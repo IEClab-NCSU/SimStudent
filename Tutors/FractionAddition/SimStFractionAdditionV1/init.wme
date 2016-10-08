@@ -1,0 +1,549 @@
+;; for Eclipse, etc., specify templates to read
+(require* wmeTypes "wmeTypes.clp")
+
+;;;; Fact assertions: slot assignments are below.
+
+(bind ?var1 (assert(MAIN::cell (name dorminTable8_C1R1))))
+(bind ?var2 (assert(MAIN::cell (name dorminTable8_C1R2))))
+(bind ?var3 (assert(MAIN::column (name dorminTable8_Column1))))
+(bind ?var4 (assert(MAIN::table (name dorminTable8))))
+(bind ?var5 (assert(MAIN::textField (name commTextField7))))
+(bind ?var6 (assert(MAIN::textField (name commTextField6))))
+(bind ?var7 (assert(MAIN::textField (name commTextField5))))
+(bind ?var8 (assert(MAIN::textField (name commTextField4))))
+(bind ?var9 (assert(MAIN::textField (name commTextField3))))
+(bind ?var10 (assert(MAIN::textField (name commTextField2))))
+(bind ?var11 (assert(MAIN::textField (name commTextField8))))
+(bind ?var12 (assert(MAIN::cell (name dorminTable1_C1R1))))
+(bind ?var13 (assert(MAIN::cell (name dorminTable1_C1R2))))
+(bind ?var14 (assert(MAIN::column (name dorminTable1_Column1))))
+(bind ?var15 (assert(MAIN::table (name  dorminTable1))))
+(bind ?var16 (assert(MAIN::button (name hint))))
+(bind ?var17 (assert(MAIN::button (name done))))
+(bind ?var18 (assert(MAIN::textField (name commTextField1))))
+(bind ?var19 (assert(MAIN::cell (name dorminTable7_C1R1))))
+(bind ?var20 (assert(MAIN::cell (name dorminTable7_C1R2))))
+(bind ?var21 (assert(MAIN::column (name dorminTable7_Column1))))
+(bind ?var22 (assert(MAIN::table (name dorminTable7))))
+(bind ?var23 (assert(MAIN::cell (name dorminTable6_C1R1))))
+(bind ?var24 (assert(MAIN::cell (name dorminTable6_C1R2))))
+(bind ?var25 (assert(MAIN::column (name dorminTable6_Column1))))
+(bind ?var26 (assert(MAIN::table (name dorminTable6))))
+(bind ?var27 (assert(MAIN::cell (name dorminTable5_C1R1))))
+(bind ?var28 (assert(MAIN::cell (name dorminTable5_C1R2))))
+(bind ?var29 (assert(MAIN::column (name dorminTable5_Column1))))
+(bind ?var30 (assert(MAIN::table (name dorminTable5))))
+(bind ?var31 (assert(MAIN::cell (name dorminTable4_C1R1))))
+(bind ?var32 (assert(MAIN::cell (name dorminTable4_C1R2))))
+(bind ?var33 (assert(MAIN::column (name dorminTable4_Column1))))
+(bind ?var34 (assert(MAIN::table (name dorminTable4))))
+(bind ?var35 (assert(MAIN::cell (name dorminTable3_C1R1))))
+(bind ?var36 (assert(MAIN::cell (name dorminTable3_C1R2))))
+(bind ?var37 (assert(MAIN::column (name dorminTable3_Column1))))
+(bind ?var38 (assert(MAIN::table (name dorminTable3))))
+(bind ?var39 (assert(MAIN::cell (name dorminTable2_C1R1))))
+(bind ?var40 (assert(MAIN::cell (name dorminTable2_C1R2))))
+(bind ?var41 (assert(MAIN::column (name dorminTable2_Column1))))
+(bind ?var42 (assert(MAIN::table (name dorminTable2))))
+(bind ?var43 (assert(MAIN::problem (name init))))
+(bind ?var44 (assert(MAIN::fraction-addition (name fraction-addition1))))
+(bind ?var45 (assert(MAIN::fraction-addition (name fraction-addition2))))
+(bind ?var46 (assert(MAIN::fraction-addition (name fraction-addition3))))
+(bind ?var47 (assert(MAIN::fraction-addition (name fraction-addition4))))
+(bind ?var48 (assert(MAIN::fraction (name fraction1))))
+(bind ?var49 (assert(MAIN::fraction (name fraction2))))
+(bind ?var50 (assert(MAIN::fraction (name fraction3))))
+(bind ?var51 (assert(MAIN::fraction (name fraction4))))
+(bind ?var52 (assert(MAIN::fraction (name fraction5))))
+(bind ?var53 (assert(MAIN::fraction (name fraction6))))
+(bind ?var54 (assert(MAIN::fraction (name fraction7))))
+(bind ?var55 (assert(MAIN::fraction (name fraction8))))
+(bind ?var56 (assert(MAIN::complex-fraction (name complex-fraction1))))
+(bind ?var57 (assert(MAIN::complex-fraction (name complex-fraction2))))
+(bind ?var58 (assert(MAIN::complex-fraction (name complex-fraction3))))
+(bind ?var59 (assert(MAIN::complex-fraction (name complex-fraction4))))
+(bind ?var60 (assert(MAIN::complex-fraction (name complex-fraction5))))
+(bind ?var61 (assert(MAIN::complex-fraction (name complex-fraction6))))
+(bind ?var62 (assert(MAIN::complex-fraction (name complex-fraction7))))
+(bind ?var63 (assert(MAIN::complex-fraction (name complex-fraction8))))
+(bind ?var64 (assert(MAIN::comboBox (name commComboBox1))))
+(bind ?var65 (assert(MAIN::comboBox (name commComboBox4))))
+(bind ?var66 (assert(MAIN::comboBox (name commComboBox3))))
+(bind ?var67 (assert(MAIN::comboBox (name commComboBox2))))
+(bind ?var68 (assert(MAIN::fraction-addition-line (name fraction-addition-line1))))
+(bind ?var69 (assert(MAIN::fraction-addition-line (name fraction-addition-line2))))
+(bind ?var70 (assert(MAIN::fraction-addition-line (name fraction-addition-line3))))
+(bind ?var71 (assert(MAIN::fraction-addition-line (name fraction-addition-line4))))
+
+;;;; Slot assignments
+
+; MAIN::cell
+(modify ?var1
+    (name dorminTable8_C1R1)
+    (value nil)
+    (description nil)
+    (row-number 1)
+    (column-number 1)
+)
+; MAIN::cell
+(modify ?var2
+    (name dorminTable8_C1R2)
+    (value nil)
+    (description nil)
+    (row-number 2)
+    (column-number 1)
+)
+; MAIN::column
+(modify ?var3
+    (name dorminTable8_Column1)
+    (cells ?var1 ?var2)
+    (position 1)
+    (description nil)
+)
+; MAIN::table
+(modify ?var4
+    (name dorminTable8)
+    (columns ?var3)
+)
+; MAIN::textField
+(modify ?var5
+    (name commTextField7)
+    (value nil)
+)
+; MAIN::textField
+(modify ?var6
+    (name commTextField6)
+    (value nil)
+)
+; MAIN::textField
+(modify ?var7
+    (name commTextField5)
+    (value nil)
+)
+; MAIN::textField
+(modify ?var8
+    (name commTextField4)
+    (value nil)
+)
+; MAIN::textField
+(modify ?var9
+    (name commTextField3)
+    (value nil)
+)
+; MAIN::textField
+(modify ?var10
+    (name commTextField2)
+    (value nil)
+)
+; MAIN::textField
+(modify ?var11
+    (name commTextField8)
+    (value nil)
+)
+; MAIN::cell
+(modify ?var12
+    (name dorminTable1_C1R1)
+    (value nil)
+    (description nil)
+    (row-number 1)
+    (column-number 1)
+)
+; MAIN::cell
+(modify ?var13
+    (name dorminTable1_C1R2)
+    (value nil)
+    (description nil)
+    (row-number 2)
+    (column-number 1)
+)
+; MAIN::column
+(modify ?var14
+    (name dorminTable1_Column1)
+    (cells ?var12 ?var13)
+    (position 1)
+    (description nil)
+)
+; MAIN::table
+(modify ?var15
+    (name dorminTable1)
+    (columns ?var14)
+)
+; MAIN::button
+(modify ?var16
+    (name hint)
+)
+; MAIN::button
+(modify ?var17
+    (name done)
+)
+; MAIN::textField
+(modify ?var18
+    (name commTextField1)
+    (value nil)
+)
+; MAIN::cell
+(modify ?var19
+    (name dorminTable7_C1R1)
+    (value nil)
+    (description nil)
+    (row-number 1)
+    (column-number 1)
+)
+; MAIN::cell
+(modify ?var20
+    (name dorminTable7_C1R2)
+    (value nil)
+    (description nil)
+    (row-number 2)
+    (column-number 1)
+)
+; MAIN::column
+(modify ?var21
+    (name dorminTable7_Column1)
+    (cells ?var19 ?var20)
+    (position 1)
+    (description nil)
+)
+; MAIN::table
+(modify ?var22
+    (name dorminTable7)
+    (columns ?var21)
+)
+; MAIN::cell
+(modify ?var23
+    (name dorminTable6_C1R1)
+    (value nil)
+    (description nil)
+    (row-number 1)
+    (column-number 1)
+)
+; MAIN::cell
+(modify ?var24
+    (name dorminTable6_C1R2)
+    (value nil)
+    (description nil)
+    (row-number 2)
+    (column-number 1)
+)
+; MAIN::column
+(modify ?var25
+    (name dorminTable6_Column1)
+    (cells ?var23 ?var24)
+    (position 1)
+    (description nil)
+)
+; MAIN::table
+(modify ?var26
+    (name dorminTable6)
+    (columns ?var25)
+)
+; MAIN::cell
+(modify ?var27
+    (name dorminTable5_C1R1)
+    (value nil)
+    (description nil)
+    (row-number 1)
+    (column-number 1)
+)
+; MAIN::cell
+(modify ?var28
+    (name dorminTable5_C1R2)
+    (value nil)
+    (description nil)
+    (row-number 2)
+    (column-number 1)
+)
+; MAIN::column
+(modify ?var29
+    (name dorminTable5_Column1)
+    (cells ?var27 ?var28)
+    (position 1)
+    (description nil)
+)
+; MAIN::table
+(modify ?var30
+    (name dorminTable5)
+    (columns ?var29)
+)
+; MAIN::cell
+(modify ?var31
+    (name dorminTable4_C1R1)
+    (value nil)
+    (description nil)
+    (row-number 1)
+    (column-number 1)
+)
+; MAIN::cell
+(modify ?var32
+    (name dorminTable4_C1R2)
+    (value nil)
+    (description nil)
+    (row-number 2)
+    (column-number 1)
+)
+; MAIN::column
+(modify ?var33
+    (name dorminTable4_Column1)
+    (cells ?var31 ?var32)
+    (position 1)
+    (description nil)
+)
+; MAIN::table
+(modify ?var34
+    (name dorminTable4)
+    (columns ?var33)
+)
+; MAIN::cell
+(modify ?var35
+    (name dorminTable3_C1R1)
+    (value nil)
+    (description nil)
+    (row-number 1)
+    (column-number 1)
+)
+; MAIN::cell
+(modify ?var36
+    (name dorminTable3_C1R2)
+    (value nil)
+    (description nil)
+    (row-number 2)
+    (column-number 1)
+)
+; MAIN::column
+(modify ?var37
+    (name dorminTable3_Column1)
+    (cells ?var35 ?var36)
+    (position 1)
+    (description nil)
+)
+; MAIN::table
+(modify ?var38
+    (name dorminTable3)
+    (columns ?var37)
+)
+; MAIN::cell
+(modify ?var39
+    (name dorminTable2_C1R1)
+    (value nil)
+    (description nil)
+    (row-number 1)
+    (column-number 1)
+)
+; MAIN::cell
+(modify ?var40
+    (name dorminTable2_C1R2)
+    (value nil)
+    (description nil)
+    (row-number 2)
+    (column-number 1)
+)
+; MAIN::column
+(modify ?var41
+    (name dorminTable2_Column1)
+    (cells ?var39 ?var40)
+    (position 1)
+    (description nil)
+)
+; MAIN::table
+(modify ?var42
+    (name dorminTable2)
+    (columns ?var41)
+)
+; MAIN::problem
+(modify ?var43
+    (name init)
+  ;;   (interface-elements ?var15 ?var4 ?var42 ?var38 ?var34 ?var30 ?var26 ?var22 ?var18 ?var11 ?var10 ?var9 ?var8 ?var7 ?var6 ?var5 ?var17 ?var16)
+  ;;  Chunking: ?var15 & ?var42 & ... &  ... replaced by fraction-addition 1 (?var44)
+   ;;  (interface-elements ?var44 ?var4 ?var38 ?var34 ?var30 ?var26 ?var22 ?var18 ?var11 ?var10 ?var9 ?var8 ?var7 ?var6 ?var5 ?var17 ?var16)
+  	;;	Chunking: ?var38 & ?var10 & ?var34 &  var9 replaced by fraction-addition 2 (?var45)
+  	;; (interface-elements ?var44 ?var45 ?var4 ?var30 ?var26 ?var22 ?var18 ?var11 ?var8 ?var7 ?var6 ?var5 ?var17 ?var16)  
+  	;;	Chunking: ?var30 & ?var26 & ?var18 &  var8 replaced by fraction-addition 3 (?var46)
+  	;; (interface-elements ?var44 ?var45 ?var46 ?var4 ?var22 ?var11 ?var7 ?var6 ?var5 ?var17 ?var16)  
+  	 ;;	Chunking: ?var22 & ?var4 & ?var5 &  var11 replaced by fraction-addition 4 (?var47)
+  	 ;; (interface-elements ?var44 ?var45 ?var46 ?var47 ?var17 ?var16) 
+  	 ;; (interface-elements ?var44 ?var45 ?var46 ?var47 ?var17 ?var64 ?var65 ?var66 ?var67 ?var16) 
+  	(interface-elements ?var68 ?var69 ?var70 ?var71 ?var17 ?var16) 
+    (subgoals)
+    (done nil)
+    (description nil)
+)
+; MAIN::fraction-addition
+(modify ?var44
+    (name fraction-addition1)
+    (value "[[nil,[nil,nil]],[nil,[nil,nil]]]")
+    (complex-fractions ?var56 ?var57)
+)
+; MAIN::complex-fraction
+(modify ?var56
+    (name complex-fraction1)
+    (value "[nil,[nil,nil]]")
+    (fractions ?var48)
+    (textFields ?var18)
+)
+; MAIN::fraction
+(modify ?var48
+    (name fraction1)
+     (value "[nil,nil]")
+    (tables ?var15)  
+)
+; MAIN::complex-fraction
+(modify ?var57
+    (name complex-fraction2)
+     (value "[nil,[nil,nil]]")
+    (fractions ?var49)
+    (textFields ?var10)
+)
+; MAIN::fraction
+(modify ?var49
+    (name fraction2)
+    (value "[nil,nil]")
+    (tables ?var42)  
+)
+; MAIN::fraction-addition
+(modify ?var45
+    (name fraction-addition2)
+     (value "[[nil,[nil,nil]],[nil,[nil,nil]]]")
+    (complex-fractions ?var58 ?var59)
+)
+; MAIN::complex-fraction
+(modify ?var58
+    (name complex-fraction3)
+    (value "[nil,[nil,nil]]")
+    (fractions ?var50)
+    (textFields ?var9)
+)
+; MAIN::fraction
+(modify ?var50
+    (name fraction3)
+    (value "[nil,nil]")
+    (tables ?var38)  
+)
+; MAIN::complex-fraction
+(modify ?var59
+    (name complex-fraction4)
+     (value "[nil,[nil,nil]]")
+    (fractions ?var51)
+    (textFields ?var8)
+)
+; MAIN::fraction
+(modify ?var51
+    (name fraction4)
+    (value "[nil,nil]")
+    (tables ?var34)  
+)
+; MAIN::fraction-addition
+(modify ?var46
+    (name fraction-addition3)
+     (value "[[nil,[nil,nil]],[nil,[nil,nil]]]")
+    (complex-fractions ?var60 ?var61)
+)
+; MAIN::complex-fraction
+(modify ?var60
+    (name complex-fraction5)
+     (value "[nil,[nil,nil]]")
+    (fractions ?var52)
+    (textFields ?var7)
+)
+; MAIN::fraction
+(modify ?var52
+    (name fraction5)
+    (value "[nil,nil]")
+    (tables ?var30)  
+)
+; MAIN::complex-fraction
+(modify ?var61
+    (name complex-fraction6)
+     (value "[nil,[nil,nil]]")
+    (fractions ?var53)
+    (textFields ?var6)
+)
+; MAIN::fraction
+(modify ?var53
+    (name fraction6)
+    (value "[nil,nil]")
+    (tables ?var26)  
+)
+; MAIN::fraction-addition
+(modify ?var47
+    (name fraction-addition4)
+     (value "[[nil,[nil,nil]],[nil,[nil,nil]]]")
+    (complex-fractions ?var62 ?var63)
+)
+; MAIN::complex-fraction
+(modify ?var62
+    (name complex-fraction7)
+     (value "[nil,[nil,nil]]")
+    (fractions ?var54)
+    (textFields ?var5)
+)
+; MAIN::fraction
+(modify ?var54
+    (name fraction7)
+      (value "[nil,nil]")
+    (tables ?var22)  
+)
+; MAIN::complex-fraction
+(modify ?var63
+    (name complex-fraction8)
+     (value "[nil,[nil,nil]]")
+    (fractions ?var55)
+    (textFields ?var11)
+)
+; MAIN::fraction
+(modify ?var55
+    (name fraction8)
+    (value "[nil,nil]")
+    (tables ?var4)  
+)
+; MAIN::comboBox
+(modify ?var64
+    (name commComboBox1)
+    (value nil)
+    (values "Select a goal" "Reduce" "Add" "Simplify" "Conversion")
+)
+; MAIN::comboBox
+(modify ?var65
+    (name commComboBox4)
+    (value nil)
+    (values "Select a goal" "Reduce" "Add" "Simplify" "Conversion")
+)
+; MAIN::comboBox
+(modify ?var66
+    (name commComboBox3)
+    (value nil)
+    (values "Select a goal" "Reduce" "Add" "Simplify" "Conversion")
+)
+; MAIN::comboBox
+(modify ?var67
+    (name commComboBox2)
+    (value nil)
+    (values "Select a goal" "Reduce" "Add" "Simplify" "Conversion")
+)
+; MAIN::fraction-addition-line
+(modify ?var68
+    (name fraction-addition-line1)
+     (value nil)
+    (fraction-additions ?var44)
+    (comboBoxs ?var64)
+)
+; MAIN::fraction-addition-line
+(modify ?var69
+    (name fraction-addition-line2)
+     (value nil)
+    (fraction-additions ?var45)
+    (comboBoxs ?var67)
+)
+; MAIN::fraction-addition-line
+(modify ?var70
+    (name fraction-addition-line3)
+     (value nil)
+    (fraction-additions ?var46)
+    (comboBoxs ?var66)
+)
+; MAIN::fraction-addition-line
+(modify ?var71
+    (name fraction-addition-line4)
+     (value nil)
+    (fraction-additions ?var47)
+    (comboBoxs ?var65)
+)

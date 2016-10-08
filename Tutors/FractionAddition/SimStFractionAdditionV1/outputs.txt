@@ -1,0 +1,241 @@
+[12:15:57] +trace+ 1: new trace level = 5 <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:1054>main
++trace+ Added debug code miss <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:1041>
++trace+ Added debug code ss <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:1041>
++trace+ Added debug code rr <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:1041>
+[12:15:57] +miss+ 2: argv[3] = miss <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[12:15:57] +miss+ 3: argv[4] = ss <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[12:15:57] +miss+ 4: argv[5] = rr <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[12:15:57] +miss+ 5: argv[6] = -ssPreservePrFile <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[12:15:57] +miss+ 6: keyStem=ssPreservePrFile <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:666>main
+[12:15:57] +miss+ 7: argv[7] = -ssTestSet <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[12:15:57] +miss+ 8: keyStem=ssTestSet <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:666>main
+[12:15:57] +miss+ 9: argv[8] = problems.txt <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[12:15:57] +miss+ 10: argv[9] = -ssTestOutput <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[12:15:57] +miss+ 11: keyStem=ssTestOutput <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:666>main
+[12:15:57] +miss+ 12: argv[10] = ./prs/productionRules-ADUYE.pr <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[12:15:57] +miss+ 13: argv[11] = -ssCacheOracleInquiry <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[12:15:57] +miss+ 14: keyStem=ssCacheOracleInquiry <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:666>main
+[12:15:57] +miss+ 15: argv[12] = false <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[12:15:57] +miss+ 16: argv[13] = -ssTestOnLastTrainingOnly <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[12:15:57] +miss+ 17: keyStem=ssTestOnLastTrainingOnly <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:666>main
+[12:15:57] +miss+ 18: argv[14] = -ssSearchTimeOutDuration <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[12:15:57] +miss+ 19: keyStem=ssSearchTimeOutDuration <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:666>main
+[12:15:57] +miss+ 20: setTimeoutDuration(60000) <edu.cmu.pact.miss.SimSt:2870>main
+[12:15:57] +miss+ 21: argv[15] = 60000 <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[12:15:57] +miss+ 22: argv[16] = -ssMaxSearchDepth <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[12:15:57] +miss+ 23: keyStem=ssMaxSearchDepth <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:666>main
+[12:15:57] +miss+ 24: argv[17] = 3 <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[12:15:57] +miss+ 25: argv[18] = -ssClSolverTutorSAIConverter <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[12:15:57] +miss+ 26: keyStem=ssClSolverTutorSAIConverter <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:666>main
+[12:15:57] +miss+ 27: argv[19] = SimStAlgebraV8.AlgebraV8AdhocSAIConverter <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[12:15:57] +miss+ 28: argv[20] = -ssSkillNameGetterClass <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[12:15:57] +miss+ 29: keyStem=ssSkillNameGetterClass <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:666>main
+[12:15:57] +miss+ 30: DEBUG: SimStAlgebraV8.AlgebraV8AdhocSkillNameGetter <edu.cmu.pact.miss.SimSt:2403>main
+[12:15:57] +miss+ 31: argv[21] = SimStAlgebraV8.AlgebraV8AdhocSkillNameGetter <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[12:15:57] +miss+ 32: argv[22] = -ssFoaGetterClass <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[12:15:57] +miss+ 33: keyStem=ssFoaGetterClass <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:666>main
+[12:15:57] +miss+ 34: argv[23] = SimStAlgebraV8.AlgebraV8AdhocFoaGetter <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[12:15:57] +miss+ 35: argv[24] = -ssRuleActivationTestMethod <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[12:15:57] +miss+ 36: keyStem=ssRuleActivationTestMethod <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:666>main
+[12:15:57] +miss+ 37: argv[25] = builtInClSolverTutor <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[12:15:57] +miss+ 38: argv[26] = -ssFoaClickDisabled <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[12:15:57] +miss+ 39: keyStem=ssFoaClickDisabled <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:666>main
+[12:15:57] +miss+ 40: argv[27] = -ssHintMethod <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[12:15:57] +miss+ 41: keyStem=ssHintMethod <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:666>main
+[12:15:57] +miss+ 42: argv[28] = builtInClSolverTutor <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[12:15:57] +miss+ 43: argv[29] = -ssInputMatcher <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[12:15:57] +miss+ 44: keyStem=ssInputMatcher <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:666>main
+[12:15:57] +miss+ 45: argv[30] = edu.cmu.pact.miss.userDef.algebra.IsEquivalent <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[12:15:57] +miss+ 46: argv[31] = -ssProjectDir <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[12:15:57] +miss+ 47: keyStem=ssProjectDir <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:666>main
+[12:15:57] +miss+ 48: ProjectDir set to . <edu.cmu.pact.miss.SimSt:767>main
+[12:15:57] +miss+ 49: argv[32] = . <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[12:15:57] +miss+ 50: argv[33] = -ssRunValidation <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[12:15:57] +miss+ 51: keyStem=ssRunValidation <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:666>main
+[12:15:58] +trace+ 52: action label menu = javax.swing.JCheckBoxMenuItem[,0,0,0x0,invalid,alignmentX=0.0,alignmentY=0.0,border=com.apple.laf.AquaMenuBorder@6761b44b,flags=264,maximumSize=,minimumSize=,preferredSize=,defaultIcon=,disabledIcon=,disabledSelectedIcon=,margin=javax.swing.plaf.InsetsUIResource[top=0,left=0,bottom=0,right=0],paintBorder=true,paintFocus=false,pressedIcon=,rolloverEnabled=false,rolloverIcon=,rolloverSelectedIcon=,selectedIcon=,text=Show Action Labels] <edu.cmu.pact.ctatview.CtatMenuBar:1879>main
+[12:15:58] +trace+ 53: lock widgets preference changed <edu.cmu.pact.BehaviorRecorder.Controller.BR_Controller:5599>main
+[12:15:58] +trace+ 54: case sensitivity preference changed <edu.cmu.pact.BehaviorRecorder.Controller.BR_Controller:5610>main
+[12:15:58] +trace+ 55: student feedback preference changed <edu.cmu.pact.BehaviorRecorder.Controller.BR_Controller:5601>main
+[12:15:58] +trace+ 56: hint policy preference changed <edu.cmu.pact.BehaviorRecorder.Controller.BR_Controller:5603>main
+[12:15:58] +trace+ 57: background = java.awt.Color[r=255,g=255,b=255] <edu.cmu.pact.BehaviorRecorder.jgraphwindow.JGraphPanel:112>main
+[12:15:58] +trace+ 58: foreground = null <edu.cmu.pact.BehaviorRecorder.jgraphwindow.JGraphPanel:113>main
+[12:15:58] +trace+ 59: setTutorPanel() post validate() min java.awt.Dimension[width=500,height=500], pref java.awt.Dimension[width=800,height=600], max java.awt.Dimension[width=2147483647,height=2147483647] <pact.CommWidgets.TutorWrapper:50>main
+[12:16:00] +miss+ 60: homeDirPath = SimStAlgebraV8/ <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:404>main
+[12:16:00] +trace+ 61: url = file:/Users/simstudent/CMU/Tomodachi8-1-6-macfriendly/SimStAlgebraV8/ <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:528>main
+[12:16:00] +ss+ 62: Running in Contest Mode: false <edu.cmu.pact.miss.console.controller.MissController:225>main
+[12:16:00] +rr+ 63: currentNode: 4x_8 <edu.cmu.pact.miss.SimSt:5459>main
+[12:16:00] +rr+ 64: rr.checkFilenameValid(SimStAlgebraV8/4x_8.bload) file result /Users/simstudent/CMU/Tomodachi8-1-6-macfriendly/SimStAlgebraV8/4x_8.bload <edu.cmu.pact.jess.SimStRete:813>main
+[12:16:00] +rr+ 65: rr.checkFilenameValid(SimStAlgebraV8/4x_8.bload) URL result null <edu.cmu.pact.jess.SimStRete:818>main
+[12:16:00] +rr+ 66: MT.getDirectory(): getProblemDirectory() result SimStAlgebraV8/+4x_8.bload valid? false <edu.cmu.pact.jess.SimStRete:789>main
+[12:16:00] +rr+ 67: rr.checkFilenameValid(/4x_8.bload) file result null <edu.cmu.pact.jess.SimStRete:813>main
+[12:16:00] +rr+ 68: rr.checkFilenameValid(/4x_8.bload) URL result null <edu.cmu.pact.jess.SimStRete:818>main
+[12:16:00] +rr+ 69: rr.checkFilenameValid(SimStAlgebraV8/wmeTypes.clp) file result /Users/simstudent/CMU/Tomodachi8-1-6-macfriendly/SimStAlgebraV8/wmeTypes.clp <edu.cmu.pact.jess.SimStRete:813>main
+[12:16:00] +rr+ 70: MT.getDirectory(): getProblemDirectory() result SimStAlgebraV8/+wmeTypes.clp valid? true <edu.cmu.pact.jess.SimStRete:789>main
+[12:16:00] +rr+ 71: rr.checkFilenameValid(SimStAlgebraV8/productionRules.pr) file result /Users/simstudent/CMU/Tomodachi8-1-6-macfriendly/SimStAlgebraV8/productionRules.pr <edu.cmu.pact.jess.SimStRete:813>main
+[12:16:00] +rr+ 72: MT.getDirectory(): getProblemDirectory() result SimStAlgebraV8/+productionRules.pr valid? true <edu.cmu.pact.jess.SimStRete:789>main
+[12:16:00] +rr+ 73: rr.checkFilenameValid(SimStAlgebraV8/init.wme) file result /Users/simstudent/CMU/Tomodachi8-1-6-macfriendly/SimStAlgebraV8/init.wme <edu.cmu.pact.jess.SimStRete:813>main
+[12:16:00] +rr+ 74: MT.getDirectory(): getProblemDirectory() result SimStAlgebraV8/+init.wme valid? true <edu.cmu.pact.jess.SimStRete:789>main
+[12:16:00] +rr+ 75: rr.checkFilenameValid(SimStAlgebraV8/4x_8.wme) file result /Users/simstudent/CMU/Tomodachi8-1-6-macfriendly/SimStAlgebraV8/4x_8.wme <edu.cmu.pact.jess.SimStRete:813>main
+[12:16:00] +rr+ 76: rr.checkFilenameValid(SimStAlgebraV8/4x_8.wme) URL result null <edu.cmu.pact.jess.SimStRete:818>main
+[12:16:00] +rr+ 77: MT.getDirectory(): getProblemDirectory() result SimStAlgebraV8/+4x_8.wme valid? false <edu.cmu.pact.jess.SimStRete:789>main
+[12:16:00] +rr+ 78: rr.checkFilenameValid(/4x_8.wme) file result null <edu.cmu.pact.jess.SimStRete:813>main
+[12:16:00] +rr+ 79: rr.checkFilenameValid(/4x_8.wme) URL result null <edu.cmu.pact.jess.SimStRete:818>main
+[12:16:00] +rr+ 80: startProblem(4x=8) <edu.cmu.pact.miss.InquiryClSolverTutor:351>main
+[12:16:00] +trace+ 81: SolverTutor.startProblem: '4x=8;solve!' <cl.utilities.Logging.Logger:47>main
+[12:16:00] +rr+ 82: getNextStep >> HINTMESSAGE;4x = 8;divide;4 <edu.cmu.pact.miss.InquiryClSolverTutor:494>main
+[12:16:00] +rr+ 83: hint: <AskHint for divide on null(null) with dorminTable3_C1R1, UpdateTable, divide 4> <edu.cmu.pact.miss.SimSt:5496>main
+[12:16:00] +ss+ 84: Checking RAN: MAIN::divide <edu.cmu.pact.miss.SimSt:5503>main
+[12:16:00] +miss+ 85: Enter inspectActivation <edu.cmu.pact.miss.SimSt:5559>main
+[12:16:00] +miss+ 86: input: [divide 4] <SimStAlgebraV8.AlgebraV8AdhocSkillNameGetter:44>main
+[12:16:00] +miss+ 87: skill: divide <SimStAlgebraV8.AlgebraV8AdhocSkillNameGetter:45>main
+[12:16:00] +rr+ 88: startProblem(4x=8) <edu.cmu.pact.miss.InquiryClSolverTutor:351>main
+[12:16:00] +trace+ 89: SolverTutor.startProblem: '4x=8;solve!' <cl.utilities.Logging.Logger:47>main
+[12:16:00] +rr+ 90: testSAI(dorminTable3_C1R1,UpdateTable,divide 4) = true <edu.cmu.pact.miss.InquiryClSolverTutor:525>main
+[12:16:00] +miss+ 91: successiveNode: state 1 <edu.cmu.pact.miss.SimSt:5509>main
+[12:16:00] +ss+ 92: Checking RAN: MAIN::divide-1 <edu.cmu.pact.miss.SimSt:5503>main
+[12:16:00] +rr+ 93: startProblem(4x=8) <edu.cmu.pact.miss.InquiryClSolverTutor:351>main
+[12:16:00] +trace+ 94: SolverTutor.startProblem: '4x=8;solve!' <cl.utilities.Logging.Logger:47>main
+[12:16:00] +rr+ 95: testSAI(dorminTable3_C1R1,UpdateTable,divide 4) = true <edu.cmu.pact.miss.InquiryClSolverTutor:525>main
+[12:16:00] +rr+ 96: hint: dorminTable3_C1R1, UpdateTable, divide 4 <edu.cmu.pact.miss.SimSt:5551>main
+[12:16:00] +rr+ 97: toVisitNode: state 2 <edu.cmu.pact.miss.SimSt:5468>main
+[12:16:00] +rr+ 98: currentNode: state 2 <edu.cmu.pact.miss.SimSt:5459>main
+[12:16:00] +rr+ 99: rr.checkFilenameValid(SimStAlgebraV8/4x_8.bload) file result /Users/simstudent/CMU/Tomodachi8-1-6-macfriendly/SimStAlgebraV8/4x_8.bload <edu.cmu.pact.jess.SimStRete:813>main
+[12:16:00] +rr+ 100: rr.checkFilenameValid(SimStAlgebraV8/4x_8.bload) URL result null <edu.cmu.pact.jess.SimStRete:818>main
+[12:16:00] +rr+ 101: MT.getDirectory(): getProblemDirectory() result SimStAlgebraV8/+4x_8.bload valid? false <edu.cmu.pact.jess.SimStRete:789>main
+[12:16:00] +rr+ 102: rr.checkFilenameValid(/4x_8.bload) file result null <edu.cmu.pact.jess.SimStRete:813>main
+[12:16:00] +rr+ 103: rr.checkFilenameValid(/4x_8.bload) URL result null <edu.cmu.pact.jess.SimStRete:818>main
+[12:16:00] +rr+ 104: rr.checkFilenameValid(SimStAlgebraV8/wmeTypes.clp) file result /Users/simstudent/CMU/Tomodachi8-1-6-macfriendly/SimStAlgebraV8/wmeTypes.clp <edu.cmu.pact.jess.SimStRete:813>main
+[12:16:00] +rr+ 105: MT.getDirectory(): getProblemDirectory() result SimStAlgebraV8/+wmeTypes.clp valid? true <edu.cmu.pact.jess.SimStRete:789>main
+[12:16:00] +rr+ 106: rr.checkFilenameValid(SimStAlgebraV8/productionRules.pr) file result /Users/simstudent/CMU/Tomodachi8-1-6-macfriendly/SimStAlgebraV8/productionRules.pr <edu.cmu.pact.jess.SimStRete:813>main
+[12:16:00] +rr+ 107: MT.getDirectory(): getProblemDirectory() result SimStAlgebraV8/+productionRules.pr valid? true <edu.cmu.pact.jess.SimStRete:789>main
+[12:16:00] +rr+ 108: rr.checkFilenameValid(SimStAlgebraV8/init.wme) file result /Users/simstudent/CMU/Tomodachi8-1-6-macfriendly/SimStAlgebraV8/init.wme <edu.cmu.pact.jess.SimStRete:813>main
+[12:16:00] +rr+ 109: MT.getDirectory(): getProblemDirectory() result SimStAlgebraV8/+init.wme valid? true <edu.cmu.pact.jess.SimStRete:789>main
+[12:16:00] +rr+ 110: rr.checkFilenameValid(SimStAlgebraV8/4x_8.wme) file result /Users/simstudent/CMU/Tomodachi8-1-6-macfriendly/SimStAlgebraV8/4x_8.wme <edu.cmu.pact.jess.SimStRete:813>main
+[12:16:00] +rr+ 111: rr.checkFilenameValid(SimStAlgebraV8/4x_8.wme) URL result null <edu.cmu.pact.jess.SimStRete:818>main
+[12:16:00] +rr+ 112: MT.getDirectory(): getProblemDirectory() result SimStAlgebraV8/+4x_8.wme valid? false <edu.cmu.pact.jess.SimStRete:789>main
+[12:16:00] +rr+ 113: rr.checkFilenameValid(/4x_8.wme) file result null <edu.cmu.pact.jess.SimStRete:813>main
+[12:16:00] +rr+ 114: rr.checkFilenameValid(/4x_8.wme) URL result null <edu.cmu.pact.jess.SimStRete:818>main
+[12:16:01] +rr+ 115: startProblem(4x=8) <edu.cmu.pact.miss.InquiryClSolverTutor:351>main
+[12:16:01] +trace+ 116: SolverTutor.startProblem: '4x=8;solve!' <cl.utilities.Logging.Logger:47>main
+[12:16:01] +rr+ 117: doStep(dorminTable3_C1R1,,divide 4) <edu.cmu.pact.miss.InquiryClSolverTutor:364>main
+[12:16:01] +rr+ 118: getNextStep >> HINTMESSAGE;x = 2;left;x <edu.cmu.pact.miss.InquiryClSolverTutor:494>main
+[12:16:01] +rr+ 119: hint: <AskHint for divide-typein on null(null) with dorminTable1_C1R2, UpdateTable, x> <edu.cmu.pact.miss.SimSt:5496>main
+[12:16:01] +ss+ 120: Checking RAN: MAIN::divide-typein&1 <edu.cmu.pact.miss.SimSt:5503>main
+[12:16:01] +ss+ 121: Checking RAN: MAIN::divide-typein&2 <edu.cmu.pact.miss.SimSt:5503>main
+[12:16:01] +miss+ 122: Enter inspectActivation <edu.cmu.pact.miss.SimSt:5559>main
+[12:16:01] +miss+ 123: input: [x] <SimStAlgebraV8.AlgebraV8AdhocSkillNameGetter:44>main
+[12:16:01] +miss+ 124: skill: x <SimStAlgebraV8.AlgebraV8AdhocSkillNameGetter:45>main
+[12:16:01] +rr+ 125: startProblem(4x=8) <edu.cmu.pact.miss.InquiryClSolverTutor:351>main
+[12:16:01] +trace+ 126: SolverTutor.startProblem: '4x=8;solve!' <cl.utilities.Logging.Logger:47>main
+[12:16:01] +rr+ 127: doStep(dorminTable3_C1R1,,divide 4) <edu.cmu.pact.miss.InquiryClSolverTutor:364>main
+[12:16:01] +trace+ 128: typein getModelRule foundRule: [RuleMatchInfo bval=true; rule=null; action = null; input = x] <cl.utilities.Logging.Logger:47>main
+[12:16:01] +rr+ 129: testSAI(dorminTable1_C1R2,UpdateTable,x) = true <edu.cmu.pact.miss.InquiryClSolverTutor:525>main
+[12:16:01] +miss+ 130: successiveNode: state 3 <edu.cmu.pact.miss.SimSt:5509>main
+[12:16:01] +rr+ 131: startProblem(4x=8) <edu.cmu.pact.miss.InquiryClSolverTutor:351>main
+[12:16:01] +trace+ 132: SolverTutor.startProblem: '4x=8;solve!' <cl.utilities.Logging.Logger:47>main
+[12:16:01] +rr+ 133: doStep(dorminTable3_C1R1,,divide 4) <edu.cmu.pact.miss.InquiryClSolverTutor:364>main
+[12:16:01] +trace+ 134: typein getModelRule foundRule: [RuleMatchInfo bval=true; rule=null; action = null; input = x] <cl.utilities.Logging.Logger:47>main
+[12:16:01] +rr+ 135: testSAI(dorminTable1_C1R2,UpdateTable,x) = true <edu.cmu.pact.miss.InquiryClSolverTutor:525>main
+[12:16:01] +rr+ 136: hint: dorminTable1_C1R2, UpdateTable, x <edu.cmu.pact.miss.SimSt:5551>main
+[12:16:01] +rr+ 137: toVisitNode: state 4 <edu.cmu.pact.miss.SimSt:5468>main
+[12:16:01] +rr+ 138: currentNode: state 4 <edu.cmu.pact.miss.SimSt:5459>main
+[12:16:01] +rr+ 139: rr.checkFilenameValid(SimStAlgebraV8/4x_8.bload) file result /Users/simstudent/CMU/Tomodachi8-1-6-macfriendly/SimStAlgebraV8/4x_8.bload <edu.cmu.pact.jess.SimStRete:813>main
+[12:16:01] +rr+ 140: rr.checkFilenameValid(SimStAlgebraV8/4x_8.bload) URL result null <edu.cmu.pact.jess.SimStRete:818>main
+[12:16:01] +rr+ 141: MT.getDirectory(): getProblemDirectory() result SimStAlgebraV8/+4x_8.bload valid? false <edu.cmu.pact.jess.SimStRete:789>main
+[12:16:01] +rr+ 142: rr.checkFilenameValid(/4x_8.bload) file result null <edu.cmu.pact.jess.SimStRete:813>main
+[12:16:01] +rr+ 143: rr.checkFilenameValid(/4x_8.bload) URL result null <edu.cmu.pact.jess.SimStRete:818>main
+[12:16:01] +rr+ 144: rr.checkFilenameValid(SimStAlgebraV8/wmeTypes.clp) file result /Users/simstudent/CMU/Tomodachi8-1-6-macfriendly/SimStAlgebraV8/wmeTypes.clp <edu.cmu.pact.jess.SimStRete:813>main
+[12:16:01] +rr+ 145: MT.getDirectory(): getProblemDirectory() result SimStAlgebraV8/+wmeTypes.clp valid? true <edu.cmu.pact.jess.SimStRete:789>main
+[12:16:01] +rr+ 146: rr.checkFilenameValid(SimStAlgebraV8/productionRules.pr) file result /Users/simstudent/CMU/Tomodachi8-1-6-macfriendly/SimStAlgebraV8/productionRules.pr <edu.cmu.pact.jess.SimStRete:813>main
+[12:16:01] +rr+ 147: MT.getDirectory(): getProblemDirectory() result SimStAlgebraV8/+productionRules.pr valid? true <edu.cmu.pact.jess.SimStRete:789>main
+[12:16:01] +rr+ 148: rr.checkFilenameValid(SimStAlgebraV8/init.wme) file result /Users/simstudent/CMU/Tomodachi8-1-6-macfriendly/SimStAlgebraV8/init.wme <edu.cmu.pact.jess.SimStRete:813>main
+[12:16:01] +rr+ 149: MT.getDirectory(): getProblemDirectory() result SimStAlgebraV8/+init.wme valid? true <edu.cmu.pact.jess.SimStRete:789>main
+[12:16:01] +rr+ 150: rr.checkFilenameValid(SimStAlgebraV8/4x_8.wme) file result /Users/simstudent/CMU/Tomodachi8-1-6-macfriendly/SimStAlgebraV8/4x_8.wme <edu.cmu.pact.jess.SimStRete:813>main
+[12:16:01] +rr+ 151: rr.checkFilenameValid(SimStAlgebraV8/4x_8.wme) URL result null <edu.cmu.pact.jess.SimStRete:818>main
+[12:16:01] +rr+ 152: MT.getDirectory(): getProblemDirectory() result SimStAlgebraV8/+4x_8.wme valid? false <edu.cmu.pact.jess.SimStRete:789>main
+[12:16:01] +rr+ 153: rr.checkFilenameValid(/4x_8.wme) file result null <edu.cmu.pact.jess.SimStRete:813>main
+[12:16:01] +rr+ 154: rr.checkFilenameValid(/4x_8.wme) URL result null <edu.cmu.pact.jess.SimStRete:818>main
+[12:16:01] +rr+ 155: startProblem(4x=8) <edu.cmu.pact.miss.InquiryClSolverTutor:351>main
+[12:16:01] +trace+ 156: SolverTutor.startProblem: '4x=8;solve!' <cl.utilities.Logging.Logger:47>main
+[12:16:01] +rr+ 157: doStep(dorminTable3_C1R1,,divide 4) <edu.cmu.pact.miss.InquiryClSolverTutor:364>main
+[12:16:01] +rr+ 158: doStep(dorminTable1_C1R2,,x) <edu.cmu.pact.miss.InquiryClSolverTutor:364>main
+[12:16:01] +rr+ 159: getNextStep >> HINTMESSAGE;x = 2;right;2 <edu.cmu.pact.miss.InquiryClSolverTutor:494>main
+[12:16:01] +rr+ 160: hint: <AskHint for divide-typein on null(null) with dorminTable2_C1R2, UpdateTable, 2> <edu.cmu.pact.miss.SimSt:5496>main
+[12:16:01] +ss+ 161: Checking RAN: MAIN::divide-typein&1 <edu.cmu.pact.miss.SimSt:5503>main
+[12:16:01] +rr+ 162: hint: dorminTable2_C1R2, UpdateTable, 2 <edu.cmu.pact.miss.SimSt:5551>main
+[12:16:01] +rr+ 163: toVisitNode: state 5 <edu.cmu.pact.miss.SimSt:5468>main
+[12:16:01] +rr+ 164: currentNode: state 5 <edu.cmu.pact.miss.SimSt:5459>main
+[12:16:01] +rr+ 165: rr.checkFilenameValid(SimStAlgebraV8/4x_8.bload) file result /Users/simstudent/CMU/Tomodachi8-1-6-macfriendly/SimStAlgebraV8/4x_8.bload <edu.cmu.pact.jess.SimStRete:813>main
+[12:16:01] +rr+ 166: rr.checkFilenameValid(SimStAlgebraV8/4x_8.bload) URL result null <edu.cmu.pact.jess.SimStRete:818>main
+[12:16:01] +rr+ 167: MT.getDirectory(): getProblemDirectory() result SimStAlgebraV8/+4x_8.bload valid? false <edu.cmu.pact.jess.SimStRete:789>main
+[12:16:01] +rr+ 168: rr.checkFilenameValid(/4x_8.bload) file result null <edu.cmu.pact.jess.SimStRete:813>main
+[12:16:01] +rr+ 169: rr.checkFilenameValid(/4x_8.bload) URL result null <edu.cmu.pact.jess.SimStRete:818>main
+[12:16:01] +rr+ 170: rr.checkFilenameValid(SimStAlgebraV8/wmeTypes.clp) file result /Users/simstudent/CMU/Tomodachi8-1-6-macfriendly/SimStAlgebraV8/wmeTypes.clp <edu.cmu.pact.jess.SimStRete:813>main
+[12:16:01] +rr+ 171: MT.getDirectory(): getProblemDirectory() result SimStAlgebraV8/+wmeTypes.clp valid? true <edu.cmu.pact.jess.SimStRete:789>main
+[12:16:01] +rr+ 172: rr.checkFilenameValid(SimStAlgebraV8/productionRules.pr) file result /Users/simstudent/CMU/Tomodachi8-1-6-macfriendly/SimStAlgebraV8/productionRules.pr <edu.cmu.pact.jess.SimStRete:813>main
+[12:16:01] +rr+ 173: MT.getDirectory(): getProblemDirectory() result SimStAlgebraV8/+productionRules.pr valid? true <edu.cmu.pact.jess.SimStRete:789>main
+[12:16:01] +rr+ 174: rr.checkFilenameValid(SimStAlgebraV8/init.wme) file result /Users/simstudent/CMU/Tomodachi8-1-6-macfriendly/SimStAlgebraV8/init.wme <edu.cmu.pact.jess.SimStRete:813>main
+[12:16:01] +rr+ 175: MT.getDirectory(): getProblemDirectory() result SimStAlgebraV8/+init.wme valid? true <edu.cmu.pact.jess.SimStRete:789>main
+[12:16:01] +rr+ 176: rr.checkFilenameValid(SimStAlgebraV8/4x_8.wme) file result /Users/simstudent/CMU/Tomodachi8-1-6-macfriendly/SimStAlgebraV8/4x_8.wme <edu.cmu.pact.jess.SimStRete:813>main
+[12:16:01] +rr+ 177: rr.checkFilenameValid(SimStAlgebraV8/4x_8.wme) URL result null <edu.cmu.pact.jess.SimStRete:818>main
+[12:16:01] +rr+ 178: MT.getDirectory(): getProblemDirectory() result SimStAlgebraV8/+4x_8.wme valid? false <edu.cmu.pact.jess.SimStRete:789>main
+[12:16:01] +rr+ 179: rr.checkFilenameValid(/4x_8.wme) file result null <edu.cmu.pact.jess.SimStRete:813>main
+[12:16:01] +rr+ 180: rr.checkFilenameValid(/4x_8.wme) URL result null <edu.cmu.pact.jess.SimStRete:818>main
+[12:16:01] +rr+ 181: startProblem(x = 2) <edu.cmu.pact.miss.InquiryClSolverTutor:351>main
+[12:16:01] +trace+ 182: SolverTutor.startProblem: 'x = 2;solve!' <cl.utilities.Logging.Logger:47>main
+[12:16:01] +trace+ 183: <<property "canDistributeMultiplicationWhole" of x is false[cl.utilities.sm.query.BooleanQuery]>> <cl.utilities.Logging.Logger:47>main
+[12:16:01] +trace+ 184: <<property "components with property canDistributeMultiplicationWhole" of x is [ArrayQuery: ][cl.utilities.sm.query.ArrayQuery]>> <cl.utilities.Logging.Logger:47>main
+[12:16:01] +trace+ 185: <<property "components with property canDistributeMultiplicationWhole" of x is [ArrayQuery: ][cl.utilities.sm.query.ArrayQuery]>> <cl.utilities.Logging.Logger:47>main
+[12:16:01] +trace+ 186: <<property "length" of [ArrayQuery: ] is 0[cl.utilities.sm.query.NumberQuery]>> <cl.utilities.Logging.Logger:47>main
+[12:16:01] +trace+ 187: <<property "length of components with property canDistributeMultiplicationWhole" of x is 0[cl.utilities.sm.query.NumberQuery]>> <cl.utilities.Logging.Logger:47>main
+[12:16:01] +trace+ 188: <<property "canDistributeMultiplicationWhole" of 2 is false[cl.utilities.sm.query.BooleanQuery]>> <cl.utilities.Logging.Logger:47>main
+[12:16:01] +trace+ 189: <<property "components with property canDistributeMultiplicationWhole" of 2 is [ArrayQuery: ][cl.utilities.sm.query.ArrayQuery]>> <cl.utilities.Logging.Logger:47>main
+[12:16:01] +trace+ 190: <<property "components with property canDistributeMultiplicationWhole" of 2 is [ArrayQuery: ][cl.utilities.sm.query.ArrayQuery]>> <cl.utilities.Logging.Logger:47>main
+[12:16:01] +trace+ 191: <<property "length" of [ArrayQuery: ] is 0[cl.utilities.sm.query.NumberQuery]>> <cl.utilities.Logging.Logger:47>main
+[12:16:01] +trace+ 192: <<property "length of components with property canDistributeMultiplicationWhole" of 2 is 0[cl.utilities.sm.query.NumberQuery]>> <cl.utilities.Logging.Logger:47>main
+[12:16:01] +trace+ 193: <<property "right side" of [EI: x=2::Z=a] is 2[cl.utilities.sm.NumberExpression]>> <cl.utilities.Logging.Logger:47>main
+[12:16:01] +trace+ 194: <<property "right side" of [EI: x=2::Z=a] is 2[cl.utilities.sm.NumberExpression]>> <cl.utilities.Logging.Logger:47>main
+[12:16:01] +trace+ 195: <<property "canDistributeMultiplication" of 2 is false[cl.utilities.sm.query.BooleanQuery]>> <cl.utilities.Logging.Logger:47>main
+[12:16:01] +trace+ 196: <<property "canDistributeMultiplication" of 2 is false[cl.utilities.sm.query.BooleanQuery]>> <cl.utilities.Logging.Logger:47>main
+[12:16:01] +rr+ 197: getNextStep >> HINTMESSAGE;x = 2;done;null <edu.cmu.pact.miss.InquiryClSolverTutor:494>main
+[12:16:01] +rr+ 198: hint: <AskHint for -kill-interactive-learning- on null(null) with done, ButtonPressed, -1> <edu.cmu.pact.miss.SimSt:5496>main
+[12:16:01] +ss+ 199: Checking RAN: MAIN::done <edu.cmu.pact.miss.SimSt:5503>main
+[12:16:01] +miss+ 200: Enter inspectActivation <edu.cmu.pact.miss.SimSt:5559>main
+[12:16:01] +miss+ 201: selection: done, skill name: done <SimStAlgebraV8.AlgebraV8AdhocSkillNameGetter:33>main
+[12:16:01] +rr+ 202: startProblem(x = 2) <edu.cmu.pact.miss.InquiryClSolverTutor:351>main
+[12:16:01] +trace+ 203: SolverTutor.startProblem: 'x = 2;solve!' <cl.utilities.Logging.Logger:47>main
+[12:16:01] +trace+ 204: <<property "canDistributeMultiplicationWhole" of x is false[cl.utilities.sm.query.BooleanQuery]>> <cl.utilities.Logging.Logger:47>main
+[12:16:01] +trace+ 205: <<property "components with property canDistributeMultiplicationWhole" of x is [ArrayQuery: ][cl.utilities.sm.query.ArrayQuery]>> <cl.utilities.Logging.Logger:47>main
+[12:16:01] +trace+ 206: <<property "components with property canDistributeMultiplicationWhole" of x is [ArrayQuery: ][cl.utilities.sm.query.ArrayQuery]>> <cl.utilities.Logging.Logger:47>main
+[12:16:01] +trace+ 207: <<property "length" of [ArrayQuery: ] is 0[cl.utilities.sm.query.NumberQuery]>> <cl.utilities.Logging.Logger:47>main
+[12:16:01] +trace+ 208: <<property "length of components with property canDistributeMultiplicationWhole" of x is 0[cl.utilities.sm.query.NumberQuery]>> <cl.utilities.Logging.Logger:47>main
+[12:16:01] +trace+ 209: <<property "canDistributeMultiplicationWhole" of 2 is false[cl.utilities.sm.query.BooleanQuery]>> <cl.utilities.Logging.Logger:47>main
+[12:16:01] +trace+ 210: <<property "components with property canDistributeMultiplicationWhole" of 2 is [ArrayQuery: ][cl.utilities.sm.query.ArrayQuery]>> <cl.utilities.Logging.Logger:47>main
+[12:16:01] +trace+ 211: <<property "components with property canDistributeMultiplicationWhole" of 2 is [ArrayQuery: ][cl.utilities.sm.query.ArrayQuery]>> <cl.utilities.Logging.Logger:47>main
+[12:16:01] +trace+ 212: <<property "length" of [ArrayQuery: ] is 0[cl.utilities.sm.query.NumberQuery]>> <cl.utilities.Logging.Logger:47>main
+[12:16:01] +trace+ 213: <<property "length of components with property canDistributeMultiplicationWhole" of 2 is 0[cl.utilities.sm.query.NumberQuery]>> <cl.utilities.Logging.Logger:47>main
+[12:16:01] +trace+ 214: <<property "right side" of [EI: x=2::Z=a] is 2[cl.utilities.sm.NumberExpression]>> <cl.utilities.Logging.Logger:47>main
+[12:16:01] +trace+ 215: <<property "right side" of [EI: x=2::Z=a] is 2[cl.utilities.sm.NumberExpression]>> <cl.utilities.Logging.Logger:47>main
+[12:16:01] +trace+ 216: <<property "canDistributeMultiplication" of 2 is false[cl.utilities.sm.query.BooleanQuery]>> <cl.utilities.Logging.Logger:47>main
+[12:16:01] +trace+ 217: <<property "canDistributeMultiplication" of 2 is false[cl.utilities.sm.query.BooleanQuery]>> <cl.utilities.Logging.Logger:47>main
+[12:16:01] +rr+ 218: getNextStep >> HINTMESSAGE;x = 2;done;null <edu.cmu.pact.miss.InquiryClSolverTutor:494>main
+[12:16:01] +miss+ 219: successiveNode: state 6 <edu.cmu.pact.miss.SimSt:5509>main
+[12:16:01] +rr+ 220: startProblem(x = 2) <edu.cmu.pact.miss.InquiryClSolverTutor:351>main
+[12:16:01] +trace+ 221: SolverTutor.startProblem: 'x = 2;solve!' <cl.utilities.Logging.Logger:47>main
+[12:16:01] +trace+ 222: <<property "canDistributeMultiplicationWhole" of x is false[cl.utilities.sm.query.BooleanQuery]>> <cl.utilities.Logging.Logger:47>main
+[12:16:01] +trace+ 223: <<property "components with property canDistributeMultiplicationWhole" of x is [ArrayQuery: ][cl.utilities.sm.query.ArrayQuery]>> <cl.utilities.Logging.Logger:47>main
+[12:16:01] +trace+ 224: <<property "components with property canDistributeMultiplicationWhole" of x is [ArrayQuery: ][cl.utilities.sm.query.ArrayQuery]>> <cl.utilities.Logging.Logger:47>main
+[12:16:01] +trace+ 225: <<property "length" of [ArrayQuery: ] is 0[cl.utilities.sm.query.NumberQuery]>> <cl.utilities.Logging.Logger:47>main
+[12:16:01] +trace+ 226: <<property "length of components with property canDistributeMultiplicationWhole" of x is 0[cl.utilities.sm.query.NumberQuery]>> <cl.utilities.Logging.Logger:47>main
+[12:16:01] +trace+ 227: <<property "canDistributeMultiplicationWhole" of 2 is false[cl.utilities.sm.query.BooleanQuery]>> <cl.utilities.Logging.Logger:47>main
+[12:16:01] +trace+ 228: <<property "components with property canDistributeMultiplicationWhole" of 2 is [ArrayQuery: ][cl.utilities.sm.query.ArrayQuery]>> <cl.utilities.Logging.Logger:47>main
+[12:16:01] +trace+ 229: <<property "components with property canDistributeMultiplicationWhole" of 2 is [ArrayQuery: ][cl.utilities.sm.query.ArrayQuery]>> <cl.utilities.Logging.Logger:47>main
+[12:16:01] +trace+ 230: <<property "length" of [ArrayQuery: ] is 0[cl.utilities.sm.query.NumberQuery]>> <cl.utilities.Logging.Logger:47>main
+[12:16:01] +trace+ 231: <<property "length of components with property canDistributeMultiplicationWhole" of 2 is 0[cl.utilities.sm.query.NumberQuery]>> <cl.utilities.Logging.Logger:47>main
+[12:16:01] +trace+ 232: <<property "right side" of [EI: x=2::Z=a] is 2[cl.utilities.sm.NumberExpression]>> <cl.utilities.Logging.Logger:47>main
+[12:16:01] +trace+ 233: <<property "right side" of [EI: x=2::Z=a] is 2[cl.utilities.sm.NumberExpression]>> <cl.utilities.Logging.Logger:47>main
+[12:16:01] +trace+ 234: <<property "canDistributeMultiplication" of 2 is false[cl.utilities.sm.query.BooleanQuery]>> <cl.utilities.Logging.Logger:47>main
+[12:16:01] +trace+ 235: <<property "canDistributeMultiplication" of 2 is false[cl.utilities.sm.query.BooleanQuery]>> <cl.utilities.Logging.Logger:47>main
+[12:16:01] +rr+ 236: getNextStep >> HINTMESSAGE;x = 2;done;null <edu.cmu.pact.miss.InquiryClSolverTutor:494>main
+[12:16:01] +rr+ 237: hint: done, ButtonPressed, -1 <edu.cmu.pact.miss.SimSt:5551>main
+[12:16:01] +rr+ 238: toVisitNode: state 7 <edu.cmu.pact.miss.SimSt:5468>main

@@ -1,0 +1,311 @@
+;; for Eclipse, etc., specify templates to read
+(require* wmeTypes "wmeTypes.clp")
+
+;;;; Fact assertions: slot assignments are below.
+
+(bind ?var1 (assert(MAIN::initial-fact)))
+(bind ?var2 (assert(MAIN::button (name hint))))
+(bind ?var3 (assert(MAIN::button (name done))))
+(bind ?var4 (assert(MAIN::cell (name table1_C1R1))))
+(bind ?var5 (assert(MAIN::cell (name table1_C1R2))))
+(bind ?var6 (assert(MAIN::cell (name table1_C1R3))))
+(bind ?var7 (assert(MAIN::cell (name table1_C1R4))))
+(bind ?var8 (assert(MAIN::column (name table1_Column1))))
+(bind ?var9 (assert(MAIN::cell (name table1_C2R1))))
+(bind ?var10 (assert(MAIN::cell (name table1_C2R2))))
+(bind ?var11 (assert(MAIN::cell (name table1_C2R3))))
+(bind ?var12 (assert(MAIN::cell (name table1_C2R4))))
+(bind ?var13 (assert(MAIN::column (name table1_Column2))))
+(bind ?var14 (assert(MAIN::cell (name table1_C3R1))))
+(bind ?var15 (assert(MAIN::cell (name table1_C3R2))))
+(bind ?var16 (assert(MAIN::cell (name table1_C3R3))))
+(bind ?var17 (assert(MAIN::cell (name table1_C3R4))))
+(bind ?var18 (assert(MAIN::column (name table1_Column3))))
+(bind ?var19 (assert(MAIN::cell (name table1_C4R1))))
+(bind ?var20 (assert(MAIN::cell (name table1_C4R2))))
+(bind ?var21 (assert(MAIN::cell (name table1_C4R3))))
+(bind ?var22 (assert(MAIN::cell (name table1_C4R4))))
+(bind ?var23 (assert(MAIN::column (name table1_Column4))))
+(bind ?var24 (assert(MAIN::cell (name table1_C5R1))))
+(bind ?var25 (assert(MAIN::cell (name table1_C5R2))))
+(bind ?var26 (assert(MAIN::cell (name table1_C5R3))))
+(bind ?var27 (assert(MAIN::cell (name table1_C5R4))))
+(bind ?var28 (assert(MAIN::column (name table1_Column5))))
+(bind ?var29 (assert(MAIN::cell (name table1_C6R1))))
+(bind ?var30 (assert(MAIN::cell (name table1_C6R2))))
+(bind ?var31 (assert(MAIN::cell (name table1_C6R3))))
+(bind ?var32 (assert(MAIN::cell (name table1_C6R4))))
+(bind ?var33 (assert(MAIN::column (name table1_Column6))))
+(bind ?var34 (assert(MAIN::table (name table1))))
+(bind ?var35 (assert(MAIN::textField (name tf2))))
+(bind ?var36 (assert(MAIN::textField (name tf1))))
+(bind ?var37 (assert(MAIN::problem (name start))))
+
+;;;; Slot assignments
+
+; MAIN::button
+(modify ?var2
+    (name hint)
+)
+; MAIN::button
+(modify ?var3
+    (name done)
+)
+; MAIN::cell
+(modify ?var4
+    (name table1_C1R1)
+    (value nil)
+    (description nil)
+    (row-number 1)
+    (column-number 1)
+)
+; MAIN::cell
+(modify ?var5
+    (name table1_C1R2)
+    (value nil)
+    (description nil)
+    (row-number 2)
+    (column-number 1)
+)
+; MAIN::cell
+(modify ?var6
+    (name table1_C1R3)
+    (value nil)
+    (description nil)
+    (row-number 3)
+    (column-number 1)
+)
+; MAIN::cell
+(modify ?var7
+    (name table1_C1R4)
+    (value nil)
+    (description nil)
+    (row-number 4)
+    (column-number 1)
+)
+; MAIN::column
+(modify ?var8
+    (name table1_Column1)
+    (cells ?var4 ?var5 ?var6 ?var7)
+    (position 1)
+    (description nil)
+)
+; MAIN::cell
+(modify ?var9
+    (name table1_C2R1)
+    (value nil)
+    (description nil)
+    (row-number 1)
+    (column-number 2)
+)
+; MAIN::cell
+(modify ?var10
+    (name table1_C2R2)
+    (value nil)
+    (description nil)
+    (row-number 2)
+    (column-number 2)
+)
+; MAIN::cell
+(modify ?var11
+    (name table1_C2R3)
+    (value nil)
+    (description nil)
+    (row-number 3)
+    (column-number 2)
+)
+; MAIN::cell
+(modify ?var12
+    (name table1_C2R4)
+    (value nil)
+    (description nil)
+    (row-number 4)
+    (column-number 2)
+)
+; MAIN::column
+(modify ?var13
+    (name table1_Column2)
+    (cells ?var9 ?var10 ?var11 ?var12)
+    (position 2)
+    (description nil)
+)
+; MAIN::cell
+(modify ?var14
+    (name table1_C3R1)
+    (value nil)
+    (description nil)
+    (row-number 1)
+    (column-number 3)
+)
+; MAIN::cell
+(modify ?var15
+    (name table1_C3R2)
+    (value nil)
+    (description nil)
+    (row-number 2)
+    (column-number 3)
+)
+; MAIN::cell
+(modify ?var16
+    (name table1_C3R3)
+    (value nil)
+    (description nil)
+    (row-number 3)
+    (column-number 3)
+)
+; MAIN::cell
+(modify ?var17
+    (name table1_C3R4)
+    (value nil)
+    (description nil)
+    (row-number 4)
+    (column-number 3)
+)
+; MAIN::column
+(modify ?var18
+    (name table1_Column3)
+    (cells ?var14 ?var15 ?var16 ?var17)
+    (position 3)
+    (description nil)
+)
+; MAIN::cell
+(modify ?var19
+    (name table1_C4R1)
+    (value nil)
+    (description nil)
+    (row-number 1)
+    (column-number 4)
+)
+; MAIN::cell
+(modify ?var20
+    (name table1_C4R2)
+    (value 6)
+    (description nil)
+    (row-number 2)
+    (column-number 4)
+)
+; MAIN::cell
+(modify ?var21
+    (name table1_C4R3)
+    (value 1)
+    (description nil)
+    (row-number 3)
+    (column-number 4)
+)
+; MAIN::cell
+(modify ?var22
+    (name table1_C4R4)
+    (value nil)
+    (description nil)
+    (row-number 4)
+    (column-number 4)
+)
+; MAIN::column
+(modify ?var23
+    (name table1_Column4)
+    (cells ?var19 ?var20 ?var21 ?var22)
+    (position 4)
+    (description nil)
+)
+; MAIN::cell
+(modify ?var24
+    (name table1_C5R1)
+    (value nil)
+    (description nil)
+    (row-number 1)
+    (column-number 5)
+)
+; MAIN::cell
+(modify ?var25
+    (name table1_C5R2)
+    (value 7)
+    (description nil)
+    (row-number 2)
+    (column-number 5)
+)
+; MAIN::cell
+(modify ?var26
+    (name table1_C5R3)
+    (value 8)
+    (description nil)
+    (row-number 3)
+    (column-number 5)
+)
+; MAIN::cell
+(modify ?var27
+    (name table1_C5R4)
+    (value nil)
+    (description nil)
+    (row-number 4)
+    (column-number 5)
+)
+; MAIN::column
+(modify ?var28
+    (name table1_Column5)
+    (cells ?var24 ?var25 ?var26 ?var27)
+    (position 5)
+    (description nil)
+)
+; MAIN::cell
+(modify ?var29
+    (name table1_C6R1)
+    (value nil)
+    (description nil)
+    (row-number 1)
+    (column-number 6)
+)
+; MAIN::cell
+(modify ?var30
+    (name table1_C6R2)
+    (value 8)
+    (description nil)
+    (row-number 2)
+    (column-number 6)
+)
+; MAIN::cell
+(modify ?var31
+    (name table1_C6R3)
+    (value 7)
+    (description nil)
+    (row-number 3)
+    (column-number 6)
+)
+; MAIN::cell
+(modify ?var32
+    (name table1_C6R4)
+    (value nil)
+    (description nil)
+    (row-number 4)
+    (column-number 6)
+)
+; MAIN::column
+(modify ?var33
+    (name table1_Column6)
+    (cells ?var29 ?var30 ?var31 ?var32)
+    (position 6)
+    (description nil)
+)
+; MAIN::table
+(modify ?var34
+    (name table1)
+    (columns ?var8 ?var13 ?var18 ?var23 ?var28 ?var33)
+)
+; MAIN::textField
+(modify ?var35
+    (name tf2)
+    (value nil)
+)
+; MAIN::textField
+(modify ?var36
+    (name tf1)
+    (value nil)
+)
+; MAIN::problem
+(modify ?var37
+    (name start)
+    (interface-elements ?var3 ?var2 ?var34 ?var36 ?var35)
+    (subgoals)
+    (done nil)
+    (description nil)
+    (turn nil)
+)

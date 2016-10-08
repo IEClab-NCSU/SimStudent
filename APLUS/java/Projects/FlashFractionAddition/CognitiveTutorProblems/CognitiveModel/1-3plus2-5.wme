@@ -1,0 +1,129 @@
+(require* wmeTypes "wmeTypes.clp")
+
+;;;; Fact assertions: slot assignments are below.
+
+(bind ?var1 (assert(MAIN::initial-fact)))
+(bind ?var7 (assert(MAIN::textField (name ansDen1))))
+(bind ?var8 (assert(MAIN::textField (name firstNumGiven))))
+(bind ?var9 (assert(MAIN::textField (name firstDenGiven))))
+(bind ?var10 (assert(MAIN::textField (name secNumGiven))))
+(bind ?var11 (assert(MAIN::textField (name secDenGiven))))
+(bind ?var12 (assert(MAIN::textField (name ansNumFinal1))))
+(bind ?var13 (assert(MAIN::textField (name ansDenFinal1))))
+(bind ?var14 (assert(MAIN::textField (name firstNumConv))))
+(bind ?var15 (assert(MAIN::textField (name firstDenConv))))
+(bind ?var16 (assert(MAIN::textField (name secNumConv))))
+(bind ?var17 (assert(MAIN::textField (name secDenConv))))
+(bind ?var18 (assert(MAIN::textField (name ansNum1))))
+(bind ?var21 (assert(MAIN::problem (name 1-3plus2-5))))
+(bind ?var22 (assert(MAIN::fraction (name given-fraction1))))
+(bind ?var23 (assert(MAIN::fraction (name given-fraction2))))
+(bind ?var24 (assert(MAIN::fraction (name converted-fraction1))))
+(bind ?var25 (assert(MAIN::fraction (name converted-fraction2))))
+(bind ?var26 (assert(MAIN::fraction (name unreduced-answer))))
+(bind ?var27 (assert(MAIN::fraction (name final-answer))))
+
+
+;;;; Slot assignments
+; MAIN::textField
+(modify ?var7
+    (name ansDen1)
+    (value nil)
+)
+; MAIN::textField
+(modify ?var8
+    (name firstNumGiven)
+    (value 1)
+)
+; MAIN::textField
+(modify ?var9
+    (name firstDenGiven)
+    (value 3)
+)
+; MAIN::textField
+(modify ?var10
+    (name secNumGiven)
+    (value 2)
+)
+; MAIN::textField
+(modify ?var11
+    (name secDenGiven)
+    (value 5)
+)
+; MAIN::textField
+(modify ?var12
+    (name ansNumFinal1)
+    (value nil)
+)
+; MAIN::textField
+(modify ?var13
+    (name ansDenFinal1)
+    (value nil)
+)
+; MAIN::textField
+(modify ?var14
+    (name firstNumConv)
+    (value nil)
+)
+; MAIN::textField
+(modify ?var15
+    (name firstDenConv)
+    (value nil)
+)
+; MAIN::textField
+(modify ?var16
+    (name secNumConv)
+    (value nil)
+)
+; MAIN::textField
+(modify ?var17
+    (name secDenConv)
+    (value nil)
+)
+; MAIN::textField
+(modify ?var18
+    (name ansNum1)
+    (value nil)
+)
+
+(modify ?var22 
+	(name given-fraction1)
+	(numerator ?var8)
+	(denominator ?var9)
+	(has-converted-form ?var24))
+
+(modify ?var23 
+	(name given-fraction2)
+	(numerator ?var10)
+	(denominator ?var11)
+	(has-converted-form ?var25))
+
+(modify ?var24 	
+    (name converted-fraction1)
+	(numerator ?var14)
+	(denominator ?var15)
+	(is-converted-form-of ?var22))
+
+(modify ?var25 	
+	(name converted-fraction2)
+	(numerator ?var16)
+	(denominator ?var17)
+	(is-converted-form-of ?var23))
+
+(modify ?var26 	
+    (name unreduced-answer)
+	(numerator ?var18)
+	(denominator ?var7))
+
+(modify ?var27 
+	(name final-answer)
+	(numerator ?var12)
+	(denominator ?var13))
+
+; MAIN::problem
+(modify ?var21
+    (name 1-3plus2-5)
+    (given-fractions ?var22 ?var23)
+    (converted-fractions ?var24 ?var25)
+    (answer-fractions ?var26 ?var27)
+ )

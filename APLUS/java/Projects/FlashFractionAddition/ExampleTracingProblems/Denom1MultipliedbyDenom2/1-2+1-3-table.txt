@@ -1,0 +1,10 @@
+Problem Name	1213
+%(num1Given)%	1
+%(den1Given)%	2
+%(num2Given)%	1
+%(den2Given)%	3
+%(LCD)%	6
+%(num1Conv)%	3
+%(num2Conv)%	2
+%(numAns)%	5
+%(incorrectDen)%	5

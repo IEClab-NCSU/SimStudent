@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<messages>
+	<message-set>
+		<name>simst-hint-request-demonstrate-step</name>
+			<menu-option>
+				<cognitive>CognitiveHint: I'm stuck too. What's the next step?,I'm stuck too. How do I skill?</cognitive>
+			</menu-option>
+	</message-set>
+	<message-set>
+		<name>simst-hint-request-demonstrate-step-solvedQP</name>
+			<menu-option>
+				<cognitive>CognitiveHint: What's the next step?</cognitive>
+			</menu-option>
+	</message-set>
+	<message-set>
+		<name>simst-feedback-request-provide-positive-feedback</name>
+			<menu-option>
+				<cognitive>CognitiveHint: Is this step correct?</cognitive>
+			</menu-option>
+	</message-set>
+	<message-set>
+		<name>simst-feedback-request-provide-negative-feedback</name>
+			<menu-option>
+				<cognitive>CognitiveHint: Is this step correct?</cognitive>
+			</menu-option>
+	</message-set>
+	<!--
+	<message-set>
+		<name>simst-quiz-fail</name>
+			<menu-option>
+				<cognitive>CognitiveHint: I quizzed ?ssName?. What should I do next?</cognitive>
+			</menu-option>
+	</message-set>
+	<message-set>
+		<name>simst-correct-step</name>
+			<menu-option>
+				<cognitive>CognitiveHint : What can I do to help ?ssName?.</cognitive>
+				<context>ContextHint : Is ?step? correct.</context>
+			</menu-option>
+	</message-set>
+	<message-set>
+		<name>simst-incorrect-step</name>
+			<menu-option>
+				<cognitive>CognitiveHint : What can I do to help ?ssName?.</cognitive>
+				<context>ContextHint : Is ?step? correct.</context>
+			</menu-option>
+	</message-set>
+	<message-set>
+		<name>simst-help-request</name>
+			<menu-option>
+				<cognitive>CognitiveHint : I am not sure what I can do to help ?ssName? now.</cognitive>
+				<context>ContextHint : I do not know the next step. Show me the hints.</context>
+			</menu-option>
+	</message-set> 
+	<message-set>
+		<name>student-view-examples</name>
+		<menu-option>
+			<cognitive>CognitiveHint: I seem to be having difficulty teaching ?ssName?. What should I do?</cognitive>
+		</menu-option>
+	</message-set>
+	<message-set>
+		<name>tutor-simst-problem</name>
+		<menu-option>
+			<cognitive>CognitiveHint: I am not sure what I should do next.</cognitive>
+		</menu-option>
+	</message-set>
+	<message-set>
+		<name>help-request-after-undo-step</name>
+		<menu-option>
+			<cognitive>CognitiveHint: I am not sure what step should I teach ?ssName? next.</cognitive>
+		</menu-option>
+	</message-set>
+		<message-set>
+		<name>simst-switch-tab</name>
+			<menu-option>
+				<cognitive>CognitiveHint: What should I do to start?</cognitive>
+			</menu-option>
+	</message-set>
+	<message-set>
+		<name>review-unit-overview</name>
+			<menu-option>
+				<cognitive>CognitiveHint : I am not sure what I should do next.</cognitive>
+			</menu-option>
+	</message-set>
+	<message-set>
+		<name>tutor-problem</name>
+			<menu-option>
+				<cognitive>CognitiveHint : I reviewed the Unit Overview, what should I do next.</cognitive>
+			</menu-option>
+	</message-set>
+	<message-set>
+		<name>simst-quiz-fail-tutor-quiz-problem</name>
+			<menu-option>
+				<cognitive>CognitiveHint: I quizzed $ssName$. What should I do next?</cognitive>
+			</menu-option>
+	</message-set>
+	<message-set>
+		<name>problem-solved-without-help</name>
+		<menu-option>
+			<cognitive>CognitiveHint: What should I do next?</cognitive>
+		</menu-option>
+	</message-set>
+	<message-set>
+		<name>simst-quiz-problem-solved-enter-problem-type</name>
+			<menu-option>
+				<cognitive>CognitiveHint: What should I do now?</cognitive>
+			</menu-option>
+	</message-set>
+	<message-set>
+		<name>simst-failed-quiz-problem-type-solved</name>
+			<menu-option>
+				<cognitive>CognitiveHint: simst-failed-quiz-problem-type-solved</cognitive>
+			</menu-option>
+	</message-set>
+	-->
+</messages>

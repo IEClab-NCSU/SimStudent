@@ -1,0 +1,1 @@
+P	x+3=8					A	done	done	pressButton	-1	dorminTable1_C1R2	dorminTable2_C1R2P	x-2=7					A	done	done	pressButton	done	dorminTable1_C1R2	dorminTable2_C1R2

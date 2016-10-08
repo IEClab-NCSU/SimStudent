@@ -1,0 +1,35 @@
+/*
+ * Created on Jul 20, 2006
+ *
+ * TODO To change the template for this generated file go to
+ * Window - Preferences - Java - Code Style - Code Templates
+ */
+package edu.cmu.pact.miss.userDef.stoichiometry;
+
+import java.util.Vector;
+
+/**
+ * @author Administrator
+ *
+ * TODO To change the template for this generated type comment go to
+ * Window - Preferences - Java - Code Style - Code Templates
+ */
+public class CanBeConvertedFlash extends StoFeatPredicate {
+
+	/**
+	 * 
+	 */
+	public CanBeConvertedFlash() {
+		setName("can-be-conv-flash");
+		setArity(2);
+                setArgValueType(new int[] {StoFeatPredicate.TYPE_UNIT, StoFeatPredicate.TYPE_UNIT});
+	}
+
+	/* (non-Javadoc)
+	 * @see edu.cmu.pact.miss.FeaturePredicate#apply(java.util.Vector)
+	 */
+	public String apply(Vector args) {
+		return canBeConvertedFlash((String)args.get(0), (String)args.get(1));
+	}
+
+}

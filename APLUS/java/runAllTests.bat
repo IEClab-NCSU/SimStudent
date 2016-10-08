@@ -1,0 +1,1 @@
+java  -cp "lib/ctat.jar;lib/junit.jar;testClasses" pact.GlobalTestSuite

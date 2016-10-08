@@ -1,0 +1,397 @@
+(require* templates "wmeTypes.clp")
+
+;; FOCUS-ON-FIRST-COLUMN
+;; IF there are no subgoals left for processing
+;; AND ?column is the rightmost column
+;; AND there are no carries in the column
+;; AND the result cell is nil
+;; THEN assert a process column goal to process rightmost column
+
+(defrule focus-on-first-column 
+;	(subtraction 
+;		(problem ?problem))
+	?problem <- (problem 
+		(subgoals ) 
+		(interface-elements $? ?table $?)) 
+	?table <- (table 
+		(columns $? ?rightmost-column)) 
+	?rightmost-column <- (column 
+		(cells ? ?second-borrow ?first-borrow ?first-addend ?second-addend ?result)) 
+	?first-addend <- (cell 
+		(value ?num1&:(neq ?num1 nil))) 
+	?second-addend <- (cell 
+		(value ?num2&:(neq ?num2 nil))) 
+	?result <- (cell 
+		(value nil)) 
+	?first-borrow <- (cell (value nil)) 
+	?second-borrow <- (cell (value nil)) 
+	
+=> 
+	(bind ?current-sub-goal (assert (process-column-goal 
+		(column ?rightmost-column) 
+		(first-addend ?num1) 
+		(second-addend ?num2)))) 
+	(modify ?problem 
+		(subgoals ?current-sub-goal)) 
+	(construct-message [ Start working from the rightmost column. ]
+			[Subtract the numbers in the rightmost column. ])
+;	(printout t "Focus-on-first-column." crlf) 
+) 
+  
+;; FOCUS-ON-NEXT-COLUMN
+;; IF there are no subgoals left for processing
+;; AND ?next-column ?column are two adjacent columns
+;; AND result cell of ?column is not nil
+;; AND the result cell of ?next-column is nil
+;; THEN assert a process-column-goal to process ?next-column
+;; taking in to account any borrows in ?next-column
+
+(defrule focus-on-next-column 
+;	(subtraction 
+;		(problem ?problem)) 
+	?problem <- (problem 
+		(subgoals ) 
+		 (interface-elements $? ?table $?)) 
+	?table <- (table 
+		(columns $? ?next-column ?previous-column $?)) 
+	?previous-column <- (column 
+		(cells $? ?previous-result)
+		(position ?pos)) 
+	?previous-result <- (cell 
+		(value ?val&:(neq ?val nil))) 
+	?next-column <- (column 
+		(cells ?third-borrow ?second-borrow ?first-borrow ?first-addend ?second-addend ?result) 
+		(position ?next-pos)) 
+	?result <- (cell 
+		(value nil)) 
+	?first-borrow <- (cell 
+		(value ?numb1)) 
+	?second-borrow <- (cell
+		(value ?numb2))
+	?third-borrow <- (cell
+		(value ?numb3))
+	?first-addend <- (cell 
+		(value ?num1&:(neq ?num1 nil))) 
+	?second-addend <- (cell 
+		(value ?num2&:(neq ?num2 nil))) 
+	    
+=> 
+	(if (neq ?num1 nil) then (bind ?x ?num1))
+	(if (neq ?numb1 nil) then (bind ?x ?numb1))
+	(if (neq ?numb2 nil) then (bind ?x ?numb2))
+	(if (neq ?numb3 nil) then (bind ?x ?numb3))
+	(bind ?current-sub-goal (assert (process-column-goal 
+		(column ?next-column) 
+		(first-addend ?x) 
+		(second-addend ?num2)))) 
+	(modify ?problem 
+		(subgoals ?current-sub-goal)) 
+	(construct-message [ You have finished Working on column ?pos . ]
+			[ Start working on next column ?next-pos . ]
+			[ Subtract the numbers in column ?next-pos . ])
+;	(printout t "Focus-on-next-column." crlf) 
+) 
+
+;; SUBTRACT-NUMBERS
+;; IF there is a subgoal to process column ?col
+;; AND sum (difference of the two numbers) is nil
+;; AND the first-addend > second-addend
+;; THEN subtract second-addend from first-addend
+;; AND modify sum to the difference between the two numbers
+
+(defrule subtract-numbers 
+;	(subtraction 
+;		(problem ?problem)) 
+	?problem <- (problem 
+		(subgoals $? ?subgoal $?)) 
+	?subgoal <- (process-column-goal 
+		(first-addend ?num1&:(neq ?num1 nil)) 
+		(second-addend ?num2&:(neq ?num2 nil)) 
+		(column ?column) 
+		(sum nil)) 
+	(test (> ?num1 ?num2)) 
+	?column <- (column
+		(position ?pos))
+        	
+=> 
+	(bind ?diff (- ?num1 ?num2)) 
+	(modify ?subgoal
+		(sum ?diff))
+	(construct-message [ Subtract the two numbers in column ?pos 
+				and write the result in the result cell. ]
+			[Perform the subtraction ?num1 - ?num2 . ])
+;	(printout t "Subtract numbers." crlf) 
+) 
+
+;; MUST-BORROW
+;; IF there is a process column goal to process column ?col
+;; AND the top number (first-addend) < bottom number (second-addend)
+;; AND ?next-col and ?col are adjacent columns
+;; THEN set a subgoal to borrow from the ?next-col , number ?num 
+;; taking in to account any previous borrows in the ?next-col
+
+(defrule must-borrow 
+;	(subtraction 
+;		(problem ?problem)) 
+	?problem <- (problem 
+		(interface-elements $? ?table $?)
+		(subgoals $?sgs ?subgoal)) 
+	?subgoal <- (process-column-goal 
+		(column ?column)
+		(sum ?sum&:(eq ?sum nil)) 
+		(first-addend ?num1) 
+		(second-addend ?num2))
+	(test (< ?num1 ?num2))
+	?table <- (table
+		(columns $? ?prev-column ?column $?))  ; get the previous column for borrow
+	?prev-column <- (column
+		(cells ?third-borrow ?second-borrow ?first-borrow ?first-addend ? ?)
+		(position ?pos))
+	?third-borrow <- (cell
+		(value nil))
+	?second-borrow <- (cell
+		(value ?new-num2))
+	?first-borrow <- (cell
+		(value ?new-num1))
+	?first-addend <- (cell
+		(value ?new-num0))
+	
+=> 
+ 	; determine if there are any previous borrows in this column
+	(if  (neq ?new-num2 nil) then (bind ?x ?new-num2) (bind ?cell ?third-borrow)
+	else (if (neq ?new-num1 nil) then (bind ?x ?new-num1) (bind ?cell ?second-borrow))
+	else (if (neq ?new-num0 nil) then (bind ?x ?new-num0) (bind ?cell ?first-borrow))
+	)
+	(bind ?borrow-goal (assert (borrow-goal		; assert a subgoal to borrow from the previous column
+		(column ?prev-column)
+		(first-addend ?x)
+		(cell ?cell)
+		(carry-column ?column)))
+	)
+	(modify ?problem
+		(subgoals $?sgs ?subgoal ?borrow-goal))
+	(construct-message [ You need to do a borrow from column ?pos . ]
+			[ You need to borrow from ?x . ])
+;	(printout t "must-borrow." crlf) 
+) 
+
+;; WRITE-BORROW
+;; IF there is a sub goal to borrow from column ?col, number ?num
+;; AND ?num > 0 
+;; THEN write the borrow in the borrow-cell
+;; AND remove the borrow goal
+;; AND assert a carry subgoal to write the carry in the prev-column
+
+(defrule write-borrow 
+;	(subtraction 
+;		(problem ?problem)) 
+	?problem <- (problem 
+		(interface-elements $? ?table $?)
+		(subgoals $?sgs ?subgoal)) 
+	?subgoal <- (borrow-goal 
+		(column ?column)
+		(first-addend ?num)
+		(cell ?cell)
+		(carry-column ?carry-column))
+	?cell <- (cell 
+		(name ?name)
+		(value ?value&:(eq ?value nil)))
+     	(test (> ?num 0))
+	?column <- (column
+		(position ?pos))
+	
+=> 
+	(bind ?new-num (- ?num 1))
+	(modify ?cell
+		(value ?new-num))
+	(predict-observable-action ?name "UpdateTable" ?new-num)
+	(bind ?carry-goal  (assert (carry-goal
+		(column ?carry-column))))
+	(modify ?problem
+		(subgoals $?sgs ?carry-goal))
+	(retract ?subgoal)
+	(construct-message [You need to write a borrow in column ?pos . ]
+			[Write a borrow in cell ?name . ]
+			[Write ?new-num in cell ?name . ])
+;	(printout t "write-borrow." crlf) 
+) 
+
+;; WRITE-CARRY
+;; IF there is a carry subgoal to write the carry in column ?col
+;; THEN write the carry in the appropriate cell in column ?col
+;; AND remove the cary goal
+;; AND IF there is a process column goal to process column ?col
+;; THEN modify the process column goal to subtract second-addend from the carry
+
+(defrule write-carry 
+;	(subtraction 
+;		(problem ?problem)) 
+	?problem <- (problem 
+		(interface-elements $? ?table $?)
+		(subgoals $?sgs1 ?proc-goal ?subgoal))
+	?subgoal <- (carry-goal 
+		(column ?column))
+	?column <- (column
+		(cells ?third-borrow ?second-borrow ?first-borrow ?first-addend ? ?)
+		(position ?pos))
+	?third-borrow <- (cell 
+		(name ?name3)
+		(value nil))
+	?second-borrow <- (cell
+		(name ?name2)
+		(value ?num2))
+	?first-borrow <- (cell
+		(name ?name1)
+		(value ?num1))
+	?first-addend <- (cell
+		(value ?num0))
+	
+=> 
+	(if (neq ?num0 nil) then (bind ?x ?num0) (bind ?cell ?first-borrow) (bind ?name ?name1))
+	(if (neq ?num1 nil) then (bind ?x ?num1) (bind ?cell ?second-borrow) (bind ?name ?name2))
+	(if  (neq ?num2 nil) then (bind ?x ?num2) (bind ?cell ?third-borrow) (bind ?name ?name3))
+	(bind ?new-num (+ ?x 10))
+	(predict-observable-action ?name "UpdateTable" ?new-num)
+	(modify ?cell
+		(name ?name)
+		(value ?new-num))
+
+	(construct-message [You need to write a carry in column ?pos as 
+			a result of the borrow from the next column. ]
+			[Add 10 to ?x and write the sum as the carry in cell ?name . ]
+			[Write ?new-num in cell ?name ] )
+	(modify ?proc-goal			; update the first-addend to carry
+		(first-addend ?new-num)	; in the process column goal or the borrow 
+	)					; goal
+	(modify ?problem
+		(subgoals ?sgs1 ?proc-goal))
+	(retract ?subgoal)
+;	(printout t "write-carry." crlf) 
+) 
+
+;; BORROW-AGAIN
+;; IF there is a subgoal to borrow from column ?col, number ?num
+;; AND ?num equals to 0
+;; AND ?next-col ?col are adjacent columns 
+;; THEN set up a subgoal to borrow from the ?next-col, number ?num
+;; taking in to account any previous borrows in ?next-col
+
+(defrule borrow-again 
+;	(subtraction 
+;		(problem ?problem)) 
+	?problem <- (problem 
+		(interface-elements $? ?table $?)
+		(subgoals $?sgs ?subgoal)) 
+	?subgoal <- (borrow-goal 
+		(column ?column)
+		(first-addend ?num)
+		(cell ?cell)
+		(carry-column ?carry-column))
+	?cell <- (cell 
+		(name ?name)
+		(value nil))
+	(test (= ?num 0))
+	?table <- (table 
+		(columns $? ?prev-column ?column $?))
+;; get the cell from the previous column to put the borrow from
+	?prev-column <- (column
+		(cells ?third-borrow ?second-borrow ?first-borrow ?first-addend ? ?)
+		(position ?prev-pos))
+	?third-borrow <- (cell 
+		(value ?name3)
+		(value ?num3&:(eq ?num3 nil)))
+	?second-borrow <- (cell
+		(name ?name2)
+		(value ?num2))
+	?first-borrow <- (cell
+		(value ?name1)
+		(value ?num1))
+	?first-addend <- (cell
+		(value ?num0))
+	
+=> 
+	(if  (neq ?num2 nil) then (bind ?x ?num2) (bind ?borrow-cell ?third-borrow)
+	else (if (neq ?num1 nil) then (bind ?x ?num1) (bind ?borrow-cell ?second-borrow))
+	else (if (neq ?num0 nil) then (bind ?x ?num0) (bind ?borrow-cell ?first-borrow))
+	)
+	(bind ?borrow-goal  (assert (borrow-goal
+		(column ?prev-column)
+		(carry-column ?column)
+		(first-addend ?x)
+		(cell ?borrow-cell))))
+	(modify ?problem
+		(subgoals $?sgs ?subgoal ?borrow-goal))
+	(construct-message [You need to do borrow again from the next column ?prev-pos ])
+;	(printout t "Borrow again. " crlf) 
+) 
+
+;; MODIFY-BORROW
+;; IF there is a subgoal to borrow and put the borrow in the cell ?cell
+;; AND ?cell is not nil 
+;; THEN modify the borrow subgoal to put the borrow in a cell above ?cell
+;; in the same column
+
+(defrule modify-borrow
+;	(subtraction 
+;		(problem ?problem)) 
+	?problem <- (problem 
+		(interface-elements $? ?table $?)
+		(subgoals $?sgs ?subgoal)) 
+	?subgoal <- (borrow-goal 
+		(column ?column)
+		(first-addend ?num)
+		(cell ?cell)
+		(carry-column ?carry-column))
+	?cell <- (cell 
+		(name ?name)
+		(value ?val&:(neq ?val nil)))
+	(test (> ?num 0))
+	?table <- (table 
+		(columns $? ?column $?))
+	?column <- (column
+		(cells $? ?prev-cell ?cell $?))
+	
+=> 
+	(modify ?subgoal
+		(first-addend ?val)
+		(cell ?prev-cell))
+	(modify ?problem
+		(subgoals $?sgs ?subgoal))
+	(construct-message [You need to now borrow from the carry that you wrote. ]
+			[Borrow from cell ?name and write the borrow in cell above it. ])
+;	(printout t "modify borrow " crlf) 
+)
+
+;; WRITE-DIFFERENCE
+;; IF there is a subgoal to process column ?col
+;; AND the sum (diffference of the two numbers) is not nil 
+;; THEN write the sum as the result of the subtraction
+;; in the result cell in the column ?col
+
+(defrule write-difference
+;	(subtraction 
+;		(problem ?problem)) 
+	?problem <- (problem 
+		(subgoals $?sgs ?subgoal)) 
+	?subgoal <- (process-column-goal 
+		(column ?column) 
+		(sum ?sum&:(neq ?sum nil))) 
+	?column <- (column
+		(cells $? ?result-cell)
+		(position ?pos))
+	?result-cell <- (cell
+		(name ?name)
+		(value nil))
+	 
+=>
+        (predict-observable-action ?name "UpdateTable" ?sum)
+	(modify ?result-cell
+		(value ?sum))	
+	(construct-message [Write the difference of the two numbers in column ?pos ]
+			[Write ?sum in cell ?name . ])
+	(modify ?problem
+		(subgoals $?sgs))
+	(retract ?subgoal)
+;	(printout t "write-difference")
+)
+	

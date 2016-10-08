@@ -1,0 +1,4 @@
+--exclude=*.java
+--exclude=*.html
+
+--exclude=vendors

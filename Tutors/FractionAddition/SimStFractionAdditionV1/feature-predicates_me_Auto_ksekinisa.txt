@@ -1,0 +1,42 @@
+;; Thu Feb 24 23:29:56 2005
+;; 
+;; A list of feature predicates
+;; 
+;; A single line shows a predicate with '#' and/or '-' indicating a
+;; type of argument.  '#' shows that the corresponding argument must
+;; be determined at the time when the predicate is called, whereas '-'
+;; shows that the argument can be a variable.  
+
+;; edu.cmu.pact.miss.userDef.algebra.CanBeSimplified(#)
+;;LucyWeakPK.IsPositive(#)
+;;edu.cmu.pact.miss.userDef.algebra.IsLastConstTermNegative(#)
+;;edu.cmu.pact.miss.userDef.algebra.HasCoefficient(#)
+;;edu.cmu.pact.miss.userDef.algebra.HasConstTerm(#)
+;;edu.cmu.pact.miss.userDef.algebra.HasVarTerm(#)
+;;edu.cmu.pact.miss.userDef.algebra.Homogeneous(#)
+;;edu.cmu.pact.miss.userDef.algebra.IsFractionTerm(#)
+;;edu.cmu.pact.miss.userDef.algebra.IsConstant(#)
+;;edu.cmu.pact.miss.userDef.algebra.IsDenominatorOf(#,#)
+;;edu.cmu.pact.miss.userDef.algebra.IsNumeratorOf(#,#)
+;;edu.cmu.pact.miss.userDef.algebra.IsPolynomial(#)
+;;edu.cmu.pact.miss.userDef.algebra.Monomial(#)
+edu.cmu.pact.miss.userDef.algebra.NotNull(#)
+;;edu.cmu.pact.miss.userDef.algebra.IsAVarTerm(#)
+;;edu.cmu.pact.miss.userDef.algebra.IsSkillAdd(#)
+;;edu.cmu.pact.miss.userDef.algebra.IsSkillSubtract(#)
+;;edu.cmu.pact.miss.userDef.algebra.IsSkillDivide(#)
+;;edu.cmu.pact.miss.userDef.algebra.IsSkillMultiply(#)
+;;edu.cmu.pact.miss.userDef.algebra.HasParentheses(#)
+
+;;fract2Complex.featurePredicates.IsImproperFraction(#)
+
+;;fract2Complex.featurePredicates.IsEmpty(#)
+
+SimStFractionAdditionV1.featurePredicates.IsImproperFraction(#,#)
+
+SimStFractionAdditionV1.featurePredicates.IsGoalReduce(#)
+SimStFractionAdditionV1.featurePredicates.IsGoalAdd(#)
+SimStFractionAdditionV1.featurePredicates.IsGoalSimplify(#)
+SimStFractionAdditionV1.featurePredicates.IsGoalComplex(#)
+SimStFractionAdditionV1.featurePredicates.IsComplexFractionChunkImproper(#)
+;;fract2ComplexNew.featurePredicates.IsEquivalentFraction(#,#,#,#)

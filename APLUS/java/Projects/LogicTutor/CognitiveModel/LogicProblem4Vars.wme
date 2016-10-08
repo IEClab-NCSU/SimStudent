@@ -1,0 +1,75 @@
+
+;;;; Fact assertions: slot assignments are below.
+
+
+(bind ?sentential-logic-expression (assert(MAIN::textField (name commTextField1)))) ;;  sententialLogicExpression
+
+(bind ?Table1 (assert(MAIN::table (name commTable1))))
+
+(bind ?done-button (assert(MAIN::button (name done))))
+
+(bind ?hint-button (assert(MAIN::button (name hint))))
+
+(bind ?problem (assert(MAIN::problem (name LogicProblem4Vars))))
+
+(bind ?answer-table1 (assert(MAIN::answer-table (name answer-table1))))
+
+(bind ?enter-expression-goal1 (assert(MAIN::enter-expression-goal (description "SENTENTIAL-LOGIC-EXPRESSION"))))
+
+(modify ?answer-table1
+
+   (variable-header-alternatives nil)                
+
+     (variable-columns nil)                          
+
+    (answer-rows nil)                                 
+
+     (answer-columns nil)                             
+
+   (description "ANSWER-TABLE1"))
+
+
+
+; MAIN::textField
+
+(modify ?sentential-logic-expression
+
+ ;;   (name commTextField1)  ;; sententialLogicExpression
+
+    (value nil)
+
+    (description "SENTENTIAL-LOGIC-EXPRESSION")
+
+)
+
+; MAIN::table
+
+(modify ?Table1
+
+    (name commTable1)
+
+    (columns nil)
+
+)
+
+
+; MAIN::problem
+
+(modify ?problem
+
+    (name start)
+
+    (interface-elements ?sentential-logic-expression ?Table1) ;; should be in order, otherwise need to modify Start-Logic-Problem rule.    
+
+    (subgoals ?enter-expression-goal1)
+
+    (decomposition-alternatives nil) 
+
+    (done-p nil)
+
+    (description nil)
+
+    (answer-table ?answer-table1)
+
+)
+

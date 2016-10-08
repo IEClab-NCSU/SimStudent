@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE scenario SYSTEM "http://www.pitt.edu/~tutalk/TuTalkScenario.dtd">
+<scenario version="$Revision: 1.1 $" default-language="en">
+
+
+
+<concepts>
+  <concept label="unanticipated-response">
+   <phrase>anything else</phrase>
+  </concept>
+
+
+  <concept label="final-thanks">
+   <phrase>Thanks! That clears things up a little bit for me.</phrase>
+  </concept>
+  <concept label="first-question">
+   <phrase>You mentioned %concept%. What's %concept%?</phrase>
+  </concept>
+</concepts>
+
+<script>
+ <goal name="start">
+  <step><subgoal>reasons</subgoal></step>
+  <!--<step>
+   <initiation>first-question</initiation>
+   </step>-->
+ </goal>
+
+ <goal name="reasons">
+  <step>
+   <initiation>first-question</initiation>
+   <response say="final-thanks">unanticipated-response</response>
+  </step>
+ </goal>
+</script>
+</scenario>

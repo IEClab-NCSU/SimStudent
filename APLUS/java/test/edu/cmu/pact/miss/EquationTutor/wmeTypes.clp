@@ -1,0 +1,61 @@
+(deftemplate MAIN::button
+   (slot name))
+(deftemplate MAIN::cell
+   (slot name)
+   (slot value)
+   (slot description)
+   (slot row-number)
+   (slot column-number))
+(deftemplate MAIN::column
+   (slot name)
+   (multislot cells)
+   (slot position)
+   (slot description))
+(deftemplate MAIN::problem
+   (slot name)
+   (multislot interface-elements)
+   (multislot subgoals)
+   (slot done)
+   (slot description)
+   (slot turn))
+(deftemplate MAIN::selection-action-input
+   (slot selection)
+   (slot action)
+   (slot input))
+(deftemplate MAIN::special-tutor-fact
+   (slot selection)
+   (slot action)
+   (slot input))
+(deftemplate MAIN::special-tutor-fact-buggy extends MAIN::special-tutor-fact
+   (multislot buggy-message))
+(deftemplate MAIN::special-tutor-fact-correct extends MAIN::special-tutor-fact
+   (multislot hint-message))
+(deftemplate MAIN::special-wme
+   (slot selection)
+   (slot action)
+   (slot input)
+   (multislot hint-message)
+   (multislot buggy-message))
+(deftemplate MAIN::studentValues
+   (slot selection)
+   (slot action)
+   (slot input))
+(deftemplate MAIN::table
+   (slot name)
+   (multislot columns))
+(deftemplate MAIN::is-a-term-of
+(slot term)
+(slot exp)
+)
+(deftemplate MAIN::is-a-factor-of
+(slot factor)
+(slot exp)
+)
+(deftemplate MAIN::is-numerator-of
+(slot num)
+(slot exp)
+)
+(deftemplate MAIN::is-denominator-of
+(slot denom)
+(slot exp)
+)

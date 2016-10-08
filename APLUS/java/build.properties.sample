@@ -1,0 +1,5 @@
+local.javahelp=C:/jh2.0
+local.install4j=C:/install4j5
+# Secret password used for code-signing (e.g., TSApplet)
+cert.password=
+

@@ -1,0 +1,245 @@
+;; for Eclipse, etc., specify templates to read
+(require* wmeTypes "wmeTypes.clp")
+
+;;;; Fact assertions: slot assignments are below.
+
+(bind ?var1 (assert(MAIN::button (name hint))))
+(bind ?var2 (assert(MAIN::button (name done))))
+(bind ?var3 (assert(MAIN::cell (name table_R0C0))))
+(bind ?var4 (assert(MAIN::cell (name table_R1C0))))
+(bind ?var5 (assert(MAIN::cell (name table_R2C0))))
+(bind ?var6 (assert(MAIN::cell (name table_R3C0))))
+(bind ?var7 (assert(MAIN::cell (name table_R4C0))))
+(bind ?var8 (assert(MAIN::column (name table_Column1))))
+(bind ?var9 (assert(MAIN::cell (name table_R0C1))))
+(bind ?var10 (assert(MAIN::cell (name table_R1C1))))
+(bind ?var11 (assert(MAIN::cell (name table_R2C1))))
+(bind ?var12 (assert(MAIN::cell (name table_R3C1))))
+(bind ?var13 (assert(MAIN::cell (name table_R4C1))))
+(bind ?var14 (assert(MAIN::column (name table_Column2))))
+(bind ?var15 (assert(MAIN::cell (name table_R0C2))))
+(bind ?var16 (assert(MAIN::cell (name table_R1C2))))
+(bind ?var17 (assert(MAIN::cell (name table_R2C2))))
+(bind ?var18 (assert(MAIN::cell (name table_R3C2))))
+(bind ?var19 (assert(MAIN::cell (name table_R4C2))))
+(bind ?var20 (assert(MAIN::column (name table_Column3))))
+(bind ?var21 (assert(MAIN::cell (name table_R0C3))))
+(bind ?var22 (assert(MAIN::cell (name table_R1C3))))
+(bind ?var23 (assert(MAIN::cell (name table_R2C3))))
+(bind ?var24 (assert(MAIN::cell (name table_R3C3))))
+(bind ?var25 (assert(MAIN::cell (name table_R4C3))))
+(bind ?var26 (assert(MAIN::column (name table_Column4))))
+(bind ?var27 (assert(MAIN::table (name table))))
+(bind ?var28 (assert(MAIN::problem (name prob2))))
+
+;;;; Slot assignments
+
+; MAIN::button
+(modify ?var1
+    (name hint)
+)
+; MAIN::button
+(modify ?var2
+    (name done)
+)
+; MAIN::cell
+(modify ?var3
+    (name table_R0C0)
+    (value "p q")
+    (description nil)
+    (row-number 1)
+    (column-number 1)
+)
+; MAIN::cell
+(modify ?var4
+    (name table_R1C0)
+    (value nil)
+    (description nil)
+    (row-number 2)
+    (column-number 1)
+)
+; MAIN::cell
+(modify ?var5
+    (name table_R2C0)
+    (value nil)
+    (description nil)
+    (row-number 3)
+    (column-number 1)
+)
+; MAIN::cell
+(modify ?var6
+    (name table_R3C0)
+    (value nil)
+    (description nil)
+    (row-number 4)
+    (column-number 1)
+)
+; MAIN::cell
+(modify ?var7
+    (name table_R4C0)
+    (value nil)
+    (description nil)
+    (row-number 5)
+    (column-number 1)
+)
+; MAIN::column
+(modify ?var8
+    (name table_Column1)
+    (cells ?var3 ?var4 ?var5 ?var6 ?var7)
+    (position 1)
+    (description nil)
+)
+; MAIN::cell
+(modify ?var9
+    (name table_R0C1)
+    (value "p V q")
+    (description nil)
+    (row-number 1)
+    (column-number 2)
+)
+; MAIN::cell
+(modify ?var10
+    (name table_R1C1)
+    (value 1)
+    (description nil)
+    (row-number 2)
+    (column-number 2)
+)
+; MAIN::cell
+(modify ?var11
+    (name table_R2C1)
+    (value 1)
+    (description nil)
+    (row-number 3)
+    (column-number 2)
+)
+; MAIN::cell
+(modify ?var12
+    (name table_R3C1)
+    (value 0)
+    (description nil)
+    (row-number 4)
+    (column-number 2)
+)
+; MAIN::cell
+(modify ?var13
+    (name table_R4C1)
+    (value 1)
+    (description nil)
+    (row-number 5)
+    (column-number 2)
+)
+; MAIN::column
+(modify ?var14
+    (name table_Column2)
+    (cells ?var9 ?var10 ?var11 ?var12 ?var13)
+    (position 2)
+    (description nil)
+)
+; MAIN::cell
+(modify ?var15
+    (name table_R0C2)
+    (value "p A q")
+    (description nil)
+    (row-number 1)
+    (column-number 3)
+)
+; MAIN::cell
+(modify ?var16
+    (name table_R1C2)
+    (value 0)
+    (description nil)
+    (row-number 2)
+    (column-number 3)
+)
+; MAIN::cell
+(modify ?var17
+    (name table_R2C2)
+    (value 1)
+    (description nil)
+    (row-number 3)
+    (column-number 3)
+)
+; MAIN::cell
+(modify ?var18
+    (name table_R3C2)
+    (value 0)
+    (description nil)
+    (row-number 4)
+    (column-number 3)
+)
+; MAIN::cell
+(modify ?var19
+    (name table_R4C2)
+    (value 0)
+    (description nil)
+    (row-number 5)
+    (column-number 3)
+)
+; MAIN::column
+(modify ?var20
+    (name table_Column3)
+    (cells ?var15 ?var16 ?var17 ?var18 ?var19)
+    (position 3)
+    (description nil)
+)
+; MAIN::cell
+(modify ?var21
+    (name table_R0C3)
+    (value "p => q")
+    (description nil)
+    (row-number 1)
+    (column-number 4)
+)
+; MAIN::cell
+(modify ?var22
+    (name table_R1C3)
+    (value 0)
+    (description nil)
+    (row-number 2)
+    (column-number 4)
+)
+; MAIN::cell
+(modify ?var23
+    (name table_R2C3)
+    (value 1)
+    (description nil)
+    (row-number 3)
+    (column-number 4)
+)
+; MAIN::cell
+(modify ?var24
+    (name table_R3C3)
+    (value 1)
+    (description nil)
+    (row-number 4)
+    (column-number 4)
+)
+; MAIN::cell
+(modify ?var25
+    (name table_R4C3)
+    (value 1)
+    (description nil)
+    (row-number 5)
+    (column-number 4)
+)
+; MAIN::column
+(modify ?var26
+    (name table_Column4)
+    (cells ?var21 ?var22 ?var23 ?var24 ?var25)
+    (position 4)
+    (description nil)
+)
+; MAIN::table
+(modify ?var27
+    (name table)
+    (columns ?var8 ?var14 ?var20 ?var26)
+)
+; MAIN::problem
+(modify ?var28
+    (name prob2)
+    (interface-elements ?var2 ?var1 ?var27)
+    (subgoals)
+    (done nil)
+    (description nil)
+)

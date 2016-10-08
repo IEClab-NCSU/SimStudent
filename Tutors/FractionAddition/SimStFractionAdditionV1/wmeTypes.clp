@@ -1,0 +1,50 @@
+(deftemplate MAIN::button 
+   (slot name)
+   (slot value))
+(deftemplate MAIN::comboBox 
+   (slot name) 
+   (slot value) 
+   (multislot values))
+(deftemplate MAIN::cell 
+   (slot name) 
+   (slot value) 
+   (slot description) 
+   (slot row-number) 
+   (slot column-number))
+(deftemplate MAIN::column 
+   (slot name) 
+   (multislot cells) 
+   (slot position) 
+   (slot description))
+(deftemplate MAIN::problem 
+   (slot name) 
+   (multislot interface-elements) 
+   (multislot subgoals) 
+   (slot done) 
+   (slot description))
+(deftemplate MAIN::table 
+   (slot name) 
+   (multislot columns))
+(deftemplate MAIN::textField 
+   (slot name) 
+   (slot value))
+(deftemplate MAIN::fraction-addition 
+   (slot name) 
+   (slot value) 
+   (multislot complex-fractions))
+(deftemplate MAIN::fraction 
+   (slot name)
+   (slot value) 
+   (multislot tables))
+(deftemplate MAIN::complex-fraction 
+   (slot name) 
+   (slot value) 
+   (multislot fractions)
+   (multislot textFields))
+(deftemplate MAIN::fraction-addition-line 
+   (slot name) 
+   (slot value) 
+   (multislot fraction-additions)
+   (multislot comboBoxs))
+; tell productionRules file that templates have been parsed
+(provide wmeTypes)

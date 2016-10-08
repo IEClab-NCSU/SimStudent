@@ -1,0 +1,1 @@
+java -cp "lib/ctat.jar" -Dschool_name="School3" -Dcourse_name="Course3" -Dunit_name="Unit3" -Dsection_name="Section3" edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher -noLisp $* -debugCodes inter

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<preferences>
+  <preference>
+    <name>Commutativity</name>
+    <class>java.lang.Boolean</class>
+    <value>true</value>
+  </preference>
+  <preference>
+    <name>OLI Logging URL</name>
+    <class>java.lang.String</class>
+    <value>/Tutors/tutors/someOther.brd</value>
+  </preference>
+</preferences>

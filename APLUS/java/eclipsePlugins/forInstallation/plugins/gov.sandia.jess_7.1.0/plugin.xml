@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin id="gov.sandia.jess"
+   name="Jess"
+   version="7.1.0"
+   provider-name="Sandia National Laboratories"
+   class="gov.sandia.jess.JessPlugin">
+    
+</plugin>

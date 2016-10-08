@@ -1,0 +1,3 @@
+GoogleDrive.js is the core file having all the functions (even the redundant ones)
+
+GoogleDrive3.js is just a clone file with minor changes. This file is for developer experiments and is not imported into the main file.

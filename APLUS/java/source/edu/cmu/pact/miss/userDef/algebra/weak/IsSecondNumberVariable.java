@@ -1,0 +1,38 @@
+package edu.cmu.pact.miss.userDef.algebra.weak;
+
+import java.util.LinkedList;
+import java.util.Vector;
+
+import edu.cmu.pact.miss.userDef.algebra.EqFeaturePredicate;
+import edu.cmu.pact.miss.userDef.algebra.expression.AlgExp;
+import edu.cmu.pact.miss.userDef.algebra.expression.ExpParseException;
+
+public class IsSecondNumberVariable extends IsFirstNumberVariable 
+{
+    public IsSecondNumberVariable() 
+    {
+		setArity(1);
+		setName("is-second-number-variable");
+		setReturnValueType(TYPE_EXP_LIST);
+		setArgValueType(new int[]{TYPE_ARITH_EXP});
+    }
+
+    public String apply(Vector args) 
+    {
+    	String expString = (String)args.get(0); 
+    	
+		if(expString == null)
+		{
+			return null;
+		}
+		
+		boolean isVariable = isNumVariable(expString, 1); 
+		
+		if(isVariable)
+		{
+			return "T";
+		}
+		
+		return null;
+    }
+}

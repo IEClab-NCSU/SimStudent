@@ -1,0 +1,248 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;  
+;;  Author: Bruce McLaren
+;;  Date: 07/30/03 12:58
+;;  
+;;  Name: Hint-Apply-Operators
+;;  IF
+;;    The current goal is “Apply Logic Operators” goal
+;;  THEN
+;;    Display hint on how to apply operators
+    
+(defrule Hint-Apply-Operators 
+   ?problem <-
+      (problem
+      	(subgoals ?subgoal))
+   ?subgoal <-
+      (apply-logic-operators-goal)
+   ?special-tutor-fact <- (special-tutor-fact-correct)
+   =>
+   (modify ?special-tutor-fact 
+	(hint-message (construct-message 
+"[Type a truth value, either a ' T ' or an ' F ', in one of the truth table cells.]"
+"[Type the truth value only in a cell that has a column heading and which is fully specified.  A cell is 'fully specified' when (a) it has a heading that is a simple variable that can be copied from one of the leftmost columns or (b) it has a heading that is a subexpression in which all constituent variables and subexpressions have been assigned truth values.]")))
+)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;  
+;;  Author: Bruce McLaren
+;;  Date: 07/22/03 13:15
+;;  
+;;  Name: Hint-Assign-Alternative-Hdg
+;;  IF
+;;    The current goal is “Assign Expression Headings”
+;;    Column1 is the first answer column
+;;    AlternativeX, Value1 is a non-empty value corresponding to Column1, Row0
+;;    AlternativeX, Value1 is Column Header Value
+;;  THEN
+;;    Display hint
+    
+(defrule Hint-Assign-Alternative-Hdg 
+   ?problem <-
+      (problem
+      	(subgoals ?subgoal)
+     	(interface-elements $? ?column-header $?)
+      	(answer-table ?answer-table)
+      	(decomposition-alternatives $? ?alternativeX $?))
+   ?subgoal <-
+      (assign-expression-headings-goal
+        (just-assigned-heading-p NIL))
+   ?column-header <-
+      (cell
+        (description "COLUMN1HEADER"))
+   ?answer-table <-
+      (answer-table
+        (answer-columns $? ?answer-column $?))
+   ?answer-column <-
+      (answer-column
+        (column-header ?column-header)
+        (alternate-col-values $? ?alternate-value $?))
+   ?alternate-value <-
+      (logic-header-alternative
+        (value ?col-header-value))
+   ?alternativeX <-
+      (decomposition-alternative
+        (selected-alternative-p NIL)
+        (header-values $? ?alternate-value $?))
+   ?special-tutor-fact <- (special-tutor-fact-correct)
+   =>
+   (bind ?var1 (get-first-valid-variable))
+   (bind ?var2 (get-second-valid-variable))
+   (modify ?special-tutor-fact 
+	(hint-message (construct-message 
+    "[Elements of the sentential logic expression must be inserted as headings of the truth table.]"
+    "[Decompose the expression into elements and insert as headings of the empty columns in the truth table.   For instance, the expression " ?var1 " -> " ?var2  " & " ?var1 " could be decomposed as a series of individual tokens - "  ?var1 ",   ->, "  ?var2 ",  &, "  ?var1  "- or as a left-to-right parse tree - "  ?var1 " -> " ?var2 ",  ( " ?var1 " -> " ?var2 ") & " ?var1 "]"
+    "[Insert the element '" ?col-header-value "' as a heading in the leftmost empty column.  This is the start of a token decomposition.]")))
+)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;  
+;;  Author: Bruce McLaren
+;;  Date: 07/22/03 13:22
+;;  
+;;  Name: Hint-Assign-Expression-Hdg
+;;  IF
+;;    The current goal is “Assign Expression Headings”
+;;    Column1 is the leftmost incomplete answer column
+;;    Column1, Row0 has no value
+;;    Current-Alternative, Value1 is a non-empty value corresponding to Column1, Row0
+;;    Current-Alternative, Value1 is Val1
+;;  THEN
+;;    Display hint
+    
+(defrule Hint-Assign-Expression-Hdg 
+   ?problem <-
+      (problem
+      	(subgoals ?subgoal)
+      	(interface-elements $? ?sentential-logic-expression $? ?column-header $?)
+      	(answer-table ?answer-table)
+      	(decomposition-alternatives $? ?alternativeX $?))
+   ?subgoal <-
+      (assign-expression-headings-goal
+        (just-assigned-heading-p NIL))
+   ?sentential-logic-expression <-
+      (cell
+      	(description "SENTENTIAL-LOGIC-EXPRESSION")
+      	(value ?expression))
+   ?column-header <-
+      (cell
+        (description ~"COLUMN1HEADER"))
+   ?answer-table <-
+      (answer-table
+        (answer-columns $? ?answer-column $?))
+   ?answer-column <-
+      (answer-column
+        (column-header ?column-header)
+        (alternate-col-values $? ?alternate-value $?))
+   ?alternativeX <-
+      (decomposition-alternative
+        (selected-alternative-p T)
+      	(decomposition-name ?decomposition-name)
+      	(header-values $? ?alternate-value-prev ?alternate-value $?))
+   ?alternate-value-prev <-
+      (logic-header-alternative
+      	(already-used-p T))
+   ?alternate-value <-
+      (logic-header-alternative
+        (already-used-p NIL)
+        (value ?col-header-value)
+        (value ~NIL))
+   =>
+   (modify ?special-tutor-fact 
+	(hint-message (construct-message 
+    "[Continue placing elements of the sentential logic expression into headings of the truth table.]"
+    "[Put the element '" ?col-header-value "' in the leftmost incomplete heading.  This is the next element of a " ?decomposition-name " decomposition of '" ?expression "'.]")))
+)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;  
+;;  Author: Bruce McLaren
+;;  Date: 07/24/03 2:58
+;;  
+;;  Name: Hint-Assign-Variable-Heading
+;;  IF
+;;    The current goal is “Create Variable Headings”
+;;    There is a variable heading that hasn't been filled
+;;    There is a variable alternative that hasn't been used
+;;  THEN
+;;    Put the variable alternative value into the variable heading
+;;    Mark the variable alternative as used 
+    
+(defrule Hint-Assign-Variable-Heading 
+   ?problem <-
+      (problem
+      	(subgoals ?subgoal)
+      	(interface-elements $? ?variable-header $?)
+      	(answer-table ?answer-table))
+   ?subgoal <-
+      (assign-variable-headings-goal)
+   ?answer-table <-
+      (answer-table
+        (variable-columns $? ?variable-column $?)
+        (variable-header-alternatives $? ?variable-alternative $?))
+   ?variable-column <-
+      (variable-column
+        (cells ?variable-header $?))
+   ?variable-header <-
+      (cell
+        (value NIL))
+   ?variable-alternative <-
+      (variable-header-alternative
+        (already-used-p NIL)
+        (value ?variable&:(neq ?variable NIL)))
+   =>
+   (modify ?special-tutor-fact 
+	(hint-message (construct-message 
+    "[Take the variables in the expression and place them as headings of the leftmost columns of the truth table.]"
+    "[The leftmost columns of the truth table, above the pre-defined 'T' and 'F' values, need headings.  The variables in the expression should be inserted as headings of these columns.]"
+    "[Place the variable '" ?variable "' as a heading above a pre-defined 'T' and 'F' column.]")))
+)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;  
+;;  Author: Bruce McLaren
+;;  Date: 07/22/03 12:58
+;;  
+;;  Name: Hint-Start-Logic-Problem
+;;  IF
+;;    There is no goal yet
+;;  THEN
+;;    Display hints on how to start
+    
+(defrule Hint-Start-Logic-Problem 
+   ?problem <-
+      (problem
+      	(subgoals ?subgoal))
+   ?subgoal <-
+      (enter-expression-goal)
+   =>
+   (bind ?max-variables (get-max-variables))
+   (bind ?valid-variables (get-valid-variables))
+   (bind ?var1 (get-first-valid-variable))
+   (bind ?var2 (get-second-valid-variable))
+   (bind ?var3 (get-third-valid-variable))
+   (bind ?var4 (get-fourth-valid-variable))
+   (modify ?special-tutor-fact 
+	(hint-message (construct-message 
+    "[Start by typing a sentential logic expression in the top box.]"
+    "[A valid expression in sentential logic (at least as defined by this tutor) is a combination of the following symbols: 
+        - single-character variables, up to a total of " ?max-variables ", and taken from " ?valid-variables "
+        - implication  (->) 
+        - bidirectional implication  (<->) 
+        - conjunction  (&) 
+        - disjunction  (|)  
+        - negation  (~)]")))
+;    (cond
+;     ((= ?max-variables 1)
+;      "[Examples of valid expressions are #\: 
+;                 ~n ~n ?var1 -> ?var1  
+;                 ~n ~n #\~ ?var1
+;                 ))
+;     ((= ?max-variables 2)
+;      "[Examples of valid expressions are #\: 
+;                 ~n ~n #\~ ?var1
+;                 ~n ~n ?var1 -> ?var2  
+;                 ~n ~n ( ?var1  #\v ?var2  ) &  #\~ ?var2  
+;                 ~n ~n #\~ ?var1 <->  ( ?var2  #\| ?var1  )
+;                 ))
+;     ((= ?max-variables 3)
+;      "[Examples of valid expressions are #\: 
+;                 ~n ~n #\~ ?var1
+;                 ~n ~n ?var1 -> ?var2  
+;                 ~n ~n ( ?var1  #\v ?var2  ) &  #\~ ?var3  
+;                 ~n ~n #\~ ?var1 <->  ( ?var2  #\| ?var3  )
+;                 ))
+;     ((> ?max-variables 3)
+;      "[Examples of valid expressions are #\: 
+;                 ~n ~n #\~ ?var1
+;                 ~n ~n ?var1 -> ?var2  
+;                 ~n ~n ( ?var1  #\v ?var2  ) &  #\~ ?var3  
+;                 ~n ~n ( #\~ ?var1  #\| ?var2  )  <->  ( ?var3  #\| ?var4  )
+;                 )))
+)
+
+

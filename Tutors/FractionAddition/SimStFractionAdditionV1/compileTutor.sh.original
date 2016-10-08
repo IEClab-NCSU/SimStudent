@@ -1,0 +1,70 @@
+#!/bin/bash
+
+echo ${OS}
+
+# 
+## Change these variables 
+#
+
+if [ "${CVSDIR}" = "" ]
+then
+	if [ "${OS}" = "Windows_NT" ]
+	then
+		CVSDIR="f:/pact-cvs-tree"
+	fi
+	if [ "${OS}" != "Windows_NT" ]
+	then
+		CVSDIR="${HOME}/CMU/pact-cvs-tree"
+	fi
+fi
+
+JAVAC="javac"
+
+#
+## Don't change following codes
+#
+if [ "${OS}" = "Windows_NT" ]
+then
+	CPS=";"
+fi
+if [ "${OS}" != "Windows_NT" ]
+then
+	CPS=":"
+fi
+
+#CommJar="../lib1/ctat.jar${CPS}../lib1/jess.jar"
+CommJar="${CVSDIR}/AuthoringToolsL/java/lib/ctat.jar${CPS}${CVSDIR}/AuthoringToolsL/java/lib/jess.jar"
+CPATH="${CommJar}${CPS}..${CPS}."
+
+# CPATH="f:/Project/CTAT/CVS-TREE/AuthoringTools/java/lib/CommWidgets.jar;..;."
+
+VmOption="-classpath ${CPATH}"
+
+echo compiling Tutor interface...
+echo ${JAVAC} ${VmOption} fraction.java
+${JAVAC} ${VmOption} fraction.java
+
+echo compiling UserDefSymbols...
+echo ${JAVAC} ${VmOption} UserDefSymbols.java
+${JAVAC} ${VmOption} UserDefSymbols.java
+
+echo compiling FractionAdditionAdhocFoaGetter...
+echo ${JAVAC} ${VmOption} FractionAdditionAdhocFoaGetter.java
+${JAVAC} ${VmOption} FractionAdditionAdhocFoaGetter.java
+
+echo compiling FractionAdditionAdhocSelectionGetter...
+echo ${JAVAC} ${VmOption} FractionAdditionAdhocSelectionGetter.java
+${JAVAC} ${VmOption} FractionAdditionAdhocSelectionGetter.java
+
+echo compiling AlgebraV8InputChecker...
+echo ${JAVAC} ${VmOption} AlgebraV8InputChecker.java
+${JAVAC} ${VmOption} AlgebraV8InputChecker.java
+
+echo compiling FractionAdditionAdhocFoaGetter...
+echo ${JAVAC} ${VmOption} FractionAdditionAdhocFoaGetter.java
+${JAVAC} ${VmOption} FractionAdditionAdhocFoaGetter.java
+
+
+echo compiling FractionAdditionAssessor...
+echo ${JAVAC} ${VmOption} FractionAdditionAssessor.java
+${JAVAC} ${VmOption} FractionAdditionAssessor.java

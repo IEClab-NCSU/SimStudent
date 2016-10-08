@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="SimStudentServlet">
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+        <wb-resource deploy-path="/" source-path="/deploy"/>
+        <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
+        <dependent-module archiveName="aima-core-pl.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/SimStudentServlet/jars/lib/aima-core-pl.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="ModelTracer.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/ModelTracer/ModelTracer">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <property name="context-root" value="SimStudentServlet"/>
+        <property name="java-output-path" value="/SimStudentServlet/build/classes"/>
+    </wb-module>
+</project-modules>

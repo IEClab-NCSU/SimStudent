@@ -1,0 +1,398 @@
+;; Mon Feb 21 22:04:07 2005
+;;
+;;	Steps performed to solve equations
+;;
+;; Noboru Matsuda
+;;
+
+;; An example consists of
+;; (1) A name of the step
+;; (2) A "selection" & "input"
+;; (3) A number of lines presenting focus_of_attention & value
+;; 
+;; A line for selection and focus of attention consist of three parts:
+;; 
+;;	WME-type/WME-name/value
+;; 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; 1.	3x = 6
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+div-lhs
+MAIN::cell/commTable1_C1R2/x
+MAIN::cell/commTable1_C1R1/3x
+MAIN::cell/commTable1_C2R1/6
+
+div-rhs
+MAIN::cell/commTable1_C2R2/2
+MAIN::cell/commTable1_C1R1/3x
+MAIN::cell/commTable1_C2R1/6
+MAIN::cell/commTable1_C1R2/x
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; 2.	2x = 4
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+div-lhs
+MAIN::cell/commTable1_C1R2/x
+MAIN::cell/commTable1_C1R1/2x
+MAIN::cell/commTable1_C2R1/4
+
+div-rhs
+MAIN::cell/commTable1_C2R2/2
+MAIN::cell/commTable1_C1R1/2x
+MAIN::cell/commTable1_C2R1/4
+MAIN::cell/commTable1_C1R2/x
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; 3.	4x = 12
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+div-lhs
+MAIN::cell/commTable1_C1R2/x
+MAIN::cell/commTable1_C1R1/4x
+MAIN::cell/commTable1_C2R1/12
+
+div-rhs
+MAIN::cell/commTable1_C2R2/3
+MAIN::cell/commTable1_C1R1/4x
+MAIN::cell/commTable1_C2R1/12
+MAIN::cell/commTable1_C1R2/x
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; 4.	x - 5 = 3
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+trans-lr-lhs
+MAIN::cell/commTable1_C1R2/x
+MAIN::cell/commTable1_C1R1/x-5
+MAIN::cell/commTable1_C2R1/3
+
+trans-lr-rhs
+MAIN::cell/commTable1_C2R2/3+5
+MAIN::cell/commTable1_C1R1/x-5
+MAIN::cell/commTable1_C2R1/3
+MAIN::cell/commTable1_C1R2/x
+
+;; Author might want to add more independent WMEs later
+copy-lhs
+MAIN::cell/commTable1_C1R3/x
+MAIN::cell/commTable1_C1R2/x
+MAIN::cell/commTable1_C2R2/3+5
+
+do-arithmetic-rhs
+MAIN::cell/commTable1_C2R3/8
+MAIN::cell/commTable1_C1R2/x
+MAIN::cell/commTable1_C2R2/3+5
+MAIN::cell/commTable1_C1R3/x
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; 5.	x + 2 = 6
+;;
+;; 1	x = 
+;; 2	x = 6 - 2
+;; 3	x = 
+;; 4	x = 4
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; 1
+trans-lr-lhs
+MAIN::cell/commTable1_C1R2/x
+MAIN::cell/commTable1_C1R1/x+2
+MAIN::cell/commTable1_C2R1/6
+
+;; 2
+trans-lr-rhs
+MAIN::cell/commTable1_C2R2/6-2
+MAIN::cell/commTable1_C1R1/x+2
+MAIN::cell/commTable1_C2R1/6
+MAIN::cell/commTable1_C1R2/x
+
+;; 3
+;; Author might want to add more independent WMEs later
+copy-lhs
+MAIN::cell/commTable1_C1R3/x
+MAIN::cell/commTable1_C1R2/x
+MAIN::cell/commTable1_C2R2/6-2
+
+;; 4
+do-arithmetic-rhs
+MAIN::cell/commTable1_C2R3/4
+MAIN::cell/commTable1_C1R2/x
+MAIN::cell/commTable1_C2R2/6-2
+MAIN::cell/commTable1_C1R3/x
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; 6.	2 = -3x + 11
+;;	2 + 3x = 11
+;;	3x = 11 - 2
+;;	3x = 9
+;;	x = 3
+;; 
+;; 1	3x + 2 =
+;; 2	3x + 2 = 11
+;; 3	3x =
+;; 4	3x = 11 - 2
+;; 5	3x =
+;; 6	3x = 9
+;; 7	x =
+;; 8	x = 3
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; **********************************
+;; **********************************
+;; **********************************
+;; C1R2 must be "2+3x", but changing them cause an EXCEPTION
+;; **********************************
+;; **********************************
+;; **********************************
+
+;; 1
+trans-rl-lhs
+MAIN::cell/commTable1_C1R2/2+3x
+MAIN::cell/commTable1_C1R1/2
+MAIN::cell/commTable1_C2R1/-3x+11
+
+;; 2
+trans-rl-rhs
+MAIN::cell/commTable1_C2R2/11
+MAIN::cell/commTable1_C1R1/2
+MAIN::cell/commTable1_C2R1/-3x+11
+MAIN::cell/commTable1_C1R2/2+3x
+
+;; 3
+trans-lr-lhs
+MAIN::cell/commTable1_C1R3/3x
+MAIN::cell/commTable1_C1R2/2+3x
+MAIN::cell/commTable1_C2R2/11
+
+;; 4
+trans-lr-rhs
+MAIN::cell/commTable1_C2R3/11-2
+MAIN::cell/commTable1_C1R2/2+3x
+MAIN::cell/commTable1_C2R2/11
+MAIN::cell/commTable1_C1R3/3x
+
+;; 5
+copy-lhs
+MAIN::cell/commTable1_C1R4/3x
+MAIN::cell/commTable1_C1R3/3x
+MAIN::cell/commTable1_C2R3/11-2
+
+;; 6
+do-arithmetic-rhs
+MAIN::cell/commTable1_C2R4/9
+MAIN::cell/commTable1_C1R3/3x
+MAIN::cell/commTable1_C2R3/11-2
+MAIN::cell/commTable1_C1R4/3x
+
+;; 7
+div-lhs
+MAIN::cell/commTable1_C1R5/x
+MAIN::cell/commTable1_C1R4/3x
+MAIN::cell/commTable1_C2R4/9
+
+;; 8
+div-rhs
+MAIN::cell/commTable1_C2R5/3
+MAIN::cell/commTable1_C1R4/3x
+MAIN::cell/commTable1_C2R4/9
+MAIN::cell/commTable1_C1R5/x
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; 7.	3x - 4 = 2
+;;	3x = 2 + 4
+;;	3x = 6
+;;	x = 2
+;;
+;; 1	3x = 
+;; 2	3x = 2 + 4
+;; 3	3x =
+;; 4	3x = 6
+;; 5	x =
+;; 6	x = 2
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; 1
+trans-lr-lhs
+MAIN::cell/commTable1_C1R2/3x
+MAIN::cell/commTable1_C1R1/3x-4
+MAIN::cell/commTable1_C2R1/2
+
+;; 2
+trans-lr-rhs
+MAIN::cell/commTable1_C2R2/2+4
+MAIN::cell/commTable1_C1R1/3x-4
+MAIN::cell/commTable1_C2R1/2
+MAIN::cell/commTable1_C1R2/3x
+
+;; 3
+copy-lhs
+MAIN::cell/commTable1_C1R3/3x
+MAIN::cell/commTable1_C1R2/3x
+MAIN::cell/commTable1_C2R2/2+4
+
+;; 4
+do-arithmetic-rhs
+MAIN::cell/commTable1_C2R3/6
+MAIN::cell/commTable1_C1R2/3x
+MAIN::cell/commTable1_C2R2/2+4
+MAIN::cell/commTable1_C1R3/3x
+
+;; 5
+div-lhs
+MAIN::cell/commTable1_C1R4/x
+MAIN::cell/commTable1_C1R3/3x
+MAIN::cell/commTable1_C2R3/6
+
+;; 6
+div-rhs
+MAIN::cell/commTable1_C2R4/2
+MAIN::cell/commTable1_C1R3/3x
+MAIN::cell/commTable1_C2R3/6
+MAIN::cell/commTable1_C1R4/x
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; 8.	2x + 3x = 3 + 7
+;;	5x = 3 + 7
+;;	5x = 10
+;;	x = 2
+;;
+;; 1	5x =
+;; 2	5x = 3 + 7
+;; 3	5x = 
+;; 4	5x = 10
+;; 5	x = 
+;; 6	x = 2
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; 1
+do-arithmetic-lhs
+MAIN::cell/commTable1_C1R2/5x
+MAIN::cell/commTable1_C1R1/2x+3x
+MAIN::cell/commTable1_C2R1/3+7
+
+;; 2
+copy-rhs
+MAIN::cell/commTable1_C2R2/3+7
+MAIN::cell/commTable1_C1R1/2x+3x
+MAIN::cell/commTable1_C2R1/3+7
+MAIN::cell/commTable1_C1R2/5x
+
+;; 3
+copy-lhs
+MAIN::cell/commTable1_C1R3/5x
+MAIN::cell/commTable1_C1R2/5x
+MAIN::cell/commTable1_C2R2/3+7
+
+;; 4
+do-arithmetic-rhs
+MAIN::cell/commTable1_C2R3/10
+MAIN::cell/commTable1_C1R2/5x
+MAIN::cell/commTable1_C2R2/3+7
+MAIN::cell/commTable1_C1R3/5x
+
+;; 5
+div-lhs
+MAIN::cell/commTable1_C1R4/x
+MAIN::cell/commTable1_C1R3/5x
+MAIN::cell/commTable1_C2R3/10
+
+;; 6
+div-rhs
+MAIN::cell/commTable1_C2R4/2
+MAIN::cell/commTable1_C1R3/5x
+MAIN::cell/commTable1_C2R3/10
+MAIN::cell/commTable1_C1R4/x
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; 9.	3x = 2x + 4
+;;	3x - 2x = 4
+;;	x = 4
+;;
+;; 1	3x - 2x =
+;; 2	3x - 2x = 4
+;; 3	x = 
+;; 4	x = 4
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; 1
+trans-rl-lhs
+MAIN::cell/commTable1_C1R2/3x-2x
+MAIN::cell/commTable1_C1R1/3x
+MAIN::cell/commTable1_C2R1/2x+4
+
+;; 2
+trans-rl-rhs
+MAIN::cell/commTable1_C2R2/4
+MAIN::cell/commTable1_C1R1/3x
+MAIN::cell/commTable1_C2R1/2x+4
+MAIN::cell/commTable1_C1R2/3x-2x
+
+;; 3
+do-arithmetic-lhs
+MAIN::cell/commTable1_C1R3/x
+MAIN::cell/commTable1_C1R2/3x-2x
+MAIN::cell/commTable1_C2R2/4
+
+;; 4
+copy-rhs
+MAIN::cell/commTable1_C2R3/4
+MAIN::cell/commTable1_C1R2/3x-2x
+MAIN::cell/commTable1_C2R2/4
+MAIN::cell/commTable1_C1R3/x
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; 10.	3x - 3 = 2x + 5
+;;	3x - 3 - 2x = 5
+;;	3x - 2x = 5 + 3
+;;	x = 5 + 3
+;;	x = 8
+;;
+;; 1	3x - 3 - 2x =
+;; 2	3x - 3 - 2x = 5
+;; 3	3x - 2x = 
+;; 4	3x - 2x =  5 + 3
+;; 5	x = 
+;; 6	x = 8
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; 1
+trans-rl-lhs
+MAIN::cell/commTable1_C1R2/3x-3-2x
+MAIN::cell/commTable1_C1R1/3x-3
+MAIN::cell/commTable1_C2R1/2x+5
+
+;; 2
+trans-rl-rhs
+MAIN::cell/commTable1_C2R2/5
+MAIN::cell/commTable1_C1R1/3x-3
+MAIN::cell/commTable1_C2R1/2x+5
+MAIN::cell/commTable1_C1R2/3x-3-2x
+
+;; 3
+trans-lr-lhs
+MAIN::cell/commTable1_C1R3/3x-2x
+MAIN::cell/commTable1_C1R2/3x-3-2x
+MAIN::cell/commTable1_C2R2/5
+
+;; 4
+trans-lr-rhs
+MAIN::cell/commTable1_C2R3/5+3
+MAIN::cell/commTable1_C1R2/3x-3-2x
+MAIN::cell/commTable1_C2R2/5
+MAIN::cell/commTable1_C1R3/3x-2x
+
+;; 5
+do-arithmetic-lhs
+MAIN::cell/commTable1_C1R4/x
+MAIN::cell/commTable1_C1R3/3x-2x
+MAIN::cell/commTable1_C2R3/5+3
+
+;; 6
+do-arithmetic-rhs
+MAIN::cell/commTable1_C2R4/8
+MAIN::cell/commTable1_C1R3/3x-2x
+MAIN::cell/commTable1_C2R3/5+3
+MAIN::cell/commTable1_C1R4/x

@@ -1,0 +1,18 @@
+.statuselement
+{
+	line-height:180%;
+	background: #eeeeee;
+	text-align:center;
+	vertical-align:middle;
+	float:left;
+	height: 14px;
+	border: 1px solid #444444;
+	padding: 0px;
+	margin: 2px;
+	overflow: hidden;
+	color: #444444;
+	font-family:Arial;
+	font-size:9px;
+	font-weight:normal;
+	font-style:normal;
+}

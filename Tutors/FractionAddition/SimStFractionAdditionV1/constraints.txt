@@ -1,0 +1,12 @@
+;;edu.cmu.pact.miss.userDef.topological.Distinctive
+;;edu.cmu.pact.miss.userDef.topological.table.SameRow
+;;edu.cmu.pact.miss.userDef.topological.table.SameColumn
+;;edu.cmu.pact.miss.userDef.topological.table.ConsecutiveRow
+;;edu.cmu.pact.miss.userDef.topological.table.ConsecutiveColumn
+edu.cmu.pact.miss.userDef.topological.fractions.SameOrder
+;;edu.cmu.pact.miss.userDef.topological.fractions.AreBothDenominators
+;;edu.cmu.pact.miss.userDef.topological.fractions.AreBothNumerators
+;;edu.cmu.pact.miss.userDef.topological.fractions.IsSameRow
+edu.cmu.pact.miss.userDef.topological.fractions.IsConsecutiveRow
+
+

@@ -1,0 +1,69 @@
+<html>
+<head>
+<!-- @author - Hardik Vasa -->
+<link rel="stylesheet" type="text/css" href="styles/homepage.css">
+
+  <script src="https://apis.google.com/js/api:client.js"></script>
+  <script>
+  
+  function signOut() {
+    var ifr = document.createElement('iframe');
+    ifr.src = 'https://accounts.google.com/logout';
+    document.body.appendChild(ifr);
+    location.reload();
+    //window.location.href = "https://accounts.google.com/logout";
+  }
+  var googleUser = {};
+  var startApp = function() {
+    gapi.load('auth2', function(){
+      // Retrieve the singleton for the GoogleAuth library and set up the client.
+      auth2 = gapi.auth2.init({
+        client_id: '162342217693-jpu5ooi1s85j4v63mke962gfe5gf14ac.apps.googleusercontent.com',
+        cookiepolicy: 'single_host_origin',
+      });
+      attachSignin(document.getElementById('customBtn'));
+    });
+  };
+
+  function attachSignin(element) {
+    console.log(element.id);
+    auth2.attachClickHandler(element, {},
+        function(googleUser) {
+          /*document.write(document.getElementById('name').innerText = "Signed in: " +
+              googleUser.getBasicProfile().getName() + "<br>" +googleUser.getBasicProfile().getEmail()+ "<br>" +
+              '<img src="' + googleUser.getBasicProfile().getImageUrl() + '" alt="some_text">'+ "<br>" +
+              '<a href="#" onclick="signOut();">Sign out</a>'); */
+              window.location.href = "page.html";
+        }, function(error) {
+          alert(JSON.stringify(error, undefined, 2));
+        });
+  }
+  </script>
+
+
+
+
+</head>
+<body>
+
+<table class="box" style="top: 20%;"> 
+<tr>
+<td valign="middle" align="center" style="padding-bottom:60px">
+<img src="images/homepage_logo.png" width="320" height="60"><br><br><br>
+</td>
+</tr>
+
+<tr>
+<td valign="middle" align="center" style="margin:30px">
+<div id="customBtn" class="customGPlusSignIn">
+<span class="icon"></span>
+<span class="buttonText">Sign In With Google</span>
+</div>
+
+<script>startApp();</script>
+</td>
+</tr>
+</table>
+
+</body>
+</html>

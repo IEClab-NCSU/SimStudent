@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html lang="en-US">
+<head>
+	<title>__TITLE__</title>
+</head>
+<body>
+<h1>__TITLE__</h1>
+
+ <script src="javascript/deployJava.js"></script>
+ <script> 
+    var attributes = {code:'edu.cmu.pact.BehaviorRecorder.Controller.AppletLauncher.class', 
+                      width:__WIDTH__,
+                      height:__HEIGHT__} ;
+    var parameters = {jnlp_href:'__JNLP_FILE__',
+      permissions:'all-permissions',
+      authenticity_token:'__AUTHENTICITY_TOKEN__', // used by TutorShop
+      lcId:'__LCID__',                             // used by TutorShop
+      reuse_swf:'false',                           // possible future use
+      target_frame:'_self',                        // should always be _self; possible future use
+      problem_state_status:'empty',                // should always be 'empty'; possible future use
+      SessionLog:'true',                           // should always be true; possible future use
+      Logging:'__LOGGING__',                 // None for no logging; some other value for logging
+      log_service_url:'__LOG_SERVER_URL__',        // address for logging 
+      curriculum_service_url:'__PROBLEM_SUMMARY_URL__',     // HTTP POST address to send problem summary
+      run_problem_url:'__CODEBASE__/__NEXT_PROBLEM_URL__',  // absolute HTTP GET address for the next problem to load
+      restore_problem_url:'',                      // should always be ''; possible future use
+      question_file:'__QUESTION_FILE__',           // relative URL for the .brd file
+      student_interface:'__STUDENT_INTERFACE__',   // full class name for the student interface
+      source_id:'CTAT_JAVA_TUTOR',                 // for DataShop logging
+      show_debug_traces:'false',                   // if true, activate tracing in the Java Console
+      user_guid:'__USERID__',                      // user identifier, for logging
+      session_id:'__SESSION_ID__',                 // session identifier, for logging
+      dataset_name:'__DATASET_NAME__',             // DataShop logging parameter
+      dataset_level_type1:'__DATASET_LEVEL_TYPE1__',  // DataShop logging parameter
+      dataset_level_name1:'__DATASET_LEVEL_NAME1__',  // DataShop logging parameter
+      dataset_level_type2:'__DATASET_LEVEL_TYPE2__',  // DataShop logging parameter
+      dataset_level_name2:'__DATASET_LEVEL_NAME2__',  // DataShop logging parameter
+      problem_name:'__PROBLEM_NAME__',                // DataShop logging parameter
+      problem_context:'__PROBLEM_CONTEXT__',          // DataShop logging parameter
+      problem_tutorflag:'tutor',                      // 'tutor' or 'quiz'
+      class_name:'__CLASS_NAME__',                    // DataShop logging parameter
+      school_name:'__SCHOOL_NAME__',                  // DataShop logging parameter
+      instructor_name:'__INSTRUCTOR_NAME__',          // DataShop logging parameter
+      study_condition_name1:'__STUDY_CONDITION_NAME1__',    // DataShop logging parameter
+      study_condition_type1:'__STUDY_CONDITION_TYPE1__'} ;  // DataShop logging parameter
+    var version = '1.6' ;
+    deployJava.runApplet(attributes, parameters, version);  
+ </script>
+ <noscript>This page requires JavaScript.</noscript>
+</body>
+</html>

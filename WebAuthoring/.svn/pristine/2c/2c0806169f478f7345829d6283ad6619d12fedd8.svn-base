@@ -1,0 +1,48 @@
+{"rows":[
+	{"name":"Background Color","value":"#ffffff","group":"CSS Styles","editor":"text"},
+	{"name":"Background Transparency","value":"1","group":"CSS Styles","editor":"numberbox"},	
+	{"name":"Disabled Background Color","value":"#ffffff","group":"CSS Styles","editor":"text"},		
+	{"name":"Disabled Text Color","value":"#000000","group":"CSS Styles","editor":"text"},		
+	{"name":"Show Border","value":"1","group":"CSS Styles","editor":"numberbox"},	
+	{"name":"Border Width","value":"1","group":"CSS Styles","editor":"numberbox"},
+	{"name":"Tutor Component","value":"true","group":"Component Properties","editor":{
+		"type":"checkbox",
+		"options":
+		{
+			"on":true,
+			"off":false
+		}
+	}},
+	{"name":"Show Hint Highlight","value":"true","group":"Component Properties","editor":{
+		"type":"checkbox",
+		"options":
+		{
+			"on":true,
+			"off":false
+		}
+	}},
+	{"name":"Disable on Correct","value":"true","group":"Component Properties","editor":{
+		"type":"checkbox",
+		"options":
+		{
+			"on":true,
+			"off":false
+		}
+	}},
+	{"name":"Tab on Enter","value":"true","group":"Component Properties","editor":{
+		"type":"checkbox",
+		"options":
+		{
+			"on":true,
+			"off":false
+		}
+	}},
+	{"name":"Tutor Component","value":"true","group":"Component Properties","editor":{
+		"type":"checkbox",
+		"options":
+		{
+			"on":true,
+			"off":false
+		}
+	}}			
+]}

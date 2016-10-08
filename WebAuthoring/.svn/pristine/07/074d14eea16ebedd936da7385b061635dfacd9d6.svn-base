@@ -1,0 +1,120 @@
+Problem Name	00Intro	02Banquet	03Goodies	05College	01Automobile	04Disguises	06Clothes
+%(startStateNodeName)%	start	Row 1 Complete	Third filled	start	Row 2 Complete	start	start
+%(statement)%	"Jen is making outfits for her dress up doll. The items shown below are the outfits she made so far, and Jen is planning to make more! Her dolls always dress up using one item from each category. Help Jen find out how many different ways she can dress up her doll."	"Your class banquet is being held at a fancy restaurant. When it's time to order your meal, you are able to select items from the following menu to make a dinner. "	"Martha is making goodie bags for a party in her neighborhood. She is going to put a chocolate bar, a lollipop, a cookie, and a piece of fruit in each bag. Please help Martha figure out how many different goodie bags she can make. Martha has the following number and types of goodies."	"At the Newfield College summer camp, each day is divided into a program that consists of an academic class, a team sport, a handicraft, and a water activity. Please help the camp administrators figure out the number of different sets of programs from which the campers can choose. "	"The Apex motor company makes one automobile, the Borealis, and the company offers these options: "	"Sam the private detective is famous for his disguises. It is important for him to never be seen in the same disguise more than once. His disguises always consist of a wig, a pair of eyeglasses, and a hat. Please help Sam plan his disguises."	"Fred is packing some t-shirts, shorts and baseball caps for a two week vacation. He is wondering how many different outfits he can make. He is currently planning to pack the items listed below. Please help Fred figure out how many different outfits he can put together."
+%(numCategory)%	5	5	4	4	4	3	3
+%(item1)%	"Hats: brown hat, black hat"	"Appetizers: nachos, soup, shrimp, breadsticks"	2 types of chocolate bars	5 Academic classes	"Exterior Colors: maroon, blue, silver, white, black "	4 Wigs	4 Shirts
+%(item2)%	"Bag colors: red, black, white, gold, silver"	"Main Courses: spaghetti, chicken, steak, salmon, fajitas"	2 flavors of lollipops	6 Team sports	"Interior Colors: beige, gray, white, blue"	5 pairs of Eyeglasses	3 pairs of Shorts
+%(item3)%	"Shirt: star patterned T-shirt, flower patterned T-shirt, plain white T-shirt"	"Vegetables: peas, broccoli, carrots"	2 types of cookies	10 Handicrafts	"Wheel Types: steel, alloy, custom alloy"	1 Hat	1 Cap
+%(item4)%	"Pairs of pants: black shorts, pair of jeans"	"Beverages: milk, soft drink, juice"	2 different types of fruit	4 Water Activities	Engine Sizes: 1600cc	-	-
+%(item5)%	"Pairs of shoes: tennis shoes, sandles"	"Desserts: brownies, cookies, cake, fruit, ice cream, pudding"	-	-	-	-	-
+%(q1)%	1. How many different ways can Jen's doll dress up using outfits available above?	1. How many different dinners are possible if you chose one item from each category?	"1. If she use all of the items shown above, how many different goodie bags can she make?"	1. The set of programs shown above are programs that were available last year. How many different programs were available to campers last year in Newfield College? 	1. How many different variations of Borealis are available to customers?	1. How many different disguises can he make using his current items shown above?	1. How many different outfits can he put together if he decideds to keep his first numbers of each of the clothes shown above?
+%(q2)%	2. Jen is now trying to make her doll dress up in exactly 160 different ways by making more shirts. How many shirts should she have in total to have exactly 160 different outfits for her doll?	2. Suppose the restaurant has run out of brownies. How many dinners are still possible?	"2. If she has 2 more flavors of lollipops, and 2 more types of cookies, how many different goodie bags can she make?"	"2. This year, the camp might reduce the number of team sports by 50% and the numbers of handicrafts by 50%. How many different programs would be available to campers?"	"2. How many variations would be available if Apex offered 3 new exterior colors, and one new Engine size?"	"2. If you give Sam 2 extra hats, how many different disguises can he make?"	"2. How many different outfits can he put together if he wants to bring 1 extra shirt, but 1 less pair of shorts?"
+%(q3)%	"3. Jen is not satisfied with just 160 different outfits. So, she has made 2 new pairs of pants for her doll. How many different ways can her doll dress up now?"	3. Suppose you don't order desserts at all. How many dinners are still possible?	"3. If she has 1 more of each type of the items she originally had, how many different goodie bags can she make?"	3. Suppose the camp completely eliminates team sports and does not reduce the number of handicrafts. How many different programs would be available to campers?	"3. If Apex offers one engine size, and keeps the current numbers of interior colors and wheel types, how many different exterior colors would the company need to offer 120 available variations?"	"3. Sam lost track of the number of hats that he has, but he knows he can make 100 disguises. How many hats does he have?"	"3. Fred finally made up his mind and brought 5 shirts, 3 pairs of shorts for the vacation, but cannot remember how many caps he brought. If he knows that he can make 60 outfits, how many caps did he bring?"
+%(event1)%	Hats	Appetizers	Types of chocolate bars	Academic classes	Exterior colors	Wigs	Shirts
+%(event2)%	Bags	Main courses	Flavors of lollipops	Team sports	Interior colors	Pairs of eyeglasses	Pairs of shorts
+%(event3)%	Shirts	Vegetables	Types of cookies	Handicrafts	Wheel types	Hats	Caps
+%(event4)%	Pairs of pants	Beverages	Types of fruit	Water sports	Engine sizes	-	-
+%(event5)%	Pairs of shoes	Desserts	-	-	-	-	-
+							
+%(ans)%	Expression for number of possible outfits	Expression for number of possible dinners	Expression for number of different goodie bags	Expression for number of different programs	Expression for number of available variations	Expression for number of possible disguises	Expression for number of possible outfits
+%(ans-final)%	Number of possible outfits	Number of possible dinners	Number of different goodie bags	Number of different programs	Number of available variations	Number of possible disguises	Number of possible outfits
+							
+%(n11)%	2	4	2	5	5	4	4
+%(Col1-h)%	-	What was the original number of appetizers? Was any change in this number mentioned in the question?	What was the original number of types of chocolate bars? Was any change in this number mentioned in the question?	What was the original number of academic classes? Was any change in this number mentioned in the question?	What was the original number of exterior colors? Was any change in this number mentioned in the question?	What was the original number of wigs? Was any change in this number mentioned in the question?	What was the original number of shirts? Was any change in this number mentioned in the question?
+%(n12)%	5	5	2	6	4	5	3
+%(Col2-h)%	-	What was the original number of main courses? Was any change in this number mentioned in the question?	What was the original number of flavors of lollipops? Was any change in this number mentioned in the question?	What was the original number of team sports? Was any change in this number mentioned in the question?	What was the original number of interior colors? Was any change in this number mentioned in the question?	What was the original number of pairs of eyeglasses? Was any change in this number mentioned in the question?	What was the original number of pairs of shorts? Was any change in this number mentioned in the question?
+%(n13)%	3	3	2	10	3	1	1
+%(Col3-h)%	-	What was the original number of vegetables? Was any change in this number mentioned in the question?	What was the original number of types of cookies? Was any change in this number mentioned in the question?	What was the original number of handicrafts? Was any change in this number mentioned in the question?	What was the original number of wheel types? Was any change in this number mentioned in the question?	What was the original number of hats? Was any change in this number mentioned in the question?	What was the original number of caps? Was any change in this number mentioned in the question?
+%(n14)%	2	3	2	4	1	-	-
+%(Col4-h)%	-	What was the original number of beverages? Was any change in this number mentioned in the question?	What was the original number of types of fruits? Was any change in this number mentioned in the question?	What was the original number of water activities? Was any change in this number mentioned in the question?	What was the original number of engine sizes? Was any change in this number mentioned in the question?	-	-
+%(n15)%	2	6	-	-	-	-	-
+%(Col5-h)%	-	What was the original number of desserts? Was any change in this number mentioned in the question?	-	-	-	-	-
+%(ans1)%	2*5*3*2*2	4*5*3*3*6	2*2*2*2	5*6*10*4	5*4*3*1	4*5*1	4*3*1
+%(ans1-condition)%	Q1C1	"Q1C1,Q1C2,Q1C3,Q1C4,Q1C5"	"Q1C1,Q1C2,Q1C3,Q1C4"	"Q1C1,Q1C2,Q1C3,Q1C4"	"Q1C1,Q1C2,Q1C3,Q1C4"	"Q1C1,Q1C2,Q1C3"	"Q1C1,Q1C2,Q1C3"
+%(ans1-ev)%	120	1080	16	1200	60	20	12
+%(ansh1)%	-	Try multiplying all possible dinner items.	Try multiplying all types of goodies.	Try multiplying all available programs.	Try multiplying all available options.	Try multiplying all available disguise items.	Try multiplying all available clothing items.
+%(ans4h)%	-	"The number of possible dinners is equal to the product of the number of appetizers, main courses, vegetables, beverages, and desserts."	"The number of possible goodie bags is equal to the product of the number of types or flavors of chocolate bars, lollipops, cookies, and fruits."	"The number of available programs is equal to the product of the number of academic classes, team sports, handicrafts, and water activities."	"The number of possible combinations is equal to the product of the number of exterior colors, interior colors, sound systems, and the engines."	"The number of possible disguises is equal to the product of the number of wigs, pairs of eyeglasses, hats."	"The number of possible outfits is equal to the product of the number of shirts, pairs of shorts, and caps."
+							
+%(n21)%	2	4	2	5	8	4	5
+%(n22)%	5	5	4	3	4	5	2
+%(n23)%	4	3	4	5	3	3	1
+%(n24)%	2	3	2	4	2	-	-
+%(n25)%	2	5	-	-	-	-	-
+%(ans2)%	2*5*?*2*2	4*5*3*3*5	2*4*4*2	5*3*5*4	8*4*3*2	4*5*3	5*2*1
+%(ans2-condition)%	Q2C1	"Q2C1,Q2C2,Q2C3,Q2C4,Q2C5"	"Q2C1,Q2C2,Q2C3,Q2C4"	"Q2C1,Q2C2,Q2C3,Q2C4"	"Q2C1,Q2C2,Q2C3,Q2C4"	"Q2C1,Q2C2,Q2C3"	"Q2C1,Q2C2,Q2C3"
+%(ans2-ev)%	160	900	64	300	192	60	10
+%(ansh2)%	-	Try multiplying all possible dinner items. 	Try multiplying all types of goodies. 	Try multiplying all available programs.	Try multiplying all available options.	Try multiplying all available disguise items.	Try multiplying all available clothing items.
+%(ans5h)%	-	"The number of possible dinners is equal to the product of the number of appetizers, main courses, vegetables, beverages, and desserts."	"The number of possible goodie bags is equal to the product of the number of types or flavors of chocolate bars, lollipops, cookies, and fruits."	"The number of available programs is equal to the product of the number of academic classes, team sports, handicrafts, and water activities."	"The number of possible combinations is equal to the product of the number of exterior colors, interior colors, sound systems, and the engines."	"The number of possible disguises is equal to the product of the number of wigs, pairs of eyeglasses, hats."	"The number of possible outfits is equal to the product of the number of shirts, pairs of shorts, and caps."
+							
+%(n31-selec)%	Q3C1	Q3C1	Q3C1	Q3C1	Q3C2	Q3C1	Q3C1
+%(n31)%	2	4	3	5	4	4	5
+%(n32-selec)%	Q3C2	Q3C2	Q3C2	Q3C3	Q3C3	Q3C2	Q3C2
+%(n32)%	5	5	3	10	3	5	3
+%(n33-selec)%	Q3C3	Q3C3	Q3C3	Q3C4	Q3C4	-	-
+%(n33)%	4	3	3	4	1	-	-
+%(n34-selec)%	Q3C4	Q3C4	Q3C4	-	-	-	-
+%(n34)%	4	3	3	-	-	-	-
+%(n35)%	2	-	-	-	-	-	-
+%(ans3)%	%(n31)%*%(n32)%*%(n33)%*%(n34)%*%(n35)%	4*5*3*3	3*3*3*3	5*10*4	10*4*3*1	4*5*5	5*3*4
+%(ans3-condition)%	Q3C1	"Q3C1,Q3C2,Q3C3,Q3C4"	"Q3C1,Q3C2,Q3C3,Q3C4"	"Q3C1,Q3C3,Q3C4"	x	x	x
+%(ans3-ev)%	320	180	81	200	120	100	60
+%(ansh3)%	-	Try multiplying all available dinner items. 	Try multiplying all available types of goodies. 	Try multiplying all available programs.	-	-	-
+%(solv-selec)%	-	-	-	-	Q3C1	Q3C3	Q3C3
+%(solv-ans)%	-	-	-	-	10	5	4
+%(solv-unknownExp)%	-	-	-	-	?*4*3*1	4*5*?	5*3*?
+%(solv-div)%	-	-	-	-	12	20	15
+%(solv-mm)%	0	0	0	0	1	1	1
+%(noSolv-mm)%	1	1	1	1	0	0	0
+							
+%(ans6h)%	-	"The number of possible dinners is equal to the product of the number of appetizers, main courses, vegetables, and beverages."	"The number of possible goodie bags is equal to the product of the number of types or flavors of chocolate bars, lollipops, cookies, and fruits."	"The number of available programs is equal to the product of the number of academic classes, handicrafts, and water activities."	-	-	-
+%(none-h)%	-	Remember that one of the choices of the dinner is not available!	"The number of available variations is equal to the product of the number of types or flavors of chocolate bars, lollipops, cookies, and fruits."	Remember that one of the choices of program is not available!	-	-	-
+%(Row3Col1-h)%	%(Col1-h)%	%(Col1-h)%	%(Col1-h)%	%(Col1-h)%	What was the original number of interior colors? Was any change in this number mentioned in the question?	What was the original number of wigs? Was any change in this number mentioned in the question?	What was the original number of shirts? Was any change in this number mentioned in the question?
+%(Row3Col2-h)%	%(Col2-h)%	%(Col2-h)%	%(Col2-h)%	%(Col2-h)%	What was the original number of wheel types? Was any change in this number mentioned in the question?	What was the original number of pairs of eyeglasses? Was any change in this number mentioned in the question?	What was the original number of pairs of shorts? Was any change in this number mentioned in the question?
+%(Row3Col3-h)%	%(Col3-h)%	%(Col3-h)%	%(Col3-h)%	%(Col3-h)%	What was the original number of engine sizes? Was any change in this number mentioned in the question?	-	-
+%(Row3Col4-h)%	%(Col4-h)%	%(Col4-h)%	%(Col4-h)%	%(Col4-h)%	-	-	-
+%(Row3Col5-h)%	%(Col5-h)%	%(Col5-h)%	%(Col5-h)%	%(Col5-h)%	-	-	-
+%(readQ3)%	-	-	-	-	the company need to offer 120 available variations	but he knows he can make 100 disguises. 	If he knows that he can make 60 outfits
+%(solve-h1)%	-	-	-	-	"<%=ifThen(hasValue(Q3C2,Q3C3,Q3C4,Ans6),""How many exterior colors would you need in order to have %(ans3-ev)% total combinations?"",""You need to solve for the number of exterior colors. Try dividing the total number of variations by the product of the known options."")%>"	"<%=ifThen(hasValue(Q3C1,Q3C2,Ans6),""How many hats would you need in order to have %(ans3-ev)% total combinations?"",""You need to solve for the number of hats. Try dividing the total number of variations by the product of the known options."")%>"	"<%=ifThen(hasValue(Q3C1,Q3C2,Ans6),""How many caps would you need in order to have %(ans3-ev)% total combinations?"",""You need to solve for the number of caps. Try dividing the total number of variations by the product of the known options."")%>"
+%(solve-hint-condition)%	-	-	-	-	"Q3C2,Q3C3,Q3C4,Ans6"	"Q3C1,Q3C2,Ans6"	"Q3C1,Q3C2,Ans6"
+							
+%(goodjob)%	-	Good job!	Good job!	Great work! You helped the camp administrators prepare for their campers.	Good Job!	Great job! You helped Sam plan his disguises.	Good job! You helped Fred make up his mind.
+%(solv-success)%	-	-	-	-	Correct! You figured out how many Exterior Colors the company needs!	Correct! You helped Sam find out how many hats he has.	Correct! You helped Fred find out how many caps he has.
+%(col4-mm)%	1	1	1	1	1	0	0
+%(col5-mm)%	1	1	0	0	0	0	0
+%(visible1)%	TRUE	TRUE	TRUE	TRUE	TRUE	FALSE	FALSE
+%(visible2)%	TRUE	TRUE	FALSE	FALSE	FALSE	FALSE	FALSE
+							
+%(q3c1-mm)%	1	1	1	1	1	1	1
+%(q3c2-mm)%	1	1	1	0	1	1	1
+%(q3c3-mm)%	1	1	1	1	1	1	0
+%(q3c4-mm)%	1	1	1	1	0	0	0
+%(q3c5-mm)%	1	0	0	0	0	0	0
+							
+%(q3exp-mm)%	1	1	1	1	0	0	0
+							
+%(chng21)%	given-entered	given-entered	given-entered	given-entered	changed-given-entered	given-entered	changed-given-entered
+%(chng22)%	given-entered	given-entered	changed-given-entered	changed-given-entered	given-entered	given-entered	changed-given-entered
+%(chng23)%	given-entered	given-entered	changed-given-entered	changed-given-entered	given-entered	changed-given-entered	given-entered
+%(chng24)%	given-entered	given-entered	given-entered	given-entered	changed-given-entered	given-entered	given-entered
+%(chng25)%	given-entered	changed-given-entered	given-entered	given-entered	given-entered	given-entered	given-entered
+%(chng21_label)%	Enter given	Enter given	Enter given	Enter given	Enter changed given	Enter given	Enter changed given
+%(chng22_label)%	Enter given	Enter given	Enter changed given	Enter changed given	Enter given	Enter given	Enter changed given
+%(chng23_label)%	Enter given	Enter given	Enter changed given	Enter changed given	Enter given	Enter changed given	Enter given
+%(chng24_label)%	Enter given	Enter given	Enter given	Enter given	Enter changed given	Enter given	Enter given
+%(chng25_label)%	Enter given	Enter changed given	Enter given	Enter given	Enter given	Enter given	Enter given
+							
+%(chng31)%	given-entered	given-entered	changed-given-entered	given-entered	given-entered	given-entered	changed-given-entered
+%(chng32)%	given-entered	given-entered	changed-given-entered	given-entered	given-entered	given-entered	changed-given-entered
+%(chng33)%	given-entered	given-entered	changed-given-entered	given-entered	given-entered	solve-component	solve-component
+%(chng34)%	given-entered	given-entered	changed-given-entered	given-entered	solve-component	given-entered	given-entered
+%(chng35)%	given-entered	given-entered	given-entered	given-entered	given-entered	given-entered	given-entered
+%(chng31_label)%	Enter given	Enter given	Enter changed given	Enter given	Enter given	Enter given	Enter changed given
+%(chng32_label)%	Enter given	Enter given	Enter changed given	Enter given	Enter given	Enter given	Enter changed given
+%(chng33_label)%	Enter given	Enter given	Enter changed given	Enter given	Enter given	Solve component	Solve component
+%(chng34_label)%	Enter given	Enter given	Enter changed given	Enter given	Solve component	Enter given	Enter given
+%(chng35_label)%	Enter given	Enter given	Enter given	Enter given	Enter given	Enter given	Enter given
+							
+%(preFill1)%	Ans2	Q3C5	x	Q3C2	Ans3	Ans3	Ans3
+%(preFill_content1)%	%(ans2)%	none	x	none	%(solv-unknownExp)%	%(solv-unknownExp)%	%(solv-unknownExp)%
+%(preFill2)%	Ans5	x	x	x	x	x	x
+%(preFill_content2)%	160	x	x	x	x	x	x

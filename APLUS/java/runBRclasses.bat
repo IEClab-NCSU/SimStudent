@@ -1,0 +1,2 @@
+java  -cp "classes;lib/ctat.jar;lib/customizer.jar;lib/Decinterface_dt.jar;lib/j2ee.jar;lib/jdom.jar;lib/jess61p2.jar;lib/jmf.jar;lib/junit.jar;lib/logclient.jar;lib/mediaplayer.jar;lib/multiplayer.jar;lib/sax.jar;lib/sound.jar;lib/cl/cl_common.jar;lib/cl/communication.jar;lib/cl/images.jar;lib/cl/LMS.jar;lib/cl/LMSDBdata.jar;lib/cl/LMSfiledata.jar;lib/cl/tools.jar;lib/cl/TT.jar;lib/cl/tutors.jar;lib/cl/utilities.jar" pact.BehaviorRecorder.ESE_Frame
+

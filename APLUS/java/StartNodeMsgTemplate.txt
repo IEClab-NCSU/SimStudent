@@ -1,0 +1,356 @@
+ <startNodeMessages>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>StartProblem</MessageType>
+                <ProblemName>$(PROB_NAME)$</ProblemName>
+            </properties>
+        </message>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>JCommTable</WidgetType>
+                <CommName>dorminTable3</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+                <Rows>6</Rows>
+                <Columns>1</Columns>
+                <jessDeftemplates>
+                    <value>(deftemplate table (slot name) (multislot columns))</value>
+                    <value>(deftemplate column (slot name) (multislot cells) (slot position) (slot description))</value>
+                    <value>(deftemplate cell (slot name) (slot value) (slot description) (slot row-number) (slot column-number))</value>
+                </jessDeftemplates>
+                <jessInstances>
+                    <value>(bind ?dorminTable3_C1R1 (assert (cell (name dorminTable3_C1R1) (row-number 1) (column-number 1))))</value>
+                    <value>(bind ?dorminTable3_C1R2 (assert (cell (name dorminTable3_C1R2) (row-number 2) (column-number 1))))</value>
+                    <value>(bind ?dorminTable3_C1R3 (assert (cell (name dorminTable3_C1R3) (row-number 3) (column-number 1))))</value>
+                    <value>(bind ?dorminTable3_C1R4 (assert (cell (name dorminTable3_C1R4) (row-number 4) (column-number 1))))</value>
+                    <value>(bind ?dorminTable3_C1R5 (assert (cell (name dorminTable3_C1R5) (row-number 5) (column-number 1))))</value>
+                    <value>(bind ?dorminTable3_C1R6 (assert (cell (name dorminTable3_C1R6) (row-number 6) (column-number 1))))</value>
+                    <value>(bind ?dorminTable3_Column1(assert (column (name dorminTable3_Column1) (cells ?dorminTable3_C1R1 ?dorminTable3_C1R2 ?dorminTable3_C1R3 ?dorminTable3_C1R4 ?dorminTable3_C1R5 ?dorminTable3_C1R6 ) (position 1))))</value>
+                    <value>(assert (table (name dorminTable3) (columns ?dorminTable3_Column1 )))</value>
+                </jessInstances>
+                <ComponentDescription>v=true,x=20,y=40</ComponentDescription>
+            </properties>
+        </message>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>JCommTable</WidgetType>
+                <CommName>dorminTable2</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+                <Rows>6</Rows>
+                <Columns>1</Columns>
+                <jessDeftemplates>
+                    <value>(deftemplate table (slot name) (multislot columns))</value>
+                    <value>(deftemplate column (slot name) (multislot cells) (slot position) (slot description))</value>
+                    <value>(deftemplate cell (slot name) (slot value) (slot description) (slot row-number) (slot column-number))</value>
+                </jessDeftemplates>
+                <jessInstances>
+                    <value>(bind ?dorminTable2_C1R1 (assert (cell (name dorminTable2_C1R1) (row-number 1) (column-number 1))))</value>
+                    <value>(bind ?dorminTable2_C1R2 (assert (cell (name dorminTable2_C1R2) (row-number 2) (column-number 1))))</value>
+                    <value>(bind ?dorminTable2_C1R3 (assert (cell (name dorminTable2_C1R3) (row-number 3) (column-number 1))))</value>
+                    <value>(bind ?dorminTable2_C1R4 (assert (cell (name dorminTable2_C1R4) (row-number 4) (column-number 1))))</value>
+                    <value>(bind ?dorminTable2_C1R5 (assert (cell (name dorminTable2_C1R5) (row-number 5) (column-number 1))))</value>
+                    <value>(bind ?dorminTable2_C1R6 (assert (cell (name dorminTable2_C1R6) (row-number 6) (column-number 1))))</value>
+                    <value>(bind ?dorminTable2_Column1(assert (column (name dorminTable2_Column1) (cells ?dorminTable2_C1R1 ?dorminTable2_C1R2 ?dorminTable2_C1R3 ?dorminTable2_C1R4 ?dorminTable2_C1R5 ?dorminTable2_C1R6 ) (position 1))))</value>
+                    <value>(assert (table (name dorminTable2) (columns ?dorminTable2_Column1 )))</value>
+                </jessInstances>
+                <ComponentDescription>v=true,x=170,y=40</ComponentDescription>
+            </properties>
+        </message>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>JCommTable</WidgetType>
+                <CommName>dorminTable1</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+                <Rows>6</Rows>
+                <Columns>1</Columns>
+                <jessDeftemplates>
+                    <value>(deftemplate table (slot name) (multislot columns))</value>
+                    <value>(deftemplate column (slot name) (multislot cells) (slot position) (slot description))</value>
+                    <value>(deftemplate cell (slot name) (slot value) (slot description) (slot row-number) (slot column-number))</value>
+                </jessDeftemplates>
+                <jessInstances>
+                    <value>(bind ?dorminTable1_C1R1 (assert (cell (name dorminTable1_C1R1) (row-number 1) (column-number 1))))</value>
+                    <value>(bind ?dorminTable1_C1R2 (assert (cell (name dorminTable1_C1R2) (row-number 2) (column-number 1))))</value>
+                    <value>(bind ?dorminTable1_C1R3 (assert (cell (name dorminTable1_C1R3) (row-number 3) (column-number 1))))</value>
+                    <value>(bind ?dorminTable1_C1R4 (assert (cell (name dorminTable1_C1R4) (row-number 4) (column-number 1))))</value>
+                    <value>(bind ?dorminTable1_C1R5 (assert (cell (name dorminTable1_C1R5) (row-number 5) (column-number 1))))</value>
+                    <value>(bind ?dorminTable1_C1R6 (assert (cell (name dorminTable1_C1R6) (row-number 6) (column-number 1))))</value>
+                    <value>(bind ?dorminTable1_Column1(assert (column (name dorminTable1_Column1) (cells ?dorminTable1_C1R1 ?dorminTable1_C1R2 ?dorminTable1_C1R3 ?dorminTable1_C1R4 ?dorminTable1_C1R5 ?dorminTable1_C1R6 ) (position 1))))</value>
+                    <value>(assert (table (name dorminTable1) (columns ?dorminTable1_Column1 )))</value>
+                </jessInstances>
+                <ComponentDescription>v=true,x=20,y=40</ComponentDescription>
+            </properties>
+        </message>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>JCommLabel</WidgetType>
+                <CommName>equals</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+                <jessDeftemplates>
+                    <value>(deftemplate label (slot name) (slot value))</value>
+                </jessDeftemplates>
+                <jessInstances>
+                    <value>(assert (label (name equals)))</value>
+                </jessInstances>
+                <ComponentDescription>v=true,x=130,y=250</ComponentDescription>
+            </properties>
+        </message>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>JCommButton</WidgetType>
+                <CommName>hint</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+                <Text>Help</Text>
+                <Icon></Icon>
+                <jessDeftemplates>
+                    <value>(deftemplate button (slot name))</value>
+                </jessDeftemplates>
+                <jessInstances>
+                    <value>(assert (button (name hint)))</value>
+                </jessInstances>
+                <ComponentDescription>v=true,x=95,y=5</ComponentDescription>
+            </properties>
+        </message>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>JCommButton</WidgetType>
+                <CommName>done</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+                <Text>Done</Text>
+                <Icon></Icon>
+                <jessDeftemplates>
+                    <value>(deftemplate button (slot name))</value>
+                </jessDeftemplates>
+                <jessInstances>
+                    <value>(assert (button (name done)))</value>
+                </jessInstances>
+                <ComponentDescription>v=true,x=11,y=5</ComponentDescription>
+            </properties>
+        </message>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>JCommLabel</WidgetType>
+                <CommName>JCommLabel5</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+                <jessDeftemplates>
+                    <value>(deftemplate label (slot name) (slot value))</value>
+                </jessDeftemplates>
+                <jessInstances>
+                    <value>(assert (label (name JCommLabel5)))</value>
+                </jessInstances>
+                <ComponentDescription>v=true,x=130,y=210</ComponentDescription>
+            </properties>
+        </message>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>JCommLabel</WidgetType>
+                <CommName>JCommLabel4</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+                <jessDeftemplates>
+                    <value>(deftemplate label (slot name) (slot value))</value>
+                </jessDeftemplates>
+                <jessInstances>
+                    <value>(assert (label (name JCommLabel4)))</value>
+                </jessInstances>
+                <ComponentDescription>v=true,x=130,y=170</ComponentDescription>
+            </properties>
+        </message>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>JCommLabel</WidgetType>
+                <CommName>JCommLabel3</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+                <jessDeftemplates>
+                    <value>(deftemplate label (slot name) (slot value))</value>
+                </jessDeftemplates>
+                <jessInstances>
+                    <value>(assert (label (name JCommLabel3)))</value>
+                </jessInstances>
+                <ComponentDescription>v=true,x=130,y=130</ComponentDescription>
+            </properties>
+        </message>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>JCommLabel</WidgetType>
+                <CommName>JCommLabel2</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+                <jessDeftemplates>
+                    <value>(deftemplate label (slot name) (slot value))</value>
+                </jessDeftemplates>
+                <jessInstances>
+                    <value>(assert (label (name JCommLabel2)))</value>
+                </jessInstances>
+                <ComponentDescription>v=true,x=130,y=90</ComponentDescription>
+            </properties>
+        </message>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>JCommLabel</WidgetType>
+                <CommName>JCommLabel</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+                <jessDeftemplates>
+                    <value>(deftemplate label (slot name) (slot value))</value>
+                </jessDeftemplates>
+                <jessInstances>
+                    <value>(assert (label (name JCommLabel)))</value>
+                </jessInstances>
+                <ComponentDescription>v=true,x=130,y=50</ComponentDescription>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>dorminTable1_C1R1</value>
+                </Selection>
+                <Action>
+                    <value>UpdateTable</value>
+                </Action>
+                <Input>
+                    <value>$(GIVEN_1)$</value>
+                </Input>
+                <transaction_id>T546d1e7f-0e77-4e19-bf64-dd726fcc34c8</transaction_id>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>equals</value>
+                </Selection>
+                <Action>
+                    <value>UpdateText</value>
+                </Action>
+                <Input>
+                    <value>=</value>
+                </Input>
+                <transaction_id>T64aa2376-5e21-43ef-8d48-4689122ea7ba</transaction_id>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>dorminTable2_C1R1</value>
+                </Selection>
+                <Action>
+                    <value>UpdateTable</value>
+                </Action>
+                <Input>
+                    <value>$(GIVEN_2)$</value>
+                </Input>
+                <transaction_id>Tb00fef75-2f5d-4364-991e-bebc7f95d139</transaction_id>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>JCommLabel5</value>
+                </Selection>
+                <Action>
+                    <value>UpdateText</value>
+                </Action>
+                <Input>
+                    <value>=</value>
+                </Input>
+                <transaction_id>Tab74a891-fdb0-4ed0-87ed-12c8eef688de</transaction_id>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>JCommLabel4</value>
+                </Selection>
+                <Action>
+                    <value>UpdateText</value>
+                </Action>
+                <Input>
+                    <value>=</value>
+                </Input>
+                <transaction_id>Tdf622c5a-e655-4a0d-89c7-a9d9281e0bf1</transaction_id>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>JCommLabel3</value>
+                </Selection>
+                <Action>
+                    <value>UpdateText</value>
+                </Action>
+                <Input>
+                    <value>=</value>
+                </Input>
+                <transaction_id>Tbc00e67f-f29c-4a21-92be-821ca2362a73</transaction_id>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>JCommLabel2</value>
+                </Selection>
+                <Action>
+                    <value>UpdateText</value>
+                </Action>
+                <Input>
+                    <value>=</value>
+                </Input>
+                <transaction_id>Td8a67d1c-25f7-4234-bc35-78c18e6bed5f</transaction_id>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>JCommLabel</value>
+                </Selection>
+                <Action>
+                    <value>UpdateText</value>
+                </Action>
+                <Input>
+                    <value>=</value>
+                </Input>
+                <transaction_id>Ta82e9e48-f588-4329-9637-d7d71d66bf3f</transaction_id>
+            </properties>
+        </message>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>StartStateEnd</MessageType>
+            </properties>
+        </message>
+    </startNodeMessages>

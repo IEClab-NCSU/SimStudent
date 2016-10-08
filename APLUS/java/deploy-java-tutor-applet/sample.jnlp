@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jnlp href="__JNLP_FILE__" codebase="__CODEBASE__">
+  <information>
+    <title>__TITLE__</title>
+    <vendor>__VENDOR__</vendor>
+    <offline-allowed/>
+  </information>
+  <security>
+    <all-permissions/>
+  </security>
+  <resources>
+    <java href="http://java.sun.com/products/autodl/j2se" version="1.6+"/>
+    <jar href="ctat_applet/TutorApplet.jar" main="true"/>
+    <jar href="ctat_applet/TableLayout.jar" main="false"/>
+    <jar href="ctat_applet/jdom.jar" main="false"/>
+    <jar href="ctat_applet/logclient.jar" main="false"/>
+    <jar href="ctat_applet/logging.jar" main="false"/>
+    <jar href="ctat_applet/runcc.jar" main="false"/>
+    <jar href="ctat_applet/HARTNetworking.jar" main="false"/>
+    <jar href="ctat_applet/jess.jar" main="false"/>
+    <jar href="__AUTHOR_JAR__" main="false"/>
+  </resources>
+  <applet-desc 
+      name="TutorDemo"
+      main-class="edu.cmu.pact.BehaviorRecorder.Controller.AppletLauncher"
+      width="400"
+      height="300">
+  </applet-desc>
+</jnlp>

@@ -1,0 +1,450 @@
+;; tell Eclipse, etc. to read the templates from the wmeTypes.clp file
+(require* wmeTypes "wmeTypes.clp")
+
+;; NOTE: in the English versions of the production rules, CAPITALIZED words denote variables
+
+;;
+;;  Functions to determine the name and rank order of the column (used for hints)
+;;
+(deffunction column-name (?pos)
+  (bind ?rpos (- 7 ?pos))    ; hacky, because it assumes 6 columns
+  (if (= ?rpos 1) then "ones"
+  else (if (= ?rpos 2) then "tens"
+  else (if (= ?rpos 3) then "hundreds"
+  else (if (= ?rpos 4) then "thousands"
+  else (if (= ?rpos 5) then "ten-thousands"
+  else (if (= ?rpos 6) then "hundred-thousands"
+  else "unknown")))))))
+
+(deffunction rank-order (?pos)
+  (bind ?rpos (- 7 ?pos))     ; hacky, because it assumes 6 columns
+  (if (= ?rpos 1) then "first"
+  else (if (= ?rpos 2) then "second"
+  else (if (= ?rpos 3) then "third"
+  else (if (= ?rpos 4) then "fourth"
+  else (if (= ?rpos 5) then "fifth"
+  else (if (= ?rpos 6) then "sixth"
+  else "unknown")))))))
+
+;; FOCUS-ON-FIRST-COLUMN
+;; IF
+;;    The goal is to do an addition problem
+;;    And there is no pending subgoal (i.e., we've just started the problem)
+;;    And T is one of the interface elements, a table 
+;;    And C is the rightmost column of the table T
+;;    And R is the result cell of column C
+;;    And NUM1 and NUM2 are the numbers to be added in column C
+;;    And R is empty
+;; THEN
+;;    Set a subgoal to process column C, using addends NUM1 and NUM2
+;;
+
+(defrule focus-on-first-column
+    ?problem <- (problem
+        (subgoals )
+        (interface-elements $? ?table $?))
+    ?table <- (table (columns $? ?right-column))
+    ?right-column <- (column
+        (cells $? ?first-addend ?second-addend ?result))
+    ?first-addend <- (cell (value ?num1))
+    ?second-addend <- (cell (value ?num2))
+    ?result <- (cell (value nil))
+    =>
+    (bind ?current-sub-goal (assert (process-column-goal
+                (column ?right-column)
+                (first-addend ?num1)
+                (second-addend ?num2))))
+    (modify ?problem (subgoals ?current-sub-goal))
+    (construct-message [Start with the column
+        on the right. This is the ones column. ])
+    )
+
+
+;; FOCUS-ON-NEXT-COLUMN
+;; IF
+;;    The goal is to do an addition problem
+;;    And there is no pending subgoal
+;;    And T is one of the interface elements, a table
+;;    And C1 and C2 are two adjacent columns in T
+;;    And the result cell in C2 contains a value
+;;    And the result cell in C1 is empty
+;;        (i.e., C1 is the rightmost column in T that has numbers to add but no result)
+;;    And R is the result cell of column C1
+;;    And NUM1 and NUM2 are the numbers to be added in column C1
+;;    And CARRY is the carry into column C1 (if any)
+;; THEN
+;;    Set a subgoal to process column C1, using addends NUM1 and NUM2 and carry CARRY
+
+(defrule focus-on-next-column
+	?problem <- (problem
+		(subgoals)
+		(interface-elements $? ?table $?))
+	?table <- (table
+		(columns $? ?next-column ?previous-column $?))
+	?previous-column <- (column
+		(cells $? ?previous-result))
+	?previous-result <- (cell
+		(value ?val&:(neq ?val nil)))
+	?next-column <- (column
+		(cells ?carry ?first-addend ?second-addend ?result)
+		(position ?pos))
+	?result <- (cell (value nil))
+	?carry <- (cell (value ?num0))
+	?first-addend <- (cell (value ?num1))
+	?second-addend <- (cell (value ?num2))
+=>
+	(bind ?current-sub-goal (assert (process-column-goal
+		(column ?next-column)
+		(carry ?num0)
+		(first-addend ?num1)
+		(second-addend ?num2))))
+	(modify ?problem (subgoals ?current-sub-goal))
+    (bind ?col-name (column-name ?pos))
+	(bind ?pos-name (rank-order ?pos))
+	(construct-message [Move on to the ?pos-name column from the right.
+                        This is the ?col-name column.])
+)
+
+;; ADD-ADDENDS
+;; IF
+;;    There is a goal to process column C, using addends NUM1 and NUM2 and carry CARRY
+;; THEN
+;;    Set SUM to the sum of the addends NUM1 and NUM2
+;;    And set a subgoal to write SUM as the result in column C, using carry CARRY
+;;    And remove the goal to process column C
+
+(defrule add-addends
+	?problem <- (problem 
+		(subgoals $?sg1 ?subgoal $?sg2))
+	?subgoal <- (process-column-goal
+		(carry ?carry)
+		(first-addend ?num1)
+		(second-addend ?num2)
+		(column ?column)
+		(sum nil))
+    (test (or (neq ?num1 nil)(neq ?num2 nil)(neq ?carry nil)))
+=>
+	(bind ?sum (+ (if (eq ?num1 nil) then 0 else ?num1) 
+            	    (if (eq ?num2 nil) then 0 else ?num2)))
+    (bind ?new-sg (assert (write-sum-goal (column ?column)(sum ?sum)(carry ?carry))))
+	(modify	?problem (subgoals ?new-sg $?sg1 $?sg2))
+    (retract ?subgoal)
+	(construct-message [You need to add the 	
+			two digits in this column. Adding ?num1 and ?num2 
+			gives ?sum .])
+)
+
+;; ADD-CARRY
+;; IF
+;;    There is a goal to write SUM as the result in column C, with carry CARRY
+;;    And there is a carry into column C (i.e., CARRY has a non-NIL value)
+;;    And the carry has not been added to SUM
+;; THEN
+;;    Change the goal to write SUM+1 as the result
+;;    And mark the carry as added
+
+(defrule add-carry
+	?problem <- (problem
+		(subgoals $? ?subgoal $?))
+	?subgoal <- (write-sum-goal
+		(sum ?sum&:(neq ?sum nil))
+		(carry ?num0&:(neq ?num0 nil)))
+=>
+	(bind ?new-sum (+ ?sum ?num0))
+	(modify ?subgoal
+		(sum ?new-sum)
+		(carry nil))
+	(construct-message [There is a carry in to 
+			this column so you need to add the value carried 
+			in. This gives ?sum + 1, which equals ?new-sum .])
+)
+
+;; MUST-CARRY
+;; IF
+;;    There is a goal to write SUM as the result in column C
+;;    And the carry into column C (if any) has been added to SUM
+;;    And SUM > 9
+;;    And T is one of the interface elements, a table
+;;    And NEXT is the column to the left of C within table T
+;; THEN
+;;    Change the goal to write SUM-10 as the result in C
+;;    Set a subgoal to write 1 as a carry in column NEXT
+
+(defrule must-carry
+	?problem <- (problem 
+		(interface-elements $? ?table $?)
+		(subgoals $?sg1 ?subgoal $?sg2))
+	?subgoal <- (write-sum-goal
+		(sum ?sum&:(neq sum nil))
+		(column ?column)
+        (carry nil))
+	(test (numberp ?sum))
+	(test (> ?sum 9))
+	?column <- (column
+		(name ?column-name)
+        (position ?pos))
+	?table <- (table
+		(columns $? ?next-column ?column $?))
+    ?next-column <- (column (position ?next-pos))
+=>
+	(bind ?new-sum (- ?sum 10))
+	(modify ?subgoal (sum ?new-sum))
+	(bind ?write-carry-goal (assert (write-carry-goal
+		(column ?next-column)
+		(carry 1))))
+	(modify ?problem
+		(subgoals $?sg1 ?write-carry-goal ?subgoal $?sg2))
+    (bind ?col-name (column-name ?pos))
+    (bind ?next-col-name (column-name ?next-pos))
+	(construct-message [You need to carry 10 of the 
+			?sum into the next column, the ?next-col-name column. And you need to write 
+			what is left of the ?sum at the bottom of the ?col-name 
+			column.])
+)
+
+;; WRITE-SUM
+;; IF
+;;    There is a goal to write SUM as the result in column C
+;;    And SUM < 10
+;;    And the carry into column C (if any) has been added
+;; THEN
+;;    Write SUM as the result in column C
+;;    And remove the goal
+
+(defrule write-sum
+    (declare (salience 100))     ; so that hints for writing the sum are given before
+               ; the hints for writing the carry
+	?problem <- (problem
+		(subgoals $?sg1 ?subgoal $?sg2))
+	?subgoal <- (write-sum-goal
+		(sum ?sum&:(and (neq ?sum nil) (< ?sum 10)))
+		(column ?column)
+		(carry nil))
+	?column <- (column 
+		(position ?pos)
+		(cells $? ?result))
+	?result <- (cell (name ?cell-name))
+=>
+    (predict-observable-action ?cell-name "UpdateTable" ?sum)
+	(modify ?result (value ?sum))
+	(modify ?problem (subgoals $?sg1 $?sg2))
+	(retract ?subgoal)
+    (bind ?col-name (column-name ?pos))
+	(construct-message [Write ?sum at the 
+				bottom of the ?col-name column.])
+)
+
+;; WRITE-CARRY
+;; IF
+;;    There is a goal to write a carry in column C
+;;    And no carry has been recorded yet in column C (i.e., the carry cell is empty)
+;;           (actually, a redundant check, but defensive programming is never bad)
+;; THEN
+;;    Write the carry in column C
+;;    And remove the goal
+
+(defrule write-carry
+	?problem <- (problem 
+        (subgoals $?sg1 ?subgoal $?sg2)
+        (interface-elements $? ?table $?))
+	?subgoal <- (write-carry-goal
+		(carry ?num)
+		(column ?column))
+	?column <- (column
+		(position ?pos)
+		(cells ?carry $?))
+	?carry <- (cell
+		(name ?cell-name)
+		(value nil))
+    ?table <- (table (columns $? ?column ?prev-column $?))
+    ?prev-column <- (column (position ?pos-previous))
+=>
+    (predict-observable-action ?cell-name "UpdateTable" ?num)
+	(modify ?carry (value ?num))
+	(modify ?problem
+		(subgoals ?sg1 ?sg2)) 	; the remaining subgoals
+    (bind ?col-name (column-name ?pos))
+    (bind ?col-rank (rank-order ?pos))
+    (bind ?prev-col-name (column-name ?pos-previous))
+	(construct-message [You need to complete 
+					the work on the ?prev-col-name column.] 
+				[Write the carry from the ?prev-col-name column
+					into the next column.]
+				[Write ?num at the top of the ?col-name column, the ?col-rank column
+					from the right.])
+	(retract ?subgoal)
+)
+
+
+;; DONE
+;; IF
+;;   The goal is to do an addition problem
+;;   And there are no subgoals
+;;   And the problem has not been marked as done
+;;   And T is one of the interface elements, a table
+;;   And C1 and C2 are two adjacent columns
+;;   And C2 has a value in its result cell
+;;   And C1 is completely empty
+;; THEN
+;;   Press the Done button
+;;   And mark the problem as done
+
+(defrule done 
+    ?problem <- (problem 
+			(subgoals )
+        	(done nil)
+			(interface-elements $? ?table $?))
+    ?table <- (table (columns $? ?empty-column ?complete-column $?))
+    ?complete-column <- (column (cells $? ?result-cell))
+    ?result-cell <- (cell (value ~nil))
+    ?empty-column <- (column (cells ?cell1 ?cell2 ?cell3 ?))
+    ?cell1 <- (cell (value nil))
+    ?cell2 <- (cell (value nil))
+    ?cell3 <- (cell (value nil))
+        =>
+    (predict-observable-action done "ButtonPressed" DONT-CARE)
+	(modify ?problem (done T))
+    (construct-message "[Any work left to do?]" 
+            	"[You are finished. Click on the Done Button.]")
+)
+
+
+;; BUG-FORGOT-TO-ADD-EXPLICIT-CARRY
+;; IF
+;;    There is a goal to a result in column C, with carry CARRY
+;;    And there is a carry into column C (i.e., CARRY has a non-NIL value)
+;;    And the carry has been written out at the top of column C
+;;    And the carry has not been added yet to the running total in the column
+;; THEN
+;;    And mark the carry as added (without adding it to the running total)
+
+(defrule bug-forgot-to-add-explicit-carry
+	?problem <- (problem
+		(subgoals $? ?subgoal $?))
+	?subgoal <- (write-sum-goal
+		(carry ~nil)
+        (column ?column))
+    ?column <- (column (cells ?carry $?))
+    ?carry <- (cell (value ~nil))     ; carry was actually written
+=>
+	(modify ?subgoal (carry nil))
+	(construct-message [ You may not have added the carry that you wrote at the top of the column. ] )
+)
+
+;; BUG-FORGOT-TO-ADD-IMPLICIT-CARRY
+;; IF
+;;    There is a goal to write a result in column C, with carry CARRY
+;;    And there is a carry into column C (i.e., CARRY has a non-NIL value)
+;;    And the carry has not been written out at the top of column C
+;;    And the carry has not been added yet to the running total in the column
+;; THEN
+;;    And mark the carry as added (without adding it to the running total)
+
+;; The only reason to have two separate bug-forgot-to-add-...-carry rules is to have
+;;    slightly more apropriate bug messages.
+
+(defrule bug-forgot-to-add-implicit-carry
+	?problem <- (problem
+		(subgoals $? ?subgoal $?))
+	?subgoal <- (write-sum-goal
+		(carry ~nil)
+        (column ?column))
+    ?column <- (column (cells ?carry $?))
+    ?carry <- (cell (value nil))     ; carry was NOT actually written
+=>
+	(modify ?subgoal (carry nil))
+	(construct-message [ You may have lost track of the fact that there is a carry into this column. ] )
+)
+
+;; BUG-WRITE-TWO-DIGIT-SUM
+;; IF
+;;    There is a goal to write SUM as the result in column C
+;;    And SUM > 9
+;; THEN
+;;    Write SUM as the result in column C
+;;    And remove the goal
+
+;; Note: this rule is based on WRITE-SUM
+;; Alternatively, could have created a version of MUST-CARRY that does not subtract 10
+;;      from the SUM.
+;; How would we decide which one is better?  Do these approaches lead to different behavior?
+
+(defrule bug-write-two-digit-sum
+    (declare (salience 100))     ; so that hints for writing the sum are given before
+               ; the hints for writing the carry
+	?problem <- (problem (subgoals $?sg1 ?subgoal $?sg2))
+	?subgoal <- (write-sum-goal
+		(sum ?sum&~nil&:(> ?sum 9))
+                          ; Here is the change - this condition is somewhat unlikely, psychologically
+                          ;    from the point of view of psychological fidelity, would prefer no condition
+                          ;    from point of view of 'defensive programming,' this is better
+		(column ?column))
+	?column <- (column (cells $? ?result))
+	?result <- (cell (name ?cell-name))
+=>
+    (predict-observable-action ?cell-name "UpdateTable" ?sum)
+	(construct-message [ Only one digit is allowed! You need to carry 10 into the next column. ] )
+)
+
+
+;; FOCUS-ON-NEXT-COLUMN-SKIPPING-CARRY
+;; IF
+;;    The goal is to do an addition problem
+;;    [Modified] There is a subgoal to write a carry CARRY into column C1
+;;    And there is no other type of subgoal
+;;    And T is one of the interface elements, a table 
+;;    And C1 and C2 are two adjacent columns in T
+;;    And the result cell in C2 contains a value
+;;    And R is the result cell of column C1
+;;    And NUM1 and NUM2 are the numbers to be added in column C1
+;; THEN
+;;    [New] Remove the subgoal to write the carry
+;;    Set a subgoal to process column C1, using addends NUM1 and NUM2 and carry CARRY
+
+;; Alternatively, could have created a variant of WRITE-CARRY that models the mental
+;;    writing of the carry without the accompanying physical writing. That would mean 
+;;    updating the carry cell fact, without a corresponding call to predict-observable-action.
+;     While that may seem elegant, a somewhat undesirable consequence would be that
+;;    the "mental" representation of the interface would not be in sync with the actual 
+;;    interface.
+
+;; Thus, we are modeling the implicit carry not by "mentally" writing it into the column,
+;;    Rather, by a process like: "ok, i have this carry into the column, and I need
+;;    to add it to the two numbers NUM1 and NUM2."  (A subtle difference?)   As a result
+;;    of not mentally writing the carry, I can distinguish two versions of forgetting to
+;;    two add the carry, one when it has been written, the other when it has not been written.
+;;    A slightly different bug message is appropriate in each situation.
+
+(defrule focus-on-next-column-skipping-carry
+	?problem <- (problem
+		(subgoals $?sg1 ?sg $?sg2)
+		(interface-elements $? ?table $?))
+    ?sg <- (write-carry-goal (column ?next-column) (carry ?num0) )
+    (not (process-column-goal))
+    (not (write-sum-goal))
+	?table <- (table 
+		(columns $? ?next-column ?previous-column $?))
+	?previous-column <- (column
+		(cells $? ?previous-result))
+	?previous-result <- (cell (value ~nil))
+	?next-column <- (column 
+		(cells ? ?first-addend ?second-addend ?)
+		(position ?pos))
+	?first-addend <- (cell (value ?num1))
+	?second-addend <- (cell (value ?num2))
+=>
+	(bind ?current-sub-goal (assert (process-column-goal
+		(column ?next-column)
+		(carry ?num0)  ; copied straight from the write-carry subgoal, without writing it
+                       ;    in the carry cell
+		(first-addend ?num1)
+		(second-addend ?num2))))
+	(modify ?problem (subgoals ?current-sub-goal $?sg1 $?sg2))
+    (retract ?sg)    ; this will make it impossible to write the carry later, for better 
+                     ;     or for worse
+    (bind ?col-name (column-name ?pos))
+	(bind ?pos-name (rank-order ?pos))
+	(construct-message [Move on to the ?pos-name column from the right.
+                        This is the ?col-name column.])
+)
+

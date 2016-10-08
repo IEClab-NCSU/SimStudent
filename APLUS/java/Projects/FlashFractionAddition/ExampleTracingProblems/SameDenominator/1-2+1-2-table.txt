@@ -1,0 +1,10 @@
+Problem Name	1212
+%(num1Given)%	1
+%(den1Given)%	2
+%(num2Given)%	1
+%(den2Given)%	2
+%(numAns)%	2
+%(numAnsFinal)%	1
+%(factorSimplify)%	2
+%(denAnsFinal)%	1
+%(denAns)%	2

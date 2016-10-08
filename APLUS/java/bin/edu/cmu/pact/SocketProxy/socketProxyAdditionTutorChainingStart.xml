@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- These messages trace the preferred path through the graph
+	 Tutors/source/tutors/AdditionTutorChaining/start.brd.
+	 This file is a sequence of XML documents delimited by empty lines. -->
+<tutor_related_message_sequence>
+	<tool_message attempt_id="NGUID-1083702363589.63667429449968040">
+		<meta>
+			<user_id>theUserId</user_id>
+			<session_id>theSessionId</session_id>
+			<time>2004-08-20 10:22:29</time>
+			<time_zone>UTC</time_zone>
+		</meta>
+		<semantic_event id="NGUID-1083702363589.63667429449968041"
+						name="ATTEMPT"/>
+		<event_descriptor>
+			<action>UpdateTable</action>
+			<selection>table1_C6R4</selection>
+			<input>5</input>
+		</event_descriptor>
+	</tool_message>
+</tutor_related_message_sequence>
+
+<?xml version="1.0" encoding="UTF-8"?>
+<tutor_related_message_sequence version_number="4">
+ <tool_message context_message_id="C-65be449d:1164957ffbb:-7fd6">
+	<problem_name>start</problem_name>
+	<semantic_event transaction_id="T-65be449d:1164957ffbb:-7fbe" name="HINT_REQUEST" />
+	<event_descriptor>
+		<selection>hint</selection>
+		<selection>table1_C1R1</selection>
+		<action>ButtonPressed</action>
+		<action>PreviousFocus</action>
+		<input>-1</input>
+		<input />
+	</event_descriptor></tool_message>
+</tutor_related_message_sequence>
+
+<?xml version="1.0" encoding="UTF-8"?>
+<tutor_related_message_sequence>
+	<tool_message attempt_id="NGUID-1083702363589.63667429449968042">
+		<meta>
+			<user_id>theUserId</user_id>
+			<session_id>theSessionId</session_id>
+			<time>2004-08-20 10:22:29</time>
+			<time_zone>UTC</time_zone>
+		</meta>
+		<semantic_event id="NGUID-1083702363589.63667429449968043"
+						name="ATTEMPT"/>
+		<event_descriptor>
+			<action>UpdateTable</action>
+			<selection>table1_C5R1</selection>
+			<input>1</input>
+		</event_descriptor>
+	</tool_message>
+</tutor_related_message_sequence>
+
+<?xml version="1.0" encoding="UTF-8"?>
+<tutor_related_message_sequence>
+	<tool_message attempt_id="NGUID-1083702363589.63667429449968044">
+		<meta>
+			<user_id>theUserId</user_id>
+			<session_id>theSessionId</session_id>
+			<time>2004-08-20 10:22:29</time>
+			<time_zone>UTC</time_zone>
+		</meta>
+		<semantic_event id="NGUID-1083702363589.63667429449968045"
+						name="ATTEMPT"/>
+		<event_descriptor>
+			<action>UpdateTable</action>
+			<selection>table1_C5R4</selection>
+			<input>6</input>
+		</event_descriptor>
+	</tool_message>
+</tutor_related_message_sequence>
+
+<tutor_related_message_sequence version_number="4">
+<tool_message context_message_id="C-65be449d:1164957ffbb:-7fd6">
+   <problem_name>start</problem_name>
+   <semantic_event transaction_id="T-65be449d:1164957ffbb:-7fbe" name="HINT_REQUEST" />
+   <event_descriptor>
+       <selection>hint</selection>
+       <selection>table1_C5R4</selection>
+       <action>ButtonPressed</action>
+       <action>PreviousFocus</action>
+       <input>-1</input>
+       <input />
+   </event_descriptor>
+</tool_message>
+</tutor_related_message_sequence>
+
+<?xml version="1.0" encoding="UTF-8"?>
+<tutor_related_message_sequence>
+	<tool_message attempt_id="NGUID-1083702363589.63667429449968046">
+		<meta>
+			<user_id>theUserId</user_id>
+			<session_id>theSessionId</session_id>
+			<time>2004-08-20 10:22:29</time>
+			<time_zone>UTC</time_zone>
+		</meta>
+		<semantic_event id="NGUID-1083702363589.63667429449968047"
+						name="ATTEMPT"/>
+		<event_descriptor>
+			<action>UpdateTable</action>
+			<selection>table1_C4R1</selection>
+			<input>1</input>
+		</event_descriptor>
+	</tool_message>
+</tutor_related_message_sequence>
+
+<?xml version="1.0" encoding="UTF-8"?>
+<tutor_related_message_sequence>
+	<tool_message attempt_id="NGUID-1083702363589.63667429449968048">
+		<meta>
+			<user_id>theUserId</user_id>
+			<session_id>theSessionId</session_id>
+			<time>2004-08-20 10:22:29</time>
+			<time_zone>UTC</time_zone>
+		</meta>
+		<semantic_event id="NGUID-1083702363589.63667429449968049"
+						name="ATTEMPT"/>
+		<event_descriptor>
+			<action>UpdateTable</action>
+			<selection>table1_C4R4</selection>
+			<input>8</input>
+		</event_descriptor>
+	</tool_message>
+</tutor_related_message_sequence>
+
+<?xml version="1.0" encoding="UTF-8"?>
+<tutor_related_message_sequence>
+	<tool_message attempt_id="NGUID-1083702363589.63667429449968050">
+		<meta>
+			<user_id>theUserId</user_id>
+			<session_id>theSessionId</session_id>
+			<time>2004-08-20 10:22:29</time>
+			<time_zone>UTC</time_zone>
+		</meta>
+		<semantic_event id="NGUID-1083702363589.63667429449968051"
+						name="ATTEMPT"/>
+		<event_descriptor>
+			<action>ButtonPressed</action>
+			<selection>Done</selection>
+			<input>-1</input>
+		</event_descriptor>
+	</tool_message>
+</tutor_related_message_sequence>

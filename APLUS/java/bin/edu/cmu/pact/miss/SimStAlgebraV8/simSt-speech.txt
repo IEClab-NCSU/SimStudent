@@ -1,0 +1,226 @@
+NEW_PROBLEM
+What would be a good problem to do now?
+Alright, what problem should we try?
+What problem should we work on?
+Can you pick my next problem?
+Okay, I took the quiz. What problem should we do next? <MT><Q>
+What problem will help me do better on the quiz next time? <MT><Q>
+What problem should we try now? Remember you can ask Mr. Williams for help. <MT><ERR>
+What's a good problem to try next? If you're not sure, maybe you can ask Mr. Williams. <MT><ERR>
+What would be a good problem to do next?
+Okay, I took the quiz. What problem should we do now? <MT><Q>
+What problem should we try next? Remember you can ask Mr. Williams for help. <MT><ERR>
+What's a good problem to try now? If you're not sure, maybe you can ask Mr. Williams. <MT><ERR>
+
+START_PROBLEM
+Can I start working on this problem?
+Is this how you wanted the problem? 
+Are you ready for me to try this problem?
+Should I go ahead and start working on this problem?
+Is that a good problem to try?  Mr. Williams might have a suggestion too. <MT><ERR>
+Will this problem help me do better on the quiz next time? <MT><ERR><Q>
+
+THINK
+Hmm...
+Well...
+Let's see...
+So...
+Okay...
+
+DONE_FEEDBACK
+Is that the solution to the problem?
+I think I'm done with this problem now. Am I right?
+Can I click the problem is solved button now?
+Is it alright to say that the problem is solved here?
+Is it okay to say that the problem is solved here? 
+I clicked the Problem is Solved button. Do you think that's right?  
+I said that the problem is solved. Do you think that was right?
+I think I've finished the problem. Is that right?
+I think I've solved the problem. Is that right?
+
+FEEDBACK
+I entered <i> <s>. Do you think that's right? 
+Would it be good to put <i> <s>?
+I think it's a good move to put <i> <s>. Do you agree?
+Is it reasonable to put <i> <s> here?
+I think I should put <i> <s>. Am I right?
+Can I enter <i> <s> here?
+Is putting <i> <s> a good idea? 
+Is it alright to enter <i> <s> now?
+Is it okay to enter <i> <s> now?
+I thought it would be good to put <i> <s>. Does that sound okay?
+I think the next step should be <i> <s>. Do you think I'm right? 
+Well, what about if I entered <i> <s>? Is that a good move? <A2>
+Okay, then, what about entering <i> <s>?  Does this sound good? <A2>
+Hmm, then I'll enter <i> <s>. Is this a good move?  <A2>
+Oops, okay, then I'll say <i> <s>.  Do you agree? <A2>
+Well, what about if I entered <i> <s>? Do you think that's right? <A2>
+Okay, then, what about entering <i> <s>?  Does that sound okay? <A2>
+Hmm, then I'll enter <i> <s>. Does that sound okay? <A2>
+Oops, okay, then I'll say <i> <s>.  Am I right? <A2>
+I think I made a mistake on this on the quiz. What about if I entered <i> <s>? Am I right? <BD>
+
+SOLVED
+...and done!  Maybe we can try a quiz now. 
+Finished that one!  Maybe we can try a quiz now. 
+Great, finished!  Maybe we can try a quiz now. 
+Cool!  We completed the problem!    Maybe we can try a quiz now. 
+Okay, done!    Maybe we can try a quiz now. 
+Great! The problem is solved!!   Maybe we can try a quiz now. 
+...and done!   Should I take the quiz now or try another problem?
+Finished that one!   Should I take the quiz now or try another problem?
+Great, finished!   Should I take the quiz now or try another problem?
+Cool!  We completed the problem!    Should I take the quiz now or try another problem?
+Okay, done!    Should I take the quiz now or try another problem?
+Great! The problem is solved!!   Should I take the quiz now or try another problem?
+...and done!  I think I'm ready to take the quiz now.  What do you think?
+Finished that one!  I think I'm ready to take the quiz now.  What do you think?
+Great, finished!  I think I'm ready to take the quiz now.  What do you think?
+Cool!  We completed the problem!   I think I'm ready to take the quiz now.  What do you think?
+Okay, done!   I think I'm ready to take the quiz now.  What do you think?
+Great! The problem is solved!!  I think I’m ready to take the quiz now.  What do you think?
+...and done!  Should I take a quiz now?
+Finished that one!  Should I take a quiz now?
+Great, finished!  Should I take a quiz now?
+Cool!  We completed the problem!   Should I take a quiz now?
+Okay, done!   Should I take a quiz now?
+Great! The problem is solved!!  Should I take a quiz now?
+...and done!   Should we ask Mr. Williams what to do next? <MT><ERR>
+Finished that one!   Should we ask Mr. Williams what to do next? <MT><ERR>
+Great, finished!   Should we ask Mr. Williams what to do next? <MT><ERR>
+Cool!  We completed the problem!    Should we ask Mr. Williams what to do next? <MT><ERR>
+Okay, done!    Should we ask Mr. Williams what to do next? <MT><ERR>
+Great! The problem is solved!!   Should we ask Mr. Williams what to do next? <MT><ERR>
+...and done!  What are we doing next? Mr. Williams might have a suggestion if you are not sure. <MT><ERR>
+Finished that one!  What are we doing next? Mr. Williams might have a suggestion if you are not sure. <MT><ERR>
+Great, finished!  What are we doing next? Mr. Williams might have a suggestion if you are not sure. <MT><ERR>
+Cool!  We completed the problem!   What are we doing next? Mr. Williams might have a suggestion if you are not sure. <MT><ERR>
+Okay, done!   What are we doing next? Mr. Williams might have a suggestion if you are not sure. <MT><ERR>
+Great! The problem is solved!!  What are we doing next? Mr. Williams might have a suggestion if you are not sure. <MT><ERR>
+
+TRANSFORMATION_HINT
+I'm stuck. Can you show me what to do next?
+I don't know what to do here. Could you please show me?
+This doesn't look familiar. Can you show me what I'm supposed to do next?<A0>
+I'm confused. Please show me what to do next.
+I'm not sure how to move on from here. Please show me what to do.
+Can you tell me what I should do now?
+Can you show me what to do here? I'm stuck.
+Can you help me out here? I don't know what I need to do.  
+I'm stuck. Can you tell me what to do next?
+I think I made mistake on this on the quiz. Can you tell me what to do next? <BD>
+
+TYPEIN_HINT
+I'm stuck. Can you show me how to <o>? 
+I'm confused. Please show me what to do.
+Can you demonstrate how to <o>? I don't know how to do it.
+Can you show me how to <o>? I'm stuck.
+I'm trying to <o>, but I'm not quite sure how. Can you show me?
+I'm not quite sure how to <o> here. Can you show me?
+I know I'm supposed to <o> here, but I don't know how. Please show me what to do.
+I don't know what I get when I <o> here. Can you show me?
+I think I made a mistake on this last time I took the quiz. Can you show me what to do? <BD>
+
+FAIL_TO_LEARN_GIVE_UP_TOPIC
+I still don't get it. Can you give me a new problem?
+I'm confused and I don't think I'm making any progress. Should we try a different problem?  
+I've been trying to figure this out, but I just don't get it. Should we move on to another problem?
+I'm lost. Maybe Mr. Williams has a suggestion of what we could do. <MT><ERR>
+I'm confused.  Should we ask Mr. Williams what we should do now? <MT><ERR>
+I don't still get it.  Should we ask Mr. Williams for suggestions? <MT><ERR>
+
+START_PROBLEM_NO
+Okay. Click 'Yes' when you've entered the right problem.
+Alright, then, enter a problem you like and click 'Yes'. 
+Okay. Maybe Mr. Williams has a suggestion for what we should be working on? <MT>
+Okay. Should we ask Mr. Williams what kind of problem we should work on? <MT>
+
+STEP_CORRECT
+Yes, based on the previous steps, <i> would be correct here.
+Yes, <i> would be correct here.
+Yes, putting <i> <s> seems reasonable to me.
+Yes, I don't see any reason why you shouldn't use <i> <s>.
+
+STEP_INCORRECT
+No, <i> would not be the correct thing to do here right now.
+No, I don't think putting <i> <s> is the best move right now.
+No, at this point in the problem, it would not be correct to put <i> here.
+
+CHECK_ANSWER
+Okay, then, let's see if the solution is correct.   I'd plug <i> in for <o> in the original equation, which is <s>.
+Now to check if the answer is right, I would plug <i> in for <o> in the original problem, <s>.
+
+NO_VAR_VALUE_CHECK_ANS
+Oh, wait!  I can't find a number to plug in for the variable!
+
+PLUG_IN
+It looks like <s> I have <i>, so that becomes <o>.<A0>
+Okay, <s> is <i>, which makes it <o>.<A0>
+Then <i> is <s> so that becomes <o>.<A2>
+<i> <s> becomes <o>.
+And <s> <i> makes <o>.<A2>
+<i> <s> makes <o>.
+And <s> <i> becomes <o>.<A2>
+
+NO_VAR_TO_PLUG
+Then <s> I have <o>.
+And <s> I have <o>. <A2>
+<o> is <s>.
+
+BALANCE_CHECK_ANSWER
+Okay, <i> and <o> are equal, so I think that is the correct answer.
+<i> and <o> are equal, so that means the problem should be right.
+<i> and <o> are balanced, so I think the answer is right.
+And <i> is equal to <o>, so I think the answer is right.
+<i> and <o> are equal.
+Oh, good! <i> and <o> are balanced!
+It looks right! <i> and <o> are the same!
+
+NO_BALANCE_CHECK_ANSWER
+Oh, <i> and <o> are not equal.
+But <i> and <o> are not equal.
+Oh, wait! <i> and <o> don't balance!
+Oh, wait! <i> and <o> aren't equal!
+
+VERIFY_WRONG
+I think the answer is wrong.  Let's restart the problem and try again.
+I don't think the answer is right.  I wonder what I did wrong!  I think we should restart the problem.
+I think I must have made a mistake.  Let's restart the problem and try again.
+I think I must have made a mistake.  I wonder what I did wrong!  I think we should restart the problem.
+I don't think the answer is right.  I'd like to restart the problem.
+I think I must have made a mistake.  I'd like to restart the problem.
+
+CONFIRM
+Okay.
+
+SKIPPED
+No? Okay.
+Alright.
+Moving on then.
+
+UNDO_CONFIRM_STEPS
+Okay.  I would erase these steps back through <o>.  Should I go ahead?
+
+NOTHING_TO_UNDO
+But we haven't gotten through any work on this problem yet!
+
+UNDO_RESUME
+Alright.  Back to working on the problem from here.  Let me think what I should do.
+
+UNDO_SHOULD_DO
+Alright.  I erased <o>.  Now let me think what I should do instead...
+
+UNDO_REMEMBER_PREVIOUS
+I remember I was trying to <o>.
+
+NO_UNDO
+Okay, then.  Now, where was I...
+
+NO_UNDO_DONE
+Okay, then I'm still done with this problem.  What should I do now?
+
+NO_UNDO_FAIL_TO_LEARN
+Okay, then I'm still confused.  Let's move on to another problem.
+
+FEEDBACK_NEGATIVE
+Oh, I understand <i> is wrong here. Let me think...

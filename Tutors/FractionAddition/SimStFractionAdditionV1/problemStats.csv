@@ -1,0 +1,12 @@
+B-V=D,2,0
+B=V+D,2,0
+AV+B=CV+D,2,0
+AV+B=D,4,0
+AV+B/C=D,2,0
+AV=B/C,2,2
+AV=B+CV,4,0
+AV=B,4,4
+-AV=B,2,0
+B-AV=D,2,0
+-AV+B=D,4,0
+V-B=D,2,2

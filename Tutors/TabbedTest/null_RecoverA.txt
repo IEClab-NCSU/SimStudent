@@ -1,0 +1,6 @@
+effective_problem1_option1,Disagree
+effective_problem1_option2,NotSure
+demo_problem1_box,r
+demo_problem1,2
+eq_problem1_box,3
+eq_problem2_box,4

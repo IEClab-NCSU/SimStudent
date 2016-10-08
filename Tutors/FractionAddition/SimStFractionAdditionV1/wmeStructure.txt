@@ -1,0 +1,23 @@
+;;WME Structure file, search control for searching WME paths
+;;Hierarchy
+;;(parent child+)+(each parent gets it's own line
+;;---------------(seperator)
+;;terminal WMEs
+;;WME+
+;;--------------
+;;Ignored WMEs
+;; WME*
+MAIN::problem interface-elements
+MAIN::table columns
+MAIN::column cells
+MAIN::fraction-addition complex-fractions
+MAIN::fraction tables
+;;MAIN::complex-fraction tables,fractions
+MAIN::complex-fraction textFields,fractions
+MAIN::fraction-addition-line fraction-additions,comboBoxs
+------------
+MAIN::cell
+MAIN::textField
+MAIN::comboBox
+-----------
+MAIN::button

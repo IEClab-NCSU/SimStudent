@@ -1,0 +1,2189 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ensure that the templates have been defined    
+(require* wmeTypes "Projects/LogicTutor/CognitiveModel/wmeTypes.clp")    
+(require* wmeTypes "LogicTutor/CognitiveModel/wmeTypes.clp")    
+(require* wmeTypes "wmeTypes.clp")    
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;  Modified By:  Chang-Hsin Chang
+;;  Date:        Aprile 10, 2007
+;;    
+;;  Author: Bruce McLaren
+;;  Date: 07/28/03 23:26
+;;  
+;;  Name: Apply-Identity-Operator
+;;  IF
+;;    The current goal is Apply-Logic-Operators-Goal
+;;    Currently-Selected-Column is an answer column
+;;    Currently-Selected-Column has a value in the top position (i.e., a heading validated by earlier rules)
+;;    Currently-Selected-Cell is empty
+;;    Index-Row is the row of the Currently-Selected-Cell
+;;    Op of Currently-Selected-Column is _id_
+;;    Operand1 of Currently-Selected-Column is a letter
+;;    Variable1-Column is a variable column
+;;    Variable1-Column contains Operand1 in the top position
+;;    Variable1-Column, Index-Row is Operand1-Value
+;;  THEN
+;;    Put the value of (Apply (Op Operand1-Value)) into Currently-Selected-Cell
+;;
+(defrule Apply-Identity-Operator 
+   ?problem <-
+      (problem
+      	(subgoals ?subgoal)
+      	(interface-elements $? ?truth-table $?)
+      	(answer-table ?answer-table))
+   ?subgoal <-
+      (apply-logic-operators-goal)
+   ?truth-table <-
+      (table
+      	(columns $? ?currently-selected-column $?))
+   ?currently-selected-column <-
+      (column
+        (cells $? ?currently-selected-cell $?))
+   ?currently-selected-cell <-
+      (cell
+ 	(name ?currently-selected-cell-name)
+        (row-number ?row-number)
+        (col-number ?col-number)
+        (value nil))
+ ;;  (test (eq ?*sSelection* ?currently-selected-cell-name))  ;;  Be sure this cell has been selected 
+   (test (cell-must-be-filled-p ?row-number))  ;; Since table varies in size, check whether this cell must be filled
+   ?answer-table <-
+      (answer-table
+        (answer-columns $? ?answer-column $?)
+        (answer-rows $? ?answer-row $?)
+        (variable-columns $? ?variable-column $?))
+   ?answer-column <-
+      (answer-column
+        (column ?currently-selected-column)
+        (selected-alternative ?selected-alternative))
+   ?selected-alternative <-
+      (logic-header-alternative
+        (logic-evaluation ?logic-evaluation))
+   ?logic-evaluation <-
+      (logic-evaluation 
+        (expression ?op ?operand $?))
+   (test (eq ?op "id"))               ;;  Check for an ID operator
+   ?variable-column <-
+      (variable-column
+        (cells ?variable-header $? ?variable-value $?))
+   ?variable-header <-
+      (textField
+        (value ?variable-header-value))
+   (test (eq ?variable-header-value ?operand))  ;; Check for selected variable
+   ?answer-row <-
+      (answer-row
+        (cells $? ?variable-value $?))
+   ?variable-value <-
+      (variable-value
+        (row-number ?row-number)
+        (value ?answer))
+    (studentValues (selection ?sSelection) (action ?sAction) (input ?sInput))
+    (test (lhs-predict-oa ?sSelection ?sAction ?sInput 
+          ?currently-selected-cell-name "UpdateTable" ?answer))
+   ;;working with JProfiler,unit tests
+    =>
+   (predict-observable-action ?currently-selected-cell-name "UpdateTable" ?answer)
+   
+   (construct-message
+    "[In the highlighted cell, transcribe the truth value from the corresponding cell on the left.]"
+    "[Look for the variable heading '" ?variable-header-value "' on the left side of the truth table.  Take the truth value from the corresponding cell in that column and type it in the highlighted cell under the heading '" ?variable-header-value  "'.]"
+    "[Type the truth value '" ?answer "' in the highlighted cell under the heading '" ?variable-header-value  "'.]"
+ 
+   (modify ?currently-selected-cell (value ?answer))
+   	)
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;  
+;;  Author: Bruce McLaren
+;;  Date: 07/28/03 14:10
+;;  
+;;  Name: Apply-Negation-to-Dep-Value 
+;;  IF
+;;    The current goal is Apply-Logic-Operators-Goal
+;;    Currently-Selected-Column is an answer column
+;;    Currently-Selected-Column has a value in the top position (i.e., a heading validated by earlier rules)
+;;    Currently-Selected-Cell is empty
+;;    Index-Row is the row of the Currently-Selected-Cell
+;;    Op of Currently-Selected-Column is _~_
+;;    Operand of Currently-Selected-Column is a number (i.e., points to another column)
+;;    Operand-Column is the column pointed to by operand
+;;    Operand-Column, Index-Row is Operand-Value
+;;  THEN
+;;    Put the value of (Apply (Op Operand-Value)) into Currently-Selected-Cell
+    
+(defrule Apply-Negation-to-Dep-Value 
+   ?problem <-
+      (problem
+      	(subgoals ?subgoal)
+      	(interface-elements $? ?truth-table $?)
+      	(answer-table ?answer-table))
+   ?subgoal <-
+      (apply-logic-operators-goal)
+   ?truth-table <-
+      (table
+        (columns $? ?currently-selected-column $?))
+   ?currently-selected-column <-
+      (column
+        (cells $? ?currently-selected-cell $?))
+   ?currently-selected-cell <-
+      (cell
+	(name ?currently-selected-cell-name)
+        (row-number ?row-number)
+        (value nil))
+  ;; (test (eq ?*sSelection* ?currently-selected-cell-name))  ;;  Be sure this cell has been selected 
+   (test (cell-must-be-filled-p ?row-number))  ;; Since table varies in size, check whether this cell must be filled
+   ?answer-table <-
+      (answer-table
+        (answer-columns $? ?answer-column $?))
+   ?answer-column <-
+      (answer-column
+        (column ?currently-selected-column)
+        (selected-alternative ?selected-alternative)
+        (column-header ?answer-column-heading))
+   ?answer-column-heading <-
+      (textField 
+        (value ?answer-column-heading-value))
+   ?selected-alternative <-
+      (logic-header-alternative
+        (logic-evaluation ?logic-evaluation))
+   ?logic-evaluation <-
+      (logic-evaluation 
+        (expression ?op ?operand))
+;;   (test (eq ?op "~"))                      ;; Check that the operator is negation
+   (test (eq ?op (sym-cat "~")))               ;; Check that the operator is negation   (eq ?OP ~) - FALSE WHY???
+   (test (dependent-value-p (str-cat ?operand)))   ;; ?operand))      ;; Check that operand is a dependent value
+   ?truth-table <-
+      (table
+        (columns $? ?operand-column $?))
+   ?operand-column <-
+      (column
+        (cells $? ?operand-cell $?))
+   ?operand-cell <-
+      (cell
+        (value ?operand-value&:(neq ?operand-value nil))
+        (row-number ?row-number)
+;;        (col-number ?operand))
+        (col-number ?col-number))
+    (test (Int-Sym-eq  ?col-number  ?operand)) ;;; need (test (dependent-value-p ?operand)) first , otherwise will cause numberformatexception
+   ?answer-table <-
+      (answer-table
+        (answer-columns $? ?operand-answer-column $?))
+   ?operand-answer-column <-
+      (answer-column
+;;        (col-number ?operand)
+        (col-number ?col-number)
+        (column-header ?operand-heading))
+   ?operand-heading <-
+      (textField 
+        (value ?operand-heading-value))
+    
+   =>
+ 
+   (bind ?answer (apply-negation-operator ?operand-value))
+   (predict-observable-action ?currently-selected-cell-name "UpdateTable" ?answer)
+   
+   (construct-message
+    "[Apply negation to a truth value you have already provided and write the resultant truth value in the highlighted cell under the heading ( '" ?answer-column-heading-value  "' ).]"
+    "[Apply the negation operator to a truth value in a cell under the heading '" ?operand-heading-value "' and place the result in the highlighted cell under the heading '" ?answer-column-heading-value "'.]"
+    "[Type the truth value '" ?answer "' in the highlighted cell under the heading '" ?answer-column-heading-value "'.  This is the result of negating the truth value '" ?operand-value "' which comes from the corresponding cell in the column headed by '" ?operand-heading-value "'.]"
+   	)
+   (modify ?currently-selected-cell (value ?answer))
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;  
+;;  Author: Bruce McLaren
+;;  Date: 07/22/03 16:42
+;;  
+;;  Name: Apply-Negation-to-Identity
+;;  IF
+;;    The current goal is Apply-Logic-Operators-Goal 
+;;    Currently-Selected-Column is an answer column
+;;    Currently-Selected-Column has a value in the top position (i.e., a heading validated by earlier rules)
+;;    Currently-Selected-Cell is empty
+;;    Op of Currently-Selected-Column is _~_
+;;    Operand of Currently-Selected-Column is a variable
+;;    Column2 is a variable column
+;;    Column2 contains Var1 in the top position
+;;    Column2, Row1 is Var1-Value
+;;  THEN
+;;    Put the value of (Apply (Op Var1-Value)) into Column2, Row1
+    
+(defrule Apply-Negation-to-Identity 
+   ?problem <-
+      (problem
+      	(subgoals ?subgoal)
+      	(interface-elements $? ?truth-table $?)
+      	(answer-table ?answer-table))
+   ?subgoal <-
+      (apply-logic-operators-goal)
+   ?truth-table <-
+      (table
+        (columns $? ?currently-selected-column $?))
+   ?currently-selected-column <-
+      (column
+        (cells $? ?currently-selected-cell $?))
+   ?currently-selected-cell <-
+      (cell
+	(name ?currently-selected-cell-name)
+        (row-number ?row-number)
+        (value nil))
+ ;;  (test (variable-eq ?*sSelection* ?currently-selected-cell-name))  ;;  Be sure this cell has been selected After selected, I still get (eq commTextField13  commTable_C1R1)  
+   (test (cell-must-be-filled-p ?row-number))  ;; Since table varies in size, check whether this cell must be filled
+   ?answer-table <-
+      (answer-table
+        (answer-columns $? ?answer-column $?)
+        (answer-rows $? ?answer-row $?)
+        (variable-columns $? ?variable-column $?))
+   ?answer-column <-
+      (answer-column
+        (column ?currently-selected-column)
+        (selected-alternative ?selected-alternative)
+        (column-header ?answer-column-heading))
+   ?answer-column-heading <-
+      (textField 
+        (value ?answer-column-heading-value))
+   ?selected-alternative <-
+      (logic-header-alternative
+      (logic-evaluation ?logic-evaluation))
+   ?logic-evaluation <-
+      (logic-evaluation 
+        (expression ?op ?operand))
+   (test (eq ?op (sym-cat "~")))               ;; Check that the operator is negation   (eq ?OP ~) - FALSE WHY???
+   (test (variable-p (str-cat ?operand)))      ;; Check that operand is a variable
+   ?variable-column <-
+      (variable-column
+        (cells ?variable-header $? ?variable-value $?))
+   ?variable-header <-
+      (textField 
+        (value ?variable-header-value))
+   (test (eq ?variable-header-value ?operand))  ;; Check that variable column header matches the operand
+   ?answer-row <-
+      (answer-row
+        (cells $? ?variable-value $?))
+   ?variable-value <-
+      (variable-value
+        (row-number ?row-number)
+        (value ?operand-value))
+	(studentValues (selection ?sSelection)(action ?sAction) (input ?sInput))
+	(test (lhs-predict-oa ?sSelection ?sAction ?sInput
+	?currently-selected-cell-name "UpdateTable" (apply-negation-operator ?operand-value)))
+    ;;working with JProfiler, unit tests
+   =>
+   (bind ?negation "~")
+   (bind ?answer (apply-negation-operator ?operand-value))
+   (predict-observable-action ?currently-selected-cell-name "UpdateTable" ?answer)
+   
+   (construct-message
+    "[In the highlighted cell under the negation operator ( '" ?negation  "' ) and a variable, negate the truth value from the corresponding cell on the left.]"
+    "[Apply the negation operator to the appropriate cell under the heading '" ?variable-header-value "' and place the result of that operation in the highlighted cell under the heading '" ?answer-column-heading-value "'.]"
+    "[Type the truth value '" ?answer "' in highlighted cell under the heading '" ?answer-column-heading-value "'.  This is the result of negating the truth value '" ?operand-value "' which comes from the corresponding cell in the column headed by '" ?variable-header-value "'.]"
+   )
+   (modify ?currently-selected-cell
+        (value ?answer))
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;  
+;;  Author: Bruce McLaren
+;;  Date: 07/22/03 17:19
+;;  
+;;  Name: Apply-Op-to-2-Dependent-Values
+;;  IF
+;;    The current goal is Apply-Logic-Operators-Goal
+;;    Currently-Selected-Column is an answer column
+;;    Currently-Selected-Column has a value in the top position (i.e., a heading validated by earlier rules)
+;;    Currently-Selected-Cell is empty
+;;    Index-Row is the row of the Currently-Selected-Cell
+;;    Op of Currently-Selected-Column is not _id_
+;;    Operand1 of Currently-Selected-Column is a number (i.e., points to another column)
+;;    Operand1-Column is the column pointed to by operand1
+;;    Operand1-Column, Index-Row is Operand1-Value
+;;    Operand2 of Currently-Selected-Column is a number (i.e., points to another column)
+;;    Operand2-Column is the column pointed to by operand1
+;;    Operand2-Column, Index-Row is Operand2-Value
+;;  THEN
+;;    Put the value of (Apply (Op Operand1-Value Operand2-Value)) into Currently-Selected-Cell
+    
+(defrule Apply-Op-to-2-Dependent-Values 
+   ?problem <-
+      (problem
+      	(subgoals ?subgoal)
+      	(interface-elements $? ?truth-table $?)
+      	(answer-table ?answer-table))
+   ?subgoal <-
+      (apply-logic-operators-goal)
+   ?truth-table <-
+      (table
+        (columns $? ?currently-selected-column $?))
+   ?currently-selected-column <-
+      (column
+        (cells $? ?currently-selected-cell $?))
+   ?currently-selected-cell <-
+      (cell
+	(name ?currently-selected-cell-name)
+        (row-number ?row-number))
+ ;;  (test (eq ?*sSelection* ?currently-selected-cell-name))  ;;  Be sure this cell has been selected 
+   ?answer-table <-
+      (answer-table
+        (answer-columns $? ?answer-column $?))
+   ?answer-column <-
+      (answer-column
+      (column ?currently-selected-column)  ;;;
+        (selected-alternative ?selected-alternative))
+   ?selected-alternative <-
+      (logic-header-alternative
+        (logic-evaluation ?logic-evaluation))
+   ?logic-evaluation <-
+      (logic-evaluation 
+        (expression ?op ?operand1 ?operand2))
+     (test (dependent-value-p (str-cat ?operand1)))  ;;; ?operand1))     ;; Check that operand1 is a dependent value
+     (test (dependent-value-p (str-cat ?operand2)))  ;;; ?operand2))     ;; Check that operand2 is a dependent value
+   ?truth-table <-
+      (table
+        (columns $? ?operand1-column $? ?operand2-column $?))
+   ?operand1-column <-
+      (column
+        (cells $? ?operand1-cell $?))
+   ?operand1-cell <-
+      (cell
+        (value ?operand1-value&:(neq ?operand1-value nil))
+        (row-number ?row-number)
+        (col-number ?operand1_Int)) 
+    (test (Int-Sym-eq  ?operand1_Int ?operand1 )) ;;; need (test (dependent-value-p (str-cat ?operand1))) first , otherwise will cause numberformatexception
+   ?operand2-column <-
+      (column
+        (cells $? ?operand2-cell $?))
+   ?operand2-cell <-
+      (cell
+        (value ?operand2-value&:(neq ?operand2-value nil))
+        (row-number ?row-number)
+        (col-number ?operand2_Int))
+    (test (Int-Sym-eq  ?operand2_Int ?operand2 )) ;;; need (test (dependent-value-p (str-cat ?operand2))) first , otherwise will cause numberformatexception
+  	
+     (studentValues (selection ?sSelection) (action ?sAction) (input ?sInput))
+    (test (lhs-predict-oa ?sSelection ?sAction ?sInput
+         ?currently-selected-cell-name "UpdateTable" (apply-logic-operator ?op ?operand1-value ?operand2-value)))   
+   ;;working with JProfiler, unit tests
+    
+    =>
+    
+   (bind ?logic-value (apply-logic-operator ?op ?operand1-value ?operand2-value)) 
+   (predict-observable-action ?currently-selected-cell-name "UpdateTable" ?logic-value)
+   (modify ?currently-selected-cell (value ?logic-value))
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;  
+;;  Author: Bruce McLaren
+;;  Date: 07/29/03 09:50
+;;  
+;;  Name: Apply-Op-to-2-Id-Values
+;;  IF
+;;    The current goal is Apply-Logic-Operators-Goal
+;;    Currently-Selected-Column is an answer column
+;;    Currently-Selected-Column has a value in the top position (i.e., a heading validated by earlier rules)
+;;    Currently-Selected-Cell is empty
+;;    Index-Row is the row of the Currently-Selected-Cell
+;;    Op of Currently-Selected-Column is not _id_
+;;    Operand1 of Currently-Selected-Column is a letter
+;;    Variable1-Column is a variable column
+;;    Variable1-Column contains Operand1 in the top position
+;;    Variable1-Column, Index-Row is Operand1-Value
+;;    Operand2 of Currently-Selected-Column is a letter
+;;    Variable2-Column is a variable column
+;;    Variable2-Column contains Operand2 in the top position
+;;    Variable2-Column, Index-Row is Operand2-Value
+;;  THEN
+;;    Put the value of (Apply (Op Operand1-Value Operand2-Value)) into Currently-Selected-Cell
+    
+(defrule Apply-Op-to-2-Id-Values 
+   ?problem <-
+      (problem
+      	(subgoals ?subgoal)
+      	(interface-elements $? ?truth-table $?)
+      	(answer-table ?answer-table))
+   ?subgoal <-
+      (apply-logic-operators-goal)
+   ?truth-table <-
+      (table
+        (columns $? ?currently-selected-column $?))
+   ?currently-selected-column <-
+      (column
+        (cells $? ?currently-selected-cell $?))
+   ?currently-selected-cell <-
+      (cell
+	(name ?currently-selected-cell-name)
+       (row-number ?row-number)
+       (value nil))
+   (test (cell-must-be-filled-p ?row-number))  ;; Since table varies in size, check whether this cell must be filled
+   ?answer-table <-
+      (answer-table
+        (answer-columns $? ?answer-column $?)
+        (answer-rows $? ?answer-row $?)
+        (variable-columns $? ?variable1-column $? $?))
+   ?answer-column <-
+      (answer-column
+        (column ?currently-selected-column)
+        (selected-alternative ?selected-alternative)
+        (column-header ?answer-column-heading))
+   ?answer-column-heading <-
+      (textField 
+        (value ?answer-column-heading-value))
+   ?selected-alternative <-
+      (logic-header-alternative
+      (logic-evaluation ?logic-evaluation))
+   ?logic-evaluation <-
+      (logic-evaluation 
+        (expression ?op ?operand1 ?operand2))
+   (test (variable-p (str-cat ?operand1)))  ;; Check that operand1 is a variable (i.e., an ID value)  ;; (test (eq ?operand1))   ;;  
+   (test (variable-p (str-cat ?operand2)))  ;; Check that operand2 is a variable (i.e., an ID value)  (test (eq ?operand2))   ;;(variable-p P) return false ???
+   ?variable1-column <-
+      (variable-column
+        (cells ?variable1-heading $? ?variable1-value $?))
+   ?variable1-heading <-
+      (textField 
+        (value ?variable1-heading-value))
+   (test (eq ?variable1-heading-value  (sym-cat ?operand1)))  ;; Check that variable1 column is for operand1
+   ?answer-row <-
+      (answer-row
+        (cells $? ?variable1-value $?))
+   ?variable1-value <-
+      (variable-value
+        (row-number ?row-number)
+        (value ?operand1-value))
+   ?answer-table <-
+      (answer-table       
+        (variable-columns $? ?variable2-column $?))
+   (test (neq ?variable2-column ?variable1-column))
+   ?variable2-column <-
+      (variable-column
+        (cells ?variable2-heading $? ?variable2-value $?))
+   ?variable2-heading <-
+      (textField 
+        (value ?variable2-heading-value))
+    (test (eq ?variable2-heading-value (sym-cat ?operand2)))  ;; Check that variable2 column is for operand2
+   ?answer-row <-
+      (answer-row
+        (cells $? ?variable2-value $?))
+   ?variable2-value <-
+      (variable-value
+        (row-number ?row-number)
+        (value ?operand2-value))
+    
+    (studentValues (selection ?sSelection) (action ?sAction) (input ?sInput))
+    (test (lhs-predict-oa ?sSelection ?sAction ?sInput
+    		?currently-selected-cell-name "UpdateTable" 
+            (apply-logic-operator ?op ?operand1-value ?operand2-value)))  
+    ;;working with JProfiler, unit tests
+  ;; (test  (progn (printout t crlf "* sSelection is '" ?*sSelection* "' and selected is '" ?currently-selected-cell-name "'" crlf)
+  ;;              (eq ?*sSelection* ?currently-selected-cell-name))
+  ;;  ) ) ;;  Be sure this cell has been selected 
+   =>
+  ;; (printout t crlf "sSelection is " ?*sSelection* " and selected is " ?currently-selected-cell-name crlf)
+   (bind ?answer (apply-logic-operator ?op ?operand1-value ?operand2-value))
+   (predict-observable-action ?currently-selected-cell-name "UpdateTable" ?answer)
+   (construct-message
+    "[In the highlighted cell, apply the appropriate operation and write the truth value in the cell.]"
+    "[Apply the operator '" ?op "' to the corresponding variable truth values '" ?variable1-heading-value "' and '" ?variable2-heading-value "' and type it into the highlighted cell.]"
+    "[Type the truth value '" ?answer "' in the highlighted cell under the heading '" ?answer-column-heading-value "'.  This is the result of applying the operator '" ?op "' to the truth values '" ?operand1-value "' and '" ?operand2-value "'.  These values come from corresponding cells in the columns headed by '" ?variable1-heading-value "' and '" ?variable2-heading-value "'.]"
+   )
+   (modify ?currently-selected-cell (value ?answer))
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;  
+;;  Author: Bruce McLaren
+;;  Date: 07/28/03 17:09
+;;  
+;;  Name: Apply-Op-to-Dep-Val-and-Id-Val
+;;  IF
+;;    The current goal is Apply-Logic-Operators-Goal
+;;    Currently-Selected-Column is an answer column
+;;    Currently-Selected-Column has a value in the top position (i.e., a heading validated by earlier rules)
+;;    Currently-Selected-Cell is empty
+;;    Index-Row is the row of the Currently-Selected-Cell
+;;    Op of Currently-Selected-Column is not _id_
+;;    Operand1 of Currently-Selected-Column is a number (i.e., points to another column)
+;;    operand-Column is the column pointed to by operand1
+;;    operand-Column, Index-Row is operand-Value
+;;    Operand2 of Currently-Selected-Column is a letter (i.e., is an id operation)
+;;    variable-Column is a variable column
+;;    variable-Column contains Operand2 in the top position
+;;    variable-Column, Index-Row is variable-Value
+;;  THEN
+;;    Put the value of (Apply (Op operand-Value variable-Value)) into Currently-Selected-Cell
+    
+    
+(defrule Apply-Op-to-Dep-Val-and-Id-Val 
+   ?problem <-
+      (problem
+      	(subgoals ?subgoal)
+      	(interface-elements $? ?truth-table $?)
+      	(answer-table ?answer-table))
+   ?subgoal <-
+      (apply-logic-operators-goal)
+   ?truth-table <-
+      (table
+        (columns $? ?currently-selected-column $?))
+   ?currently-selected-column <-
+      (column
+        (cells $? ?currently-selected-cell $?))
+   ?currently-selected-cell <-
+      (cell
+        (name ?currently-selected-cell-name)
+        (row-number ?row-number)
+        (value nil))
+ ;;  (test (eq ?*sSelection* ?currently-selected-cell-name))  ;;  Be sure this cell has been selected 
+   (test (cell-must-be-filled-p ?row-number))  ;; Since table varies in size, check whether this cell must be filled
+   ?answer-table <-
+      (answer-table
+        (answer-columns $? ?answer-column $?)
+        (answer-rows $? ?answer-row $?)
+        (variable-columns $? ?variable-column $?))
+   ?answer-column <-
+      (answer-column
+        (column ?currently-selected-column)
+        (selected-alternative ?selected-alternative)
+        (column-header ?answer-column-heading))
+   ?answer-column-heading <-
+      (textField 
+        (value ?answer-column-heading-value))
+   ?selected-alternative <-
+      (logic-header-alternative
+      	(logic-evaluation ?logic-evaluation))
+   ?logic-evaluation <-
+      (logic-evaluation 
+        (expression ?op ?operand1 ?operand2))
+   (test (dependent-value-p (str-cat ?operand1)))   ;; ?operand1))     ;; Check that operand1 is a dependent value
+;;   (test (variable-p ?operand2))            ;; Check that operand2 is a variable (i.e., an ID value)
+   (test (variable-p (str-cat ?operand2)))            ;; Check that operand2 is a variable (i.e., an ID value)
+   ?truth-table <-
+      (table
+        (columns $? ?operand-column $?))
+   ?operand-column <-
+      (column
+        (cells $? ?operand-cell $?))
+   ?operand-cell <-
+      (cell
+        (value ?operand-value&:(neq ?operand-value nil))
+        (row-number ?row-number)
+;;        (col-number ?operand1))
+        (col-number ?col-number))
+    (test (Int-Sym-eq  ?col-number  ?operand1)) ;;; need (test (dependent-value-p ?operand)) first , otherwise will cause numberformatexception
+   ?answer-table <-
+      (answer-table
+        (answer-columns $? ?operand-answer-column $?))
+   ?operand-answer-column <-
+      (answer-column
+;;        (col-number ?operand1)
+        (col-number ?col-number)
+        (column-header ?operand-heading))
+   ?operand-heading <-
+      (textField 
+        (value ?operand-heading-value))
+   ?variable-column <-
+      (variable-column
+        (cells ?variable-heading $? ?variable-cell $?))
+   ?variable-heading <-
+      (textField 
+        (value ?variable-heading-value))
+   (test (eq ?variable-heading-value ?operand2))  ;; Check that variable2 column is for operand2
+   ?answer-row <-
+      (answer-row
+        (cells $? ?variable-cell $?))
+   ?variable-cell <-
+      (variable-value
+        (row-number ?row-number)
+        (value ?variable-value))
+    
+    (studentValues (selection ?sSelection) (action ?sAction) (input ?sInput))
+    (test (lhs-predict-oa ?sSelection ?sAction ?sInput 
+            ?currently-selected-cell-name "UpdateTable"
+            (apply-logic-operator ?op ?operand-value ?variable-value)))
+    ;;working with JProfiler, unit tests
+   =>
+   (bind ?answer (apply-logic-operator ?op ?operand-value ?variable-value))
+   (predict-observable-action ?currently-selected-cell-name "UpdateTable" ?answer)
+   (construct-message 
+    "[In a cell on the right in a column that depends on one truth value you have already provided and one variable truth value, apply the appropriate operation and write the truth value in the cell.]"
+    "[Apply the operator '" ?op "' to the truth values in the corresponding cells under headings '" ?operand-heading-value "' and '" ?variable-heading-value "'.]"
+    "[Type the truth value '" ?answer "' in the row " ?row-number " cell under the heading '" ?answer-column-heading-value "'.  This is the result of applying the operator '" ?op "' to the truth values '" ?operand-value "' and '" ?variable-value "'.  These values come from corresponding cells in the columns headed by '" ?operand-heading-value "' and '" ?variable-heading-value "'.]"
+   )
+   (modify ?currently-selected-cell (value ?answer))
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;  
+;;  Author: Bruce McLaren
+;;  Date: 07/22/03 13:15
+;;  
+;;  Name: Assign-Alternative-Heading
+;;  IF
+;;    The current goal is Assign-Expression-Headings-Goal
+;;    Column1 is the first answer column
+;;    AlternativeX, Value1 is a non-empty value corresponding to Column1, Row0
+;;    AlternativeX, Value1 is Column Header Value
+;;  THEN
+;;    Put Column Header Value into Column1, Row0
+;;    Put T into AlternativeX, Selected-Alternative-P
+    
+(defrule Assign-Alternative-Heading 
+   ?problem <-
+      (problem
+      	(subgoals ?subgoal)
+   ;;   	(interface-elements $? ?column-header $?)
+      	(answer-table ?answer-table)
+      	(decomposition-alternatives $? ?alternativeX $?))
+   ?subgoal <-
+      (assign-expression-headings-goal
+         (just-assigned-heading-p nil))
+  ;; (test (eq ?*sAction* "UpdateTextField"))   ;;  Be sure this input is to update one of the textfield headings
+   ?answer-table <-
+      (answer-table
+        (answer-columns $? ?answer-column $?))
+   ?answer-column <-
+      (answer-column
+        (column-header ?column-header)
+        (selected-alternative ?test-selected-alternate)
+        (alternate-col-values $? ?alternate-value $?))
+   ?column-header <-
+      (textField 
+        (description "COLUMN1HEADER")
+	(value nil))
+   ?alternate-value <-
+      (logic-header-alternative
+        (value ?col-header-value))
+   ?alternativeX <-
+      (decomposition-alternative
+        (selected-alternative-p nil)
+        (header-values $? ?alternate-value $?)
+      )
+   
+   =>
+   (bind ?capitalized-col-header-value (upcase ?col-header-value))
+   (modify ?column-header (value ?capitalized-col-header-value))
+   (modify ?alternate-value (already-used-p T)) ;; "T"))
+   ;;   (printout t crlf "?answer-column = " ?answer-column "?alternate-value  =  " ?alternate-value "?test-selected-alternate = " ?test-selected-alternate crlf)
+   (modify ?answer-column (selected-alternative ?alternate-value))
+   ;;
+   ;;  Shouldn't have to do the following, but it seems unless we update the 'header-values slot of
+   ;;  ?alternativeX, the update of ?alternate-value doesn't take effect.   Not sure why ...
+   ;;  maybe because a copy of ?alternate-value is created during LHS match?
+   ;;
+  ;; (bind $?alternative-values (fact-slot-value ?alternativeX header-values))
+  ;; (bind $?new-alternative-values (create$ ?alternate-value (rest$ $?alternative-values)))
+   (modify ?alternativeX 
+	(selected-alternative-p T)  ;; "T") 
+	;; (header-values $?new-alternative-values)
+	)
+   (bind ?column-header-name
+     	(fact-slot-value ?column-header name))
+   (modify ?subgoal 
+	(just-assigned-heading-p T)  ;; "T")
+	(column-header ?col-header-value)
+	(column-header-name ?column-header-name))
+   (bind ?var1 (get-first-valid-variable))
+   (bind ?var2 (get-second-valid-variable))
+   
+   (construct-message 
+    "[Elements of the sentential logic expression must be inserted as headings of the truth table.]"
+    "[Decompose the expression into elements and insert as headings of the empty columns in the truth table.   For instance, the expression " ?var1 " -> " ?var2  " & " ?var1 " could be decomposed as a series of individual tokens - "  ?var1 ",   ->, "  ?var2 ",  &, "  ?var1  "- or as a left-to-right parse tree - "  ?var1 " -> " ?var2 ",  ( " ?var1 " -> " ?var2 ") & " ?var1 "]"
+    "[Insert the element '" ?capitalized-col-header-value "' as a heading in the highlighted cell.  This is the start of a parse tree decomposition.]")
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;  
+;;  Author: Bruce McLaren
+;;  Date: 07/22/03 13:22
+;;  
+;;  Name: Assign-Expression-Heading
+;;  IF
+;;    The current goal is Assign-Expression-Headings-Goal
+;;    Column1, Row0 has a value
+;;    Column2 is an answer column
+;;    Column2, Row0 has no value
+;;    Current-Alternative, Value1 is a non-empty value corresponding to Column1, Row0
+;;    Current-Alternative, Value1 is Val1
+;;  THEN
+;;    Put Val1 into Column1, Row0
+    
+(defrule Assign-Expression-Heading 
+   ?problem <-
+      (problem
+      	(subgoals ?subgoal)
+;      	(interface-elements $? ?column-header $?)   ; Don't need this anymore since the answer-table references the column-header
+      	(answer-table ?answer-table)
+;      	(decomposition-alternatives $? ?alternativeY $?)   ; Had to comment this out to keep Jess from crashing on a null pointer error
+      )
+   ?subgoal <-
+      (assign-expression-headings-goal
+         (just-assigned-heading-p nil))
+   ;; (test (eq ?*sAction* "UpdateTextField"))   ;;  Be sure this input is to update one of the textfield headings
+   ?answer-table <-
+      (answer-table
+        (answer-columns $? ?previous-answer-column ?answer-column $?))
+   ?previous-answer-column <-
+      (answer-column
+        (column-header ?previous-column-header))
+   ?previous-column-header <-
+      (textField 
+	(value ~nil))
+   ?answer-column <-
+      (answer-column
+        (column-header ?column-header)
+        (alternate-col-values $? ?alternate-value $?))
+   ?column-header <-
+      (textField 
+        (description ~"COLUMN1HEADER")
+	(value nil))
+   ?alternativeY <-
+      (decomposition-alternative
+        (selected-alternative-p T)  ;; "T")
+        (decomposition-name ?decomposition-name)
+        (header-values $? ?alternate-value $?))
+   ?alternate-value <-
+      (logic-header-alternative
+        (already-used-p nil)
+        (value ?col-header-value))
+  
+   =>
+   (construct-message 
+    "[Continue placing elements of the sentential logic expression into headings of the truth table.]"
+    "[Put the element '" ?col-header-value "' in the highlighted cell.  This is the next element of a " ?decomposition-name " decomposition of the expression.]")
+   (bind ?capitalized-col-header-value (upcase ?col-header-value))
+   (modify ?column-header (value ?capitalized-col-header-value))
+   (modify ?alternate-value (already-used-p T)) ;; "T"))
+   (modify ?answer-column (selected-alternative ?alternate-value))
+   ;;
+   ;;  JESS BUG #1: Shouldn't have to do the following bit of ugly replacement code, but it seems unless 
+   ;;  the RHS updates the 'header-values slot of ?alternativeY, the update of the individual fact ?alternate-value 
+   ;;  doesn't take effect.   Not sure why ...  maybe because a copy of ?alternate-value is created during LHS match?
+   ;;
+   ;;  JESS BUG #2: I had to change the variable name ?alternativeX to ?alternativeY to get this rule to work.
+   ;;  Apparently, when I used ?alternativeX, Jess was using a value from a previous rule instantiation,
+   ;;  in particular from rule Assign-Alternative-Heading.   I was getting a JessNullPointer error until
+   ;;  I simply changed the name below and on the LHS.
+   ;;
+   (bind $?alternative-values (fact-slot-value ?alternativeY header-values))
+   (bind $?new-alternative-values (replace-element ?alternate-value $?alternative-values))
+;(printout t crlf "New alternative values: " $?new-alternative-values crlf)
+;(printout t crlf "alternativeY: " ?alternativeY crlf)
+   (modify ?alternativeY (header-values $?new-alternative-values))
+   (bind ?column-header-name
+      	(fact-slot-value ?column-header name))
+   (modify ?subgoal 
+	(just-assigned-heading-p T)  ;; "T")
+	(column-header ?col-header-value)
+	(column-header-name ?column-header-name))
+   
+)
+    
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;  
+;;  Author: Bruce McLaren
+;;  Date: 07/25/03 2:58
+;;  
+;;  Name: Keep-Assigning-Expr-Hdgs
+;;  IF
+;;    The current goal is Assign-Expression-Headings-Goal
+;;    There are components of the expression that haven't been assigned to a heading
+;;  THEN
+;;    Keep working on the goal "Assign Expression Headings"
+    
+(defrule Keep-Assigning-Expr-Hdgs 
+   ?problem <-
+      (problem
+      	(subgoals ?subgoal)
+      	(interface-elements $? ?column-header $?)
+      	(answer-table ?answer-table)
+      	(decomposition-alternatives $? ?alternativeX $?))
+   ?subgoal <-
+      (assign-expression-headings-goal
+      	(just-assigned-heading-p T)   ;; "T")
+	(column-header ?col-header-value)
+	(column-header-name ?column-header-name))
+   ?column-header <-
+      (textField 
+        (description ~"COLUMN1HEADER")
+        (value nil))
+   ?answer-table <-
+      (answer-table
+        (answer-columns $? ?answer-column $?))
+   ?answer-column <-
+      (answer-column
+        (column-header ?column-header) ;;
+        (alternate-col-values $? ?alternate-value $?))
+   ?alternativeX <-
+      (decomposition-alternative
+        (selected-alternative-p T)   ;; "T")
+        (header-values $? ?alternate-value $?))
+   ?alternate-value <-
+      (logic-header-alternative
+        (already-used-p nil)  ;;
+      	(value ~nil))
+ ;;  (test (ModifyInputString))
+	(studentValues (selection ?sSelection) (action ?sAction) (input ?sInput))
+    (test (lhs-predict-oa ?sSelection ?sAction ?sInput 
+        ?column-header-name "UpdateTextField" ?col-header-value
+         Ignore-SpaceOuterUnaryParens-String-Equal))
+    ;;working with JProfiler, unit tests
+   =>
+
+   (predict-observable-action ?column-header-name "UpdateTextField" ?col-header-value Ignore-SpaceOuterUnaryParens-String-Equal)
+   (modify ?subgoal
+    	(just-assigned-heading-p nil))
+    
+;;  Need to use the function  Ignore-Blanks-Outer-Parens-String-Equal  !!
+)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;  
+;;  Author: Bruce McLaren
+;;  Date: 07/25/03 2:58
+;;  
+;;  Name: Move-Exp-Hdgs-to-Apply-Ops
+;;  IF
+;;    The current goal is Assign-Expression-Headings-Goal
+;;    There is NOT an active expression component that hasn't been used yet
+;;  THEN
+;;    Create the goal "Assign Logic Operators" and push onto subgoal stack 
+    
+(defrule Move-Exp-Hdgs-to-Apply-Ops 
+   ?problem <-
+      (problem
+      	(subgoals ?subgoal)
+      	(decomposition-alternatives $? ?alternativeX $?))
+   ?subgoal <-
+      (assign-expression-headings-goal
+      	(just-assigned-heading-p  T)   ;; "T")
+	(column-header ?col-header-value)
+	(column-header-name ?column-header-name))
+   ?alternativeX <-
+      (decomposition-alternative
+          (selected-alternative-p  T)   ;; "T")
+	  (header-values $?alternate-values))
+   (test (all-alternatives-used-p $?alternate-values))   ;;  Test for no instances of (already-used-p nil) and (value ~nil).
+                                                         ;;  It this succeeds, there is no expr. that has not yet been used.
+	(studentValues (selection ?sSelection) (action ?sAction) (input ?sInput))
+    (test (lhs-predict-oa ?sSelection ?sAction ?sInput
+           ?column-header-name "UpdateTextField" ?col-header-value 
+            Ignore-SpaceOuterUnaryParens-String-Equal))
+	;; was working with JProfiler, unit tests
+   =>
+   (predict-observable-action ?column-header-name "UpdateTextField" ?col-header-value Ignore-SpaceOuterUnaryParens-String-Equal)
+
+   (retract ?subgoal)
+   (bind ?new-subgoal (assert (apply-logic-operators-goal)))
+   (modify ?problem (subgoals ?new-subgoal))
+
+;;  Need to use the function  Ignore-Blanks-Outer-Parens-String-Equal  !!
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;  
+;;  Author: Bruce McLaren
+;;  Date: 07/24/03 2:58
+;;  
+;;  Name: Assign-Variable-Heading
+;;  IF
+;;    The current goal is Assign-Variable-Headings-Goal
+;;    There is a variable heading that hasn't been filled
+;;    There is a variable alternative that hasn't been used
+;;  THEN
+;;    Put the variable alternative value into the variable heading
+;;    Mark the variable alternative as used 
+    
+(defrule Assign-Variable-Heading 
+   ?problem <-
+      (problem
+      	(subgoals ?subgoal)
+    ;;	(interface-elements $? ?variable-header $?)  ;; redundant
+      	(answer-table ?answer-table)
+      )
+   ?subgoal <-
+      (assign-variable-headings-goal
+      	(just-assigned-heading-p nil))
+        (test (= ?*sAction* "UpdateTextField"))         ;;  Be sure this input is to update one of the textfield headings
+;;;    (test (member$  (sym-cat ?*sInput*) ?*current-variables*))  ;;  Be sure the input value is equal to one of the valid variables
+   ?answer-table <-
+      (answer-table
+        (variable-columns $? ?variable-column $?)
+        (variable-header-alternatives $? ?variable-header-alternative $?)
+      )
+   ?variable-column <-
+      (variable-column
+        (cells ?variable-header $?))
+   ?variable-header <- 
+      (textField
+	(value nil)
+       (name ?variable-header-name))
+  ;;   (test (eq* (?*sSelection* toString) (?variable-header-name toString)))         ;;  Be sure this input is to update one of the textfield headings
+   ?variable-header-alternative <-
+      (variable-header-alternative
+        (already-used-p nil)
+        (value ?variable&:(neq ?variable nil))
+      )
+
+   =>
+   (modify ?variable-header-alternative (already-used-p  T)) 
+   (modify ?variable-header (value ?variable))
+   ;; (bind ?variable-header-name
+   ;;    	(fact-slot-value ?variable-header name))
+   (modify ?subgoal 
+	(just-assigned-heading-p  T)
+	(variable-header ?variable)
+   	(variable-header-name ?variable-header-name)
+	)
+   (construct-message 
+    "[Take the variables in the expression and place them as headings of the leftmost columns of the truth table.]"
+    "[The leftmost columns of the truth table, above the pre-defined 'T' and 'F' values, need headings.  The variables in the expression should be inserted as headings of these columns.]"
+    "[Place the variable '" ?variable "' as a heading above a pre-defined 'T' and 'F' column.]")
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;  
+;;  Author: Bruce McLaren
+;;  Date: 07/25/03 2:58
+;;  
+;;  Name: Keep-Assigning-Variable-Hdgs
+;;  IF
+;;    The current goal is Assign-Variable-Headings-Goal
+;;    There is an active variable alternative that hasn't been used yet
+;;  THEN
+;;    Keep working on the goal "Assign Variable Headings"
+    
+(defrule Keep-Assigning-Variable-Hdgs 
+   ?problem <-
+      (problem
+      	(subgoals ?subgoal)
+      	(answer-table ?answer-table))
+   ?subgoal <-
+      (assign-variable-headings-goal
+      	(just-assigned-heading-p  T)   ;; "T")
+	(variable-header ?variable)
+	(variable-header-name ?variable-header-name))
+   ?answer-table <-
+       (answer-table
+         (variable-header-alternatives $? ?variable-header-alternative $?))
+   ?variable-header-alternative <-
+      (variable-header-alternative
+        (already-used-p nil)
+        (value ~nil))
+    	(studentValues (selection ?sSelection) (action ?sAction) (input ?sInput))
+    (test (lhs-predict-oa ?sSelection ?sAction ?sInput
+            ?variable-header-name "UpdateTextField" ?variable 
+            equals-Ignore-Case))
+;; was working with JProfiler, unit tests
+   =>
+ ;; (printout t crlf "RHS Keep-Assigning-Variable-Hdgs" ?*sSelection* " " ?variable-header-name crlf)
+   (predict-observable-action ?variable-header-name "UpdateTextField" ?variable equals-Ignore-Case) ;; Ignore-Blanks-Outer-Parens-String-Equal) ;; 
+   (modify ?subgoal
+    	(just-assigned-heading-p nil))
+;;  Need to use the function  Ignore-Blanks-Outer-Parens-String-Equal  !!
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;  
+;;  Author: Bruce McLaren
+;;  Date: 07/25/03 2:58
+;;  
+;;  Name: Move-Var-to-Exp-Headings
+;;  IF
+;;    The current goal is _Assign Variable Headings_
+;;    There is NOT an active expression component that hasn't been used
+;;  THEN
+;;    Create the goal "Assign Expression Headings" and push onto subgoal stack 
+    
+(defrule Move-Var-to-Exp-Headings 
+   ?problem <-
+      (problem
+      	(subgoals ?subgoal)
+      	(answer-table ?answer-table))
+   ?subgoal <-
+      (assign-variable-headings-goal
+      	(just-assigned-heading-p T) ;; "T")
+	(variable-header ?variable)
+	(variable-header-name ?variable-header-name))
+   ?answer-table <-
+      (answer-table
+        (variable-header-alternatives $?variable-header-alternatives))
+   (test (all-alternatives-used-p $?variable-header-alternatives))   ;; Test for no instances of (already-used-p nil) and (value ~nil).
+                                                                     ;;  It this succeeds, there is no expr. that has not yet been used.
+	(studentValues (selection ?sSelection) (action ?sAction) (input ?sInput))
+    (test (lhs-predict-oa ?sSelection ?sAction ?sInput
+         ?variable-header-name "UpdateTextField" ?variable  ?variable
+             equals-Ignore-Case))   
+;;was working with JProfiler,unit tests
+    ;;epfeifer - does this have too many arguments? second "?variable" argument is just ignored by call function?
+   =>
+   (predict-observable-action ?variable-header-name "UpdateTextField" ?variable  ?variable equals-Ignore-Case)
+   (retract ?subgoal)
+   (bind ?new-subgoal (assert (assign-expression-headings-goal)))
+   (modify ?problem (subgoals ?new-subgoal))
+
+;;  Need to use the function  Ignore-Blanks-Outer-Parens-String-Equal  !!
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;  
+;;  Author: Chang-Hsin Chang
+;;  Date: 02/27/02 16:31
+;;  
+;;  Name: Select-Answer-Column
+;;
+;; IF
+;;    The current goal is “Apply Logic Operators” goal
+;;    The radio button that has been selected is for the correct answer column
+;; THEN
+;;    Radio button has been correctly chosen
+(defrule Select-Answer-Column 
+   ?problem <-
+      (problem
+      	(subgoals ?subgoal)
+      	(answer-table ?answer-table))
+   ?subgoal <-
+      (apply-logic-operators-goal)
+   ?answer-table <-
+      (answer-table
+        (answer-columns $? ?answer-column $?))
+   ?answer-column <-
+      (answer-column
+      	(radio-button ?radio-button)
+        (selected-alternative ?selected-alternative)
+      	(column ?column))
+   ?selected-alternative <-
+      (logic-header-alternative
+      	(logic-evaluation ?logic-evaluation))
+   ?logic-evaluation <-
+      (logic-evaluation
+      	(answer-p T))
+   ?radio-button <-
+      (radioButton 
+       (name ?current-selected-button)
+	(value nil))
+	(studentValues (selection ?sSelection) (action ?sAction) (input ?sInput))
+    (test (lhs-predict-oa ?sSelection ?sAction ?sInput
+            ?current-selected-button "UpdateRadioButton" true))
+    ;;working with JProfiler, unit tests
+   =>
+
+   (predict-observable-action ?current-selected-button "UpdateRadioButton" true)
+   (construct-message
+             "[You need to select the column that contains the final answers.]"
+       ;;      "[Click the button under column '" ?col-index "' .]"
+   )
+   (bind ?col-index
+      	(fact-slot-value ?answer-column column))
+   (modify ?radio-button (value T)) 
+
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;  
+;;  Author: Bruce McLaren
+;;  Date: 08/11/03 10:00
+;;  
+;;  Name: DONE
+;;
+;; IF
+;;    The goal is to do an addition problem
+;;    And there is no incomplete subgoal to work on
+;;    And there is no column left with numbers to add (or a carry) and no result
+;; THEN
+;;    Mark the problem as done
+(defrule Done 
+   ?problem <-
+      (problem
+      	(subgoals ?subgoal)
+      	(answer-table ?answer-table))
+   ?subgoal <-
+      (apply-logic-operators-goal)
+   ?answer-table <-
+      (answer-table
+        (answer-columns $? ?answer-column $?))
+   ?answer-column <-
+      (answer-column
+      	(radio-button ?radio-button)
+        (selected-alternative ?selected-alternative)
+      	(column ?column))
+   ?selected-alternative <-
+      (logic-header-alternative
+      	(logic-evaluation ?logic-evaluation))
+   ?logic-evaluation <-
+      (logic-evaluation
+      	(answer-p T)) 
+   ?radio-button <-
+      (radioButton 
+	(value T))
+   (test (all-cells-have-been-filled-p ?column))  
+	(studentValues (selection ?sSelection) (action ?sAction) (input ?sInput))
+    (test (lhs-predict-oa ?sSelection ?sAction ?sInput
+            Done "ButtonPressed" -1))
+    ;;this is failing with JProfiler, works with unit tests
+   =>
+
+   (predict-observable-action Done "ButtonPressed" -1)
+   (modify ?problem (done-p T))
+   (construct-message
+             "[You are done with this problem.]"
+             "[Click on 'Done'.]")
+   
+
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;  
+;;  Author: Bruce McLaren
+;;  Date: 07/23/03 2:58
+;;  
+;;  Name: Parse-Results-OK
+;;  IF
+;;    The current goal is _Check Parse Results_
+;;    The Parse Results are "OK"
+;;  THEN
+;;    Create the goal "Check Expression Headings" and push onto subgoal stack
+    
+(defrule Parse-Results-OK 
+   ?problem <-
+      (problem
+      	(subgoals ?subgoal)
+        (interface-elements $? ?sentential-logic-expression $?))
+
+   ?sentential-logic-expression <-
+      (textField  (description "SENTENTIAL-LOGIC-EXPRESSION")
+        (name ?sentential-logic-expression-name))
+    
+   ?subgoal <-
+      (check-parse-results-goal
+      	(parse-expression-results "OK")
+ 	(parse-event ?parse-result-struct)
+      	)
+    (studentValues (selection ?sSelection) (action ?sAction) (input ?sInput))
+    (test (lhs-predict-oa ?sSelection ?sAction ?sInput
+           ?sentential-logic-expression-name UpdateTextField DONT-CARE))
+	;; eep why is this not working?, works with unit tests
+   =>
+   ;;(bind ?sentential-logic-expression-name
+   ;;   	(fact-slot-value ?sentential-logic-expression name))
+   (predict-observable-action ?sentential-logic-expression-name UpdateTextField DONT-CARE)
+   (retract ?subgoal)
+
+;;   (bind ?parse-root (call ?parse-result-struct getRoot))
+;;   (bind ?parse-tree (new LogicTutor.LogicExprTree (call ?parse-root getParserNode)))
+;;   (bind ?tree-root (call ?parse-tree getRoot))
+;;   (printout t crlf "User Input Expression: " (call ?tree-root toString) crlf)
+
+   (bind ?assign-variable-headings-goal 
+      	(assert (assign-variable-headings-goal)))
+   (modify ?problem (subgoals ?assign-variable-headings-goal))
+   
+   
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;  
+;;  Author: Bruce McLaren
+;;  Date: 07/22/03 12:58
+;;  
+;;  Name: Start-Logic-Problem
+;;  IF
+;;    There is an "Enter Expression" goal
+;;  THEN
+;;    Save (tutors.LogicTutor.LogicExprParser.instance().parse(?*sInput*)) // Assume codes in package LogicTutor
+;;       a parse of the expression -- in parse-result
+;;    Create the goal "Check Parse Results" and push onto subgoal stack
+;;    Save parse-result with "Check Parse Results" goal and chain
+;;
+;;  ?*sInput* is a string, not symbol. 
+;;  (numberp ?*sInput*) = false, (stringp ?*sInput*) = true, (symbolp ?*sInput*) = false.
+;;
+(defrule Start-Logic-Problem 
+   ?problem <-
+      (problem
+      	(subgoals ?subgoal)
+      	(interface-elements $? ?sentential-logic-expression $?))
+   ?subgoal <-
+      (enter-expression-goal)
+   ?sentential-logic-expression <-
+      (textField  (description "SENTENTIAL-LOGIC-EXPRESSION"))
+
+   =>
+
+     ;; (printout t " number  = " (numberp ?*sInput*) " string  = " (stringp ?*sInput*) " symbol  = " (symbolp ?*sInput*) crlf)
+          (if (= ?*sInput* "-1")
+            then (bind ?current-input "P->Q")   ;; new value was -1 (numberp ?*sInput*)
+            else (bind ?current-input (call (new String ?*sInput*) toUpperCase)))
+     ;; (printout t " current-input " ?current-input crlf)
+        
+     (bind ?parser (call LogicTutor.LogicExprParser instance))   ;; (bind ?parser (call LogicExprParser instance)) if codes not in any package        
+     (bind ?parse-result-struct (call ?parser parse ?current-input))
+     (bind ?parse-result-boolean (call ?parse-result-struct getResult))
+
+     (if ?parse-result-boolean then    
+       (progn
+	(bind ?parse-result "OK")
+        
+        (bind ?parse-result-VariableSet (call ?parse-result-struct getVariableList))
+          
+        (bind ?CreateMemory (create-wme ?parse-result-struct ?parse-result-VariableSet ?problem ))
+        (modify ?sentential-logic-expression (value ?current-input))
+       )    
+     else (bind ?parse-result (call ?parse-result-struct getErrorMsg)))
+     
+     (bind ?check-parse-results-goal
+            (assert (check-parse-results-goal
+      		(parse-expression-results ?parse-result)
+        	(parse-event ?parse-result-struct)
+      		)))
+
+     (retract ?subgoal)
+     
+     (modify ?problem (subgoals ?check-parse-results-goal))
+    
+     (construct-message 
+         "[Start by typing a sentential logic expression in the highlighted text box.]"
+         "[A valid expression in sentential logic is a combination of the following symbols: 
+         (1) single-character variables P, Q, R, S, (2) implication  (->), (3) bidirectional implication  (<->), 
+         (4) conjunction  (&), (5) disjunction  (|), (6) negation  (~)]")   
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;  
+;;  Author: Bruce McLaren
+;;  Date: 07/23/03 2:58
+;;  
+;;  Name: BUGGY-Parse-Results
+;;  IF
+;;    The current goal is _Check Parse Results_
+;;    The Parse Results are not "OK"
+;;  THEN
+;;    Reset goals to empty
+;;    Print bug message returned in Parse Results
+    
+(defrule BUGGY-Parse-Results 
+   ?problem <-
+      (problem
+      	(subgoals ?subgoal)
+        (interface-elements $? ?sentential-logic-expression $?))
+
+   ?sentential-logic-expression <-
+      (textField  (description "SENTENTIAL-LOGIC-EXPRESSION")
+        (name ?sentential-logic-expression-name))
+    
+   ?subgoal <-
+      (check-parse-results-goal
+      	(parse-expression-results ?parse-expression-results&:(neq ?parse-expression-results "OK")))
+	
+          (studentValues (selection ?sSelection) (action ?sAction) (input ?sInput))
+    (test (lhs-predict-oa ?sSelection ?sAction ?sInput
+           ?sentential-logic-expression-name UpdateTextField DONT-CARE))
+;;failing with JProfiler, working with unit tests
+   =>
+	;;(bind ?sentential-logic-expression-name
+	;;	 (fact-slot-value ?sentential-logic-expression name))
+;; eep not needed ^ now matched on lhs
+	(predict-observable-action ?sentential-logic-expression-name "UpdateTextField" DONT-CARE)
+	(construct-message "[" ?parse-expression-results "]" )
+        (retract ?subgoal)
+        (modify ?problem (subgoals ))
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;  
+;;  Author: Bruce McLaren
+;;  Date: 07/28/03 14:10
+;;  
+;;  Name: BUGGY-Apply-Negation-to-DepVal 
+;;  IF
+;;    The current goal is Apply-Logic-Operators-Goal
+;;    Currently-Selected-Column is an answer column
+;;    Currently-Selected-Column has a value in the top position (i.e., a heading validated by earlier rules)
+;;    Currently-Selected-Cell is empty
+;;    Index-Row is the row of the Currently-Selected-Cell
+;;    Op of Currently-Selected-Column is _~_
+;;    Operand of Currently-Selected-Column is a number (i.e., points to another column)
+;;    Operand-Column is the column pointed to by operand
+;;    Operand-Column, Index-Row is Operand-Value
+;;    Operand-Value is nil
+;;  THEN
+;;    Display error "dependent value not completed"
+    
+(defrule BUGGY-Apply-Negation-to-DepVal 
+   ?problem <-
+      (problem
+      	(subgoals ?subgoal)
+      	(interface-elements $? ?truth-table $?)
+      	(answer-table ?answer-table))
+   ?subgoal <-
+      (apply-logic-operators-goal)
+   ?truth-table <-
+      (table
+        (columns $? ?currently-selected-column $?))
+   ?currently-selected-column <-
+      (column
+        (cells $? ?currently-selected-cell $?))
+   ?currently-selected-cell <-
+      (cell
+	(name ?currently-selected-cell-name)
+        (row-number ?row-number)
+        (value nil))
+   ?answer-table <-
+      (answer-table
+        (answer-columns $? ?answer-column $?))
+   ?answer-column <-
+      (answer-column
+        (column ?currently-selected-column)
+        (selected-alternative ?selected-alternative)
+        (column-header ?answer-column-heading))
+   ?answer-column-heading <-
+      (textField 
+        (value ?answer-column-heading-value))
+   ?selected-alternative <-
+      (logic-header-alternative
+      	(logic-evaluation ?logic-evaluation))
+   ?logic-evaluation <-
+      (logic-evaluation 
+        (expression ?op ?operand))
+ ;;  (test (eq ?op (sym-cat "~")))                      ;; Check that the operator is negation
+ ;;  (test (dependent-value-p (str-cat ?operand)))      ;; Check that the operand is a dependent value
+   ?truth-table <-
+      (table
+        (columns $? ?operand-column $?))
+   ?operand-column <-
+      (column
+        (cells $? ?operand-cell $?))
+   ?operand-cell <-
+      (cell
+        (value nil)
+        (row-number ?row-number)
+ ;;       (col-number ?operand)
+        )
+   ?answer-table <-
+      (answer-table
+        (answer-columns $? ?dep-column $?))
+   ?dep-column <-
+      (answer-column
+        (column ?operand2-column)
+        (column-header ?dep-column-header)
+        (col-number ?operand))
+   ?dep-column-header <-
+      (textField 
+        (value ?dep-column-header-value))
+	(studentValues (selection ?sSelection) (action ?sAction) (input ?sInput))
+    (test (lhs-predict-oa ?sSelection ?sAction ?sInput
+          ?currently-selected-cell-name "UpdateTable" DONT-CARE))
+;;fails with JProfiler, works with unit tests 
+
+   =>
+   ;;(bind ?currently-selected-cell-name
+    ;;  	(fact-slot-value ?currently-selected-cell name))
+;; this is not needed.. the name is matched earlier on the lhs
+
+   (predict-observable-action ?currently-selected-cell-name "UpdateTable" DONT-CARE)
+   
+	(construct-message  
+"[This part of the expression cannot be answered until the cell in this row with column heading '" ?dep-column-header-value "' has been correctly answered.]")
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;  
+;;  Author: Bruce McLaren
+;;  Date: 07/30/03 09:40
+;;  
+;;  Name: BUGGY-Apply-Op-to-1st-Dep-Val
+;;  IF
+;;    The current goal is Apply-Logic-Operators-Goal
+;;    Currently-Selected-Column is an answer column
+;;    Currently-Selected-Column has a value in the top position (i.e., a heading validated by earlier rules)
+;;    Currently-Selected-Cell is empty
+;;    Index-Row is the row of the Currently-Selected-Cell
+;;    Op of Currently-Selected-Column is not _id_
+;;    Operand1 of Currently-Selected-Column is a number (i.e., points to another column)
+;;    Operand1-Column is the column pointed to by operand1
+;;    Operand1-Column, Index-Row is Operand1-Value
+;;    Operand1-Value is nil
+;;    Operand2 is a letter (i.e., it is an identity evaluation)
+;;  THEN
+;;    We have an "empty dependent value" error
+    
+(defrule BUGGY-Apply-Op-to-1st-Dep-Val 
+   ?problem <-
+      (problem
+      	(subgoals ?subgoal)
+      	(interface-elements $? ?truth-table $?)
+      	(answer-table ?answer-table))
+   ?subgoal <-
+      (apply-logic-operators-goal)
+   ?truth-table <-
+      (table
+        (columns $? ?currently-selected-column $?))
+   ?currently-selected-column <-
+      (column
+        (cells $? ?currently-selected-cell $?))
+   ?currently-selected-cell <-
+      (cell
+        (name ?currently-selected-cell-name)
+        (row-number ?row-number))
+   ?answer-table <-
+      (answer-table
+        (answer-columns $? ?answer-column $?))
+   ?answer-column <-
+      (answer-column
+        (column ?currently-selected-column)
+        (selected-alternative ?selected-alternative))
+   ?selected-alternative <-
+      (logic-header-alternative
+        (logic-evaluation ?logic-evaluation))
+   ?logic-evaluation <-
+      (logic-evaluation 
+        (expression ?op ?operand1 ?operand2))
+   (test (dependent-value-p ?operand1))      ;; Check that operand1 is a dependent value
+   ;(test (variable-p ?operand2))            ;; Check that operand2 is a variable (i.e., an ID value)
+   ?truth-table <-
+      (table
+        (columns $? ?operand1-column $?))
+   ?operand1-column <-
+      (column
+      	(cells $? ?operand1-cell $?))
+   ?operand1-cell <-
+      (cell
+        (value nil)
+        (row-number ?row-number)
+        (col-number ?operand1))
+   ?answer-table <-
+      (answer-table
+      	(answer-columns $? ?dep1-column $?))
+   ?dep1-column <-
+      (answer-column
+      	(column ?operand1-column)
+      	(column-header ?dep1-column-header))
+   ?dep1-column-header <-
+      (textField 
+      	(value ?dep1-column-header-value))
+	(studentValues (selection ?sSelection) (action ?sAction) (input ?sInput))
+    (test (lhs-predict-oa ?sSelection ?sAction ?sInput
+          ?currently-selected-cell-name "UpdateTable" DONT-CARE))
+;;fails with JProfiler, works with unit tests
+    
+   =>
+  ;; (bind ?currently-selected-cell-name
+  ;;    	(fact-slot-value ?currently-selected-cell name))
+;; now matched on lhs, so not needed
+
+   (predict-observable-action ?currently-selected-cell-name "UpdateTable" DONT-CARE)
+   
+	(construct-message  
+"[This part of the expression cannot be answered until the cell in this row with column heading '" ?dep1-column-header-value "' has been correctly answered.]")
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;  
+;;  Author: Bruce McLaren
+;;  Date: 07/22/03 17:19
+;;  
+;;  Name: BUGGY-Apply-Op-to-2-Dep-Vals
+;;  IF
+;;    The current goal is Apply-Logic-Operators-Goal
+;;    Currently-Selected-Column is an answer column
+;;    Currently-Selected-Column has a value in the top position (i.e., a heading validated by earlier rules)
+;;    Currently-Selected-Cell is empty
+;;    Index-Row is the row of the Currently-Selected-Cell
+;;    Op of Currently-Selected-Column is not _id_
+;;    Operand1 of Currently-Selected-Column is a number (i.e., points to another column)
+;;    Operand1-Column is the column pointed to by operand1
+;;    Operand1-Column, Index-Row is Operand1-Value
+;;    Operand1-Value is nil
+;;    Operand2 of Currently-Selected-Column is a number (i.e., points to another column)
+;;    Operand2-Column is the column pointed to by operand1
+;;    Operand2-Column, Index-Row is Operand2-Value
+;;    Operand2-Value is nil
+;;  THEN
+;;    We have an "empty dependent value" error
+    
+(defrule BUGGY-Apply-Op-to-2-Dep-Vals 
+   ?problem <-
+      (problem
+      	(subgoals ?subgoal)
+      	(interface-elements $? ?truth-table $?)
+      	(answer-table ?answer-table))
+   ?subgoal <-
+      (apply-logic-operators-goal)
+   ?truth-table <-
+      (table
+        (columns $? ?currently-selected-column $?))
+   ?currently-selected-column <-
+      (column
+        (cells $? ?currently-selected-cell $?))
+   ?currently-selected-cell <-
+      (cell
+        (name ?currently-selected-cell-name)
+        (row-number ?row-number))
+   ?answer-table <-
+      (answer-table
+        (answer-columns $? ?answer-column $?))
+   ?answer-column <-
+      (answer-column
+        (column ?currently-selected-column)
+        (selected-alternative ?selected-alternative))
+   ?selected-alternative <-
+      (logic-header-alternative
+      	(logic-evaluation ?logic-evaluation))
+   ?logic-evaluation <-
+      (logic-evaluation 
+        (expression ?op ?operand1 ?operand2))
+   (test (dependent-value-p ?operand1))     ;; Check that operand1 is a dependent value
+   (test (dependent-value-p ?operand2))     ;; Check that operand2 is a dependent value
+   ?truth-table <-
+      (table
+      	(columns $? ?operand1-column $? ?operand2-column $?))
+   ?operand1-column <-
+      (column
+        (cells $? ?operand1-cell $?))
+   ?operand1-cell <-
+      (cell
+        (value nil)
+        (row-number ?row-number)
+        (col-number ?operand1))
+   ?operand2-column <-
+      (column
+        (cells $? ?operand2-cell $?))
+   ?operand2-cell <-
+      (cell
+        (value nil)
+        (row-number ?row-number)
+        (col-number ?operand2))
+   ?answer-table <-
+      (answer-table
+      	(answer-columns $? ?dep1-column $? ?dep2-column $?))
+   ?dep1-column <-
+      (answer-column
+      	(column ?operand1-column)
+      	(column-header ?dep1-column-header))
+   ?dep1-column-header <-
+      (textField 
+      	(value ?dep1-column-header-value))
+   ?dep2-column <-
+      (answer-column
+        (column ?operand2-column)
+      	(column-header ?dep2-column-header))
+   ?dep2-column-header <-
+      (textField 
+      	(value ?dep2-column-header-value))
+	(studentValues (selection ?sSelection) (action ?sAction) (input ?sInput))
+    (test (lhs-predict-oa ?sSelection ?sAction ?sInput
+          ?currently-selected-cell-name "UpdateTable" DONT-CARE))
+	;;fails with JProfiler, works with unit tests
+   =>
+   ;;(bind ?currently-selected-cell-name
+    ;;  	(fact-slot-value ?currently-selected-cell name))
+;; now superfluous; matched on lhs - eep
+
+   (predict-observable-action ?currently-selected-cell-name "UpdateTable" DONT-CARE)
+   
+	(construct-message  
+"[This part of the expression cannot be answered until the cells in this row with column headings '" ?dep1-column-header-value "' and '" ?dep2-column-header-value "' have been correctly answered.]")
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;  
+;;  Author: Bruce McLaren
+;;  Date: 07/30/03 09:50
+;;  
+;;  Name: BUGGY-Apply-Op-to-2nd-Dep-Val
+;;  IF
+;;    The current goal is Apply-Logic-Operators-Goal
+;;    Currently-Selected-Column is an answer column
+;;    Currently-Selected-Column has a value in the top position (i.e., a heading validated by earlier rules)
+;;    Currently-Selected-Cell is empty
+;;    Index-Row is the row of the Currently-Selected-Cell
+;;    Op of Currently-Selected-Column is not _id_
+;;    Operand1 of Currently-Selected-Column is a number (i.e., points to another column)
+;;    Operand1-Column is the column pointed to by operand1
+;;    Operand1-Column, Index-Row is Operand1-Value
+;;    Operand1-Value is nil
+;;    Operand2 is a letter (i.e., it is an identity evaluation)
+;;  THEN
+;;    We have an "empty dependent value" error
+    
+(defrule BUGGY-Apply-Op-to-2nd-Dep-Val 
+   ?problem <-
+      (problem
+      	(subgoals ?subgoal)
+      	(interface-elements $? ?truth-table $?)
+      	(answer-table ?answer-table))
+   ?subgoal <-
+      (apply-logic-operators-goal)
+   ?truth-table <-
+      (table
+        (columns $? ?currently-selected-column $?))
+   ?currently-selected-column <-
+      (column
+        (cells $? ?currently-selected-cell $?))
+   ?currently-selected-cell <-
+      (cell
+        (name ?currently-selected-cell-name)
+        (row-number ?row-number))
+   ?answer-table <-
+      (answer-table
+        (answer-columns $? ?answer-column $?))
+   ?answer-column <-
+      (answer-column
+        (column ?currently-selected-column)
+        (selected-alternative ?selected-alternative))
+   ?selected-alternative <-
+      (logic-header-alternative
+      	(logic-evaluation ?logic-evaluation))
+   ?logic-evaluation <-
+      (logic-evaluation 
+        (expression ?op ?operand1 ?operand2))
+   ;(test (variable-p ?operand1)              ;; Check that operand1 is a variable (i.e., an ID value)
+   (test (dependent-value-p ?operand2))       ;; Check that operand2 is a dependent value
+   ?truth-table <-
+      (table
+      	(columns $? ?operand2-column $?))
+   ?operand2-column <-
+      (column
+        (cells $? ?operand2-cell $?))
+   ?operand2-cell <-
+      (cell
+        (value nil)
+        (row-number ?row-number)
+        (col-number ?operand2))
+   ?answer-table <-
+      (answer-table
+      	(answer-columns $? ?dep2-column $?))
+   ?dep2-column <-
+      (answer-column
+        (column ?operand2-column)
+      	(column-header ?dep2-column-header))
+   ?dep2-column-header <-
+      (textField 
+      	(value ?dep2-column-header-value))
+	(studentValues (selection ?sSelection) (action ?sAction) (input ?sInput))
+    (test (lhs-predict-oa ?sSelection ?sAction ?sInput
+          ?currently-selected-cell-name "UpdateTable" DONT-CARE))
+	;;fails with JProfiler, works with unit tests
+   =>
+   ;;(bind ?currently-selected-cell-name
+    ;;  	(fact-slot-value ?currently-selected-cell name))
+;; redundant, now selected for on lhs - eep
+
+   (predict-observable-action ?currently-selected-cell-name "UpdateTable" DONT-CARE)
+   
+	(construct-message  
+"[This part of the expression cannot be answered until the cell in this row with column heading '" ?dep2-column-header-value "' has been correctly answered.]")
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;  
+;;  Author: Bruce McLaren
+;;  Date: 07/22/03 13:15
+;;  
+;;  Name: BUGGY-Assign-Alternative-Heading
+;;  IF
+;;    The current goal is Assign-Expression-Headings-Goal
+;;    Column1 is the first answer column
+;;    AlternativeX, Value1 is a non-empty value corresponding to Column1, Row0
+;;    AlternativeX, Value1 is Column Header Value
+;;  THEN
+;;    Compare current input to expected value
+;;    If values are not the same, we have a "invalid decomposition" error
+    
+(defrule BUGGY-Assign-Alternative-Heading 
+   ?problem <-
+      (problem
+      	(subgoals ?subgoal)
+      	(interface-elements $? ?column-header $?)
+      	(answer-table ?answer-table)
+      	(decomposition-alternatives $? ?alternativeX $?))
+   ?subgoal <-
+      (assign-expression-headings-goal
+         (just-assigned-heading-p nil))
+   ?column-header <-
+      (textField 
+        (description "COLUMN1HEADER")
+    	(name ?column-header-name))
+   ?answer-table <-
+      (answer-table
+        (answer-columns $? ?answer-column $?))
+   ?answer-column <-
+      (answer-column
+        (column-header ?column-header)
+        (alternate-col-values $? ?alternate-value $?))
+   ?alternate-value <-
+      (logic-header-alternative
+        (value ?col-header-value))
+   ?alternativeX <-
+      (decomposition-alternative
+        (selected-alternative-p nil)
+        (header-values $? ?alternate-value $?))
+	(studentValues (selection ?sSelection) (action ?sAction) (input ?sInput))
+    (test (lhs-predict-oa ?sSelection ?sAction ?sInput
+          ?column-header-name "UpdateTextField" ?*sInput*))          
+	;;fails with JProfiler, works with unit tests
+   =>
+   ;;(bind ?column-header-name
+    ;;  	(fact-slot-value ?column-header name))
+;; now unecessary; matched on lhs - eep
+    
+   (predict-observable-action ?column-header-name "UpdateTextField" ?*sInput*)
+   (construct-message  
+"['" ?*sInput* "' is not a valid decomposition element of the expression.]")
+;;  Need to use the function  Ignore-Blanks-Outer-Parens-String-Not-Equal  !!
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;  
+;;  Author: Bruce McLaren
+;;  Date: 07/25/03 2:58
+;;  
+;;  Name: BUGGY-Assign-Variable-Heading
+;;  IF
+;;    The current goal is Create-Variable-Headings
+;;    There is a variable heading that hasn't been filled
+;;    There is a variable alternative that HAS NOT been used
+;;  THEN
+;;    Compare current input to expected value
+;;    If values are not the same, we have a "invalid var" error
+    
+	
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;  
+;;  Author: Bruce McLaren
+;;  Date: 07/30/03 10:40
+;;  
+;;  Name: BUGGY-Invalid-Answer 
+;;  IF
+;;    The current goal is Apply-Logic-Operators-Goal
+;;    Currently-Selected-Column is an answer column
+;;    Currently-Selected-Column has a value in the top position (i.e., a heading validated by earlier rules)
+;;    Currently-Selected-Cell has a value other than "T" or "F"
+;;  THEN
+;;    We have an "invalid answer" error
+(defrule BUGGY-Invalid-Answer 
+(declare (salience -100))
+   ?problem <-
+      (problem
+      	(subgoals ?subgoal)
+;      	(interface-elements $? ?truth-table $?)
+;      	(answer-table ?answer-table)
+      )
+   ?subgoal <-
+      (apply-logic-operators-goal)
+   (test (not (Answer-is-T-or-F ?*sInput*)))
+;   ?truth-table <-
+;      (table
+;        (columns $? ?currently-selected-column $?))
+;   ?currently-selected-column <-
+;      (column
+;        (cells $? ?currently-selected-cell $?))
+;   ?answer-column <-
+;      (answer-column
+;        (column ?currently-selected-column)
+;        (column-header ?column-header))
+;   ?column-header <-
+;      (textField 
+;        (value ~nil))
+;   ?currently-selected-cell <-
+;      (cell
+;      	(value nil))
+;   ?answer-table <-
+;      (answer-table
+;        (answer-columns $? ?answer-column $?))
+	(studentValues (selection ?sSelection) (action ?sAction) (input ?sInput))
+    (test (lhs-predict-oa ?sSelection ?sAction ?sInput
+                    DONT-CARE "UpdateTable" ?*sInput*))
+	;;working with JProfiler
+   =>
+    (predict-observable-action DONT-CARE "UpdateTable" ?*sInput*)
+	(construct-message 
+     "['" ?*sInput* "' is not the correct truth value.") 
+
+;     "['" ?*sInput* "' is not a valid answer.  You must answer with a truth value of 'T' or 'F'")
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;  
+;;  Author: Bruce McLaren
+;;  Date: 07/25/03 2:58
+;;  
+;;  Name: BUGGY-Assign-Variable-Heading
+;;  IF
+;;    The current goal is Create-Variable-Headings
+;;    There is a variable heading that hasn't been filled
+;;    There is a variable alternative that HAS NOT been used
+;;  THEN
+;;    Compare current input to expected value
+;;    If values are not the same, we have a "invalid var" error
+    
+	
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;  
+;;  Author: Bruce McLaren
+;;  Date: 07/22/03 13:22
+;;  
+;;  Name: BUGGY-Invalid-Expression-Hdg
+;;  IF
+;;    The current goal is Assign-Expression-Headings-Goal
+;;    Column1 is an answer column
+;;    Column1, Row0 has no value
+;;    Current-Alternative, Value1 is a non-empty value corresponding to Column1, Row0
+;;    Current-Alternative, Value1 is not equal to the input of Column1, Row0
+;;  THEN
+;;    If the values do not match, we have an invalid heading error
+    
+(defrule BUGGY-Invalid-Expression-Hdg 
+   ?problem <-
+      (problem
+      	(interface-elements $? ?sentential-logic-expression $? ?column-header $?)
+      	(answer-table ?answer-table)
+      	(decomposition-alternatives $? ?alternativeX $?))
+   ?sentential-logic-expression <-
+      (textField 
+      	(description "SENTENTIAL-LOGIC-EXPRESSION")
+      	(value ?expression))
+   ?column-header <-
+      (textField 
+        (description ~"COLUMN1HEADER")
+    	(name ?column-header-name))
+   ?answer-table <-
+      (answer-table
+        (answer-columns $? ?answer-column $?))
+   ?answer-column <-
+      (answer-column
+        (column-header ?column-header)
+        (alternate-col-values $? ?alternate-value $?))
+   ?alternativeX <-
+      (decomposition-alternative
+        (selected-alternative-p T)  ;; "T")
+        (header-values $? ?alternate-value $?))
+   ?alternate-value <-
+      (logic-header-alternative
+        (already-used-p nil)
+        (value ?alternate-val&:(neq ?alternate-val nil)))
+	;;(studentValues (selection ?sSelection) (action ?sAction) (input ?sInput))
+    ;;(test (lhs-predict-oa ?sSelection ?sAction ?sInput
+      ;; 	   ?column-header-name "UpdateTextField" ?*sInput*))
+	;;fails with JProfiler
+   =>
+   ;;(bind ?column-header-name
+    ;;  	(fact-slot-value ?column-header name))
+   (predict-observable-action ?column-header-name "UpdateTextField" ?*sInput*)
+	(construct-message  
+"[The heading '" ?*sInput* "' is not correct for this column, given the input expression '" ?expression "' and its decomposition.]")
+;;  Need to use the function  'Ignore-Blanks-Outer-Parens-String-Not-Equal  !!
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;  
+;;  Author: Bruce McLaren
+;;  Date: 07/30/03 15:05
+;;  
+;;  Name: BUGGY-Invalid-Table-Entry
+;;  IF
+;;    The current goal is Apply-Logic-Operators-Goal
+;;    A value is entered into a cell that has no header
+;;  THEN
+;;    Display an "Invalid entry" message
+    
+(defrule BUGGY-Invalid-Table-Entry 
+   ?problem <-
+      (problem
+      	(interface-elements $? ?truth-table $?)
+      	(subgoals ?subgoal)
+      	(answer-table ?answer-table))
+   ?subgoal <-
+      (apply-logic-operators-goal)
+   ?truth-table <-
+      (table
+        (columns $? ?currently-selected-column $?))
+   ?currently-selected-column <-
+      (column
+        (cells $? ?currently-selected-cell $?))
+   ?currently-selected-cell <- (cell)
+   ?answer-table <-
+      (answer-table
+        (answer-columns $? ?answer-column $?))
+   ?answer-column <-
+      (answer-column
+        (column ?currently-selected-column)
+      	(selected-alternative nil))
+	(studentValues (selection ?sSelection) (action ?sAction) (input ?sInput))
+    (test (lhs-predict-oa ?sSelection ?sAction ?sInput
+          (fact-slot-value ?currently-selected-cell name) "UpdateTable" DONT-CARE))
+	;;works with JProfiler, unit tests
+
+   =>
+	(bind ?currently-selected-cell-name
+		(fact-slot-value ?currently-selected-cell name))
+	(predict-observable-action ?currently-selected-cell-name "UpdateTable" DONT-CARE)
+	(construct-message  
+"[There is no heading for this column, so no truth value should be provided in this cell.]")
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;  
+;;  Author: Bruce McLaren
+;;  Date: 07/22/03 13:22
+;;  
+;;  Name: BUGGY-Invalid-Time-for-Table
+;;  IF
+;;    The current goal is NOT Apply Logical Operators
+;;  THEN
+;;    If a value is put into the truth table, we have an 'invalid time for table entry' error
+ ;; rule fired, but the buggy message is not correct  
+(defrule BUGGY-Invalid-Time-for-Table (declare (salience -100))
+   ?problem <-
+      (problem
+;      	(interface-elements $? ?truth-table $?)
+      	(subgoals ?subgoal))
+     (not (apply-logic-operators-goal))   ;;  Match if there is NOT an apply-logic-operators-goal
+;;   ?truth-table <-
+;;        (table
+;;       	(columns $? ?currently-selected-column $?))
+;;    ?currently-selected-column <-
+;;       (column
+;;       	(cells $? ?cell $?))
+;;    ?currently-selected-cell <-
+;;       (cell
+;; 		(name ?cell-name))
+	(studentValues (selection ?sSelection) (action ?sAction) (input ?sInput))
+    (test (lhs-predict-oa ?sSelection ?sAction ?sInput
+                    DONT-CARE "UpdateTable" DONT-CARE))
+	;; works with JProfiler, unit tests
+   =>
+
+   (predict-observable-action DONT-CARE "UpdateTable" DONT-CARE)
+
+   (construct-message  
+"[This is not the appropriate time to fill in values of the truth table .  You must first fill in all of the headings of the table based on a sentential logic expression provided in the top box.]")
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;  
+;;  Author: Bruce McLaren
+;;  Date: 07/25/03 2:58
+;;  
+;;  Name: BUGGY-Multiple-Assign-Var-Hdg
+;;  IF
+;;    The current goal is Create-Variable-Headings
+;;    There is a variable heading that hasn't been filled
+;;    There is a variable alternative that HAS been used
+;;  THEN
+;;    Compare current input to already used value
+;;    If values are the same, we have a "multiple use of var" error
+    
+(defrule BUGGY-Multiple-Assign-Var-Hdg 
+   ?problem <-
+      (problem
+      	(subgoals ?subgoal)
+      	(interface-elements $? ?variable-header $?)
+      	(answer-table ?answer-table))
+   ?subgoal <-
+      (assign-variable-headings-goal)
+   ?answer-table <-
+      (answer-table
+        (variable-columns $? ?variable-column $?)
+        (variable-header-alternatives $? ?variable-header-alternative $?))
+   ?variable-column <-
+      (variable-column
+        (cells ?variable-header $?))
+   ?variable-header <- (textField )
+   ?variable-header-alternative <-
+      (variable-header-alternative
+      	(already-used-p T)
+        (value ?variable&:(neq ?variable nil)))
+	;;(studentValues (selection ?sSelection) (action ?sAction) (input ?sInput))
+    ;;(test (lhs-predict-oa ?sSelection ?sAction ?sInput
+    ;;(fact-slot-value ?variable-header name) "UpdateTextField" ?variable))
+	;;gives problem with p&q, fails with JProfiler, works with unit tests
+   =>
+   (bind ?variable-header-name
+      	(fact-slot-value ?variable-header name))
+
+   (predict-observable-action ?variable-header-name "UpdateTextField" ?variable)
+   
+	(construct-message  
+"['" ?variable "' has already been used as the header to another column.]")
+;;  Need to use the function  'Blanks-String-Equal !!
+)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;  
+;;  Author: Bruce McLaren
+;;  Date: 07/22/03 13:22
+;;  
+;;  Name: BUGGY-No-Expression-Hdg
+;;  IF
+;;    Column1 is an answer column
+;;    Column1, Row0 has no value
+;;    Current-Alternative, Value1 is a non-empty value corresponding to Column1, Row0
+;;    Current-Alternative, Value1 is nil (i.e., there should be no header for this column)
+;;  THEN
+;;    If a value is put into a column that should be empty, we have a "no heading error"
+    
+(defrule BUGGY-No-Expression-Hdg 
+   ?problem <-
+      (problem
+      	(interface-elements $? ?column-header $?)
+      	(answer-table ?answer-table)
+      	(decomposition-alternatives $? ?alternativeX $?))
+   ?column-header <-
+      (textField 
+        (description ~"COLUMN1HEADER"))
+   ?answer-table <-
+      (answer-table
+        (answer-columns $? ?answer-column $?))
+   ?answer-column <-
+      (answer-column
+        (column-header ?column-header)
+        (alternate-col-values $? ?alternate-value $?))
+   ?alternativeX <-
+      (decomposition-alternative
+        (selected-alternative-p "T")
+        (header-values $? ?alternate-value $?))
+   ?alternate-value <-
+      (logic-header-alternative
+        (already-used-p nil)
+        (value nil))
+	(studentValues (selection ?sSelection) (action ?sAction) (input ?sInput))
+    (test (lhs-predict-oa ?sSelection ?sAction ?sInput
+         (fact-slot-value ?column-header name) "UpdateTextField" DONT-CARE))
+	;;working with JProfiler, unit tests
+   =>
+   (bind ?column-header-name
+      	(fact-slot-value ?column-header name))
+
+   (predict-observable-action ?column-header-name "UpdateTextField" DONT-CARE)
+
+	(construct-message  
+"[There is no heading for this column, given the decomposition of the expression.]")
+)
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;  
+;;  Author: Bruce McLaren
+;;  Date: 07/28/03 17:09
+;;  
+;;  Name: Apply-Op-to-Dep-Val-and-Id-Val
+;;  IF
+;;    The current goal is Apply-Logic-Operators-Goal
+;;    Currently-Selected-Column is an answer column
+;;    Currently-Selected-Column has a value in the top position (i.e., a heading validated by earlier rules)
+;;    Currently-Selected-Cell is empty
+;;    Index-Row is the row of the Currently-Selected-Cell
+;;    Op of Currently-Selected-Column is not _id_
+;;    Operand1 of Currently-Selected-Column is a number (i.e., points to another column)
+;;    operand-Column is the column pointed to by operand1
+;;    operand-Column, Index-Row is operand-Value
+;;    Operand2 of Currently-Selected-Column is a letter (i.e., is an id operation)
+;;    variable-Column is a variable column
+;;    variable-Column contains Operand2 in the top position
+;;    variable-Column, Index-Row is variable-Value
+;;  THEN
+;;    Put the value of (Apply (Op operand-Value variable-Value)) into Currently-Selected-Cell
+    
+    
+(defrule Apply-Op-to-Id-Val-and-Dep-Val 
+   ?problem <-
+      (problem
+      	(subgoals ?subgoal)
+      	(interface-elements $? ?truth-table $?)
+      	(answer-table ?answer-table))
+   ?subgoal <-
+      (apply-logic-operators-goal)
+   ?truth-table <-
+      (table
+        (columns $? ?currently-selected-column $?))
+   ?currently-selected-column <-
+      (column
+        (cells $? ?currently-selected-cell $?))
+   ?currently-selected-cell <-
+      (cell
+        (name ?currently-selected-cell-name)
+        (row-number ?row-number)
+        (value nil))
+ ;;  (test (eq ?*sSelection* ?currently-selected-cell-name))  ;;  Be sure this cell has been selected 
+   (test (cell-must-be-filled-p ?row-number))  ;; Since table varies in size, check whether this cell must be filled
+   ?answer-table <-
+      (answer-table
+        (answer-columns $? ?answer-column $?)
+        (answer-rows $? ?answer-row $?)
+        (variable-columns $? ?variable-column $?))
+   ?answer-column <-
+      (answer-column
+        (column ?currently-selected-column)
+        (selected-alternative ?selected-alternative)
+        (column-header ?answer-column-heading))
+   ?answer-column-heading <-
+      (textField 
+        (value ?answer-column-heading-value))
+   ?selected-alternative <-
+      (logic-header-alternative
+      	(logic-evaluation ?logic-evaluation))
+   ?logic-evaluation <-
+      (logic-evaluation 
+        (expression ?op ?operand1 ?operand2))
+   (test (dependent-value-p (str-cat ?operand2)))   ;; ?operand1))     ;; Check that operand1 is a dependent value
+;;   (test (variable-p ?operand2))            ;; Check that operand2 is a variable (i.e., an ID value)
+   (test (variable-p (str-cat ?operand1)))            ;; Check that operand2 is a variable (i.e., an ID value)
+   ?truth-table <-
+      (table
+        (columns $? ?operand-column $?))
+   ?operand-column <-
+      (column
+        (cells $? ?operand-cell $?))
+   ?operand-cell <-
+      (cell
+        (value ?operand-value&:(neq ?operand-value nil))
+        (row-number ?row-number)
+;;        (col-number ?operand1))
+        (col-number ?col-number))
+    (test (Int-Sym-eq  ?col-number  ?operand2)) ;;; need (test (dependent-value-p ?operand)) first , otherwise will cause numberformatexception
+   ?answer-table <-
+      (answer-table
+        (answer-columns $? ?operand-answer-column $?))
+   ?operand-answer-column <-
+      (answer-column
+;;        (col-number ?operand2)
+        (col-number ?col-number)
+        (column-header ?operand-heading))
+   ?operand-heading <-
+      (textField 
+        (value ?operand-heading-value))
+   ?variable-column <-
+      (variable-column
+        (cells ?variable-heading $? ?variable-cell $?))
+   ?variable-heading <-
+      (textField 
+        (value ?variable-heading-value))
+   (test (eq ?variable-heading-value ?operand1))  ;; Check that variable1 column is for operand1
+   ?answer-row <-
+      (answer-row
+        (cells $? ?variable-cell $?))
+   ?variable-cell <-
+      (variable-value
+        (row-number ?row-number)
+        (value ?variable-value))
+
+	(studentValues (selection ?sSelection) (action ?sAction) (input ?sInput))
+    (test (lhs-predict-oa ?sSelection ?sAction ?sInput
+     ?currently-selected-cell-name "UpdateTable" (apply-logic-operator ?op ?variable-value ?operand-value )))
+  	;;working with JProfiler, unit tests
+    
+     =>
+   (bind ?answer (apply-logic-operator ?op ?variable-value ?operand-value ))
+   (predict-observable-action ?currently-selected-cell-name "UpdateTable" ?answer)
+   (construct-message 
+    "[In a cell on the right in a column that depends on one truth value you have already provided and one variable truth value, apply the appropriate operation and write the truth value in the cell.]"
+    "[Apply the operator '" ?op "' to the truth values in the corresponding cells under headings '" ?operand-heading-value "' and '" ?variable-heading-value "'.]"
+    "[Type the truth value '" ?answer "' in the row " ?row-number " cell under the heading '" ?answer-column-heading-value "'.  This is the result of applying the operator '" ?op "' to the truth values '" ?operand-value "' and '" ?variable-value "'.  These values come from corresponding cells in the columns headed by '" ?operand-heading-value "' and '" ?variable-heading-value "'.]"
+   )
+   (modify ?currently-selected-cell (value ?answer))
+)

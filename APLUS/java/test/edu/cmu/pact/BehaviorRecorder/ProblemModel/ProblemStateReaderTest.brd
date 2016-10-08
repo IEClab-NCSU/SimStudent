@@ -1,0 +1,299 @@
+<stateGraph firstCheckAllStates="true" caseInsensitive="true" commutative="false" lockWidget="true" version="1.0">
+<startNodeMessages>
+   <message>
+               <verb>NotePropertySet</verb>
+            <properties>
+                    <MessageType>StartProblem</MessageType>
+                <ProblemName>NASA-Exercise</ProblemName>
+                </properties>
+   </message>
+      <message>
+               <verb>SendNoteProperty</verb>
+           <properties>
+                    <MessageType>GroupDescriptionStart</MessageType>
+                </properties>
+   </message>
+      <message>
+               <verb>SendNoteProperty</verb>
+           <properties>
+                    <MessageType>GroupDescriptionEnd</MessageType>
+          </properties>
+   </message>
+      <message>
+               <verb>NotePropertySet</verb>
+            <properties>
+                    <MessageType>NumberOfTables</MessageType>
+                       <Number>0</Number>
+              </properties>
+   </message>
+      <message>
+               <verb>NotePropertySet</verb>
+            <properties>
+                    <MessageType>StartStateEnd</MessageType>
+                </properties>
+   </message>
+</startNodeMessages>
+
+<node locked="false" doneState ="false">
+  <text>NASA-Exercise</text>
+      <uniqueID>1</uniqueID>
+  <dimension>
+             <x>191</x>
+              <y>30</y>
+               <width>112</width>
+              <height>25</height>
+     </dimension>
+</node>
+<!--
+<node locked="false" doneState ="false">
+     <text>state1</text>
+     <uniqueID>2</uniqueID>
+  <dimension>
+             <x>59</x>
+               <y>140</y>
+              <width>52</width>
+               <height>25</height>
+     </dimension>
+</node>
+<node locked="false" doneState ="false">
+     <text>state2</text>
+     <uniqueID>3</uniqueID>
+  <dimension>
+             <x>59</x>
+               <y>285</y>
+              <width>52</width>
+               <height>25</height>
+     </dimension>
+</node>
+
+<node locked="false" doneState ="false">
+     <text>state3</text>
+     <uniqueID>4</uniqueID>
+  <dimension>
+             <x>66</x>
+               <y>388</y>
+              <width>52</width>
+               <height>25</height>
+     </dimension>
+</node>
+
+<node locked="false" doneState ="false">
+     <text>state4</text>
+     <uniqueID>5</uniqueID>
+  <dimension>
+             <x>177</x>
+              <y>515</y>
+              <width>52</width>
+               <height>25</height>
+     </dimension>
+</node>
+
+<node locked="false" doneState ="false">
+     <text>state5</text>
+     <uniqueID>6</uniqueID>
+  <dimension>
+             <x>178</x>
+              <y>608</y>
+              <width>52</width>
+               <height>25</height>
+     </dimension>
+</node>
+-->
+<!--
+<edge>
+       <actionLabel preferPathMark="true" studentHintRequest="false" stepSuccesfulCompletion="false" stepStudentError="false">
+        <text>[], [AgreeEdgeModel_001], [objectCreated]</text>
+          <dialogueName></dialogueName>
+           <uniqueID>1</uniqueID>
+          <message>
+                       <verb>NotePropertySet</verb>
+                   <properties>
+                            <MessageType>InterfaceAction</MessageType>
+                              <Selection><value>AgreeEdgeModel_001</value></Selection>
+                                <Action><value>objectCreated</value></Action>
+                           <Input><value></value></Input>
+                </properties>
+           </message>
+              <buggyMessage>No, this is not correct.</buggyMessage>
+           <successMessage></successMessage>
+               <actionType>Correct Action</actionType>
+        <oldActionType>Correct Action</oldActionType>
+           <checkedStatus>Never Checked</checkedStatus>
+            <dimension>
+                     <width>31</width>
+                       <height>16</height>
+             </dimension>
+    </actionLabel>
+  <preCheckedStatus>No-Applicable</preCheckedStatus>
+      <rule>
+          <text>unnamed</text>
+            <indicator>-1</indicator>
+               <dimension>
+                     <width>41</width>
+                       <height>16</height>
+             </dimension>
+    </rule>
+<sourceID>1</sourceID>
+  <destID>2</destID>
+      <associations>
+  </associations>
+</edge>
+<edge>
+    <actionLabel preferPathMark="true" studentHintRequest="false" stepSuccesfulCompletion="false" stepStudentError="false">
+        <text>[], [AgreeEdgeModel_002], [objectCreated]</text>
+          <dialogueName></dialogueName>
+           <uniqueID>3</uniqueID>
+          <message>
+                       <verb></verb>
+                   <properties>
+                            <MessageType>InterfaceAction</MessageType>
+                              <Selection><value>AgreeEdgeModel_002</value></Selection>
+                                <Action><value>objectCreated</value></Action>
+                           <Input><value></value></Input>
+                </properties>
+           </message>
+              <buggyMessage>No, this is not correct.</buggyMessage>
+           <successMessage></successMessage>
+               <actionType>Correct Action</actionType>
+        <oldActionType>Correct Action</oldActionType>
+                <checkedStatus>Never Checked</checkedStatus>
+            <dimension>
+                     <width>31</width>
+                       <height>16</height>
+             </dimension>
+    </actionLabel>
+  <preCheckedStatus>No-Applicable</preCheckedStatus>
+      <rule>
+          <text>unnamed</text>
+            <indicator>-1</indicator>
+               <dimension>
+                     <width>41</width>
+                       <height>16</height>
+             </dimension>
+    </rule>
+<sourceID>2</sourceID>
+  <destID>3</destID>
+      <associations>
+  </associations>
+</edge>
+
+<edge>
+    <actionLabel preferPathMark="true" studentHintRequest="false" stepSuccesfulCompletion="false" stepStudentError="false">
+        <text>[], [AgreeEdgeModel_003], [objectCreated]</text>
+          <dialogueName></dialogueName>
+           <uniqueID>5</uniqueID>
+          <message>
+                       <verb></verb>
+                   <properties>
+                            <MessageType>InterfaceAction</MessageType>
+                              <Selection><value>AgreeEdgeModel_003</value></Selection>
+                                <Action><value>objectCreated</value></Action>
+                           <Input><value></value></Input>
+                </properties>
+           </message>
+              <buggyMessage>No, this is not correct.</buggyMessage>
+           <successMessage></successMessage>
+               <actionType>Correct Action</actionType>
+        <oldActionType>Correct Action</oldActionType>
+           <checkedStatus>Never Checked</checkedStatus>
+            <dimension>
+                     <width>31</width>
+                       <height>16</height>
+             </dimension>
+    </actionLabel>
+  <preCheckedStatus>No-Applicable</preCheckedStatus>
+      <rule>
+          <text>unnamed</text>
+            <indicator>-1</indicator>
+               <dimension>
+                     <width>41</width>
+                       <height>16</height>
+             </dimension>
+    </rule>
+<sourceID>3</sourceID>
+  <destID>4</destID>
+      <associations>
+  </associations>
+</edge>
+
+<edge>
+    <actionLabel preferPathMark="true" studentHintRequest="false" stepSuccesfulCompletion="false" stepStudentError="false">
+        <text>[], [AgreeEdgeModel_004], [objectCreated]</text>
+          <dialogueName></dialogueName>
+           <uniqueID>7</uniqueID>
+          <message>
+                       <verb></verb>
+                   <properties>
+                            <MessageType>InterfaceAction</MessageType>
+                              <Selection><value>AgreeEdgeModel_004</value></Selection>
+                                <Action><value>objectCreated</value></Action>
+                           <Input><value></value></Input>
+                </properties>
+           </message>
+              <buggyMessage>No, this is not correct.</buggyMessage>
+           <successMessage></successMessage>
+               <actionType>Correct Action</actionType>
+        <oldActionType>Correct Action</oldActionType>
+           <checkedStatus>Never Checked</checkedStatus>
+            <dimension>
+                     <width>31</width>
+                       <height>16</height>
+             </dimension>
+    </actionLabel>
+  <preCheckedStatus>No-Applicable</preCheckedStatus>
+      <rule>
+          <text>unnamed</text>
+            <indicator>-1</indicator>
+               <dimension>
+                     <width>41</width>
+                       <height>16</height>
+             </dimension>
+    </rule>
+<sourceID>4</sourceID>
+  <destID>5</destID>
+      <associations>
+  </associations>
+</edge>
+
+<edge>
+    <actionLabel preferPathMark="true" studentHintRequest="false" stepSuccesfulCompletion="false" stepStudentError="false">
+        <text>[], [AgreeEdgeModel_005], [objectCreated]</text>
+          <dialogueName></dialogueName>
+           <uniqueID>9</uniqueID>
+          <message>
+                       <verb></verb>
+                   <properties>
+                            <MessageType>InterfaceAction</MessageType>
+                              <Selection><value>AgreeEdgeModel_005</value></Selection>
+                                <Action><value>objectCreated</value></Action>
+                           <Input><value></value></Input>
+                </properties>
+           </message>
+              <buggyMessage>No, this is not correct.</buggyMessage>
+           <successMessage></successMessage>
+               <actionType>Correct Action</actionType>
+        <oldActionType>Correct Action</oldActionType>
+           <checkedStatus>Never Checked</checkedStatus>
+            <dimension>
+                     <width>31</width>
+                       <height>16</height>
+             </dimension>
+    </actionLabel>
+  <preCheckedStatus>No-Applicable</preCheckedStatus>
+      <rule>
+          <text>unnamed</text>
+            <indicator>-1</indicator>
+               <dimension>
+                     <width>41</width>
+                       <height>16</height>
+             </dimension>
+    </rule>
+<sourceID>5</sourceID>
+  <destID>6</destID>
+      <associations>
+  </associations>
+</edge>
+-->
+  <EdgesGroups>
+   </EdgesGroups>
+</stateGraph>

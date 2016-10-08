@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="gov.sandia.jess"
+      label="JessDE"
+      version="7.1.0"
+      provider-name="Sandia National Laboratories"
+      image="icons/jess-16x16.gif">
+
+   <description url="about.html">
+      Development environment for Jess, the Rule Engine for the Java Platform.
+   </description>
+
+   <copyright url="about.html">
+      Jess is Copyright (C) 2006 by the Sandia Corporation.
+   </copyright>
+
+   <license url="about.html">
+      Jess is commercial software. Contact Craig Smith, casmith@sandia.gov,
+   for information about licensing Jess.
+   </license>
+
+   <requires>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.debug.core"/>
+      <import plugin="org.eclipse.jdt.launching"/>
+      <import plugin="org.eclipse.jdt.core"/>
+      <import plugin="org.eclipse.debug.ui"/>
+      <import plugin="org.eclipse.jdt.ui"/>
+      <import plugin="org.eclipse.jdt.debug.ui"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.ui.editors"/>
+      <import plugin="org.eclipse.ui.workbench.texteditor"/>
+      <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.eclipse.core.variables"/>
+      <import plugin="org.eclipse.jface"/>
+      <import plugin="org.eclipse.ui.views"/>
+      <import plugin="org.eclipse.swt"/>
+      <import plugin="org.junit"/>
+   </requires>
+
+   <plugin
+         id="gov.sandia.jess"
+         download-size="0"
+         install-size="0"
+         version="7.1.0"/>
+
+   <plugin
+         id="gov.sandia.jess.debug"
+         download-size="0"
+         install-size="0"
+         version="7.1.0"/>
+
+   <plugin
+         id="gov.sandia.jess.editor"
+         download-size="0"
+         install-size="0"
+         version="7.1.0"/>
+
+</feature>

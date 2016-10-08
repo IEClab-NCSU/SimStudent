@@ -1,0 +1,583 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<log_session_start auth_token="" session_id="L-400167e8:115d39724c3:-8000" user_guid="sewall" date_time="2007/10/24 15:57:20.00165" timezone="US/Eastern" class_id="" treatment_id="" assignment_id="" info_type=""/>
+<?xml version="1.0" encoding="ISO-8859-1"?><log_action auth_token="" session_id="L-400167e8:115d39724c3:-8000" user_guid="sewall" date_time="2007/10/24 16:00:28.00546" timezone="US/Eastern" action_id="message" source_id="PACT_CTAT" external_object_id="" info_type="tutor_message.dtd"><?xml version="1.0" encoding="UTF-8"?>
+<tutor_related_message_sequence version_number="4">
+<message context_message_id="C-400167e8:115d39724c3:-7fac">
+	<property name="verb">
+		SendNoteProperty
+	</property>
+	<property name="MessageType">
+		StateGraph
+	</property>
+	<property name="caseInsensitive">
+		true
+	</property>
+	<property name="unordered">
+		false
+	</property>
+	<property name="lockWidget">
+		true
+	</property>
+	<property name="suppressStudentFeedback">
+		false
+	</property>
+	<property name="highlightRightSelection">
+		true
+	</property>
+</message>
+</tutor_related_message_sequence>
+</log_action>
+<?xml version="1.0" encoding="ISO-8859-1"?><log_action auth_token="" session_id="L-400167e8:115d39724c3:-8000" user_guid="sewall" date_time="2007/10/24 16:00:28.00546" timezone="US/Eastern" action_id="context_message" source_id="PACT_CTAT" external_object_id="" info_type="tutor_message.dtd"><?xml version="1.0" encoding="UTF-8"?>
+<tutor_related_message_sequence version_number="4">
+<context_message context_message_id="C-400167e8:115d39724c3:-7fac" name="START_PROBLEM">
+	<class>
+	</class>
+	<dataset>
+		<name>Examples</name>
+		<level type="Unit">
+			<name>Arithmetic</name>
+			<level type="Section">
+				<name>Addition</name>
+				<problem>
+					<name>start</name>
+					<context>start</context>
+				</problem>
+			</level>
+		</level>
+	</dataset>
+</context_message>
+</tutor_related_message_sequence>
+</log_action>
+<?xml version="1.0" encoding="ISO-8859-1"?><log_action auth_token="" session_id="L-400167e8:115d39724c3:-8000" user_guid="sewall" date_time="2007/10/24 16:00:28.00576" timezone="US/Eastern" action_id="message" source_id="PACT_CTAT" external_object_id="" info_type="tutor_message.dtd"><?xml version="1.0" encoding="UTF-8"?>
+<tutor_related_message_sequence version_number="4">
+<message context_message_id="C-400167e8:115d39724c3:-7fac">
+	<property name="verb">
+		SendNoteProperty
+	</property>
+	<property name="MessageType">
+		GroupDescriptionStart
+	</property>
+</message>
+</tutor_related_message_sequence>
+</log_action>
+<?xml version="1.0" encoding="ISO-8859-1"?><log_action auth_token="" session_id="L-400167e8:115d39724c3:-8000" user_guid="sewall" date_time="2007/10/24 16:00:28.00576" timezone="US/Eastern" action_id="message" source_id="PACT_CTAT" external_object_id="" info_type="tutor_message.dtd"><?xml version="1.0" encoding="UTF-8"?>
+<tutor_related_message_sequence version_number="4">
+<message context_message_id="C-400167e8:115d39724c3:-7fac">
+	<property name="verb">
+		SendNoteProperty
+	</property>
+	<property name="MessageType">
+		GroupDescriptionEnd
+	</property>
+</message>
+</tutor_related_message_sequence>
+</log_action>
+<?xml version="1.0" encoding="ISO-8859-1"?><log_action auth_token="" session_id="L-400167e8:115d39724c3:-8000" user_guid="sewall" date_time="2007/10/24 16:00:28.00586" timezone="US/Eastern" action_id="message" source_id="PACT_CTAT" external_object_id="" info_type="tutor_message.dtd"><?xml version="1.0" encoding="UTF-8"?>
+<tutor_related_message_sequence version_number="4">
+<message context_message_id="C-400167e8:115d39724c3:-7fac">
+	<property name="verb">
+		NotePropertySet
+	</property>
+	<property name="MessageType">
+		NumberOfTables
+	</property>
+	<property name="Number">
+		1
+	</property>
+</message>
+</tutor_related_message_sequence>
+</log_action>
+<?xml version="1.0" encoding="ISO-8859-1"?><log_action auth_token="" session_id="L-400167e8:115d39724c3:-8000" user_guid="sewall" date_time="2007/10/24 16:00:28.00586" timezone="US/Eastern" action_id="message" source_id="PACT_CTAT" external_object_id="" info_type="tutor_message.dtd"><?xml version="1.0" encoding="UTF-8"?>
+<tutor_related_message_sequence version_number="4">
+<message context_message_id="C-400167e8:115d39724c3:-7fac">
+	<property name="verb">
+		SendNoteProperty
+	</property>
+	<property name="MessageType">
+		InterfaceDescription
+	</property>
+	<property name="WidgetType">
+		CommButton
+	</property>
+	<property name="CommName">
+		hint
+	</property>
+	<property name="UpdateEachCycle">
+		false
+	</property>
+	<property name="jessDeftemplates">
+		<entry>(deftemplate button (slot name))</entry>
+	</property>
+	<property name="jessInstances">
+		<entry>(assert (button (name hint)))</entry>
+	</property>
+	<property name="ComponentDescription">
+		v=true,x=110,y=180
+	</property>
+</message>
+</tutor_related_message_sequence>
+</log_action>
+<?xml version="1.0" encoding="ISO-8859-1"?><log_action auth_token="" session_id="L-400167e8:115d39724c3:-8000" user_guid="sewall" date_time="2007/10/24 16:00:28.00596" timezone="US/Eastern" action_id="message" source_id="PACT_CTAT" external_object_id="" info_type="tutor_message.dtd"><?xml version="1.0" encoding="UTF-8"?>
+<tutor_related_message_sequence version_number="4">
+<message context_message_id="C-400167e8:115d39724c3:-7fac">
+	<property name="verb">
+		NotePropertySet
+	</property>
+	<property name="MessageType">
+		InterfaceAction
+	</property>
+	<property name="Selection">
+		<entry>hint</entry>
+	</property>
+	<property name="Action">
+		<entry>UpdateText</entry>
+	</property>
+	<property name="Input">
+		<entry>Hint</entry>
+	</property>
+</message>
+</tutor_related_message_sequence>
+</log_action>
+<?xml version="1.0" encoding="ISO-8859-1"?><log_action auth_token="" session_id="L-400167e8:115d39724c3:-8000" user_guid="sewall" date_time="2007/10/24 16:00:28.00606" timezone="US/Eastern" action_id="message" source_id="PACT_CTAT" external_object_id="" info_type="tutor_message.dtd"><?xml version="1.0" encoding="UTF-8"?>
+<tutor_related_message_sequence version_number="4">
+<message context_message_id="C-400167e8:115d39724c3:-7fac">
+	<property name="verb">
+		SendNoteProperty
+	</property>
+	<property name="MessageType">
+		InterfaceDescription
+	</property>
+	<property name="WidgetType">
+		CommTable
+	</property>
+	<property name="CommName">
+		table1
+	</property>
+	<property name="UpdateEachCycle">
+		false
+	</property>
+	<property name="Rows">
+		4
+	</property>
+	<property name="Columns">
+		6
+	</property>
+	<property name="jessDeftemplates">
+		<entry>(deftemplate table (slot name) (multislot columns))</entry>
+		<entry>(deftemplate column (slot name) (multislot cells) (slot position) (slot description))</entry>
+		<entry>(deftemplate cell (slot name) (slot value) (slot description) (slot row-number) (slot column-number))</entry>
+	</property>
+	<property name="jessInstances">
+		<entry>(bind ?table1_C1R1 (assert (cell (name table1_C1R1) (row-number 1) (column-number 1))))</entry>
+		<entry>(bind ?table1_C1R2 (assert (cell (name table1_C1R2) (row-number 2) (column-number 1))))</entry>
+		<entry>(bind ?table1_C1R3 (assert (cell (name table1_C1R3) (row-number 3) (column-number 1))))</entry>
+		<entry>(bind ?table1_C1R4 (assert (cell (name table1_C1R4) (row-number 4) (column-number 1))))</entry>
+		<entry>(bind ?table1_Column1(assert (column (name table1_Column1) (cells ?table1_C1R1 ?table1_C1R2 ?table1_C1R3 ?table1_C1R4 ) (position 1))))</entry>
+		<entry>(bind ?table1_C2R1 (assert (cell (name table1_C2R1) (row-number 1) (column-number 2))))</entry>
+		<entry>(bind ?table1_C2R2 (assert (cell (name table1_C2R2) (row-number 2) (column-number 2))))</entry>
+		<entry>(bind ?table1_C2R3 (assert (cell (name table1_C2R3) (row-number 3) (column-number 2))))</entry>
+		<entry>(bind ?table1_C2R4 (assert (cell (name table1_C2R4) (row-number 4) (column-number 2))))</entry>
+		<entry>(bind ?table1_Column2(assert (column (name table1_Column2) (cells ?table1_C2R1 ?table1_C2R2 ?table1_C2R3 ?table1_C2R4 ) (position 2))))</entry>
+		<entry>(bind ?table1_C3R1 (assert (cell (name table1_C3R1) (row-number 1) (column-number 3))))</entry>
+		<entry>(bind ?table1_C3R2 (assert (cell (name table1_C3R2) (row-number 2) (column-number 3))))</entry>
+		<entry>(bind ?table1_C3R3 (assert (cell (name table1_C3R3) (row-number 3) (column-number 3))))</entry>
+		<entry>(bind ?table1_C3R4 (assert (cell (name table1_C3R4) (row-number 4) (column-number 3))))</entry>
+		<entry>(bind ?table1_Column3(assert (column (name table1_Column3) (cells ?table1_C3R1 ?table1_C3R2 ?table1_C3R3 ?table1_C3R4 ) (position 3))))</entry>
+		<entry>(bind ?table1_C4R1 (assert (cell (name table1_C4R1) (row-number 1) (column-number 4))))</entry>
+		<entry>(bind ?table1_C4R2 (assert (cell (name table1_C4R2) (row-number 2) (column-number 4))))</entry>
+		<entry>(bind ?table1_C4R3 (assert (cell (name table1_C4R3) (row-number 3) (column-number 4))))</entry>
+		<entry>(bind ?table1_C4R4 (assert (cell (name table1_C4R4) (row-number 4) (column-number 4))))</entry>
+		<entry>(bind ?table1_Column4(assert (column (name table1_Column4) (cells ?table1_C4R1 ?table1_C4R2 ?table1_C4R3 ?table1_C4R4 ) (position 4))))</entry>
+		<entry>(bind ?table1_C5R1 (assert (cell (name table1_C5R1) (row-number 1) (column-number 5))))</entry>
+		<entry>(bind ?table1_C5R2 (assert (cell (name table1_C5R2) (row-number 2) (column-number 5))))</entry>
+		<entry>(bind ?table1_C5R3 (assert (cell (name table1_C5R3) (row-number 3) (column-number 5))))</entry>
+		<entry>(bind ?table1_C5R4 (assert (cell (name table1_C5R4) (row-number 4) (column-number 5))))</entry>
+		<entry>(bind ?table1_Column5(assert (column (name table1_Column5) (cells ?table1_C5R1 ?table1_C5R2 ?table1_C5R3 ?table1_C5R4 ) (position 5))))</entry>
+		<entry>(bind ?table1_C6R1 (assert (cell (name table1_C6R1) (row-number 1) (column-number 6))))</entry>
+		<entry>(bind ?table1_C6R2 (assert (cell (name table1_C6R2) (row-number 2) (column-number 6))))</entry>
+		<entry>(bind ?table1_C6R3 (assert (cell (name table1_C6R3) (row-number 3) (column-number 6))))</entry>
+		<entry>(bind ?table1_C6R4 (assert (cell (name table1_C6R4) (row-number 4) (column-number 6))))</entry>
+		<entry>(bind ?table1_Column6(assert (column (name table1_Column6) (cells ?table1_C6R1 ?table1_C6R2 ?table1_C6R3 ?table1_C6R4 ) (position 6))))</entry>
+		<entry>(assert (table (name table1) (columns ?table1_Column1 ?table1_Column2 ?table1_Column3 ?table1_Column4 ?table1_Column5 ?table1_Column6 )))</entry>
+	</property>
+	<property name="ComponentDescription">
+		v=true,x=50,y=30
+	</property>
+</message>
+</tutor_related_message_sequence>
+</log_action>
+<?xml version="1.0" encoding="ISO-8859-1"?><log_action auth_token="" session_id="L-400167e8:115d39724c3:-8000" user_guid="sewall" date_time="2007/10/24 16:00:28.00636" timezone="US/Eastern" action_id="message" source_id="PACT_CTAT" external_object_id="" info_type="tutor_message.dtd"><?xml version="1.0" encoding="UTF-8"?>
+<tutor_related_message_sequence version_number="4">
+<message context_message_id="C-400167e8:115d39724c3:-7fac">
+	<property name="verb">
+		NotePropertySet
+	</property>
+	<property name="MessageType">
+		InterfaceAction
+	</property>
+	<property name="Selection">
+		<entry>table1_C4R2</entry>
+	</property>
+	<property name="Action">
+		<entry>UpdateTable</entry>
+	</property>
+	<property name="Input">
+		<entry>6</entry>
+	</property>
+</message>
+</tutor_related_message_sequence>
+</log_action>
+<?xml version="1.0" encoding="ISO-8859-1"?><log_action auth_token="" session_id="L-400167e8:115d39724c3:-8000" user_guid="sewall" date_time="2007/10/24 16:00:28.00636" timezone="US/Eastern" action_id="message" source_id="PACT_CTAT" external_object_id="" info_type="tutor_message.dtd"><?xml version="1.0" encoding="UTF-8"?>
+<tutor_related_message_sequence version_number="4">
+<message context_message_id="C-400167e8:115d39724c3:-7fac">
+	<property name="verb">
+		NotePropertySet
+	</property>
+	<property name="MessageType">
+		InterfaceAction
+	</property>
+	<property name="Selection">
+		<entry>table1_C5R2</entry>
+	</property>
+	<property name="Action">
+		<entry>UpdateTable</entry>
+	</property>
+	<property name="Input">
+		<entry>8</entry>
+	</property>
+</message>
+</tutor_related_message_sequence>
+</log_action>
+<?xml version="1.0" encoding="ISO-8859-1"?><log_action auth_token="" session_id="L-400167e8:115d39724c3:-8000" user_guid="sewall" date_time="2007/10/24 16:00:28.00646" timezone="US/Eastern" action_id="message" source_id="PACT_CTAT" external_object_id="" info_type="tutor_message.dtd"><?xml version="1.0" encoding="UTF-8"?>
+<tutor_related_message_sequence version_number="4">
+<message context_message_id="C-400167e8:115d39724c3:-7fac">
+	<property name="verb">
+		NotePropertySet
+	</property>
+	<property name="MessageType">
+		InterfaceAction
+	</property>
+	<property name="Selection">
+		<entry>table1_C6R2</entry>
+	</property>
+	<property name="Action">
+		<entry>UpdateTable</entry>
+	</property>
+	<property name="Input">
+		<entry>7</entry>
+	</property>
+</message>
+</tutor_related_message_sequence>
+</log_action>
+<?xml version="1.0" encoding="ISO-8859-1"?><log_action auth_token="" session_id="L-400167e8:115d39724c3:-8000" user_guid="sewall" date_time="2007/10/24 16:00:28.00656" timezone="US/Eastern" action_id="message" source_id="PACT_CTAT" external_object_id="" info_type="tutor_message.dtd"><?xml version="1.0" encoding="UTF-8"?>
+<tutor_related_message_sequence version_number="4">
+<message context_message_id="C-400167e8:115d39724c3:-7fac">
+	<property name="verb">
+		NotePropertySet
+	</property>
+	<property name="MessageType">
+		InterfaceAction
+	</property>
+	<property name="Selection">
+		<entry>table1_C4R3</entry>
+	</property>
+	<property name="Action">
+		<entry>UpdateTable</entry>
+	</property>
+	<property name="Input">
+		<entry>1</entry>
+	</property>
+</message>
+</tutor_related_message_sequence>
+</log_action>
+<?xml version="1.0" encoding="ISO-8859-1"?><log_action auth_token="" session_id="L-400167e8:115d39724c3:-8000" user_guid="sewall" date_time="2007/10/24 16:00:28.00666" timezone="US/Eastern" action_id="message" source_id="PACT_CTAT" external_object_id="" info_type="tutor_message.dtd"><?xml version="1.0" encoding="UTF-8"?>
+<tutor_related_message_sequence version_number="4">
+<message context_message_id="C-400167e8:115d39724c3:-7fac">
+	<property name="verb">
+		NotePropertySet
+	</property>
+	<property name="MessageType">
+		InterfaceAction
+	</property>
+	<property name="Selection">
+		<entry>table1_C5R3</entry>
+	</property>
+	<property name="Action">
+		<entry>UpdateTable</entry>
+	</property>
+	<property name="Input">
+		<entry>7</entry>
+	</property>
+</message>
+</tutor_related_message_sequence>
+</log_action>
+<?xml version="1.0" encoding="ISO-8859-1"?><log_action auth_token="" session_id="L-400167e8:115d39724c3:-8000" user_guid="sewall" date_time="2007/10/24 16:00:28.00666" timezone="US/Eastern" action_id="message" source_id="PACT_CTAT" external_object_id="" info_type="tutor_message.dtd"><?xml version="1.0" encoding="UTF-8"?>
+<tutor_related_message_sequence version_number="4">
+<message context_message_id="C-400167e8:115d39724c3:-7fac">
+	<property name="verb">
+		NotePropertySet
+	</property>
+	<property name="MessageType">
+		InterfaceAction
+	</property>
+	<property name="Selection">
+		<entry>table1_C6R3</entry>
+	</property>
+	<property name="Action">
+		<entry>UpdateTable</entry>
+	</property>
+	<property name="Input">
+		<entry>8</entry>
+	</property>
+</message>
+</tutor_related_message_sequence>
+</log_action>
+<?xml version="1.0" encoding="ISO-8859-1"?><log_action auth_token="" session_id="L-400167e8:115d39724c3:-8000" user_guid="sewall" date_time="2007/10/24 16:00:28.00666" timezone="US/Eastern" action_id="message" source_id="PACT_CTAT" external_object_id="" info_type="tutor_message.dtd"><?xml version="1.0" encoding="UTF-8"?>
+<tutor_related_message_sequence version_number="4">
+<message context_message_id="C-400167e8:115d39724c3:-7fac">
+	<property name="verb">
+		SendNoteProperty
+	</property>
+	<property name="MessageType">
+		SendWidgetLock
+	</property>
+	<property name="WidgetLockFlag">
+		true
+	</property>
+</message>
+</tutor_related_message_sequence>
+</log_action>
+<?xml version="1.0" encoding="ISO-8859-1"?><log_action auth_token="" session_id="L-400167e8:115d39724c3:-8000" user_guid="sewall" date_time="2007/10/24 16:00:28.00676" timezone="US/Eastern" action_id="message" source_id="PACT_CTAT" external_object_id="" info_type="tutor_message.dtd"><?xml version="1.0" encoding="UTF-8"?>
+<tutor_related_message_sequence version_number="4">
+<message context_message_id="C-400167e8:115d39724c3:-7fac">
+	<property name="verb">
+		NotePropertySet
+	</property>
+	<property name="MessageType">
+		StartStateEnd
+	</property>
+</message>
+</tutor_related_message_sequence>
+</log_action>
+<?xml version="1.0" encoding="ISO-8859-1"?><log_action auth_token="" session_id="L-400167e8:115d39724c3:-8000" user_guid="sewall" date_time="2007/10/24 16:00:28.00686" timezone="US/Eastern" action_id="author_action_message" source_id="BEHAVIOR_RECORDER" external_object_id="" info_type="author_message.dtd"><?xml version="1.0" encoding="UTF-8"?>
+<tutor_related_message_sequence version_number="2">
+ <author_action_message>
+  <action_type>OPEN_GRAPH</action_type>
+  <argument>C:\cygwin\home\sewall\t2\AuthoringTools\java\Projects\ProblemsOrganizer\Examples\Arithmetic\Addition\start.brd</argument>
+  <result />
+ </author_action_message>
+</tutor_related_message_sequence>
+
+</log_action>
+<?xml version="1.0" encoding="ISO-8859-1"?><log_action auth_token="" session_id="L-400167e8:115d39724c3:-8000" user_guid="sewall" date_time="2007/10/24 16:00:28.00746" timezone="US/Eastern" action_id="author_action_message" source_id="CTAT_WINDOW" external_object_id="" info_type="author_message.dtd"><?xml version="1.0" encoding="UTF-8"?>
+<tutor_related_message_sequence version_number="2">
+ <author_action_message>
+  <action_type>FOCUS_GAINED</action_type>
+  <argument>Docked Window</argument>
+  <result />
+  <result_details />
+ </author_action_message>
+</tutor_related_message_sequence>
+
+</log_action>
+<?xml version="1.0" encoding="ISO-8859-1"?><log_action auth_token="" session_id="L-400167e8:115d39724c3:-8000" user_guid="sewall" date_time="2007/10/24 16:00:32.00537" timezone="US/Eastern" action_id="author_action_message" source_id="CTAT_WINDOW" external_object_id="" info_type="author_message.dtd"><?xml version="1.0" encoding="UTF-8"?>
+<tutor_related_message_sequence version_number="2">
+ <author_action_message>
+  <action_type>FOCUS_LOST</action_type>
+  <argument>Docked Window</argument>
+  <result />
+  <result_details />
+ </author_action_message>
+</tutor_related_message_sequence>
+
+</log_action>
+<?xml version="1.0" encoding="ISO-8859-1"?><log_action auth_token="" session_id="L-400167e8:115d39724c3:-8000" user_guid="sewall" date_time="2007/10/24 16:00:32.00537" timezone="US/Eastern" action_id="author_action_message" source_id="CTAT_WINDOW" external_object_id="" info_type="author_message.dtd"><?xml version="1.0" encoding="UTF-8"?>
+<tutor_related_message_sequence version_number="2">
+ <author_action_message>
+  <action_type>FOCUS_GAINED</action_type>
+  <argument>Student Interface</argument>
+  <result />
+  <result_details />
+ </author_action_message>
+</tutor_related_message_sequence>
+
+</log_action>
+<?xml version="1.0" encoding="ISO-8859-1"?><log_action auth_token="" session_id="L-400167e8:115d39724c3:-8000" user_guid="sewall" date_time="2007/10/24 16:01:03.00678" timezone="US/Eastern" action_id="tool_message" source_id="PACT_CTAT" external_object_id="" info_type="tutor_message.dtd"><?xml version="1.0" encoding="UTF-8"?>
+<tutor_related_message_sequence version_number="4">
+<tool_message context_message_id="C-400167e8:115d39724c3:-7fac">
+	<problem_name>start</problem_name>
+	<semantic_event transaction_id="T-400167e8:115d39724c3:-7f9b" name="ATTEMPT"/>
+	<event_descriptor>
+		<selection>table1_C6R4</selection>
+		<action>UpdateTable</action>
+		<input>5</input>
+	</event_descriptor>
+</tool_message>
+</tutor_related_message_sequence>
+</log_action>
+<?xml version="1.0" encoding="ISO-8859-1"?><log_action auth_token="" session_id="L-400167e8:115d39724c3:-8000" user_guid="sewall" date_time="2007/10/24 16:01:03.00728" timezone="US/Eastern" action_id="tutor_message" source_id="PACT_CTAT" external_object_id="" info_type="tutor_message.dtd"><?xml version="1.0" encoding="UTF-8"?>
+<tutor_related_message_sequence version_number="4">
+<tutor_message context_message_id="C-400167e8:115d39724c3:-7fac">
+	<problem_name>start</problem_name>
+	<semantic_event transaction_id="T-400167e8:115d39724c3:-7f9b" name="RESULT"/>
+	<event_descriptor>
+		<selection>table1_C6R4</selection>
+		<action>UpdateTable</action>
+		<input>5</input>
+	</event_descriptor>
+	<action_evaluation>CORRECT</action_evaluation>
+</tutor_message>
+</tutor_related_message_sequence>
+</log_action>
+<?xml version="1.0" encoding="ISO-8859-1"?><log_action auth_token="" session_id="L-400167e8:115d39724c3:-8000" user_guid="sewall" date_time="2007/10/24 16:01:05.00929" timezone="US/Eastern" action_id="tool_message" source_id="PACT_CTAT" external_object_id="" info_type="tutor_message.dtd"><?xml version="1.0" encoding="UTF-8"?>
+<tutor_related_message_sequence version_number="4">
+<tool_message context_message_id="C-400167e8:115d39724c3:-7fac">
+	<problem_name>start</problem_name>
+	<semantic_event transaction_id="T-400167e8:115d39724c3:-7f95" name="ATTEMPT"/>
+	<event_descriptor>
+		<selection>table1_C5R1</selection>
+		<action>UpdateTable</action>
+		<input>1</input>
+	</event_descriptor>
+</tool_message>
+</tutor_related_message_sequence>
+</log_action>
+<?xml version="1.0" encoding="ISO-8859-1"?><log_action auth_token="" session_id="L-400167e8:115d39724c3:-8000" user_guid="sewall" date_time="2007/10/24 16:01:05.00939" timezone="US/Eastern" action_id="tutor_message" source_id="PACT_CTAT" external_object_id="" info_type="tutor_message.dtd"><?xml version="1.0" encoding="UTF-8"?>
+<tutor_related_message_sequence version_number="4">
+<tutor_message context_message_id="C-400167e8:115d39724c3:-7fac">
+	<problem_name>start</problem_name>
+	<semantic_event transaction_id="T-400167e8:115d39724c3:-7f95" name="RESULT"/>
+	<event_descriptor>
+		<selection>table1_C5R1</selection>
+		<action>UpdateTable</action>
+		<input>1</input>
+	</event_descriptor>
+	<action_evaluation>CORRECT</action_evaluation>
+</tutor_message>
+</tutor_related_message_sequence>
+</log_action>
+<?xml version="1.0" encoding="ISO-8859-1"?><log_action auth_token="" session_id="L-400167e8:115d39724c3:-8000" user_guid="sewall" date_time="2007/10/24 16:01:08.00209" timezone="US/Eastern" action_id="tool_message" source_id="PACT_CTAT" external_object_id="" info_type="tutor_message.dtd"><?xml version="1.0" encoding="UTF-8"?>
+<tutor_related_message_sequence version_number="4">
+<tool_message context_message_id="C-400167e8:115d39724c3:-7fac">
+	<problem_name>start</problem_name>
+	<semantic_event transaction_id="T-400167e8:115d39724c3:-7f8f" name="ATTEMPT"/>
+	<event_descriptor>
+		<selection>table1_C5R4</selection>
+		<action>UpdateTable</action>
+		<input>6</input>
+	</event_descriptor>
+</tool_message>
+</tutor_related_message_sequence>
+</log_action>
+<?xml version="1.0" encoding="ISO-8859-1"?><log_action auth_token="" session_id="L-400167e8:115d39724c3:-8000" user_guid="sewall" date_time="2007/10/24 16:01:08.00219" timezone="US/Eastern" action_id="tutor_message" source_id="PACT_CTAT" external_object_id="" info_type="tutor_message.dtd"><?xml version="1.0" encoding="UTF-8"?>
+<tutor_related_message_sequence version_number="4">
+<tutor_message context_message_id="C-400167e8:115d39724c3:-7fac">
+	<problem_name>start</problem_name>
+	<semantic_event transaction_id="T-400167e8:115d39724c3:-7f8f" name="RESULT"/>
+	<event_descriptor>
+		<selection>table1_C5R4</selection>
+		<action>UpdateTable</action>
+		<input>6</input>
+	</event_descriptor>
+	<action_evaluation>CORRECT</action_evaluation>
+</tutor_message>
+</tutor_related_message_sequence>
+</log_action>
+<?xml version="1.0" encoding="ISO-8859-1"?><log_action auth_token="" session_id="L-400167e8:115d39724c3:-8000" user_guid="sewall" date_time="2007/10/24 16:01:10.00059" timezone="US/Eastern" action_id="tool_message" source_id="PACT_CTAT" external_object_id="" info_type="tutor_message.dtd"><?xml version="1.0" encoding="UTF-8"?>
+<tutor_related_message_sequence version_number="4">
+<tool_message context_message_id="C-400167e8:115d39724c3:-7fac">
+	<problem_name>start</problem_name>
+	<semantic_event transaction_id="T-400167e8:115d39724c3:-7f89" name="ATTEMPT"/>
+	<event_descriptor>
+		<selection>table1_C4R1</selection>
+		<action>UpdateTable</action>
+		<input>1</input>
+	</event_descriptor>
+</tool_message>
+</tutor_related_message_sequence>
+</log_action>
+<?xml version="1.0" encoding="ISO-8859-1"?><log_action auth_token="" session_id="L-400167e8:115d39724c3:-8000" user_guid="sewall" date_time="2007/10/24 16:01:10.00069" timezone="US/Eastern" action_id="tutor_message" source_id="PACT_CTAT" external_object_id="" info_type="tutor_message.dtd"><?xml version="1.0" encoding="UTF-8"?>
+<tutor_related_message_sequence version_number="4">
+<tutor_message context_message_id="C-400167e8:115d39724c3:-7fac">
+	<problem_name>start</problem_name>
+	<semantic_event transaction_id="T-400167e8:115d39724c3:-7f89" name="RESULT"/>
+	<event_descriptor>
+		<selection>table1_C4R1</selection>
+		<action>UpdateTable</action>
+		<input>1</input>
+	</event_descriptor>
+	<action_evaluation>CORRECT</action_evaluation>
+</tutor_message>
+</tutor_related_message_sequence>
+</log_action>
+<?xml version="1.0" encoding="ISO-8859-1"?><log_action auth_token="" session_id="L-400167e8:115d39724c3:-8000" user_guid="sewall" date_time="2007/10/24 16:01:12.00349" timezone="US/Eastern" action_id="tool_message" source_id="PACT_CTAT" external_object_id="" info_type="tutor_message.dtd"><?xml version="1.0" encoding="UTF-8"?>
+<tutor_related_message_sequence version_number="4">
+<tool_message context_message_id="C-400167e8:115d39724c3:-7fac">
+	<problem_name>start</problem_name>
+	<semantic_event transaction_id="T-400167e8:115d39724c3:-7f83" name="ATTEMPT"/>
+	<event_descriptor>
+		<selection>table1_C4R4</selection>
+		<action>UpdateTable</action>
+		<input>8</input>
+	</event_descriptor>
+</tool_message>
+</tutor_related_message_sequence>
+</log_action>
+<?xml version="1.0" encoding="ISO-8859-1"?><log_action auth_token="" session_id="L-400167e8:115d39724c3:-8000" user_guid="sewall" date_time="2007/10/24 16:01:12.00359" timezone="US/Eastern" action_id="tutor_message" source_id="PACT_CTAT" external_object_id="" info_type="tutor_message.dtd"><?xml version="1.0" encoding="UTF-8"?>
+<tutor_related_message_sequence version_number="4">
+<tutor_message context_message_id="C-400167e8:115d39724c3:-7fac">
+	<problem_name>start</problem_name>
+	<semantic_event transaction_id="T-400167e8:115d39724c3:-7f83" name="RESULT"/>
+	<event_descriptor>
+		<selection>table1_C4R4</selection>
+		<action>UpdateTable</action>
+		<input>8</input>
+	</event_descriptor>
+	<action_evaluation>CORRECT</action_evaluation>
+</tutor_message>
+</tutor_related_message_sequence>
+</log_action>
+<?xml version="1.0" encoding="ISO-8859-1"?><log_action auth_token="" session_id="L-400167e8:115d39724c3:-8000" user_guid="sewall" date_time="2007/10/24 16:01:24.00140" timezone="US/Eastern" action_id="author_action_message" source_id="CTAT_WINDOW" external_object_id="" info_type="author_message.dtd"><?xml version="1.0" encoding="UTF-8"?>
+<tutor_related_message_sequence version_number="2">
+ <author_action_message>
+  <action_type>FOCUS_LOST</action_type>
+  <argument>Student Interface</argument>
+  <result />
+  <result_details />
+ </author_action_message>
+</tutor_related_message_sequence>
+
+</log_action>
+<?xml version="1.0" encoding="ISO-8859-1"?><log_action auth_token="" session_id="L-400167e8:115d39724c3:-8000" user_guid="sewall" date_time="2007/10/24 16:01:24.00140" timezone="US/Eastern" action_id="author_action_message" source_id="CTAT_WINDOW" external_object_id="" info_type="author_message.dtd"><?xml version="1.0" encoding="UTF-8"?>
+<tutor_related_message_sequence version_number="2">
+ <author_action_message>
+  <action_type>FOCUS_GAINED</action_type>
+  <argument>Docked Window</argument>
+  <result />
+  <result_details />
+ </author_action_message>
+</tutor_related_message_sequence>
+
+</log_action>
+<?xml version="1.0" encoding="ISO-8859-1"?><log_action auth_token="" session_id="L-400167e8:115d39724c3:-8000" user_guid="sewall" date_time="2007/10/24 16:01:32.00560" timezone="US/Eastern" action_id="author_action_message" source_id="BEHAVIOR_RECORDER" external_object_id="" info_type="author_message.dtd"><?xml version="1.0" encoding="UTF-8"?>
+<tutor_related_message_sequence version_number="2">
+ <author_action_message>
+  <action_type>Quit</action_type>
+  <argument />
+  <result />
+  <result_details />
+ </author_action_message>
+</tutor_related_message_sequence>
+
+</log_action>
+<?xml version="1.0" encoding="ISO-8859-1"?><log_action auth_token="" session_id="L-400167e8:115d39724c3:-8000" user_guid="sewall" date_time="2007/10/24 16:01:32.00610" timezone="US/Eastern" action_id="author_action_message" source_id="CTAT_WINDOW" external_object_id="" info_type="author_message.dtd"><?xml version="1.0" encoding="UTF-8"?>
+<tutor_related_message_sequence version_number="2">
+ <author_action_message>
+  <action_type>FOCUS_LOST</action_type>
+  <argument>Docked Window</argument>
+  <result />
+  <result_details />
+ </author_action_message>
+</tutor_related_message_sequence>
+
+</log_action>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates>
+
+<template 
+	context="gov.sandia.jess.editor.context.type" 
+	description="A new rule" 
+	id="gov.sandia.jess.editor.templates.defrule" 
+	name="defrule">(defrule ${name}
+	"${comment}"
+	${cursor}=>)</template>
+
+<template 
+	context="gov.sandia.jess.editor.context.type" 
+	description="A new fact template" 
+	id="gov.sandia.jess.editor.templates.deftemplate" 
+	name="deftemplate">(deftemplate ${name}
+	"${comment}"
+	(${cursor}))</template>
+
+<template 
+	context="gov.sandia.jess.editor.context.type" 
+	description="A new query" 
+	id="gov.sandia.jess.editor.templates.defquery" 
+	name="defquery">(defquery ${name}
+	"${comment}"
+	(declare (variables ${cursor}))
+	)</template>
+
+<template 
+	context="gov.sandia.jess.editor.context.type" 
+	description="A new function" 
+	id="gov.sandia.jess.editor.templates.deffunction" 
+	name="deffunction">(deffunction ${name} (${arguments})
+	"${comment}"
+	(${cursor}))</template>
+	
+<template 
+	context="gov.sandia.jess.editor.context.type" 
+	description="A new global variable" 
+	id="gov.sandia.jess.editor.templates.defglobal" 
+	name="defglobal">(defglobal ?*${variable}* = ${cursor})</template>
+	
+<template 
+	context="gov.sandia.jess.editor.context.type" 
+	description="A new list of facts" 
+	id="gov.sandia.jess.editor.templates.deffacts" 
+	name="deffacts">(deffacts ${name}
+	"${comment}"
+	${cursor})</template>
+
+</templates>

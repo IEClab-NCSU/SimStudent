@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- if you want a column to appear in the formatted xml output, set its value to true here -->
+<preferences>
+	<columns>
+		<auth_token>true</auth_token>
+		<session_id>true</session_id>
+		<user_guid>true</user_guid>
+		<timezone>true</timezone>
+		<action_id>true</action_id>
+		<source_id>true</source_id>
+		<external_object_id>true</external_object_id>
+		<info_type>true</info_type>
+		<date_time>true</date_time>
+		<time_elapsed>true</time_elapsed>
+		<current_window>true</current_window>
+		<action>true</action>
+		<argument>true</argument>
+		<result>true</result>
+	</columns>
+	<show_focus_entries>true</show_focus_entries>
+</preferences>

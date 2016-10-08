@@ -1,0 +1,8148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="generator" content="JsDoc Toolkit" />
+		
+		<title>JsDoc Reference - _global_</title>
+
+		<style type="text/css">
+			/* default.css */
+body
+{
+	font: 12px "Lucida Grande", Tahoma, Arial, Helvetica, sans-serif;
+	width: 800px;
+}
+
+.header
+{
+	clear: both;
+	background-color: #ccc;
+	padding: 8px;
+}
+
+h1
+{
+	font-size: 150%;
+	font-weight: bold;
+	padding: 0;
+	margin: 1em 0 0 .3em;
+}
+
+hr
+{
+	border: none 0;
+	border-top: 1px solid #7F8FB1;
+	height: 1px;
+}
+
+pre.code
+{
+	display: block;
+	padding: 8px;
+	border: 1px dashed #ccc;
+}
+
+#index
+{
+	margin-top: 24px;
+	float: left;
+	width: 160px;
+	position: absolute;
+	left: 8px;
+	background-color: #F3F3F3;
+	padding: 8px;
+}
+
+#content
+{
+	margin-left: 190px;
+	width: 600px;
+}
+
+.classList
+{
+	list-style-type: none;
+	padding: 0;
+	margin: 0 0 0 8px;
+	font-family: arial, sans-serif;
+	font-size: 1em;
+	overflow: auto;
+}
+
+.classList li
+{
+	padding: 0;
+	margin: 0 0 8px 0;
+}
+
+.summaryTable { width: 100%; }
+
+h1.classTitle
+{
+	font-size:170%;
+	line-height:130%;
+}
+
+h2 { font-size: 110%; }
+caption, div.sectionTitle
+{
+	background-color: #7F8FB1;
+	color: #fff;
+	font-size:130%;
+	text-align: left;
+	padding: 2px 6px 2px 6px;
+	border: 1px #7F8FB1 solid;
+}
+
+div.sectionTitle { margin-bottom: 8px; }
+.summaryTable thead { display: none; }
+
+.summaryTable td
+{
+	vertical-align: top;
+	padding: 4px;
+	border-bottom: 1px #7F8FB1 solid;
+	border-right: 1px #7F8FB1 solid;
+}
+
+/*col#summaryAttributes {}*/
+.summaryTable td.attributes
+{
+	border-left: 1px #7F8FB1 solid;
+	width: 140px;
+	text-align: right;
+}
+
+td.attributes, .fixedFont
+{
+	line-height: 15px;
+	color: #002EBE;
+	font-family: "Courier New",Courier,monospace;
+	font-size: 13px;
+}
+
+.summaryTable td.nameDescription
+{
+	text-align: left;
+	font-size: 13px;
+	line-height: 15px;
+}
+
+.summaryTable td.nameDescription, .description
+{
+	line-height: 15px;
+	padding: 4px;
+	padding-left: 4px;
+}
+
+.summaryTable { margin-bottom: 8px; }
+
+ul.inheritsList
+{
+	list-style: square;
+	margin-left: 20px;
+	padding-left: 0;
+}
+
+.detailList {
+	margin-left: 20px; 
+	line-height: 15px;
+}
+.detailList dt { margin-left: 20px; }
+
+.detailList .heading
+{
+	font-weight: bold;
+	padding-bottom: 6px;
+	margin-left: 0;
+}
+
+.light, td.attributes, .light a:link, .light a:visited
+{
+	color: #777;
+	font-style: italic;
+}
+
+.fineprint
+{
+	text-align: right;
+	font-size: 10px;
+}
+		</style>
+	</head>
+
+	<body>
+<!-- ============================== header ================================= -->	
+		<!-- begin static/header.html -->
+		<div id="header">
+</div>
+		<!-- end static/header.html -->
+
+<!-- ============================== classes index ============================ -->
+		<div id="index">
+			<!-- begin publish.classesIndex -->
+			<div align="center"><a href="../index.html">Class Index</a>
+| <a href="../files.html">File Index</a></div>
+<hr />
+<h2>Classes</h2>
+<ul class="classList">
+	
+	<li><i><a href="../symbols/_global_.html">_global_</a></i></li>
+	
+	<li><a href="../symbols/Date.html">Date</a></li>
+	
+	<li><a href="../symbols/Object.html">Object</a></li>
+	
+</ul>
+<hr />
+			<!-- end publish.classesIndex -->
+		</div>
+		
+		<div id="content">
+<!-- ============================== class title ============================ -->
+			<h1 class="classTitle">
+				
+				Built-In Namespace _global_
+			</h1>
+
+<!-- ============================== class summary ========================== -->			
+			<p class="description">
+				
+				
+			
+				
+				
+				
+			</p>
+
+<!-- ============================== constructor summary ==================== -->			
+			
+
+<!-- ============================== properties summary ===================== -->
+			
+				
+				
+				<table class="summaryTable" cellspacing="0" summary="A summary of the fields documented in the class _global_.">
+					<caption>Field Summary</caption>
+					<thead>
+						<tr>
+							<th scope="col">Field Attributes</th>
+							<th scope="col">Field Name and Description</th>
+						</tr>
+					</thead>
+					<tbody>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/_global_.html#createInterface">createInterface</a></b>
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/_global_.html#createInterfaceManually">createInterfaceManually</a></b>
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/_global_.html#dateFormat">dateFormat</a></b>
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/_global_.html#hintWindowWidth">hintWindowWidth</a></b>
+								</div>
+								<div class="description">------------------------------------------------------------------------------------
+ $Author$ 
+ $Date$ 
+ $Header$ 
+ $Name$ 
+ $Locker$ 
+ $Log$
+ 
+ -
+ License:
+ -
+ ChangeLog:
+ -
+ Notes:</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/_global_.html#stringInput">stringInput</a></b>
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont">
+								<b><a href="../symbols/_global_.html#useDebugging">useDebugging</a></b>
+								</div>
+								<div class="description">------------------------------------------------------------------------------------
+ $Author$ 
+ $Date$ 
+ $Header$ 
+ $Name$ 
+ $Locker$ 
+ $Log$
+ 
+ -
+ License:
+ -
+ ChangeLog:
+ -
+ Notes:</div>
+							</td>
+						</tr>
+					
+					</tbody>
+				</table>
+				
+				
+				
+			
+
+<!-- ============================== methods summary ======================== -->
+			
+				
+				
+				<table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class _global_.">
+					<caption>Method Summary</caption>
+					<thead>
+						<tr>
+							<th scope="col">Method Attributes</th>
+							<th scope="col">Method Name and Description</th>
+						</tr>
+					</thead>
+					<tbody>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#addComponent">addComponent</a></b>(aComponent)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#addCSSAttribute">addCSSAttribute</a></b>(attribute, value)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#addListener">addListener</a></b>(eventName, handler)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#addPoint">addPoint</a></b>(addX, addY)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#addSelector">addSelector</a></b>(selector)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#addSelectorAttribute">addSelectorAttribute</a></b>(selector, attribute, value)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#addShape">addShape</a></b>(aShape)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#addStringCSS">addStringCSS</a></b>(str)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#addTextInput">addTextInput</a></b>(anX, anY, aWidth, aHeight)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#assignRawFlashVars">assignRawFlashVars</a></b>(aData)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#centerTutor">centerTutor</a></b>(tutorWidth, tutorHeight)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#clear">clear</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#clearCanvas">clearCanvas</a></b>(x, y, width, height)
+								</div>
+								<div class="description">Paints a white rectangle over the given region.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#clearCSS">clearCSS</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#clearInitialScrim">clearInitialScrim</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#clip">clip</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#componentToHex">componentToHex</a></b>(c)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#confirmScrimUp">confirmScrimUp</a></b>(prompt, onYes, onNo)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#createTextComponent">createTextComponent</a></b>(anX, anY, aWidth, aHeight)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#CTATCanvasComponent">CTATCanvasComponent</a></b>(aName)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#CTATContextData">CTATContextData</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#CTATCSS">CTATCSS</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#CTATDialogBox">CTATDialogBox</a></b>(aX, aY, aWidth, aHeight)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#CTATFlashVars">CTATFlashVars</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#CTATGraphicsTools">CTATGraphicsTools</a></b>(aCanvasCtx, aBorderWidth, aLineColor, aFillColor, aFillShape, allowAA)
+								</div>
+								<div class="description">------------------------------------------------------------------------------------
+ $Author$ 
+ $Date$ 
+ $Header$ 
+ $Name$ 
+ $Locker$ 
+ $Log$
+ 
+ -
+ License:
+ -
+ ChangeLog:
+ -
+ Notes:</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#CTATHTMLManager">CTATHTMLManager</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#CTATMobileTutorHandler">CTATMobileTutorHandler</a></b>(aName, aMode)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#CTATScrim">CTATScrim</a></b>()
+								</div>
+								<div class="description">------------------------------------------------------------------------------------
+ $Author$ 
+ $Date$ 
+ $Header$ 
+ $Name$ 
+ $Locker$ 
+ $Log$
+ 
+ -
+ License:
+ -
+ ChangeLog:
+ -
+ Notes:
+ 
+The scrim.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#CTATShape">CTATShape</a></b>(anID, aName, startX, startY, aWidth, aHeight)
+								</div>
+								<div class="description">------------------------------------------------------------------------------------
+ $Author$ 
+ $Date$ 
+ $Header$ 
+ $Name$ 
+ $Locker$ 
+ $Log$
+ 
+ -
+ License:
+ -
+ ChangeLog:
+ -
+ Notes:
+ 
+ This is best used for dynamic objects.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#CTATStringUtil">CTATStringUtil</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#CTATStyle">CTATStyle</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#detatchCanvas">detatchCanvas</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#drawCircle">drawCircle</a></b>(centerX:, centerY:, radius:, sides:)
+								</div>
+								<div class="description">------------------------------------------------------------------------------------drawCircle(centerX, centerY, radius, sides):void</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#drawCircleFilled">drawCircleFilled</a></b>(centerX:, centerY:, radius:, sides:)
+								</div>
+								<div class="description">------------------------------------------------------------------------------------drawCircleFilled(centerX:Number, centerY:Number, radius:Number, sides:Number):void</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#drawLine">drawLine</a></b>(x1:, y1:, x2:, y2:, c:, w:)
+								</div>
+								<div class="description">------------------------------------------------------------------------------------drawLine(x1,y1,x2,y2,c,w):void</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#drawRectangle">drawRectangle</a></b>(x:, y:, w:, h:)
+								</div>
+								<div class="description">------------------------------------------------------------------------------------drawRectangle (x:Number,y:Number,w:Number,h:Number)</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#drawRectangleFilled">drawRectangleFilled</a></b>(x:, y:, w:, h:)
+								</div>
+								<div class="description">------------------------------------------------------------------------------------drawRectangleFilled(x:Number,y:Number,w:Number,h:Number)</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#drawRoundedRect">drawRoundedRect</a></b>(canvasCtx, x, y, width, height, radius)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#drawRoundedRectFilled">drawRoundedRectFilled</a></b>(grcanvasCtx, x, y, width, height, radius)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#drawText">drawText</a></b>(x, y, aText)
+								</div>
+								<div class="description">Text is placed from a top left anchor.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#drawTriangle">drawTriangle</a></b>(x1:, y1:, x2:, y2:, x3:, y3:)
+								</div>
+								<div class="description">------------------------------------------------------------------------------------drawTriangle(x1,y1,x2,y2,x3,y3)</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#drawTriangleFilled">drawTriangleFilled</a></b>(x1:, y1:, x2:, y2:, x3:, y3:)
+								</div>
+								<div class="description">------------------------------------------------------------------------------------drawTriangleFilled(x1:Number,y1:Number,x2:Number,y2:Number,x3:Number,y3:Number)</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#drawTutor">drawTutor</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#entitiesConvert">entitiesConvert</a></b>(str)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#entitiesGenerate">entitiesGenerate</a></b>(str)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#erase">erase</a></b>()
+								</div>
+								<div class="description">Gives you a new canvas to draw on, but is situated in the samespot as the last one.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#error">error</a></b>(aMessage)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#errorScrimUp">errorScrimUp</a></b>(aMessage)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#getColor">getColor</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#getComponentDescriptionFromComponent">getComponentDescriptionFromComponent</a></b>(aComponent)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#getComponentFromDescription">getComponentFromDescription</a></b>(aDescription)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#getData">getData</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#getFillColor">getFillColor</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#getFillShape">getFillShape</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#getFont">getFont</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#getFontSize">getFontSize</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#getGraphicBorderWidth">getGraphicBorderWidth</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#getHeight">getHeight</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#getInAuthorTime">getInAuthorTime</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#getLineColor">getLineColor</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#getName">getName</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#getRadius">getRadius</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#getRawFlashVars">getRawFlashVars</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#getTextFont">getTextFont</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#getTextSize">getTextSize</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#getTimeStamp">getTimeStamp</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#getTimeZone">getTimeZone</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#getWidth">getWidth</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#getXOffset">getXOffset</a></b>()
+								</div>
+								<div class="description">The get offset methods are primarily used in situations where you want to placeone shape's canvas over another.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#getXPoint">getXPoint</a></b>(index)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#getYOffset">getYOffset</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#getYPoint">getYPoint</a></b>(index)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#guid">guid</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#handleTSDisconnect">handleTSDisconnect</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#hexToRgb">hexToRgb</a></b>(hex)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#hideComponent">hideComponent</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#hideShape">hideShape</a></b>(aShapeName)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#htmlDecode">htmlDecode</a></b>(value)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#htmlEncode">htmlEncode</a></b>(value)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#htmlEscape">htmlEscape</a></b>(str)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#htmlUnescape">htmlUnescape</a></b>(value)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#initEntities">initEntities</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#initialize">initialize</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#initTutor">initTutor</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#introspect">introspect</a></b>(name, obj, indent, levels)
+								</div>
+								<div class="description">Introspects an object.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#isBlank">isBlank</a></b>(str)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#isEmpty">isEmpty</a></b>(str)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#javaScriptInfo">javaScriptInfo</a></b>(aString)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#listComponentReferences">listComponentReferences</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#loadjscssfile">loadjscssfile</a></b>(filename, filetype)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#magicTrigFunctionX">magicTrigFunctionX</a></b>(pointRatio)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#magicTrigFunctionY">magicTrigFunctionY</a></b>(pointRatio)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#manipulateKeyboard">manipulateKeyboard</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#modifyCanvasCSS">modifyCanvasCSS</a></b>(attrib, value)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#modifyCSSAttribute">modifyCSSAttribute</a></b>(attribute, value)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#moveComponent">moveComponent</a></b>(toX, toY)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#moveShape">moveShape</a></b>(aShapeName, toX, toY)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#nextProblemScrimUp">nextProblemScrimUp</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#noenter">noenter</a></b>(e)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#OKScrimUp">OKScrimUp</a></b>(aMessage, aFunction)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#pad">pad</a></b>(val, len)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#parseQueryString">parseQueryString</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#prepTutorArea">prepTutorArea</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#processEnter">processEnter</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#processOrientationChange">processOrientationChange</a></b>(aComponent)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#processTextFocus">processTextFocus</a></b>(aComponent, y, width, height)
+								</div>
+								<div class="description">The argument will be a component with a className of either one of:CTATTextInput, CTATTextField, CTATTextArea</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#raiseInitialScrim">raiseInitialScrim</a></b>(aMessage)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#receiveFromTutor">receiveFromTutor</a></b>()
+								</div>
+								<div class="description">This is a function accessible by TutorShop</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#removeComponent">removeComponent</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#removeCSSAttribute">removeCSSAttribute</a></b>(attribute)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#removeShape">removeShape</a></b>(aShapeName)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#removeStringCSS">removeStringCSS</a></b>(str)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#replaceString">replaceString</a></b>(thisStr, searchStr, replaceStr)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#resetCSSStringArray">resetCSSStringArray</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#resetSelectors">resetSelectors</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#resizeScrim">resizeScrim</a></b>(newWidth, newHeight)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#restore">restore</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#rgbToHex">rgbToHex</a></b>(r, g, b)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#runTutor">runTutor</a></b>(aVars)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#s4">s4</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#save">save</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#saveAndQuit">saveAndQuit</a></b>()
+								</div>
+								<div class="description">This is a function accessible by TutorShop and is used to do a rapidshutdown of a tutor whilst at the same time saving its state.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#scrimDown">scrimDown</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#scrimUp">scrimUp</a></b>(aMessage)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#setColor">setColor</a></b>(aColor)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#setData">setData</a></b>(aData)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#setDrawWidth">setDrawWidth</a></b>(aDrawWidth)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#setFillColor">setFillColor</a></b>(aColor)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#setFillShape">setFillShape</a></b>(aValue)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#setFont">setFont</a></b>(aFont)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#setFontSize">setFontSize</a></b>(aSize)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#setGraphicBorderWidth">setGraphicBorderWidth</a></b>(aWidth)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#setHeight">setHeight</a></b>(aHeight)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#setInAuthorTime">setInAuthorTime</a></b>(theValue)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#setLineColor">setLineColor</a></b>(aColor)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#setName">setName</a></b>(aName)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#setOrientation">setOrientation</a></b>(anOrientation)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#setRadius">setRadius</a></b>(aRadius)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#setText">setText</a></b>(aString)
+								</div>
+								<div class="description">Called by any outside code to push a new string into the currentlyselected text input component</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#setTextFont">setTextFont</a></b>(aFont)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#setTextSize">setTextSize</a></b>(aSize)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#setTimeZone">setTimeZone</a></b>(zone)
+								</div>
+								<div class="description"><b>[Required]</b> The local time zone name.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#setWidth">setWidth</a></b>(aWidth)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#setXPoints">setXPoints</a></b>(xPoints)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#setYPoints">setYPoints</a></b>(yPoints)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#shapeMagicTrigFunctionX">shapeMagicTrigFunctionX</a></b>(pointRatio)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#shapeMagicTrigFunctionY">shapeMagicTrigFunctionY</a></b>(pointRatio)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#showComponent">showComponent</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#showEntities">showEntities</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#showShape">showShape</a></b>(aShapeName)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#String2Boolean">String2Boolean</a></b>(aString)
+								</div>
+								<div class="description">Apparently AS3 expects a direct conversion between a string and a boolean to onlyhappen when the string is '0' or '1' for every other case we have to test manually.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#thisMovie">thisMovie</a></b>(movieName)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#toString">toString</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#tutorPrep">tutorPrep</a></b>(aVars)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#urldecode">urldecode</a></b>(str)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#waitScrimUp">waitScrimUp</a></b>()
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#warningScrimUp">warningScrimUp</a></b>(aMessage)
+								</div>
+								<div class="description"></div>
+							</td>
+						</tr>
+					
+					</tbody>
+				</table>
+				
+				
+				
+			
+<!-- ============================== events summary ======================== -->
+			
+
+<!-- ============================== constructor details ==================== -->		
+			
+
+<!-- ============================== field details ========================== -->		
+			
+				<div class="sectionTitle">
+					Field Detail
+				</div>
+				
+					<a name="createInterface"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>createInterface</b>
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATTutor-backup.js.html">CTATTutor-backup.js</a>.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="createInterfaceManually"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>createInterfaceManually</b>
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATTutor-backup.js.html">CTATTutor-backup.js</a>.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="dateFormat"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>dateFormat</b>
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATDateTime.js.html">CTATDateTime.js</a>.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="hintWindowWidth"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>hintWindowWidth</b>
+					
+					</div>
+					<div class="description">
+						------------------------------------------------------------------------------------
+ $Author$ 
+ $Date$ 
+ $Header$ 
+ $Name$ 
+ $Locker$ 
+ $Log$
+ 
+ -
+ License:
+ -
+ ChangeLog:
+ -
+ Notes:
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATTutor-backup.js.html">CTATTutor-backup.js</a>.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="stringInput"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>stringInput</b>
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATMobileTutorHandler.js.html">CTATMobileTutorHandler.js</a>.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="useDebugging"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>useDebugging</b>
+					
+					</div>
+					<div class="description">
+						------------------------------------------------------------------------------------
+ $Author$ 
+ $Date$ 
+ $Header$ 
+ $Name$ 
+ $Locker$ 
+ $Log$
+ 
+ -
+ License:
+ -
+ ChangeLog:
+ -
+ Notes:
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATGlobals.js.html">CTATGlobals.js</a>.
+						
+						
+					</div>
+					
+					
+
+						
+						
+						
+						
+
+					
+				
+			
+
+<!-- ============================== method details ========================= -->		
+			
+				<div class="sectionTitle">
+					Method Detail
+				</div>
+				
+					<a name="addComponent"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>addComponent</b>(aComponent)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATTutor-backup.js.html">CTATTutor-backup.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>aComponent</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="addCSSAttribute"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>addCSSAttribute</b>(attribute, value)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATCSS.js.html">CTATCSS.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>attribute</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>value</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="addListener"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>addListener</b>(eventName, handler)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATShape.js.html">CTATShape.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>eventName</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>handler</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="addPoint"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>addPoint</b>(addX, addY)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATShape.js.html">CTATShape.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>addX</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>addY</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="addSelector"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>addSelector</b>(selector)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATCSS.js.html">CTATCSS.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>selector</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="addSelectorAttribute"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>addSelectorAttribute</b>(selector, attribute, value)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATCSS.js.html">CTATCSS.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>selector</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>attribute</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>value</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="addShape"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>addShape</b>(aShape)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATCanvasComponent.js.html">CTATCanvasComponent.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>aShape</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="addStringCSS"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>addStringCSS</b>(str)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATCSS.js.html">CTATCSS.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>str</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="addTextInput"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>addTextInput</b>(anX, anY, aWidth, aHeight)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATTutor-backup.js.html">CTATTutor-backup.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>anX</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>anY</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>aWidth</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>aHeight</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="assignRawFlashVars"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>assignRawFlashVars</b>(aData)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATFlashVars.js.html">CTATFlashVars.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>aData</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="centerTutor"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>centerTutor</b>(tutorWidth, tutorHeight)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATGlobals.js.html">CTATGlobals.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>tutorWidth</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>tutorHeight</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="clear"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>clear</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATTutor-backup.js.html">CTATTutor-backup.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="clearCanvas"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>clearCanvas</b>(x, y, width, height)
+					
+					</div>
+					<div class="description">
+						Paints a white rectangle over the given region.
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATGraphicsTools.js.html">CTATGraphicsTools.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>x</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>y</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>width</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>height</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="clearCSS"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>clearCSS</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATCSS.js.html">CTATCSS.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="clearInitialScrim"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>clearInitialScrim</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATGlobals.js.html">CTATGlobals.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="clip"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>clip</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATShape.js.html">CTATShape.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="componentToHex"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>componentToHex</b>(c)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATGlobals.js.html">CTATGlobals.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>c</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="confirmScrimUp"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>confirmScrimUp</b>(prompt, onYes, onNo)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATScrim.js.html">CTATScrim.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>prompt</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>onYes</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>onNo</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="createTextComponent"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>createTextComponent</b>(anX, anY, aWidth, aHeight)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATTutor-backup.js.html">CTATTutor-backup.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>anX</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>anY</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>aWidth</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>aHeight</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="CTATCanvasComponent"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>CTATCanvasComponent</b>(aName)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATCanvasComponent.js.html">CTATCanvasComponent.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>aName</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="CTATContextData"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>CTATContextData</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATContextData.js.html">CTATContextData.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="CTATCSS"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>CTATCSS</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATCSS.js.html">CTATCSS.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="CTATDialogBox"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>CTATDialogBox</b>(aX, aY, aWidth, aHeight)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATDialogBox.js.html">CTATDialogBox.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>aX</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>aY</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>aWidth</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>aHeight</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="CTATFlashVars"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>CTATFlashVars</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATFlashVars.js.html">CTATFlashVars.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="CTATGraphicsTools"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>CTATGraphicsTools</b>(aCanvasCtx, aBorderWidth, aLineColor, aFillColor, aFillShape, allowAA)
+					
+					</div>
+					<div class="description">
+						------------------------------------------------------------------------------------
+ $Author$ 
+ $Date$ 
+ $Header$ 
+ $Name$ 
+ $Locker$ 
+ $Log$
+ 
+ -
+ License:
+ -
+ ChangeLog:
+ -
+ Notes:
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATGraphicsTools.js.html">CTATGraphicsTools.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>aCanvasCtx</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>aBorderWidth</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>aLineColor</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>aFillColor</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>aFillShape</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>allowAA</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="CTATHTMLManager"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>CTATHTMLManager</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATHTMLManager.js.html">CTATHTMLManager.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="CTATMobileTutorHandler"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>CTATMobileTutorHandler</b>(aName, aMode)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATMobileTutorHandler.js.html">CTATMobileTutorHandler.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>aName</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>aMode</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="CTATScrim"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>CTATScrim</b>()
+					
+					</div>
+					<div class="description">
+						------------------------------------------------------------------------------------
+ $Author$ 
+ $Date$ 
+ $Header$ 
+ $Name$ 
+ $Locker$ 
+ $Log$
+ 
+ -
+ License:
+ -
+ ChangeLog:
+ -
+ Notes:
+ 
+The scrim. Modeled after the scrim in ActionScript 3.0.
+
+At the moment, a global variable called ctatscrim (CTATGlobals.js) should be used as the scrim.
+
+Here are is a list of the different methods:
+	- scrimUp(aMessage) : Pulls up a scrim with a dialog that displays a message aMessage.
+	- waitScrimUp() : Pulls up the wait scrim.
+	- okScrimUp(aMessage, aFunction) : Pulls up a scrim with a dialog message of aMessage, and executes aFunction when the ok button is clicked.
+	- confirmScrimUp(prompt, onYes, onNo) : Pulls up a scrim with a prompt message, and function handlers for clicking on yes/no buttons.
+	- errorScrimUp(aMessage) : Pulls up a non-removable scrim displaying an error message aMessage.
+	- warningScrimUp(aMessage) : Pulls up scrim displaying a warning message aMessage, and may only be closed when the close button is clicked.
+	- scrimDown() : Pulls down the scrim if it is in a state that allows it to be pulled down.
+	- resizeScrim(newWidth, newHeight) : Resizes the scrim, and sets the width and height to newWidth and newHeight.
+
+If the wait scrim is up, and you wish to pull up another scrim, you should pull down the wait scrim first for the time
+being.
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATScrim.js.html">CTATScrim.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="CTATShape"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>CTATShape</b>(anID, aName, startX, startY, aWidth, aHeight)
+					
+					</div>
+					<div class="description">
+						------------------------------------------------------------------------------------
+ $Author$ 
+ $Date$ 
+ $Header$ 
+ $Name$ 
+ $Locker$ 
+ $Log$
+ 
+ -
+ License:
+ -
+ ChangeLog:
+ -
+ Notes:
+ 
+ This is best used for dynamic objects. If you are simply painting something "static" (rounded rect for
+ the Skill and Hint Windows for example), just use the CTATGraphicsTools code to paint.
+ 
+ Use this with CTATCanvasComponent to create aggregates of shapes, or a "whole component" made
+ of shapes. For instance, a CTATNumberLine would consist of many CTATShapes (many lines
+ drawn), that will represent tick marks.
+ 
+ The constructor takes six arguments:
+ 	1. anID    - ID of the div you want to add the canvas to.
+ 	2. aName   - The name of this shape.
+ 	3. startX  - The x coordinate of the canvas to be drawn on.
+ 	4. startY  - The y coordinate of the canvas to be drawn on.
+ 	5. aWidth  - The width of the canvas and the shape.
+ 	6. aHeight - The height of the canvas and the shape.
+ 	
+The startX and startY coordinates are absolutely positioned. Once set, you must then call
+addPoints which will set an (x, y) coordinate local to the shape's canvas.
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATShape.js.html">CTATShape.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>anID</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>aName</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>startX</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>startY</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>aWidth</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>aHeight</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="CTATStringUtil"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>CTATStringUtil</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATStringUtil.js.html">CTATStringUtil.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="CTATStyle"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>CTATStyle</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATStyles.js.html">CTATStyles.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="detatchCanvas"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>detatchCanvas</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATShape.js.html">CTATShape.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="drawCircle"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>drawCircle</b>(centerX:, centerY:, radius:, sides:)
+					
+					</div>
+					<div class="description">
+						------------------------------------------------------------------------------------drawCircle(centerX, centerY, radius, sides):void
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATGraphicsTools.js.html">CTATGraphicsTools.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>centerX:</b>
+									
+								</dt>
+								<dd>the x-coordinate of the center</dd>
+							
+								<dt>
+									<b>centerY:</b>
+									
+								</dt>
+								<dd>the y-coordinate of the center</dd>
+							
+								<dt>
+									<b>radius:</b>
+									
+								</dt>
+								<dd>the radius of the circle</dd>
+							
+								<dt>
+									<b>sides:</b>
+									
+								</dt>
+								<dd>the number of sidesNOTE: Due to restrictions, drawCircle is drawing an n-gon with 'sides' sidesDraws a circle*------------------------------------------------------------------------------------</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="drawCircleFilled"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>drawCircleFilled</b>(centerX:, centerY:, radius:, sides:)
+					
+					</div>
+					<div class="description">
+						------------------------------------------------------------------------------------drawCircleFilled(centerX:Number, centerY:Number, radius:Number, sides:Number):void
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATGraphicsTools.js.html">CTATGraphicsTools.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>centerX:</b>
+									
+								</dt>
+								<dd>the x-coordinate of the center</dd>
+							
+								<dt>
+									<b>centerY:</b>
+									
+								</dt>
+								<dd>the y-coordinate of the center</dd>
+							
+								<dt>
+									<b>radius:</b>
+									
+								</dt>
+								<dd>the radius of the circle</dd>
+							
+								<dt>
+									<b>sides:</b>
+									
+								</dt>
+								<dd>the number of sidesNOTE: Due to restrictions, drawCircle is drawing an n-gon with 'sides' sidesDraws a filled circle*------------------------------------------------------------------------------------</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="drawLine"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>drawLine</b>(x1:, y1:, x2:, y2:, c:, w:)
+					
+					</div>
+					<div class="description">
+						------------------------------------------------------------------------------------drawLine(x1,y1,x2,y2,c,w):void
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATGraphicsTools.js.html">CTATGraphicsTools.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>x1:</b>
+									
+								</dt>
+								<dd>the x-coordinate of the first point</dd>
+							
+								<dt>
+									<b>y1:</b>
+									
+								</dt>
+								<dd>the y-coordinate of the first point</dd>
+							
+								<dt>
+									<b>x2:</b>
+									
+								</dt>
+								<dd>the x-coordinate of the second point</dd>
+							
+								<dt>
+									<b>y2:</b>
+									
+								</dt>
+								<dd>the y-coordinate of the second point</dd>
+							
+								<dt>
+									<b>c:</b>
+									
+								</dt>
+								<dd>color of the line (May not be correct comment)</dd>
+							
+								<dt>
+									<b>w:</b>
+									
+								</dt>
+								<dd>width of the line (May not be correct comment)Draws a line*------------------------------------------------------------------------------------</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="drawRectangle"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>drawRectangle</b>(x:, y:, w:, h:)
+					
+					</div>
+					<div class="description">
+						------------------------------------------------------------------------------------drawRectangle (x:Number,y:Number,w:Number,h:Number)
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATGraphicsTools.js.html">CTATGraphicsTools.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>x:</b>
+									
+								</dt>
+								<dd>the x-coordinate of the top left corner of the rectangle</dd>
+							
+								<dt>
+									<b>y:</b>
+									
+								</dt>
+								<dd>the y-coordinate of the top left corner of the rectangle</dd>
+							
+								<dt>
+									<b>w:</b>
+									
+								</dt>
+								<dd>the width of th rectangle</dd>
+							
+								<dt>
+									<b>h:</b>
+									
+								</dt>
+								<dd>the height of the rectangleDraws a rectangle*------------------------------------------------------------------------------------</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="drawRectangleFilled"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>drawRectangleFilled</b>(x:, y:, w:, h:)
+					
+					</div>
+					<div class="description">
+						------------------------------------------------------------------------------------drawRectangleFilled(x:Number,y:Number,w:Number,h:Number)
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATGraphicsTools.js.html">CTATGraphicsTools.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>x:</b>
+									
+								</dt>
+								<dd>the x-coordinate of the top left corner of the rectangle</dd>
+							
+								<dt>
+									<b>y:</b>
+									
+								</dt>
+								<dd>the y-coordinate of the top left corner of the rectangle</dd>
+							
+								<dt>
+									<b>w:</b>
+									
+								</dt>
+								<dd>the width of th rectangle</dd>
+							
+								<dt>
+									<b>h:</b>
+									
+								</dt>
+								<dd>the height of the rectangleDraws a filled rectangle*------------------------------------------------------------------------------------</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="drawRoundedRect"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>drawRoundedRect</b>(canvasCtx, x, y, width, height, radius)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATGraphicsTools.js.html">CTATGraphicsTools.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>canvasCtx</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>x</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>y</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>width</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>height</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>radius</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="drawRoundedRectFilled"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>drawRoundedRectFilled</b>(grcanvasCtx, x, y, width, height, radius)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATGraphicsTools.js.html">CTATGraphicsTools.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>grcanvasCtx</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>x</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>y</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>width</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>height</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>radius</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="drawText"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>drawText</b>(x, y, aText)
+					
+					</div>
+					<div class="description">
+						Text is placed from a top left anchor.
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATGraphicsTools.js.html">CTATGraphicsTools.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>x</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>y</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>aText</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="drawTriangle"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>drawTriangle</b>(x1:, y1:, x2:, y2:, x3:, y3:)
+					
+					</div>
+					<div class="description">
+						------------------------------------------------------------------------------------drawTriangle(x1,y1,x2,y2,x3,y3)
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATGraphicsTools.js.html">CTATGraphicsTools.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>x1:</b>
+									
+								</dt>
+								<dd>the x-coordinate of the point1</dd>
+							
+								<dt>
+									<b>y1:</b>
+									
+								</dt>
+								<dd>the y-coordinate of the point1</dd>
+							
+								<dt>
+									<b>x2:</b>
+									
+								</dt>
+								<dd>the x-coordinate of the point2</dd>
+							
+								<dt>
+									<b>y2:</b>
+									
+								</dt>
+								<dd>the y-coordinate of the point2</dd>
+							
+								<dt>
+									<b>x3:</b>
+									
+								</dt>
+								<dd>the x-coordinate of the point3</dd>
+							
+								<dt>
+									<b>y3:</b>
+									
+								</dt>
+								<dd>the y-coordinate of the point3Draws a triangle (Three points define a triangle)*------------------------------------------------------------------------------------</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="drawTriangleFilled"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>drawTriangleFilled</b>(x1:, y1:, x2:, y2:, x3:, y3:)
+					
+					</div>
+					<div class="description">
+						------------------------------------------------------------------------------------drawTriangleFilled(x1:Number,y1:Number,x2:Number,y2:Number,x3:Number,y3:Number)
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATGraphicsTools.js.html">CTATGraphicsTools.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>x1:</b>
+									
+								</dt>
+								<dd>the x-coordinate of the point1</dd>
+							
+								<dt>
+									<b>y1:</b>
+									
+								</dt>
+								<dd>the y-coordinate of the point1</dd>
+							
+								<dt>
+									<b>x2:</b>
+									
+								</dt>
+								<dd>the x-coordinate of the point2</dd>
+							
+								<dt>
+									<b>y2:</b>
+									
+								</dt>
+								<dd>the y-coordinate of the point2</dd>
+							
+								<dt>
+									<b>x3:</b>
+									
+								</dt>
+								<dd>the x-coordinate of the point3</dd>
+							
+								<dt>
+									<b>y3:</b>
+									
+								</dt>
+								<dd>the y-coordinate of the point3Draws a filled triangle (Three points define a triangle)*------------------------------------------------------------------------------------</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="drawTutor"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>drawTutor</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATTutor-backup.js.html">CTATTutor-backup.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="entitiesConvert"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>entitiesConvert</b>(str)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATHTMLManager.js.html">CTATHTMLManager.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>str</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="entitiesGenerate"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>entitiesGenerate</b>(str)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATHTMLManager.js.html">CTATHTMLManager.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>str</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="erase"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>erase</b>()
+					
+					</div>
+					<div class="description">
+						Gives you a new canvas to draw on, but is situated in the samespot as the last one. Doing so effectively "erases" the painted object.
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATShape.js.html">CTATShape.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="error"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>error</b>(aMessage)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATMobileTutorHandler.js.html">CTATMobileTutorHandler.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>aMessage</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="errorScrimUp"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>errorScrimUp</b>(aMessage)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATScrim.js.html">CTATScrim.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>aMessage</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="getColor"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>getColor</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATShape.js.html">CTATShape.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="getComponentDescriptionFromComponent"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>getComponentDescriptionFromComponent</b>(aComponent)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATTutor-backup.js.html">CTATTutor-backup.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>aComponent</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="getComponentFromDescription"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>getComponentFromDescription</b>(aDescription)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATTutor-backup.js.html">CTATTutor-backup.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>aDescription</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="getData"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>getData</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATShape.js.html">CTATShape.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="getFillColor"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>getFillColor</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATGraphicsTools.js.html">CTATGraphicsTools.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="getFillShape"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>getFillShape</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATGraphicsTools.js.html">CTATGraphicsTools.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="getFont"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>getFont</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATGraphicsTools.js.html">CTATGraphicsTools.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="getFontSize"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>getFontSize</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATGraphicsTools.js.html">CTATGraphicsTools.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="getGraphicBorderWidth"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>getGraphicBorderWidth</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATGraphicsTools.js.html">CTATGraphicsTools.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="getHeight"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>getHeight</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATShape.js.html">CTATShape.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="getInAuthorTime"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>getInAuthorTime</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATScrim.js.html">CTATScrim.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="getLineColor"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>getLineColor</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATGraphicsTools.js.html">CTATGraphicsTools.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="getName"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>getName</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATShape.js.html">CTATShape.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="getRadius"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>getRadius</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATShape.js.html">CTATShape.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="getRawFlashVars"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>getRawFlashVars</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATFlashVars.js.html">CTATFlashVars.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="getTextFont"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>getTextFont</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATShape.js.html">CTATShape.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="getTextSize"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>getTextSize</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATShape.js.html">CTATShape.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="getTimeStamp"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>getTimeStamp</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATDateTime.js.html">CTATDateTime.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="getTimeZone"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>getTimeZone</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATFlashVars.js.html">CTATFlashVars.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="getWidth"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>getWidth</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATShape.js.html">CTATShape.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="getXOffset"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>getXOffset</b>()
+					
+					</div>
+					<div class="description">
+						The get offset methods are primarily used in situations where you want to placeone shape's canvas over another. Since a shape's coordinates are represented locallyto its own canvas, this is needed to get the absolute positioning of its canvas.
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATShape.js.html">CTATShape.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="getXPoint"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>getXPoint</b>(index)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATShape.js.html">CTATShape.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>index</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="getYOffset"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>getYOffset</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATShape.js.html">CTATShape.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="getYPoint"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>getYPoint</b>(index)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATShape.js.html">CTATShape.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>index</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="guid"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{String}</span>
+					<b>guid</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATTools.js.html">CTATTools.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{String}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="handleTSDisconnect"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>handleTSDisconnect</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATScrim.js.html">CTATScrim.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="hexToRgb"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>hexToRgb</b>(hex)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATGlobals.js.html">CTATGlobals.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>hex</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="hideComponent"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>hideComponent</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATCanvasComponent.js.html">CTATCanvasComponent.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="hideShape"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>hideShape</b>(aShapeName)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATCanvasComponent.js.html">CTATCanvasComponent.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>aShapeName</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="htmlDecode"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>htmlDecode</b>(value)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATHTMLManager.js.html">CTATHTMLManager.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>value</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="htmlEncode"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>htmlEncode</b>(value)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATHTMLManager.js.html">CTATHTMLManager.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>value</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="htmlEscape"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>htmlEscape</b>(str)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATTools.js.html">CTATTools.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>str</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="htmlUnescape"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>htmlUnescape</b>(value)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATTools.js.html">CTATTools.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>value</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="initEntities"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>initEntities</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATHTMLManager.js.html">CTATHTMLManager.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="initialize"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>initialize</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATTutor-backup.js.html">CTATTutor-backup.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="initTutor"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>initTutor</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATTutor-backup.js.html">CTATTutor-backup.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="introspect"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>introspect</b>(name, obj, indent, levels)
+					
+					</div>
+					<div class="description">
+						Introspects an object.http://www.syger.it/Tutorials/JavaScriptIntrospector.html
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATGlobals.js.html">CTATGlobals.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>name</b>
+									
+								</dt>
+								<dd>the object name.</dd>
+							
+								<dt>
+									<b>obj</b>
+									
+								</dt>
+								<dd>the object to introspect.</dd>
+							
+								<dt>
+									<b>indent</b>
+									
+								</dt>
+								<dd>the indentation (optional, defaults to "").</dd>
+							
+								<dt>
+									<b>levels</b>
+									
+								</dt>
+								<dd>the introspection nesting level (defaults to 1).</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd>a plain text analysis of the object.</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="isBlank"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>isBlank</b>(str)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATGlobals.js.html">CTATGlobals.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>str</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="isEmpty"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{Boolean}</span>
+					<b>isEmpty</b>(str)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATGlobals.js.html">CTATGlobals.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>str</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{Boolean}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="javaScriptInfo"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>javaScriptInfo</b>(aString)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_TutorShopAPIProxy.js.html">TutorShopAPIProxy.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>aString</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="listComponentReferences"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>listComponentReferences</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATGlobals.js.html">CTATGlobals.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="loadjscssfile"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>loadjscssfile</b>(filename, filetype)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATGlobals.js.html">CTATGlobals.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>filename</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>filetype</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="magicTrigFunctionX"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>magicTrigFunctionX</b>(pointRatio)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATGraphicsTools.js.html">CTATGraphicsTools.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>pointRatio</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="magicTrigFunctionY"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>magicTrigFunctionY</b>(pointRatio)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATGraphicsTools.js.html">CTATGraphicsTools.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>pointRatio</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="manipulateKeyboard"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>manipulateKeyboard</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATMobileTutorHandler.js.html">CTATMobileTutorHandler.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="modifyCanvasCSS"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>modifyCanvasCSS</b>(attrib, value)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATShape.js.html">CTATShape.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>attrib</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>value</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="modifyCSSAttribute"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>modifyCSSAttribute</b>(attribute, value)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATCSS.js.html">CTATCSS.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>attribute</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>value</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="moveComponent"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>moveComponent</b>(toX, toY)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATCanvasComponent.js.html">CTATCanvasComponent.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>toX</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>toY</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="moveShape"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>moveShape</b>(aShapeName, toX, toY)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATCanvasComponent.js.html">CTATCanvasComponent.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>aShapeName</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>toX</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>toY</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="nextProblemScrimUp"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>nextProblemScrimUp</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATScrim.js.html">CTATScrim.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="noenter"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>noenter</b>(e)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATGlobals.js.html">CTATGlobals.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>e</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="OKScrimUp"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>OKScrimUp</b>(aMessage, aFunction)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATScrim.js.html">CTATScrim.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>aMessage</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>aFunction</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="pad"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>pad</b>(val, len)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATDateTime.js.html">CTATDateTime.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>val</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>len</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="parseQueryString"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>parseQueryString</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATGlobals.js.html">CTATGlobals.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="prepTutorArea"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>prepTutorArea</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATTutor.js.html">CTATTutor.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="processEnter"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>processEnter</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATMobileTutorHandler.js.html">CTATMobileTutorHandler.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="processOrientationChange"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>processOrientationChange</b>(aComponent)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATMobileTutorHandler.js.html">CTATMobileTutorHandler.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>aComponent</b>
+									
+								</dt>
+								<dd>One of 'landscape' or 'portrait'</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="processTextFocus"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>processTextFocus</b>(aComponent, y, width, height)
+					
+					</div>
+					<div class="description">
+						The argument will be a component with a className of either one of:CTATTextInput, CTATTextField, CTATTextArea
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATMobileTutorHandler.js.html">CTATMobileTutorHandler.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>aComponent</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>y</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>width</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>height</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="raiseInitialScrim"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>raiseInitialScrim</b>(aMessage)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATGlobals.js.html">CTATGlobals.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>aMessage</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="receiveFromTutor"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>receiveFromTutor</b>()
+					
+					</div>
+					<div class="description">
+						This is a function accessible by TutorShop
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATTutor-backup.js.html">CTATTutor-backup.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="removeComponent"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>removeComponent</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATCanvasComponent.js.html">CTATCanvasComponent.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="removeCSSAttribute"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>removeCSSAttribute</b>(attribute)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATCSS.js.html">CTATCSS.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>attribute</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="removeShape"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>removeShape</b>(aShapeName)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATCanvasComponent.js.html">CTATCanvasComponent.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>aShapeName</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="removeStringCSS"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>removeStringCSS</b>(str)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATCSS.js.html">CTATCSS.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>str</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="replaceString"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>replaceString</b>(thisStr, searchStr, replaceStr)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATStringUtil.js.html">CTATStringUtil.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>thisStr</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>searchStr</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>replaceStr</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="resetCSSStringArray"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>resetCSSStringArray</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATCSS.js.html">CTATCSS.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="resetSelectors"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>resetSelectors</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATCSS.js.html">CTATCSS.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="resizeScrim"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>resizeScrim</b>(newWidth, newHeight)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATScrim.js.html">CTATScrim.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>newWidth</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>newHeight</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="restore"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>restore</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATShape.js.html">CTATShape.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="rgbToHex"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{String}</span>
+					<b>rgbToHex</b>(r, g, b)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATGlobals.js.html">CTATGlobals.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>r</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>g</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>b</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{String}</span> </dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="runTutor"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>runTutor</b>(aVars)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATTutor-backup.js.html">CTATTutor-backup.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>aVars</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="s4"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>s4</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATTools.js.html">CTATTools.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="save"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>save</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATShape.js.html">CTATShape.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="saveAndQuit"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>saveAndQuit</b>()
+					
+					</div>
+					<div class="description">
+						This is a function accessible by TutorShop and is used to do a rapidshutdown of a tutor whilst at the same time saving its state.
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATTutor-backup.js.html">CTATTutor-backup.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="scrimDown"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>scrimDown</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATScrim.js.html">CTATScrim.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="scrimUp"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>scrimUp</b>(aMessage)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATScrim.js.html">CTATScrim.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>aMessage</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="setColor"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>setColor</b>(aColor)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATShape.js.html">CTATShape.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>aColor</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="setData"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>setData</b>(aData)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATShape.js.html">CTATShape.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>aData</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="setDrawWidth"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>setDrawWidth</b>(aDrawWidth)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATShape.js.html">CTATShape.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>aDrawWidth</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="setFillColor"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>setFillColor</b>(aColor)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATGraphicsTools.js.html">CTATGraphicsTools.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>aColor</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="setFillShape"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>setFillShape</b>(aValue)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATGraphicsTools.js.html">CTATGraphicsTools.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>aValue</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="setFont"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>setFont</b>(aFont)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATGraphicsTools.js.html">CTATGraphicsTools.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>aFont</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="setFontSize"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>setFontSize</b>(aSize)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATGraphicsTools.js.html">CTATGraphicsTools.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>aSize</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="setGraphicBorderWidth"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>setGraphicBorderWidth</b>(aWidth)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATGraphicsTools.js.html">CTATGraphicsTools.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>aWidth</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="setHeight"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>setHeight</b>(aHeight)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATShape.js.html">CTATShape.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>aHeight</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="setInAuthorTime"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>setInAuthorTime</b>(theValue)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATScrim.js.html">CTATScrim.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>theValue</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="setLineColor"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>setLineColor</b>(aColor)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATGraphicsTools.js.html">CTATGraphicsTools.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>aColor</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="setName"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>setName</b>(aName)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATShape.js.html">CTATShape.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>aName</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="setOrientation"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>setOrientation</b>(anOrientation)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATGlobals.js.html">CTATGlobals.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>anOrientation</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="setRadius"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>setRadius</b>(aRadius)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATShape.js.html">CTATShape.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>aRadius</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="setText"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>setText</b>(aString)
+					
+					</div>
+					<div class="description">
+						Called by any outside code to push a new string into the currentlyselected text input component
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATMobileTutorHandler.js.html">CTATMobileTutorHandler.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>aString</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="setTextFont"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>setTextFont</b>(aFont)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATShape.js.html">CTATShape.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>aFont</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="setTextSize"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>setTextSize</b>(aSize)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATShape.js.html">CTATShape.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>aSize</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="setTimeZone"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>setTimeZone</b>(zone)
+					
+					</div>
+					<div class="description">
+						<b>[Required]</b> The local time zone name. <p>Datashop prefers the use of tz database time zones, such as one from the "TZ" column in this <a href="http://en.wikipedia.org/wiki/List_of_zoneinfo_time_zones">List of zoneinfo time zones</a>. Three-letter time zone abbreviations such as "EST" and "PST" are still valid, but are deprecated. If the field is not assignedthe default value of "America/New_York" will be used.</p>
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATFlashVars.js.html">CTATFlashVars.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>zone</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="setWidth"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>setWidth</b>(aWidth)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATShape.js.html">CTATShape.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>aWidth</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="setXPoints"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>setXPoints</b>(xPoints)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATShape.js.html">CTATShape.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>xPoints</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="setYPoints"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>setYPoints</b>(yPoints)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATShape.js.html">CTATShape.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>yPoints</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="shapeMagicTrigFunctionX"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>shapeMagicTrigFunctionX</b>(pointRatio)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATShape.js.html">CTATShape.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>pointRatio</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="shapeMagicTrigFunctionY"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>shapeMagicTrigFunctionY</b>(pointRatio)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATShape.js.html">CTATShape.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>pointRatio</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="showComponent"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>showComponent</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATCanvasComponent.js.html">CTATCanvasComponent.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="showEntities"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>showEntities</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATHTMLManager.js.html">CTATHTMLManager.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="showShape"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>showShape</b>(aShapeName)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATCanvasComponent.js.html">CTATCanvasComponent.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>aShapeName</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="String2Boolean"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>String2Boolean</b>(aString)
+					
+					</div>
+					<div class="description">
+						Apparently AS3 expects a direct conversion between a string and a boolean to onlyhappen when the string is '0' or '1' for every other case we have to test manually.So this method pretty much catches all varieties.
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATStringUtil.js.html">CTATStringUtil.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>aString</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="thisMovie"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>thisMovie</b>(movieName)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATGlobals.js.html">CTATGlobals.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>movieName</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="toString"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>toString</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATCSS.js.html">CTATCSS.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="tutorPrep"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>tutorPrep</b>(aVars)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATGlobals.js.html">CTATGlobals.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>aVars</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="urldecode"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>urldecode</b>(str)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATHTMLManager.js.html">CTATHTMLManager.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>str</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="waitScrimUp"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>waitScrimUp</b>()
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATScrim.js.html">CTATScrim.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="warningScrimUp"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>warningScrimUp</b>(aMessage)
+					
+					</div>
+					<div class="description">
+						
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/src_CTATScrim.js.html">CTATScrim.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<b>aMessage</b>
+									
+								</dt>
+								<dd></dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					
+				
+			
+			
+<!-- ============================== event details ========================= -->		
+			
+			
+			<hr />
+		</div>
+
+		
+<!-- ============================== footer ================================= -->
+		<div class="fineprint" style="clear:both">
+			
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Thu Sep 19 2013 09:35:02 GMT-0400 (EDT)
+		</div>
+	</body>
+</html>

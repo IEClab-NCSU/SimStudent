@@ -1,0 +1,267 @@
+;; for Eclipse, etc., specify templates to read
+(require* templates "wmeTypes.clp")
+
+;;;; Fact assertions: slot assignments are below.
+
+(bind ?var1 (assert(MAIN::cell (name dorminTable3_C1R1))))
+(bind ?var2 (assert(MAIN::cell (name dorminTable3_C1R2))))
+(bind ?var3 (assert(MAIN::cell (name dorminTable3_C1R3))))
+(bind ?var4 (assert(MAIN::cell (name dorminTable3_C1R4))))
+(bind ?var5 (assert(MAIN::cell (name dorminTable3_C1R5))))
+(bind ?var6 (assert(MAIN::cell (name dorminTable3_C1R6))))
+(bind ?var7 (assert(MAIN::column (name dorminTable3_Column1))))
+(bind ?var8 (assert(MAIN::table (name dorminTable3))))
+(bind ?var9 (assert(MAIN::cell (name dorminTable2_C1R1))))
+(bind ?var10 (assert(MAIN::cell (name dorminTable2_C1R2))))
+(bind ?var11 (assert(MAIN::cell (name dorminTable2_C1R3))))
+(bind ?var12 (assert(MAIN::cell (name dorminTable2_C1R4))))
+(bind ?var13 (assert(MAIN::cell (name dorminTable2_C1R5))))
+(bind ?var14 (assert(MAIN::cell (name dorminTable2_C1R6))))
+(bind ?var15 (assert(MAIN::column (name dorminTable2_Column1))))
+(bind ?var16 (assert(MAIN::table (name dorminTable2))))
+(bind ?var17 (assert(MAIN::cell (name dorminTable1_C1R1))))
+(bind ?var18 (assert(MAIN::cell (name dorminTable1_C1R2))))
+(bind ?var19 (assert(MAIN::cell (name dorminTable1_C1R3))))
+(bind ?var20 (assert(MAIN::cell (name dorminTable1_C1R4))))
+(bind ?var21 (assert(MAIN::cell (name dorminTable1_C1R5))))
+(bind ?var22 (assert(MAIN::cell (name dorminTable1_C1R6))))
+(bind ?var23 (assert(MAIN::column (name dorminTable1_Column1))))
+(bind ?var24 (assert(MAIN::table (name dorminTable1))))
+(bind ?var25 (assert(MAIN::label (name dorminLabel6))))
+(bind ?var26 (assert(MAIN::label (name dorminLabel5))))
+(bind ?var27 (assert(MAIN::label (name dorminLabel4))))
+(bind ?var28 (assert(MAIN::button (name hint))))
+(bind ?var29 (assert(MAIN::label (name dorminLabel3))))
+(bind ?var30 (assert(MAIN::label (name dorminLabel2))))
+(bind ?var31 (assert(MAIN::button (name done))))
+(bind ?var32 (assert(MAIN::label (name dorminLabel1))))
+(bind ?var33 (assert(MAIN::problem (name init))))
+
+;;;; Slot assignments
+
+; MAIN::cell
+(modify ?var1
+    (name dorminTable3_C1R1)
+    (value nil)
+    (description nil)
+    (row-number 1)
+    (column-number 1)
+)
+; MAIN::cell
+(modify ?var2
+    (name dorminTable3_C1R2)
+    (value nil)
+    (description nil)
+    (row-number 2)
+    (column-number 1)
+)
+; MAIN::cell
+(modify ?var3
+    (name dorminTable3_C1R3)
+    (value nil)
+    (description nil)
+    (row-number 3)
+    (column-number 1)
+)
+; MAIN::cell
+(modify ?var4
+    (name dorminTable3_C1R4)
+    (value nil)
+    (description nil)
+    (row-number 4)
+    (column-number 1)
+)
+; MAIN::cell
+(modify ?var5
+    (name dorminTable3_C1R5)
+    (value nil)
+    (description nil)
+    (row-number 5)
+    (column-number 1)
+)
+; MAIN::cell
+(modify ?var6
+    (name dorminTable3_C1R6)
+    (value nil)
+    (description nil)
+    (row-number 6)
+    (column-number 1)
+)
+; MAIN::column
+(modify ?var7
+    (name dorminTable3_Column1)
+    (cells ?var1 ?var2 ?var3 ?var4 ?var5 ?var6)
+    (position 1)
+    (description nil)
+)
+; MAIN::table
+(modify ?var8
+    (name dorminTable3)
+    (columns ?var7)
+)
+; MAIN::cell
+(modify ?var9
+    (name dorminTable2_C1R1)
+    (value "9-7x")
+    (description nil)
+    (row-number 1)
+    (column-number 1)
+)
+; MAIN::cell
+(modify ?var10
+    (name dorminTable2_C1R2)
+    (value nil)
+    (description nil)
+    (row-number 2)
+    (column-number 1)
+)
+; MAIN::cell
+(modify ?var11
+    (name dorminTable2_C1R3)
+    (value nil)
+    (description nil)
+    (row-number 3)
+    (column-number 1)
+)
+; MAIN::cell
+(modify ?var12
+    (name dorminTable2_C1R4)
+    (value nil)
+    (description nil)
+    (row-number 4)
+    (column-number 1)
+)
+; MAIN::cell
+(modify ?var13
+    (name dorminTable2_C1R5)
+    (value nil)
+    (description nil)
+    (row-number 5)
+    (column-number 1)
+)
+; MAIN::cell
+(modify ?var14
+    (name dorminTable2_C1R6)
+    (value nil)
+    (description nil)
+    (row-number 6)
+    (column-number 1)
+)
+; MAIN::column
+(modify ?var15
+    (name dorminTable2_Column1)
+    (cells ?var9 ?var10 ?var11 ?var12 ?var13 ?var14)
+    (position 1)
+    (description nil)
+)
+; MAIN::table
+(modify ?var16
+    (name dorminTable2)
+    (columns ?var15)
+)
+; MAIN::cell
+(modify ?var17
+    (name dorminTable1_C1R1)
+    (value "8x-10")
+    (description nil)
+    (row-number 1)
+    (column-number 1)
+)
+; MAIN::cell
+(modify ?var18
+    (name dorminTable1_C1R2)
+    (value nil)
+    (description nil)
+    (row-number 2)
+    (column-number 1)
+)
+; MAIN::cell
+(modify ?var19
+    (name dorminTable1_C1R3)
+    (value nil)
+    (description nil)
+    (row-number 3)
+    (column-number 1)
+)
+; MAIN::cell
+(modify ?var20
+    (name dorminTable1_C1R4)
+    (value nil)
+    (description nil)
+    (row-number 4)
+    (column-number 1)
+)
+; MAIN::cell
+(modify ?var21
+    (name dorminTable1_C1R5)
+    (value nil)
+    (description nil)
+    (row-number 5)
+    (column-number 1)
+)
+; MAIN::cell
+(modify ?var22
+    (name dorminTable1_C1R6)
+    (value nil)
+    (description nil)
+    (row-number 6)
+    (column-number 1)
+)
+; MAIN::column
+(modify ?var23
+    (name dorminTable1_Column1)
+    (cells ?var17 ?var18 ?var19 ?var20 ?var21 ?var22)
+    (position 1)
+    (description nil)
+)
+; MAIN::table
+(modify ?var24
+    (name dorminTable1)
+    (columns ?var23)
+)
+; MAIN::label
+(modify ?var25
+    (name dorminLabel6)
+    (value "=")
+)
+; MAIN::label
+(modify ?var26
+    (name dorminLabel5)
+    (value "=")
+)
+; MAIN::label
+(modify ?var27
+    (name dorminLabel4)
+    (value "=")
+)
+; MAIN::button
+(modify ?var28
+    (name hint)
+)
+; MAIN::label
+(modify ?var29
+    (name dorminLabel3)
+    (value "=")
+)
+; MAIN::label
+(modify ?var30
+    (name dorminLabel2)
+    (value "=")
+)
+; MAIN::button
+(modify ?var31
+    (name done)
+)
+; MAIN::label
+(modify ?var32
+    (name dorminLabel1)
+    (value "=")
+)
+; MAIN::problem
+(modify ?var33
+    (name init)
+    (interface-elements ?var31 ?var32 ?var30 ?var29 ?var27 ?var26 ?var25 ?var24 ?var16 ?var8 ?var28)
+    (subgoals)
+    (done nil)
+    (description nil)
+)

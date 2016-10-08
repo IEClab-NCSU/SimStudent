@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+    <title>ProblemSetTitle</title>
+	
+	<meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta property="og:title" content="Share your tutors on the web!">
+    <meta property="og:site_name" content="CTAT">
+    <meta property="og:description" content="Share tutors with fellow students or build your own.">
+    <meta property="og:type" content="Website">	
+	<meta property="og:image" content="http://augustus.pslc.cs.cmu.edu/html5/logo.png">
+	
+	<link rel="stylesheet" type="text/css" href="/css/jquery-ui.css">
+	<link rel="stylesheet" type="text/css" href="/css/android_keyboard.css">
+	
+	<script type="text/javascript" src="/html5/CollapsibleLists.js"></script>
+	
+    <script type="text/javascript" src="/jquery/jquery-1.9.0.min.js"></script>
+    <script type="text/javascript" src="/jquery/jquery-ui-1.10.3.custom.js"></script>
+	
+	<script type="text/javascript" src="/html5/CTATUtil/jstz.js"></script>
+	
+	<script type="text/javascript" src="/html5/CTATUtil/CTATGuid.js"></script>
+	<script type="text/javascript" src="/html5/CTATGlobals.js"></script>	
+
+    <script type="text/javascript" src="/html5/CTATComponentHierarchy/CTATBase.js"></script>
+	
+    <script type="text/javascript" src="/html5/CTATUtil/CTATVariable.js"></script>		
+    <script type="text/javascript" src="/html5/CTATStringUtil.js"></script>
+    <script type="text/javascript" src="/html5/CTATHTMLManager.js"></script>
+    <script type="text/javascript" src="/html5/CTATUtil/CTATXML.js"></script>		
+    <script type="text/javascript" src="/html5/CTATSerialization/CTATArgument.js"></script>
+    <script type="text/javascript" src="/html5/CTATSerialization/CTATSAI.js"></script>	
+    <script type="text/javascript" src="/html5/CTATSerialization/CTATComplexSAI.js"></script>		
+    <script type="text/javascript" src="/html5/CTATGraphicsTools.js"></script>
+    <script type="text/javascript" src="/html5/CTATShape.js"></script>
+    <script type="text/javascript" src="/html5/CTATCanvasComponent.js"></script>
+    <script type="text/javascript" src="/html5/CTATScrim.js"></script>
+		
+	<script type="text/javascript" src="/html5/CTATCommunication/CTATMessage.js"></script>
+	<script type="text/javascript" src="/html5/CTATCommunication/CTATActionEvaluationData.js"></script>
+	
+    <script type="text/javascript" src="/html5/CTATComponentHierarchy/CTATCompBase.js"></script>
+    <script type="text/javascript" src="/html5/CTATComponentHierarchy/CTATClickableComponent.js"></script>
+    <script type="text/javascript" src="/html5/CTATComponentHierarchy/CTATTutorableComponent.js"></script>
+    <script type="text/javascript" src="/html5/CTATComponentHierarchy/CTATButtonBasedComponent.js"></script>
+    <script type="text/javascript" src="/html5/CTATComponentHierarchy/CTATTextBasedComponent.js"></script>
+    <script type="text/javascript" src="/html5/CTATComponentHierarchy/CTATImageButtonComponent.js"></script>
+  
+    <script type="text/javascript" src="/html5/CTATCSS.js"></script>	
+    <script type="text/javascript" src="/html5/CTATUtil/CTATShellTools.js"></script>	
+    <script type="text/javascript" src="/html5/CTATTools.js"></script>
+    <script type="text/javascript" src="/html5/CTATDateTime.js"></script>
+    <script type="text/javascript" src="/html5/CTATLinkData.js"></script>
+    <script type="text/javascript" src="/html5/CTATSerialization/CTATComponentReference.js"></script>
+    <script type="text/javascript" src="/html5/CTATSerialization/CTATComponentDescription.js"></script>    
+    <script type="text/javascript" src="/html5/CTATFlashVars.js"></script>
+    <script type="text/javascript" src="/html5/CTATContextData.js"></script>
+    <script type="text/javascript" src="/html5/CTATCommunication/CTATConnection.js"></script>	
+    <script type="text/javascript" src="/html5/CTATCommunication/CTATCommLibrary.js"></script>
+    <script type="text/javascript" src="/html5/CTATCommunication/CTATCurriculumService.js"></script>
+    <script type="text/javascript" src="/html5/CTATCommunication/CTATLogMessageBuilder.js"></script>
+    <script type="text/javascript" src="/html5/CTATCommunication/CTATLoggingLibrary.js"></script>
+    <script type="text/javascript" src="/html5/CTATCommunication/CTATTutoringServiceMessageBuilder.js"></script>
+    <script type="text/javascript" src="/html5/CTATCommunication/CTATMessageHandler.js"></script>
+    <script type="text/javascript" src="/html5/CTATCommunication/CTATCommShell.js"></script>
+    <script type="text/javascript" src="/html5/CTATBinaryImages.js"></script>
+
+    <script type="text/javascript" src="/html5/CTATComponents/CTATComponent.js"></script>
+    <script type="text/javascript" src="/html5/CTATComponents/CTATSkill.js"></script>
+    <script type="text/javascript" src="/html5/CTATComponents/CTATSkillSet.js"></script>
+    <script type="text/javascript" src="/html5/CTATComponents/CTATTextField.js"></script>
+    <script type="text/javascript" src="/html5/CTATComponents/CTATTextInput.js"></script>	
+    <script type="text/javascript" src="/html5/CTATComponents/CTATButton.js"></script>	
+    <script type="text/javascript" src="/html5/CTATComponents/CTATRadioButton.js"></script>
+    <script type="text/javascript" src="/html5/CTATComponents/CTATCheckBox.js"></script>
+    <script type="text/javascript" src="/html5/CTATComponents/CTATComboBox.js"></script>
+    <script type="text/javascript" src="/html5/CTATComponents/CTATImageButton.js"></script>
+    <script type="text/javascript" src="/html5/CTATComponents/CTATHintWindow.js"></script>
+    <script type="text/javascript" src="/html5/CTATComponents/CTATSkillWindow.js"></script>
+    <script type="text/javascript" src="/html5/CTATComponents/CTATAudioButton.js"></script>
+    <script type="text/javascript" src="/html5/CTATComponents/CTATVideo.js"></script>
+    <script type="text/javascript" src="/html5/CTATComponents/CTATTable.js"></script>
+    <script type="text/javascript" src="/html5/CTATComponents/CTATPlayButton.js"></script>
+
+    <script type="text/javascript" src="/html5/CTATMobileTutorHandler.js"></script>
+    <script type="text/javascript" src="/html5/CTATTutor.js"></script>
+			
+    <style type="text/css">
+				
+	body 
+	{
+		margin: 0;
+		padding: 0;
+		text-align: center; /* !!! */
+		background-color:#cccccc;
+	}
+		
+	.container 
+	{ 
+		width: 320px; 
+		height: 200px; 		  
+		box-shadow: 10px 10px 5px #222222;
+		z-index: 0;
+		position: relative;
+		margin: auto;
+		vertical-align: middle;
+	}
+	
+	#main-canvas
+	{
+	}
+	
+	canvas
+	{
+		border: 1px solid black; 
+		background-color: #ffffff;
+		z-index: 1;
+		position: relative;		
+	}	
+	
+	.console 
+	{ 
+		background-color: #ffffff;
+		width: 600px;  		  
+		height: 0px;
+		box-shadow: 10px 10px 5px #222222;
+		text-align: left;
+		overflow: auto;
+		font-family: courier; 
+		font-size: 11px;
+		border: 1px solid black;
+		/*white-space: nowrap;*/
+	}	
+	
+	.classname 
+	{
+		box-shadow:inset 0px 1px 0px 0px #ffffff;
+		background-color:#ededed;
+		border-radius:6px;
+		border:1px solid #dcdcdc;
+		display:inline-block;
+		color:#777777;
+		font-family:arial;
+		font-size:15px;
+		font-weight:bold;
+		padding:6px 24px;
+		text-decoration:none;
+		text-shadow:1px 1px 0px #ffffff;
+	}
+	
+	.classname:hover 
+	{
+		background-color:#dfdfdf;
+	}
+	
+	.classname:active 
+	{
+		position:relative;
+		top:1px;
+	}	
+	
+	.shadow
+	{
+		box-shadow: 5px 5px 5px #888888;	
+	}
+		
+	.ui-widget-content 
+	{
+		border: 1px solid #aaaaaa;
+		background: #ffffff url(skindata/ui-bg_flat_75_ffffff_40x100.png) 50% 50% repeat-x;
+		color: #222222;
+		font-size: 10px;
+	}
+	
+	.ui-widget-content a 
+	{
+		color: #222222;
+		font-size: 12px;
+	}	
+	
+	#divbg 
+	{
+		width: 100%;
+		height: 100%;
+		left: 0px;
+		top: 0px;
+		position: absolute;
+		z-index: 0;
+	}	
+	
+	div.floating-menu 
+	{
+		font:11px Arial, Helvetica, sans-serif;
+		position:relative;
+		background:#fff4c8;
+		border:1px solid #ffcc00;
+		width:175px;
+		z-index:1000;
+	}
+
+	div.floating-menu a, div.floating-menu h3 {display:block;margin:0 0.5em;}
+					
+	#closeKeyboard
+	{
+		background-color:red;
+		width:40px;
+		margin-top:5px;
+	}
+
+	#openKeyboard
+	{
+		background-color:green;
+		width:40px;
+		margin-top:5px;
+	}
+	
+	.collapsibleList li
+	{
+		list-style-image:url('/images/button.png');
+		cursor:auto;
+	}
+
+	li.collapsibleListOpen
+	{
+		list-style-image:url('/images/button-open.png');
+		cursor:pointer;
+	}
+
+	li.collapsibleListClosed
+	{
+		list-style-image:url('/images/button-closed.png');
+		cursor:pointer;
+	}	
+	
+    .treeView li li
+	{
+       background-image:url('/images/list-item.png');
+       padding-left:1.5em;
+    }
+
+    .treeView li.lastChild
+	{
+       background-image:url('/images/list-item-last.png');
+    }
+
+    .treeView li.collapsibleListOpen
+	{
+       background-image:url('/images/list-item-open.png');
+    }
+
+    .treeView li.collapsibleListOpen.lastChild
+	{
+       background-image:url('/images/list-item-last-open.png');
+    }	
+				
+    </style>
+	    
+    <script language="javascript">
+        	
+    var consoleFolded=true;
+    
+    /**
+    *
+    */
+	function clearConsole ()
+	{
+		console=document.getElementById("console");
+		
+		console.innerHTML="";
+	}
+    /**
+    *
+    */
+	function foldConsole ()
+	{
+		console=document.getElementById("console");
+		
+		if (consoleFolded==false)
+		{
+			consoleFolded=true;
+			console.style.height="0px";
+		}
+		else
+		{
+			consoleFolded=false;
+			console.style.height="300px";
+		}
+	}    
+	/**
+	*
+	*/
+	function toggleDebugging(cb) 
+	{				
+		if (cb.checked==true)
+			useDebugging=true;
+		else
+			useDebugging=false;
+	}
+	/**
+	*
+	*/
+	function listCTATComponents() 
+	{				
+		var tempValue=useDebugging;
+		
+		useDebugging=true;	
+		var tools=new CTATShellTools ();
+		tools.listComponents ();	
+		useDebugging=tempValue;
+	}	
+	   			
+	function javaScriptInfo (aMessage)
+	{
+		var menubar=document.getElementById('info');
+		
+		if (menubar!=null)
+		{
+			//menubar.innerHTML=('<img src="/images/available.png" align="left">'+aMessage);
+		}
+	}
+	
+	//>-------------------------------------------------------------------	
+					
+	function openK()
+	{
+		document.getElementById("keyboardUI").style.visibility="visible";
+	}
+	
+	function closeK()
+	{
+		document.getElementById("keyboardUI").style.visibility="hidden";
+	}
+
+	function closeKeyboardOnBlur()
+	{
+		document.getElementById("keyboardUI").style.visibility="hidden";
+		console.log("keyboard onblur");
+	}	
+	
+	//>-------------------------------------------------------------------		
+	
+	function init ()
+	{
+		CollapsibleLists.applyTo(document.getElementById('curriculum'));	
+		
+		setOrientation (180);
+	}
+	
+	</script>	
+	    
+	</head>
+	<body onload='init ();'>
+	
+<div id="divbg"><img src="/images/blueswirly.jpg" width="100%" height="100%"></div>
+
+<div id="maincontent">	
+	
+	<div class="floating-menu" align="left">
+	<h3>Tutor Menu</h3>
+	directory.txt
+	</div>
+    
+	<table cellpadding="0" cellspacing="0" width="100%" height="100%" border="0" style="vertical-align: middle;">
+	<tr>
+		<td id="table element">  
+			<div width="600" id="info" name="info">
+			</div>
+
+			flashtags
+			
+			<div width="600">
+				<input type="checkbox" id="debugtraces" name="debugtraces" value="debugtraces" onclick='toggleDebugging(this);'>Show Debug Traces 
+				<button type="button" onclick="listCTATComponents ()"><img src="list.png" alt="List CTAT Components" /></button>
+				<button type="button" onclick="clearConsole ()"><img src="edit-clear.png" alt="Clear Console" /></button>
+				<button type="button" onclick="foldConsole ()"><img src="fold.png" alt="Fold Console" /></button>
+				<img id="pageor" name="pageor" src="skindata/portrait.png" border="0">
+				<br>
+				<div id="console" class="console" style="margin: auto; position: relative;"></div>
+			</div>			
+		</td>
+	</tr>
+	</table>
+	
+<div id="keyboardUI" onblur="closeKeyboardOnBlur()">
+	<div>
+		<div class="cssBG"></div>
+		<div class="onlay"></div>
+
+		<div class="numbers" id="zero" onclick="mobileAPI.setText('0')">0</div>
+		<div class="numbers" id="one" onclick="mobileAPI.setText('1')">1</div>
+		<div class="numbers" id="two"onclick="mobileAPI.setText('2')">2</div>
+		<div class="numbers" id="three" onclick="mobileAPI.setText('3')">3</div>
+		<div class="numbers" id="four" onclick="mobileAPI.setText('4')">4</div>
+		<div class="numbers" id="five" onclick="mobileAPI.setText('5')">5</div>
+		<div class="numbers" id="six" onclick="mobileAPI.setText('6')">6</div>
+		<div class="numbers" id="seven" onclick="mobileAPI.setText('7')">7</div>
+		<div class="numbers" id="eight" onclick="mobileAPI.setText('8')">8</div>
+		<div class="numbers" id="nine" onclick="mobileAPI.setText('9')">9</div>
+		<div class="xvar" style="left:535px;bottom:78px;" onclick="mobileAPI.setText('x')"><span style="font-family:times new roman;">x</span><br><span style="font-size:20px;">variable</span></div>
+		<div class="parenthesesDivision" id="openparen" onclick="mobileAPI.setText('(')">(</div>
+		<div class="parenthesesDivision" id="closeparen" onclick="mobileAPI.setText(')')">)</div>
+		<div class="parenthesesDivision" id="division" onclick="mobileAPI.setText('/')">/
+		</div>
+		<div class="plusMinus" id="plus" onclick="mobileAPI.setText('+')">+</div>
+		<div class="plusMinus" id="minus" onclick="mobileAPI.setText('-')">-</div>
+		<div class="close" onclick="closeK()">close</div>
+		<div class="enter" onclick="mobileAPI.processEnter()">Enter</div>
+		<div class="backspace">Backspace</div>
+		<div id="triangle-left"></div>
+		<div id="triangle-right"></div>
+	</div>
+<div>	
+		
+</div>		
+		
+	</body>
+</html>

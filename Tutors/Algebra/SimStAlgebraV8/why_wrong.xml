@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE scenario SYSTEM "http://www.pitt.edu/~tutalk/TuTalkScenario.dtd">
+<scenario version="$Revision: 1.2 $" default-language="en">
+
+
+
+<concepts>
+  <concept label="unanticipated-response">
+   <phrase>anything else</phrase>
+  </concept>
+
+
+  <concept label="final-thanks">
+   <phrase>Thanks! That's all I wanted to know for now.</phrase>
+  </concept>
+  <concept label="first-question">
+   <phrase>Why do you think that what I did is wrong?</phrase>
+  </concept>
+  
+  
+  <concept label="right-action-response">
+   <phrase>have to</phrase>
+   <phrase>had to</phrase>
+   <phrase>need to</phrase>
+   <phrase>should</phrase>
+   <phrase>instead</phrase>
+  </concept>
+  <concept label="right-action-response-simst">
+   <phrase>What do I get by doing that?</phrase>
+  </concept>
+
+  <concept label="mistake-response">
+   <phrase>sorry</phrase>
+   <phrase>oops</phrase>
+   <phrase>you are right</phrase>
+   <phrase>you were right</phrase>
+  </concept>
+  <concept label="mistake-response-simst">
+   <phrase>Not a problem. We'll do better next time.</phrase>
+  </concept>
+  
+  <concept label="insult-response">
+   <phrase>stupid</phrase>
+   <phrase>dummy</phrase>
+   <phrase>dumb</phrase>
+   <phrase>idiot</phrase>
+   <phrase>retard</phrase>
+  </concept>
+  <concept label="insult-response-simst">
+   <phrase>There's no need for calling names!  I'm trying!</phrase>
+  </concept>
+
+  <concept label="wrong-response">
+   <phrase>you were wrong</phrase>
+   <phrase>you are wrong</phrase>
+   <phrase>you can't</phrase>
+   <phrase>you cannot</phrase>
+   <phrase>u can't</phrase>
+   <phrase>u cant</phrase>
+  </concept>
+  <concept label="wrong-response-simst">
+   <phrase>Oh, I see. Why do you think that doing that is wrong?</phrase>
+  </concept>
+
+  <concept label="nature-response">
+   <phrase>it has</phrase>
+   <phrase>equation has</phrase>
+   <phrase>there are</phrase>
+   <phrase>there is</phrase>
+  </concept>
+  <concept label="nature-response-simst">
+   <phrase>Oh, I see...</phrase>
+  </concept>
+</concepts>
+
+<script>
+ <goal name="start">
+  <step><subgoal>reasons</subgoal></step>
+  <!--<step>
+   <initiation>first-question</initiation>
+   </step>-->
+ </goal>
+ 
+ <goal name="reasons">
+  <step>
+   <initiation>first-question</initiation>
+   <response push="right-action-response-action">right-action-response</response>
+   <response push="wrong-response-action">wrong-response</response>
+   
+   <response say="nature-response-simst">nature-response</response>
+   <response say="mistake-response-simst">mistake-response</response> 
+   <response say="insult-response-simst">insult-response</response> 
+   <response say="final-thanks">unanticipated-response</response>
+  </step>
+ </goal>
+ 
+ <goal name="right-action-response-action">
+  <step>
+   <initiation>right-action-response-simst</initiation>
+   <response say="final-thanks">unanticipated-response</response>
+  </step>
+ </goal>
+
+ <goal name="wrong-response-action">
+  <step>
+   <initiation>wrong-response-simst</initiation>
+   <response say="final-thanks">unanticipated-response</response>
+  </step>
+ </goal>
+ 
+</script>
+</scenario>

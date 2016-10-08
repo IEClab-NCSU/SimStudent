@@ -1,0 +1,724 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<preferences>
+  <preference>
+    <name>Show Action Labels</name>
+    <class>java.lang.Boolean</class>
+    <value>true</value>
+  </preference>
+  <preference>
+    <name>Show Rule Labels</name>
+    <class>java.lang.Boolean</class>
+    <value>false</value>
+  </preference>
+  <preference>
+    <name>Allow Tool-Performed Actions</name>
+    <class>java.lang.Boolean</class>
+    <value>true</value>
+  </preference>
+  <preference>
+    <name>Maximum Number of Student Actors</name>
+    <class>java.lang.Integer</class>
+    <value>1</value>
+  </preference>
+  <preference>
+    <name>frame0 Width</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame0 Height</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame0 Location X</name>
+    <class>java.lang.Integer</class>
+    <value>560</value>
+  </preference>
+  <preference>
+    <name>frame0 Location Y</name>
+    <class>java.lang.Integer</class>
+    <value>171</value>
+  </preference>
+  <preference>
+    <name>Show Tutor Type Save Popup</name>
+    <class>java.lang.Boolean</class>
+    <value>true</value>
+  </preference>
+  <preference>
+    <name>Docked Window Location X</name>
+    <class>java.lang.Integer</class>
+    <value>125</value>
+  </preference>
+  <preference>
+    <name>Docked Window Location Y</name>
+    <class>java.lang.Integer</class>
+    <value>23</value>
+  </preference>
+  <preference>
+    <name>Docked Window Width</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>Docked Window Height</name>
+    <class>java.lang.Integer</class>
+    <value>734</value>
+  </preference>
+  <preference>
+    <name>Student Interface Location X</name>
+    <class>java.lang.Integer</class>
+    <value>51</value>
+  </preference>
+  <preference>
+    <name>Student Interface Location Y</name>
+    <class>java.lang.Integer</class>
+    <value>52</value>
+  </preference>
+  <preference>
+    <name>Student Interface Width</name>
+    <class>java.lang.Integer</class>
+    <value>1229</value>
+  </preference>
+  <preference>
+    <name>Student Interface Height</name>
+    <class>java.lang.Integer</class>
+    <value>705</value>
+  </preference>
+  <preference>
+    <name>Problem Directory</name>
+    <class>java.lang.String</class>
+    <value>edu/cmu/pact/BehaviorRecorder/ProblemModel/</value>
+  </preference>
+  <preference>
+    <name>BRD File other location</name>
+    <class>java.lang.String</class>
+    <value>edu/cmu/pact/BehaviorRecorder/ProblemModel/</value>
+  </preference>
+  <preference>
+    <name>Tutor Wrapper Vertical Divider Location</name>
+    <class>java.lang.Integer</class>
+    <value>300</value>
+  </preference>
+  <preference>
+    <name>Tutor Wrapper Horizontal Divider Location</name>
+    <class>java.lang.Integer</class>
+    <value>500</value>
+  </preference>
+  <preference>
+    <name>Use OLI Logging</name>
+    <class>java.lang.Boolean</class>
+    <value>false</value>
+  </preference>
+  <preference>
+    <name>Use Disk Logging</name>
+    <class>java.lang.Boolean</class>
+    <value>false</value>
+  </preference>
+  <preference>
+    <name>Projects Directory</name>
+    <class>java.lang.String</class>
+    <value>/Users/simstudent/CMU/pact-cvs-tree/AuthoringToolsL/java/test/edu/cmu/pact/miss/SimStAlgebraV8</value>
+  </preference>
+  <preference>
+    <name>frame1 Width</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame1 Height</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame1 Location X</name>
+    <class>java.lang.Integer</class>
+    <value>560</value>
+  </preference>
+  <preference>
+    <name>frame1 Location Y</name>
+    <class>java.lang.Integer</class>
+    <value>171</value>
+  </preference>
+  <preference>
+    <name>frame2 Width</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame2 Height</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame2 Location X</name>
+    <class>java.lang.Integer</class>
+    <value>560</value>
+  </preference>
+  <preference>
+    <name>frame2 Location Y</name>
+    <class>java.lang.Integer</class>
+    <value>171</value>
+  </preference>
+  <preference>
+    <name>frame3 Width</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame3 Height</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame3 Location X</name>
+    <class>java.lang.Integer</class>
+    <value>560</value>
+  </preference>
+  <preference>
+    <name>frame3 Location Y</name>
+    <class>java.lang.Integer</class>
+    <value>171</value>
+  </preference>
+  <preference>
+    <name>frame4 Width</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame4 Height</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame4 Location X</name>
+    <class>java.lang.Integer</class>
+    <value>560</value>
+  </preference>
+  <preference>
+    <name>frame4 Location Y</name>
+    <class>java.lang.Integer</class>
+    <value>171</value>
+  </preference>
+  <preference>
+    <name>frame5 Width</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame5 Height</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame5 Location X</name>
+    <class>java.lang.Integer</class>
+    <value>560</value>
+  </preference>
+  <preference>
+    <name>frame5 Location Y</name>
+    <class>java.lang.Integer</class>
+    <value>171</value>
+  </preference>
+  <preference>
+    <name>frame6 Width</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame6 Height</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame6 Location X</name>
+    <class>java.lang.Integer</class>
+    <value>560</value>
+  </preference>
+  <preference>
+    <name>frame6 Location Y</name>
+    <class>java.lang.Integer</class>
+    <value>171</value>
+  </preference>
+  <preference>
+    <name>frame7 Width</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame7 Height</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame7 Location X</name>
+    <class>java.lang.Integer</class>
+    <value>560</value>
+  </preference>
+  <preference>
+    <name>frame7 Location Y</name>
+    <class>java.lang.Integer</class>
+    <value>171</value>
+  </preference>
+  <preference>
+    <name>frame11 Width</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame11 Height</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame11 Location X</name>
+    <class>java.lang.Integer</class>
+    <value>560</value>
+  </preference>
+  <preference>
+    <name>frame11 Location Y</name>
+    <class>java.lang.Integer</class>
+    <value>171</value>
+  </preference>
+  <preference>
+    <name>frame14 Width</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame14 Height</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame14 Location X</name>
+    <class>java.lang.Integer</class>
+    <value>560</value>
+  </preference>
+  <preference>
+    <name>frame14 Location Y</name>
+    <class>java.lang.Integer</class>
+    <value>171</value>
+  </preference>
+  <preference>
+    <name>frame13 Width</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame13 Height</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame13 Location X</name>
+    <class>java.lang.Integer</class>
+    <value>560</value>
+  </preference>
+  <preference>
+    <name>frame13 Location Y</name>
+    <class>java.lang.Integer</class>
+    <value>171</value>
+  </preference>
+  <preference>
+    <name>frame15 Width</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame15 Height</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame15 Location X</name>
+    <class>java.lang.Integer</class>
+    <value>560</value>
+  </preference>
+  <preference>
+    <name>frame15 Location Y</name>
+    <class>java.lang.Integer</class>
+    <value>171</value>
+  </preference>
+  <preference>
+    <name>frame16 Width</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame16 Height</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame16 Location X</name>
+    <class>java.lang.Integer</class>
+    <value>560</value>
+  </preference>
+  <preference>
+    <name>frame16 Location Y</name>
+    <class>java.lang.Integer</class>
+    <value>171</value>
+  </preference>
+  <preference>
+    <name>frame17 Width</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame17 Height</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame17 Location X</name>
+    <class>java.lang.Integer</class>
+    <value>560</value>
+  </preference>
+  <preference>
+    <name>frame17 Location Y</name>
+    <class>java.lang.Integer</class>
+    <value>171</value>
+  </preference>
+  <preference>
+    <name>frame18 Width</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame18 Height</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame18 Location X</name>
+    <class>java.lang.Integer</class>
+    <value>560</value>
+  </preference>
+  <preference>
+    <name>frame18 Location Y</name>
+    <class>java.lang.Integer</class>
+    <value>171</value>
+  </preference>
+  <preference>
+    <name>frame19 Width</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame19 Height</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame19 Location X</name>
+    <class>java.lang.Integer</class>
+    <value>560</value>
+  </preference>
+  <preference>
+    <name>frame19 Location Y</name>
+    <class>java.lang.Integer</class>
+    <value>171</value>
+  </preference>
+  <preference>
+    <name>frame20 Width</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame20 Height</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame20 Location X</name>
+    <class>java.lang.Integer</class>
+    <value>560</value>
+  </preference>
+  <preference>
+    <name>frame20 Location Y</name>
+    <class>java.lang.Integer</class>
+    <value>171</value>
+  </preference>
+  <preference>
+    <name>frame21 Width</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame21 Height</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame21 Location X</name>
+    <class>java.lang.Integer</class>
+    <value>560</value>
+  </preference>
+  <preference>
+    <name>frame21 Location Y</name>
+    <class>java.lang.Integer</class>
+    <value>171</value>
+  </preference>
+  <preference>
+    <name>frame22 Width</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame22 Height</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame22 Location X</name>
+    <class>java.lang.Integer</class>
+    <value>560</value>
+  </preference>
+  <preference>
+    <name>frame22 Location Y</name>
+    <class>java.lang.Integer</class>
+    <value>171</value>
+  </preference>
+  <preference>
+    <name>frame23 Width</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame23 Height</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame23 Location X</name>
+    <class>java.lang.Integer</class>
+    <value>560</value>
+  </preference>
+  <preference>
+    <name>frame23 Location Y</name>
+    <class>java.lang.Integer</class>
+    <value>171</value>
+  </preference>
+  <preference>
+    <name>frame24 Width</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame24 Height</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame24 Location X</name>
+    <class>java.lang.Integer</class>
+    <value>560</value>
+  </preference>
+  <preference>
+    <name>frame24 Location Y</name>
+    <class>java.lang.Integer</class>
+    <value>171</value>
+  </preference>
+  <preference>
+    <name>frame25 Width</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame25 Height</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame25 Location X</name>
+    <class>java.lang.Integer</class>
+    <value>560</value>
+  </preference>
+  <preference>
+    <name>frame25 Location Y</name>
+    <class>java.lang.Integer</class>
+    <value>171</value>
+  </preference>
+  <preference>
+    <name>frame26 Width</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame26 Height</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame26 Location X</name>
+    <class>java.lang.Integer</class>
+    <value>560</value>
+  </preference>
+  <preference>
+    <name>frame26 Location Y</name>
+    <class>java.lang.Integer</class>
+    <value>171</value>
+  </preference>
+  <preference>
+    <name>frame27 Width</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame27 Height</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame27 Location X</name>
+    <class>java.lang.Integer</class>
+    <value>560</value>
+  </preference>
+  <preference>
+    <name>frame27 Location Y</name>
+    <class>java.lang.Integer</class>
+    <value>171</value>
+  </preference>
+  <preference>
+    <name>frame28 Width</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame28 Height</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame28 Location X</name>
+    <class>java.lang.Integer</class>
+    <value>560</value>
+  </preference>
+  <preference>
+    <name>frame28 Location Y</name>
+    <class>java.lang.Integer</class>
+    <value>171</value>
+  </preference>
+  <preference>
+    <name>frame29 Width</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame29 Height</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame29 Location X</name>
+    <class>java.lang.Integer</class>
+    <value>560</value>
+  </preference>
+  <preference>
+    <name>frame29 Location Y</name>
+    <class>java.lang.Integer</class>
+    <value>171</value>
+  </preference>
+  <preference>
+    <name>frame30 Width</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame30 Height</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame30 Location X</name>
+    <class>java.lang.Integer</class>
+    <value>560</value>
+  </preference>
+  <preference>
+    <name>frame30 Location Y</name>
+    <class>java.lang.Integer</class>
+    <value>171</value>
+  </preference>
+  <preference>
+    <name>frame31 Width</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame31 Height</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame31 Location X</name>
+    <class>java.lang.Integer</class>
+    <value>560</value>
+  </preference>
+  <preference>
+    <name>frame31 Location Y</name>
+    <class>java.lang.Integer</class>
+    <value>171</value>
+  </preference>
+  <preference>
+    <name>frame32 Width</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame32 Height</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame32 Location X</name>
+    <class>java.lang.Integer</class>
+    <value>560</value>
+  </preference>
+  <preference>
+    <name>frame32 Location Y</name>
+    <class>java.lang.Integer</class>
+    <value>171</value>
+  </preference>
+  <preference>
+    <name>frame33 Width</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame33 Height</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame33 Location X</name>
+    <class>java.lang.Integer</class>
+    <value>560</value>
+  </preference>
+  <preference>
+    <name>frame33 Location Y</name>
+    <class>java.lang.Integer</class>
+    <value>171</value>
+  </preference>
+  <preference>
+    <name>frame8 Width</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame8 Height</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame8 Location X</name>
+    <class>java.lang.Integer</class>
+    <value>560</value>
+  </preference>
+  <preference>
+    <name>frame8 Location Y</name>
+    <class>java.lang.Integer</class>
+    <value>171</value>
+  </preference>
+</preferences>
+

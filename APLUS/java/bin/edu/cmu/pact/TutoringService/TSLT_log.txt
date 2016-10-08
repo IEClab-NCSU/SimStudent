@@ -1,0 +1,63 @@
+Tutoring Service Load Test (TSLT)
+
+8/23/2007
+Michael and I sat down to use the load test on my machine. We did the following:
+
+1) Changed private static final String HTML_FILE  in TestingFramework.java to point to a absolute path on my machine.  The new path is: D:/Documents/PACT-CVS-TREE/AuthoringTools/java/test/edu/cmu/pact/TutoringService/TSLT.html.  
+	See D:\Documents\PACT-CVS-TREE\AuthoringTools\java\test\edu\cmu\pact\TutoringService
+
+2) Update test.sh, putting CommWidgets on the class path. 
+	See D:\Documents\PACT-CVS-TREE\AuthoringTools\java\test\edu\cmu\pact\TutoringService\test.sh
+
+3) Run ant to compile CommWidgets which is used by TSLTListener, TestingFramework, and TSLTCorrectnessChecker
+
+4) Run the Tutoring Service on my machine. We ran it by running a Java application from Eclipse - LauncherServer. This compiles the TS code and runs it from Eclipse output folder.
+
+5) We took .log files and put them into the same folder as test.sh. The .log files are files taken from Author Time logging. Michael recommends not to use paths names, subfolders.  The .log files show the path to the BRD but there is a lot of variability. The origin of the .log files is author loggging, log-to-disk from Flash AuthorTime. Should be able to take any disk log with tool & tutor messages.  This can be a source of frustration with this test. Don't use AuthorTimeTutoring because the logs produced lack Tool messages.
+
+6) We took the .brd files named in the .log and put them in the same directory as LauncherServer. The test runs the .log logs against the graph and assesses them to produce a 
+
+7)Then we ran the tests. This is done by running 'test.sh. *.log'   We used cygwin because it is a shell script. The script ran fine and some messages appeared reporting results. Michael is going to output this to an HTML file. The sequence of things happening when I load one log file named "3term1.log" follows:
+a) The Shell script removes log* directories
+
+b) Create a directory for each log file. E.g. "log1". This will contain TSLT.swf, tsltHTML.html, input.xml, and 3term1.log.  This process uses TestingFramework.java
+
+c) Run TSLTListener.java.  Receives transactions from Flash tutor (TSLT.swf). Communicated through a socket on port 1515. The socket is in the TSLT component. The data from this message should match the original log file(s).  The TSLTListener program writes files with the same name as the orignal log but with .test appended. E.g., ChemTutor1.log.test and ChemTutor1.log. Note, that it writes the files to the root directory (edu\cmu\pact\TutoringService)
+
+d) Run Internet Explorer on each generated HTML file. A IE windows opens for each log.  A web page loads into the IE window.  The path to the HTML file is:   D:\Documents\PACT-CVS-TREE\AuthoringTools\java\test\edu\cmu\pact\TutoringService\log1\tsltHTML.html
+
+e) Wait 2 minutes & then the TSLT.swf should have sent the log bundle to TSLTListener | consider increasing if test takes a long time for example if a lot of files
+
+f) Cleanup | kill Internet Explorer, kill TSLTListener. The test.sh script has a sleep timer for this. We set the timer to 120 seconds but it running a simple test, this can be shortened. If running a longer test, lengthened.
+
+g) Compare the correctness of the new log file, that is the data sent from TSLT.swf to TSLTListener, with the original log file sent to TSLT.swf. The comparision is done with TSLTCorrectnessChecker.java.
+
+
+Comments
+* If I want run a large load, I need a large number of .log files and BRD files. One way to do this is to take a single .log file and make a bunch of copies. 
+
+
+keywords: TSLT, Tutoring Service, Load Testing, TutoringService, Michael Weber, Tutoring Service Load Test, CMU, CTAT, RunTime, AuthorTimeTutoring.
+
+9/21/2007
+I see a file named TutoringServiceLTrun.sh in D:\Documents\PACT-CVS-TREE\AuthoringTools\java\outpout
+
+
+10/4/2007
+Michael sent me a 3 term chemistry file log named 3term1.log on 10.3.07. I ran that with the test and it seemed to run ok. One browser window opened. and the test ended with a trace "The test log matches the original log".  I 
+
+Background
+P java/source/edu/cmu/pact/Log/LogFormatUtils.java
+P java/source/edu/cmu/pact/Log/Transaction.java
+P java/source/edu/cmu/pact/SocketProxy/SocketProxy.java
+P java/source_appl/LauncherServer.java
+U java/test/edu/cmu/pact/TutoringService/TSLT.html	=> Template html that is copied into the log folders.
+U java/test/edu/cmu/pact/TutoringService/TSLT.swf	=> Template swf that is copied into the log folders.
+U java/test/edu/cmu/pact/TutoringService/TSLTCorrectnessChecker.java
+U java/test/edu/cmu/pact/TutoringService/TSLTListener.java
+U java/test/edu/cmu/pact/TutoringService/TestingFramework.java
+U java/test/edu/cmu/pact/TutoringService/test.sh
+
+TSLT.html includes a new flashvars
+* logFileName = the .log file. e.g., 3term1.log
+

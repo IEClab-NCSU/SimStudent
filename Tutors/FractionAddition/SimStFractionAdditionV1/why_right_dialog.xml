@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scenario version="$Revision: 1.2 $" default-language="en">
+
+<configuration> 
+	<module kind="model" name="coded" classname="edu.cmu.cs.lti.tutalk.module.SidePredictor"> 
+		<param key="path" value="./coded_dialog.ser" /> 
+		<param key="prediction" value="predicted" />
+		<param key="currentAnnotation" value="Category" />
+	</module> 
+	<module kind="model" name="recheck" classname="edu.cmu.cs.lti.tutalk.module.SidePredictor"> 
+		<param key="path" value="./second_chance.ser" /> 
+		<param key="prediction" value="predicted" />
+		<param key="currentAnnotation" value="Category" />
+	</module>  
+</configuration>
+
+
+<concepts>
+  <concept label="unanticipated-response">
+   <phrase>anything else</phrase>
+  </concept>
+
+  <concept label="final-thanks">
+   <phrase>Okay!</phrase>
+  </concept>
+  <concept label="first-question">
+   <phrase>Why did you do "%sai_i%" for the step here?</phrase>
+  </concept>
+
+  <concept label="N1" model="coded" />
+  <concept label="N1-response-simst">
+   <phrase>Okay!</phrase>
+  </concept>
+  
+  <concept label="N2" model="coded"/>
+  <concept label="N2-response-simst">
+   <phrase>Why is this the right thing to do now?</phrase>
+  </concept>
+
+  <concept label="N5" model="coded" />
+  <concept label="N5-response-simst">
+   <phrase>I understand that you made a mistake, but I'm confused.  Let's go back to working on the problem and you can show me the right way there.</phrase>
+  </concept>
+
+  <concept label="N6" model="coded"/>
+  <concept label="N6-response-simst">
+   <phrase>The example problems and unit overview might help with this problem.  You could use these to help you explain this to me.</phrase>
+  </concept>
+
+  <concept label="okay" model="recheck"/>
+  <concept label="N4-response-simst-okay">
+   <phrase>Okay.</phrase>
+  </concept>
+
+  <concept label="N4" model="coded"/>
+  <concept label="clarify" model="recheck"/>
+  <concept label="response-simst-clarify">
+   <phrase>Hmm, I still don't understand-could you explain this to me in more detail?</phrase>
+  </concept>
+
+  <concept label="bad" model="recheck"/>
+  <concept label="N7-response-simst">
+   <phrase>That didn't answer my question.  Maybe you didn't understand what I was asking? - Could you try to explain it to me another way?</phrase>
+  </concept>
+
+
+</concepts>
+
+<script>
+ <goal name="start">
+  <step><subgoal>reasons</subgoal></step>
+  <!--<step>
+   <initiation>first-question</initiation>
+   </step>-->
+ </goal>
+ 
+ <goal name="reasons">
+  <step>
+   <initiation>first-question</initiation>
+   <response say="N1-response-simst">N1</response>
+   <response push="N2-response-action">N2</response>
+   <response push="N6-response-action">N6</response>   
+   <response say="N5-response-simst">N5</response> 
+   <response say="N4-response-simst-okay">okay</response>
+   <response push="N4-response-action-clarify">N4</response>
+   <response push="N7-response-action">bad</response>
+   <response push="N4-response-action-clarify">clarify</response>
+
+   <response say="final-thanks">unanticipated-response</response>
+  </step>
+ </goal>
+ 
+ <goal name="N2-response-action">
+  <step>
+   <initiation>N2-response-simst</initiation>
+   <response say="final-thanks">unanticipated-response</response>
+  </step>
+ </goal>
+
+ <goal name="N4-response-action-clarify">
+  <step>
+   <initiation>response-simst-clarify</initiation>
+   <response say="final-thanks">unanticipated-response</response>
+  </step>
+ </goal>
+
+ <goal name="N6-response-action">
+  <step>
+   <initiation>N6-response-simst</initiation>
+   <response say="final-thanks">unanticipated-response</response>
+  </step>
+ </goal>
+
+ <goal name="N7-response-action">
+  <step>
+   <initiation>N7-response-simst</initiation>
+   <response say="final-thanks">unanticipated-response</response>
+  </step>
+ </goal>
+ 
+</script>
+</scenario>
+

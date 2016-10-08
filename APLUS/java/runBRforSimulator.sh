@@ -1,0 +1,1 @@
+java -cp "lib/ctat.jar" -Dschool_name="School1" -Dcourse_name="Course1" -Dunit_name="Unit1" -Dsection_name="Section1" -DBehaviorRecorderMode=Demonstrate -DBehaviorRecorderVisible=true $* edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher -spEOM 00 -spUseSingleSocket true -spOneMsgPerSocket false -spMsgFormat X -spServerPort 1502 -DDebugCodes sp

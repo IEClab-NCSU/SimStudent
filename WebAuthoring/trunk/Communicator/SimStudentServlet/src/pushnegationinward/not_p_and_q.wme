@@ -1,0 +1,57 @@
+;; for Eclipse, etc., specify templates to read
+(require* wmeTypes "wmeTypes.clp")
+
+;;;; Fact assertions: slot assignments are below.
+
+(bind ?var1 (assert(MAIN::button (name done))))
+(bind ?var2 (assert(MAIN::textField (name step1_field))))
+(bind ?var3 (assert(MAIN::textField (name step2_field))))
+(bind ?var4 (assert(MAIN::label (name ans_label))))
+(bind ?var5 (assert(MAIN::label (name prob_label))))
+(bind ?var6 (assert(MAIN::textField (name formula_field))))
+(bind ?var7 (assert(MAIN::button (name hint))))
+(bind ?var8 (assert(MAIN::problem (name not_p_and_q))))
+
+;;;; Slot assignments
+
+; MAIN::button
+(modify ?var1
+    (name done)
+)
+; MAIN::textField
+(modify ?var2
+    (name step1_field)
+    (value nil)
+)
+; MAIN::textField
+(modify ?var3
+    (name step2_field)
+    (value nil)
+)
+; MAIN::label
+(modify ?var4
+    (name ans_label)
+    (value "Move Negation Inward")
+)
+; MAIN::label
+(modify ?var5
+    (name prob_label)
+    (value Formula)
+)
+; MAIN::textField
+(modify ?var6
+    (name formula_field)
+    (value "~(p & q)")
+)
+; MAIN::button
+(modify ?var7
+    (name hint)
+)
+; MAIN::problem
+(modify ?var8
+    (name not_p_and_q)
+    (interface-elements ?var5 ?var4 ?var1 ?var6 ?var7 ?var2 ?var3)
+    (subgoals)
+    (done nil)
+    (description nil)
+)

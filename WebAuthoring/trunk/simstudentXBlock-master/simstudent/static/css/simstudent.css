@@ -1,0 +1,9 @@
+/* CSS for simstudentXBlock */
+
+.simstudent_block .count {
+    font-weight: bold;
+}
+
+.simstudent_block p {
+    cursor: pointer;
+}

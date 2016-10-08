@@ -1,0 +1,218 @@
+    <startNodeMessages>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>StartProblem</MessageType>
+                <ProblemName>$(PROB_NAME)$</ProblemName>
+            </properties>
+        </message>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>GroupDescriptionStart</MessageType>
+            </properties>
+        </message>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>GroupDescriptionEnd</MessageType>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>NumberOfTables</MessageType>
+                <Number>1</Number>
+            </properties>
+        </message>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>CommLabel</WidgetType>
+                <CommName>commLabel2</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>commLabel2</value>
+                </Selection>
+                <Action>
+                    <value>UpdateText</value>
+                </Action>
+                <Input>
+                    <value>LHS</value>
+                </Input>
+            </properties>
+        </message>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>CommButton</WidgetType>
+                <CommName>done</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+                <jessDeftemplates>
+                    <value>(deftemplate button (slot name))</value>
+                </jessDeftemplates>
+                <jessInstances>
+                    <value>(assert (button (name done)))</value>
+                </jessInstances>
+            </properties>
+        </message>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>CommLabel</WidgetType>
+                <CommName>commLabel1</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>commLabel1</value>
+                </Selection>
+                <Action>
+                    <value>UpdateText</value>
+                </Action>
+                <Input>
+                    <value>Skill Operand</value>
+                </Input>
+            </properties>
+        </message>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>CommTable</WidgetType>
+                <CommName>commTable1</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+                <Rows>10</Rows>
+                <Columns>3</Columns>
+                <jessDeftemplates>
+                    <value>(deftemplate table (slot name) (multislot columns))</value>
+                    <value>(deftemplate column (slot name) (multislot cells) (slot position) (slot description))</value>
+                    <value>(deftemplate cell (slot name) (slot value) (slot description) (slot row-number) (slot column-number))</value>
+                </jessDeftemplates>
+                <jessInstances>
+                    <value>(bind ?commTable1_C1R1 (assert (cell (name commTable1_C1R1) (row-number 1) (column-number 1))))</value>
+                    <value>(bind ?commTable1_C1R2 (assert (cell (name commTable1_C1R2) (row-number 2) (column-number 1))))</value>
+                    <value>(bind ?commTable1_C1R3 (assert (cell (name commTable1_C1R3) (row-number 3) (column-number 1))))</value>
+                    <value>(bind ?commTable1_C1R4 (assert (cell (name commTable1_C1R4) (row-number 4) (column-number 1))))</value>
+                    <value>(bind ?commTable1_C1R5 (assert (cell (name commTable1_C1R5) (row-number 5) (column-number 1))))</value>
+                    <value>(bind ?commTable1_C1R6 (assert (cell (name commTable1_C1R6) (row-number 6) (column-number 1))))</value>
+                    <value>(bind ?commTable1_C1R7 (assert (cell (name commTable1_C1R7) (row-number 7) (column-number 1))))</value>
+                    <value>(bind ?commTable1_C1R8 (assert (cell (name commTable1_C1R8) (row-number 8) (column-number 1))))</value>
+                    <value>(bind ?commTable1_C1R9 (assert (cell (name commTable1_C1R9) (row-number 9) (column-number 1))))</value>
+                    <value>(bind ?commTable1_C1R10 (assert (cell (name commTable1_C1R10) (row-number 10) (column-number 1))))</value>
+                    <value>(bind ?commTable1_Column1(assert (column (name commTable1_Column1) (cells ?commTable1_C1R1 ?commTable1_C1R2 ?commTable1_C1R3 ?commTable1_C1R4 ?commTable1_C1R5 ?commTable1_C1R6 ?commTable1_C1R7 ?commTable1_C1R8 ?commTable1_C1R9 ?commTable1_C1R10 ) (position 1))))</value>
+                    <value>(bind ?commTable1_C2R1 (assert (cell (name commTable1_C2R1) (row-number 1) (column-number 2))))</value>
+                    <value>(bind ?commTable1_C2R2 (assert (cell (name commTable1_C2R2) (row-number 2) (column-number 2))))</value>
+                    <value>(bind ?commTable1_C2R3 (assert (cell (name commTable1_C2R3) (row-number 3) (column-number 2))))</value>
+                    <value>(bind ?commTable1_C2R4 (assert (cell (name commTable1_C2R4) (row-number 4) (column-number 2))))</value>
+                    <value>(bind ?commTable1_C2R5 (assert (cell (name commTable1_C2R5) (row-number 5) (column-number 2))))</value>
+                    <value>(bind ?commTable1_C2R6 (assert (cell (name commTable1_C2R6) (row-number 6) (column-number 2))))</value>
+                    <value>(bind ?commTable1_C2R7 (assert (cell (name commTable1_C2R7) (row-number 7) (column-number 2))))</value>
+                    <value>(bind ?commTable1_C2R8 (assert (cell (name commTable1_C2R8) (row-number 8) (column-number 2))))</value>
+                    <value>(bind ?commTable1_C2R9 (assert (cell (name commTable1_C2R9) (row-number 9) (column-number 2))))</value>
+                    <value>(bind ?commTable1_C2R10 (assert (cell (name commTable1_C2R10) (row-number 10) (column-number 2))))</value>
+                    <value>(bind ?commTable1_Column2(assert (column (name commTable1_Column2) (cells ?commTable1_C2R1 ?commTable1_C2R2 ?commTable1_C2R3 ?commTable1_C2R4 ?commTable1_C2R5 ?commTable1_C2R6 ?commTable1_C2R7 ?commTable1_C2R8 ?commTable1_C2R9 ?commTable1_C2R10 ) (position 2))))</value>
+                    <value>(bind ?commTable1_C3R1 (assert (cell (name commTable1_C3R1) (row-number 1) (column-number 3))))</value>
+                    <value>(bind ?commTable1_C3R2 (assert (cell (name commTable1_C3R2) (row-number 2) (column-number 3))))</value>
+                    <value>(bind ?commTable1_C3R3 (assert (cell (name commTable1_C3R3) (row-number 3) (column-number 3))))</value>
+                    <value>(bind ?commTable1_C3R4 (assert (cell (name commTable1_C3R4) (row-number 4) (column-number 3))))</value>
+                    <value>(bind ?commTable1_C3R5 (assert (cell (name commTable1_C3R5) (row-number 5) (column-number 3))))</value>
+                    <value>(bind ?commTable1_C3R6 (assert (cell (name commTable1_C3R6) (row-number 6) (column-number 3))))</value>
+                    <value>(bind ?commTable1_C3R7 (assert (cell (name commTable1_C3R7) (row-number 7) (column-number 3))))</value>
+                    <value>(bind ?commTable1_C3R8 (assert (cell (name commTable1_C3R8) (row-number 8) (column-number 3))))</value>
+                    <value>(bind ?commTable1_C3R9 (assert (cell (name commTable1_C3R9) (row-number 9) (column-number 3))))</value>
+                    <value>(bind ?commTable1_C3R10 (assert (cell (name commTable1_C3R10) (row-number 10) (column-number 3))))</value>
+                    <value>(bind ?commTable1_Column3(assert (column (name commTable1_Column3) (cells ?commTable1_C3R1 ?commTable1_C3R2 ?commTable1_C3R3 ?commTable1_C3R4 ?commTable1_C3R5 ?commTable1_C3R6 ?commTable1_C3R7 ?commTable1_C3R8 ?commTable1_C3R9 ?commTable1_C3R10 ) (position 3))))</value>
+                    <value>(assert (table (name commTable1) (columns ?commTable1_Column1 ?commTable1_Column2 ?commTable1_Column3 )))</value>
+                </jessInstances>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>commTable1_C1R1</value>
+                </Selection>
+                <Action>
+                    <value>UpdateTable</value>
+                </Action>
+                <Input>
+                    <value>$(GIVEN_1)$</value>
+                </Input>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>commTable1_C2R1</value>
+                </Selection>
+                <Action>
+                    <value>UpdateTable</value>
+                </Action>
+                <Input>
+                    <value>$(GIVEN_2)$</value>
+                </Input>
+            </properties>
+        </message>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>CommButton</WidgetType>
+                <CommName>hint</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+                <jessDeftemplates>
+                    <value>(deftemplate button (slot name))</value>
+                </jessDeftemplates>
+                <jessInstances>
+                    <value>(assert (button (name hint)))</value>
+                </jessInstances>
+            </properties>
+        </message>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>CommLabel</WidgetType>
+                <CommName>commLabel3</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>commLabel3</value>
+                </Selection>
+                <Action>
+                    <value>UpdateText</value>
+                </Action>
+                <Input>
+                    <value>RHS</value>
+                </Input>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>StartStateEnd</MessageType>
+            </properties>
+        </message>
+    </startNodeMessages>

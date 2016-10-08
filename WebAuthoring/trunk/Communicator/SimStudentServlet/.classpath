@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7">
+		<attributes>
+			<attribute name="owner.project.facets" value="java"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Apache Tomcat v7.0"/>
+	<classpathentry exported="true" kind="lib" path="jars/jess.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="jars/lib/ctat.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="jars/servlet-api.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/aima.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="jars/lib/commons-lang-2.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/commons-lang3-3.0.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/customizer.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/foil.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/HARTNetworking.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/idw.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/jcalendar-1.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/jdom.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/je-5.0.34.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/jgraphlayout.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/jh.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/jmf.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/jmf.properties"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/jnlp.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/joda-time-2.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/junit.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/light.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/lightside.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/lingpipe-2.3.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/logclient.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/logging.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/LucyWeakPK.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/mediaplayer.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/multiplayer.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/mylib.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/PACTkeyStore"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/plugin.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/runcc.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/stanford-postagger-2010-05-26.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/swingx-beaninfo-1.6.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/swingx-core-1.6.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/TableLayout.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/trove.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/TuTalkSlim.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/tutorshop.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/update-selfcontained-libs.sh"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/weka.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/xalan.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/xercesImpl.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/xercesSamples.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/xml-writer.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/xpp3-1.1.3.4d_b4_min.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/xstream-1.1.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/yeritools.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/CVS/Entries"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/CVS/Entries.Extra"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/CVS/Entries.Old"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/CVS/Repository"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/CVS/Root"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/cl/cl_common.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/cl/communication.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/cl/editor.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/cl/grant.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/cl/jzlib.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/cl/LMS.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/cl/LMSfiledata.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/cl/resources.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/cl/TT.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/cl/tutors.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/cl/ui.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/cl/utilities.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/cl/XPlauncher.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/cl/thirdparty/TableLayout.jar"/>
+	<classpathentry exported="true" kind="lib" path="jars/lib/cl/thirdparty/webeq35.jar"/>
+	<classpathentry kind="lib" path="/home/simstudent/SimSt Files/ModelTracer.jar">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="output" path="build/classes"/>
+</classpath>

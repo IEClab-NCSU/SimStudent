@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin
+   id="gov.sandia.jess.debug"
+   name="Jess Debugger"
+   version="7.1.0"
+   provider-name="Sandia National Laboratories"
+   class="gov.sandia.jess.debug.JessDebugPlugin">
+
+   <runtime>
+      <library name="jessdebug.jar">
+         <export name="*"/>
+      </library>
+   </runtime>
+
+   <requires>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.debug.core"/>
+      <import plugin="org.eclipse.jdt.launching"/>
+      <import plugin="org.eclipse.jdt.core"/>
+      <import plugin="org.eclipse.debug.ui"/>
+      <import plugin="org.eclipse.jdt.ui"/>
+      <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.jdt.debug.ui"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.ui.editors"/>
+      <import plugin="org.eclipse.ui.workbench.texteditor"/>
+      <import plugin="org.eclipse.jface.text"/>
+      <import plugin="gov.sandia.jess.editor"/>
+      <import plugin="gov.sandia.jess"/>
+      <import plugin="org.eclipse.core.variables"/>
+      <import plugin="org.junit"/>
+   </requires>
+
+   <extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+            sourceLocatorId="gov.sandia.jess.debug.sourceLookupDirector"
+            delegate="gov.sandia.jess.debug.launching.JessLaunchConfigurationDelegate"
+            public="true"
+            sourcePathComputerId="gov.sandia.jess.debug.sourcePathComputer"
+            name="Jess Application"
+            id="gov.sandia.jess.debug.launching.Main"
+            modes="run,debug"/>
+   </extension>
+   
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+            icon="icons/jess-16x16.gif"
+            configTypeID="gov.sandia.jess.debug.launching.Main"
+            id="gov.sandia.jess.debug.launchConfigurationTypeImage.Main"/>
+   </extension>
+   
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            type="gov.sandia.jess.debug.launching.Main"
+            class="gov.sandia.jess.debug.launching.JessTabGroup"
+            id="gov.sandia.jess.debug.launching.Main"/>
+   </extension>
+   <extension
+         point="org.eclipse.debug.core.sourceLocators">
+      <sourceLocator
+            class="gov.sandia.jess.debug.sourcelookup.JessSourceLookupDirector"
+            name="gov.sandia.jess.debug.sourceLookupDirector"
+            id="gov.sandia.jess.debug.sourceLookupDirector"/>
+   </extension>
+   <extension
+         point="org.eclipse.debug.core.sourcePathComputers">
+      <sourcePathComputer
+            class="gov.sandia.jess.debug.sourcelookup.JessSourcePathComputerDelegate"
+            id="gov.sandia.jess.debug.sourcePathComputer"/>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.debugModelPresentations">
+      <debugModelPresentation
+            class="gov.sandia.jess.debug.JessDebugModelPresentation"
+            id="gov.sandia.jess.debug.application"/>
+   </extension>
+   <extension
+         point="org.eclipse.debug.core.breakpoints">
+      <breakpoint
+            class="gov.sandia.jess.debug.JessDebugLineBreakpoint"
+            markerType="gov.sandia.jess.debug.lineBreakpoint.marker"
+            id="gov.sandia.jess.debug.lineBreakpoint"/>
+   </extension>
+   <extension
+         id="lineBreakpoint.marker"
+         name="Jess Breakpoint"
+         point="org.eclipse.core.resources.markers">
+      <super type="org.eclipse.debug.core.lineBreakpointMarker"/>
+      <persistent value="true"/>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.adapters">
+      <factory
+            class="gov.sandia.jess.debug.JessBreakpointAdapterFactory"
+            adaptableType="gov.sandia.jess.editor.JessEditor">
+         <adapter type="org.eclipse.debug.ui.actions.IToggleBreakpointsTarget"/>
+      </factory>
+   </extension>
+   <extension
+      point="org.eclipse.ui.popupMenus">
+     <viewerContribution
+            targetID="#JessEditorRulerContext"
+            id="gov.sandia.jess.debug.JessEditorPopupActions">
+         <action
+               label="Toggle Breakpoint"
+               class="gov.sandia.jess.debug.ToggleBreakpointRulerActionDelegate"
+               menubarPath="debug"
+               id="gov.sandia.jess.debug.ToggleBreakpointRulerAction">
+         </action>
+     </viewerContribution>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchShortcuts">
+      <shortcut
+            label="Jess Application"
+            icon="icons/jess-16x16.gif"
+            class="gov.sandia.jess.debug.launching.JessApplicationLaunchShortcut"
+            modes="run,debug"
+            id="gov.sandia.jess.debug.application">
+         <contextualLaunch>
+           <enablement>
+             <with variable="selection">
+               <count value="1"/>
+               <iterate>
+                   <test property="org.eclipse.debug.ui.matchesPattern" value="*.clp"/>
+               </iterate>
+             </with>
+           </enablement>
+  		 </contextualLaunch>   
+         <perspective
+               id="org.eclipse.jdt.ui.JavaPerspective">
+         </perspective>
+         <perspective
+               id="org.eclipse.jdt.ui.JavaHierarchyPerspective">
+         </perspective>
+         <perspective
+               id="org.eclipse.jdt.ui.JavaBrowsingPerspective">
+         </perspective>
+         <perspective
+               id="org.eclipse.debug.ui.DebugPerspective">
+         </perspective>
+   	  </shortcut>
+   </extension>
+   <extension point="org.eclipse.ui.views">
+     <category
+           name="Jess Debugger"
+           id="gov.sandia.jess.debug.viewCategory"/>
+     <view
+           icon="icons/jess-16x16.gif"
+           class="gov.sandia.jess.debug.monitoring.Monitor"
+           category="gov.sandia.jess.debug.viewCategory"
+           name="Debug Protocol Monitor"
+           id="gov.sandia.jess.debug.protocolMonitor"/>
+     <view
+           icon="icons/jess-16x16.gif"
+           class="gov.sandia.jess.debug.caview.CurrentActivationView"
+           category="gov.sandia.jess.debug.viewCategory"
+           name="Current Activation"
+           id="gov.sandia.jess.debug.caview"/>
+     <view
+           icon="icons/jess-16x16.gif"
+           class="gov.sandia.jess.debug.agenda.AgendaView"
+           category="gov.sandia.jess.debug.viewCategory"
+           name="Agenda"
+           id="gov.sandia.jess.debug.agenda"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.viewActions">
+      <viewContribution
+            targetID="gov.sandia.jess.debug.agenda"
+            id="gov.sandia.jess.debug.agendaViewContribution">
+         <action
+               label="Configure..."
+               class="gov.sandia.jess.debug.agenda.ConfigureAction"
+               style="push"
+               menubarPath="additions"
+               id="gov.sandia.jess.debug.configureAgendaView"/>
+      </viewContribution>
+   </extension>
+   <extension
+         point="org.eclipse.debug.core.sourceContainerTypes">
+      <sourceContainerType
+            class="gov.sandia.jess.debug.sourcelookup.JessWorkspaceSourceContainer"
+            name="Workspace"
+            id="gov.sandia.jess.debug.workspace"/>
+      <sourceContainerType
+            class="gov.sandia.jess.debug.sourcelookup.JessSourceFolderSourceContainer"
+            name="Source Folder"
+            id="gov.sandia.jess.debug.sourceFolder"/>
+   </extension>
+</plugin>

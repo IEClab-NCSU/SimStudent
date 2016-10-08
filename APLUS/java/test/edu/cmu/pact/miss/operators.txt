@@ -1,0 +1,31 @@
+edu.cmu.pact.miss.userDef.oldpredicates.CopyTerm
+edu.cmu.pact.miss.userDef.oldpredicates.Coefficient
+edu.cmu.pact.miss.userDef.oldpredicates.InverseTerm
+edu.cmu.pact.miss.userDef.oldpredicates.ReverseSign
+edu.cmu.pact.miss.userDef.oldpredicates.EvalArithmetic
+edu.cmu.pact.miss.userDef.oldpredicates.RipCoefficient
+edu.cmu.pact.miss.userDef.oldpredicates.FirstVarTerm
+edu.cmu.pact.miss.userDef.oldpredicates.LastTerm
+edu.cmu.pact.miss.userDef.oldpredicates.LastConstTerm
+edu.cmu.pact.miss.userDef.oldpredicates.RemoveFirstVarTerm
+edu.cmu.pact.miss.userDef.oldpredicates.RemoveLastTerm
+edu.cmu.pact.miss.userDef.oldpredicates.RemoveLastConstTerm
+edu.cmu.pact.miss.userDef.oldpredicates.Denominator
+edu.cmu.pact.miss.userDef.oldpredicates.Numerator
+edu.cmu.pact.miss.userDef.oldpredicates.AddTerm
+edu.cmu.pact.miss.userDef.oldpredicates.DivTerm
+edu.cmu.pact.miss.userDef.oldpredicates.MulTerm
+edu.cmu.pact.miss.userDef.oldpredicates.DivTen
+edu.cmu.pact.miss.userDef.oldpredicates.ModTen
+edu.cmu.pact.miss.userDef.oldpredicates.AddTermBy
+edu.cmu.pact.miss.userDef.oldpredicates.DivTermBy
+edu.cmu.pact.miss.userDef.oldpredicates.MulTermBy
+edu.cmu.pact.miss.userDef.oldpredicates.GCD
+edu.cmu.pact.miss.userDef.oldpredicates.LCM
+;; 
+;; Mon Oct 03 22:48:44 2005
+;; Too ad-hoc and domain specific hence no longer used
+;; 
+;;edu.cmu.pact.miss.userDef.oldpredicates.CancelDenominator
+;;edu.cmu.pact.miss.userDef.oldpredicates.CancelCoefficient
+;;edu.cmu.pact.miss.userDef.oldpredicates.CancelLastConstTerm

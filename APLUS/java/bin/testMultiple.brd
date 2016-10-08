@@ -1,0 +1,74 @@
+<stateGraph firstCheckAllStates="true" caseInsensitive="true" unordered="true" lockWidget="true" version="1.0">
+<startNodeMessages>
+	<message>
+		<verb>SendNoteProperty</verb>
+		<properties>
+			<MessageType>StartProblem</MessageType>
+			<ProblemName>aaa</ProblemName>
+		</properties>
+	</message>
+	
+	<message>
+		<verb>SendNoteProperty</verb>
+		<properties>
+			<MessageType>GroupDescriptionEnd</MessageType>
+		</properties>
+	</message>
+
+	<message>
+		<verb>NotePropertySet</verb>
+		<properties>
+			<MessageType>NumberOfTables</MessageType>
+			<Number>1</Number>
+		</properties>
+	</message>
+	
+</startNodeMessages>
+
+<node locked="false" doneState ="true">
+	<text>aaa</text>
+	<uniqueID>1</uniqueID>
+	<dimension>
+		<x>233</x>
+		<y>30</y>
+		<width>34</width>
+		<height>25</height>
+	</dimension>
+</node>
+
+<node locked="true" doneState ="true">
+	<text>bbb</text>
+	<uniqueID>2</uniqueID>
+	<dimension>
+		<x>233</x>
+		<y>30</y>
+		<width>34</width>
+		<height>26</height>
+	</dimension>
+</node>
+
+<node locked="false" doneState ="false">
+	<text>ccc</text>
+	<uniqueID>3</uniqueID>
+	<dimension>
+		<x>233</x>
+		<y>30</y>
+		<width>34</width>
+		<height>27</height>
+	</dimension>
+</node>
+
+<node locked="true" doneState ="false">
+	<text>ddd</text>
+	<uniqueID>4</uniqueID>
+	<dimension>
+		<x>233</x>
+		<y>30</y>
+		<width>34</width>
+		<height>28</height>
+	</dimension>
+</node>
+
+	<EdgesGroups>
+	</EdgesGroups>
+</stateGraph>

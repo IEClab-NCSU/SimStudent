@@ -1,0 +1,22 @@
+RuleActivationTree rat = brController.getRuleActivationTree();
+TreeTableModel ttm = rat.getActivationModel();
+RuleActivationNode ran = (RuleActivationNode)ttm.getRoot();
+ran.getName();
+
+
+match = ((RuleActivationNode)node).selectionMatches();
+match = ((RuleActivationNode)node).actionMatches();
+match = ((RuleActivationNode)node).inputMatches();
+return ((RuleActivationNode)node).getName();
+if(match == RuleActivationNode.MATCH)
+
+
+RuleActivationNode root = rootActivation;
+root.saveState(rete);  // save can chg agenda: do before create children
+List wholeAgenda = rete.getAgendaAsList(null);
+root.createChildren(wholeAgenda, isHint);
+List children = root.getChildren();
+trace.out("mt", "root.children.size() "+children.size());
+for (int i = 0; !searchSucceeded && i < children.size(); ++i) {
+	RuleActivationNode child = (RuleActivationNode)	children.get(i);
+

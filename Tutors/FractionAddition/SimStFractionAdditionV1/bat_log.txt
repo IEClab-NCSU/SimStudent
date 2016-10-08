@@ -1,0 +1,146 @@
++trace+ Added debug code miss <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:190>
++trace+ Added debug code ss <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:190>
++trace+ Added debug code rr <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:190>
+[16:37:47] +miss+ 1: ---------------------------------------- <edu.cmu.pact.miss.SimSt:2947>main
+[16:37:47] +miss+ 2: Simulated Student Ver. 8.1 <edu.cmu.pact.miss.SimSt:2948>main
+[16:37:47] +miss+ 3: July 18, 2012 04:37:47 PM <edu.cmu.pact.miss.SimSt:2949>main
+[16:37:47] +miss+ 4: OS: Windows Vista <edu.cmu.pact.miss.SimSt:2950>main
+[16:37:47] +miss+ 5: ----------------------------------------
+ <edu.cmu.pact.miss.SimSt:2951>main
+[16:37:47] +miss+ 6: ProjectDir = . <edu.cmu.pact.miss.SimSt:2986>main
+[16:37:47] +miss+ 7: feature predicate file exists <edu.cmu.pact.miss.SimSt:3167>main
+[16:37:47] +miss+ 8: 42 operators read from Z:\Distributions\tomodachi\Tomodachi8-1-6-macfriendly\SimStAlgebraV8\.\operators.txt <edu.cmu.pact.miss.SimSt:9828>main
+[16:37:47] +miss+ 9: Load WME types from Z:\Distributions\tomodachi\Tomodachi8-1-6-macfriendly\SimStAlgebraV8\.\wmeTypes.clp <edu.cmu.pact.miss.SimSt:833>main
+[16:37:47] +miss+ 10: Initialize WME with Z:\Distributions\tomodachi\Tomodachi8-1-6-macfriendly\SimStAlgebraV8\.\init.wme <edu.cmu.pact.miss.SimSt:845>main
+[16:37:47] +miss+ 11: ===>miss instanceof MissController <edu.cmu.pact.BehaviorRecorder.Controller.BR_Controller:5955>main
+[16:37:47] +miss+ 12: argv[0] = -traceLevel <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:47] +miss+ 13: keyStem=traceLevel <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[16:37:47] +trace+ 14: new trace level = 5 <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:1039>main
+[16:37:47] +miss+ 15: argv[1] = 5 <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:47] +miss+ 16: argv[2] = -debugCodes <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:47] +miss+ 17: keyStem=debugCodes <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
++trace+ Added debug code miss,ss,rr <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:1026>
+[16:37:47] +miss+ 18: argv[3] = miss,ss,rr <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:47] +miss+ 19: argv[4] = -ssRunInPLE <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:47] +miss+ 20: keyStem=ssRunInPLE <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[16:37:47] +miss+ 21: argv[5] = -ssLoadPrefsFile <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:47] +miss+ 22: keyStem=ssLoadPrefsFile <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[16:37:47] +miss+ 23: Loading the prefs file locally:  brPrefsStacy.xml <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:1475>main
+[16:37:47] +miss+ 24: argv[6] = brPrefsStacy.xml <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:47] +miss+ 25: argv[7] = -ssSelfExplainMode <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:47] +miss+ 26: keyStem=ssSelfExplainMode <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[16:37:47] +miss+ 27: argv[8] = -ssLocalLogging <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:47] +miss+ 28: keyStem=ssLocalLogging <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[16:37:47] +miss+ 29: argv[9] = -ssUserID <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:47] +miss+ 30: keyStem=ssUserID <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[16:37:47] +trace+ 31: diskLogger = edu.cmu.oli.log.client.DiskLogger@12b2aac, logFileDir log, diskLogFile log\TestSS_20120718163747873.log <edu.cmu.pact.Utilities.Logger:1675>main
+[16:37:47] +trace+ 32: diskLogger = edu.cmu.oli.log.client.DiskLogger@bc3d39, logFileDir log, diskLogFile log\TestSS_20120718163747925.log <edu.cmu.pact.Utilities.Logger:1675>main
+[16:37:47] +miss+ 33: argv[10] = TestSS <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:47] +miss+ 34: argv[11] = -ssOverviewPage <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:47] +miss+ 35: keyStem=ssOverviewPage <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[16:37:47] +miss+ 36: argv[12] = curriculum.html <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:47] +miss+ 37: argv[13] = -ssLogURL <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:47] +miss+ 38: keyStem=ssLogURL <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[16:37:47] +miss+ 39: argv[14] = http://pslc-qa.andrew.cmu.edu/log/server <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:47] +miss+ 40: argv[15] = -ssCacheOracleInquiry <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:47] +miss+ 41: keyStem=ssCacheOracleInquiry <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[16:37:47] +miss+ 42: argv[16] = false <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:47] +miss+ 43: argv[17] = -ssSearchTimeOutDuration <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:47] +miss+ 44: keyStem=ssSearchTimeOutDuration <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[16:37:47] +miss+ 45: setTimeoutDuration(20000) <edu.cmu.pact.miss.SimSt:2857>main
+[16:37:47] +miss+ 46: argv[18] = 20000 <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:47] +miss+ 47: argv[19] = -ssMaxSearchDepth <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:47] +miss+ 48: keyStem=ssMaxSearchDepth <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[16:37:47] +miss+ 49: argv[20] = 3 <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:47] +miss+ 50: argv[21] = -ssSkillNameGetterClass <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:47] +miss+ 51: keyStem=ssSkillNameGetterClass <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[16:37:47] +miss+ 52: DEBUG: SimStAlgebraV8.AlgebraV8AdhocSkillNameGetter <edu.cmu.pact.miss.SimSt:2390>main
+[16:37:47] +miss+ 53: argv[22] = SimStAlgebraV8.AlgebraV8AdhocSkillNameGetter <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:47] +miss+ 54: argv[23] = -ssRuleActivationTestMethod <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:47] +miss+ 55: keyStem=ssRuleActivationTestMethod <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[16:37:47] +miss+ 56: argv[24] = humanOracle <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:47] +miss+ 57: argv[25] = -ssHintMethod <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:47] +miss+ 58: keyStem=ssHintMethod <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[16:37:47] +miss+ 59: argv[26] = humanDemonstration <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:47] +miss+ 60: argv[27] = -ssInputMatcher <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:47] +miss+ 61: keyStem=ssInputMatcher <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[16:37:47] +miss+ 62: argv[28] = edu.cmu.pact.miss.userDef.algebra.IsEquivalent <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:47] +miss+ 63: argv[29] = -ssInputCheckerClass <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:47] +miss+ 64: keyStem=ssInputCheckerClass <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[16:37:47] +miss+ 65: argv[30] = SimStAlgebraV8.AlgebraV8InputChecker <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:47] +miss+ 66: argv[31] = -ssFoaGetterClass <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:47] +miss+ 67: keyStem=ssFoaGetterClass <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[16:37:48] +miss+ 68: argv[32] = SimStAlgebraV8.AlgebraV8AdhocFoaGetter <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:48] +miss+ 69: argv[33] = -ssSelectionOrderGetterClass <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:48] +miss+ 70: keyStem=ssSelectionOrderGetterClass <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[16:37:48] +miss+ 71: argv[34] = SimStAlgebraV8.AlgebraV8AdhocSelectionGetter <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:48] +miss+ 72: argv[35] = -ssClSolverTutorSAIConverter <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:48] +miss+ 73: keyStem=ssClSolverTutorSAIConverter <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[16:37:48] +miss+ 74: argv[36] = SimStAlgebraV8.AlgebraV8AdhocSAIConverter <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:48] +miss+ 75: argv[37] = -ssActivationList <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:48] +miss+ 76: keyStem=ssActivationList <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[16:37:48] +miss+ 77: argv[38] = AccuracySortedActivationList <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:48] +miss+ 78: argv[39] = -ssFoaClickDisabled <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:48] +miss+ 79: keyStem=ssFoaClickDisabled <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[16:37:48] +miss+ 80: argv[40] = -ssCLQuizReqMode <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:48] +miss+ 81: keyStem=ssCLQuizReqMode <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[16:37:48] +miss+ 82: argv[41] = -ssProjectDir <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:48] +miss+ 83: keyStem=ssProjectDir <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[16:37:48] +miss+ 84: ProjectDir set to . <edu.cmu.pact.miss.SimSt:767>main
+[16:37:48] +miss+ 85: argv[42] = . <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:48] +miss+ 86: argv[43] = -ssNumBadInputRetries <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:48] +miss+ 87: keyStem=ssNumBadInputRetries <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[16:37:48] +miss+ 88: argv[44] = 2 <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:48] +miss+ 89: argv[45] = -ssProblemsPerQuizSection <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:48] +miss+ 90: keyStem=ssProblemsPerQuizSection <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[16:37:48] +miss+ 91: argv[46] = 2 <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:48] +miss+ 92: argv[47] = -ssOperatorFile <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:48] +miss+ 93: keyStem=ssOperatorFile <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[16:37:48] +miss+ 94: 42 operators read from operators.txt <edu.cmu.pact.miss.SimSt:9828>main
+[16:37:48] +miss+ 95: argv[48] = operators.txt <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:48] +miss+ 96: argv[49] = -Dcourse_name=simStMetaTutor <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:48] +miss+ 97: keyStem=Dcourse_name=simStMetaTutor <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[16:37:48] +miss+ 98: argv[50] = -Dschool=pilot <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:48] +miss+ 99: keyStem=Dschool=pilot <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[16:37:48] +miss+ 100: argv[51] = -Dunit_name=Tutoring <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:644>main
+[16:37:48] +miss+ 101: keyStem=Dunit_name=Tutoring <edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher:652>main
+[16:37:48] +trace+ 102: action label menu = javax.swing.JCheckBoxMenuItem[,0,0,0x0,invalid,alignmentX=0.0,alignmentY=0.0,border=javax.swing.plaf.basic.BasicBorders$MarginBorder@1f373a2,flags=264,maximumSize=,minimumSize=,preferredSize=,defaultIcon=,disabledIcon=,disabledSelectedIcon=,margin=javax.swing.plaf.InsetsUIResource[top=2,left=2,bottom=2,right=2],paintBorder=false,paintFocus=false,pressedIcon=,rolloverEnabled=false,rolloverIcon=,rolloverSelectedIcon=,selectedIcon=,text=Show Action Labels] <edu.cmu.pact.ctatview.CtatMenuBar:1879>main
+[16:37:48] +trace+ 103: lock widgets preference changed <edu.cmu.pact.BehaviorRecorder.Controller.BR_Controller:5582>main
+[16:37:48] +trace+ 104: case sensitivity preference changed <edu.cmu.pact.BehaviorRecorder.Controller.BR_Controller:5593>main
+[16:37:48] +trace+ 105: student feedback preference changed <edu.cmu.pact.BehaviorRecorder.Controller.BR_Controller:5584>main
+[16:37:48] +trace+ 106: hint policy preference changed <edu.cmu.pact.BehaviorRecorder.Controller.BR_Controller:5586>main
+[16:37:48] +trace+ 107: background = java.awt.Color[r=255,g=255,b=255] <edu.cmu.pact.BehaviorRecorder.jgraphwindow.JGraphPanel:112>main
+[16:37:48] +trace+ 108: foreground = null <edu.cmu.pact.BehaviorRecorder.jgraphwindow.JGraphPanel:113>main
+[16:37:48] +miss+ 109: Miss Controller activated!! <edu.cmu.pact.miss.console.controller.MissController:300>main
+[16:37:48] +miss+ 110: Inside setHtmlSource with fileName: curriculum.html <edu.cmu.pact.miss.PeerLearning.CurriculumBrowser:150>main
+[16:37:48] +ss+ 111: Sections------------------------------- <edu.cmu.pact.miss.PeerLearning.SimStPLE:692>main
+[16:37:48] +ss+ 112: One Step Equations <edu.cmu.pact.miss.PeerLearning.SimStPLE:694>main
+[16:37:48] +ss+ 113: Two Step Equations <edu.cmu.pact.miss.PeerLearning.SimStPLE:694>main
+[16:37:48] +ss+ 114: Equations with Variables on Both Sides <edu.cmu.pact.miss.PeerLearning.SimStPLE:694>main
+[16:37:48] +ss+ 115: -Final Challenge <edu.cmu.pact.miss.PeerLearning.SimStPLE:694>main
+[16:37:48] +ss+ 116: Added topic NEW_PROBLEM with 12 choices. <edu.cmu.pact.miss.PeerLearning.SimStConversation:103>main
+[16:37:48] +ss+ 117: Added topic START_PROBLEM with 6 choices. <edu.cmu.pact.miss.PeerLearning.SimStConversation:103>main
+[16:37:48] +ss+ 118: Added topic THINK with 6 choices. <edu.cmu.pact.miss.PeerLearning.SimStConversation:103>main
+[16:37:48] +ss+ 119: Added topic DONE_FEEDBACK with 9 choices. <edu.cmu.pact.miss.PeerLearning.SimStConversation:103>main
+[16:37:48] +ss+ 120: Added topic FEEDBACK with 19 choices. <edu.cmu.pact.miss.PeerLearning.SimStConversation:103>main
+[16:37:48] +ss+ 121: Added topic SOLVED with 42 choices. <edu.cmu.pact.miss.PeerLearning.SimStConversation:103>main
+[16:37:48] +ss+ 122: Added topic TRANSFORMATION_HINT with 9 choices. <edu.cmu.pact.miss.PeerLearning.SimStConversation:103>main
+[16:37:48] +ss+ 123: Added topic TYPEIN_HINT with 8 choices. <edu.cmu.pact.miss.PeerLearning.SimStConversation:103>main
+[16:37:48] +ss+ 124: Added topic FAIL_TO_LEARN_GIVE_UP with 6 choices. <edu.cmu.pact.miss.PeerLearning.SimStConversation:103>main
+[16:37:48] +ss+ 125: Added topic START_PROBLEM_NO with 4 choices. <edu.cmu.pact.miss.PeerLearning.SimStConversation:103>main
+[16:37:48] +ss+ 126: Added topic STEP_CORRECT with 4 choices. <edu.cmu.pact.miss.PeerLearning.SimStConversation:103>main
+[16:37:48] +ss+ 127: Added topic STEP_INCORRECT with 3 choices. <edu.cmu.pact.miss.PeerLearning.SimStConversation:103>main
+[16:37:48] +ss+ 128: Added topic CHECK_ANSWER with 2 choices. <edu.cmu.pact.miss.PeerLearning.SimStConversation:103>main
+[16:37:48] +ss+ 129: Added topic NO_VAR_VALUE_CHECK_ANS with 1 choices. <edu.cmu.pact.miss.PeerLearning.SimStConversation:103>main
+[16:37:48] +ss+ 130: Added topic PLUG_IN with 7 choices. <edu.cmu.pact.miss.PeerLearning.SimStConversation:103>main
+[16:37:48] +ss+ 131: Added topic NO_VAR_TO_PLUG with 3 choices. <edu.cmu.pact.miss.PeerLearning.SimStConversation:103>main
+[16:37:48] +ss+ 132: Added topic BALANCE_CHECK_ANSWER with 7 choices. <edu.cmu.pact.miss.PeerLearning.SimStConversation:103>main
+[16:37:48] +ss+ 133: Added topic NO_BALANCE_CHECK_ANSWER with 4 choices. <edu.cmu.pact.miss.PeerLearning.SimStConversation:103>main
+[16:37:48] +ss+ 134: Added topic VERIFY_WRONG with 6 choices. <edu.cmu.pact.miss.PeerLearning.SimStConversation:103>main
+[16:37:48] +miss+ 135: loadAccountInfo: TestSS <edu.cmu.pact.miss.PeerLearning.SimStPLE:449>main
+[16:37:48] +miss+ 136: Loading the instructions now <edu.cmu.pact.miss.PeerLearning.SimStPLE:424>main
+[16:37:48] +miss+ 137: Inside loadInstnDeSerialize <edu.cmu.pact.miss.console.controller.MissController:1085>main
+[16:37:48] +ss+ 138: Running in Contest Mode: false <edu.cmu.pact.miss.console.controller.MissController:225>main
+[16:37:48] +miss+ 139: deleting PR file <edu.cmu.pact.miss.console.controller.MissController:258>main
+deleting a file!
+^C

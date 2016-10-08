@@ -1,0 +1,228 @@
+startStateElements
+dorminTable1_C1R1
+dorminTable2_C1R1
+
+foaElements
+dorminTable1_C1R2
+dorminTable2_C1R2
+dorminTable3_C1R1
+dorminTable3_C1R2
+dorminTable1_C1R3
+dorminTable2_C1R3
+dorminTable3_C1R3
+dorminTable1_C1R4
+dorminTable2_C1R4
+dorminTable3_C1R4
+dorminTable1_C1R5
+dorminTable2_C1R5
+dorminTable3_C1R5
+dorminTable1_C1R6
+dorminTable2_C1R6
+dorminTable3_C1R6
+
+componentNames
+dorminTable1_C.R. on the left-hand side
+dorminTable2_C.R. on the right-hand side
+dorminTable3_C.R. for the transformation
+done the problem solved button
+
+sections
+One Step Equations
+Two Step Equations
+Equations with Variables on Both Sides
+-Final Challenge
+
+quizProblems
+0:3x=12
+1:3v+2=7
+1:4y-8=10
+1:(y+2)/3=5
+2:1+9u=-3u+7
+2:7c-10=8-9c
+2:-8+4x=-2-7x
+2:9x+5=2x-3
+3:8j+8=9j-5
+3:3x-17=7+5x
+3:-11x-5=-16-3x
+3:-7-2n=n
+3:6-g=-10g+13
+3:n+6=-4n-2
+3:-2+v=-v+6
+3:-b+5b=1+b
+.
+3:A(CV+B)=D
+3:B-AV=CV
+2:-AV+B=-CV-D
+3:(AV+B)/C=D
+3:(AV-B)/C=-D
+2:AV=CV
+.
+2:V-B/A=CV
+1:A/V=B
+1:A/V+B=D
+2:AV=CV+B
+2:V/A+B=CV+D
+3:(AV-B)/V=D
+
+examples
+section:0
+title:x-2=5
+text:For this one-step equation, you might first add 2 to both sides.  Why?  Because that way you will have x by itself on the left-hand side.  If you add 2 to the left-hand side, it will be x-2+2, which simplifies to x.  The right-hand side will be 5+2, which simplifies to 7.  So, you first type "add 2" for the transformation, and then type x in the left-hand side, and 7 in the right-hand side.  Always remember, you need to apply an arithmetic operator (i.e., add, subtract, multiply, divide) to both sides to maintain the quality of the equation. 
+dorminTable1_C1R1:x-2:This is the left-hand side of the equation.
+dorminTable1_C1R2:x:If you add 2 to x-2, you'll get x.:correct
+dorminTable2_C1R1:5:This is the right-hand side of the equation.
+dorminTable2_C1R2:7:If you add 2 to 5, you'll get 7.:correct
+dorminTable3_C1R1:add 2:Your first step may be to add 2 to both sides.:correct
+done:-1:The problem is solved.  The answer is x=7.:correct
+.
+section:0
+title:3a=15
+text:This is another example of a one-step equation.  What do you need to do to have x by itself on the left-hand side?  Yes, you need to divide both sides by 3.  You may use any letter for a variable when solving an equation.  This example uses the letter 'a'. 
+dorminTable1_C1R1:3a:The variable a has a coefficient of 3.
+dorminTable2_C1R1:15:This is a constant term of 15.
+dorminTable3_C1R1:divide 3:Divide both sides by 3 to get the variable a by itself.:correct
+dorminTable1_C1R2:a:3a divided by 3 is a.:correct
+dorminTable2_C1R2:5:15 divided by 3 is 5.:correct
+done:-1:The problem is solved.  The answer is a = 5.:correct
+.
+section:1
+title:3y+4=10
+text:This is an example of a two-step equation. To get the variable y by itself, you need to eliminate the constant term +4 and the coefficient 3.  To eliminate +4, you would subtract 4 from both sides.  Then to eliminate 3, divide both sides by 3.
+dorminTable1_C1R1:3y+4
+dorminTable2_C1R1:10
+dorminTable3_C1R1:subtract 4:Subtract 4 from both sides to eliminate the constant term 4 on the left-hand side.:correct
+dorminTable1_C1R2:3y:The constant term 4 has been eliminated.:correct
+dorminTable2_C1R2:6::correct
+dorminTable3_C1R2:divide 3:To divide both sides by 3, type 'divide 3'.:correct
+dorminTable1_C1R3:y::correct
+dorminTable2_C1R3:2::correct
+done:-1:The problem is solved.  The answer is y=2.:correct
+.
+section:1
+title:-2=(p+4)/3
+text: To get the variable p by itself on the right-hand side, you need to eliminate the constants 3 and 4 on the right-hand side.  Because the right-hand side of the equation uses parentheses, you have to get rid of terms outside the parentheses first.  That is, to get the variable p by itself, you might first eliminate 3, which is a denominator of the fraction (p+4)/3.  To eliminate 3, you might multiply both sides by 3.
+dorminTable1_C1R1:-2
+dorminTable2_C1R1: (p+4)/3
+dorminTable3_C1R1:multiply 3:First, eliminate the denominator of the fraction (p+4)/3.:correct
+dorminTable1_C1R2: -6::correct
+dorminTable2_C1R2: p+4::correct
+dorminTable3_C1R2:subtract 4:Subtract 4 from both sides to eliminate the constant term 4 on the right-hand side:correct
+dorminTable1_C1R3:-10::correct
+dorminTable2_C1R3:p::correct
+done:-1:The problem is solved.  The answer is -10 = p.  The isolated variable can also be on the right-hand side.:correct
+.
+section:2
+title: -2x-6 = 4+3x
+text:This is an example of an equation with variables on both sides. This example is also in the Unit Overview. You should visit the Unit Overview to review the detailed explanation on how to solve this problem.  Here, you can see how to tutor SimStudent using the tutoring interface.  
+dorminTable1_C1R1:-2x-6
+dorminTable2_C1R1: 4+3x
+dorminTable3_C1R1:add 6:Eliminate -6 on the left-hand side by adding 6 to both sides of the equation.:correct
+dorminTable1_C1R2: -2x::correct
+dorminTable2_C1R2: 10+3x::correct
+dorminTable3_C1R2:subtract 3x:Subtract 3x from both sides to eliminate 3x on the right-hand side.:correct
+dorminTable1_C1R3:-5x::correct
+dorminTable2_C1R3:10::correct
+dorminTable3_C1R3:divide -5:Finally, divide both sides by -5, which is the coefficient of -5x.:correct
+dorminTable1_C1R4:x::correct
+dorminTable2_C1R4:-2::correct
+done:-1:The problem is solved.  The answer is x = -2.:correct
+.
+section:2
+title:3(2q-5)=12q
+text:This is an example of an equation with variables on both sides, but this equation has parentheses. To get the variable q by itself, you need to eliminate 3, 2, -5, and 12. Which one should you eliminate first?  One way to eliminate '3' is to distribute 3 over the parentheses.  There are three things to be eliminated on the left-hand side: 3, 2 and -5.  After you distribute 3, you would have only two things to be eliminated: 6 and -15.  See the example above. 
+dorminTable1_C1R1:3(2q-5)
+dorminTable2_C1R1:12q
+dorminTable3_C1R1:distribute 3(2q-5):After distributing 3 over the parentheses, you would only have two things to eliminate.:correct
+dorminTable1_C1R2:6q-15::correct
+dorminTable2_C1R2:12q::correct
+dorminTable3_C1R2:subtract 6q:Eliminate the variable term 6q from the left-hand side.:correct
+dorminTable1_C1R3:-15::correct
+dorminTable2_C1R3:6q::correct
+dorminTable3_C1R3:divide 6:To eliminate 6 on the right-hand side, you would divide both sides by 6.:correct
+dorminTable1_C1R4:-5/2::correct
+dorminTable2_C1R4:q::correct
+done:-1:The problem is solved.  The answer is -5/2 = q. It's fine to have an improper fraction as an answer.:correct
+.
+section:2
+title:-3+4b+8=-6-6b
+text:This is an example of an equation with variables on both sides, but the left-hand side of this equation has two constant terms, -3 and 8.  You should combine these two terms first, because that way you would get a simpler equation that has only two terms on the left-hand side.  You may use 'clt' as an abbreviation for combine like terms.
+dorminTable1_C1R1:-3+4b+8
+dorminTable2_C1R1:-6-6b
+dorminTable3_C1R1:clt -3+4b+8:clt means combine like terms.  Specify the side of the equation to be combined.:correct
+dorminTable1_C1R2:5+4b:The constant term 8 has been eliminated.:correct
+dorminTable2_C1R2:-6-6b::correct
+dorminTable3_C1R2:subtract 5:Eliminate the constant term of '5' on the left-hand side by subtracting 5 from both sides.:correct
+dorminTable1_C1R3:4b::correct
+dorminTable2_C1R3:-11-6b::correct
+dorminTable3_C1R3:add 6b:Add 6b to both sides to cancel the variable term on the right-hand side.:correct
+dorminTable1_C1R4:10b::correct
+dorminTable2_C1R4:-11::correct
+dorminTable3_C1R4:divide 10:Divide both sides by 10 to eliminate the coefficient on the left-hand side.:correct
+dorminTable1_C1R5:b::correct
+dorminTable2_C1R5:-11/10::correct
+done:-1:The problem is solved.  The answer is b = -11/10.  It's fine to have an improper fraction as a final answer.:correct
+
+mistakeExplanations
+text:But I put (E).  Why doesn't (I) work now?
+.
+text:But before I did (E).  I thought that would be the same with (I) here.  Why is this different?
+
+problemChoiceExplanations
+text:Why did you choose (P) for the problem?
+:Because it is an easier problem.
+:Because it is a more challenging problem.
+:Because I want to see if you can do it.
+:Because you got a problem like it wrong before.
+:Because I want you to get more practice on this type of problem.
+.
+text:What will doing the problem (P) help me learn?
+:How to deal with more terms.
+:How to deal with coefficients.
+:How to deal with variables on both sides.
+:How to use inverse operations.
+:How to deal with negatives.
+:How to deal with terms in different places.
+
+hintExplanations
+text:What will doing (I) accomplish?
+!typein,add;subtract:It will get the variables to the same side.
+!typein,add;subtract:It will get the constants to the same side.
+!typein,multiply;divide:It will get the variable by itself.
+!typein,multiply;divide:It gets rid of the division.
+!typein,distribute;clt:It will get rid of the parentheses.
+!typein,distribute;clt:It will move the variable terms together.
+!typein,distribute;clt:It will move the constant terms together.
+done:We can stop working on the problem.
+:It cancels out the term (F).
+:It simplifies the equation.
+.
+text:What is it about (P) that made you know to (O)?
+!typein,add;subtract:The term (F) is positive.
+!typein,add;subtract:The term (F) is negative.
+!typein,add;subtract:There are variables on both sides of the equation.
+!typein,add;subtract:There are constants on both sides of the equation.
+!typein,multiply;divide:The variable term <get-var-term (F)> has a coefficient (<coefficient (F)>).
+!typein,multiply;divide:The equation has division in it.
+!typein,multiply;divide:There are no extra terms left to cancel out.
+!typein,distribute;clt:The equation has parentheses in it.
+!typein,distribute;clt:There is more than one variable term on one side.
+!typein,distribute;clt:There is more than one constant term on one side.
+!typein,distribute;clt:The equation has multiplication in it.
+done:The only variable is by itself.
+done:The variable has no coefficient.
+:There is more than one term in part of the equation.
+.
+text:How did you know to use <get-operand "(I)">?
+!typein,add;subtract:Because <get-var-term (F)> is a variable term.
+!typein,add;subtract:Because <get-const-term (F)> is a constant term.
+!typein,multiply;divide:Because <coefficient (F)> is the coefficient of the variable term <get-var-term (F)>.
+!typein,multiply;divide:Because <get-operand "(I)"> is the denominator of the division.
+!typein,distribute;clt:That part of the equation has parentheses.
+!typein,distribute;clt:That part of the equation has multiplication.
+!typein,distribute;clt:That side of the equation has more than one variable term.
+!typein,distribute;clt:That side of the equation has more than one constant term.
+done:The only variable is by itself.
+done:The variable has no coefficient.
+!done:Because <get-const-term <get-operand "(I)">> is right next to the variable.
+!done:Because <get-operand "(I)"> is the opposite of one of the terms.
+!done:Because (F) is on the same side with a different type of term.

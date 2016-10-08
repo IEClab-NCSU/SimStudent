@@ -1,0 +1,428 @@
+<?xml version="1.0" standalone="yes"?>
+
+<stateGraph firstCheckAllStates="true" caseInsensitive="true" unordered="false" lockWidget="true" version="1.0" suppressStudentFeedback="false">
+    <startNodeMessages>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>StartProblem</MessageType>
+                <ProblemName>gus1</ProblemName>
+            </properties>
+        </message>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>GroupDescriptionStart</MessageType>
+            </properties>
+        </message>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>GroupDescriptionEnd</MessageType>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>NumberOfTables</MessageType>
+                <Number>2</Number>
+            </properties>
+        </message>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>CommTable</WidgetType>
+                <CommName>commTable2</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+                <Rows>8</Rows>
+                <Columns>1</Columns>
+                <jessDeftemplates>
+                    <value>(deftemplate table (slot name) (multislot columns))</value>
+                    <value>(deftemplate column (slot name) (multislot cells) (slot position) (slot description))</value>
+                    <value>(deftemplate cell (slot name) (slot value) (slot description) (slot row-number) (slot column-number))</value>
+                </jessDeftemplates>
+                <jessInstances>
+                    <value>(bind ?commTable2_C1R1 (assert (cell (name commTable2_C1R1) (row-number 1) (column-number 1))))</value>
+                    <value>(bind ?commTable2_C1R2 (assert (cell (name commTable2_C1R2) (row-number 2) (column-number 1))))</value>
+                    <value>(bind ?commTable2_C1R3 (assert (cell (name commTable2_C1R3) (row-number 3) (column-number 1))))</value>
+                    <value>(bind ?commTable2_C1R4 (assert (cell (name commTable2_C1R4) (row-number 4) (column-number 1))))</value>
+                    <value>(bind ?commTable2_C1R5 (assert (cell (name commTable2_C1R5) (row-number 5) (column-number 1))))</value>
+                    <value>(bind ?commTable2_C1R6 (assert (cell (name commTable2_C1R6) (row-number 6) (column-number 1))))</value>
+                    <value>(bind ?commTable2_C1R7 (assert (cell (name commTable2_C1R7) (row-number 7) (column-number 1))))</value>
+                    <value>(bind ?commTable2_C1R8 (assert (cell (name commTable2_C1R8) (row-number 8) (column-number 1))))</value>
+                    <value>(bind ?commTable2_Column1(assert (column (name commTable2_Column1) (cells ?commTable2_C1R1 ?commTable2_C1R2 ?commTable2_C1R3 ?commTable2_C1R4 ?commTable2_C1R5 ?commTable2_C1R6 ?commTable2_C1R7 ?commTable2_C1R8 ) (position 1))))</value>
+                    <value>(assert (table (name commTable2) (columns ?commTable2_Column1 )))</value>
+                </jessInstances>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>commTable2_C1R1</value>
+                </Selection>
+                <Action>
+                    <value>UpdateTable</value>
+                </Action>
+                <Input>
+                    <value>2x</value>
+                </Input>
+            </properties>
+        </message>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>CommTable</WidgetType>
+                <CommName>commTable1</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+                <Rows>8</Rows>
+                <Columns>1</Columns>
+                <jessDeftemplates>
+                    <value>(deftemplate table (slot name) (multislot columns))</value>
+                    <value>(deftemplate column (slot name) (multislot cells) (slot position) (slot description))</value>
+                    <value>(deftemplate cell (slot name) (slot value) (slot description) (slot row-number) (slot column-number))</value>
+                </jessDeftemplates>
+                <jessInstances>
+                    <value>(bind ?commTable1_C1R1 (assert (cell (name commTable1_C1R1) (row-number 1) (column-number 1))))</value>
+                    <value>(bind ?commTable1_C1R2 (assert (cell (name commTable1_C1R2) (row-number 2) (column-number 1))))</value>
+                    <value>(bind ?commTable1_C1R3 (assert (cell (name commTable1_C1R3) (row-number 3) (column-number 1))))</value>
+                    <value>(bind ?commTable1_C1R4 (assert (cell (name commTable1_C1R4) (row-number 4) (column-number 1))))</value>
+                    <value>(bind ?commTable1_C1R5 (assert (cell (name commTable1_C1R5) (row-number 5) (column-number 1))))</value>
+                    <value>(bind ?commTable1_C1R6 (assert (cell (name commTable1_C1R6) (row-number 6) (column-number 1))))</value>
+                    <value>(bind ?commTable1_C1R7 (assert (cell (name commTable1_C1R7) (row-number 7) (column-number 1))))</value>
+                    <value>(bind ?commTable1_C1R8 (assert (cell (name commTable1_C1R8) (row-number 8) (column-number 1))))</value>
+                    <value>(bind ?commTable1_Column1(assert (column (name commTable1_Column1) (cells ?commTable1_C1R1 ?commTable1_C1R2 ?commTable1_C1R3 ?commTable1_C1R4 ?commTable1_C1R5 ?commTable1_C1R6 ?commTable1_C1R7 ?commTable1_C1R8 ) (position 1))))</value>
+                    <value>(assert (table (name commTable1) (columns ?commTable1_Column1 )))</value>
+                </jessInstances>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>commTable1_C1R1</value>
+                </Selection>
+                <Action>
+                    <value>UpdateTable</value>
+                </Action>
+                <Input>
+                    <value>6</value>
+                </Input>
+            </properties>
+        </message>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>CommButton</WidgetType>
+                <CommName>hint</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+                <jessDeftemplates>
+                    <value>(deftemplate button (slot name))</value>
+                </jessDeftemplates>
+                <jessInstances>
+                    <value>(assert (button (name hint)))</value>
+                </jessInstances>
+            </properties>
+        </message>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>CommButton</WidgetType>
+                <CommName>done</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+                <jessDeftemplates>
+                    <value>(deftemplate button (slot name))</value>
+                </jessDeftemplates>
+                <jessInstances>
+                    <value>(assert (button (name done)))</value>
+                </jessInstances>
+            </properties>
+        </message>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>CommLabel</WidgetType>
+                <CommName>commLabel8</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>commLabel8</value>
+                </Selection>
+                <Action>
+                    <value>UpdateText</value>
+                </Action>
+                <Input>
+                    <value>=</value>
+                </Input>
+            </properties>
+        </message>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>CommLabel</WidgetType>
+                <CommName>commLabel7</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>commLabel7</value>
+                </Selection>
+                <Action>
+                    <value>UpdateText</value>
+                </Action>
+                <Input>
+                    <value>=</value>
+                </Input>
+            </properties>
+        </message>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>CommLabel</WidgetType>
+                <CommName>commLabel6</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>commLabel6</value>
+                </Selection>
+                <Action>
+                    <value>UpdateText</value>
+                </Action>
+                <Input>
+                    <value>=</value>
+                </Input>
+            </properties>
+        </message>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>CommLabel</WidgetType>
+                <CommName>commLabel5</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>commLabel5</value>
+                </Selection>
+                <Action>
+                    <value>UpdateText</value>
+                </Action>
+                <Input>
+                    <value>=</value>
+                </Input>
+            </properties>
+        </message>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>CommLabel</WidgetType>
+                <CommName>commLabel4</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>commLabel4</value>
+                </Selection>
+                <Action>
+                    <value>UpdateText</value>
+                </Action>
+                <Input>
+                    <value>=</value>
+                </Input>
+            </properties>
+        </message>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>CommLabel</WidgetType>
+                <CommName>commLabel3</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>commLabel3</value>
+                </Selection>
+                <Action>
+                    <value>UpdateText</value>
+                </Action>
+                <Input>
+                    <value>=</value>
+                </Input>
+            </properties>
+        </message>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>CommLabel</WidgetType>
+                <CommName>commLabel2</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>commLabel2</value>
+                </Selection>
+                <Action>
+                    <value>UpdateText</value>
+                </Action>
+                <Input>
+                    <value>=</value>
+                </Input>
+            </properties>
+        </message>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>CommLabel</WidgetType>
+                <CommName>commLabel1</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>commLabel1</value>
+                </Selection>
+                <Action>
+                    <value>UpdateText</value>
+                </Action>
+                <Input>
+                    <value>=</value>
+                </Input>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>StartStateEnd</MessageType>
+            </properties>
+        </message>
+    </startNodeMessages>
+    <node locked="false" doneState="false">
+        <text>start</text>
+        <uniqueID>1</uniqueID>
+        <dimension>
+            <x>365</x>
+            <y>30</y>
+            <width>39</width>
+            <height>27</height>
+        </dimension>
+    </node>
+    <node locked="false" doneState="false">
+        <text>state1</text>
+        <uniqueID>2</uniqueID>
+        <dimension>
+            <x>360</x>
+            <y>140</y>
+            <width>40</width>
+            <height>22</height>
+        </dimension>
+    </node>
+    <edge>
+        <actionLabel preferPathMark="true" optional="false">
+            <studentHintRequest></studentHintRequest>
+            <stepSuccessfulCompletion></stepSuccessfulCompletion>
+            <stepStudentError></stepStudentError>
+            <uniqueID>1</uniqueID>
+            <message>
+                <verb>NotePropertySet</verb>
+                <properties>
+                    <MessageType>InterfaceAction</MessageType>
+                    <Selection>
+                        <value>commTable2_C1R2</value>
+                    </Selection>
+                    <Action>
+                        <value>UpdateTable</value>
+                    </Action>
+                    <Input>
+                        <value>x</value>
+                    </Input>
+                </properties>
+            </message>
+            <buggyMessage>No, this is not correct.</buggyMessage>
+            <successMessage></successMessage>
+            <hintMessage>Please enter 'x' in the highlighted cell.</hintMessage>
+            <actionType>Correct Action</actionType>
+            <oldActionType>Correct Action</oldActionType>
+            <checkedStatus>Never Checked</checkedStatus>
+            <matcher>
+                <matcherType>ExactMatcher</matcherType>
+                <matcherParameter>UpdateTable</matcherParameter>
+                <matcherParameter>x</matcherParameter>
+                <matcherParameter>commTable2_C1R2</matcherParameter>
+                <matcherParameter>Student</matcherParameter>
+            </matcher>
+            <dimension>
+                <width>157</width>
+                <height>16</height>
+            </dimension>
+        </actionLabel>
+        <preCheckedStatus>No-Applicable</preCheckedStatus>
+        <rule>
+            <text>div-lhs eq</text>
+            <indicator>-1</indicator>
+            <dimension>
+                <width>48</width>
+                <height>16</height>
+            </dimension>
+        </rule>
+        <sourceID>1</sourceID>
+        <destID>2</destID>
+        <traversalCount>0</traversalCount>
+
+	<SimSt>
+		<focusOfAttention>
+			<target>commTable2_C1R1</target>
+		</focusOfAttention>
+		<focusOfAttention>
+			<target>commTable1_C1R1</target>
+		</focusOfAttention>
+	</SimSt>
+    </edge>
+</stateGraph>
+

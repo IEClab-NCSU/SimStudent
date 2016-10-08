@@ -1,0 +1,12 @@
+function CTATDialogBox(aX, aY, aWidth, aHeight)
+{
+	var x=aX;
+	var y=aY;
+	var width=aWidth;
+	var height=aHeight;
+	var borderRoundness=5;
+	var dialogBorderColor="#CCCCCC";
+	
+	var dialog=null;
+	var scrimMessage=null;
+}

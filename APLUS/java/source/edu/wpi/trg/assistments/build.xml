@@ -1,0 +1,755 @@
+<project name="edu.wpi.trg.assistments" default="compile" basedir=".">
+	<!-- "Java, compiling from sources in the most cheesiest fashion!"
+						~ Chris Aniszczyk
+-->
+	<!-- ========== Initialize Properties ===================================== -->
+	<property file="build.properties"/>
+	<!-- Component local   -->
+	<!-- the base package that all classes in this directory and subdirectories
+		will be compiled into -->
+	<property name="base-package-name" value="edu/wpi/trg/assistments"/>
+	<!-- ========== External Dependencies ===================================== -->
+	<!-- ========== Derived Values ============================================ -->
+	<!-- The locations of necessary jar files 
+	** No need to worry about this now since we rely on the build.properties
+	like all good java developers should ** -->
+	<!-- ========== Component Declarations ==================================== -->
+	<!-- The name of this component -->
+	<property name="component.name" value="AssistmentToHTML"/>
+	<!-- The primary package name of this component -->
+	<property name="component.package" value="edu.wpi.assistmentToHTML"/>
+	<!-- The title of this component -->
+	<property name="component.title" value="The Assistments Project"/>
+	<!-- The current version number of this component -->
+	<property name="component.version" value="1.0.0"/>
+	<!-- The base directory for compilation targets -->
+	<property name="build.home" value="${basedir}"/>
+	<!-- The base directory for distribution targets -->
+	<property name="dist.home" value="dist"/>
+	<!-- The base directory for component sources -->
+	<property name="source.home" value="${basedir}"/>
+	<!-- The base directory for unit test sources -->
+	<property name="test.home" value="src/test"/>
+	<!-- The directory where some jars are stored -->
+	<property name="jar.dest" value="../../../../../lib"/>
+	<!-- The directory where some jars are stored -->
+	<property name="web.home.test" value="/Users/Shared/jakarta-tomcat-5.0.16/webapps/assistment"/>
+	<property name="web.home.stable" value="/opt/tomcat/webapps/assistment"/>
+	<property name="web.home.classes.test" value="${web.home}/WEB-INF/classes"/>
+	<property name="web.home.lib.test" value="${web.home}/WEB-INF/lib"/>
+	<!-- The directory on the test server where curriculums are stored -->
+	<property name="web.home.curriculum.test" value="${web.home.test}/conf/curriculum/curriculumStore"/>
+	<!-- The base directory for curriculums -->
+	<property name="curriculum.home" value="$../../../../../../../wpicurriculumStore"/>
+
+	<!-- The directory where config files are stored -->
+	<property name="lib.home" value="../../../../../lib"/>
+	<!-- The directory where config files are stored -->
+	<property name="config.home" value="../../../../../config"/>
+	<!-- to directory to copy brd files to -->
+	<property name="brd.home" value="${build.home}/classes/${base-package-name}"/>
+	<!-- ========== Assistment Specific Components ========================================= -->
+	<!-- The base directory for our shared sources -->
+	<property name="shared-src.home" value="${source.home}/shared"/>
+	<property name="jess-src.home" value="${source.home}/jess"/>
+	<!-- The base directory for our ctat sources -->
+	<property name="ctat-src.home" value="${source.home}/ctat"/>
+	<!-- The base direcotry for our htmlconverter sources -->
+	<property name="htmlconverter-src.home" value="${source.home}/htmlconverter"/>
+	<!-- The base directory for our htmlconverter.router sources -->
+	<property name="htmlconverter.router-src.home" value="${source.home}/htmlconverter/router"/>
+	<!-- The base direcotry for our web sources -->
+	<property name="web-src.home" value="${source.home}/web"/>
+	<!-- The base direcotry for our util sources -->
+	<property name="util-src.home" value="${source.home}/util"/>
+	<!-- ========== Properties for running apps ============================================ -->
+	<!-- default properties files for the ctat app to load -->
+	<property name="ctat.run.properties" value="${config.home}/webstart_properties.xml"/>
+	<property name="ctat.viewer.properties" value="${config.home}/CurriculumViewer_properties.xml"/>
+	<!-- default student to run as -->
+	<!-- demo will be the default test student -->
+	<property name="ctat.run.student" value="demo"/>
+	<!-- default session id to run with -->
+	<property name="ctat.run.session" value="0"/>
+	<!-- ========== Server Stuff ========================================= -->
+	<!-- Test Server Stuff -->
+
+	<!-- SUMMER SCHOOL Stuff -->
+	<property name="web.home.summer" value="assistment"/>
+	<property name="summer-server" value="128.2.63.122"/>
+	<property name="summer-server-login" value="monty"/>
+	<property name="summer-server-password" value="summerschool"/>
+	<!-- end of Summer School Stuff-->
+	
+	<!-- Test Server Location-->
+	<property name="test-server" value="nth-dtg4.wpi.edu"/>
+	<property name="test-server-login" value="zx"/>
+	<property name="test-server-password" value="aniszczyk"/>
+
+	<!-- Stable Server Location -->
+	<property name="stable-server" value="nova.assistment.com"/>
+	<property name="stable-server-login" value="dump"/>
+	<property name="stable-server-password" value="dump"/>
+	<!-- ========== Compiler Defaults ========================================= -->
+	<!-- Should Java compilations set the 'debug' compiler option? -->
+	<property name="compile.debug" value="true"/>
+	<!-- Should Java compilations set the 'deprecation' compiler option? -->
+	<property name="compile.deprecation" value="false"/>
+	<!-- Should Java compilations set the 'optimize' compiler option? -->
+	<property name="compile.optimize" value="false"/>
+	<!-- Construct compile classpath -->
+	<path id="compile.classpath">
+		<pathelement location="${ctat.jar}"/>
+		<pathelement location="${build.home}/classes"/>
+		<pathelement location="${jess61p2.jar}"/>
+		<pathelement location="${CommWidgets.jar}"/>
+		<pathelement location="${jmf.jar}"/>
+		<pathelement location="${j2ee.jar}"/>
+		<pathelement location="${jfreechart-0.9.8.jar}"/>
+		<pathelement location="${mysql-connector-java-3.0.9-stable-bin.jar}"/>
+		<pathelement location="${cewolf.jar}"/>
+		<pathelement location="${logclient.jar}"/>
+		<pathelement location="${Decinterface_dt.jar}"/>
+		<pathelement location="${Splus.jar}"/>
+		<pathelement location="${assistment.jar}"/>
+		<pathelement location="${dom.jar}"/>
+		<pathelement location="${fp.jar}"/>
+	</path>
+
+	<!-- ========== Test Execution Defaults =================================== -->
+	<!-- No need to worry about this junit crap now -->
+	<!-- ========== Executable Targets ======================================== -->
+
+	<target name="init" description="Initialize and evaluate conditionals">
+		<echo message="-------- ${component.title} ${component.version} --------"/>
+		<filter token="name" value="${component.name}"/>
+		<filter token="package" value="${component.package}"/>
+		<filter token="version" value="${component.version}"/>
+	</target>
+
+	<target name="prepare" depends="init" description="Prepare build directory">
+		<echo message="-------- Location of some important deps --------"/>
+		<echo>
+			${CommWidgets.jar}
+			${jmf.jar}
+			${jess61p2.jar}
+			${j2ee.jar}
+		</echo>
+		<mkdir dir="${build.home}"/>
+		<mkdir dir="${build.home}/classes"/>
+		<mkdir dir="${build.home}/dist"/>
+		<mkdir dir="${build.home}/docs"/>
+		<mkdir dir="${build.home}/docs/api"/>
+		<mkdir dir="${build.home}/tests"/>
+	</target>
+
+	<target name="compile" depends="prepare, compile-only" description="Compile everything"/>
+
+	<target name="compile-shared" depends="prepare" description="Compile shareable components">
+		<javac srcdir="${shared-src.home}" destdir="${build.home}/classes" debug="${compile.debug}" deprecation="${compile.deprecation}" optimize="${compile.optimize}">
+			<classpath refid="compile.classpath"/>
+		</javac>
+	</target>
+
+	<!-- to reduce redundancy just call compile-ctat-only -->
+	<target name="compile-ctat" depends="prepare, compile-shared, compile-jess" description="Compile ctat components">
+		<antcall target="compile-ctat-only"/>
+	</target>
+
+	<!-- I do not want to wait for all the ctat dependencies to be
+		rebuilt when I have just made a change to this package -->
+	<target name="compile-ctat-only" description="Compile only ctat components no dependencies">
+		<javac srcdir="${ctat-src.home}" excludes="assistmentTemplate/**" destdir="${build.home}/classes" debug="${compile.debug}" deprecation="${compile.deprecation}" optimize="${compile.optimize}">
+			<classpath refid="compile.classpath"/>
+		</javac>
+
+		<copy todir="${build.home}/classes/${base-package-name}/ctat/" flatten="false">
+			<fileset dir="${ctat-src.home}">
+				<include name="**/*.png"/>
+				<include name="**/*.JPG"/>	
+				<exclude name="**/*.java"/>
+			</fileset>
+		</copy>
+
+	</target>
+
+	<target name="compile-jess" description="Compile jess package">
+		<javac srcdir="${jess-src.home}" destdir="${build.home}/classes" debug="${compile.debug}" deprecation="${compile.deprecation}" optimize="${compile.optimize}">
+			<classpath refid="compile.classpath"/>
+		</javac>
+	</target>
+
+	<target name="compile-web" depends="prepare, compile-shared" description="compiles web packages and 
+				all its dependencies">
+		<javac srcdir="${util-src.home}" destdir="${build.home}/classes"
+                        excludes="AssistmentsJarIntrospection.java, log/Logger.java, log/LogBuffer.java"
+                        debug="${compile.debug}" deprecation="${compile.deprecation}" target="1.3">
+			<classpath refid="compile.classpath"/>
+                </javac>
+		<javac srcdir="${web-src.home}" destdir="${build.home}/classes" debug="${compile.debug}" deprecation="${compile.deprecation}" target="1.3" excludes="HtmlConverterServlet.java">
+			<classpath refid="compile.classpath"/>
+                </javac>
+	</target>
+
+	<target name="compile-htmlconverter" depends="compile-ctat" description="compiles htmlconverter and all dependencies">
+		<antcall target="compile-htmlconverter-only"/>
+	</target>
+
+	<target name="compile-htmlconverter-only" description="Compile just the htmlconverter package">
+		<javac srcdir="${htmlconverter-src.home}" destdir="${build.home}/classes" debug="${compile.debug}" deprecation="${compile.deprecation}" optimize="${compile.optimize}">
+			<classpath refid="compile.classpath"/>
+		</javac>
+		<rmic base="${build.home}/classes" classname="edu.wpi.trg.assistments.htmlconverter.router.HtmlConverterProcess"/>
+		<rmic base="${build.home}/classes" classname="edu.wpi.trg.assistments.htmlconverter.router.HtmlConverterRouter"/>
+		<rmic base="${build.home}/classes" classname="edu.wpi.trg.assistments.htmlconverter.router.HtmlConverterControl"/>
+		<copy todir="${build.home}/classes" flatten="true">
+			<fileset dir="${htmlconverter-src.home}">
+				<include name="**/*.html"/>
+				<include name="**/*.css"/>
+				<include name="**/*.gif"/>
+				<include name="**/*.png"/>
+				<exclude name="**/*.java"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="compile-assistments" description="compiles all the assistments">
+		<javac srcdir="${build.home}" destdir="${build.home}/classes" debug="${compile.debug}" deprecation="${compile.deprecation}" optimize="${compile.optimize}">
+			<classpath refid="compile.classpath"/>
+			<!-- assistment stuff is not serparate from application stuff, 
+				only want to compile assisment directories -->
+			<include name="testassistments/**"/>
+			<include name="mcas/**"/>
+		</javac>
+		<!-- grab the .brd files  and put them in the right place -->
+		<copy todir="${brd.home}/testassistments">
+			<fileset dir="${build.home}/testassistments">
+				<include name="**/*.brd"/>
+				<include name="**/images/**"/>
+			</fileset>
+		</copy>
+		<copy todir="${brd.home}/mcas">
+			<fileset dir="${build.home}/mcas">
+				<include name="**/*.brd"/>
+				<include name="**/images/**"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="package-web" depends="compile-web" description="package up the web classes into a jar file">
+		<jar destfile="${jar.dest}/web.jar" basedir="${build.home}/classes" includes="edu/wpi/trg/assistments/web/**"/>
+	</target>
+
+	<target name="package-assistments" depends="compile-assistments" description="package assistments.jar">
+		<jar destfile="${jar.dest}/assistments.jar" basedir="${build.home}/classes" excludes="edu/wpi/trg/assistments/web/** edu/wpi/trg/assistments/htmlconverter/** edu/wpi/trg/assistments/ctat/** edu/wpi/trg/assistments/jess/** edu/wpi/trg/assistments/shared/**"/>
+	</target>
+
+	<target name="package-ctat" description="package up the ctat classes into a jar file">
+		<copy file="${ctat.run.properties}" todir="${build.home}/classes"/>
+		<copy file="${ctat.viewer.properties}" todir="${build.home}/classes"/>
+		<jar destfile="${jar.dest}/ctat.jar" basedir="${build.home}/classes" includes="edu/wpi/trg/assistments/ctat/**,edu/wpi/trg/assistments/shared/**,edu/wpi/trg/assistments/htmlconverter/AssistmentToHTML.class,edu/wpi/trg/assistments/htmlconverter/ComponentType.class">
+			<fileset dir="${config.home}"/>
+		</jar>
+		<delete file="${build.home}/classes/webstart_properties.xml"/>
+	</target>
+	
+	<!-- well the the ctat application classes can not be in the class
+		 path of htmlconverter is run.  HtmlConverterServlet needs 
+		 at least the HtmlConverterInterface and maybe the stub classes
+		 generated by rmic. So we will jar up the htmlconverter stuff. -->
+	<target name="package-htmlconverter" description="packages up the htmlconverter classes into a jar file">
+		<jar destfile="${jar.dest}/htmlconverter.jar" basedir="${build.home}/classes" includes="edu/wpi/trg/assistments/htmlconverter/router/**,edu/wpi/trg/assistments/shared/**"/>
+	</target>
+
+	<target name="compile-only" depends="init, compile-shared, compile-ctat">
+		<echo message="Compiling sources..."/>
+	</target>
+
+	<target name="clean" description="Clean build and distribution directories">
+		<delete dir="${build.home}/classes"/>
+		<delete dir="${dist.home}"/>
+	</target>
+
+	<target name="all" depends="clean,compile" description="Clean and compile all components"/>
+
+	<target name="javadoc" depends="compile" description="Create component Javadoc documentation">
+		<mkdir dir="${dist.home}"/>
+		<mkdir dir="${dist.home}/docs"/>
+		<mkdir dir="${dist.home}/docs/api"/>
+		<javadoc sourcepath="${source.home}" destdir="${dist.home}/docs/api" overview="${source.home}/overview.html" packagenames="wpi.edu.assistments.*" author="true" private="true" version="true" doctitle="&lt;h1&gt;${component.title} (Version ${component.version})&lt;/h1&gt;" windowtitle="${component.title} (Version ${component.version})" bottom="Copyright (c) 2004 - WPI">
+			<classpath refid="compile.classpath"/>
+		</javadoc>
+	</target>
+
+	<target name="dist" depends="compile,javadoc" description="Create binary distribution">
+		<mkdir dir="${dist.home}"/>
+		<copy file="LICENSE.txt" todir="${dist.home}"/>
+		<copy file="RELEASE-NOTES.txt" todir="${dist.home}"/>
+		<copy file="${build.home}/${component.name}.jar" tofile="${dist.home}/${component.name}.jar"/>
+		<copy file="${build.home}/${component.name}-api.jar" tofile="${dist.home}/${component.name}-api.jar"/>
+		<mkdir dir="${dist.home}/src"/>
+		<copy todir="${dist.home}/src" filtering="on">
+			<fileset dir="${source.home}"/>
+		</copy>
+	</target>
+
+	<!-- ========== A Section for Run Commands ================================ -->
+
+	<target name="run-ctat" description="runs ctat with its default settings">
+		<java classname="edu.wpi.trg.assistments.ctat.CTAT" dir="${build.home}/classes" fork="true">
+			<classpath refid="compile.classpath"/>
+			
+		</java>
+	</target>
+
+	<target name="run-ctat-student-webstart" description="runs the ctat class in webstart mode">
+		<java classname="edu.wpi.trg.assistments.ctat.CTAT" dir="${build.home}/classes" fork="true">
+			<classpath refid="compile.classpath"/>
+			<arg value="-P"/>
+			<arg value="../${ctat.run.properties}"/>
+			<arg value="${ctat.run.student}"/>
+			<arg value="${ctat.run.session}"/>
+		</java>
+	</target>
+
+	<target name="run-assistmenttohtml" description="runs the AssistmentToHTML class">
+		<java classname="edu.wpi.trg.assistments.htmlconverter.AssistmentToHTML" fork="true" dir="${build.home}/classes">
+			<classpath refid="compile.classpath"/>
+			<arg value="-P"/>
+			<arg value="../${ctat.run.properties}"/>
+			<arg value="${ctat.run.student}"/>
+			<arg value="${ctat.run.session}"/>
+		</java>
+	</target>
+	<target name="deploy-web-test-server" depends="compile-web" description="deploy's webstuff to ${test-server}">
+		<scp todir="${test-server-login}@${test-server}:/${web.home.test}/pages" password="${test-server-password}" trust="yes">
+			<fileset dir="${build.home}/web/pages"/>
+		</scp>
+		<scp todir="${test-server-login}@${test-server}:/${web.home.test}" password="${test-server-password}" trust="yes">
+			<fileset dir="${build.home}/web/main"/>
+		</scp>
+		<scp todir="${test-server-login}@${test-server}:/${web.home.test}/WEB-INF/classes/${base-package-name}/web" password="${test-server-password}" trust="yes">
+			<fileset dir="${build.home}/classes/${base-package-name}/web"/>
+		</scp>
+	</target>
+
+	<target name="deploy-web-stable-server" depends="compile-web" description="deploy's webstuff to nova.assistment.com">
+		<scp todir="${stable-server-login}@${stable-server}:/${web.home.stable}/pages" password="${stable-server-password}" trust="yes">
+			<fileset dir="${build.home}/web/pages"/>
+		</scp>
+		<scp todir="${stable-server-login}@${stable-server}:/${web.home.stable}" password="${stable-server-password}" trust="yes">
+			<fileset dir="${build.home}/web/main"/>
+		</scp>
+		<scp todir="${stable-server-login}@${stable-server}:/${web.home.stable}/WEB-INF/classes/${base-package-name}/web" password="${stable-server-password}" trust="yes">
+			<fileset dir="${build.home}/classes/${base-package-name}/web"/>
+		</scp>
+	</target>
+
+	<target name="deploy-htmlconverter-test-server" depends="compile-htmlconverter, package-htmlconverter" description="deploy's htmlconverter.jar to ${test-server}">
+		<copy file="${lib.home}/htmlconverter.jar" todir="${dist.home}"/> 
+		<signjar jar="${dist.home}/htmlconverter.jar" keystore="${lib.home}/assiststore" alias="signfiles" storepass="assistment"/>
+		<scp file="${dist.home}/htmlconverter.jar" todir="${test-server-login}@${test-server}:/Users/Shared/tomcat/webapps/assistment/conf/jars/htmlconverter.jar" password="${test-server-password}" trust="yes" />
+	</target>
+
+	<target name="deploy-htmlconverter-stable-server" depends="compile-htmlconverter, package-htmlconverter" description="deploy's htmlconverter.jar to nova.assistment.com">
+		<copy file="${lib.home}/htmlconverter.jar" todir="${dist.home}"/> 
+		<signjar jar="${dist.home}/htmlconverter.jar" keystore="${lib.home}/assiststore" alias="signfiles" storepass="assistment"/>
+		<scp file="${dist.home}/htmlconverter.jar" todir="${stable-server-login}@${stable-server}:${web.home.stable}/conf/jars/htmlconverter.jar" password="${stable-server-password}" trust="yes" />
+	</target>
+
+	<target name="deploy-ctat-test-server" depends="compile-ctat, package-ctat" description="deploy's ctat.jar to ${test-server}">
+		<copy file="${lib.home}/ctat.jar" todir="${dist.home}"/> 
+		<signjar jar="${dist.home}/ctat.jar" keystore="${lib.home}/assiststore" alias="signfiles" storepass="assistment"/>
+		<scp file="${dist.home}/ctat.jar" todir="${test-server-login}@${test-server}:/Users/Shared/jakarta-tomcat-5.0.16/webapps/assistment/conf/jars" password="${test-server-password}" trust="yes"/>
+	</target>
+
+	<target name="deploy-ctat-stable-server" depends="compile-ctat, package-ctat" description="deploy's ctat.jar to nova.assistment.com">
+		<copy file="${lib.home}/ctat.jar" todir="${dist.home}"/> 
+		<signjar jar="${dist.home}/ctat.jar" keystore="${lib.home}/assiststore" alias="signfiles" storepass="assistment"/>
+		<scp file="${dist.home}/ctat.jar" todir="${stable-server-login}@${stable-server}:${web.home.stable}/conf/jars" password="${stable-server-password}" trust="yes"/>
+	</target>
+
+	<target name="deploy-commwidgets-test-server" depends="" description="deploy's CommWidgets.jar to ${test-server}">
+		<copy todir="${dist.home}">
+			<fileset dir="${lib.home}"/>
+		</copy>
+			 
+		<signjar jar="${dist.home}/CommWidgets.jar" keystore="${lib.home}/assiststore" alias="signfiles" storepass="assistment"/>
+		<signjar jar="${dist.home}/logclient.jar" keystore="${lib.home}/assiststore" alias="signfiles" storepass="assistment"/>
+		<signjar jar="${dist.home}/Decinterface_dt.jar" keystore="${lib.home}/assiststore" alias="signfiles" storepass="assistment"/>
+		<signjar jar="${dist.home}/cl/cl_common.jar" keystore="${lib.home}/assiststore" alias="signfiles" storepass="assistment"/>
+		<signjar jar="${dist.home}/cl/utilities.jar" keystore="${lib.home}/assiststore" alias="signfiles" storepass="assistment"/>
+		
+		<scp todir="${test-server-login}@${test-server}:/Users/Shared/jakarta-tomcat-5.0.16/webapps/assistment/conf/jars" password="${test-server-password}" trust="yes">
+			<fileset dir="${dist.home}">
+				<include name="**/CommWidgets.jar"/>
+				<include name="**/logclient.jar"/>
+				<include name="**/Decinterface_dt.jar"/>
+			</fileset>
+		</scp>
+		<scp todir="${test-server-login}@${test-server}:/Users/Shared/jakarta-tomcat-5.0.16/webapps/assistment/conf/jars/cl" password="${test-server-password}" trust="yes">	
+			<fileset dir="${dist.home}/cl">	
+				<include name="**/cl/cl_common.jar"/>
+				<include name="**/cl/utilities.jar"/>
+			</fileset>
+		</scp>	
+	</target>
+
+	<target name="deploy-commwidgets-stable-server" depends="" description="deploy's CommWidgets.jar to nova.assistment.com">
+		<copy file="${lib.home}/CommWidgets.jar" todir="${dist.home}"/> 
+		<signjar jar="${dist.home}/CommWidgets.jar" keystore="${lib.home}/assiststore" alias="signfiles" storepass="assistment"/>
+		<scp file="${dist.home}/CommWidgets.jar" todir="${stable-server-login}@${stable-server}:${web.home.stable}/conf/jars" password="${stable-server-password}" trust="yes"/>
+	</target>
+
+
+	<target name="deploy-jdom-test-server" depends="" description="deploy's jdom.jar to ${test-server}">
+		<copy file="${lib.home}/jdom.jar" todir="${dist.home}"/> 
+		<signjar jar="${dist.home}/jdom.jar" keystore="${lib.home}/assiststore" alias="signfiles" storepass="assistment"/>
+		<scp file="${dist.home}/jdom.jar" todir="${test-server-login}@${test-server}:/Users/Shared/jakarta-tomcat-5.0.16/webapps/assistment/conf/jars" password="${test-server-password}" trust="yes"/>
+	</target>
+
+	<target name="deploy-jdom-stable-server" depends="" description="deploy's jdom.jar to nova.assistment.com">
+		<copy file="${lib.home}/jdom.jar" todir="${dist.home}"/> 
+		<signjar jar="${dist.home}/jdom.jar" keystore="${lib.home}/assiststore" alias="signfiles" storepass="assistment"/>
+		<scp file="${dist.home}/jdom.jar" todir="${stable-server-login}@${stable-server}:${web.home.stable}/conf/jars" password="${stable-server-password}" trust="yes"/>
+	</target>
+
+	<target name="deploy-jess-test-server" depends="" description="deploy's jess61p2.jar to ${test-server}">
+		<copy file="${lib.home}/jess61p2.jar" todir="${dist.home}"/> 
+		<signjar jar="${dist.home}/jess61p2.jar" keystore="${lib.home}/assiststore" alias="signfiles" storepass="assistment"/>
+		<scp file="${dist.home}/jess61p2.jar" todir="${test-server-login}@${test-server}:/Users/Shared/jakarta-tomcat-5.0.16/webapps/assistment/conf/jars" password="${test-server-password}" trust="yes"/>
+	</target>
+
+	<target name="deploy-jdom-stable-server" depends="" description="deploy's jdom.jar to nova.assistment.com">
+		<copy file="${lib.home}/jdom.jar" todir="${dist.home}"/> 
+		<signjar jar="${dist.home}/jdom.jar" keystore="${lib.home}/assiststore" alias="signfiles" storepass="assistment"/>
+		<scp file="${dist.home}/jdom.jar" todir="${stable-server-login}@${stable-server}:${web.home.stable}/conf/jars" password="${stable-server-password}" trust="yes"/>
+	</target>
+
+
+	<target name="deploy-assistments-test-server" depends="compile-assistments, package-assistments" description="deploy's assistments.jar to ${test-server}">
+		<copy file="${lib.home}/assistments.jar" todir="${dist.home}"/> 
+		<signjar jar="${dist.home}/assistments.jar" keystore="${lib.home}/assiststore" alias="signfiles" storepass="assistment"/>
+		<scp file="${dist.home}/assistments.jar" todir="${test-server-login}@${test-server}:/Users/Shared/jakarta-tomcat-5.0.16/webapps/assistment/conf/jars" password="${test-server-password}" trust="yes"/>
+		<scp todir="${test-server-login}@${test-server}:/Users/Shared/jakarta-tomcat-5.0.16/webapps/ROOT/images/tmp" password="${test-server-password}" trust="yes">
+                	<fileset dir="${build.home}/classes" casesensitive="no">
+				<include name="**/*.gif"/>
+                                <include name="**/*.png"/>
+                                <include name="**/*.jpg"/>
+			</fileset>
+		</scp>
+	</target>
+
+	<target name="deploy-assistments-stable-server" depends="compile-assistments, package-assistments" description="deploy's assistments.jar to nova.assistment.com">
+		<copy file="${lib.home}/assistments.jar" todir="${dist.home}"/> 
+		<signjar jar="${dist.home}/assistments.jar" keystore="${lib.home}/assiststore" alias="signfiles" storepass="assistment"/>
+		<scp file="${dist.home}/assistments.jar" todir="${stable-server-login}@${stable-server}:${web.home.stable}/conf/jars" password="${stable-server-password}" trust="yes"/>
+		<scp todir="${stable-server-login}@${stable-server}:/opt/tomcat/webapps/ROOT/images/tmp" password="${stable-server-password}" trust="yes">
+                	<fileset dir="${build.home}/classes" casesensitive="no">
+				<include name="**/*.gif"/>
+                                <include name="**/*.png"/>
+                                <include name="**/*.jpg"/>
+			</fileset>
+		</scp>
+	</target>
+	
+	<target name="deploy-curriculums-test-server" description="deploy's the curriculums to ${test-server}">
+		<scp todir="${test-server-login}@${test-server}:/Users/Shared/jakarta-tomcat-5.0.16/webapps/assistment/conf/curriculum/curriculumStore" password="${test-server-password}" trust="yes">
+			<fileset dir="${curriculum.home}"/>
+		</scp>
+	</target>
+
+	<target name="deploy-curriculums-stable-server" description="deploy's the curriculums to nova.assistment.com">
+		<scp todir="${stable-server-login}@${stable-server}:${web.home.stable}/conf/curriculum/curriculumStore" password="${stable-server-password}" trust="yes">
+			<fileset dir="${curriculum.home}"/>
+		</scp>
+	</target>
+
+	<target name="full-deploy-test-server" description="deploy EVERYTHING to nth-dtg4.wpi.edu">
+		<antcall target="deploy-htmlconverter-test-server"/>
+		<antcall target="deploy-assistments-test-server"/>
+		<antcall target="deploy-commwidgets-test-server"/>
+		<antcall target="deploy-ctat-test-server"/>
+		<antcall target="deploy-web-test-server"/>
+		<antcall target="deploy-tutors-test-server"/>
+		<antcall target="deploy-jdom-test-server"/>
+		<antcall target="deploy-jess61p2-test-server"/>
+	</target>
+
+	<target name="full-deploy-test-server" description="deploy EVERYTHING to nova.assistment.com">
+		<antcall target="deploy-htmlconverter-stable-server"/>
+		<antcall target="deploy-assistments-stable-server"/>
+		<antcall target="deploy-commwidgets-stable-server"/>
+		<antcall target="deploy-ctat-stable-server"/>
+		<antcall target="deploy-web-stable-server"/>
+		<antcall target="deploy-tutors-stable-server"/>
+		<antcall target="deploy-jdom-stable-server"/>
+		<antcall target="deploy-jess61p2-stable-server"/>
+	</target>
+
+	<target name="deploy-htmlconverter-stable-server" depends="compile-htmlconverter, package-htmlconverter, package-ctat" description="deploy the AssistmentToHTML package to nth-dtg4.wpi.edu">
+	</target>
+
+	<target name="run-htmlconverter-test" >
+		<sshexec host="${test-server}" 
+			command="cd /Users/Shared/htmlconverter; source run.sh"
+                        trust="yes"
+			timeout="30000"
+                        username="${test-server-login}"
+                        password="${test-server-password}"/>
+	</target>
+
+	<target name="shutdown-htmlconverter-test" >
+		<sshexec host="${test-server}" 
+			command="cd /Users/Shared/htmlconverter; source shutdown.sh"
+                        trust="yes"
+			timeout="15000"
+                        username="${test-server-login}"
+                        password="${test-server-password}"/>
+	</target>
+
+	<target name="run-htmlconverter-stable ">
+	</target>
+
+	<target name="shutdown-htmlconverter-stable" >
+	</target>
+
+	<!-- this target runs the html converter shut down client which opens an RMI
+		 connection to the currently running html converter system and tells the
+		 system to shutdown. The html converter system is expected to system.exit() -->
+	<target name="shutdown-htmlconverter" description="shutdown the html converter system">
+		<java fork="true" dir="${build.home}/classes" 
+			classname="edu.wpi.trg.assistments.htmlconverter.router.HtmlConverterShutdownClient" 
+			classpath="${lib.home}/htmlconverter.jar">
+			<sysproperty key="java.rmi.server.codebase" value="http://192.168.0.100:8080/htmlconverter.jar"/>
+		</java>
+	</target>
+
+	<!-- this target runs a copy of the html converter router on the local machine.  The router
+		 will attempt to connect the html converter control.-->
+	<target name="run-htmlrouter" description="runs a html converter router on the local machine">
+		<java fork="true" dir="${build.home}/classes"
+			classname="edu.wpi.trg.assistments.htmlconverter.router.HtmlConverterRouter"
+			classpath="${lib.home}/htmlconverter.jar">
+			<sysproperty key="java.rmi.server.codebase" value="http://nth-dtg4.wpi.edu:8081/assistment/conf/jars/htmlconverter.jar"/>
+			<arg value="130.215.27.190"/>
+			<arg value="../../../../../../config/htmlrouter_config.xml"/>
+		</java>
+	</target>
+
+	<!-- this target runs the html converter control on the local machine.  The html converter
+		 control is the backbone of the entire html converter system.  This target is primarily
+		 for local testing.  -->
+	<target name="run-htmlcontrol" description="runs the html control on the local machine">
+		<java fork="true" dir="${build.home}/classes"
+			classname="edu.wpi.trg.assistments.htmlconverter.router.HtmlConverterControl"
+			classpath="${lib.home}/htmlconverter.jar">
+			<sysproperty key="java.rmi.server.codebase" value="http://192.168.0.100:8080/htmlconverter.jar"/>
+			<arg value="192.168.0.100"/>
+		</java>
+	</target>
+
+	<!-- ========== Unit Test Targets ========================================= -->
+	
+	<!-- Summer School Stuff -->
+	<!-- deploy web server -->
+	<target name="deploy-web-summer-server" depends="compile-web, package-ctat" description="deploy's webstuff to ${test-server}">
+		<!-- conf files-->
+		<ftp action="mkdir" server="${summer-server}" remotedir="${web.home.summer}/conf" userid="${summer-server-login}" password="${summer-server-password}" separator="\" depends="yes"/>
+		<ftp server="${summer-server}" remotedir="${web.home.summer}/conf" userid="${summer-server-login}" password="${summer-server-password}" separator="\" depends="yes">
+			<fileset dir="${build.home}/web/conf"/>
+		</ftp>
+		<!-- servlet, class files -->
+		<ftp action="mkdir" server="${summer-server}" remotedir="${web.home.summer}/WEB-INF/classes/${base-package-name}/web" userid="${summer-server-login}" password="${summer-server-password}" separator="\" depends="yes"/>
+		<ftp server="${summer-server}" remotedir="${web.home.summer}/WEB-INF/classes/${base-package-name}/web" userid="${summer-server-login}" password="${summer-server-password}" separator="\" depends="yes">
+			<fileset dir="${build.home}/classes/${base-package-name}/web"/>
+		</ftp>
+		<ftp action="mkdir" server="${summer-server}" remotedir="${web.home.summer}/WEB-INF/classes/${base-package-name}/util" userid="${summer-server-login}" password="${summer-server-password}" separator="\" depends="yes"/>
+		<ftp server="${summer-server}" remotedir="${web.home.summer}/WEB-INF/classes/${base-package-name}/util" userid="${summer-server-login}" password="${summer-server-password}" separator="\" depends="yes">
+			<fileset dir="${build.home}/classes/${base-package-name}/util"/>
+		</ftp>
+
+		<!-- JSP pages -->
+		<ftp action="mkdir" server="${summer-server}" remotedir="${web.home.summer}/pages" userid="${summer-server-login}" password="${summer-server-password}" separator="\" depends="yes"/>
+		<ftp server="${summer-server}" remotedir="${web.home.summer}/pages" userid="${summer-server-login}" password="${summer-server-password}" separator="\" depends="yes">
+			<fileset dir="${build.home}/web/pages"/>
+		</ftp>
+		<!-- main pages: htm, css files -->
+		<ftp server="${summer-server}" remotedir="${web.home.summer}" userid="${summer-server-login}" password="${summer-server-password}" separator="\" depends="yes">
+			<fileset dir="${build.home}/web/main"/>
+		</ftp>
+		
+		<!-- library jar files -->
+		<ftp action="mkdir" server="${summer-server}" remotedir="${web.home.summer}/WEB-INF/lib" userid="${summer-server-login}" password="${summer-server-password}" separator="\" depends="yes"/>
+		<ftp server="${summer-server}" remotedir="${web.home.summer}/WEB-INF/lib" userid="${summer-server-login}" password="${summer-server-password}" separator="\" depends="yes">
+			<fileset dir="${build.home}/web/WEB-INF/lib">
+				<include name="**/*.jar"/>
+			</fileset>	
+		</ftp>
+		<!-- for property reader in shared package -->
+		<ftp server="${summer-server}" remotedir="${web.home.summer}/WEB-INF/lib" userid="${summer-server-login}" password="${summer-server-password}" separator="\" depends="yes">
+			<fileset dir="${lib.home}">
+				<include name="**/ctat.jar"/>
+			</fileset>	
+		</ftp>
+		<!-- JSP tags -->
+		<ftp server="${summer-server}" remotedir="${web.home.summer}/WEB-INF" userid="${summer-server-login}" password="${summer-server-password}" separator="\" depends="yes">
+			<fileset dir="${build.home}/web/WEB-INF/jspTags">
+				<include name="**/*.tld"/>
+			</fileset>
+		</ftp>
+		<!-- conf files-->
+		<ftp action="mkdir" server="${summer-server}" remotedir="${web.home.summer}/conf" userid="${summer-server-login}" password="${summer-server-password}" separator="\" depends="yes"/>
+		<ftp action="mkdir" server="${summer-server}" remotedir="${web.home.summer}/conf/studentFiles" userid="${summer-server-login}" password="${summer-server-password}" separator="\" depends="yes"/>
+		<ftp server="${summer-server}" remotedir="${web.home.summer}/conf" userid="${summer-server-login}" password="${summer-server-password}" separator="\" depends="yes">
+			<fileset dir="${build.home}/web/conf"/>
+		</ftp>
+		
+		<!-- web.xml -->
+		<ftp server="${summer-server}" remotedir="${web.home.summer}/WEB-INF" userid="${summer-server-login}" password="${summer-server-password}" separator="\" depends="yes">
+			<fileset dir="${build.home}/web/WEB-INF">
+				<include name="**/web.xml"/>
+			</fileset>	
+		</ftp>
+		
+		<!-- images -->
+		<ftp action="mkdir" server="${summer-server}" remotedir="${web.home.summer}/images" userid="${summer-server-login}" password="${summer-server-password}" separator="\" depends="yes"/>
+		<ftp server="${summer-server}" remotedir="${web.home.summer}/images" userid="${summer-server-login}" password="${summer-server-password}" separator="\" depends="yes">
+			<fileset dir="${build.home}/web/images">
+				<include name="**/*.*"/>
+			</fileset>	
+		</ftp>
+		<!-- db server connection property -->
+		<ftp server="${summer-server}" remotedir="${web.home.summer}/WEB-INF/classes/${base-package-name}/web/dbConnector" userid="${summer-server-login}" password="${summer-server-password}" separator="\" depends="yes">
+			<fileset dir="${config.home}">
+				<include name="**/db_server_properties.xml"/>
+			</fileset>	
+		</ftp>
+		<!-- default currculum property -->
+		<ftp server="${summer-server}" remotedir="${web.home.summer}/WEB-INF/classes/${base-package-name}/web" userid="${summer-server-login}" password="${summer-server-password}" separator="\" depends="yes">
+			<fileset dir="${config.home}">
+				<include name="**/default_curriculum_properties.xml"/>
+			</fileset>	
+		</ftp>
+	</target>
+	
+	<!-- deploy htmlconverter -->
+	<target name="deploy-htmlconverter-summer-server" depends="compile-htmlconverter, package-htmlconverter" description="deploy's htmlconverter.jar to ${test-server}">
+		<copy file="${lib.home}/htmlconverter.jar" todir="${dist.home}"/> 
+		<signjar jar="${dist.home}/htmlconverter.jar" keystore="${lib.home}/assiststore" alias="signfiles" storepass="assistment"/>
+		
+		<ftp action="mkdir" server="${summer-server}" remotedir="${web.home.summer}/conf/jars" userid="${summer-server-login}" password="${summer-server-password}" separator="\" depends="yes"/>
+		
+		<ftp server="${summer-server}" remotedir="${web.home.summer}/conf/jars/htmlconerter.jar" userid="${summer-server-login}" password="${summer-server-password}" separator="\" depends="yes">
+			<fileset dir="${dist.home}">
+				<include name="**/htmlconverter.jar"/>
+			</fileset>	
+		</ftp>
+	</target>
+	<!-- end of deploy htmlconverter -->
+	
+	<!-- deploy CTAT -->
+	<target name="deploy-ctat-summer-server" depends="compile-ctat, package-ctat" description="deploy's ctat.jar to ${test-server}">
+		<copy file="${lib.home}/ctat.jar" todir="${dist.home}"/> 
+		<copy file="${lib.home}/ctat.jar" todir="${build.home}/web/WEB-INF/lib"/> 
+				
+		<signjar jar="${dist.home}/ctat.jar" keystore="${lib.home}/assiststore" alias="signfiles" storepass="assistment"/>
+		
+		<ftp action="mkdir" server="${summer-server}" remotedir="${web.home.summer}/conf/jars" userid="${summer-server-login}" password="${summer-server-password}" separator="\" depends="yes"/>
+		
+		<ftp server="${summer-server}" remotedir="${web.home.summer}/conf/jars" userid="${summer-server-login}" password="${summer-server-password}" separator="\" depends="yes">
+			<fileset dir="${dist.home}">
+				<include name="**/ctat.jar"/>
+			</fileset>	
+		</ftp>
+	</target>
+	<!-- end of deploy CTAT-->
+	
+	<!-- deploy comm widgets -->
+	<target name="deploy-commwidgets-summer-server" depends="" description="deploy's CommWidgets.jar to ${test-server}">
+		<copy todir="${dist.home}">
+			<fileset dir= "${lib.home}">
+				<include name="**/*.jar"/>
+				<include name="**/cl/**"/>
+			</fileset>
+		</copy>
+			 
+		<signjar jar="${dist.home}/CommWidgets.jar" keystore="${lib.home}/assiststore" alias="signfiles" storepass="assistment"/>
+		<signjar jar="${dist.home}/jdom.jar" keystore="${lib.home}/assiststore" alias="signfiles" storepass="assistment"/>
+		<signjar jar="${dist.home}/jess61p2.jar" keystore="${lib.home}/assiststore" alias="signfiles" storepass="assistment"/>
+		<signjar jar="${dist.home}/logclient.jar" keystore="${lib.home}/assiststore" alias="signfiles" storepass="assistment"/>
+		<signjar jar="${dist.home}/Decinterface_dt.jar" keystore="${lib.home}/assiststore" alias="signfiles" storepass="assistment"/>
+		<signjar jar="${dist.home}/xalan.jar" keystore="${lib.home}/assiststore" alias="signfiles" storepass="assistment"/>
+		<signjar jar="${dist.home}/cl/cl_common.jar" keystore="${lib.home}/assiststore" alias="signfiles" storepass="assistment"/>
+		<signjar jar="${dist.home}/cl/utilities.jar" keystore="${lib.home}/assiststore" alias="signfiles" storepass="assistment"/>
+		<signjar jar="${dist.home}/cl/LMS.jar" keystore="${lib.home}/assiststore" alias="signfiles" storepass="assistment"/>
+		
+		<ftp action="mkdir" server="${summer-server}" remotedir="${web.home.summer}/conf/jars/cl" userid="${summer-server-login}" password="${summer-server-password}" separator="\" depends="yes"/>
+		
+		<ftp server="${summer-server}" remotedir="${web.home.summer}/conf/jars" userid="${summer-server-login}" password="${summer-server-password}" separator="\" depends="yes">
+			<fileset dir="${dist.home}">
+				<include name="**/CommWidgets.jar"/>
+				<include name="**/jdom.jar"/>
+				<include name="**/jess61p2.jar"/>
+				<include name="**/logclient.jar"/>
+				<include name="**/Decinterface_dt.jar"/>
+				<include name="**/xalan.jar"/>
+			</fileset>	
+		</ftp>
+		<ftp server="${summer-server}" remotedir="${web.home.summer}/conf/jars/cl" userid="${summer-server-login}" password="${summer-server-password}" separator="\" depends="yes">
+			<fileset dir="${dist.home}/cl">
+				<include name="**/cl_common.jar"/>
+				<include name="**/utilities.jar"/>
+				<include name="**/LMS.jar"/>
+			</fileset>	
+		</ftp>
+	</target>
+	<!-- end of deploy comm widgets -->
+	
+	<!-- deploy assistments-->
+	<target name="deploy-assistments-summer-server" depends="compile-assistments, package-assistments" description="deploy's assistments.jar to ${test-server}">
+		<copy file="${lib.home}/assistments.jar" todir="${dist.home}"/> 
+		<copy file="${lib.home}/tutors.jar" todir="${dist.home}"/> 
+		<signjar jar="${dist.home}/assistments.jar" keystore="${lib.home}/assiststore" alias="signfiles" storepass="assistment"/>
+		<signjar jar="${dist.home}/tutors.jar" keystore="${lib.home}/assiststore" alias="signfiles" storepass="assistment"/>
+		<ftp action="mkdir" server="${summer-server}" remotedir="${web.home.summer}/conf/jars" userid="${summer-server-login}" password="${summer-server-password}" separator="\" depends="yes"/>
+		
+		<ftp server="${summer-server}" remotedir="${web.home.summer}/conf/jars" userid="${summer-server-login}" password="${summer-server-password}" separator="\" depends="yes">
+			<fileset dir="${dist.home}">
+				<include name="**/assistments.jar"/>
+				<include name="**/tutors.jar"/>
+			</fileset>	
+		</ftp>
+		
+		<ftp action="mkdir" server="${summer-server}" remotedir="${web.home.summer}/../ROOT/images/tmp" userid="${summer-server-login}" password="${summer-server-password}" separator="\" depends="yes"/>
+		
+		<ftp server="${summer-server}" remotedir="${web.home.summer}/../ROOT/images/tmp" userid="${summer-server-login}" password="${summer-server-password}" separator="\" depends="yes">
+			<fileset dir="${build.home}/classes" casesensitive="no">
+				<include name="**/*.gif"/>
+                                <include name="**/*.png"/>
+                                <include name="**/*.jpg"/>
+			</fileset>	
+		</ftp>
+		
+	</target>
+	<!-- end of deploy assistments -->
+	
+	<!-- deploy curriculums -->
+	<target name="deploy-curriculums-summer-server" description="deploy's the curriculums to ${summer-server}">
+		<ftp server="${summer-server}" remotedir="${web.home.summer}/conf/curriculum/curriculumStore" userid="${summer-server-login}" password="${summer-server-password}" separator="\" depends="yes">
+			<fileset dir="${curriculum.home}">
+				<include name="**/*.xml"/>
+			</fileset>	
+		</ftp>
+	</target>
+	<!-- end of deploy curriculums -->
+
+	<target name="full-deploy-summer-server" description="deploy EVERYTHING to summer server">
+		<antcall target="deploy-htmlconverter-summer-server"/>
+		<antcall target="deploy-assistments-summer-server"/>
+		<antcall target="deploy-commwidgets-summer-server"/>
+		<antcall target="deploy-ctat-summer-server"/>
+		<antcall target="deploy-web-summer-server"/>
+	</target>
+	<!-- end of summer school stuff -->
+</project>

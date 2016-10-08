@@ -1,0 +1,483 @@
+
+(require* wmeTypes "wmeTypes.clp")
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;;  This file contains Jess / CTAT production rules to solve and tutor
+;;  fraction addition problems.
+;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; These are functions used by the fraction addition rules
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;
+;;  Function to calculate the greatest common divisor of two given integers
+;;
+(deffunction gcd (?m ?n)
+  (if (< ?m ?n) then
+	(return (gcd ?n ?m))
+	else 
+(if (< ?n 1) then
+	(return ?m)
+else 
+	(bind ?q (div ?m ?n))
+	(bind ?r (mod ?m ?n))
+	(return (gcd ?n ?r)))))
+
+;;
+;;  Function to calculate the least common multiple of two given integers
+;;
+(deffunction lcm (?m ?n)
+	(return (div (* ?m ?n) (gcd ?m ?n))))
+
+;;
+;; Function to compute the denominator used by the student.
+;; Ugly but unavoidable, it seems, if the tutor is to accept any common multiple
+;;   as denominator.
+;;
+(deffunction comp-denom-with-hindsight (?n1 ?d1 ?n2 ?d2 ?inp ?sel)
+    (if (or (= ?sel firstDenConv) (= ?sel secDenConv))
+        then (return ?inp)
+    else (if (= ?sel firstNumConv)
+        then (return (* ?d1 (/ ?inp ?n1)))
+    else (if (= ?sel secondNumConv)
+        then (return (* ?d2 (/ ?inp ?n2))))
+            )))
+
+;;
+;; Function to check whether the third number is a common multiple of the first two.
+;; Does the definition of common multiple require that the candidate is an integer?
+;;
+(deffunction common-multiple? (?d1 ?d2 ?cand)
+   (and (= ?cand (integer ?cand))
+        (multiple? ?cand ?d1)
+        (multiple? ?cand ?d2)))
+
+(deffunction multiple? (?larger ?smaller)
+   (= 0 (mod ?larger ?smaller))
+   )
+
+;; Ordering constraints implemented by the model
+;; =============================================
+;; Student can skip conversion steps only when not needed.
+;; Student can skip reduction steps only when not needed.
+;; Student con do conversion steps in any order.
+;; Answer denominator can be filled in as soon as one of the denonminators has been converted.
+;; Answer numerator can be filled in as soon as the two numerators have been converted.
+
+
+;; SAME-DENOMINATORS
+;; IF there are no subgoals
+;; and the two given fractions have the same denominator
+;; THEN
+;; Set a subgoal to add the fractions (without converting)
+;;
+(defrule same-denominators
+	(declare (salience 300))   ; should be preferred over more difficult rules denominators-multiples and determine-lcd
+	?problem <- (problem (given-fractions ?f1 ?f2) (subgoals))
+    ?f1 <- (fraction (denominator ?denom1))
+    ?f2 <- (fraction (denominator ?denom2))
+	?denom1 <- (textField (value ?d&:(neq ?d nil)))
+	?denom2 <- (textField (value ?d))
+=>
+	(bind ?sub (assert (add-fractions-goal (fractions ?f1 ?f2))))
+	(modify ?problem (subgoals ?sub))
+	(construct-message
+        "[ The two fractions have the same denominator, so no need to convert them. ]"
+   ))
+
+
+;; DETERMINE-LCD
+;; IF there are no subgoals
+;; and D1 is the denominator of the first given fraction
+;; and D2 is the denominator of the second given fraction
+;; THEN
+;; Set LCD to the least common denominator of D1 and D2
+;; Set subgoals to convert the fractions
+;; Set a subgoal to add the converted fractions
+;;
+;;NOTE: covers the case where one fraction is a multiple of the other - although might want specialized rule
+;;
+(defrule determine-lcd
+	(declare (salience 100))
+	?problem <- (problem 
+					(given-fractions ?f1 ?f2)
+					(converted-fractions ?f3 ?f4)
+					(subgoals))
+    ?f1 <- (fraction (denominator ?denom1))
+    ?f2 <- (fraction (denominator ?denom2))
+	?denom1 <- (textField (value ?d1&:(neq ?d1 nil)))
+	?denom2 <- (textField (value ?d2&:(neq ?d2 nil)))
+=>
+	(bind ?new-den (lcm ?d1 ?d2))
+	(bind ?sub1 (assert (convert-fraction-goal  (fraction ?f1) (denominator-value ?new-den))))
+	(bind ?sub2 (assert (convert-fraction-goal (fraction ?f2) (denominator-value ?new-den))))
+	(bind ?sub3 (assert (add-fractions-goal (fractions ?f3 ?f4))))
+	(modify ?problem (subgoals ?sub1 ?sub2 ?sub3))
+	(construct-message
+        "[ Find the least common denominator of the given fractions. ]"
+        "[The least common denominator is " ?new-den ".  ]"
+        ))
+
+;; DETERMINE-PRODUCT
+;; IF there are no subgoals
+;; and D1 is the denominator of the first given fraction
+;; and D2 is the denominator of the second given fraction
+;; THEN
+;; Set PROD to the product of D1 and D2
+;; Set subgoals to convert the fractions
+;; Set a subgoal to add the converted fractions
+;;
+;;NOTE: covers the case where one denominator is a multipe of the other - 
+;;      although might want specialized rule;  also, when prod = lcm, which
+;;      rule should be preferred?
+;;
+(defrule determine-product
+    (declare (salience 50))
+	?problem <- (problem 
+					(given-fractions ?f1 ?f2)
+					(converted-fractions ?f3 ?f4)
+					(subgoals))
+    ?f1 <- (fraction (denominator ?denom1))
+    ?f2 <- (fraction (denominator ?denom2))
+	?denom1 <- (textField (value ?d1&:(neq ?d1 nil)))
+	?denom2 <- (textField (value ?d2&:(neq ?d2 nil)))
+=>
+	(bind ?new-den (* ?d1 ?d2))
+	(bind ?sub1 (assert (convert-fraction-goal  (fraction ?f1) (denominator-value ?new-den))))
+	(bind ?sub2 (assert (convert-fraction-goal (fraction ?f2) (denominator-value ?new-den))))
+	(bind ?sub3 (assert (add-fractions-goal (fractions ?f3 ?f4))))
+	(modify ?problem (subgoals ?sub1 ?sub2 ?sub3))
+	(construct-message
+        "[ Find a common denominator of the given fractions by multiplying the two denominators. ]"
+        "[A common denominator is " ?new-den ".  ]"
+        ))	
+             ;; perhaps this rule should not have hints; since lcm is always preferred?
+
+;; DETERMINE-COMMON-MULTIPLE
+;; IF there are no subgoals
+;; and D1 is the denominator of the first given fraction
+;; and D2 is the denominator of the second given fraction
+;; THEN
+;; Set MULT to the any common multiple of D1 and D2
+;; Set subgoals to convert the fractions to denominator MULT
+;; Set a subgoal to add the converted fractions
+;;
+;; NOTE: covers all the special cases; probably want low priority
+;;
+;; This rule "predicts with hindsight" ...    Bit of a hack, but we cannot
+;; have a rule activation for each possible common multiple, it would swamp
+;; the model tracer.
+;;
+(defrule determine-common-multiple
+    (declare (salience 10))    ; low salience?
+	?problem <- (problem 
+					(given-fractions ?f1 ?f2)
+					(converted-fractions ?f3 ?f4)
+					(subgoals))
+    ?f1 <- (fraction (denominator ?denom1)(numerator ?num1))
+    ?f2 <- (fraction (denominator ?denom2)(numerator ?num2))
+    ?denom1 <- (textField (value ?d1&:(neq ?d1 nil)))
+	?denom2 <- (textField (value ?d2&:(neq ?d2 nil)))
+    ?num1 <- (textField (value ?n1&:(neq ?n1 nil)))
+    ?num2 <- (textField (value ?n2&:(neq ?n2 nil)))
+    (studentValues (selection ?sel)(input ?inp))
+    (test (common-multiple? ?d1 ?d2 (comp-denom-with-hindsight ?n1 ?d1 ?n2 ?d2 ?inp ?sel)))
+=>
+	(bind ?new-den (integer (comp-denom-with-hindsight ?n1 ?d1 ?n2 ?d2 ?inp ?sel)))
+	(bind ?sub1 (assert (convert-fraction-goal  (fraction ?f1) (denominator-value ?new-den))))
+	(bind ?sub2 (assert (convert-fraction-goal (fraction ?f2) (denominator-value ?new-den))))
+	(bind ?sub3 (assert (add-fractions-goal (fractions ?f3 ?f4))))
+	(modify ?problem (subgoals ?sub1 ?sub2 ?sub3))
+	)
+
+;; BUG-DETERMINE-SUM
+;; IF there are no subgoals
+;; and D1 is the denominator of the first given fraction
+;; and D2 is the denominator of the second given fraction
+;; THEN
+;; Set LCD to the least common denominator of D1 and D2
+;; Set subgoals to convert the fractions
+;; Set a subgoal to add the converted fractions
+;;
+;; Captures the common error of adding the denominators.
+;;
+(defrule bug-determine-sum
+	?problem <- (problem 
+					(given-fractions ?f1 ?f2)
+					(converted-fractions ?f3 ?f4)
+					(subgoals))
+    ?f1 <- (fraction (denominator ?denom1))
+    ?f2 <- (fraction (denominator ?denom2))
+	?denom1 <- (textField (value ?d1&:(neq ?d1 nil)))
+	?denom2 <- (textField (value ?d2&:(neq ?d2 nil)))
+=>
+	(bind ?new-den (+ ?d1 ?d2))
+	(bind ?sub1 (assert (convert-fraction-goal  (fraction ?f1) (denominator-value ?new-den))))
+	(bind ?sub2 (assert (convert-fraction-goal (fraction ?f2) (denominator-value ?new-den))))
+	(bind ?sub3 (assert (add-fractions-goal (fractions ?f3 ?f4))))
+	(modify ?problem (subgoals ?sub1 ?sub2 ?sub3))
+	(construct-message
+        "[ It looks like you are adding the denominators, but you need a common multiple. ]"
+        ))
+
+        
+;; CONVERT-DENOMINATOR
+;; IF there is a subgoal to convert fraction F so that the denominator is D
+;; and the denominator of F has not been converted yet
+;; THEN
+;; Write D as the denominator
+;; Make a note that the denominator part of the subgoal is done
+;;
+(defrule convert-denominator
+    	(declare (salience 100))    ; so that hints for converting denominators are given before
+                                ;    hints for numerators
+	?problem <- (problem (subgoals $? ?sub $?))
+	?sub <- (convert-fraction-goal
+		(fraction ?f)
+		(denominator-value ?new-den&:(neq ?new-den nil))
+		(denom-done nil)
+		)
+	?f <- (fraction (has-converted-form ?conv-f))
+	?conv-f <- (fraction (denominator ?conv-denom))
+	?conv-denom <- (textField (name ?field-name)(value nil))  ; redundant but won't hurt
+
+    =>
+	(predict-observable-action ?field-name UpdateTextField ?new-den)
+    	(modify ?conv-denom (value ?new-den))
+	(modify ?sub (denom-done T))
+	(construct-message
+         "[ Enter " ?new-den " in the highlighted field  ]" ))
+
+
+;; CONVERT-NUMERATOR
+;; IF there is a subgoal to convert the numerator of fraction F
+;;              so that the denominator of the converted fraction is D
+;; and the (original) numerator of F is NUM
+;; and the denominator of F is DENOM
+;; THEN
+;; Write NUM * (D / DENOM) as the numerator of the converted fraction
+;; Mark the subgoal: numerator done
+;;
+(defrule convert-numerator
+    	(declare (salience 50))     ; so that hints for 
+    	?problem <- (problem (subgoals $? ?sub $?))
+	?sub <- (convert-fraction-goal
+		(fraction ?f)
+		(denominator-value ?new-denom-val&:(neq ?new-denom-val nil))
+		(num-done nil))
+	?f <- (fraction
+		(has-converted-form ?conv-f)
+		(numerator ?num)
+		(denominator ?denom))
+	?num <- (textField (value ?num-val))    ; could have been stored in the subgoal, but this is fine also
+	?denom <- (textField (value ?denom-val))
+	?conv-f <- (fraction (numerator ?conv-num))
+	?conv-num <- (textField (name ?field-name)(value nil))  ; redundant but won't hurt    
+=>
+    	(bind ?conv-factor (div ?new-denom-val ?denom-val))    ; perhaps somewhat implausible, cognitively speaking
+	(bind ?new-num-val (* ?num-val ?conv-factor))
+	(predict-observable-action ?field-name UpdateTextField ?new-num-val)
+    	(modify ?conv-num (value ?new-num-val))
+	(modify ?sub (num-done t))
+	(construct-message
+        "[ You must find a numerator so that 
+                          the new fraction is equivalent to the original fraction. ]"
+;        "[ Multiplying the numerator and the denominator by the same number gives an equivalent fraction. ]"
+        "[ You multiplied the denominator by " ?conv-factor ". So you need to multiply the numerator by the same amount. ]"
+        "[ The new numerator is equal to " ?conv-factor " times " ?num-val ". ]"       
+	))
+
+
+;; ADD-NUMERATORS
+;;
+;; IF there is an add-fractions subgoal
+;;    (i.e., if both fractions have been fully converted)
+;; and the numerators have not been added yet
+;; and N1 and N2 are the numerators of the two converted fractions
+;; THEN
+;; write N1 + N2 as the numerator of the (unreduced) sum fraction
+;; (mark numerator part of the subgoal done?)
+;;
+(defrule add-numerators
+	?problem <- (problem (subgoals $? ?sub $?)(answer-fractions ?answer ?))
+	?sub <- (add-fractions-goal (fractions ?f1 ?f2))
+	?f1 <- (fraction (numerator ?num1))
+	?num1 <- (textField (value ?n1&:(neq ?n1 nil)))
+	?f2 <- (fraction (numerator ?num2))
+	?num2 <- (textField (value ?n2&:(neq ?n2 nil)))
+	?answer <- (fraction (numerator ?num-ans))
+	?num-ans <- (textField (name ?field-name)(value nil))
+=>
+	(bind ?sum (+ ?n1 ?n2))
+	(predict-observable-action ?field-name UpdateTextField ?sum)
+    	(modify ?num-ans (value ?sum))
+	(construct-message
+        "[You have two fractions with the same denominator. You can add the numerators to find the numerator of the sum fraction. ]" 
+        "[What is the sum of the numerators " ?n1 " and " ?n2 "?]"
+        "[The sum of the numerators is " ?sum ". Write " ?sum " as the numerator in the highlighted cell.]"    
+	))
+
+
+;; COPY-ANSWER-DENOMINATOR
+;;
+;; IF there is an add-fractions-goal
+;; and the denominator of the sum fraction has not been written yet
+;; and DENOM is the denominator of one of the converted fractions
+;; THEN
+;; write DENOM as the denominator of the sum fraction
+;;
+(defrule copy-answer-denominator
+	?problem <- (problem (subgoals $? ?sub $?)(answer-fractions ?answer ?))
+	?answer <- (fraction (denominator ?ans-denom))
+	?ans-denom <- (textField (name ?field-name)(value nil))
+	?sub <- (add-fractions-goal (fractions $? ?f $?))
+    ?f <- (fraction (denominator ?den1))
+	?den1 <- (textField (value ?d1&:(neq ?d1 nil)))
+=>
+	(predict-observable-action ?field-name UpdateTextField ?d1)
+    	(modify ?ans-denom (value ?d1))
+	(construct-message
+        "[ Now that you have the two converted fractions, can you determine the denominator of the sum of the two fractions? ]" 
+        "[ The denominator is equal to the denominator of the converted fractions. ]"
+        "[ Write " ?d1 " as the denominator in the highlighted cell. ]"
+        ))
+
+
+;; DETERMINE-REDUCTION-FACTOR
+;;
+;; IF the fractions have been added (i.e., the answer numerator and denominator have been
+;;      determined)
+;; And the answer numerator and denominator have a GCD greater than 1 (thus the answer
+;;      fraction can be reduced)
+;; And the numerator of the reduced fraction has not been reduced yet
+;; THEN 
+;; Set a subgoal to reduce the fraction, using the GCD of the denominator and numerator
+;;      as the reduction factor
+;;
+(defrule determine-reduction-factor
+	?problem <- (problem (answer-fractions ?unreduced-answer ?)(subgoals $? ?sub))
+;    ?sub <- (add-fractions-goal)    ; effectively a test that there is no reduce-fraction-subgoal
+    (not (reduce-fraction-goal))     ; a different way to express the same test
+	?unreduced-answer <- (fraction (numerator ?unreduced-numerator) (denominator ?unreduced-denominator))
+	?unreduced-numerator <- (textField (value ?n&:(neq ?n nil)))   ; fractions have been added
+	?unreduced-denominator <- (textField (value ?d&:(neq ?d nil)))
+	(test (> (gcd ?d ?n) 1))
+=>
+	(bind ?gcd (gcd ?d ?n))
+	(bind ?new-sub (assert (reduce-fraction-goal (fraction ?unreduced-answer)(factor ?gcd))))
+	(modify ?problem (subgoals ?new-sub))   ; we don't need the other subgoals any more, so let's get rid of them
+	)
+
+
+;; REDUCE-NUMERATOR
+;;
+;; IF there is a subgoal to reduce the answer fraction, with reduction factor F
+;; And the numerator of the answer fraction has been determined to be N
+;; And the numerator of the reduced answer fraction has not been determined
+;; THEN
+;; Write N/F as the numerator of the reduced answer fraction
+;;
+(defrule reduce-numerator
+	?problem <- (problem 
+					(answer-fractions $? ?final-answer)
+					(subgoals $? ?sub $?))
+	?sub <- (reduce-fraction-goal (fraction ?fraction)(factor ?factor))
+	?fraction <- (fraction (numerator ?numerator))
+	?numerator <- (textField (value ?num&:(neq ?num nil)))
+	?final-answer <- (fraction (numerator ?final-answer-numerator))
+	?final-answer-numerator <- (textField (name ?field-name)(value nil))
+=>
+	(bind ?reduced (div ?num ?factor))
+	(predict-observable-action ?field-name UpdateTextField ?reduced)
+    	(modify ?final-answer-numerator (value ?reduced))
+	(construct-message
+        [ If the greatest common divisor of a numerator and a denominator is greater than 1, then the fraction can be further reduced. ]                      
+        [ To reduce a fraction, you must divide its denominator and its numerator by their greatest common divisor.]
+        "[ Divide the numerator value " ?num " by the gcd " ?factor "."" ]" 
+        "[ Write " ?reduced ", the reduced numerator, in the highlighted cell. ]"
+	))
+
+
+;; REDUCE-DENOMINATOR
+;;
+;; IF there is a subgoal to reduce the answer fraction, with reduction factor F
+;; And the denominator of the answer fraction has been determined to be D
+;; And the denominator of the reduced answer fraction has not been determined
+;; THEN
+;; Write D/F as the denominator of the reduced answer fraction
+;;
+(defrule reduce-denominator
+	?problem <- (problem 
+					(answer-fractions $? ?final-answer)
+					(subgoals $? ?sub $?))
+	?sub <- (reduce-fraction-goal (fraction ?fraction)(factor ?factor))
+	?fraction <- (fraction (denominator ?denominator))
+	?denominator <- (textField (value ?denom&:(neq ?denom nil)))
+	?final-answer <- (fraction (denominator ?final-answer-denominator))
+	?final-answer-denominator <- (textField (name ?field-name)(value nil))
+=>
+	(bind ?reduced (div ?denom ?factor))
+	(predict-observable-action ?field-name UpdateTextField ?reduced)
+    	(modify ?final-answer-denominator (value ?reduced))
+	(construct-message
+        [ If the greatest common divisor of a numerator and a denominator is greater than 1, then the fraction can be further reduced. ]                      
+        [ To reduce a fraction, you must divide its denominator and its numerator by their greatest common divisor.]
+        "Divide the denominator value " ?denom " by the gcd " ?factor "."""
+        "Write " ?reduced ", the reduced denominator, in the highlighted cell."
+ 	))
+
+
+;; DONE
+;; IF  One of the answer fractions is filled in and cannot be reduced
+;; THEN
+;; Click Done
+;;
+(defrule done
+	?problem <- (problem (answer-fractions $? ?unreduced-answer $?))
+    ?unreduced-answer <- (fraction (numerator ?num) (denominator ?denom))
+	?num <- (textField (value ?n&:(neq ?n nil)))
+	?denom <- (textField (value ?d&:(neq ?d nil)))
+	(test (eq (gcd ?d ?n) 1))
+=>
+	(predict-observable-action done ButtonPressed -1)
+    (construct-message
+       [ Is there anything else to do?]
+       [ If the greatest common divisor of a numerator and a denominator is 1, then the fraction cannot be further
+reduced. ]
+	  [ "The greatest common divisor of " ?n " and " ?d " is 1." ]
+      [ You are done.  Press the done button.]
+        ))
+
+
+;; BUG-REDUCE-NUMERATOR
+;; IF the fractions have been added (i.e., the unreduced answer numerator and denominator
+;;     have been determined)
+;; and the GCD of the numerator and denominator is 1 (i.e., answer fraction cannot be reduced)
+;; THEN
+;; Write something in the space for the numerator of the reduced answer 
+;;
+;; NOTE: rule models incorrect behavior. So its action part has an incorrect action.
+;;
+(defrule BUG-reduce-numerator
+	?problem <- (problem 
+   					(answer-fractions ?unreduced-answer ?final-answer)
+					(subgoals))
+    ?unreduced-answer <- (fraction (numerator ?unreduced-numerator) (denominator ?unreduced-denominator))
+	?unreduced-numerator <- (textField (value ?n&:(neq ?n nil)))
+	?unreduced-denominator <- (textField (value ?d&:(neq ?d nil)))
+    ?final-answer <- (fraction (numerator ?final-numerator))
+	?final-numerator <- (textField (name ?name) (value nil))
+	(test (eq (gcd ?d ?n) 1))
+=>
+	(predict-observable-action ?name  DONT-CARE ANY-VALUE)
+    (construct-message
+        [The fraction is already in reduced form, so there is no more work to do.]
+        ))
+
+
+
+

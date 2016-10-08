@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<preferences>
+  <preference>
+    <name>Show Action Labels</name>
+    <class>java.lang.Boolean</class>
+    <value>true</value>
+  </preference>
+  <preference>
+    <name>Show Rule Labels</name>
+    <class>java.lang.Boolean</class>
+    <value>false</value>
+  </preference>
+  <preference>
+    <name>Allow Tool-Performed Actions</name>
+    <class>java.lang.Boolean</class>
+    <value>true</value>
+  </preference>
+  <preference>
+    <name>Maximum Number of Student Actors</name>
+    <class>java.lang.Integer</class>
+    <value>1</value>
+  </preference>
+  <preference>
+    <name>Show Tutor Type Save Popup</name>
+    <class>java.lang.Boolean</class>
+    <value>true</value>
+  </preference>
+  <preference>
+    <name>Use Disk Logging</name>
+    <class>java.lang.Boolean</class>
+    <value>true</value>
+  </preference>
+  <preference>
+    <name>frame0 Width</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame0 Height</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>frame0 Location X</name>
+    <class>java.lang.Integer</class>
+    <value>440</value>
+  </preference>
+  <preference>
+    <name>frame0 Location Y</name>
+    <class>java.lang.Integer</class>
+    <value>111</value>
+  </preference>
+  <preference>
+    <name>Docked Window Location X</name>
+    <class>java.lang.Integer</class>
+    <value>348</value>
+  </preference>
+  <preference>
+    <name>Docked Window Location Y</name>
+    <class>java.lang.Integer</class>
+    <value>119</value>
+  </preference>
+  <preference>
+    <name>Docked Window Width</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>Docked Window Height</name>
+    <class>java.lang.Integer</class>
+    <value>576</value>
+  </preference>
+  <preference>
+    <name>Student Interface Location X</name>
+    <class>java.lang.Integer</class>
+    <value>147</value>
+  </preference>
+  <preference>
+    <name>Student Interface Location Y</name>
+    <class>java.lang.Integer</class>
+    <value>23</value>
+  </preference>
+  <preference>
+    <name>Use OLI Logging</name>
+    <class>java.lang.Boolean</class>
+    <value>false</value>
+  </preference>
+  <preference>
+    <name>OLI Logging URL</name>
+    <class>java.lang.String</class>
+    <value>http://learnlab.web.cmu.edu/log/server</value>
+  </preference>
+  <preference>
+    <name>Disk Logging Directory</name>
+    <class>java.lang.String</class>
+    <value>log</value>
+  </preference>
+  <preference>
+    <name>Student Interface Width</name>
+    <class>java.lang.Integer</class>
+    <value>1133</value>
+  </preference>
+  <preference>
+    <name>Student Interface Height</name>
+    <class>java.lang.Integer</class>
+    <value>717</value>
+  </preference>
+  <preference>
+    <name>Problem Directory</name>
+    <class>java.lang.String</class>
+    <value>SimStFractionAdditionV1/</value>
+  </preference>
+  <preference>
+    <name>BRD File other location</name>
+    <class>java.lang.String</class>
+    <value>SimStFractionAdditionV1/</value>
+  </preference>
+  <preference>
+    <name>Tutor Wrapper Vertical Divider Location</name>
+    <class>java.lang.Integer</class>
+    <value>300</value>
+  </preference>
+  <preference>
+    <name>Tutor Wrapper Horizontal Divider Location</name>
+    <class>java.lang.Integer</class>
+    <value>500</value>
+  </preference>
+  <preference>
+    <name>EditSkillNameDialogLocationX</name>
+    <class>java.lang.Integer</class>
+    <value>100</value>
+  </preference>
+  <preference>
+    <name>EditSkillNameDialogLocationY</name>
+    <class>java.lang.Integer</class>
+    <value>100</value>
+  </preference>
+  <preference>
+    <name>Restore workspace</name>
+    <class>java.lang.Boolean</class>
+    <value>true</value>
+  </preference>
+  <preference>
+    <name>Miss FileChooser Path</name>
+    <class>java.lang.String</class>
+    <value>/Users/simstudent/Desktop</value>
+  </preference>
+</preferences>
+

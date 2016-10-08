@@ -1,0 +1,478 @@
+;;  Tell Eclipse et al. to parse the templates before parsing this file
+(require* wmeTypes "wmeTypes.clp")
+
+;;
+;;  Function to add three values.
+;;  If any of the values are non-numeric, they are treated as 0.
+;;  This function was necessary to handle situations in which
+;;  one or more of the values in a column are empty.
+;;
+
+(deffunction add-3vals (?val1 ?val2 ?val3)
+	(if (eq ?val1 nil) then (bind ?num1 0) else (bind ?num1 ?val1))
+	(if (eq ?val2 nil) then (bind ?num2 0) else (bind ?num2 ?val2))
+	(if (eq ?val3 nil) then (bind ?num3 0) else (bind ?num3 ?val3))
+	(return (+ ?num1 ?num2 ?num3)))
+
+;;
+;;  Function to test whether the carry value and result value in the
+;;  leftmost column indicates that the column is done.
+;;
+
+(deffunction final-column-done (?carry-value ?result-value)
+	(return 	(or 	(numberp ?result-value)
+				(and (not (numberp ?carry-value)) 
+					(not (numberp ?result-value))))))
+
+; ADD-FIRST-COLUMN-NO-CARRY
+;
+; If there is no subgoal
+;	and C is the first column (i.e., the rightmost column)
+;	and there is no result yet in column C (i.e., the answer cell in C is empty)
+;	and the sum of the two digits in column C is S
+;	and S is less than 10
+; then
+;	write S as the result in the answer cell of column C
+;
+
+(defrule add-first-column-no-carry
+	?problem <- (problem 
+		(interface-elements $? ?table $?) 
+		(subgoals ))
+	?table <- (table (columns $? ?right-column))
+	?right-column <- (column (cells ? ?first-addend ?second-addend ?result))
+	?result <- (cell (value nil)
+			 (name ?cell-name))
+	?first-addend <- (cell (value ?num1))
+	?second-addend <- (cell (value ?num2))
+	(test (< (+ ?num1 ?num2) 10))
+=>
+	(bind ?sum (+ ?num1 ?num2))
+
+   (predict-observable-action ?cell-name UpdateTable ?sum)
+   
+	(modify ?result (value ?sum))
+	(construct-message 
+			[ Work in the column on the right.  This is the 'ones' column. ]
+			[ Add the two numbers in the 'ones' column and write the result in the highlighted box.]
+			"[ The sum in the first column is " ?sum ".  Write " ?sum " the 'ones' part  in the highlighted cell.]"
+	)
+)
+
+
+; ADD-FIRST-COLUMN-CARRY
+;
+; If there is no subgoal
+;	and C1 is the first column (i.e., the rightmost column)
+;	and C2 is the second column
+;	and there is no result in column C1 (i..e., the answer cell in C1 is empty)
+;	and the sum of the two digits in column C1 is S
+;	and S is greater than 9
+; then
+;	write S-10 as the result in the answer cell of column C1
+;	set a subgoal to carry 1 into column C2
+;
+(defrule add-first-column-carry
+	?problem <- (problem 
+		(interface-elements $? ?table $?)
+		(subgoals )
+	)
+	?table <- (table (columns $? ?second-column ?first-column))
+	?first-column <- (column (cells ? ?first-addend ?second-addend ?result))
+	?result <- (cell (value nil) (name ?cell-name))
+	?first-addend <- (cell (value ?num1))
+	?second-addend <- (cell (value ?num2))
+	(test (> (+ ?num1 ?num2) 9))
+=>
+	(bind ?sum (+ ?num1 ?num2))
+	(bind ?new-sum (- ?sum 10))
+
+   (predict-observable-action ?cell-name UpdateTable ?new-sum)
+   
+	(modify ?result (value ?new-sum))
+	(bind ?new-subgoal (assert
+		(carry-goal (carry 1) (column ?second-column))))
+	(modify ?problem (subgoals ?new-subgoal))
+	(construct-message 
+			[ Work in the column on the right.  This is the 'ones' column. ]
+			[ Add the two numbers in the 'ones' column. If the sum is greater than 9, 
+				you need to write the 'ones' part in the 'ones' column and the 'tens' 
+				part in the next column to the left. ]
+			"[ The sum in the first column is " ?sum ". Write " ?new-sum " the 'ones' part 
+				in the highlighted cell. Carry the 'tens' part into the next column. ]"
+	))
+
+;WRITE-CARRY
+; If	There is a subgoal to write S as the carry in column C
+; Then
+; Write S in the carry cell of column C
+; Remove the subgoal
+(defrule write-carry
+	?problem <- (problem 
+		(interface-elements $? ?table $?) 
+		(subgoals ?goal))
+	;the goal is to carry the one in a particular column
+	?goal <- (carry-goal (carry 1) (column ?column1))
+	?table <- (table (columns $?  ?column1 ?column2 $?))
+	?column1 <- (column (cells ?top $?))
+	?column2 <- (column (cells $? ?result))
+	?result <- (cell (value ?r))
+	;the top cell of that column is empty and has a name
+	?top <- (cell (value nil) (name ?cell-name))
+
+=>
+
+   (predict-observable-action ?cell-name UpdateTable 1)
+   
+	(modify ?top (value 1)) ;update the value
+        (modify ?problem (subgoals )) ;remove the subgoal
+	(construct-message 
+			"[The values you just added were greater than 9.  You wrote " ?r " as part of the answer, so now you have to...]"
+			[You have to carry the one.]
+			[Please enter 1 in the highlighted cell.]
+	
+	)
+)
+
+; ADD-NEXT-COLUMN-NO-CARRY
+;
+; if there is no subgoal
+; 	and C is column with no result
+; 	and the column to the right of C has a result
+; 	and the sum in C < 10
+; then
+; 	write the sum as the result in C
+;
+(defrule add-next-column-no-carry
+	?problem <- (problem 
+		(interface-elements $? ?table $?) 
+		(subgoals ))
+	?table <- (table (columns $? ?column1 ?column2 $?))
+	?column1 <- (column (cells ?carry ?first-addend ?second-addend ?result1))
+	?result1 <- (cell (value nil) (name ?cell-name))
+	?column2 <- (column (cells $? ?result2))
+	?result2 <- (cell (value ~nil))
+	?first-addend <- (cell (value ?num1))
+	?second-addend <- (cell (value ?num2))
+	?carry <- (cell (value ?num3))
+	(test (< (add-3vals ?num1 ?num2 ?num3) 10))
+	(test (> (add-3vals ?num1 ?num2 ?num3) 0))
+
+=>
+	(bind ?sum (add-3vals ?num1 ?num2 ?num3))
+
+   (predict-observable-action ?cell-name UpdateTable ?sum)
+   
+	(modify ?result1 (value ?sum))
+	(construct-message 
+			[ Add the numbers in the next column that does not have a result. ]
+			"[ Adding " (if (numberp ?num1) then ?num1 else 0)  ", the first addend, " (if (numberp ?num2) then ?num2 else 0) ", the second addend, and " (if (numberp ?num3) then ?num3 else 0) ", the carry, gives what value? ]"
+			"[ Please enter " ?sum " in the highlighted cell. ]"
+	)
+)
+
+
+; ADD-NEXT-COLUMN-CARRY
+;If	There is no subgoal
+;C1 , C2 , C3 are adjacent columns, C1 to the left of C2 to the left of C3
+;And there is no result yet in column C2 (i..e., the answer cell in C2 is empty)
+;And there is a result in column C3 (i..e., the answer cell in C3 is not empty)
+;And the sum of the two digits and the carry (if any) in column C2 is S
+;And S is greater than 9
+;Then
+;Write S-10  as the result in the answer cell of column C2
+;And set a subgoal to carry 1 into column C3
+
+(defrule add-next-column-carry
+	?problem <- (problem 
+		(interface-elements $? ?table $?) 
+		(subgoals ))
+	?table <- (table (columns $? ?column1 ?column2 ?column3 $?))
+	; the middle column is to add the numbers
+	?column2 <- (column (cells ?carry ?first-addend ?second-addend ?result1))
+	?result1 <- (cell (value nil) (name ?cell-name))
+	?first-addend <- (cell (value ?num1))
+	?second-addend <- (cell (value ?num2))
+	?carry <- (cell (value ?num3))
+	(test (> (add-3vals ?num1 ?num2 ?num3) 9))
+	;making sure there's an answer in the rightmost column
+	?column3 <- (column (cells $? ?result2))
+	?result2 <- (cell (value ?v&:(numberp ?v)))
+
+=>
+	;updates the answer
+	(bind ?sum (add-3vals ?num1 ?num2 ?num3))
+	(bind ?new-sum (- ?sum 10))
+
+   (predict-observable-action ?cell-name UpdateTable ?new-sum)
+   
+	(modify ?result1 (value ?new-sum))
+	;adds a subgoal to write a carry
+	(bind ?new-subgoal (assert
+		(carry-goal (carry 1) (column ?column1))))
+	(modify ?problem (subgoals ?new-subgoal))
+	;specifies the ideal student input
+	(construct-message 
+			[Add the numbers in the next column that does not have a result]
+			"[ Adding " ?num1 ", the first addend, " ?num2 ", the second addend, and " ?num3 ", the carry, gives what value? ]"			"[ Please enter " ?new-sum " in the highlighted cell. ]"	))
+
+
+;WRITE-ANSWER
+;this rule writes the answer in the previous column after the student has written the carry in the current column
+;IF there is a subgoal to write the result R in column C
+;and column C exists
+;and the result column of C is empty
+;then put R in the result column of C
+;and remove the subgoal
+(defrule write-answer
+	?problem <- (problem 
+		(interface-elements $? ?table $?) 
+		(subgoals ?goal))
+	;there is a goal to write the answer, and the column exists
+	?goal <- (answer-goal ?sum ?column1)
+	?table <- (table (columns $?  ?column1 $?))
+	?column1 <- (column (cells $? ?result))
+	?result <- (cell (value nil) (name ?cell-name))
+
+=>
+
+   (predict-observable-action ?cell-name UpdateTable ?sum)
+   
+	(modify ?result (value ?sum))
+	;removes the subgoal from the problem
+        (modify ?problem (subgoals ))
+	(construct-message 
+			[Work in the column with the highlighted cell.]
+			[Add the numbers in this column and place the ones value of the result in the highlighted cell.]
+			"[Type " ?sum " in the highlighted cell.]"		
+	))
+
+; WRITE CARRY FIRST RIGHT COLUMN
+; The LHS of the algorithm maps to the LHS of ADD-FIRST-COLUMN-CARRY, because it's an alternative to that action
+; If there is no subgoal
+;	and C1 is the first column (i.e., the rightmost column)
+;	and C2 is the second column
+;	and there is no result in column C1 (i..e., the answer cell in C1 is empty)
+;	and the sum of the two digits in column C1 is S
+;	and S is greater than 9
+; then
+;	write a 1 in the carry box of C2
+;	set a subgoal to write S-10 in the answer cell of C1
+;
+
+(defrule write-carry-first-right-column
+	?problem <- (problem 
+		(interface-elements $? ?table $?)
+		(subgoals )
+	)
+	?table <- (table (columns $? ?second-column ?first-column))
+	?second-column <- (column
+        (position ?carry-column)
+        (cells ?top $?))
+	;top is where the carry goes
+	?top <- (cell (value nil) (name ?cell-name))
+	?first-column <- (column
+        (position ?sum-column)
+        (cells ? ?first-addend ?second-addend ?result))
+	;result is where the answer will eventually be written
+	?result <- (cell (value nil))
+	?first-addend <- (cell (value ?num1))
+	?second-addend <- (cell (value ?num2))
+	(test (> (+ ?num1 ?num2) 9))
+
+=>
+
+   (predict-observable-action ?cell-name UpdateTable 1)
+   
+	(modify ?top (value 1)) ;change carry cell to 1
+	(bind ?new-goal (assert (answer-goal (- (+ ?num1 ?num2) 10) ?first-column)))
+	;adds a goal to finish writing the answer
+        (modify ?problem (subgoals ?new-goal))
+	(construct-message [Note that the addends in
+                    column ?sum-column sum to a value greater than 9.] 
+				[Write the carry from column ?sum-column
+					to the next column.]
+				[Write 1 at the top of column ?carry-column .])
+)
+
+
+;WRITE-CARRY-FIRST-NEXT-COLUMN
+; The LHS is the same as the ADD-NEXT-COLUMN-CARRY rule
+; If there is no subgoal
+;	C1 , C2 , C3 are adjacent columns, C1 to the left of C2 to the left of C3
+;	and there is no result in column C2 (i..e., the answer cell in C2 is empty)
+;	and there is a result in column C3 (i..e., the answer cell in C3 is not empty)
+;	and the sum of the two digits and the carry (if any) in column C2 is S
+;	and S is greater than 9
+; then
+;	write a 1 in the carry box of C1
+;	set a subgoal to write S-10 in the answer cell of C2
+;
+(defrule write-carry-first-next-column
+	?problem <- (problem 
+		(interface-elements $? ?table $?) 
+		(subgoals ))
+	?table <- (table (columns $? ?column1 ?column2 ?column3 $?))
+	?column1 <- (column
+        (position ?carry-column)
+        (cells ?top $?))
+	?top <- (cell (value nil) (name ?cell-name)) ;carry cell
+	?column2 <- (column
+	    (position ?sum-column)
+        (cells ?carry ?first-addend ?second-addend ?result1))
+	?result1 <- (cell (value nil)) ;answer cell
+	?column3 <- (column (cells $? ?result2))
+	?result2 <- (cell (value ?v&:(numberp ?v)))
+	?first-addend <- (cell (value ?num1))
+	?second-addend <- (cell (value ?num2))
+	?carry <- (cell (value ?num3))
+	;testing to see if there is a carry
+	(test (> (add-3vals ?num1 ?num2 ?num3) 9))
+
+	=>
+
+   (predict-observable-action ?cell-name UpdateTable 1)
+   
+	(modify ?top (value 1))
+	(bind ?new-goal (assert (answer-goal (- (add-3vals ?num1 ?num2 ?num3) 10) ?column2)))
+	;adds goal to finish writing the answer
+        (modify ?problem (subgoals ?new-goal))
+	(construct-message [Note that the addends and carry in
+                    column ?sum-column sum to a value greater than 9.] 
+				[Write the carry from column ?sum-column
+					to the next column.]
+				[Write 1 at the top of column ?carry-column .])
+)
+
+;DONE
+;If	There is no subgoal
+;C1 and C2 are adjacent columns, C1 to the left of C2
+;And there are no digits in C1 
+;And there is a result in column C2 (i..e., the answer cell in C2 is not empty)
+;And there is either a result in column C1 OR there is no result or carry in C1
+;Then
+;Write ""Done"
+(defrule done
+	?problem <- (problem 
+		(interface-elements $? ?table $?)
+		(subgoals )
+	)
+	?table <- (table (columns $? ?left-column ?right-column $?))
+	;all the cells in the left column should be empty
+	?left-column <- (column (cells ?carry ?first-addend ?second-addend ?result))
+        ?carry <- (cell (value ?carry-value))
+	?first-addend <- (cell (value nil))
+	?second-addend <- (cell (value nil))
+	?result <- (cell (value ?result-value))
+	(test (final-column-done ?carry-value ?result-value))
+	;there should be a result in the right column
+	?right-column <- (column (cells $? ?answer))
+	?answer <- (cell (value ~nil))
+
+=>
+
+   (predict-observable-action done ButtonPressed -1)
+   
+	;ButtonPressed selection-action-input
+	(construct-message 
+			[ Have you finished adding the numbers? ]
+			"[ You are done.  Press the done button. ]"
+	))
+
+;BUGGY-ADD-NEXT-COLUMN-FORGOT-CARRY
+;if there is a subgoal to write a carry in column C
+;then
+;leave the carry cell in column C empty
+;and add the two addends in column C
+;and find the ones digit of the result
+;and place the ones digit in the result square of column C
+;write "Forgot to carry!"
+(defrule buggy-add-next-column-forgot-carry
+	?problem <- (problem 
+		(interface-elements $? ?table $?) 
+		(subgoals ?goal))
+	;there is a goal to place a carry in a particular column
+	?goal <- (carry-goal (carry 1) (column ?column1))
+        ;gets the values of the cells in that column
+	?table <- (table (columns $? ?column1 $?))
+	?column1 <- (column (cells ?carry ?first ?second ?result))
+	?first <- (cell (value ?cell1))
+	?second <- (cell (value ?cell2))
+	?result <- (cell (value nil) (name ?result-name))
+
+=>
+	;finds the sum of the two addends
+	(bind ?sum (add-3vals 0 ?cell1 ?cell2))
+	;if the sum is greater than 9 just finds the ones digit
+	(if (> ?sum 9) then
+		(bind ?new-sum (- ?sum 10))
+	else then (bind ?new-sum ?sum))
+
+   (predict-observable-action ?result-name UpdateTable ?new-sum)
+   
+	;modifies the value of the cell
+	(modify ?result (value ?new-sum))
+	;selection-action-input
+	(construct-message 
+			"[You were supposed to carry the one from the previous column.  You need to write the carry at the top of the current column, and then add it to " ?cell1 " and " ?cell2 " to get the answer. ]"
+	))
+
+;BUGGY-ADD-NEXT-COLUMN-DID-NOT-WRITE-CARRY
+;if there is a subgoal to write a carry in column C
+;then
+;leave the carry cell in column C empty
+;and add the two addends + 1 in column C
+;and find the ones digit of the result
+;and place the ones digit in the result square of column C
+;write "Answer is correct, but you forgot to carry!"
+(defrule buggy-add-next-column-did-not-write-carry
+	?problem <- (problem 
+		(interface-elements $? ?table $?) 
+		(subgoals ?goal))
+	;there is a goal to place a carry in a particular column
+	?goal <- (carry-goal (carry 1) (column ?column1))
+	;gets the values of the cells in that column
+	?table <- (table (columns $? ?column1 $?))
+	?column1 <- (column (cells ?carry ?first ?second ?result))
+	?first <- (cell (value ?cell1))
+	?second <- (cell (value ?cell2))
+ 	?result <- (cell (value nil) (name ?result-name))
+
+=>
+	;finds the sum of the two addends
+	(bind ?sum (add-3vals 1 ?cell1 ?cell2))
+	
+	;if the sum is greater than 9 just finds the ones digit
+	(if (> ?sum 9) then
+		(bind ?new-sum (- ?sum 10))
+	else then (bind ?new-sum ?sum))
+
+   (predict-observable-action ?result-name UpdateTable ?new-sum)
+   
+	;modifies the value of the cell
+	(modify ?result (value ?new-sum))
+	;selection-action-input
+	(construct-message 
+			"[" ?new-sum " is the correct value here, but you first need to write the carry at the top of the current column! ]"
+	))
+
+;BUGGY-DONE
+;If	There is a table
+;And no other rules can fire
+;Then
+;The student selects "Done"""
+;Write "You are not done yet!"
+(defrule buggy-done
+	?problem <- (problem 
+		(interface-elements $? ?table $?)
+	)
+	?table <- (table )
+
+=>
+
+   (predict-observable-action done ButtonPressed -1)
+   
+	;ButtonPressed selection-action-input
+	(construct-message 
+			[ You are not done yet! ]
+	))

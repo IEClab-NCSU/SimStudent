@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin
+  id="gov.sandia.jess.editor"
+  name="Jess Editor Plug-in"
+  version="7.0.0"
+  provider-name="Sandia National Laboratories"
+  class="gov.sandia.jess.editor.JessEditorPlugin">
+
+   <runtime>
+      <library name="jesside.jar">
+         <export name="*"/>
+      </library>
+   </runtime>
+
+   <requires>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.ui.editors"/>
+      <import plugin="org.eclipse.ui.workbench.texteditor"/>
+      <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.eclipse.jface"/>
+      <import plugin="gov.sandia.jess"/>
+      <import plugin="org.eclipse.ui.views"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.jdt.core"/>
+      <import plugin="org.eclipse.jdt.ui"/>
+      <import plugin="org.junit"/>
+      <import plugin="org.eclipse.swt"/>
+   </requires>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            icon="icons/jess-16x16.gif"
+            class="gov.sandia.jess.editor.JessEditor"
+            contributorClass="org.eclipse.ui.editors.text.TextEditorActionContributor"
+            name="Jess Editor"
+            id="gov.sandia.jess.editor.JessEditor"
+            extensions="clp,jess,wme,pr"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="gov.sandia.jess.editor.preferences.EditorPreferencePage"
+            name="Jess Editor"
+            id="gov.sandia.jess.editor.preferences.EditorPreferencePage">
+      </page>
+      <page
+            class="gov.sandia.jess.editor.preferences.JessTemplatePreferencePage"
+            category="gov.sandia.jess.editor.preferences.EditorPreferencePage"
+            name="Jess Templates"
+            id="gov.sandia.jess.editor.preferences.Templates"/>
+   </extension>
+   <extension
+         id="problem"
+         name="Jess Problem"
+         point="org.eclipse.core.resources.markers">
+      <super type="org.eclipse.core.resources.problemmarker"/>
+      <super type="org.eclipse.core.resources.textmarker"/>
+      <persistent value="true"/>
+      <attribute name="gov.sandia.jess.editor.errorCode"/>
+   </extension>
+
+
+<extension point="org.eclipse.ui.editorActions"> 
+   <editorContribution 
+      id="gov.sandia.jess.editor.SourceMenu" 
+      targetID="gov.sandia.jess.editor.JessEditor">
+      <menu
+            label="&amp;Source"            
+            path="edit"
+            id="gov.sandia.jess.editor.menu.source">
+            <separator
+                  name="editGroup">
+            </separator>
+      </menu>
+      <action
+            label="Previ&amp;ous Expression"
+            definitionId="gov.sandia.jess.commands.gotoPreviousExpression"
+            class="gov.sandia.jess.editor.GotoPreviousExpressionAction"
+            tooltip="Got to previous expression"
+            menubarPath="gov.sandia.jess.editor.menu.source/editGroup"
+            id="gov.sandia.jess.editor.gotoPreviousExpressionAction">
+      </action>
+            <action
+            label="N&amp;ext Expression"
+            definitionId="gov.sandia.jess.commands.gotoNextExpression"
+            class="gov.sandia.jess.editor.GotoNextExpressionAction"
+            tooltip="Got to next expression"
+            menubarPath="gov.sandia.jess.editor.menu.source/editGroup"
+            id="gov.sandia.jess.editor.gotoNextExpressionAction">
+      </action>
+      <action
+            label="F&amp;ormat"
+            definitionId="gov.sandia.jess.commands.format"
+            class="gov.sandia.jess.editor.formatting.JessFormatAction"
+            tooltip="Format code"
+            menubarPath="gov.sandia.jess.editor.menu.source/editGroup"
+            id="gov.sandia.jess.editor.formatAction">
+      </action> 
+      <action
+                  label="Toggle &amp;Comment"
+                  definitionId="gov.sandia.jess.commands.toggleComment"
+                  tooltip="Comment or uncomment line"
+                  class="gov.sandia.jess.editor.JessToggleCommentAction"
+                  menubarPath="gov.sandia.jess.editor.menu.source/editGroup"
+                  id="gov.sandia.jess.editor.toggleCommentAction">
+      </action>
+            <action
+                  label="Quick Fix"
+                  definitionId="gov.sandia.jess.commands.quickFix"
+                  tooltip="Fix source code problems"
+                  class="gov.sandia.jess.editor.quickfix.QuickFixMenuActionDelegate"
+                  style="push"
+                  menubarPath="gov.sandia.jess.editor.menu.source/editGroup"
+                  id="gov.sandia.jess.editor.quickFixAction"/> 
+   </editorContribution> 
+</extension>
+<extension
+      point="org.eclipse.ui.editors.templates">
+   <contextType
+         class="gov.sandia.jess.editor.templates.JessContextType"
+         id="gov.sandia.jess.editor.context.type"/>
+   <include file="templates/jess.xml"/>
+</extension>
+<extension
+      point="org.eclipse.ui.popupMenus">
+     <viewerContribution
+            targetID="#JessEditorRulerContext"
+            id="gov.sandia.jess.editor.JessEditorPopupActions">
+		<action
+               label="Add Task"
+               helpContextId="org.eclipse.ui.AddTask_action_context"
+               class="org.eclipse.ui.texteditor.TaskRulerAction"
+               menubarPath="additions"
+               id="org.eclipse.ui.texteditor.TaskRulerAction">
+         </action>
+         <action
+               label="Add Bookmark"
+               helpContextId="org.eclipse.ui.bookmark_action_context"
+               class="org.eclipse.ui.texteditor.BookmarkRulerAction"
+               menubarPath="additions"
+               id="org.eclipse.ui.texteditor.BookmarkRulerAction">
+         </action>
+         <!-- <action
+               label="Quick Fix"
+               definitionId="gov.sandia.jess.commands.quickFix"
+               class="gov.sandia.jess.editor.quickfix.QuickFixRulerActionDelegate"
+               menubarPath="additions"
+               id="gov.sandia.jess.editor.quickfix"/> -->
+       </viewerContribution>
+</extension>
+<extension
+      point="org.eclipse.ui.ide.markerResolution">
+   <markerResolutionGenerator
+         class="gov.sandia.jess.editor.quickfix.JessMarkerResolutionGenerator"
+         markerType="gov.sandia.jess.editor.problem"/>
+</extension>
+<extension
+      point="org.eclipse.ui.commands">
+   <category
+         description="Jess Commands"
+         name="Jess"
+         id="gov.sandia.jess.commands"/>
+   <command
+         description="Fix a problem in your source"
+         categoryId="gov.sandia.jess.commands"
+         name="Quick Fix"
+         id="gov.sandia.jess.commands.quickFix"/>
+   <keyBinding
+         contextId="gov.sandia.jess.editor.context"
+         commandId="gov.sandia.jess.commands.quickFix"
+         keySequence="Ctrl+1"
+         keyConfigurationId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+   <command
+         description="Comment or uncomment lines of source"
+         categoryId="gov.sandia.jess.commands"
+         name="Toggle Comment"
+         id="gov.sandia.jess.commands.toggleComment"/>
+   <command
+         description="Format your source code"
+         categoryId="gov.sandia.jess.commands"
+         name="Format"
+         id="gov.sandia.jess.commands.format"/>
+   <command
+         description="Go to next expression"
+         categoryId="gov.sandia.jess.commands"
+         name="Go To Next Expression"
+         id="gov.sandia.jess.commands.gotoNextExpression"/>      
+   <command
+         description="Go to previous expression"
+         categoryId="gov.sandia.jess.commands"
+         name="Go To Previous Expression"
+         id="gov.sandia.jess.commands.gotoPreviousExpression"/>      
+   <keyBinding
+         contextId="gov.sandia.jess.editor.context"
+         commandId="gov.sandia.jess.commands.gotoNextExpression"
+         keySequence="Shift+Ctrl+Down"
+         keyConfigurationId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+   <keyBinding
+         contextId="gov.sandia.jess.editor.context"
+         commandId="gov.sandia.jess.commands.gotoPreviousExpression"
+         keySequence="Shift+Ctrl+Up"
+         keyConfigurationId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+   <keyBinding
+         contextId="gov.sandia.jess.editor.context"
+         commandId="gov.sandia.jess.commands.format"
+         keySequence="Esc Ctrl+F"
+         keyConfigurationId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+   <keyBinding
+         contextId="gov.sandia.jess.editor.context"
+         commandId="gov.sandia.jess.commands.toggleComment"
+         keySequence="Esc Ctrl-C"
+         keyConfigurationId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+         
+</extension>
+<extension
+      point="org.eclipse.ui.contexts">
+   <context
+         parentId="org.eclipse.ui.textEditorScope"
+         description="Editing Jess Source"
+         name="Editing Jess Source"
+         id="gov.sandia.jess.editor.context"/>
+</extension>
+    
+</plugin>

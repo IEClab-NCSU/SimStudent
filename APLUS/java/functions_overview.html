@@ -1,0 +1,20 @@
+<body> 
+<p>These pages document functions that can be used within CTAT formulas&mdash;expressions you
+can write for steps in an example-tracing tutor that enable the tutor to accept a wider variety of
+student input. Formulas enable you to combine the values of inputs on other steps, student-entered
+input on the current step, and the contents of interface widgets (such as text fields) in evaluating
+correctness. They can also be used to accept a variety of inputs, such as a number with a comma
+and/or a dollar sign, or an expression that is not simplified but is otherwise correct. Formula
+results can be embedded in the text of hint and other feedback messages by inserting the
+formula expression within special brackets. And a formula result can rewrite a student input field,
+so that, e.g., the tutor can display <code>8</code> if the student entered <code>6+2</code>.</p>
+
+<p>For more information on how to write formulas and where to enter them, see the section <a
+href="http://ctat.pact.cs.cmu.edu/docs/ctat_2_6/formulas.html" target="_new">Generalizing an example-tracing tutor
+with formulas</a> in the CTAT Users Guide.</p>
+
+<p><strong>Note:</strong> When using any of the Java String or Math functions from within a CTAT
+formula, specify the string or number you want to manipulate as the <em>first argument</em> to the
+function. For example, to use <code>String.replaceAll</code> to remove any leading spaces or dollar
+signs in student-entered input, use the formula <code>replaceAll(input, "^[ $]*", "")</code></p>
+</body>

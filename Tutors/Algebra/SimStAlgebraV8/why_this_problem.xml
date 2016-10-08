@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE scenario SYSTEM "http://www.pitt.edu/~tutalk/TuTalkScenario.dtd">
+<scenario version="$Revision: 1.2 $" default-language="en">
+
+
+
+<concepts>
+  <concept label="unanticipated-response">
+   <phrase>anything else</phrase>
+  </concept>
+
+  <concept label="final-thanks">
+   <phrase>Thanks! That's all I wanted to know for now.</phrase>
+  </concept>
+  <concept label="first-question">
+   <phrase>Looks interesting. Why do you think I should do the problem %equation%?</phrase>
+  </concept>
+
+  <concept label="purpose-response">
+   <phrase>to get</phrase>
+   <phrase>to make</phrase>
+   <phrase>to see</phrase>
+   <phrase>to understand</phrase>
+  </concept>
+  <concept label="purpose-response-simst">
+   <phrase>Oh - I see, I'll try it.</phrase>
+  </concept>
+
+  <concept label="nature-response">
+   <phrase>it has</phrase>
+   <phrase>equation has</phrase>
+   <phrase>there are</phrase>
+   <phrase>there is</phrase>
+  </concept>
+  <concept label="nature-response-simst">
+   <phrase>Oh, I think I see...  That would be good to know.</phrase>
+  </concept>
+</concepts>
+
+<script>
+ <goal name="start">
+  <step><subgoal>reasons</subgoal></step>
+  <!--<step>
+   <initiation>first-question</initiation>
+   </step>-->
+ </goal>
+
+ <goal name="reasons">
+  <step>
+   <initiation>first-question</initiation>
+   <response say="purpose-response-simst">purpose-response</response>
+   <response say="nature-response-simst">nature-response</response>
+   <response say="final-thanks">unanticipated-response</response>
+  </step>
+ </goal>
+
+</script>
+</scenario>

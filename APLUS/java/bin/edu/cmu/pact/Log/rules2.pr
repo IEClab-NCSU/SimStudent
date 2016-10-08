@@ -1,0 +1,3 @@
+(defrule rule2 (ccc) => )
+
+(defrule rule3 (ddd) => )

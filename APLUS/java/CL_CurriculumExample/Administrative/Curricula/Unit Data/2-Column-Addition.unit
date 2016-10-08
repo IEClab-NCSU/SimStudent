@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+ <LMS:Unit id="2-Column-Addition"  name="2 Column Addition" unit_introduction="2-Column-AdditionNo-Carry">
+    <LMS:Section id="2-Column-Addition-No-Carry-1" name="2 Column Addition, No Carry" completion_code_freq="PROBLEM_COMPLETION">
+       <LMS:SectionSkill skill_id="Add_two_numbers_no_carry" skill_name="Add_two_numbers_no_carry" initial_p_known="0.1" displayed="true" remediated="true" p_guess="0.3" p_learn="0.1" p_slip="0.4">
+          <LMS:SectionSubSkill subskill_id="Add_two_numbers_no_carry" subskill_name="Add two numbers, with carry"  />
+       </LMS:SectionSkill>
+       <LMS:Executable id="2-Column-Addition-No-Carry" name="2 Column Addition No Carry" type="JAVA_IN_VM" platform="ANY" entry_point="edu.cmu.pact.CTAT_LMS_Launcher"/>
+       <LMS:ProblemSet id="2-Column-Addition-No-Carry-1-PS-1" problem_count="2" repeat_problems="1">
+          <LMS:SelectionInfo>
+             <LMS:SelectionAlgo id="Ordered-1" name="Ordered" execution_point="precompile"/>
+          </LMS:SelectionInfo>
+          <LMS:ProblemSetMember>
+             <LMS:ProblemSet id="2-Column-Addition-No-Carry-1-PS-2" problem_count="5" repeat_problems="1">
+                <LMS:SelectionInfo>
+                   <LMS:SelectionAlgo id="Ordered-1" name="Ordered" execution_point="precompile"/>
+                </LMS:SelectionInfo>
+                <LMS:ProblemSetMember>
+                   <LMS:Problem id="15+21" name="15+21"/>
+                   <LMS:Problem id="14+80" name="14+80"/>
+                   <LMS:Problem id="45+4" name="45+4"/>
+                   <LMS:Problem id="66+33" name="66+33"/>
+                   <LMS:Problem id="12+21" name="12+21"/>
+                </LMS:ProblemSetMember>
+             </LMS:ProblemSet>
+          </LMS:ProblemSetMember>
+       </LMS:ProblemSet>
+    </LMS:Section>
+    <LMS:Section id="2_Column_Addition_With_Carry" name="2 Column Addition With Carry" completion_code_freq="PROBLEM_COMPLETION">
+       <LMS:SectionSkill skill_id="Add_two_numbers_with_carry" skill_name="Add_two_numbers_with_carry" initial_p_known="0.1" displayed="true" remediated="true" p_guess="0.3" p_learn="0.1" p_slip="0.4">
+          <LMS:SectionSubSkill subskill_id="Add_two_numbers_with_carry" subskill_name="Add two numbers, with carry"  />
+       </LMS:SectionSkill>
+       <LMS:SectionSkill skill_id="Mark_carry" skill_name="Mark_carry" initial_p_known="0.1" displayed="true" remediated="true" p_guess="0.3" p_learn="0.1" p_slip="0.4">
+          <LMS:SectionSubSkill subskill_id="Mark_carry" subskill_name="Mark carry"  />
+       </LMS:SectionSkill>
+       <LMS:SectionSkill skill_id="Add_carry" skill_name="Add_carry" initial_p_known="0.1" displayed="true" remediated="true" p_guess="0.3" p_learn="0.1" p_slip="0.4">
+          <LMS:SectionSubSkill subskill_id="Add_carry" subskill_name="Add carry"  />
+       </LMS:SectionSkill>
+       <LMS:SectionSkill skill_id="Add_three_numbers_no_carry" skill_name="Add_three_numbers_no_carry" initial_p_known="0.1" displayed="true" remediated="true" p_guess="0.3" p_learn="0.1" p_slip="0.4">
+          <LMS:SectionSubSkill subskill_id="Add_three_numbers_no_carry" subskill_name="Add_three_numbers_no_carry"  />
+       </LMS:SectionSkill>
+       <LMS:SectionSkill skill_id="Add_three_numbers_with_carry" skill_name="Add_three_numbers_with_carry" initial_p_known="0.1" displayed="true" remediated="true" p_guess="0.3" p_learn="0.1" p_slip="0.4">
+          <LMS:SectionSubSkill subskill_id="Add_three_numbers_with_carry" subskill_name="Add_three_numbers_with_carry"  />
+       </LMS:SectionSkill>
+       <LMS:Executable id="2-Column-Addition-No-Carry" name="2 Column Addition No Carry" type="JAVA_IN_VM" platform="ANY" entry_point="edu.cmu.pact.CTAT_LMS_Launcher"/>
+       <LMS:ProblemSet id="2-Column-Addition-With-Carry-1-PS-1" problem_count="2" repeat_problems="1">
+          <LMS:SelectionInfo>
+             <LMS:SelectionAlgo id="Ordered-1" name="Ordered" execution_point="precompile"/>
+          </LMS:SelectionInfo>
+          <LMS:ProblemSetMember>
+             <LMS:ProblemSet id="2-Column-Addition-With-Carry-1-PS-2" problem_count="5" repeat_problems="1">
+                <LMS:SelectionInfo>
+                   <LMS:SelectionAlgo id="Ordered-1" name="Ordered" execution_point="precompile"/>
+                </LMS:SelectionInfo>
+                <LMS:ProblemSetMember>
+                   <LMS:Problem id="15+25" name="15+25"/>
+                   <LMS:Problem id="14+88" name="14+88"/>
+                   <LMS:Problem id="45+91" name="45+91"/>
+                   <LMS:Problem id="16+66" name="16+66"/>
+                   <LMS:Problem id="64+44" name="64+44"/>
+                </LMS:ProblemSetMember>
+             </LMS:ProblemSet>
+          </LMS:ProblemSetMember>
+       </LMS:ProblemSet>
+    </LMS:Section>
+ </LMS:Unit>

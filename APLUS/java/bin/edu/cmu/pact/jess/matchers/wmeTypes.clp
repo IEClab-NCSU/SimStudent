@@ -1,0 +1,49 @@
+(deftemplate MAIN::button 
+   (slot name))
+(deftemplate MAIN::cell 
+   (slot name) 
+   (slot value) 
+   (slot description) 
+   (slot row-number) 
+   (slot column-number))
+(deftemplate MAIN::column 
+   (slot name) 
+   (multislot cells) 
+   (slot position) 
+   (slot description))
+(deftemplate MAIN::finish-problem-goal 
+   (slot begin-rule))
+(deftemplate MAIN::problem 
+   (slot name) 
+   (multislot interface-elements) 
+   (multislot subgoals) 
+   (slot done) 
+   (slot description) 
+   (slot turn))
+(deftemplate MAIN::process-column-goal 
+   (slot carry) 
+   (slot column) 
+   (slot first-addend) 
+   (slot second-addend) 
+   (slot sum) 
+   (slot description))
+(deftemplate MAIN::process-tf2 
+   "(Implied)" 
+   (multislot __data))
+(deftemplate MAIN::studentValues 
+   (slot selection) 
+   (slot action) 
+   (slot input))
+(deftemplate MAIN::table 
+   (slot name) 
+   (multislot columns))
+(deftemplate MAIN::textField 
+   (slot name) 
+   (slot value))
+(deftemplate MAIN::write-carry-goal 
+   (slot carry) 
+   (slot column) 
+   (slot description))
+
+; tell productionRules file that templates have been parsed
+(provide wmeTypes)

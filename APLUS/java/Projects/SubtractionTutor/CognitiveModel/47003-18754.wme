@@ -1,0 +1,367 @@
+(require* templates "wmeTypes.clp")
+
+;;;; Fact assertions: slot assignments are below.
+
+(bind ?var1 (assert(MAIN::initial-fact)))
+(bind ?var2 (assert(MAIN::selection-action-input)))
+(bind ?var7 (assert(MAIN::cell (name table1_C1R1))))
+(bind ?var8 (assert(MAIN::cell (name table1_C1R2))))
+(bind ?var9 (assert(MAIN::cell (name table1_C1R3))))
+(bind ?var10 (assert(MAIN::cell (name table1_C1R4))))
+(bind ?var11 (assert(MAIN::cell (name table1_C1R5))))
+(bind ?var12 (assert(MAIN::cell (name table1_C1R6))))
+(bind ?var13 (assert(MAIN::column (name table1_Column1))))
+(bind ?var14 (assert(MAIN::cell (name table1_C2R1))))
+(bind ?var15 (assert(MAIN::cell (name table1_C2R2))))
+(bind ?var16 (assert(MAIN::cell (name table1_C2R3))))
+(bind ?var17 (assert(MAIN::cell (name table1_C2R4))))
+(bind ?var18 (assert(MAIN::cell (name table1_C2R5))))
+(bind ?var19 (assert(MAIN::cell (name table1_C2R6))))
+(bind ?var20 (assert(MAIN::column (name table1_Column2))))
+(bind ?var21 (assert(MAIN::cell (name table1_C3R1))))
+(bind ?var22 (assert(MAIN::cell (name table1_C3R2))))
+(bind ?var23 (assert(MAIN::cell (name table1_C3R3))))
+(bind ?var24 (assert(MAIN::cell (name table1_C3R4))))
+(bind ?var25 (assert(MAIN::cell (name table1_C3R5))))
+(bind ?var26 (assert(MAIN::cell (name table1_C3R6))))
+(bind ?var27 (assert(MAIN::column (name table1_Column3))))
+(bind ?var28 (assert(MAIN::cell (name table1_C4R1))))
+(bind ?var29 (assert(MAIN::cell (name table1_C4R2))))
+(bind ?var30 (assert(MAIN::cell (name table1_C4R3))))
+(bind ?var31 (assert(MAIN::cell (name table1_C4R4))))
+(bind ?var32 (assert(MAIN::cell (name table1_C4R5))))
+(bind ?var33 (assert(MAIN::cell (name table1_C4R6))))
+(bind ?var34 (assert(MAIN::column (name table1_Column4))))
+(bind ?var35 (assert(MAIN::cell (name table1_C5R1))))
+(bind ?var36 (assert(MAIN::cell (name table1_C5R2))))
+(bind ?var37 (assert(MAIN::cell (name table1_C5R3))))
+(bind ?var38 (assert(MAIN::cell (name table1_C5R4))))
+(bind ?var39 (assert(MAIN::cell (name table1_C5R5))))
+(bind ?var40 (assert(MAIN::cell (name table1_C5R6))))
+(bind ?var41 (assert(MAIN::column (name table1_Column5))))
+(bind ?var42 (assert(MAIN::cell (name table1_C6R1))))
+(bind ?var43 (assert(MAIN::cell (name table1_C6R2))))
+(bind ?var44 (assert(MAIN::cell (name table1_C6R3))))
+(bind ?var45 (assert(MAIN::cell (name table1_C6R4))))
+(bind ?var46 (assert(MAIN::cell (name table1_C6R5))))
+(bind ?var47 (assert(MAIN::cell (name table1_C6R6))))
+(bind ?var48 (assert(MAIN::column (name table1_Column6))))
+(bind ?var49 (assert(MAIN::table (name table1))))
+(bind ?var50 (assert(MAIN::problem (name 47003-18754))))
+
+;;;; Slot assignments
+
+; MAIN::selection-action-input
+(modify ?var2
+    (selection NotSpecified)
+    (action NotSpecified)
+    (input NotSpecified)
+)
+; MAIN::cell
+(modify ?var7
+    (name table1_C1R1)
+    (value nil)
+    (description nil)
+    (row-number nil)
+)
+; MAIN::cell
+(modify ?var8
+    (name table1_C1R2)
+    (value nil)
+    (description nil)
+    (row-number nil)
+)
+; MAIN::cell
+(modify ?var9
+    (name table1_C1R3)
+    (value nil)
+    (description nil)
+    (row-number nil)
+)
+; MAIN::cell
+(modify ?var10
+    (name table1_C1R4)
+    (value nil)
+    (description nil)
+    (row-number nil)
+)
+; MAIN::cell
+(modify ?var11
+    (name table1_C1R5)
+    (value nil)
+    (description nil)
+    (row-number nil)
+)
+; MAIN::cell
+(modify ?var12
+    (name table1_C1R6)
+    (value nil)
+    (description nil)
+    (row-number nil)
+)
+; MAIN::column
+(modify ?var13
+    (name table1_Column1)
+    (cells ?var7 ?var8 ?var9 ?var10 ?var11 ?var12)
+    (position 1)
+    (description nil)
+)
+; MAIN::cell
+(modify ?var14
+    (name table1_C2R1)
+    (value nil)
+    (description nil)
+    (row-number nil)
+)
+; MAIN::cell
+(modify ?var15
+    (name table1_C2R2)
+    (value nil)
+    (description nil)
+    (row-number nil)
+)
+; MAIN::cell
+(modify ?var16
+    (name table1_C2R3)
+    (value nil)
+    (description nil)
+    (row-number nil)
+)
+; MAIN::cell
+(modify ?var17
+    (name table1_C2R4)
+    (value 4)
+    (description nil)
+    (row-number nil)
+)
+; MAIN::cell
+(modify ?var18
+    (name table1_C2R5)
+    (value 1)
+    (description nil)
+    (row-number nil)
+)
+; MAIN::cell
+(modify ?var19
+    (name table1_C2R6)
+    (value nil)
+    (description nil)
+    (row-number nil)
+)
+; MAIN::column
+(modify ?var20
+    (name table1_Column2)
+    (cells ?var14 ?var15 ?var16 ?var17 ?var18 ?var19)
+    (position 2)
+    (description nil)
+)
+; MAIN::cell
+(modify ?var21
+    (name table1_C3R1)
+    (value nil)
+    (description nil)
+    (row-number nil)
+)
+; MAIN::cell
+(modify ?var22
+    (name table1_C3R2)
+    (value nil)
+    (description nil)
+    (row-number nil)
+)
+; MAIN::cell
+(modify ?var23
+    (name table1_C3R3)
+    (value nil)
+    (description nil)
+    (row-number nil)
+)
+; MAIN::cell
+(modify ?var24
+    (name table1_C3R4)
+    (value 7)
+    (description nil)
+    (row-number nil)
+)
+; MAIN::cell
+(modify ?var25
+    (name table1_C3R5)
+    (value 8)
+    (description nil)
+    (row-number nil)
+)
+; MAIN::cell
+(modify ?var26
+    (name table1_C3R6)
+    (value nil)
+    (description nil)
+    (row-number nil)
+)
+; MAIN::column
+(modify ?var27
+    (name table1_Column3)
+    (cells ?var21 ?var22 ?var23 ?var24 ?var25 ?var26)
+    (position 3)
+    (description nil)
+)
+; MAIN::cell
+(modify ?var28
+    (name table1_C4R1)
+    (value nil)
+    (description nil)
+    (row-number nil)
+)
+; MAIN::cell
+(modify ?var29
+    (name table1_C4R2)
+    (value nil)
+    (description nil)
+    (row-number nil)
+)
+; MAIN::cell
+(modify ?var30
+    (name table1_C4R3)
+    (value nil)
+    (description nil)
+    (row-number nil)
+)
+; MAIN::cell
+(modify ?var31
+    (name table1_C4R4)
+    (value 0)
+    (description nil)
+    (row-number nil)
+)
+; MAIN::cell
+(modify ?var32
+    (name table1_C4R5)
+    (value 7)
+    (description nil)
+    (row-number nil)
+)
+; MAIN::cell
+(modify ?var33
+    (name table1_C4R6)
+    (value nil)
+    (description nil)
+    (row-number nil)
+)
+; MAIN::column
+(modify ?var34
+    (name table1_Column4)
+    (cells ?var28 ?var29 ?var30 ?var31 ?var32 ?var33)
+    (position 4)
+    (description nil)
+)
+; MAIN::cell
+(modify ?var35
+    (name table1_C5R1)
+    (value nil)
+    (description nil)
+    (row-number nil)
+)
+; MAIN::cell
+(modify ?var36
+    (name table1_C5R2)
+    (value nil)
+    (description nil)
+    (row-number nil)
+)
+; MAIN::cell
+(modify ?var37
+    (name table1_C5R3)
+    (value nil)
+    (description nil)
+    (row-number nil)
+)
+; MAIN::cell
+(modify ?var38
+    (name table1_C5R4)
+    (value 0)
+    (description nil)
+    (row-number nil)
+)
+; MAIN::cell
+(modify ?var39
+    (name table1_C5R5)
+    (value 5)
+    (description nil)
+    (row-number nil)
+)
+; MAIN::cell
+(modify ?var40
+    (name table1_C5R6)
+    (value nil)
+    (description nil)
+    (row-number nil)
+)
+; MAIN::column
+(modify ?var41
+    (name table1_Column5)
+    (cells ?var35 ?var36 ?var37 ?var38 ?var39 ?var40)
+    (position 5)
+    (description nil)
+)
+; MAIN::cell
+(modify ?var42
+    (name table1_C6R1)
+    (value nil)
+    (description nil)
+    (row-number nil)
+)
+; MAIN::cell
+(modify ?var43
+    (name table1_C6R2)
+    (value nil)
+    (description nil)
+    (row-number nil)
+)
+; MAIN::cell
+(modify ?var44
+    (name table1_C6R3)
+    (value nil)
+    (description nil)
+    (row-number nil)
+)
+; MAIN::cell
+(modify ?var45
+    (name table1_C6R4)
+    (value 3)
+    (description nil)
+    (row-number nil)
+)
+; MAIN::cell
+(modify ?var46
+    (name table1_C6R5)
+    (value 4)
+    (description nil)
+    (row-number nil)
+)
+; MAIN::cell
+(modify ?var47
+    (name table1_C6R6)
+    (value nil)
+    (description nil)
+    (row-number nil)
+)
+; MAIN::column
+(modify ?var48
+    (name table1_Column6)
+    (cells ?var42 ?var43 ?var44 ?var45 ?var46 ?var47)
+    (position 6)
+    (description nil)
+)
+; MAIN::table
+(modify ?var49
+    (name table1)
+    (columns ?var13 ?var20 ?var27 ?var34 ?var41 ?var48)
+)
+; MAIN::problem
+(modify ?var50
+    (name 47003-18754)
+    (interface-elements ?var49)
+    (subgoals)
+    (done nil)
+    (description nil)
+    (turn nil)
+)

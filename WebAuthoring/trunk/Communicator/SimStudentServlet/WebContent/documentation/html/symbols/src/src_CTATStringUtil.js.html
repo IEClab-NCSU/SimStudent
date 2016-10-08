@@ -1,0 +1,65 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='line'>  1</span> <span class="COMM">/**------------------------------------------------------------------------------------
+<span class='line'>  2</span>  $Author$ 
+<span class='line'>  3</span>  $Date$ 
+<span class='line'>  4</span>  $Header$ 
+<span class='line'>  5</span>  $Name$ 
+<span class='line'>  6</span>  $Locker$ 
+<span class='line'>  7</span>  $Log$
+<span class='line'>  8</span>  
+<span class='line'>  9</span>  -
+<span class='line'> 10</span>  License:
+<span class='line'> 11</span>  -
+<span class='line'> 12</span>  ChangeLog:
+<span class='line'> 13</span>  -
+<span class='line'> 14</span>  Notes:
+<span class='line'> 15</span>  
+<span class='line'> 16</span> */</span><span class="WHIT">
+<span class='line'> 17</span> 
+<span class='line'> 18</span> </span><span class="COMM">/**
+<span class='line'> 19</span> *
+<span class='line'> 20</span> */</span><span class="WHIT">
+<span class='line'> 21</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">CTATStringUtil</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 22</span> </span><span class="PUNC">{</span><span class="WHIT">	</span><span class="WHIT">
+<span class='line'> 23</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'> 24</span> 	* Apparently AS3 expects a direct conversion between a string and a boolean to only
+<span class='line'> 25</span> 	* happen when the string is '0' or '1' for every other case we have to test manually.
+<span class='line'> 26</span> 	* So this method pretty much catches all varieties.
+<span class='line'> 27</span> 	*/</span><span class="WHIT">	</span><span class="WHIT">
+<span class='line'> 28</span> </span><span class="WHIT">	</span><span class="NAME">this.String2Boolean</span><span class="PUNC">=</span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">String2Boolean</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">aString</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 29</span> </span><span class="WHIT">	</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 30</span> </span><span class="WHIT">		</span><span class="KEYW">switch</span><span class="PUNC">(</span><span class="NAME">aString</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="WHIT">
+<span class='line'> 31</span> </span><span class="WHIT">		</span><span class="PUNC">{</span><span class="WHIT">     </span><span class="WHIT">
+<span class='line'> 32</span> </span><span class="WHIT">			</span><span class="KEYW">case</span><span class="WHIT"> </span><span class="STRN">"1"</span><span class="PUNC">:</span><span class="WHIT">     </span><span class="WHIT">
+<span class='line'> 33</span> </span><span class="WHIT">			</span><span class="KEYW">case</span><span class="WHIT"> </span><span class="STRN">"true"</span><span class="PUNC">:</span><span class="WHIT">     </span><span class="WHIT">
+<span class='line'> 34</span> </span><span class="WHIT">			</span><span class="KEYW">case</span><span class="WHIT"> </span><span class="STRN">"yes"</span><span class="PUNC">:</span><span class="WHIT">     </span><span class="WHIT">
+<span class='line'> 35</span> </span><span class="WHIT">			</span><span class="KEYW">case</span><span class="WHIT"> </span><span class="STRN">"TRUE"</span><span class="PUNC">:</span><span class="WHIT">     </span><span class="WHIT">
+<span class='line'> 36</span> </span><span class="WHIT">			</span><span class="KEYW">case</span><span class="WHIT"> </span><span class="STRN">"YES"</span><span class="PUNC">:</span><span class="WHIT">
+<span class='line'> 37</span> </span><span class="WHIT">			</span><span class="KEYW">case</span><span class="WHIT"> </span><span class="STRN">"Yes"</span><span class="PUNC">:</span><span class="WHIT">					</span><span class="WHIT">
+<span class='line'> 38</span> </span><span class="WHIT">						</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">     </span><span class="WHIT">
+<span class='line'> 39</span> </span><span class="WHIT">			</span><span class="KEYW">case</span><span class="WHIT"> </span><span class="STRN">"0"</span><span class="PUNC">:</span><span class="WHIT">     </span><span class="WHIT">
+<span class='line'> 40</span> </span><span class="WHIT">			</span><span class="KEYW">case</span><span class="WHIT"> </span><span class="STRN">"false"</span><span class="PUNC">:</span><span class="WHIT">     </span><span class="WHIT">
+<span class='line'> 41</span> </span><span class="WHIT">			</span><span class="KEYW">case</span><span class="WHIT"> </span><span class="STRN">"no"</span><span class="PUNC">:</span><span class="WHIT">
+<span class='line'> 42</span> </span><span class="WHIT">			</span><span class="KEYW">case</span><span class="WHIT"> </span><span class="STRN">"FALSE"</span><span class="PUNC">:</span><span class="WHIT">     </span><span class="WHIT">
+<span class='line'> 43</span> </span><span class="WHIT">			</span><span class="KEYW">case</span><span class="WHIT"> </span><span class="STRN">"NO"</span><span class="PUNC">:</span><span class="WHIT">
+<span class='line'> 44</span> </span><span class="WHIT">			</span><span class="KEYW">case</span><span class="WHIT"> </span><span class="STRN">"No"</span><span class="PUNC">:</span><span class="WHIT">
+<span class='line'> 45</span> </span><span class="WHIT">						</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">						</span><span class="WHIT">
+<span class='line'> 46</span> </span><span class="WHIT">		</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 47</span> </span><span class="WHIT">	</span><span class="WHIT">
+<span class='line'> 48</span> </span><span class="WHIT">		</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">true</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">		</span><span class="WHIT">
+<span class='line'> 49</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 50</span> </span><span class="WHIT">	</span><span class="COMM">/**
+<span class='line'> 51</span> 	*	
+<span class='line'> 52</span> 	*/</span><span class="WHIT">
+<span class='line'> 53</span> </span><span class="WHIT">	</span><span class="NAME">this.replaceString</span><span class="PUNC">=</span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">replaceString</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">thisStr</span><span class="PUNC">,</span><span class="NAME">searchStr</span><span class="PUNC">,</span><span class="NAME">replaceStr</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="WHIT">
+<span class='line'> 54</span> </span><span class="WHIT">	</span><span class="PUNC">{</span><span class="WHIT">	</span><span class="WHIT">
+<span class='line'> 55</span> </span><span class="WHIT">		</span><span class="KEYW">return</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">thisStr.replace</span><span class="PUNC">(</span><span class="NAME">searchStr</span><span class="PUNC">,</span><span class="NAME">replaceStr</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 56</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">	</span><span class="WHIT">
+<span class='line'> 57</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 58</span> </span></pre></body></html>

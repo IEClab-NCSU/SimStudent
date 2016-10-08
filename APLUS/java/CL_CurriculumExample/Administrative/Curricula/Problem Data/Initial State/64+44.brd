@@ -1,0 +1,475 @@
+<stateGraph firstCheckAllStates="true" protoTypeModeCaseInsensitive="true">
+<startNodeMessages>
+	<message>
+		<verb>NotePropertySet</verb>
+		<properties>
+			<MessageType>StartProblem</MessageType>
+			<ProblemName>64+44</ProblemName>
+		</properties>
+		<!--SE/1.2&VERB=S:15:NotePropertySet&OBJECT=O:2:S:11:Application,S:8:POSITION,I:1:1,S:13:AuthoringTool,S:8:POSITION,I:1:1&PROPERTYNAMES=L:2:[S:11:MessageType,S:11:ProblemName]&PROPERTYVALUES=L:2:[S:12:StartProblem,S:5:64+44]&MESSAGENUMBER=I:3:340&-->
+	</message>
+	<message>
+		<verb>SendNoteProperty</verb>
+		<properties>
+			<MessageType>GroupDescriptionStart</MessageType>
+		</properties>
+		<!--SE/1.2&VERB=S:16:SendNoteProperty&OBJECT=O:2:S:11:Application,S:8:POSITION,I:1:1,S:13:AuthoringTool,S:8:POSITION,I:1:1&PROPERTYNAMES=L:1:[S:11:MessageType]&PROPERTYVALUES=L:1:[S:21:GroupDescriptionStart]&MESSAGENUMBER=I:3:341&-->
+	</message>
+	<message>
+		<verb>SendNoteProperty</verb>
+		<properties>
+			<MessageType>GroupDescriptionEnd</MessageType>
+		</properties>
+		<!--SE/1.2&VERB=S:16:SendNoteProperty&OBJECT=O:2:S:11:Application,S:8:POSITION,I:1:1,S:13:AuthoringTool,S:8:POSITION,I:1:1&PROPERTYNAMES=L:1:[S:11:MessageType]&PROPERTYVALUES=L:1:[S:19:GroupDescriptionEnd]&MESSAGENUMBER=I:3:342&-->
+	</message>
+	<message>
+		<verb>NotePropertySet</verb>
+		<properties>
+			<MessageType>NumberOfTables</MessageType>
+			<Number>1</Number>
+		</properties>
+		<!--SE/1.2&VERB=S:15:NotePropertySet&OBJECT=O:2:S:11:Application,S:8:POSITION,I:1:1,S:13:AuthoringTool,S:8:POSITION,I:1:1&PROPERTYNAMES=L:2:[S:11:MessageType,S:6:Number]&PROPERTYVALUES=L:2:[S:14:NumberOfTables,S:1:1]&MESSAGENUMBER=I:3:343&-->
+	</message>
+	<message>
+		<verb>SendNoteProperty</verb>
+		<properties>
+			<MessageType>InterfaceDescription</MessageType>
+			<WidgetType>DorminButton</WidgetType>
+			<DorminName>Done</DorminName>
+			<UpdateEachCycle>false</UpdateEachCycle>
+		</properties>
+		<!--SE/1.2&VERB=S:16:SendNoteProperty&OBJECT=O:2:S:11:Application,S:8:POSITION,I:1:1,S:13:AuthoringTool,S:8:POSITION,I:1:1&PROPERTYNAMES=L:4:[S:11:MessageType,S:10:WidgetType,S:10:DorminName,S:15:UpdateEachCycle]&PROPERTYVALUES=L:4:[S:20:InterfaceDescription,S:12:DorminButton,S:4:Done,S:5:false]&MESSAGENUMBER=I:3:344&-->
+	</message>
+	<message>
+		<verb>SendNoteProperty</verb>
+		<properties>
+			<MessageType>InterfaceDescription</MessageType>
+			<WidgetType>DorminButton</WidgetType>
+			<DorminName>Hint</DorminName>
+			<UpdateEachCycle>false</UpdateEachCycle>
+		</properties>
+		<!--SE/1.2&VERB=S:16:SendNoteProperty&OBJECT=O:2:S:11:Application,S:8:POSITION,I:1:1,S:13:AuthoringTool,S:8:POSITION,I:1:1&PROPERTYNAMES=L:4:[S:11:MessageType,S:10:WidgetType,S:10:DorminName,S:15:UpdateEachCycle]&PROPERTYVALUES=L:4:[S:20:InterfaceDescription,S:12:DorminButton,S:4:Hint,S:5:false]&MESSAGENUMBER=I:3:345&-->
+	</message>
+	<message>
+		<verb>SendNoteProperty</verb>
+		<properties>
+			<MessageType>InterfaceDescription</MessageType>
+			<WidgetType>DorminTable</WidgetType>
+			<DorminName>Table0</DorminName>
+			<UpdateEachCycle>false</UpdateEachCycle>
+			<Rows>4</Rows>
+			<Columns>4</Columns>
+		</properties>
+		<!--SE/1.2&VERB=S:16:SendNoteProperty&OBJECT=O:2:S:11:Application,S:8:POSITION,I:1:1,S:13:AuthoringTool,S:8:POSITION,I:1:1&PROPERTYNAMES=L:6:[S:11:MessageType,S:10:WidgetType,S:10:DorminName,S:15:UpdateEachCycle,S:4:Rows,S:7:Columns]&PROPERTYVALUES=L:6:[S:20:InterfaceDescription,S:11:DorminTable,S:6:Table0,S:5:false,S:1:4,S:1:4]&MESSAGENUMBER=I:3:346&-->
+	</message>
+	<message>
+		<verb>NotePropertySet</verb>
+		<properties>
+			<MessageType>InterfaceAction</MessageType>
+			<Selection><value>Table0_C3R2</value></Selection>
+			<Action><value>UpdateTable</value></Action>
+			<Input><value>6</value></Input>
+		</properties>
+		<!--SE/1.2&VERB=S:15:NotePropertySet&OBJECT=O:2:S:11:Application,S:8:POSITION,I:1:1,S:13:AuthoringTool,S:8:POSITION,I:1:1&PROPERTYNAMES=L:4:[S:11:MessageType,S:9:Selection,S:6:Action,S:5:Input]&PROPERTYVALUES=L:4:[S:15:InterfaceAction,L:1:[S:11:Table0_C3R2],L:1:[S:11:UpdateTable],L:1:[S:1:6]]&MESSAGENUMBER=I:3:347&-->
+	</message>
+	<message>
+		<verb>NotePropertySet</verb>
+		<properties>
+			<MessageType>InterfaceAction</MessageType>
+			<Selection><value>Table0_C4R2</value></Selection>
+			<Action><value>UpdateTable</value></Action>
+			<Input><value>4</value></Input>
+		</properties>
+		<!--SE/1.2&VERB=S:15:NotePropertySet&OBJECT=O:2:S:11:Application,S:8:POSITION,I:1:1,S:13:AuthoringTool,S:8:POSITION,I:1:1&PROPERTYNAMES=L:4:[S:11:MessageType,S:9:Selection,S:6:Action,S:5:Input]&PROPERTYVALUES=L:4:[S:15:InterfaceAction,L:1:[S:11:Table0_C4R2],L:1:[S:11:UpdateTable],L:1:[S:1:4]]&MESSAGENUMBER=I:3:348&-->
+	</message>
+	<message>
+		<verb>NotePropertySet</verb>
+		<properties>
+			<MessageType>InterfaceAction</MessageType>
+			<Selection><value>Table0_C2R3</value></Selection>
+			<Action><value>UpdateTable</value></Action>
+			<Input><value>+</value></Input>
+		</properties>
+		<!--SE/1.2&VERB=S:15:NotePropertySet&OBJECT=O:2:S:11:Application,S:8:POSITION,I:1:1,S:13:AuthoringTool,S:8:POSITION,I:1:1&PROPERTYNAMES=L:4:[S:11:MessageType,S:9:Selection,S:6:Action,S:5:Input]&PROPERTYVALUES=L:4:[S:15:InterfaceAction,L:1:[S:11:Table0_C2R3],L:1:[S:11:UpdateTable],L:1:[S:1:+]]&MESSAGENUMBER=I:3:349&-->
+	</message>
+	<message>
+		<verb>NotePropertySet</verb>
+		<properties>
+			<MessageType>InterfaceAction</MessageType>
+			<Selection><value>Table0_C3R3</value></Selection>
+			<Action><value>UpdateTable</value></Action>
+			<Input><value>4</value></Input>
+		</properties>
+		<!--SE/1.2&VERB=S:15:NotePropertySet&OBJECT=O:2:S:11:Application,S:8:POSITION,I:1:1,S:13:AuthoringTool,S:8:POSITION,I:1:1&PROPERTYNAMES=L:4:[S:11:MessageType,S:9:Selection,S:6:Action,S:5:Input]&PROPERTYVALUES=L:4:[S:15:InterfaceAction,L:1:[S:11:Table0_C3R3],L:1:[S:11:UpdateTable],L:1:[S:1:4]]&MESSAGENUMBER=I:3:350&-->
+	</message>
+	<message>
+		<verb>NotePropertySet</verb>
+		<properties>
+			<MessageType>InterfaceAction</MessageType>
+			<Selection><value>Table0_C4R3</value></Selection>
+			<Action><value>UpdateTable</value></Action>
+			<Input><value>4</value></Input>
+		</properties>
+		<!--SE/1.2&VERB=S:15:NotePropertySet&OBJECT=O:2:S:11:Application,S:8:POSITION,I:1:1,S:13:AuthoringTool,S:8:POSITION,I:1:1&PROPERTYNAMES=L:4:[S:11:MessageType,S:9:Selection,S:6:Action,S:5:Input]&PROPERTYVALUES=L:4:[S:15:InterfaceAction,L:1:[S:11:Table0_C4R3],L:1:[S:11:UpdateTable],L:1:[S:1:4]]&MESSAGENUMBER=I:3:351&-->
+	</message>
+	<message>
+		<verb>NotePropertySet</verb>
+		<properties>
+			<MessageType>StartStateEnd</MessageType>
+		</properties>
+		<!--SE/1.2&VERB=S:15:NotePropertySet&OBJECT=O:2:S:11:Application,S:8:POSITION,I:1:1,S:13:AuthoringTool,S:8:POSITION,I:1:1&PROPERTYNAMES=L:1:[S:11:MessageType]&PROPERTYVALUES=L:1:[S:13:StartStateEnd]&MESSAGENUMBER=I:3:352&-->
+	</message>
+</startNodeMessages>
+
+<node>
+	<text>64+44</text>
+	<uniqueID>1</uniqueID>
+	<dimension>
+		<x>242</x>
+		<y>30</y>
+		<width>55</width>
+		<height>25</height>
+	</dimension>
+</node>
+
+<node>
+	<text>state7</text>
+	<uniqueID>8</uniqueID>
+	<dimension>
+		<x>242</x>
+		<y>150</y>
+		<width>55</width>
+		<height>25</height>
+	</dimension>
+</node>
+
+<node>
+	<text>state8</text>
+	<uniqueID>9</uniqueID>
+	<dimension>
+		<x>242</x>
+		<y>270</y>
+		<width>55</width>
+		<height>25</height>
+	</dimension>
+</node>
+
+<node>
+	<text>state9</text>
+	<uniqueID>10</uniqueID>
+	<dimension>
+		<x>242</x>
+		<y>390</y>
+		<width>55</width>
+		<height>25</height>
+	</dimension>
+</node>
+
+<node>
+	<text>state10</text>
+	<uniqueID>11</uniqueID>
+	<dimension>
+		<x>237</x>
+		<y>510</y>
+		<width>64</width>
+		<height>25</height>
+	</dimension>
+</node>
+
+<node>
+	<text>state11</text>
+	<uniqueID>12</uniqueID>
+	<dimension>
+		<x>237</x>
+		<y>630</y>
+		<width>64</width>
+		<height>25</height>
+	</dimension>
+</node>
+
+<edge>
+	<actionLabel preferPathMark="true">
+		<text>[8], [Table0_C4R4], [UpdateTable]</text>
+		<uniqueID>13</uniqueID>
+		<message>
+			<verb>NotePropertySet</verb>
+			<properties>
+				<MessageType>InterfaceAction</MessageType>
+				<Selection><value>Table0_C4R4</value></Selection>
+				<Action><value>UpdateTable</value></Action>
+				<Input><value>8</value></Input>
+			</properties>
+			<!--SE/1.2&VERB=S:15:NotePropertySet&OBJECT=O:2:S:11:Application,S:8:POSITION,I:1:1,S:13:AuthoringTool,S:8:POSITION,I:1:1&PROPERTYNAMES=L:4:[S:11:MessageType,S:9:Selection,S:6:Action,S:5:Input]&PROPERTYVALUES=L:4:[S:15:InterfaceAction,L:1:[S:11:Table0_C4R4],L:1:[S:11:UpdateTable],L:1:[S:1:8]]&MESSAGENUMBER=I:3:357&-->
+		</message>
+		<buggyMessage></buggyMessage>
+		<successMessage></successMessage>
+		<authorIntent>Correct Action</authorIntent>
+		<oldAuthorIntent>Correct Action</oldAuthorIntent>
+		<checkedStatus>Never Checked</checkedStatus>
+		<dimension>
+			<width>34</width>
+			<height>16</height>
+		</dimension>
+	</actionLabel>
+	<preCheckedStatus>No-Applicable</preCheckedStatus>
+	<rule>
+		<text>Add_two_numbers_no_carry Addition</text>
+		<indicator>-1</indicator>
+		<dimension>
+			<width>158</width>
+			<height>16</height>
+		</dimension>
+	</rule>
+	<sourceID>1</sourceID>
+	<destID>8</destID>
+</edge>
+
+<edge>
+	<actionLabel preferPathMark="true">
+		<text>[0], [Table0_C3R4], [UpdateTable]</text>
+		<uniqueID>15</uniqueID>
+		<message>
+			<verb>NotePropertySet</verb>
+			<properties>
+				<MessageType>InterfaceAction</MessageType>
+				<Selection><value>Table0_C3R4</value></Selection>
+				<Action><value>UpdateTable</value></Action>
+				<Input><value>0</value></Input>
+			</properties>
+			<!--SE/1.2&VERB=S:15:NotePropertySet&OBJECT=O:2:S:11:Application,S:8:POSITION,I:1:1,S:13:AuthoringTool,S:8:POSITION,I:1:1&PROPERTYNAMES=L:4:[S:11:MessageType,S:9:Selection,S:6:Action,S:5:Input]&PROPERTYVALUES=L:4:[S:15:InterfaceAction,L:1:[S:11:Table0_C3R4],L:1:[S:11:UpdateTable],L:1:[S:1:0]]&MESSAGENUMBER=I:3:358&-->
+		</message>
+		<buggyMessage></buggyMessage>
+		<successMessage></successMessage>
+		<authorIntent>Correct Action</authorIntent>
+		<oldAuthorIntent>Correct Action</oldAuthorIntent>
+		<checkedStatus>Never Checked</checkedStatus>
+		<dimension>
+			<width>34</width>
+			<height>16</height>
+		</dimension>
+	</actionLabel>
+	<preCheckedStatus>No-Applicable</preCheckedStatus>
+	<rule>
+		<text>Add_two_numbers_with_carry Addition</text>
+		<indicator>-1</indicator>
+		<dimension>
+			<width>164</width>
+			<height>16</height>
+		</dimension>
+	</rule>
+	<sourceID>8</sourceID>
+	<destID>9</destID>
+</edge>
+
+<edge>
+	<actionLabel preferPathMark="true">
+		<text>[1], [Table0_C2R1], [UpdateTable]</text>
+		<uniqueID>17</uniqueID>
+		<message>
+			<verb>NotePropertySet</verb>
+			<properties>
+				<MessageType>InterfaceAction</MessageType>
+				<Selection><value>Table0_C2R1</value></Selection>
+				<Action><value>UpdateTable</value></Action>
+				<Input><value>1</value></Input>
+			</properties>
+			<!--SE/1.2&VERB=S:15:NotePropertySet&OBJECT=O:2:S:11:Application,S:8:POSITION,I:1:1,S:13:AuthoringTool,S:8:POSITION,I:1:1&PROPERTYNAMES=L:4:[S:11:MessageType,S:9:Selection,S:6:Action,S:5:Input]&PROPERTYVALUES=L:4:[S:15:InterfaceAction,L:1:[S:11:Table0_C2R1],L:1:[S:11:UpdateTable],L:1:[S:1:1]]&MESSAGENUMBER=I:3:359&-->
+		</message>
+		<buggyMessage></buggyMessage>
+		<successMessage></successMessage>
+		<authorIntent>Correct Action</authorIntent>
+		<oldAuthorIntent>Correct Action</oldAuthorIntent>
+		<checkedStatus>Never Checked</checkedStatus>
+		<dimension>
+			<width>34</width>
+			<height>16</height>
+		</dimension>
+	</actionLabel>
+	<preCheckedStatus>No-Applicable</preCheckedStatus>
+	<rule>
+		<text>Mark_carry Addition</text>
+		<indicator>-1</indicator>
+		<dimension>
+			<width>87</width>
+			<height>16</height>
+		</dimension>
+	</rule>
+	<sourceID>9</sourceID>
+	<destID>10</destID>
+</edge>
+
+<edge>
+	<actionLabel preferPathMark="true">
+		<text>[1], [Table0_C2R4], [UpdateTable]</text>
+		<uniqueID>19</uniqueID>
+		<message>
+			<verb>NotePropertySet</verb>
+			<properties>
+				<MessageType>InterfaceAction</MessageType>
+				<Selection><value>Table0_C2R4</value></Selection>
+				<Action><value>UpdateTable</value></Action>
+				<Input><value>1</value></Input>
+			</properties>
+			<!--SE/1.2&VERB=S:15:NotePropertySet&OBJECT=O:2:S:11:Application,S:8:POSITION,I:1:1,S:13:AuthoringTool,S:8:POSITION,I:1:1&PROPERTYNAMES=L:4:[S:11:MessageType,S:9:Selection,S:6:Action,S:5:Input]&PROPERTYVALUES=L:4:[S:15:InterfaceAction,L:1:[S:11:Table0_C2R4],L:1:[S:11:UpdateTable],L:1:[S:1:1]]&MESSAGENUMBER=I:3:360&-->
+		</message>
+		<buggyMessage></buggyMessage>
+		<successMessage></successMessage>
+		<authorIntent>Correct Action</authorIntent>
+		<oldAuthorIntent>Correct Action</oldAuthorIntent>
+		<checkedStatus>Never Checked</checkedStatus>
+		<dimension>
+			<width>34</width>
+			<height>16</height>
+		</dimension>
+	</actionLabel>
+	<preCheckedStatus>No-Applicable</preCheckedStatus>
+	<rule>
+		<text>Add_carry Addition</text>
+		<indicator>-1</indicator>
+		<dimension>
+			<width>83</width>
+			<height>16</height>
+		</dimension>
+	</rule>
+	<sourceID>10</sourceID>
+	<destID>11</destID>
+</edge>
+
+<edge>
+	<actionLabel preferPathMark="true">
+		<text>[-1], [Done], [ButtonPressed]</text>
+		<uniqueID>21</uniqueID>
+		<message>
+			<verb>NotePropertySet</verb>
+			<properties>
+				<MessageType>InterfaceAction</MessageType>
+				<Selection><value>Done</value></Selection>
+				<Action><value>ButtonPressed</value></Action>
+				<Input><value>-1</value></Input>
+			</properties>
+			<!--SE/1.2&VERB=S:15:NotePropertySet&OBJECT=O:2:S:11:Application,S:8:POSITION,I:1:1,S:13:AuthoringTool,S:8:POSITION,I:1:1&PROPERTYNAMES=L:4:[S:11:MessageType,S:9:Selection,S:6:Action,S:5:Input]&PROPERTYVALUES=L:4:[S:15:InterfaceAction,L:1:[S:4:Done],L:1:[S:13:ButtonPressed],L:1:[S:2:-1]]&MESSAGENUMBER=I:3:361&-->
+		</message>
+		<buggyMessage></buggyMessage>
+		<successMessage></successMessage>
+		<authorIntent>Correct Action</authorIntent>
+		<oldAuthorIntent>Correct Action</oldAuthorIntent>
+		<checkedStatus>Never Checked</checkedStatus>
+		<dimension>
+			<width>37</width>
+			<height>16</height>
+		</dimension>
+	</actionLabel>
+	<preCheckedStatus>No-Applicable</preCheckedStatus>
+	<rule>
+		<text>r0</text>
+		<indicator>-1</indicator>
+		<dimension>
+			<width>12</width>
+			<height>16</height>
+		</dimension>
+	</rule>
+	<sourceID>11</sourceID>
+	<destID>12</destID>
+</edge>
+
+<actionType>8,Table</actionType>
+
+<actionType>
+
+1,Table</actionType>
+
+<actionType>
+
+-1,Done</actionType>
+
+<actionType>
+
+
+	Add_carry</actionType>
+
+<actionType>
+	Addition</actionType>
+
+<actionType>
+	</actionType>
+
+<actionType>
+</actionType>
+
+<actionType>
+
+
+	Mark_carry</actionType>
+
+<actionType>
+	Addition</actionType>
+
+<actionType>
+	</actionType>
+
+<actionType>
+</actionType>
+
+<actionType>
+
+
+	Add_three_numbers_no_carry</actionType>
+
+<actionType>
+	Addition</actionType>
+
+<actionType>
+	</actionType>
+
+<actionType>
+</actionType>
+
+<actionType>
+
+
+	Add_two_numbers_with_carry</actionType>
+
+<actionType>
+	Addition</actionType>
+
+<actionType>
+	</actionType>
+
+<actionType>
+</actionType>
+
+<actionType>
+
+</actionType>
+
+<actionType>0,Table</actionType>
+
+<actionType>1,Table</actionType>
+
+<actionType>-1,Done</actionType>
+
+<productionRule>
+	<ruleName>Add_carry</ruleName>
+	<productionSet>Addition</productionSet>
+	<text></text>
+</productionRule>
+
+<productionRule>
+	<ruleName>Mark_carry</ruleName>
+	<productionSet>Addition</productionSet>
+	<text></text>
+</productionRule>
+
+<productionRule>
+	<ruleName>Add_two_numbers_with_carry</ruleName>
+	<productionSet>Addition</productionSet>
+	<text></text>
+</productionRule>
+
+<productionRule>
+	<ruleName>Add_two_numbers_no_carry</ruleName>
+	<productionSet>Addition</productionSet>
+	<text></text>
+</productionRule>
+
+</stateGraph>

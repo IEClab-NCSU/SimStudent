@@ -1,0 +1,195 @@
+<stateGraph firstCheckAllStates="true" protoTypeModeCaseInsensitive="true">
+<startNodeMessages>
+	<message>
+		<properties>
+			<MessageType>StartProblem</MessageType>
+			<ProblemName>7+2</ProblemName>
+		</properties>
+	</message>
+	<message>
+		<properties>
+			<MessageType>GroupDescriptionStart</MessageType>
+		</properties>
+	</message>
+	<message>
+		<properties>
+			<MessageType>GroupDescriptionEnd</MessageType>
+		</properties>
+	</message>
+	<message>
+		<properties>
+			<MessageType>NumberOfTables</MessageType>
+			<Number>1</Number>
+		</properties>
+	</message>
+	<message>
+		<properties>
+			<MessageType>InterfaceDescription</MessageType>
+			<WidgetType>DorminButton</WidgetType>
+			<DorminName>Done</DorminName>
+			<UpdateEachCycle>false</UpdateEachCycle>
+		</properties>
+	</message>
+	<message>
+		<properties>
+			<MessageType>InterfaceDescription</MessageType>
+			<WidgetType>DorminButton</WidgetType>
+			<DorminName>Hint</DorminName>
+			<UpdateEachCycle>false</UpdateEachCycle>
+		</properties>
+	</message>
+	<message>
+		<properties>
+			<MessageType>InterfaceDescription</MessageType>
+			<WidgetType>DorminTable</WidgetType>
+			<DorminName>Table0</DorminName>
+			<UpdateEachCycle>false</UpdateEachCycle>
+			<Rows>4</Rows>
+			<Columns>4</Columns>
+		</properties>
+	</message>
+	<message>
+		<properties>
+			<MessageType>InterfaceAction</MessageType>
+			<Selection><value>Table0_C4R2</value></Selection>
+			<Action><value>UpdateTable</value></Action>
+			<Input><value>7</value></Input>
+		</properties>
+	</message>
+	<message>
+		<properties>
+			<MessageType>InterfaceAction</MessageType>
+			<Selection><value>Table0_C3R3</value></Selection>
+			<Action><value>UpdateTable</value></Action>
+			<Input><value>+</value></Input>
+		</properties>
+	</message>
+	<message>
+		<properties>
+			<MessageType>InterfaceAction</MessageType>
+			<Selection><value>Table0_C4R3</value></Selection>
+			<Action><value>UpdateTable</value></Action>
+			<Input><value>2</value></Input>
+		</properties>
+	</message>
+	<message>
+		<properties>
+			<MessageType>StartStateEnd</MessageType>
+		</properties>
+	</message>
+</startNodeMessages>
+
+<node>
+	<text>7+2</text>
+	<uniqueID>1</uniqueID>
+	<dimension>
+		<x>225</x>
+		<y>30</y>
+		<width>37</width>
+		<height>25</height>
+	</dimension>
+</node>
+
+<node>
+	<text>state1</text>
+	<uniqueID>2</uniqueID>
+	<dimension>
+		<x>216</x>
+		<y>150</y>
+		<width>55</width>
+		<height>25</height>
+	</dimension>
+</node>
+
+<node>
+	<text>state2</text>
+	<uniqueID>3</uniqueID>
+	<dimension>
+		<x>216</x>
+		<y>270</y>
+		<width>55</width>
+		<height>25</height>
+	</dimension>
+</node>
+
+<edge>
+	<actionLabel preferPathMark="true">
+		<text>[9], [Table0_C4R4], [UpdateTable]</text>
+		<uniqueID>1</uniqueID>
+		<message>
+			<properties>
+				<MessageType>InterfaceAction</MessageType>
+				<Selection><value>Table0_C4R4</value></Selection>
+				<Action><value>UpdateTable</value></Action>
+				<Input><value>9</value></Input>
+			</properties>
+		</message>
+		<buggyMessage></buggyMessage>
+		<successMessage></successMessage>
+		<authorIntent>Correct Action</authorIntent>
+		<oldAuthorIntent>Correct Action</oldAuthorIntent>
+		<checkedStatus>Never Checked</checkedStatus>
+		<dimension>
+			<width>34</width>
+			<height>16</height>
+		</dimension>
+	</actionLabel>
+	<preCheckedStatus>No-Applicable</preCheckedStatus>
+	<rule>
+		<text>Add_two_numbers_no_carry Addition</text>
+		<indicator>-1</indicator>
+		<dimension>
+			<width>158</width>
+			<height>16</height>
+		</dimension>
+	</rule>
+	<sourceID>1</sourceID>
+	<destID>2</destID>
+</edge>
+
+<edge>
+	<actionLabel preferPathMark="true">
+		<text>[-1], [Done], [ButtonPressed]</text>
+		<uniqueID>3</uniqueID>
+		<message>
+			<properties>
+				<MessageType>InterfaceAction</MessageType>
+				<Selection><value>Done</value></Selection>
+				<Action><value>ButtonPressed</value></Action>
+				<Input><value>-1</value></Input>
+			</properties>
+		</message>
+		<buggyMessage></buggyMessage>
+		<successMessage></successMessage>
+		<authorIntent>Correct Action</authorIntent>
+		<oldAuthorIntent>Correct Action</oldAuthorIntent>
+		<checkedStatus>Never Checked</checkedStatus>
+		<dimension>
+			<width>37</width>
+			<height>16</height>
+		</dimension>
+	</actionLabel>
+	<preCheckedStatus>No-Applicable</preCheckedStatus>
+	<rule>
+		<text>r0</text>
+		<indicator>-1</indicator>
+		<dimension>
+			<width>12</width>
+			<height>16</height>
+		</dimension>
+	</rule>
+	<sourceID>2</sourceID>
+	<destID>3</destID>
+</edge>
+
+<actionType>9,Table</actionType>
+
+<actionType>-1,Done</actionType>
+
+<productionRule>
+	<ruleName>Add_two_numbers_no_carry</ruleName>
+	<productionSet>Addition</productionSet>
+	<text></text>
+</productionRule>
+
+</stateGraph>

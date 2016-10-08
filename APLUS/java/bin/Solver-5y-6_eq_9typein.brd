@@ -1,0 +1,213 @@
+<?xml version="1.0" standalone="yes"?>
+
+<stateGraph firstCheckAllStates="false" caseInsensitive="true" unordered="false" lockWidget="true" version="2.1" suppressStudentFeedback="false" highlightRightSelection="true" startStateNodeName="%(startStateNodeName)%">
+    <startNodeMessages>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>StartProblem</MessageType>
+                <ProblemName>-5y-6_eq_9</ProblemName>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceIdentification</MessageType>
+                <Guid>3FC055CF-E15E-A208-1222-04B098CE008B</Guid>
+            </properties>
+        </message>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>CommEquationSolver</WidgetType>
+                <CommName>solver</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+                <jessDeftemplates>
+                    <value>(deftemplate Button (slot name))</value>
+                </jessDeftemplates>
+                <jessInstances>
+                    <value>(assert (Button (name solver) (value "" )))</value>
+                </jessInstances>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <transaction_id>5E7DB37B581A62E57D1B6E1BB060E0EE8E392B5</transaction_id>
+                <Selection>
+                    <value>solver</value>
+                </Selection>
+                <Action>
+                    <value>Solver_setEquation</value>
+                </Action>
+                <Input>
+                    <value>-5y-6=9</value>
+                </Input>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>StartStateEnd</MessageType>
+            </properties>
+        </message>
+    </startNodeMessages>
+    <node locked="false" doneState="false">
+        <text>-5y-6_eq_9</text>
+        <uniqueID>1</uniqueID>
+        <dimension>
+            <x>142</x>
+            <y>30</y>
+            <width>80</width>
+            <height>25</height>
+        </dimension>
+    </node>
+    <node locked="false" doneState="false">
+        <text>state1</text>
+        <uniqueID>2</uniqueID>
+        <dimension>
+            <x>175</x>
+            <y>131</y>
+            <width>51</width>
+            <height>25</height>
+        </dimension>
+    </node>
+    <node locked="false" doneState="true">
+        <text>Done</text>
+        <uniqueID>9</uniqueID>
+        <dimension>
+            <x>281</x>
+            <y>721</y>
+            <width>45</width>
+            <height>25</height>
+        </dimension>
+    </node>
+    <edge>
+        <actionLabel preferPathMark="true" optional="false" minTraversals="6" maxTraversals="999">
+            <text>unnamed action</text>
+            <studentHintRequest></studentHintRequest>
+            <stepSuccessfulCompletion></stepSuccessfulCompletion>
+            <stepStudentError></stepStudentError>
+            <uniqueID>1</uniqueID>
+            <message>
+                <verb>NotePropertySet</verb>
+                <properties>
+                    <MessageType>InterfaceAction</MessageType>
+                    <Selection>
+                        <value>solver</value>
+                    </Selection>
+                    <Action>
+                        <value>solvefor_y</value>
+                    </Action>
+                    <Input>
+                        <value>-5y-6=9</value>
+                    </Input>
+                </properties>
+            </message>
+            <buggyMessage></buggyMessage>
+            <successMessage></successMessage>
+            <hintMessage>You need to add the two digits in this column.</hintMessage>
+            <hintMessage>Adding 8 and 7 gives 15.  Since 15 is greater than 10, you will need to write a carry.</hintMessage>
+            <hintMessage>The sum that you have, 15,  is greater than 9. So you need to carry 10 of the 15 to the tens column. And you need to write the rest of the sum, 5, at the bottom of the ones column.</hintMessage>
+            <actionType>Correct Action</actionType>
+            <oldActionType>Correct Action</oldActionType>
+            <checkedStatus>SUCCESS</checkedStatus>
+            <solverMatcher AutoSimplify="false" TypeinMode="true">
+                <Selection>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">solver</matcherParameter>
+                    </matcher>
+                </Selection>
+                <Action>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">solvefor_y</matcherParameter>
+                    </matcher>
+                </Action>
+                <Input>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">-5y-6=9</matcherParameter>
+                    </matcher>
+                </Input>
+                <Actor>Student</Actor>
+            </solverMatcher>
+            <dimension>
+                <width>115</width>
+                <height>16</height>
+            </dimension>
+        </actionLabel>
+        <preCheckedStatus>SUCCESS</preCheckedStatus>
+        <rule>
+            <text>add-addends addition</text>
+            <indicator>-1</indicator>
+            <dimension>
+                <width>98</width>
+                <height>16</height>
+            </dimension>
+        </rule>
+        <sourceID>1</sourceID>
+        <destID>2</destID>
+        <traversalCount>0</traversalCount>
+        <SimSt></SimSt>
+    </edge>
+    <edge>
+        <actionLabel preferPathMark="true" optional="false">
+            <text>unnamed action</text>
+            <studentHintRequest></studentHintRequest>
+            <stepSuccessfulCompletion></stepSuccessfulCompletion>
+            <stepStudentError></stepStudentError>
+            <uniqueID>17</uniqueID>
+            <message>
+                <verb>NotePropertySet</verb>
+                <properties>
+                    <MessageType>InterfaceAction</MessageType>
+                    <Selection>
+                        <value>done</value>
+                    </Selection>
+                    <Action>
+                        <value>ButtonPressed</value>
+                    </Action>
+                    <Input>
+                        <value>-1</value>
+                    </Input>
+                </properties>
+            </message>
+            <buggyMessage>No, this is not correct.</buggyMessage>
+            <successMessage></successMessage>
+            <hintMessage>You have answered all the questions. Please click on the Done button to proceed to the next problem.</hintMessage>
+            <actionType>Correct Action</actionType>
+            <oldActionType>Correct Action</oldActionType>
+            <checkedStatus>SUCCESS</checkedStatus>
+            <matcher>
+                <matcherType>ExactMatcher</matcherType>
+                <matcherParameter>ButtonPressed</matcherParameter>
+                <matcherParameter>-1</matcherParameter>
+                <matcherParameter>done</matcherParameter>
+                <matcherParameter>Student</matcherParameter>
+            </matcher>
+            <dimension>
+                <width>84</width>
+                <height>16</height>
+            </dimension>
+        </actionLabel>
+        <preCheckedStatus>SUCCESS</preCheckedStatus>
+        <rule>
+            <text>done Done</text>
+            <indicator>-1</indicator>
+            <dimension>
+                <width>55</width>
+                <height>16</height>
+            </dimension>
+        </rule>
+        <sourceID>2</sourceID>
+        <destID>9</destID>
+        <traversalCount>0</traversalCount>
+        <SimSt></SimSt>
+    </edge>
+    <EdgesGroups ordered="true"></EdgesGroups>
+</stateGraph>
+

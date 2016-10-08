@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin
+  id="gov.sandia.jess.editor"
+  name="Jess Editor Plug-in"
+  version="7.1.0"
+  provider-name="Sandia National Laboratories"
+  class="gov.sandia.jess.editor.JessEditorPlugin">
+
+   <runtime>
+      <library name="jesside.jar">
+         <export name="*"/>
+      </library>
+   </runtime>
+
+   <requires>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.ui.editors"/>
+      <import plugin="org.eclipse.ui.workbench.texteditor"/>
+      <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.eclipse.jface"/>
+      <import plugin="gov.sandia.jess"/>
+      <import plugin="org.eclipse.ui.views"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.jdt.core"/>
+      <import plugin="org.eclipse.jdt.ui"/>
+      <import plugin="org.eclipse.swt"/>
+      <import plugin="org.junit"/>
+   </requires>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            icon="icons/jess-16x16.gif"
+            class="gov.sandia.jess.editor.JessEditor"
+            contributorClass="org.eclipse.ui.editors.text.TextEditorActionContributor"
+            name="Jess Editor"
+            id="gov.sandia.jess.editor.JessEditor"
+            extensions="clp,jess,pr,wme"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="gov.sandia.jess.editor.preferences.EditorPreferencePage"
+            name="Jess Editor"
+            id="gov.sandia.jess.editor.preferences.EditorPreferencePage">
+      </page>
+      <page
+            class="gov.sandia.jess.editor.preferences.JessTemplatePreferencePage"
+            category="gov.sandia.jess.editor.preferences.EditorPreferencePage"
+            name="Jess Templates"
+            id="gov.sandia.jess.editor.preferences.Templates"/>
+   </extension>
+   <extension
+         id="problem"
+         name="Jess Problem"
+         point="org.eclipse.core.resources.markers">
+      <super type="org.eclipse.core.resources.problemmarker"/>
+      <super type="org.eclipse.core.resources.textmarker"/>
+      <persistent value="true"/>
+      <attribute name="gov.sandia.jess.editor.errorCode"/>
+   </extension>
+
+
+<extension point="org.eclipse.ui.editorActions"> 
+   <editorContribution 
+      id="gov.sandia.jess.editor.SourceMenu" 
+      targetID="gov.sandia.jess.editor.JessEditor">
+      <menu
+            id="gov.sandia.jess.editor.menu.source"
+            label="&amp;Source"
+            path="edit">
+            <separator
+                  name="editGroup">
+            </separator>
+      </menu> 
+      <action
+            class="gov.sandia.jess.editor.formatting.JessFormatAction"
+            definitionId="gov.sandia.jess.commands.format"
+            id="gov.sandia.jess.editor.formatAction"
+            label="&amp;Format"
+            menubarPath="gov.sandia.jess.editor.menu.source/editGroup"
+            tooltip="Format code">
+      </action> 
+      <action
+            class="gov.sandia.jess.editor.JessToggleCommentAction"
+            definitionId="gov.sandia.jess.commands.toggleComment"
+            id="gov.sandia.jess.editor.toggleCommentAction"
+            label="Toggle &amp;Comment"
+            menubarPath="gov.sandia.jess.editor.menu.source/editGroup"
+            tooltip="Comment or uncomment line"/>
+            <action
+                  class="gov.sandia.jess.editor.quickfix.QuickFixMenuActionDelegate"
+                  definitionId="gov.sandia.jess.commands.quickFix"
+                  id="gov.sandia.jess.editor.quickFixAction"
+                  label="&amp;Quick Fix"
+                  menubarPath="gov.sandia.jess.editor.menu.source/editGroup"
+                  style="push"
+                  tooltip="Fix source code problems"/>
+            <action
+                  class="gov.sandia.jess.editor.formatting.PrettyPrintConstructAction"
+                  definitionId="gov.sandia.jess.commands.prettyPrintConstruct"
+                  id="gov.sandia.jess.editor.prettyPrintConstructAction"
+                  label="&amp;Pretty Print Construct"
+                  menubarPath="gov.sandia.jess.editor.menu.source/editGroup"
+                  tooltip="Pretty-print enclosing construct"/> 
+   </editorContribution>
+   <editorContribution
+         id="gov.sandia.jess.editor.EditMenu"
+         targetID="gov.sandia.jess.editor.JessEditor">
+      <action
+            class="gov.sandia.jess.editor.selection.SelectConstructAction"
+            definitionId="gov.sandia.jess.commands.selectConstruct"
+            id="gov.sandia.jess.editor.selectConstructAction"
+            label="Se&amp;lect Construct"
+            menubarPath="edit/editEnd"
+            tooltip="Select enclosing construct"/>
+   </editorContribution> 
+</extension>
+<extension
+      point="org.eclipse.ui.editors.templates">
+   <contextType
+         class="gov.sandia.jess.editor.templates.JessContextType"
+         id="gov.sandia.jess.editor.context.type"/>
+   <include file="templates/jess.xml"/>
+</extension>
+<extension
+      point="org.eclipse.ui.popupMenus">
+     <viewerContribution
+            targetID="#JessEditorRulerContext"
+            id="gov.sandia.jess.editor.JessEditorPopupActions">
+		<action
+               label="Add Task"
+               helpContextId="org.eclipse.ui.AddTask_action_context"
+               class="org.eclipse.ui.texteditor.TaskRulerAction"
+               menubarPath="additions"
+               id="org.eclipse.ui.texteditor.TaskRulerAction">
+         </action>
+         <action
+               label="Add Bookmark"
+               helpContextId="org.eclipse.ui.bookmark_action_context"
+               class="org.eclipse.ui.texteditor.BookmarkRulerAction"
+               menubarPath="additions"
+               id="org.eclipse.ui.texteditor.BookmarkRulerAction">
+         </action>
+         <action
+               label="Quick Fix"
+               definitionId="gov.sandia.jess.commands.quickFix"
+               class="gov.sandia.jess.editor.quickfix.QuickFixRulerActionDelegate"
+               menubarPath="additions"
+               id="gov.sandia.jess.editor.quickfix"/> 
+       </viewerContribution>
+</extension>
+<extension
+      point="org.eclipse.ui.ide.markerResolution">
+   <markerResolutionGenerator
+         class="gov.sandia.jess.editor.quickfix.JessMarkerResolutionGenerator"
+         markerType="gov.sandia.jess.editor.problem"/>
+</extension>
+<extension
+      point="org.eclipse.ui.commands">
+   <category
+         description="Jess Commands"
+         name="Jess"
+         id="gov.sandia.jess.commands"/>
+   <command
+         description="Fix a problem in your source"
+         categoryId="gov.sandia.jess.commands"
+         name="Quick Fix"
+         id="gov.sandia.jess.commands.quickFix"/>
+   <command
+         description="Comment or uncomment lines of source"
+         categoryId="gov.sandia.jess.commands"
+         name="Toggle Comment"
+         id="gov.sandia.jess.commands.toggleComment"/>
+   <command
+         description="Format your source code"
+         categoryId="gov.sandia.jess.commands"
+         name="Format"
+         id="gov.sandia.jess.commands.format"/>
+   <command
+         categoryId="gov.sandia.jess.commands"
+         description="Select the construct around the cursor"
+         id="gov.sandia.jess.commands.selectConstruct"
+         name="Select Construct"/>
+   <command
+         categoryId="gov.sandia.jess.commands"
+         description="Pretty-print enclosing construct"
+         id="gov.sandia.jess.commands.prettyPrintConstruct"
+         name="Pretty Print Construct"/>  
+         
+</extension>
+<extension
+      point="org.eclipse.ui.contexts">
+   <context
+         parentId="org.eclipse.ui.textEditorScope"
+         description="Editing Jess Source"
+         name="Editing Jess Source"
+         id="gov.sandia.jess.editor.context"/>
+</extension>
+
+<extension
+	id="JessDocumentSetupParticipant"
+	point="org.eclipse.core.filebuffers.documentSetup">
+	<participant
+		extensions="clp"
+		class="gov.sandia.jess.editor.JessEditorDocumentSetupParticipant">
+	</participant>
+</extension>
+<extension
+      point="org.eclipse.ui.bindings">
+	<!-- M1 is control on Windows, Command on Mac
+		 M2 is shift
+		 M3 is alt -->
+   <key
+         commandId="gov.sandia.jess.commands.toggleComment"
+         contextId="gov.sandia.jess.editor.context"
+         schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+         sequence="M1+M2+C"/>
+   <key
+         commandId="gov.sandia.jess.commands.quickFix"
+         contextId="gov.sandia.jess.editor.context"
+         schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+         sequence="M1+1"/> 
+   <key
+         commandId="gov.sandia.jess.commands.format"
+         contextId="gov.sandia.jess.editor.context"
+         schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+         sequence="M1+M2+F"/>
+   <key
+         commandId="gov.sandia.jess.commands.selectConstruct"
+         contextId="gov.sandia.jess.editor.context"
+         schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+         sequence="M1+M2+ARROW_UP"/>
+   <key
+         commandId="gov.sandia.jess.commands.prettyPrintConstruct"
+         contextId="gov.sandia.jess.editor.context"
+         schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+         sequence="M1+M2+P"/>
+</extension>
+    
+</plugin>

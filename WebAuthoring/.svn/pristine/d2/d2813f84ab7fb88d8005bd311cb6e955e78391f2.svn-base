@@ -1,0 +1,323 @@
+<html>
+<head>
+	<title>SimStudent Tutoring Interface</title>
+	<!-- Importing All the Libraries -->
+	
+	<link rel="stylesheet" type="text/css" href="styles/tutor.css">
+	
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+	<script type="text/javascript" src="raphael/raphael-min.js"></script>
+
+	<script type="text/javascript" src="src/ctat/CTATDateTime.js"></script>
+	<script type="text/javascript" src="src/ctat/CTATUtil/jstz.js"></script>
+
+	<script type="text/javascript" src="src/ctat/CTAT/CTATConfig.js"></script>
+	<script type="text/javascript" src="src/ctat/CTATUtil/CTATSandboxDriver.js"></script>
+	<script type="text/javascript" src="src/ctat/CTATUtil/CTATGuid.js"></script>
+	<script type="text/javascript" src="src/ctat/CTATGlobals.js"></script>	
+	<script type="text/javascript" src="src/ctat/CTATGlobalFunctions.js"></script>	
+	<script type="text/javascript" src="src/ctat/TutorShopAPIProxy.js"></script>	
+	<script type="text/javascript" src="src/ctat/appletTS.js"></script>
+
+	<script type="text/javascript" src="src/ctat/CTATComponentHierarchy/CTATBase.js"></script>
+	<script type="text/javascript" src="src/ctat/CTATHTMLManager.js"></script>
+	<script type="text/javascript" src="src/ctat/CTATUtil/CTATShellTools.js"></script>
+
+	<script type="text/javascript" src="src/ctat/CTATUtil/CTATVariable.js"></script>		
+	<script type="text/javascript" src="src/ctat/CTATStringUtil.js"></script>
+	<script type="text/javascript" src="src/ctat/CTAT/CTATXML.js"></script>		
+	<script type="text/javascript" src="src/ctat/CTATSerialization/CTATArgument.js"></script>
+	<script type="text/javascript" src="src/ctat/CTATSerialization/CTATSAI.js"></script>	
+	<script type="text/javascript" src="src/ctat/CTATSerialization/CTATComplexSAI.js"></script>		
+	<script type="text/javascript" src="src/ctat/CTATGraphicsTools.js"></script>
+	<script type="text/javascript" src="src/ctat/CTATShape.js"></script>
+	<script type="text/javascript" src="src/ctat/CTATCanvasComponent.js"></script>
+	<script type="text/javascript" src="src/ctat/CTATScrim.js"></script>
+
+	<script type="text/javascript" src="src/ctat/CTAT/CTATConnection.js"></script>
+	<script type="text/javascript" src="src/ctat/CTATCommunication/CTATMessage.js"></script>
+	<script type="text/javascript" src="src/ctat/CTATCommunication/CTATActionEvaluationData.js"></script>
+	<script type="text/javascript" src="src/ctat/CTATComponentHierarchy/CTATCompBase.js"></script>
+
+	<script type="text/javascript" src="src/ctat/CTATComponentHierarchy/CTATClickableComponent.js"></script>
+	<script type="text/javascript" src="src/ctat/CTATComponentHierarchy/CTATTutorableComponent.js"></script>
+	<script type="text/javascript" src="src/ctat/CTATComponentHierarchy/CTATButtonBasedComponent.js"></script>
+	<script type="text/javascript" src="src/ctat/CTATComponentHierarchy/CTATTextBasedComponent.js"></script>
+	<script type="text/javascript" src="src/ctat/CTATComponentHierarchy/CTATImageButtonComponent.js"></script>
+
+
+	<script type="text/javascript" src="src/ctat/CTATCSS.js"></script>	
+	<script type="text/javascript" src="src/ctat/CTATTools.js"></script>
+	<script type="text/javascript" src="src/ctat/CTATLinkData.js"></script>
+
+	<script type="text/javascript" src="src/ctat/CTATSerialization/CTATComponentReference.js"></script>
+	<script type="text/javascript" src="src/ctat/CTATSerialization/CTATComponentDescription.js"></script>    
+
+	<script type="text/javascript" src="src/ctat/CTATFlashVars.js"></script>
+	<script type="text/javascript" src="src/ctat/CTATContextData.js"></script>
+
+	<!-- Communication Libraries -->
+	<script type="text/javascript" src="src/ctat/CTAT/CTATCommLibrary.js"></script>
+	<script type="text/javascript" src="src/ctat/CTATCommunication/CTATCurriculumService.js"></script>
+	<script type="text/javascript" src="src/ctat/CTATCommunication/CTATLogMessageBuilder.js"></script>
+	<script type="text/javascript" src="src/ctat/CTATCommunication/CTATLoggingLibrary.js"></script>
+	<script type="text/javascript" src="src/ctat/CTATCommunication/CTATTutoringServiceMessageBuilder.js"></script>
+	<script type="text/javascript" src="src/ctat/CTATCommunication/CTATMessageHandler.js"></script>
+	<script type="text/javascript" src="src/ctat/CTATCommunication/CTATCommShell.js"></script>
+	<script type="text/javascript" src="src/ctat/CTATBinaryImages.js"></script>
+
+	<!-- Components Libraries -->
+	<script type="text/javascript" src="src/ctat/CTATComponents/CTATComponent.js"></script>
+	<script type="text/javascript" src="src/ctat/CTATComponents/CTATSkill.js"></script>
+	<script type="text/javascript" src="src/ctat/CTATComponents/CTATSkillSet.js"></script>
+	<script type="text/javascript" src="src/ctat/CTATComponents/CTATTextField.js"></script>
+	<script type="text/javascript" src="src/ctat/CTATComponents/CTATTextInput.js"></script>	
+	<script type="text/javascript" src="src/ctat/CTATComponents/CTATButton.js"></script>	
+	<script type="text/javascript" src="src/ctat/CTATComponents/CTATRadioButton.js"></script>
+	<script type="text/javascript" src="src/ctat/CTATComponents/CTATCheckBox.js"></script>
+	<script type="text/javascript" src="src/ctat/CTATComponents/CTATComboBox.js"></script>
+	<script type="text/javascript" src="src/ctat/CTATComponents/CTATImageButton.js"></script>
+	<script type="text/javascript" src="src/ctat/CTATComponents/CTATHintWindow.js"></script>
+	<script type="text/javascript" src="src/ctat/CTATComponents/CTATSkillWindow.js"></script>
+	<script type="text/javascript" src="src/ctat/CTATComponents/CTATAudioButton.js"></script>
+	<script type="text/javascript" src="src/ctat/CTATComponents/CTATVideo.js"></script>
+	<script type="text/javascript" src="src/ctat/CTATComponents/CTATTable.js"></script>
+	<script type="text/javascript" src="src/ctat/CTATComponents/CTATPlayButton.js"></script>
+
+	<!-- Example Tracer Libraries -->
+	<script type="text/javascript" src="src/ctat/CTATExampleTracer/CTATExampleTracerGraphVisualData.js"></script>
+	<script type="text/javascript" src="src/ctat/CTATExampleTracer/CTATExampleTracerLinkVisualData.js"></script>
+	<script type="text/javascript" src="src/ctat/CTATExampleTracer/CTATExampleTracerNodeVisualData.js"></script>
+
+	<script type="text/javascript" src="src/ctat/CTATUtil/CTATNameTranslator.js"></script>
+	<script type="text/javascript" src="src/ctat/CTATMobileTutorHandler.js"></script>
+	<script type="text/javascript" src="src/ctat/CTATTutor.js"></script>	
+
+	<!-- Main -->	
+	<script type="text/javascript" src="src/OTBGlobal.js"></script>
+	<script type="text/javascript" src="src/OTBGraphics.js"></script>
+	<script type="text/javascript" src="src/OTBGraph.js"></script>
+	<script type="text/javascript" src="src/OTBMain.js"></script>
+	<script type="text/javascript" src="src/OTBEditor.js"></script>
+
+	<!-- Google Drive Integration -->
+	<script type="text/javascript" src="src/drive/GoogleDrive.js"></script>
+	<script type="text/javascript" src="src/drive/DriveUI.js"></script>
+	
+<script type="text/javascript">
+mxBasePath = 'mxgraph/';
+</script>
+<script type="text/javascript" src="mxgraph/mxClient.js"></script>
+	
+	
+<!-- Google Sign In Scripts -->
+<script src="https://apis.google.com/js/api:client.js"></script>
+<script>
+function signOut() {
+    var ifr = document.createElement('iframe');
+    ifr.src = 'https://accounts.google.com/logout';
+    document.body.appendChild(ifr);
+    //location.reload();
+    window.location.href = "index.html";
+  }
+
+gapi.load('auth2', function() {
+  auth2 = gapi.auth2.init({
+    client_id: '647226128255-v13oivftpdv8pf14np5p1mglidt2nq52.apps.googleusercontent.com',
+    fetch_basic_profile: true,
+    scope: 'profile'
+  });
+
+  // Sign the user in, and then retrieve their ID.
+  auth2.signIn().then(function() {
+    if (auth2.isSignedIn.get()) {
+    var profile = auth2.currentUser.get().getBasicProfile();
+    console.log('ID: ' + profile.getId());
+    console.log('Name: ' + profile.getName());
+    document.getElementById('name').innerHTML = profile.getEmail();
+    console.log('Image URL: ' + profile.getImageUrl());
+    console.log('Email: ' + profile.getEmail());
+    }
+  });
+});
+</script>
+<!-- End of Sign In Scripts -->
+
+
+
+
+<!-- Google Drive Script -->
+<script>
+	
+	var canvasBkgdColor = "white";
+	var mygraphic = null; // this is the "canvas"
+		
+	var drive = new GoogleDrive();
+
+	var rootFolderName="TutorInterfaceFiles";
+	var preferenceFileName="preferences.json";
+	
+	//Google Drive Connection
+	function initDrive()
+	{
+		drive.authorize(true,function(authorized)
+		{
+			debug("Authorization:"+authorized);
+			
+			if(!authorized)
+			{		
+				window.parent.setAppStatus ("Google authorization failed. Please login and authorize.");
+				
+				window.parent.setFail (true);
+				
+				return;
+			}
+			
+			//status bar
+			var request = gapi.client.plus.people.get(
+			{
+				'userId' : 'me'
+			});
+		  
+			request.execute(function(me)
+			{
+				//window.parent.setAppStatus ("Logged in as: "+me.displayName);
+				//setStatus("Logged in as: "+me.displayName);
+			});
+				  
+			//setting default folder for tutor interface files 
+			var setRootFolder = function(rootFile)
+			{
+				rootFolder=rootFile.id;
+				
+				debug("Set rootFolder to "+rootFolder);
+				
+				drive.retrieveFile(preferenceFileName,rootFolder,managePreferences);//sets the preferences files, code below
+			};
+			
+			var manageRootFolder = function(files)
+			{
+				//debug(files);
+				
+				if(!files[0])
+				{
+					debug("Folder does not exist. Creating.");
+					drive.insertFolder(rootFolderName,null,setRootFolder);
+				}
+				else
+				{
+					debug("Folder exists.");
+					rootFolder=files[0].id;
+					debug("Set rootFolder to "+rootFolder);
+					drive.retrieveFile(preferenceFileName,rootFolder,managePreferences);//sets the preferences files, code below
+				}
+			};
+			
+			drive.retrieveFile(rootFolderName,null,manageRootFolder);
+		  
+			//sets the preferences file
+			//called above after setting the root folder
+			var setPreferenceFileId = function(preferenceF)
+			{
+				preferenceFileId=preferenceF.id;
+				
+				debug("Set preferences to "+preferenceFileId);
+				
+				drive.downloadFile(preferenceFileId,setPreferenceFile);
+			};
+			
+			var managePreferences = function(files)
+			{
+				//debug(files);
+				
+				if(!files[0])
+				{
+					debug(preferenceFileName+" does not exist. Creating.");
+					//drive.insertFile(preferenceFileName,"",null,[{id:rootFolder}],setPreferenceFileId); // TODO should this be here?
+				}
+				else
+				{
+					debug(preferenceFileName+" exists.");
+					preferenceFileId=files[0].id;
+					debug("Set preferences to "+preferenceFileId);
+					drive.downloadFile(preferenceFileId,setPreferenceFile);
+				}
+			};
+		  
+			var setPreferenceFile = function(preferenceFileText)
+			{
+				preferenceFile=preferenceFileText;
+				
+				debug("Text in "+preferenceFileName + " is "+preferenceFileText);
+				//saves preferences every 30 minutes
+				window.setInterval(savePreferences,30*60*1000);
+			};            
+		});    
+	}
+	/*
+	* Method to save the preferences file on drive
+	*/
+	var savePreferences = function()
+	{
+		var callback = function(file)
+		{
+			if(!file)
+			{
+				debug("Save preferences failed.");
+			}
+			else
+			{
+				debug("Save preferences success.");
+		}
+		}
+		
+		drive.updateFile(preferenceFileId,preferenceFile,callback);
+	}
+			
+	</script>
+
+<!-- This script must come after authorize since it calls authorize on loading the api -->
+		
+	<script type="text/javascript" src="https://apis.google.com/js/client.js?onload=initDrive"></script> 	
+
+<!-- End of Google Drive Script -->
+</head>
+
+<body>
+	<div id="wrap">
+		<div id="title">
+			<h1>Tutoring Interface</h1>
+		</div>
+		
+		<div id="left">
+			<img src="images/do_it.png" alt="Mountain View" style="width:100px;height:50px;"><br><br>
+			<img src="images/watch_me.png" alt="Mountain View" style="width:100px;height:50px;">
+		</div>
+		
+		<div id="canvas" onclick="file_open (loadInterfaceDescription)">
+			<p>Interface</p>
+		</div>
+		
+		<div id="right">
+			<p>Message Window</p>
+			<textarea width="100%" rows="5"></textarea>
+			<br><br>
+			<img src="images/new_problem.png" alt="Mountain View" style="width:160px;height:35px;">
+		</div>
+		
+		<div id="operations">
+			<table align="center">
+			  <tr>
+				<th><img src="images/yes.png" alt="Mountain View" style="width:110px;height:40px;"></th>
+				<th><img src="images/no.png" alt="Mountain View" style="width:110px;height:40px;"></th>
+			  </tr>
+			  </table>
+			  <table align="center">
+			  <tr>
+				<td>Skill Name: <input type="text" name="FirstName"><th><img src="images/enter.png" alt="Mountain View" style="width:100px;height:50px;"></th>
+			</table>
+		</div>
+	</div>
+</body>
+</html>

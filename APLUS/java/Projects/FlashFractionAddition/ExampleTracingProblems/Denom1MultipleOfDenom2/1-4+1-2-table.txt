@@ -1,0 +1,16 @@
+Problem Name	1412
+%(num1Given)%	1
+%(den1Given)%	4
+%(num2Given)%	1
+%(den2Given)%	2
+%(LCD)%	4
+%(num1Conv)%	1
+%(num2Conv)%	2
+%(numAnsFinal)%	3
+%(denConvNotLCD)%	8
+%(num1ConvNotLCD)%	2
+%(factor1NotLCD)%	2
+%(num2ConvNotLCD)%	4
+%(factor2NotLCD)%	4
+%(numAnsNotLCD)%	6
+%(factorSimplifyNotLCD)%	2

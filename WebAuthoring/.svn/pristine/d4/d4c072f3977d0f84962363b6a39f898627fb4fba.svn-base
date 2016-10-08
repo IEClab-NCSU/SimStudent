@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>HTML5 drag'n'drop file upload with Servlet</title>
+<script type="text/javascript" src="js/dnd.js"></script>
+<link rel="stylesheet" type="text/css" href="styles/dnd.css" />
+</head>
+<body>
+	<div id="dropbox">
+		Drag and drop a file here...<br /> Or <br /> <input type="file"
+			id="uploadFile" multiple onchange="readURL(this.files)" />
+	</div>
+	<div id="file_description">
+		<label for="title">Title</label><br />
+		<input id="title" type="text" size="30"/><br />
+		<label for="description">Description</label> <br />
+		<textarea  id="description" rows="4" cols="30" wrap="soft"></textarea>
+		<button type="submit" onclick="submitFile()">Save</button>
+	</div>
+	<br />
+	<div id="status">[File Upload Status]</div>
+	<br />
+	[File Preview]
+	<iframe id="preview_image" width="100%" height="300" title="File Preview">[File
+		preview]</iframe>
+</body>
+</html>

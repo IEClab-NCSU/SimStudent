@@ -1,0 +1,22 @@
+Index: MissController.java
+===================================================================
+--- MissController.java	(revision 20342)
++++ MissController.java	(working copy)
+@@ -343,7 +343,7 @@
+      *
+      */
+     public void startNewProblem() {
+-	getSimSt().startNewProblem();
++        getSimSt().startNewProblem();
+     }
+ 
+     /**
+@@ -1547,7 +1547,7 @@
+ 			wrapper = new SimStPLEWrapper((BR_Controller) controller);
+ 		else
+ 			wrapper = new TutorWrapper(controller);
+-        if (simStPleOnArg)
++        if (ssContestArg)
+         	wrapper = new GameShowWrapper((BR_Controller) controller);
+         return wrapper;
+ 	}

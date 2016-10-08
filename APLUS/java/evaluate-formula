@@ -1,0 +1,3 @@
+#!bash
+
+java -classpath lib/DorminWidgets.jar edu/cmu/pact/BehaviorRecorder/ProblemModel/Matcher/CTATFunctions "$*" 2>/dev/null

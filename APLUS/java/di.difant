@@ -1,0 +1,137 @@
+Index: source/edu/cmu/pact/miss/Rule.java
+===================================================================
+--- source/edu/cmu/pact/miss/Rule.java	(revision 21153)
++++ source/edu/cmu/pact/miss/Rule.java	(working copy)
+@@ -145,7 +145,9 @@
+ 
+     private ArrayList lhsPath = new ArrayList();
+     ArrayList getLhsPath() { return this.lhsPath; }
+-    private void addLhsPath( String lhsPath ) { this.lhsPath.add( lhsPath ); }
++    private void addLhsPath( String lhsPath ) { 
++    	lhsPath=lhsPath.replace("(value )", "(value nil)");
++    	this.lhsPath.add( lhsPath ); }
+ 
+     private ArrayList lhsTopologicalConsts = new ArrayList();
+     ArrayList getLhsTopologicalConsts() {
+@@ -351,7 +353,7 @@
+     // ad-hoc... 
+     private String problemVar = null;
+ 	
+-    public String toString() {
++    public String toString(Vector<Instruction> instructions) {
+    	
+     	
+ 	// reset problemVar
+@@ -384,7 +386,7 @@
+ 
+ 	String jessRule = "(" + DEFRULE + " " + getName() + "\n\n";
+ 	// printWmePaths bind a global variable problemVar
+-	jessRule += printWmePaths( saiVal );
++	jessRule += printWmePaths( saiVal, instructions);
+ 	jessRule += printTopologicalConditions() + "\n";
+ 	jessRule += printFeatureConditions( numFoA ) + "\n";
+ 	// jessRule += printTutorFactPath() + "\n";
+@@ -404,10 +406,43 @@
+ 	return jessRule;
+     }
+ 
+-  
++    final int FOA_NILL=1;
++    final int FOA_NOT_NILL=-1;
++    final int FOA_BOTH=0;
+     
++    /*  1 means foa was nill of all previous instructions
++     *  0 means foa was both nill and not nill of all previous instructions
++     * -1 means foa was not nill of all previous instructions
++     * */
++    int getFoaValueConstraint(int i, Vector<Instruction> instrunctions){
++
++    	int returnValue=-5; 			// random initial value to indicate returnValue is uninitialized   	
++    	boolean firstIteration=true;	//flag to detect first iteration.
++    	
++    	for (Instruction inst:instrunctions){
++    		
++    		String currentValue=inst.getValues().get(i+1).toString();
++    		int curValue= currentValue.equals("nil")? FOA_NILL:FOA_NOT_NILL;
++    		
++    		if (firstIteration){	//on the first iteration returnValue just copy the value
++    			returnValue=curValue;
++    			firstIteration=false;
++    		}
++    		else{
++    			//if returnValue is not the same as current value then we have both cases (nil and not-nil).
++    			if (returnValue!=curValue){
++    				returnValue=FOA_BOTH;
++    				break;
++    			}
++    		}
++    			
++    	}
++    	    			
++    	return returnValue;
++    }
++    
+     // Given a WME value for the "selection" WME
+-    private String printWmePaths( String saiVal ) {
++    private String printWmePaths( String saiVal, Vector<Instruction> instructions ) {
+     
+ 	String str = "";
+ 	int no = 0;
+@@ -416,23 +451,11 @@
+ 	int seedNum = getLhsPath().size() - (isDoneRule() ? 0 : 1);
+ 	for (int i = 0; i < seedNum ; i++) {
+ 			
+-			/* nbarba 06/27/14: focus of attention was forced to be "not empty" in the lhs of rules (i.e. &~nil). While developing an oliTutor 
+-			 * for problem solving, we discovered that there are cases where we need the focus of attention to be empty. In the past, the preceeding 
+-			 * function call "replaceValName" had the last argument always true, so &~nill was always printed. 
+-			 * Variable foaMustBeNotNill now checks if focus of attention is empty, and is passed onto "replaceValName" (last argument). 
+-		 	 * */
+-			boolean foaMustBeNotNill=true;	
+-			
+-			if (getLhsPath().get(i).toString().contains("value nil")){		   		//if path entry has a null value				
+-				foaMustBeNotNill=false;												//then don't use &~nill but add &nill				
+-			}
+-		
+-			
+-
+-			String line = replaceValName((String)getLhsPath().get(i), no++, foaMustBeNotNill);
++			int foaValueConstraint=getFoaValueConstraint(i, instructions);
++	
++			String line = replaceValName((String)getLhsPath().get(i), no++, foaValueConstraint);
+  
+-		
+-		 
++ 
+             line = processNameSlotValue(line,i);
+             str += line+"\n";
+ 	}
+@@ -495,13 +518,26 @@
+ 	return replaceValName( path, id, false );
+     }
+     */
+-  
+     
++    /*
++     * */
++    private String foaConstraintValueToPrint(int value){
++    	String returnValue;
++    	if (value==FOA_NILL)
++    		returnValue="&nil";
++    	else if (value==FOA_NOT_NILL)
++    		returnValue="&~nil";
++    	else
++    		returnValue="";
++    	return returnValue;
++    }
++    
+     // Replace the "value" slot value with "?valN" where N is a
+     // specified id.  Add "&~nil" at the end if notNil is true.
+-    private String replaceValName( String path, int id, boolean notNil ) {
++    private String replaceValName( String path, int id, int foaValueConstraint ) {
+     	    	
+-	String newVal = "(value " + "?val" + id + (notNil ? "&~nil" : "&nil" ) + ")";
++	//String newVal = "(value " + "?val" + id + (notNil ? "&~nil" : "&nil" ) + ")";
++    String newVal = "(value " + "?val" + id + foaConstraintValueToPrint(foaValueConstraint) + ")";
+ 	String result = path.replaceFirst( "\\(value .+?\\)", newVal );
+ 	
+         //replace (name *) with (name ?foa_index)

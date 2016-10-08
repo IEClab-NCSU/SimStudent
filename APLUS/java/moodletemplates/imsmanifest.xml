@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<manifest identifier="CQFaceism" version="1.0" xmlns="http://www.imsproject.org/xsd/imscp_rootv1p1p2" xmlns:adlcp="http://www.adlnet.org/xsd/adlcp_rootv1p2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsproject.org/xsd/imscp_rootv1p1p2 imscp_rootv1p1p2.xsd http://www.imsglobal.org/xsd/imsmd_rootv1p2p1 imsmd_rootv1p2p1.xsd http://www.adlnet.org/xsd/adlcp_rootv1p2 adlcp_rootv1p2.xsd">
+<organizations default="CMU"><organization identifier="CMU"><title>CTAT Example Moodle Tutors</title><item identifier="problemset" identifierref="ctat" isvisible="true"><title>CTAT Example Moodle Tutors</title></item></organization></organizations><metadata>
+<schema>ADL SCORM</schema>
+<schemaversion>1.2</schemaversion>
+<lom xmlns="http://www.imsglobal.org/xsd/imsmd_rootv1p2p1">
+</lom>
+</metadata>
+<resources>
+<resource adlcp:scormtype="sco" href="adlcp_rootv1p2.xsd" identifier="ctat-0" type="webcontent">
+<file href="adlcp_rootv1p2.xsd"/>
+</resource>
+<resource adlcp:scormtype="sco" href="dolmsfunctions.js" identifier="ctat-1" type="webcontent">
+<file href="dolmsfunctions.js"/>
+</resource>
+<resource adlcp:scormtype="sco" href="ims_xml.xsd" identifier="ctat-2" type="webcontent">
+<file href="ims_xml.xsd"/>
+</resource>
+<resource adlcp:scormtype="sco" href="imscp_root1p1p2.xsd" identifier="ctat-3" type="webcontent">
+<file href="imscp_root1p1p2.xsd"/>
+</resource>
+<resource adlcp:scormtype="sco" href="imsmd_rootv1p2p1.xsd" identifier="ctat-4" type="webcontent">
+<file href="imsmd_rootv1p2p1.xsd"/>
+</resource>
+<resource adlcp:scormtype="sco" href="scormfs.js" identifier="ctat-5" type="webcontent">
+<file href="scormfs.js"/>
+</resource>
+<resource adlcp:scormtype="sco" href="writeFlash.js" identifier="ctat-6" type="webcontent">
+<file href="writeFlash.js"/>
+</resource>
+<resource adlcp:scormtype="sco" href="imsmanifest.xml" identifier="ctat-7" type="webcontent">
+<file href="imsmanifest.xml"/>
+</resource>
+<resource adlcp:scormtype="sco" href="index.html" identifier="ctat" type="webcontent">
+<file href="index.html"/>
+</resource>
+<resource adlcp:scormtype="sco" href="fractionAddition-as3.swf" identifier="ctat-8" type="webcontent">
+<file href="fractionAddition-as3.swf"/>
+</resource>
+<resource adlcp:scormtype="sco" href="1416.brd" identifier="ctat-9" type="webcontent">
+<file href="1416.brd"/>
+</resource>
+</resources>
+</manifest>

@@ -1,0 +1,18 @@
+package edu.cmu.pact.miss.userDef.algebra;
+
+
+import java.util.Vector;
+
+public class GetNumSymbolsList extends EqFeaturePredicate {
+	public GetNumSymbolsList () {
+	    setArity(1);
+	    setName("get-num-symbols-list");
+	    setReturnValueType(TYPE_EXP_LIST);
+	    setArgValueType(new int[]{TYPE_ARITH_EXP});
+	}
+	public String apply(Vector args) 
+	{		
+            String ret = getNumSymbolsList((String)args.get(0)); 
+            return ret;
+	}
+}

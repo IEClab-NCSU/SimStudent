@@ -1,0 +1,19 @@
+;; Thu Feb 24 23:29:56 2005
+;; 
+;; A list of feature predicates
+;; 
+;; A single line shows a predicate with '#' and/or '-' indicating a
+;; type of argument.  '#' shows that the corresponding argument must
+;; be determined at the time when the predicate is called, whereas '-'
+;; shows that the argument can be a variable.  
+
+edu.cmu.pact.miss.userDef.oldpredicates.HasCoefficient(#)
+edu.cmu.pact.miss.userDef.oldpredicates.VarTerm(#)
+edu.cmu.pact.miss.userDef.oldpredicates.Monomial(#)
+edu.cmu.pact.miss.userDef.oldpredicates.Polynomial(#)
+edu.cmu.pact.miss.userDef.oldpredicates.HasVarTerm(#)
+edu.cmu.pact.miss.userDef.oldpredicates.HasConstTerm(#)
+edu.cmu.pact.miss.userDef.oldpredicates.Homogeneous(#)
+edu.cmu.pact.miss.userDef.oldpredicates.NotNull(#)
+edu.cmu.pact.miss.userDef.oldpredicates.CanBeSimplified(#)
+edu.cmu.pact.miss.userDef.oldpredicates.IsFractionTerm(#)

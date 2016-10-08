@@ -1,0 +1,1 @@
+java -jar Minerva3.jar $1 $2

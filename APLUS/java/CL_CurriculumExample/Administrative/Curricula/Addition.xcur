@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="US-ASCII"  ?>
+<LMS:Curriculum xmlns:LMS="http://www.carnegielearning.com/LMS"
+                id="Addition" name="Addition">
+  <LMS:Unit id="1-Column-Addition" />
+  <LMS:Unit id="2-Column-Addition" />
+</LMS:Curriculum>

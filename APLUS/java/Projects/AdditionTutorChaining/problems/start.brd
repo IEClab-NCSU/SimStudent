@@ -1,0 +1,876 @@
+<?xml version="1.0" standalone="yes"?>
+
+<stateGraph firstCheckAllStates="false" caseInsensitive="true" unordered="false" lockWidget="true" version="1.0" suppressStudentFeedback="false">
+    <startNodeMessages>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>StartProblem</MessageType>
+                <ProblemName>start</ProblemName>
+            </properties>
+        </message>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>GroupDescriptionStart</MessageType>
+            </properties>
+        </message>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>GroupDescriptionEnd</MessageType>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>NumberOfTables</MessageType>
+                <Number>1</Number>
+            </properties>
+        </message>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>JCommButton</WidgetType>
+                <CommName>Hint</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+                <jessDeftemplates>
+                    <value>(deftemplate button (slot name))</value>
+                </jessDeftemplates>
+                <jessInstances>
+                    <value>(assert (button (name Hint)))</value>
+                </jessInstances>
+            </properties>
+        </message>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>JCommButton</WidgetType>
+                <CommName>Done</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+                <jessDeftemplates>
+                    <value>(deftemplate button (slot name))</value>
+                </jessDeftemplates>
+                <jessInstances>
+                    <value>(assert (button (name Done)))</value>
+                </jessInstances>
+            </properties>
+        </message>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>JCommTable</WidgetType>
+                <CommName>table1</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+                <Rows>4</Rows>
+                <Columns>6</Columns>
+                <jessDeftemplates>
+                    <value>(deftemplate table (slot name) (multislot columns))</value>
+                    <value>(deftemplate column (slot name) (multislot cells) (slot position) (slot description))</value>
+                    <value>(deftemplate cell (slot name) (slot value) (slot description) (slot row-number))</value>
+                </jessDeftemplates>
+                <jessInstances>
+                    <value>(bind ?table1_C1R1 (assert (cell (name table1_C1R1))))</value>
+                    <value>(bind ?table1_C1R2 (assert (cell (name table1_C1R2))))</value>
+                    <value>(bind ?table1_C1R3 (assert (cell (name table1_C1R3))))</value>
+                    <value>(bind ?table1_C1R4 (assert (cell (name table1_C1R4))))</value>
+                    <value>(bind ?table1_Column1(assert (column (name table1_Column1) (cells ?table1_C1R1 ?table1_C1R2 ?table1_C1R3 ?table1_C1R4 ) (position 1))))</value>
+                    <value>(bind ?table1_C2R1 (assert (cell (name table1_C2R1))))</value>
+                    <value>(bind ?table1_C2R2 (assert (cell (name table1_C2R2))))</value>
+                    <value>(bind ?table1_C2R3 (assert (cell (name table1_C2R3))))</value>
+                    <value>(bind ?table1_C2R4 (assert (cell (name table1_C2R4))))</value>
+                    <value>(bind ?table1_Column2(assert (column (name table1_Column2) (cells ?table1_C2R1 ?table1_C2R2 ?table1_C2R3 ?table1_C2R4 ) (position 2))))</value>
+                    <value>(bind ?table1_C3R1 (assert (cell (name table1_C3R1))))</value>
+                    <value>(bind ?table1_C3R2 (assert (cell (name table1_C3R2))))</value>
+                    <value>(bind ?table1_C3R3 (assert (cell (name table1_C3R3))))</value>
+                    <value>(bind ?table1_C3R4 (assert (cell (name table1_C3R4))))</value>
+                    <value>(bind ?table1_Column3(assert (column (name table1_Column3) (cells ?table1_C3R1 ?table1_C3R2 ?table1_C3R3 ?table1_C3R4 ) (position 3))))</value>
+                    <value>(bind ?table1_C4R1 (assert (cell (name table1_C4R1))))</value>
+                    <value>(bind ?table1_C4R2 (assert (cell (name table1_C4R2))))</value>
+                    <value>(bind ?table1_C4R3 (assert (cell (name table1_C4R3))))</value>
+                    <value>(bind ?table1_C4R4 (assert (cell (name table1_C4R4))))</value>
+                    <value>(bind ?table1_Column4(assert (column (name table1_Column4) (cells ?table1_C4R1 ?table1_C4R2 ?table1_C4R3 ?table1_C4R4 ) (position 4))))</value>
+                    <value>(bind ?table1_C5R1 (assert (cell (name table1_C5R1))))</value>
+                    <value>(bind ?table1_C5R2 (assert (cell (name table1_C5R2))))</value>
+                    <value>(bind ?table1_C5R3 (assert (cell (name table1_C5R3))))</value>
+                    <value>(bind ?table1_C5R4 (assert (cell (name table1_C5R4))))</value>
+                    <value>(bind ?table1_Column5(assert (column (name table1_Column5) (cells ?table1_C5R1 ?table1_C5R2 ?table1_C5R3 ?table1_C5R4 ) (position 5))))</value>
+                    <value>(bind ?table1_C6R1 (assert (cell (name table1_C6R1))))</value>
+                    <value>(bind ?table1_C6R2 (assert (cell (name table1_C6R2))))</value>
+                    <value>(bind ?table1_C6R3 (assert (cell (name table1_C6R3))))</value>
+                    <value>(bind ?table1_C6R4 (assert (cell (name table1_C6R4))))</value>
+                    <value>(bind ?table1_Column6(assert (column (name table1_Column6) (cells ?table1_C6R1 ?table1_C6R2 ?table1_C6R3 ?table1_C6R4 ) (position 6))))</value>
+                    <value>(assert (table (name table1) (columns ?table1_Column1 ?table1_Column2 ?table1_Column3 ?table1_Column4 ?table1_Column5 ?table1_Column6 )))</value>
+                </jessInstances>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>table1_C4R2</value>
+                </Selection>
+                <Action>
+                    <value>UpdateTable</value>
+                </Action>
+                <Input>
+                    <value>6</value>
+                </Input>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>table1_C5R2</value>
+                </Selection>
+                <Action>
+                    <value>UpdateTable</value>
+                </Action>
+                <Input>
+                    <value>7</value>
+                </Input>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>table1_C6R2</value>
+                </Selection>
+                <Action>
+                    <value>UpdateTable</value>
+                </Action>
+                <Input>
+                    <value>8</value>
+                </Input>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>table1_C4R3</value>
+                </Selection>
+                <Action>
+                    <value>UpdateTable</value>
+                </Action>
+                <Input>
+                    <value>1</value>
+                </Input>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>table1_C5R3</value>
+                </Selection>
+                <Action>
+                    <value>UpdateTable</value>
+                </Action>
+                <Input>
+                    <value>8</value>
+                </Input>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>table1_C6R3</value>
+                </Selection>
+                <Action>
+                    <value>UpdateTable</value>
+                </Action>
+                <Input>
+                    <value>7</value>
+                </Input>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>StartStateEnd</MessageType>
+            </properties>
+        </message>
+    </startNodeMessages>
+    <node locked="false" doneState="false">
+        <text>start</text>
+        <uniqueID>1</uniqueID>
+        <dimension>
+            <x>246</x>
+            <y>29</y>
+            <width>41</width>
+            <height>25</height>
+        </dimension>
+    </node>
+    <node locked="false" doneState="false">
+        <text>state1</text>
+        <uniqueID>2</uniqueID>
+        <dimension>
+            <x>175</x>
+            <y>131</y>
+            <width>51</width>
+            <height>25</height>
+        </dimension>
+    </node>
+    <node locked="false" doneState="false">
+        <text>state2</text>
+        <uniqueID>3</uniqueID>
+        <dimension>
+            <x>263</x>
+            <y>242</y>
+            <width>51</width>
+            <height>25</height>
+        </dimension>
+    </node>
+    <node locked="false" doneState="false">
+        <text>state3</text>
+        <uniqueID>4</uniqueID>
+        <dimension>
+            <x>170</x>
+            <y>364</y>
+            <width>51</width>
+            <height>25</height>
+        </dimension>
+    </node>
+    <node locked="false" doneState="false">
+        <text>state4</text>
+        <uniqueID>5</uniqueID>
+        <dimension>
+            <x>278</x>
+            <y>481</y>
+            <width>51</width>
+            <height>25</height>
+        </dimension>
+    </node>
+    <node locked="false" doneState="false">
+        <text>state5</text>
+        <uniqueID>6</uniqueID>
+        <dimension>
+            <x>278</x>
+            <y>601</y>
+            <width>51</width>
+            <height>25</height>
+        </dimension>
+    </node>
+    <node locked="false" doneState="false">
+        <text>state6</text>
+        <uniqueID>7</uniqueID>
+        <dimension>
+            <x>359</x>
+            <y>132</y>
+            <width>51</width>
+            <height>25</height>
+        </dimension>
+    </node>
+    <node locked="false" doneState="false">
+        <text>state7</text>
+        <uniqueID>8</uniqueID>
+        <dimension>
+            <x>351</x>
+            <y>354</y>
+            <width>51</width>
+            <height>25</height>
+        </dimension>
+    </node>
+    <node locked="false" doneState="false">
+        <text>Done</text>
+        <uniqueID>9</uniqueID>
+        <dimension>
+            <x>281</x>
+            <y>721</y>
+            <width>45</width>
+            <height>25</height>
+        </dimension>
+    </node>
+    <edge>
+        <actionLabel preferPathMark="true" optional="false">
+            <text>unnamed action</text>
+            <studentHintRequest></studentHintRequest>
+            <stepSuccessfulCompletion></stepSuccessfulCompletion>
+            <stepStudentError></stepStudentError>
+            <uniqueID>1</uniqueID>
+            <message>
+                <verb>NotePropertySet</verb>
+                <properties>
+                    <MessageType>InterfaceAction</MessageType>
+                    <Selection>
+                        <value>table1_C6R4</value>
+                    </Selection>
+                    <Action>
+                        <value>UpdateTable</value>
+                    </Action>
+                    <Input>
+                        <value>5</value>
+                    </Input>
+                </properties>
+            </message>
+            <buggyMessage></buggyMessage>
+            <successMessage></successMessage>
+            <hintMessage>You need to add the two digits in this column.</hintMessage>
+            <hintMessage>Adding 8 and 7 gives 15.  Since 15 is greater than 10, you will need to write a carry.</hintMessage>
+            <hintMessage>The sum that you have, 15,  is greater than 9. So you need to carry 10 of the 15 to the tens column. And you need to write the rest of the sum, 5, at the bottom of the ones column.</hintMessage>
+            <actionType>Correct Action</actionType>
+            <oldActionType>Correct Action</oldActionType>
+            <checkedStatus>SUCCESS</checkedStatus>
+            <matcher>
+                <matcherType>ExactMatcher</matcherType>
+                <matcherParameter>UpdateTable</matcherParameter>
+                <matcherParameter>5</matcherParameter>
+                <matcherParameter>table1_C6R4</matcherParameter>
+                <matcherParameter>Student</matcherParameter>
+            </matcher>
+            <dimension>
+                <width>115</width>
+                <height>16</height>
+            </dimension>
+        </actionLabel>
+        <preCheckedStatus>SUCCESS</preCheckedStatus>
+        <rule>
+            <text>add-addends addition</text>
+            <indicator>-1</indicator>
+            <dimension>
+                <width>98</width>
+                <height>16</height>
+            </dimension>
+        </rule>
+        <sourceID>1</sourceID>
+        <destID>2</destID>
+        <traversalCount>0</traversalCount>
+        <SimSt></SimSt>
+    </edge>
+    <edge>
+        <actionLabel preferPathMark="true" optional="false">
+            <text>unnamed action</text>
+            <studentHintRequest></studentHintRequest>
+            <stepSuccessfulCompletion></stepSuccessfulCompletion>
+            <stepStudentError></stepStudentError>
+            <uniqueID>2</uniqueID>
+            <message>
+                <verb>NotePropertySet</verb>
+                <properties>
+                    <MessageType>InterfaceAction</MessageType>
+                    <Selection>
+                        <value>table1_C5R1</value>
+                    </Selection>
+                    <Action>
+                        <value>UpdateTable</value>
+                    </Action>
+                    <Input>
+                        <value>1</value>
+                    </Input>
+                </properties>
+            </message>
+            <buggyMessage></buggyMessage>
+            <successMessage></successMessage>
+            <hintMessage>Write carry from the ones to the next column.</hintMessage>
+            <hintMessage>The sum that you have, 15, is greater than 9. So you need to carry 10 of the 15 to the tens column.</hintMessage>
+            <hintMessage>Write 1 at the top of the second column from the right.</hintMessage>
+            <actionType>Correct Action</actionType>
+            <oldActionType>Correct Action</oldActionType>
+            <checkedStatus>SUCCESS</checkedStatus>
+            <matcher>
+                <matcherType>ExactMatcher</matcherType>
+                <matcherParameter>UpdateTable</matcherParameter>
+                <matcherParameter>1</matcherParameter>
+                <matcherParameter>table1_C5R1</matcherParameter>
+                <matcherParameter>Student</matcherParameter>
+            </matcher>
+            <dimension>
+                <width>115</width>
+                <height>16</height>
+            </dimension>
+        </actionLabel>
+        <preCheckedStatus>SUCCESS</preCheckedStatus>
+        <rule>
+            <text>write-carry addition</text>
+            <indicator>-1</indicator>
+            <dimension>
+                <width>89</width>
+                <height>16</height>
+            </dimension>
+        </rule>
+        <sourceID>2</sourceID>
+        <destID>3</destID>
+        <traversalCount>0</traversalCount>
+        <SimSt></SimSt>
+    </edge>
+    <edge>
+        <actionLabel preferPathMark="true" optional="false">
+            <text>unnamed action</text>
+            <studentHintRequest></studentHintRequest>
+            <stepSuccessfulCompletion></stepSuccessfulCompletion>
+            <stepStudentError></stepStudentError>
+            <uniqueID>4</uniqueID>
+            <message>
+                <verb>NotePropertySet</verb>
+                <properties>
+                    <MessageType>InterfaceAction</MessageType>
+                    <Selection>
+                        <value>table1_C5R4</value>
+                    </Selection>
+                    <Action>
+                        <value>UpdateTable</value>
+                    </Action>
+                    <Input>
+                        <value>6</value>
+                    </Input>
+                </properties>
+            </message>
+            <buggyMessage></buggyMessage>
+            <successMessage></successMessage>
+            <hintMessage>There is a carry in to this column so you need to add the value carried in.</hintMessage>
+            <hintMessage>This gives 7 + 8 + 1 equals 16.</hintMessage>
+            <hintMessage>Please enter '6' in the highlighted cell.</hintMessage>
+            <actionType>Correct Action</actionType>
+            <oldActionType>Correct Action</oldActionType>
+            <checkedStatus>SUCCESS</checkedStatus>
+            <matcher>
+                <matcherType>ExactMatcher</matcherType>
+                <matcherParameter>UpdateTable</matcherParameter>
+                <matcherParameter>6</matcherParameter>
+                <matcherParameter>table1_C5R4</matcherParameter>
+                <matcherParameter>Student</matcherParameter>
+            </matcher>
+            <dimension>
+                <width>115</width>
+                <height>16</height>
+            </dimension>
+        </actionLabel>
+        <preCheckedStatus>SUCCESS</preCheckedStatus>
+        <rule>
+            <text>add-carry addition</text>
+            <indicator>-1</indicator>
+            <dimension>
+                <width>85</width>
+                <height>16</height>
+            </dimension>
+        </rule>
+        <sourceID>3</sourceID>
+        <destID>4</destID>
+        <traversalCount>0</traversalCount>
+        <SimSt></SimSt>
+    </edge>
+    <edge>
+        <actionLabel preferPathMark="true" optional="false">
+            <text>unnamed action</text>
+            <studentHintRequest></studentHintRequest>
+            <stepSuccessfulCompletion></stepSuccessfulCompletion>
+            <stepStudentError></stepStudentError>
+            <uniqueID>6</uniqueID>
+            <message>
+                <verb>NotePropertySet</verb>
+                <properties>
+                    <MessageType>InterfaceAction</MessageType>
+                    <Selection>
+                        <value>table1_C4R1</value>
+                    </Selection>
+                    <Action>
+                        <value>UpdateTable</value>
+                    </Action>
+                    <Input>
+                        <value>1</value>
+                    </Input>
+                </properties>
+            </message>
+            <buggyMessage></buggyMessage>
+            <successMessage></successMessage>
+            <hintMessage>Write carry from the tens to the next column.</hintMessage>
+            <hintMessage>The sum that you have, 16, is greater than 9. So you need to carry 10 of the 16 to the hundreds column.</hintMessage>
+            <hintMessage>Write 1 at the top of the third column from the right.</hintMessage>
+            <actionType>Correct Action</actionType>
+            <oldActionType>Correct Action</oldActionType>
+            <checkedStatus>SUCCESS</checkedStatus>
+            <matcher>
+                <matcherType>ExactMatcher</matcherType>
+                <matcherParameter>UpdateTable</matcherParameter>
+                <matcherParameter>1</matcherParameter>
+                <matcherParameter>table1_C4R1</matcherParameter>
+                <matcherParameter>Student</matcherParameter>
+            </matcher>
+            <dimension>
+                <width>115</width>
+                <height>16</height>
+            </dimension>
+        </actionLabel>
+        <preCheckedStatus>SUCCESS</preCheckedStatus>
+        <rule>
+            <text>write-carry addition</text>
+            <indicator>-1</indicator>
+            <dimension>
+                <width>89</width>
+                <height>16</height>
+            </dimension>
+        </rule>
+        <sourceID>4</sourceID>
+        <destID>5</destID>
+        <traversalCount>0</traversalCount>
+        <SimSt></SimSt>
+    </edge>
+    <edge>
+        <actionLabel preferPathMark="true" optional="false">
+            <text>unnamed action</text>
+            <studentHintRequest></studentHintRequest>
+            <stepSuccessfulCompletion></stepSuccessfulCompletion>
+            <stepStudentError></stepStudentError>
+            <uniqueID>8</uniqueID>
+            <message>
+                <verb>NotePropertySet</verb>
+                <properties>
+                    <MessageType>InterfaceAction</MessageType>
+                    <Selection>
+                        <value>table1_C4R4</value>
+                    </Selection>
+                    <Action>
+                        <value>UpdateTable</value>
+                    </Action>
+                    <Input>
+                        <value>8</value>
+                    </Input>
+                </properties>
+            </message>
+            <buggyMessage></buggyMessage>
+            <successMessage></successMessage>
+            <hintMessage>There is a carry in to this column so you need to add the value carried in.</hintMessage>
+            <hintMessage>This gives 6 + 1 + 1 equals 8.</hintMessage>
+            <hintMessage>Please enter '8' in the highlighted cell.</hintMessage>
+            <actionType>Correct Action</actionType>
+            <oldActionType>Correct Action</oldActionType>
+            <checkedStatus>SUCCESS</checkedStatus>
+            <matcher>
+                <matcherType>ExactMatcher</matcherType>
+                <matcherParameter>UpdateTable</matcherParameter>
+                <matcherParameter>8</matcherParameter>
+                <matcherParameter>table1_C4R4</matcherParameter>
+                <matcherParameter>Student</matcherParameter>
+            </matcher>
+            <dimension>
+                <width>115</width>
+                <height>16</height>
+            </dimension>
+        </actionLabel>
+        <preCheckedStatus>SUCCESS</preCheckedStatus>
+        <rule>
+            <text>add-carry addition</text>
+            <indicator>-1</indicator>
+            <dimension>
+                <width>85</width>
+                <height>16</height>
+            </dimension>
+        </rule>
+        <sourceID>5</sourceID>
+        <destID>6</destID>
+        <traversalCount>0</traversalCount>
+        <SimSt></SimSt>
+    </edge>
+    <edge>
+        <actionLabel preferPathMark="false" optional="false">
+            <text>unnamed action</text>
+            <studentHintRequest></studentHintRequest>
+            <stepSuccessfulCompletion></stepSuccessfulCompletion>
+            <stepStudentError></stepStudentError>
+            <uniqueID>10</uniqueID>
+            <message>
+                <verb>NotePropertySet</verb>
+                <properties>
+                    <MessageType>InterfaceAction</MessageType>
+                    <Selection>
+                        <value>table1_C5R1</value>
+                    </Selection>
+                    <Action>
+                        <value>UpdateTable</value>
+                    </Action>
+                    <Input>
+                        <value>1</value>
+                    </Input>
+                </properties>
+            </message>
+            <buggyMessage></buggyMessage>
+            <successMessage></successMessage>
+            <hintMessage>Write carry from the ones to the next column.</hintMessage>
+            <hintMessage>The sum that you have, 15, is greater than 9. So you need to carry 10 of the 15 to the tens column.</hintMessage>
+            <hintMessage>Write 1 at the top of the second column from the right.</hintMessage>
+            <actionType>Correct Action</actionType>
+            <oldActionType>Correct Action</oldActionType>
+            <checkedStatus>SUCCESS</checkedStatus>
+            <matcher>
+                <matcherType>ExactMatcher</matcherType>
+                <matcherParameter>UpdateTable</matcherParameter>
+                <matcherParameter>1</matcherParameter>
+                <matcherParameter>table1_C5R1</matcherParameter>
+                <matcherParameter>Student</matcherParameter>
+            </matcher>
+            <dimension>
+                <width>115</width>
+                <height>16</height>
+            </dimension>
+        </actionLabel>
+        <preCheckedStatus>SUCCESS</preCheckedStatus>
+        <rule>
+            <text>write-carry addition</text>
+            <indicator>-1</indicator>
+            <dimension>
+                <width>89</width>
+                <height>16</height>
+            </dimension>
+        </rule>
+        <sourceID>1</sourceID>
+        <destID>7</destID>
+        <traversalCount>0</traversalCount>
+        <SimSt></SimSt>
+    </edge>
+    <edge>
+        <actionLabel preferPathMark="true" optional="false">
+            <text>unnamed action</text>
+            <studentHintRequest></studentHintRequest>
+            <stepSuccessfulCompletion></stepSuccessfulCompletion>
+            <stepStudentError></stepStudentError>
+            <uniqueID>12</uniqueID>
+            <message>
+                <verb>NotePropertySet</verb>
+                <properties>
+                    <MessageType>InterfaceAction</MessageType>
+                    <Selection>
+                        <value>table1_C6R4</value>
+                    </Selection>
+                    <Action>
+                        <value>UpdateTable</value>
+                    </Action>
+                    <Input>
+                        <value>5</value>
+                    </Input>
+                </properties>
+            </message>
+            <buggyMessage></buggyMessage>
+            <successMessage></successMessage>
+            <hintMessage>You need to add the two digits in this column.</hintMessage>
+            <hintMessage>Adding 8 and 7 gives 15.</hintMessage>
+            <hintMessage>The sum that you have, 15,  is greater than 9. You have carried 10 of the 15 to the tens column. Now you need to write the rest of the sum, 5, at the bottom of the ones column.</hintMessage>
+            <actionType>Correct Action</actionType>
+            <oldActionType>Correct Action</oldActionType>
+            <checkedStatus>SUCCESS</checkedStatus>
+            <matcher>
+                <matcherType>ExactMatcher</matcherType>
+                <matcherParameter>UpdateTable</matcherParameter>
+                <matcherParameter>5</matcherParameter>
+                <matcherParameter>table1_C6R4</matcherParameter>
+                <matcherParameter>Student</matcherParameter>
+            </matcher>
+            <dimension>
+                <width>115</width>
+                <height>16</height>
+            </dimension>
+        </actionLabel>
+        <preCheckedStatus>SUCCESS</preCheckedStatus>
+        <rule>
+            <text>write-sum addition</text>
+            <indicator>-1</indicator>
+            <dimension>
+                <width>85</width>
+                <height>16</height>
+            </dimension>
+        </rule>
+        <sourceID>7</sourceID>
+        <destID>3</destID>
+        <traversalCount>0</traversalCount>
+        <SimSt></SimSt>
+    </edge>
+    <edge>
+        <actionLabel preferPathMark="false" optional="false">
+            <text>unnamed action</text>
+            <studentHintRequest></studentHintRequest>
+            <stepSuccessfulCompletion></stepSuccessfulCompletion>
+            <stepStudentError></stepStudentError>
+            <uniqueID>14</uniqueID>
+            <message>
+                <verb>NotePropertySet</verb>
+                <properties>
+                    <MessageType>InterfaceAction</MessageType>
+                    <Selection>
+                        <value>table1_C4R1</value>
+                    </Selection>
+                    <Action>
+                        <value>UpdateTable</value>
+                    </Action>
+                    <Input>
+                        <value>1</value>
+                    </Input>
+                </properties>
+            </message>
+            <buggyMessage></buggyMessage>
+            <successMessage></successMessage>
+            <hintMessage>Write carry from the tens to the next column.</hintMessage>
+            <hintMessage>The sum that you have, 16, is greater than 9. So you need to carry 10 of the 16 to the hundreds column.</hintMessage>
+            <hintMessage>Write 1 at the top of the third column from the right.</hintMessage>
+            <actionType>Correct Action</actionType>
+            <oldActionType>Correct Action</oldActionType>
+            <checkedStatus>SUCCESS</checkedStatus>
+            <matcher>
+                <matcherType>ExactMatcher</matcherType>
+                <matcherParameter>UpdateTable</matcherParameter>
+                <matcherParameter>1</matcherParameter>
+                <matcherParameter>table1_C4R1</matcherParameter>
+                <matcherParameter>Student</matcherParameter>
+            </matcher>
+            <dimension>
+                <width>115</width>
+                <height>16</height>
+            </dimension>
+        </actionLabel>
+        <preCheckedStatus>SUCCESS</preCheckedStatus>
+        <rule>
+            <text>write-carry addition</text>
+            <indicator>-1</indicator>
+            <dimension>
+                <width>89</width>
+                <height>16</height>
+            </dimension>
+        </rule>
+        <sourceID>3</sourceID>
+        <destID>8</destID>
+        <traversalCount>0</traversalCount>
+        <SimSt></SimSt>
+    </edge>
+    <edge>
+        <actionLabel preferPathMark="true" optional="false">
+            <text>unnamed action</text>
+            <studentHintRequest></studentHintRequest>
+            <stepSuccessfulCompletion></stepSuccessfulCompletion>
+            <stepStudentError></stepStudentError>
+            <uniqueID>16</uniqueID>
+            <message>
+                <verb>NotePropertySet</verb>
+                <properties>
+                    <MessageType>InterfaceAction</MessageType>
+                    <Selection>
+                        <value>table1_C5R4</value>
+                    </Selection>
+                    <Action>
+                        <value>UpdateTable</value>
+                    </Action>
+                    <Input>
+                        <value>6</value>
+                    </Input>
+                </properties>
+            </message>
+            <buggyMessage></buggyMessage>
+            <successMessage></successMessage>
+            <hintMessage>There is a carry in to this column so you need to add the value carried in.</hintMessage>
+            <hintMessage>This gives 7 + 8 + 1 equals 16.</hintMessage>
+            <hintMessage>Please enter '6' in the highlighted cell.</hintMessage>
+            <actionType>Correct Action</actionType>
+            <oldActionType>Correct Action</oldActionType>
+            <checkedStatus>SUCCESS</checkedStatus>
+            <matcher>
+                <matcherType>ExactMatcher</matcherType>
+                <matcherParameter>UpdateTable</matcherParameter>
+                <matcherParameter>6</matcherParameter>
+                <matcherParameter>table1_C5R4</matcherParameter>
+                <matcherParameter>Student</matcherParameter>
+            </matcher>
+            <dimension>
+                <width>115</width>
+                <height>16</height>
+            </dimension>
+        </actionLabel>
+        <preCheckedStatus>SUCCESS</preCheckedStatus>
+        <rule>
+            <text>add-carry addition</text>
+            <indicator>-1</indicator>
+            <dimension>
+                <width>85</width>
+                <height>16</height>
+            </dimension>
+        </rule>
+        <sourceID>8</sourceID>
+        <destID>5</destID>
+        <traversalCount>0</traversalCount>
+        <SimSt></SimSt>
+    </edge>
+    <edge>
+        <actionLabel preferPathMark="true" optional="false">
+            <text>unnamed action</text>
+            <studentHintRequest></studentHintRequest>
+            <stepSuccessfulCompletion></stepSuccessfulCompletion>
+            <stepStudentError></stepStudentError>
+            <uniqueID>17</uniqueID>
+            <message>
+                <verb>NotePropertySet</verb>
+                <properties>
+                    <MessageType>InterfaceAction</MessageType>
+                    <Selection>
+                        <value>done</value>
+                    </Selection>
+                    <Action>
+                        <value>ButtonPressed</value>
+                    </Action>
+                    <Input>
+                        <value>-1</value>
+                    </Input>
+                </properties>
+            </message>
+            <buggyMessage>No, this is not correct.</buggyMessage>
+            <successMessage></successMessage>
+            <hintMessage>You have answered all the questions. Please click on the Done button to proceed to the next problem.</hintMessage>
+            <actionType>Correct Action</actionType>
+            <oldActionType>Correct Action</oldActionType>
+            <checkedStatus>SUCCESS</checkedStatus>
+            <matcher>
+                <matcherType>ExactMatcher</matcherType>
+                <matcherParameter>ButtonPressed</matcherParameter>
+                <matcherParameter>-1</matcherParameter>
+                <matcherParameter>done</matcherParameter>
+                <matcherParameter>Student</matcherParameter>
+            </matcher>
+            <dimension>
+                <width>84</width>
+                <height>16</height>
+            </dimension>
+        </actionLabel>
+        <preCheckedStatus>SUCCESS</preCheckedStatus>
+        <rule>
+            <text>done Done</text>
+            <indicator>-1</indicator>
+            <dimension>
+                <width>55</width>
+                <height>16</height>
+            </dimension>
+        </rule>
+        <sourceID>6</sourceID>
+        <destID>9</destID>
+        <traversalCount>0</traversalCount>
+        <SimSt></SimSt>
+    </edge>
+    <productionRule>
+        <ruleName>done</ruleName>
+        <productionSet>Done</productionSet>
+    </productionRule>
+    <productionRule>
+        <ruleName>add-carry</ruleName>
+        <productionSet>addition</productionSet>
+    </productionRule>
+    <productionRule>
+        <ruleName>write-carry</ruleName>
+        <productionSet>addition</productionSet>
+    </productionRule>
+    <productionRule>
+        <ruleName>write-sum</ruleName>
+        <productionSet>addition</productionSet>
+    </productionRule>
+    <productionRule>
+        <ruleName>add-addends</ruleName>
+        <productionSet>addition</productionSet>
+    </productionRule>
+</stateGraph>
+

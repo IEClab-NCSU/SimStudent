@@ -1,0 +1,320 @@
+<?xml version="1.0" standalone="yes"?>
+
+<stateGraph firstCheckAllStates="false" caseInsensitive="true" unordered="false" lockWidget="true" version="1.0" suppressStudentFeedback="false">
+    <startNodeMessages>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>StartProblem</MessageType>
+                <ProblemName>start</ProblemName>
+            </properties>
+        </message>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>GroupDescriptionStart</MessageType>
+            </properties>
+        </message>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>GroupDescriptionEnd</MessageType>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>NumberOfTables</MessageType>
+                <Number>1</Number>
+            </properties>
+        </message>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>CommButton</WidgetType>
+                <CommName>Hint</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+                <jessDeftemplates>
+                    <value>(deftemplate button (slot name))</value>
+                </jessDeftemplates>
+                <jessInstances>
+                    <value>(assert (button (name Hint)))</value>
+                </jessInstances>
+            </properties>
+        </message>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>CommButton</WidgetType>
+                <CommName>Done</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+                <jessDeftemplates>
+                    <value>(deftemplate button (slot name))</value>
+                </jessDeftemplates>
+                <jessInstances>
+                    <value>(assert (button (name Done)))</value>
+                </jessInstances>
+            </properties>
+        </message>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>Solver</WidgetType>
+                <CommName>solver1</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+                <jessDeftemplates>
+                    <value>(deftemplate solver (slot name) (slot value))</value>
+                </jessDeftemplates>
+                <jessInstances>
+                    <value>(bind ?solver1 (assert (solver (name solver1))))</value>
+                </jessInstances>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>solver1</value>
+                </Selection>
+                <Action>
+                    <value>nextEquation</value>
+                </Action>
+                <Input>
+                    <value>5y-6=9</value>
+                </Input>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>StartStateEnd</MessageType>
+            </properties>
+        </message>
+    </startNodeMessages>
+    <node locked="false" doneState="false">
+        <text>-5y-6=9</text>
+        <uniqueID>1</uniqueID>
+        <dimension>
+            <x>246</x>
+            <y>29</y>
+            <width>41</width>
+            <height>25</height>
+        </dimension>
+    </node>
+    <node locked="false" doneState="false">
+        <text>state1</text>
+        <uniqueID>2</uniqueID>
+        <dimension>
+            <x>175</x>
+            <y>131</y>
+            <width>51</width>
+            <height>25</height>
+        </dimension>
+    </node>
+    <node locked="false" doneState="true">
+        <text>Done</text>
+        <uniqueID>9</uniqueID>
+        <dimension>
+            <x>281</x>
+            <y>721</y>
+            <width>45</width>
+            <height>25</height>
+        </dimension>
+    </node>
+    <edge>
+        <actionLabel preferPathMark="true" optional="false" minTraversals="1" maxTraversals="999">
+            <text>unnamed action</text>
+            <studentHintRequest></studentHintRequest>
+            <stepSuccessfulCompletion></stepSuccessfulCompletion>
+            <stepStudentError></stepStudentError>
+            <uniqueID>1</uniqueID>
+            <message>
+                <verb>NotePropertySet</verb>
+                <properties>
+                    <MessageType>InterfaceAction</MessageType>
+                    <Selection>
+                        <value>solver1</value>
+                    </Selection>
+                    <Action>
+                        <value>solvefor_y</value>
+                    </Action>
+                    <Input>
+                        <value>-5y-6=9</value>
+                    </Input>
+                </properties>
+            </message>
+            <buggyMessage></buggyMessage>
+            <successMessage></successMessage>
+            <hintMessage>You need to add the two digits in this column.</hintMessage>
+            <hintMessage>Adding 8 and 7 gives 15.  Since 15 is greater than 10, you will need to write a carry.</hintMessage>
+            <hintMessage>The sum that you have, 15,  is greater than 9. So you need to carry 10 of the 15 to the tens column. And you need to write the rest of the sum, 5, at the bottom of the ones column.</hintMessage>
+            <actionType>Correct Action</actionType>
+            <oldActionType>Correct Action</oldActionType>
+            <checkedStatus>SUCCESS</checkedStatus>
+            <solverMatcher AutoSimplify="false">
+                <Selection>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">solver1</matcherParameter>
+                    </matcher>
+                </Selection>
+                <Action>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">solvefor_y</matcherParameter>
+                    </matcher>
+                </Action>
+                <Input>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">-5y-6=9</matcherParameter>
+                    </matcher>
+                </Input>
+                <Actor>Student</Actor>
+            </solverMatcher>
+            <dimension>
+                <width>115</width>
+                <height>16</height>
+            </dimension>
+        </actionLabel>
+        <preCheckedStatus>SUCCESS</preCheckedStatus>
+        <rule>
+            <text>Make_variable_positive Solver</text>
+            <indicator>-1</indicator>
+            <dimension>
+                <width>98</width>
+                <height>16</height>
+            </dimension>
+        </rule>
+        <rule>
+            <text>Remove_negative_coefficient Solver</text>
+            <indicator>-1</indicator>
+            <dimension>
+                <width>98</width>
+                <height>16</height>
+            </dimension>
+        </rule>
+        <rule>
+            <text>Remove_coefficient Solver</text>
+            <indicator>-1</indicator>
+            <dimension>
+                <width>98</width>
+                <height>16</height>
+            </dimension>
+        </rule>
+        <rule>
+            <text>Select_Combine_Terms Solver</text>
+            <indicator>-1</indicator>
+            <dimension>
+                <width>98</width>
+                <height>16</height>
+            </dimension>
+        </rule>
+        <rule>
+            <text>ax+b=c,_negative Solver</text>
+            <indicator>-1</indicator>
+            <dimension>
+                <width>98</width>
+                <height>16</height>
+            </dimension>
+        </rule>
+        <rule>
+            <text>Remove_constant Solver</text>
+            <indicator>-1</indicator>
+            <dimension>
+                <width>98</width>
+                <height>16</height>
+            </dimension>
+        </rule>
+        <sourceID>1</sourceID>
+        <destID>2</destID>
+        <traversalCount>0</traversalCount>
+        <SimSt></SimSt>
+    </edge>
+    <edge>
+        <actionLabel preferPathMark="true" optional="false">
+            <text>unnamed action</text>
+            <studentHintRequest></studentHintRequest>
+            <stepSuccessfulCompletion></stepSuccessfulCompletion>
+            <stepStudentError></stepStudentError>
+            <uniqueID>17</uniqueID>
+            <message>
+                <verb>NotePropertySet</verb>
+                <properties>
+                    <MessageType>InterfaceAction</MessageType>
+                    <Selection>
+                        <value>done</value>
+                    </Selection>
+                    <Action>
+                        <value>ButtonPressed</value>
+                    </Action>
+                    <Input>
+                        <value>-1</value>
+                    </Input>
+                </properties>
+            </message>
+            <buggyMessage>No, this is not correct.</buggyMessage>
+            <successMessage></successMessage>
+            <hintMessage>You have answered all the questions. Please click on the Done button to proceed to the next problem.</hintMessage>
+            <actionType>Correct Action</actionType>
+            <oldActionType>Correct Action</oldActionType>
+            <checkedStatus>SUCCESS</checkedStatus>
+            <matcher>
+                <matcherType>ExactMatcher</matcherType>
+                <matcherParameter>ButtonPressed</matcherParameter>
+                <matcherParameter>-1</matcherParameter>
+                <matcherParameter>done</matcherParameter>
+                <matcherParameter>Student</matcherParameter>
+            </matcher>
+            <dimension>
+                <width>84</width>
+                <height>16</height>
+            </dimension>
+        </actionLabel>
+        <preCheckedStatus>SUCCESS</preCheckedStatus>
+        <rule>
+            <text>done Done</text>
+            <indicator>-1</indicator>
+            <dimension>
+                <width>55</width>
+                <height>16</height>
+            </dimension>
+        </rule>
+        <sourceID>2</sourceID>
+        <destID>9</destID>
+        <traversalCount>0</traversalCount>
+        <SimSt></SimSt>
+    </edge>
+    <productionRule>
+        <ruleName>done</ruleName>
+        <productionSet>Done</productionSet>
+    </productionRule>
+    <productionRule>
+        <ruleName>Make_variable_positive</ruleName>
+        <productionSet>Solver</productionSet>
+    </productionRule>
+    <productionRule>
+        <ruleName>Remove_negative_coefficient</ruleName>
+        <productionSet>Solver</productionSet>
+    </productionRule>
+    <productionRule>
+        <ruleName>Remove_coefficient</ruleName>
+        <productionSet>Solver</productionSet>
+    </productionRule>
+    <productionRule>
+        <ruleName>Select_Combine_Terms</ruleName>
+        <productionSet>Solver</productionSet>
+    </productionRule>
+    <productionRule>
+        <ruleName>Remove_constant</ruleName>
+        <productionSet>Solver</productionSet>
+    </productionRule>
+    <productionRule>
+        <ruleName>ax+b=c,_negative</ruleName>
+        <productionSet>Solver</productionSet>
+    </productionRule>
+</stateGraph>

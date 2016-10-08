@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jnlp href="TSApplet.jnlp" codebase="/ctat_applet">
+  <information>
+    <title>TSApplet</title>
+    <vendor>CMU</vendor>
+    <offline-allowed/>
+  </information>
+  <security>
+    <all-permissions/>
+  </security>
+  <resources>
+    <java href="http://java.sun.com/products/autodl/j2se" version="1.6+"/>
+    <jar href="TSApplet.jar" main="true"/>
+    <jar href="jdom.jar" main="false"/>
+    <jar href="logclient.jar" main="false"/>
+    <jar href="logging.jar" main="false"/>
+    <jar href="runcc.jar" main="false"/>
+    <jar href="HARTNetworking.jar" main="false"/>
+    <jar href="jess.jar" main="false"/>
+    <property name="DebugCodes" value="ls,applet,tsltsp,tsltstp"/>
+  </resources>
+  <applet-desc name="TSApplet" main-class="edu.cmu.pact.JavascriptBridge.JSBridge" width="1" height="1"/>
+</jnlp>

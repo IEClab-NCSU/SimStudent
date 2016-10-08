@@ -1,0 +1,46 @@
+#Note - Apparently if you stack enough messages, we start getting strange results.  
+#       It is also possible that there's an incorrect message in here that needs to be fixed
+#       -Michael Weber
+<message><verb>NotePropertySet</verb><properties><MessageType>InterfaceIdentification</MessageType><Guid>3F08E8D5-319D-D74D-E319-DBE62903E616</Guid></properties></message>
+
+<message><verb>NotePropertySet</verb><properties><MessageType>SetPreferences</MessageType><ProblemName>ChemPT_3T_62_IU.brd</ProblemName><auth_token>myAuth_token</auth_token><school_name>CMU</school_name><log_service_url>http://learnlab.web.cmu.edu/log/server</log_service_url><problem_name>myGraphName</problem_name><session_id>mySessionID</session_id><user_guid>myUniqueUserIdentifier</user_guid><course_name>mySubjectMatter_Arithmetic</course_name><section_name>mySectionName__Addition</section_name><unit_name>myUnitName__Fractions</unit_name><BehaviorRecorderMode>AuthorTimeTutoring</BehaviorRecorderMode><auth_token>myAuth_token</auth_token><source_id>PACT_CTAT_FLASH</source_id><question_file>ChemPT_3T_62_IU.brd</question_file></properties></message>
+
+<message><verb>NotePropertySet</verb><properties><MessageType>InterfaceAction</MessageType><Selection><value>Denominator0Cancel</value></Selection><Action><value>UpdateCheckBox</value></Action><Input><value>: true</value></Input></properties></message>
+
+<message><verb>NotePropertySet</verb><properties><MessageType>InterfaceAction</MessageType><Selection><value>Numerator2Value</value></Selection><Action><value>UpdateTextField</value></Action><Input><value>33</value></Input></properties></message>
+
+<message><verb>NotePropertySet</verb><properties><MessageType>InterfaceAction</MessageType><Selection><value>done</value></Selection><Action><value>ButtonPressed</value></Action><Input><value>-1</value></Input></properties></message>
+
+<message><verb>NotePropertySet</verb><properties><MessageType>InterfaceAction</MessageType><Selection><value>Term0Definition</value></Selection><Action><value>UpdateComboBox</value></Action><Input><value>Given Value</value></Input></properties></message>
+
+<message><verb>NotePropertySet</verb><properties><MessageType>InterfaceAction</MessageType><Selection><value>Term1Definition</value></Selection><Action><value>UpdateComboBox</value></Action><Input><value>Unit Conversion</value></Input></properties></message>
+
+<message><verb>NotePropertySet</verb><properties><MessageType>InterfaceAction</MessageType><Selection><value>Numerator1Value</value></Selection><Action><value>UpdateTextField</value></Action><Input><value>1</value></Input></properties></message>
+
+<message><verb>NotePropertySet</verb><properties><MessageType>InterfaceAction</MessageType><Selection><value>Denominator1Value</value></Selection><Action><value>UpdateTextField</value></Action><Input><value>4000</value></Input></properties></message>
+
+<message><verb>NotePropertySet</verb><properties><MessageType>InterfaceAction</MessageType><Selection><value>Denominator1Value</value></Selection><Action><value>UpdateTextField</value></Action><Input><value>1000</value></Input></properties></message>
+
+<message><verb>NotePropertySet</verb><properties><MessageType>InterfaceAction</MessageType><Selection><value>Numerator0Cancel</value></Selection><Action><value>UpdateCheckBox</value></Action><Input><value>: true</value></Input></properties></message>
+
+<message><verb>NotePropertySet</verb><properties><MessageType>InterfaceAction</MessageType><Selection><value>Numerator1Units</value></Selection><Action><value>UpdateComboBox</value></Action><Input><value>g</value></Input></properties></message>
+
+<message><verb>NotePropertySet</verb><properties><MessageType>InterfaceAction</MessageType><Selection><value>Denominator1Units</value></Selection><Action><value>UpdateComboBox</value></Action><Input><value>mg</value></Input></properties></message>
+
+<message><verb>NotePropertySet</verb><properties><MessageType>InterfaceAction</MessageType><Selection><value>Denominator1Substance</value></Selection><Action><value>UpdateComboBox</value></Action><Input><value>Canadian</value></Input></properties></message>
+
+<message><verb>NotePropertySet</verb><properties><MessageType>InterfaceAction</MessageType><Selection><value>Numerator1Substance</value></Selection><Action><value>UpdateComboBox</value></Action><Input><value>COH4</value></Input></properties></message>
+
+<message><verb>NotePropertySet</verb><properties><MessageType>InterfaceAction</MessageType><Selection><value>Denominator1Substance</value></Selection><Action><value>UpdateComboBox</value></Action><Input><value>COH4</value></Input></properties></message>
+
+<message><verb>NotePropertySet</verb><properties><MessageType>InterfaceAction</MessageType><Selection><value>Denominator1Cancel</value></Selection><Action><value>UpdateCheckBox</value></Action><Input><value>: true</value></Input></properties></message>
+
+<message><verb>NotePropertySet</verb><properties><MessageType>InterfaceAction</MessageType><Selection><value>Numerator4Value</value></Selection><Action><value>UpdateTextField</value></Action><Input><value>.011</value></Input></properties></message>
+
+<message><verb>NotePropertySet</verb><properties><MessageType>InterfaceAction</MessageType><Selection><value>Numerator4Units</value></Selection><Action><value>UpdateComboBox</value></Action><Input><value>g</value></Input></properties></message>
+
+<message><verb>NotePropertySet</verb><properties><MessageType>InterfaceAction</MessageType><Selection><value>Numerator4Substance</value></Selection><Action><value>UpdateComboBox</value></Action><Input><value>COH4</value></Input></properties></message>
+
+<message><verb>NotePropertySet</verb><properties><MessageType>InterfaceAction</MessageType><Selection><value>Numerator4Value</value></Selection><Action><value>UpdateTextField</value></Action><Input><value>.0106</value></Input></properties></message>
+
+<message><verb>NotePropertySet</verb><properties><MessageType>InterfaceAction</MessageType><Selection><value>done</value></Selection><Action><value>ButtonPressed</value></Action><Input><value>-1</value></Input></properties></message>

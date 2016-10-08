@@ -1,0 +1,24 @@
+@CHARSET "ISO-8859-1";
+body {
+	margin: 5px 10px;
+	padding: 10px 10px;
+}
+#dropbox {
+	width: 130px;
+	height: 130px;
+	border: 1px dashed gray;
+	border-radius: 5px;
+	padding: 70px;
+	color: gray;
+	text-align: center;
+	float: left;
+}
+#file_description {
+	width: 100px;
+	height: 130px;
+	margin-left: 20px;
+	float: left;
+}
+#status {
+	clear: both;
+}

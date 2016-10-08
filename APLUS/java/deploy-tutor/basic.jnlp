@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<!-- JNLP File for SwingSet2 Demo Application --> 
+<jnlp spec="1.0+" codebase="__CODEBASE__" href="__TUTOR_NAME__.jnlp"> 
+    <information> 
+        <title>__TUTOR_NAME__</title> 
+        <vendor>CMU</vendor> 
+        <homepage href="__TUTOR_NAME__.html"/> 
+        <description>__TUTOR_NAME__</description>   
+        <offline-allowed/> 
+    </information> 
+    <security> 
+        <all-permissions/> 
+    </security> 
+    <resources> 
+        <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/> 
+        <jar href="__TUTOR_NAME__.jar"/> 
+        <jar href="lib/ctat.jar"/> 
+        <jar href="lib/TableLayout.jar"/>
+        <jar href="lib/idw.jar"/> 
+        <jar href="lib/jdom.jar"/> 
+        __JESS_JAR__
+        <jar href="lib/jgraphlayout.jar"/> 
+        <jar href="lib/jnlp.jar"/>
+        <jar href="lib/junit.jar"/> 
+        <jar href="lib/logclient.jar"/> 
+        <jar href="lib/logging.jar"/>
+        <jar href="lib/runcc.jar"/>
+        <jar href="lib/xalan.jar"/>
+        <jar href="lib/xml-writer.jar"/>
+        __SIM_STUDENT_JARS__
+        <property name="noCtatWindow" value="true"/>
+    </resources> 
+    <application-desc main-class="__MAIN_CLASS__">
+        <argument>-Dschool_name=__SCHOOL_NAME__</argument>
+        <argument>-Dcourse_name=__COURSE_NAME__</argument>
+        <argument>-Dunit_name=__UNIT_NAME__</argument>
+        <argument>-Dsection_name=__SECTION_NAME__</argument>
+        <argument>-DBehaviorRecorderVisible=false</argument>
+        <argument>-DProblemFileLocation=__BRD_FILE__</argument>
+        <argument>-DBehaviorRecorderMode=__BR_MODE__</argument>
+    </application-desc> 
+</jnlp> 

@@ -1,0 +1,279 @@
+<project name="deploy-tutor" default="deploy-files" >
+
+	<property file="${user.home}/build.properties"/>
+	<property file="build.properties" />
+	
+	<!--Uncomment the property local-install to enable local (file) installation - mps -->
+	<!--property name="local-install" value="true" /-->
+	<property name="tutor-name-tag" value="__TUTOR_NAME__" />
+	<property name="main-name-tag" value="__MAIN_CLASS__" />
+	<property name="brd-name-tag" value="__BRD_FILE__" />
+	<property name="school-name-tag" value="__SCHOOL_NAME__" />
+	<property name="course-name-tag" value="__COURSE_NAME__" />
+	<property name="unit-name-tag" value="__UNIT_NAME__" />
+	<property name="section-name-tag" value="__SECTION_NAME__" />
+	<property name="br-mode-tag" value="__BR_MODE__" />
+	<property name="codebase-tag" value="__CODEBASE__" />
+	<property name="jess-jar-tag" value="__JESS_JAR__" />
+	<property name="sim-student-jars-tag" value="__SIM_STUDENT_JARS__" />
+	<property name="default-codebase" value="http://learnlab.web.cmu.edu/~pact/tutors/"/>
+	
+	<!--condition property="default-codebase"
+		value="file:///g:/AT_1_4/AuthoringTools/java/deploy-tutor/test/"
+		else="http://learnlab.web.cmu.edu/~pact/tutors/">
+		<istrue value="${local-install}"/>
+	</condition-->
+	<dirname property="parent-dir" file="." />
+	<dirname property="lib-dir" file="../lib/jnlp.jar" />
+	<property name="projects-dir" value="../Projects/" />
+	<property name="server" value="learnlab.web.cmu.edu" />
+	<property name="server-dir" value="/oli/private/pact/public_html/tutors" />
+	<property name="server-login" value="mike4" />
+	<property name="server-password" value="" />
+
+	<property name="master-jar" value="ctat.jar" />
+	<property name="preferences-xml" value="edu/cmu/pact/Preferences/InstallationPreferences.xml" />
+	<property name="tmp_jar_location" value="_tmpjar"/>
+	
+	<!--Execute this target if others fail on "can't rename" errors.-->
+	<target name="clean">
+		<delete failonerror="false">
+			<fileset dir="${tmp_jar_location}"/>
+			<fileset dir="_tmp"/>
+			<fileset dir="temp"/>
+			<fileset dir="."
+				includes="**/*.jar,**/*.jnlp,**/*.html"
+				excludes="**/jsch.jar,**/basic.*"/>
+		</delete>
+		
+	</target>
+
+	<target name="build" depends="get-input">
+		<property name="jar-file" value="${descriptive-name}.jar"/>
+		<property name="html-file" value="${descriptive-name}.html"/>
+		<property name="jnlp-file" value="${descriptive-name}.jnlp"/>
+		<antcall target="clean-one"/>
+		<antcall target="build-jar"/>
+		<antcall target="build-deployable"/>
+	</target>
+
+	<target name="get-input">
+		<input message="Enter descriptive name of tutor:" addproperty="descriptive-name"/>
+		<input message="Enter tutor folder (relative to Projects/ folder):" addproperty="tutor-dir"/>
+		<input message="Enter main class of tutor (relative to Projects/${tutor-dir}:" addproperty="main-class"/>
+		<loadfile property="cls-txt" srcFile="../Projects/${tutor-dir}/${main-class}.class" failonerror="true"/>
+		<input message="Enter brd file (relative to Projects/ folder) BE SURE TO USE FORWARD SLASHES! (/) :" addproperty="brd-file"/>
+		<loadfile property="brd-txt" srcFile="../Projects/${brd-file}" failonerror="true"/>
+		<input message="Enter school name:" defaultvalue="school1" addproperty="school-name"/>
+		<input message="Enter course name:" defaultvalue="course1" addproperty="course-name"/>
+		<input message="Enter unit name:" defaultvalue="unit1" addproperty="unit-name"/>
+		<input message="Enter section name:" defaultvalue="section1" addproperty="section-name"/>
+		<input message="Enter &quot;J&quot; for Jess tutor, &quot;T&quot; for TDK tutor (leave empty for default Example Tracing):" validargs=",E,e,J,j,T,t" defaultvalue="E" addproperty="br-mode-initial"/>
+		<input message="Enter codebase (leave empty for default ${default-codebase}:" defaultvalue="${default-codebase}" addproperty="codebase"/>
+		<condition property="br-mode" value="Cognitive Tutor (Jess)">
+			<equals arg1="${br-mode-initial}" arg2="J" casesensitive="false" trim="true"/>
+		</condition>
+		<condition property="br-mode" value="Cognitive Tutor (TDK)">
+			<equals arg1="${br-mode-initial}" arg2="T" casesensitive="false" trim="true"/>
+		</condition>
+		<condition property="br-mode" value="Example-tracing Tutor">
+			<equals arg1="${br-mode-initial}" arg2="E" casesensitive="false" trim="true"/>
+		</condition>
+		<condition property="jess-jar" value="&lt;jar href=&quot;lib/jess.jar&quot;/&gt;" else="">
+			<available file="../lib/jess.jar" property="jess.jar.present"/>
+		</condition>
+		<fileset id="sim-student-jars" dir="${lib-dir}" defaultexcludes="yes">
+			<include name="aima.jar"/>
+			<include name="mylib.jar"/>
+			<include name="cl/**/*.jar"/>
+		</fileset>
+		<pathconvert property="sim-student-jars" refid="sim-student-jars" pathsep="${line.separator}        " dirsep="/">
+			<mapper type="glob" from="${lib-dir}${file.separator}*" to="&lt;jar href=&quot;lib/*&quot;/&gt;"/>
+		</pathconvert>
+	</target>
+	
+	<target name="clean-one">
+		<delete failonerror="false">
+			<fileset dir="temp" includes="**/${descriptive-name}.*"/>
+		</delete>
+	</target>
+
+	<target name="sign-one-jar">
+		<input message="Enter jar file name:" addproperty="jar-file"/>
+		<signjar jar="${jar-file}" keystore="../lib/PACTkeyStore" alias="mike" storepass="pact123" />
+	</target>
+
+	<target name="build-jar">
+			
+		<mkdir dir="temp"/>
+		<jar jarfile="temp/${jar-file}" compress="true" update="false" duplicate="preserve">
+			<fileset dir="${projects-dir}" includes="${tutor-dir}/**"/>
+			<fileset dir="${projects-dir}" includes="${brd-file}"/>
+		</jar>	
+		<signjar jar="temp/${jar-file}" keystore="../lib/PACTkeyStore" alias="mike" storepass="pact123" />
+	</target>
+
+	<target name="build-jar-all-tutors" description="build and sign a study's jar with multiple tutors and .brd files">
+		<input message="Enter parent folder (relative to current folder):" addproperty="parent-dir"/>		
+		<input message="Enter tutor folder (relative to parent folder):" addproperty="tutor-dir"/>		
+		<input message="Enter jar file name:" addproperty="jar-file"/>
+		<delete failonerror="false">
+			<fileset dir="temp"/>
+		</delete>
+		<mkdir dir="temp"/>
+		<jar jarfile="temp/${jar-file}" compress="true" update="false" duplicate="preserve">
+			<fileset dir="${parent-dir}" includes="${tutor-dir}/**"/>
+			<fileset dir="${parent-dir}" includes="**/*.brd"/>
+		</jar>	
+		<signjar jar="temp/${jar-file}" keystore="../lib/PACTkeyStore" alias="mike" storepass="pact123" />
+	</target>
+
+	<target name="build-deployable">
+		<copy file="basic.html" tofile="temp/${html-file}"/>	
+		<copy file="basic.jnlp" tofile="temp/${jnlp-file}"/>	
+		<replace file="temp/${html-file}" value="${descriptive-name}" token="${tutor-name-tag}"/>
+		<replace file="temp/${html-file}" value="${jnlp-file}" token="${jnlp-name-tag}"/>
+		<replace file="temp/${jnlp-file}" value="${descriptive-name}" token="${tutor-name-tag}"/>
+		<replace file="temp/${jnlp-file}" value="${brd-file}" token="${brd-name-tag}"/>
+		<replace file="temp/${jnlp-file}" value="${tutor-dir}.${main-class}" token="${main-name-tag}"/>
+		<replace file="temp/${jnlp-file}" value="${school-name}" token="${school-name-tag}"/>
+		<replace file="temp/${jnlp-file}" value="${course-name}" token="${course-name-tag}"/>
+		<replace file="temp/${jnlp-file}" value="${unit-name}" token="${unit-name-tag}"/>
+		<replace file="temp/${jnlp-file}" value="${section-name}" token="${section-name-tag}"/>
+		<replace file="temp/${jnlp-file}" value="${br-mode}" token="${br-mode-tag}"/>
+		<replace file="temp/${jnlp-file}" value="${codebase}" token="${codebase-tag}"/>
+		<replace file="temp/${jnlp-file}" value="${jess-jar}" token="${jess-jar-tag}"/>
+		<replace file="temp/${jnlp-file}" value="${sim-student-jars}" token="${sim-student-jars-tag}"/>
+	</target>
+
+	<target name="build-only" depends="build">
+		<echo>Next, transfer these files to ${server-login}@${server}:${server-dir}:
+temp/${jar-file}
+temp/${jnlp-file}
+temp/${html-file}
+		 </echo>
+	</target>
+
+	<target name="copy-libs" depends="build" if="local-install">
+		<antcall target="deploy-jars" />
+		<mkdir dir="test/lib/"/>
+		<copy todir="test/lib">
+			<fileset dir="${tmp_jar_location}" />
+		</copy>
+		<copy todir="test">
+			<fileset dir="temp" includes="${jar-file},${jnlp-file},${html-file}"/>
+		</copy>
+	</target>
+	
+	<target name="deploy-files" depends="copy-libs">
+		<scp todir="${server-login}@${server}:${server-dir}" password="${server-password}" trust="yes">
+			<fileset dir="temp" includes="${jar-file},${jnlp-file},${html-file}"/>
+		</scp>
+		<delete file="temp/${jar-file}" />
+		<delete file="temp/${jnlp-file}" />
+		<delete file="temp/${html-file}" />
+		<echo message="${line.separator}
+			The file has been deployed successfully	to ${server}${server-dir}/${html-file}"/>
+	</target>
+
+	<!-- Update all the lib/*jar files on the server.-->
+	<target name="deploy-jars">
+		<delete failonerror="false" dir="${tmp_jar_location}"/>
+		<copy todir="${tmp_jar_location}">
+			<fileset dir="../lib" includes="**/*.jar"/>
+		</copy>
+		<antcall target="edit-installation-preferences" />
+		<antcall target="sign-all-jars" />
+		<echo>
+************
+Transfer the entire tree of .jar files in ${tmp_jar_location}/ to
+${server-login}@${server}:${server-dir}/lib
+************
+		</echo>
+	</target>
+
+	<!-- Update only the master jar on the server.-->
+	<target name="deploy-ctatjar">
+		<delete failonerror="false" dir="${tmp_jar_location}"/>
+		<copy todir="${tmp_jar_location}">
+			<fileset dir="../lib" includes="${master-jar}"/>
+		</copy>
+		<antcall target="deploy-master-jar" />
+	</target>
+
+	<target name="change-installation-preferences">
+		<delete failonerror="false" dir="${tmp_jar_location}"/>
+		<copy todir="${tmp_jar_location}">
+			<fileset dir="../lib" includes="${master-jar}"/>
+		</copy>
+		<antcall target="edit-installation-preferences" />
+		<antcall target="deploy-master-jar" />
+	</target>
+
+	<target name="deploy-master-jar">
+		<signjar keystore="../lib/PACTkeyStore" alias="mike" storepass="pact123">
+			<fileset dir="${tmp_jar_location}" includes="${master-jar}"/>
+		</signjar>
+		<echo>
+************
+Transfer the jar file ${tmp_jar_location}/${master-jar} to
+${server-login}@${server}:${server-dir}/lib
+************
+		</echo>
+	</target>
+
+	<target name="edit-installation-preferences">
+		<mkdir dir="_tmp" />
+		<unjar dest="_tmp" src="${tmp_jar_location}/${master-jar}">
+			<patternset>
+				<include name="**/${preferences-xml}" />
+			</patternset>
+		</unjar>
+		<property name="pref-file" value="_tmp/${preferences-xml}" />
+		<antcall target="edit-preference">
+			<param name="pref-name" value="Log to Remote Server" />
+			<param name="pref-constraint" value="value must be true or false"/>
+			<param name="pref-default" value="false" />
+		</antcall>
+		<antcall target="edit-preference">
+			<param name="pref-name" value="Logging Server URL" />
+			<param name="pref-constraint" value="value must be a URL"/>
+			<param name="pref-default" value="http://learnlab.web.cmu.edu/log" />
+		</antcall>
+		<antcall target="edit-preference">
+			<param name="pref-name" value="Log to Disk" />
+			<param name="pref-constraint" value="value must be true or false"/>
+			<param name="pref-default" value="false" />
+		</antcall>
+		<antcall target="edit-preference">
+			<param name="pref-name" value="Disk Logging Directory" />
+			<param name="pref-constraint" value="value must be a directory path on client machines; e.g. C:/temp/log"/>
+			<param name="pref-default" value="." />
+		</antcall>
+		<antcall target="edit-preference">
+			<param name="pref-name" value="Use Login Window" />
+			<param name="pref-constraint" value="value must be true or false"/>
+			<param name="pref-default" value="false" />
+		</antcall>
+		<jar update="true" basedir="_tmp" destfile="${tmp_jar_location}/${master-jar}"/>
+		<delete failonerror="false" dir="_tmp"/>
+	</target>
+
+	<target name="sign-all-jars">
+		<signjar keystore="../lib/PACTkeyStore" alias="mike" storepass="pact123">
+			<fileset dir="${tmp_jar_location}" includes="**/*.jar"/>
+		</signjar>
+	</target>
+
+	<target name="edit-preference">
+		<input
+			message="Enter value for ${pref-name};&#x0A;${pref-constraint}&#x0A;(leave empty for default value &quot;${pref-default}&quot;)"
+			defaultvalue="${pref-default}"
+			addproperty="pref-value"/>
+		<replaceregexp byline="true"
+			file="${pref-file}"
+			match="(&lt;!--DEPLOY_TUTOR ${pref-name}--&gt;&lt;value&gt;)[^&lt;]*(&lt;/value&gt;)"
+			replace="\1${pref-value}\2" />
+	</target>
+
+</project>

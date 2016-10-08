@@ -1,0 +1,1948 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;																			    ;;
+;;  This file contains Jess / SimStudent production rules to tutor effectively  ;;
+;;  (MetaCognitive Model) when teaching SimStudent.							    ;;
+;;																				;;
+;; 	Simulated Student Project													;;
+;;  Carnegie Mellon University													;;
+;;																				;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; You may need to add similar statements if you wish to add your own predicates
+;; and operator symbols.See http://herzberg.ca.sandia.gov/jess/docs/70/extending.html
+;; for details.
+
+;; Now define the behavior rules themselves. Each rule matches a set of conditions
+;; and then predicts the student SAI, the hint message and updates the working memory
+;; if the student SAI matches the rule SAI.
+
+;; Removing a following line will jeopardize the tutor's model tracing capability
+
+;; (watch all) ;; for debug
+
+;;
+;; If [APlusLaunched == "true"]
+;; Then
+;; [Press Quiz Button]
+(defrule simst-launch-take-quiz
+	"If APlusLaunched then take the quiz"
+	(declare (salience 150)) ;; salience determines the priority of the rules : higher the salience, higher the priority
+	?wm <- (ModelTraceWorkingMemory (APlusLaunched "true") 
+									(studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil)))
+	=>
+	(predicted-sai quiz ButtonPressed -1) ;; predicts-the-ruleSAI
+	(update-wm-if-ruleSAI-equals-studentSAI ?wm "(quizTaken true)" "(afterQuiz true)" "(solutionCheckError false)" "(resourceViewed false)" "(APlusLaunched false)") ;; updates the working memory when the rule's predicted values matches the student's values
+	(construct-tutor-hint-message
+		"[ It's a good strategy to quiz SimStName, because it would help you to understand what SimStName already knows. ]"
+		"[ Go to the Quiz tab and click the Quiz button. ]"
+		"P[ It's a good strategy to quiz SimStName, because it would help you to understand what SimStName already knows. ]"
+		"P[Go to the Quiz tab and click the Quiz button. ]"
+		"F[ As I said, go to the Quiz tab and click the Quiz button.. ]"))
+
+
+(defrule simst-fail-quizP-solved-take-quiz
+	(declare (salience 300))
+	?wm <- (or (ModelTraceWorkingMemory (problemType "failedQuizProblem")
+									(problemStatus "solved")
+									(studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil))
+									;;(UOTabReviewed ?tabClicked&:(neq ?tabClicked "true"))
+									)
+			   (ModelTraceWorkingMemory (problemType "solvedQuizProblem")
+									(problemStatus "solved")
+									(studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil))
+									(hintRequestSolvedQuizProblem ?var&:(eq ?var nil))))
+	=>
+	(predicted-sai quiz ButtonPressed -1)
+	(update-wm-if-ruleSAI-equals-studentSAI ?wm "(quizTaken true)" "(problemStatus nil)")
+	(construct-tutor-hint-message 
+		"[ SimStName has had some practice on the failed quiz problem. It would be good to see if SimStName can solve it now. ]"
+		"[ Go to the Quiz tab and click the Quiz button. ]"
+		"P[ SimStName has had some practice on the failed quiz problem. It would be good to see if SimStName can solve it now. ]"
+		"P[ Go to the Quiz tab and click the Quiz button. ]"
+		"F[ As I said, go to the Quiz tab and click the Quiz button. ]"))
+		
+		
+
+;;(defrule simst-launch-review-resources
+;;	"If APlusLaunched then take the review resources"
+;;	(declare (salience 150)) ;; salience determines the priority of the rules : higher the salience, higher the priority
+;;	?wm <- (ModelTraceWorkingMemory (APlusLaunched "true") 
+;;									(studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil)))
+;;	=>
+;;	(predicted-sai DONT-CARE TabClicked -1)) ;; predicts-the-ruleSAI
+	
+		
+		
+					
+(defrule student-view-resource-uoverview;;
+	"If Unit Overview not viewed then view them"
+	(declare (salience 260)) ;; salience determines the priority of the rules : higher the salience, higher the priority
+	?wm <- (ModelTraceWorkingMemory (UOTabClicked "false")
+	    							(afterQuiz "true")
+	   								(quizOutcome "fail")
+	   								(tutoredProblemCorrectness "false")
+	   								(resourceViewed "false")
+	   								)
+	=>
+	(predicted-sai UnitOverview TabClicked -1) ;; predicts-the-ruleSAI
+	(update-wm-if-ruleSAI-equals-studentSAI ?wm "(UOTabClicked true)" "(resourceViewed true)" ) 
+	(construct-tutor-hint-message
+		"[ It would be a good idea to go through the Unit Overview - see the tab above. ]"
+		"[ Click on the Unit Overview tab. ]"
+		"P[ It would be a good idea to go through the Unit Overview - see the tab above. ]"
+		"P[ Click on the Unit Overview tab. ]"
+		"F[ As I said, click the Unit Overview tab. ]"))
+		
+			
+	
+(defrule student-view-resource-examples;;
+	"If Examples not viewed then view them"
+	(declare (salience 260)) ;; salience determines the priority of the rules : higher the salience, higher the priority
+	?wm <- (ModelTraceWorkingMemory (examplesTabClicked "false")
+	    							(afterQuiz "true")
+	   								(quizOutcome "fail")
+	   								(tutoredProblemCorrectness "false")
+	   								(resourceViewed "false")
+	   								)
+	=>
+	(predicted-sai Examples TabClicked -1) ;; predicts-the-ruleSAI
+	(update-wm-if-ruleSAI-equals-studentSAI ?wm "(examplesTabClicked true)" "(resourceViewed true)" ) 
+	(construct-tutor-hint-message
+		"[ I think its a good idea to go through the Examples - see the tab above. Make sure you understand all the examples.]"
+		"[ Click the Examples tab. ]"
+		"P[ I think its a good idea to go through the Examples - see the tab above. Make sure you understand all the examples.]"
+		"P[ Click the Examples tab. ]"
+		"F[ As I said, click the Examples tab.]"))
+	
+	
+			
+			
+;;If problem is entered and SimStudent does not request anything (i.e. SimStudent is thinking), then wait unti SimStudent stops thinking.
+(defrule simst-thinking;;
+	"If SimStudent is thinking then wait until thinking stops"
+	(declare (salience 400)) 
+	?wm <- (ModelTraceWorkingMemory (requestType ?req&:(eq ?req nil))								
+									(studentEnteredProblem ?enteredProblem&:(neq ?enteredProblem nil))
+									(simStudentThinking "true"))
+	=>
+	(predicted-sai DONT-CARE DONT-CARE DONT-CARE) ;; predicts-the-ruleSAI
+	(construct-tutor-hint-message
+		"[ You should wait until SimStName stops thinking. ]"))	
+
+			
+(defrule simst-self-explanation-update-request
+	(declare (salience 200))
+	?wm <- (ModelTraceWorkingMemory (studentEnteredProblem ?enteredProblem&:(neq ?enteredProblem nil)))
+	(studentValues (selection ?sel&:(eq ?sel "selfExp")))
+	=>
+	(predicted-sai ?sel DONT-CARE DONT-CARE)
+	(modify ?wm (requestType self-explanation)))
+
+;;If problem is entered and SimStudent requests for self-explanation, then justify answer.										
+(defrule simst-self-explanation;;
+	"If SimStudent asks for self-explanation then provide self explanation"
+	(declare (salience 200)) 
+	?wm <- (ModelTraceWorkingMemory (requestType "self-explanation")								
+									(studentEnteredProblem ?enteredProblem&:(neq ?enteredProblem nil)))
+	=>
+	(predicted-sai submit ButtonPressed -1) ;; predicts-the-ruleSAI
+	(construct-tutor-hint-message
+		"[ SimStName is asking you to justify your answer. You should answer SimStName 's question. ]"))	
+
+
+;;(defrule simst-solution-error-update
+;;	(declare (salience 200))
+;;	?wm <- (ModelTraceWorkingMemory (studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil)))
+;;	(studentValues (selection ?sel&:(eq ?sel "solutionError")))
+;;	=>
+;;	(predicted-sai ?sel DONT-CARE DONT-CARE)
+;;	(modify ?wm (solutionCheckError true)))
+		
+;;If solution checking revealed an error then restart problem.										
+(defrule student-solution-error;;
+	"If solution checking reveals an error then solve problem again"
+	(declare (salience 260)) 
+	?wm <- (ModelTraceWorkingMemory (solutionCheckError "true")
+									(solutionGiven "true")
+									(studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil)))
+	=>
+	(predicted-sai restart ButtonPressed -1)
+	(update-wm-if-ruleSAI-equals-studentSAI ?wm "(solutionCheckError false)" ) ;; updates the working memory when the rule's predicted values matches the student's values
+	(construct-tutor-hint-message
+		"[ There is an error somewhere in SimStName 's solution. You should try having SimStName solve the problem again. ]"
+		"[ Click the restart button. ]"))								
+				
+
+
+;;(defrule simst-solution-error-update
+;;	(declare (salience 200))
+;;	?wm <- (ModelTraceWorkingMemory (studentEnteredProblem ?enteredProblem&:(neq ?enteredProblem nil)))
+;;	(studentValues (selection ?sel&:(eq ?sel "ssRestartCount")) (input ?inp&:(neq ?inp nil)))
+;;	=>
+;;	(predicted-sai ?sel DONT-CARE DONT-CARE)
+;;	(modify ?wm (restartCount ?inp)))
+	
+
+
+;; ==============
+;; NEW RULES
+;; ==============
+
+;;rule 1:   if next SAI is x --> do x
+;;(defrule simst-enter-correct-sai
+;;	(declare (salience 25))
+;;	?wm <- (ModelTraceWorkingMemory (studentEnteredProblem ?enteredProblem&:(neq ?enteredProblem nil))
+;;									(nextSelection ?nextSelection&:(neq ?nextSelection "nil"))
+;;									(nextAction ?nextAction&:(neq ?nextAction "nil"))
+;;									(nextInput ?nextInput&:(neq ?nextInput "nil"))
+;;									(studentSaiEntered "true"))
+;;	 (studentValues (action ?act) (input ?inp))
+  ;;	 (test (= ?act ?nextAction))
+;;  	 (test (= ?inp ?nextInput))
+;;	=>
+;;	(predicted-sai ?nextSelection DONT-CARE DONT-CARE)
+;;	(bind ?selName (get-selection-name ?nextSelection))
+;;	(update-wm-if-ruleSAI-equals-studentSAI ?wm "(nextSelection nil)" "(nextAction nil)" "(nextInput nil)")
+;;	(construct-tutor-hint-message
+;;		"[ To proceed, you have to enter the next step ]"
+;;		"[ The next step for the solution, should be entered in the " ?nextSelection ". ]"
+;;		"[  Enter " ?nextInput " in "?selName". ]"
+;;		"P[ I see you did not enter the next step in the right place. ]"
+;;		"P[ The next step for the solution, should be entered in the " ?selName ". ]"
+;;		"P[ Wait until SimStName stops thinking and enter " ?nextInput " in the "?selName". ]"
+;;		"F[ As I said, wait until SimStName stops thinking and enter " ?nextInput " in the "?nextSelection". ]"))	
+ 
+
+;; rule 7: if restarting problem more than 3 times then give new problem
+(defrule student-click-restart-repeatedly;;
+	"If restart clicked repeatedly, click new problem"
+	(declare (salience 250)) 
+	?wm <- (ModelTraceWorkingMemory (studentEnteredProblem ?enteredProblem&:(neq ?enteredProblem nil))
+									(restartCount ?restart&:(> ?restart 2)))
+	=>
+	(predicted-sai "next problem" ButtonPressed -1) ;; predicts-the-ruleSAI
+	(update-wm-if-ruleSAI-equals-studentSAI ?wm "(restartCount 0)")
+	(construct-tutor-hint-message
+		"[ You restarted this problem too many times. How about giving a new problem to SimStName?  ]"
+		"[ To give a new problem, you have to click the new problem button ]"
+		"[ Click the new problem button]"
+		"P[ I see you restarted this problem too many times. Maybe its best if you give a new problem to SimStName.  ]"
+		"P[ To give a new problem, you have to click the new problem button. ]"
+		"P[ Click the new problem button. ]"
+		"F[ As I said, click the new problem button. ]"))			
+		
+			
+				
+;; rule 3: If SimStudent solved two problems in a row without hint requested, take quiz			
+(defrule student-teach-same-problem-no-quiz;;
+	"If restart clicked repeatedly, click new problem"
+	(declare (salience 400)) 
+	?wm <- (ModelTraceWorkingMemory (studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil))	
+									(allTutoredProblemList ?problemList&:(neq ?problemList nil))
+									;;(problemStatus "solved")
+									;;(solutionGiven "true")
+									(tutoredProblemsWithoutHint ?num&:(> ?num 1)))
+	(test (are-last-problems-same-type ?problemList 2))
+	=>
+	(predicted-sai quiz ButtonPressed -1) ;; predicts-the-ruleSAI
+	(update-wm-if-ruleSAI-equals-studentSAI ?wm "(tutoredProblemsWithoutHint 0)" )
+	(construct-tutor-hint-message
+		"[ SimStName solved the last two problem without getting stuck. Its a good strategy to check if what SimStName learned is correct  ]"
+		"[ Quizzing SimStName will help you see if what SimStName learned is correct. ]"
+		"[ Go to the Quiz tab and click the Quiz button ]"
+		"P[ I see that SimStName seems to be solving problems without getting stuck. I would be a good strategy  to see if what SimStName learned is correct ]"
+		"P[ Quizzing SimStName will help you see if what SimStName learned is correct.  ]";		
+		"P[ Go to the Quiz tab and click the Quiz button  ]"
+		"F[ As I said, go to the Quiz tab and click the Quiz button  ]"))				
+								
+	
+	
+;; rule 4.2: If SimStudent solved problems n time in a row incorrectly			
+;;(defrule student-teach-same-problem-incorrectly;;
+;;	"If problem x tutored N times AND solved incorrectly or abandoned then review sections"
+;;	(declare (salience 200)) 
+;;	?wm <- (or (ModelTraceWorkingMemory (studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil))	
+;;									(allTutoredProblemList ?problemList&:(neq ?problemList nil))
+;;									(problemStatus "solved")
+;;									(tutoredProblemCorrectness "false"))
+;;				(ModelTraceWorkingMemory (studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil))	
+;;									(allTutoredProblemList ?problemList&:(neq ?problemList nil))
+;;									(problemStatus "abandoned")))
+;;	(test (are-last-problems-same ?problemList 4))
+;;	=>
+;;	(bind ?lastProblem (get-last-tutored-problem ?problemList))
+;;	(bind ?resource (get-resource ?lastProblem))
+;;	(bind ?currentType (get-type-of-problem ?lastProblem))
+;;	(predicted-sai  ?resource TabClicked -1)	
+;;	(construct-tutor-hint-message
+;;	"[ SimStName is having some trouble understanding "?currentType". You can refresh your memory on " ?currentType " by going through the available resources ]"
+;;	"[ You should go to the " ?resource " tab and review the section about " ?currentType " equations. ]"
+;;	"[ Click on the "?resource" tab and review the section about "?currentType" equations. ]"
+;;	"P[ I see that SimStName is having some trouble understanding "?currentType". You can refresh your memory on " ?currentType " by going through the available resources  ]"
+;;	"P[ You should go to the " ?resource " tab and review the section about " ?currentType " equations  ]";		"P[ Click on the "?resource" tab and review the section about "?currentType".]"
+;;	"F[ As I said, click on the "?resource" tab and review the section about "?currentType". ]"))
+	
+
+    		
+    		
+    		
+    		
+	
+;;rule 5: if problem solved in more steps than needed, solve again 
+;;(defrule simstudent-problem-solved-more-steps;;
+;;	"If problem solved in more steps then restart"
+;;	(declare (salience 420)) ;; salience determines the priority of the rules : higher the salience, higher the priority
+;;	?wm <- (or (ModelTraceWorkingMemory (studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil))
+;;									(allTutoredProblemList ?problemList&:(neq ?problemList nil))
+;;	    							(solutionGiven "true")
+;;	    							(tutoredProblemCorrectness "true")
+;;	    							(solutionSteps ?actualSteps&:(neq ?actualSteps nil)))	
+;;	    	(ModelTraceWorkingMemory (allTutoredProblemList ?problemList&:(neq ?problemList nil))
+;;	    						  	 (studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil))
+;;	    						  	 (solutionSteps ?actualSteps&:(neq ?actualSteps nil))
+;;	    							 (moreSteps "true")))	    							
+;;	(test (is-solution-non-optimal (get-last-tutored-problem ?problemList) ?actualSteps) )						
+;;	=>
+;;	(predicted-sai restart ButtonPressed -1) ;; predicts-the-ruleSAI
+;;	(bind ?lastProblem (get-last-tutored-problem ?problemList))
+;;	(bind ?optimalSteps (get-optimal-steps ?lastProblem))
+;;	(modify ?wm (moreSteps true))
+;;	(bind ?lhsProblem (get-lhs ?lastProblem))
+;;	(bind ?rhsProblem (get-rhs ?lastProblem))
+;;	(construct-tutor-hint-message
+;;		"[ SimStName solved " ?lastProblem" correctly, but this problem can be solved in fewer steps. Can you demonstrate this solution to SimStName? ]"
+;;		"[ Problem " ?lastProblem" can be solved in "?optimalSteps" steps.  It would be good to have SimStName solve "?lastProblem" in "?optimalSteps" steps. ]"
+;;		"[ Start by entering "?lhsProblem" on the left-hand side and "?rhsProblem" on the right-hand side of the tutoring interface. ]"
+;;		"P[ Hm... SimStName solved " ?lastProblem" correctly, but this problem can be solved in fewer steps. Can you demonstrate this solution to SimStName?  ]"
+;;		"P[ Problem " ?lastProblem" can be solved in "?optimalSteps" steps.  It would be good to have SimStName solve "?lastProblem" in "?optimalSteps" steps.  ]";		
+;;		"P[ Start by entering "?lhsProblem" on the left-hand side and "?rhsProblem" on the right-hand side of the tutoring interface. ]"
+;;		"F[ As I said, start by entering "?lhsProblem" on the left-hand side and "?rhsProblem" on the right-hand side of the tutoring interface. ]"))				
+									
+		
+		
+;;rule 4: if quiz level failed 3 times then review resourses
+(defrule simstudent-quiz-failed-repeatedly;;
+	"If quiz failed more than 3 times, then  review resources"
+	(declare (salience 220)) ;; salience determines the priority of the rules : higher the salience, higher the priority
+	?wm <- (ModelTraceWorkingMemory	(quizTaken "true") 
+									(quizOutcome "fail")
+									(quizProblemsFailedList ?suggestedProblems&:(neq ?suggestedProblems nil))
+									(studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil))		
+	    							(quizFailCount ?num&:(> ?num 3)))											
+	=>
+	(bind ?failedProblemType (get-first-problem ?suggestedProblems))
+	(bind ?resource (get-resource ?failedProblemType))
+	(bind ?currentType (get-type-of-problem ?failedProblemType))
+	(predicted-sai  ?resource TabClicked -1) ;; predicts-the-ruleSAI
+	(update-wm-if-ruleSAI-equals-student-entered-side ?wm "(quizFailCount 0)")	
+	(construct-tutor-hint-message
+		"[ SimStName is having some trouble passing the quiz. You can refresh your memory on " ?currentType " by going through the available resources ]"
+		"[ You should go to the " ?resource " tab and review the section about " ?currentType " equations. ]"
+		"[ Click on the "?resource" tab and review the section about "?currentType" equations. ]"
+		"P[ I see that SimStName is having some trouble passing the quiz. You can refresh your memory on " ?currentType " by going through the available resources  ]"
+		"P[ You should go to the " ?resource " tab and review the section about " ?currentType " equations  ]";		
+		"P[ Click on the "?resource" tab and review the section about "?currentType".]"
+		"F[ As I said, click on the "?resource" tab and review the section about "?currentType". ]"))				
+											
+
+
+;; Rule 8.1. : if all quiz items failed, encourage student to give similar problem to 1st one 
+(defrule simst-all-quiz-failed-enter-lhs-similar-problem
+	(declare (salience 200))
+	?wm <-  (ModelTraceWorkingMemory (quizTaken "true")
+									(quizOutcome "fail")
+									(quizProblemsFailedList ?suggestedProblems&:(neq ?suggestedProblems nil))
+									(studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil))
+									(allQuizFailed "true")
+									(allQuizFailCount ?num&:(= ?num 1)))
+	(studentValues (selection ?sel) (input ?inp))
+	=>
+	(bind ?firstFailedProblem (get-first-problem ?suggestedProblems))
+	(bind ?currentType (get-current-quiz-section))
+	(bind ?similarPType (get-similar-problem ?firstFailedProblem))
+	(bind ?lhsSimilarPType (get-lhs ?similarPType))
+	(bind ?rhsSimilarPType (get-rhs ?similarPType))
+	(bind ?problem (comp-problem-with-hindsight ?suggestedProblems ?inp ?sel dorminTable2_C1R1))
+	(bind ?lhs-problem (get-lhs ?problem))
+	(bind ?rhs-problem (get-rhs ?problem))
+	(predicted-sai dorminTable1_C1R1 UpdateTable ?lhs-problem)
+	(get-mt-problem-suggestion dorminTable1_C1R1 UpdateTable ?lhsSimilarPType)
+	(get-mt-problem-suggestion dorminTable2_C1R1 UpdateTable ?rhsSimilarPType)
+	(update-wm-if-ruleSAI-equals-student-entered-side ?wm lhsQProblem ?lhs-problem)
+	(construct-tutor-hint-message
+		"[ SimStName failed all quiz items. SimStName can do better with some practice on "?currentType". ]"
+		"[ Since SimStName failed on "?currentType" on the quiz, giving " ?similarPType " would help SimStName correct the mistakes. ]"
+		"[ Start by putting " ?lhsSimilarPType " on the left hand side and " ?rhsSimilarPType " on the right hand side of the tutoring interface. ]"
+		"P[ I see that SimStName failed all quiz items. SimStName can do better with some practice on "?currentType". ]"
+		"P[ Since SimStName failed on "?currentType" on the quiz, giving " ?similarPType " would help SimStName correct the mistakes. ]"
+		"P[ Start by putting " ?lhsSimilarPType " on the left hand side and " ?rhsSimilarPType " on the right hand side of the tutoring interface. ]"
+		"F[ Start by putting " ?lhsSimilarPType " on the left hand side and " ?rhsSimilarPType " on the right hand side of the tutoring interface. ]"))
+
+
+(defrule simst-all-quiz-failed-enter-rhs-similar-problem.
+	(declare (salience 175))
+	?wm <- (ModelTraceWorkingMemory  (quizTaken "true")
+									(quizOutcome "fail")
+									(quizProblemsFailedList ?suggestedProblems&:(neq ?suggestedProblems nil))
+									(allQuizFailed "true")
+									(studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil))
+									(quizProblemsTutoredListAllSections ?tutoredProblemsAllSections)
+									(lhsQProblem ?lhs&:(neq ?lhs nil)))
+	(studentValues (selection ?sel) (input ?inp))
+	=>
+	(bind ?firstFailedProblem (get-first-problem ?suggestedProblems))
+	(bind ?similarPType (get-similar-problem ?firstFailedProblem))
+	(bind ?problem (comp-problem-with-hindsight ?suggestedProblems ?inp ?sel dorminTable1_C1R1))
+	(bind ?rhs-problem (get-rhs ?problem))
+	(predicted-sai dorminTable2_C1R1 UpdateTable ?rhs-problem)
+	(update-wm-if-ruleSAI-equals-student-entered-side ?wm rhsQProblem ?rhs-problem))
+
+
+
+
+
+;; Rule 8.2. : if all quiz items failed, encourage student to give similar problem to 1st one 
+(defrule simst-all-quiz-failed-again-enter-lhs-similar-problem
+	(declare (salience 200))
+	?wm <-  (ModelTraceWorkingMemory (quizTaken "true")
+									(quizOutcome "fail")
+									(quizProblemsFailedList ?suggestedProblems&:(neq ?suggestedProblems nil))
+									(studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil))
+									(allQuizFailed "true")
+									(allQuizFailCount ?num&:(> ?num 1)))
+	(studentValues (selection ?sel) (input ?inp))
+	=>
+	(bind ?firstFailedProblem (get-first-problem ?suggestedProblems))
+	(bind ?currentType (get-current-quiz-section))
+	(bind ?similarPType (get-similar-problem ?firstFailedProblem))
+	(bind ?lhsSimilarPType (get-lhs ?similarPType))
+	(bind ?rhsSimilarPType (get-rhs ?similarPType))
+	(bind ?problem (comp-problem-with-hindsight ?suggestedProblems ?inp ?sel dorminTable2_C1R1))
+	(bind ?lhs-problem (get-lhs ?problem))
+	(bind ?rhs-problem (get-rhs ?problem))
+	(predicted-sai dorminTable1_C1R1 UpdateTable ?lhs-problem)
+	(get-mt-problem-suggestion dorminTable1_C1R1 UpdateTable ?lhsSimilarPType)
+	(get-mt-problem-suggestion dorminTable2_C1R1 UpdateTable ?rhsSimilarPType)
+	(update-wm-if-ruleSAI-equals-student-entered-side ?wm lhsQProblem ?lhs-problem)
+	(construct-tutor-hint-message
+		"[ SimStName failed again on all quiz items. More practice on "?currentType" can help SimStName pass the quiz!. ]"
+		"[ Since SimStName failed on "?currentType" on the quiz, giving " ?similarPType " would help SimStName correct the mistakes. ]"
+		"[ Start by putting " ?lhsSimilarPType " on the left hand side and " ?rhsSimilarPType " on the right hand side of the tutoring interface. ]"
+		"P[ I see that SimStName failed all quiz items again. More practice on "?currentType" can help SimStName pass the quiz!. ]"
+		"P[ Since SimStName failed on "?currentType" on the quiz, giving " ?similarPType " would help SimStName correct the mistakes. ]"
+		"P[ Start by putting " ?lhsSimilarPType " on the left hand side and " ?rhsSimilarPType " on the right hand side of the tutoring interface. ]"
+		"F[ Start by putting " ?lhsSimilarPType " on the left hand side and " ?rhsSimilarPType " on the right hand side of the tutoring interface. ]"))
+
+
+(defrule simst-all-quiz-failed-again-enter-rhs-similar-problem.
+	(declare (salience 175))
+	?wm <- (ModelTraceWorkingMemory  (quizTaken "true")
+									(quizOutcome "fail")
+									(quizProblemsFailedList ?suggestedProblems&:(neq ?suggestedProblems nil))
+									(allQuizFailed "true")
+									(studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil))
+									(quizProblemsTutoredListAllSections ?tutoredProblemsAllSections)
+									(lhsQProblem ?lhs&:(neq ?lhs nil)))
+	(studentValues (selection ?sel) (input ?inp))
+	=>
+	(bind ?firstFailedProblem (get-first-problem ?suggestedProblems))
+	(bind ?similarPType (get-similar-problem ?firstFailedProblem))
+	(bind ?problem (comp-problem-with-hindsight ?suggestedProblems ?inp ?sel dorminTable1_C1R1))
+	(bind ?rhs-problem (get-rhs ?problem))
+	(predicted-sai dorminTable2_C1R1 UpdateTable ?rhs-problem)
+	(update-wm-if-ruleSAI-equals-student-entered-side ?wm rhsQProblem ?rhs-problem))
+
+
+
+;;rule 2: if student can solve problem, then give solved problem.
+;;(defrule BUG-simst-can-solve-problem
+;;	(declare (salience 200))
+;;	?wm <- (ModelTraceWorkingMemory  (APlusLaunched "true")
+;;								;;(studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil))
+;;							 	(lhsProblem ?lhs&:(neq ?lhs nil))
+;;							 	(problemStarted "true")
+;;							 	(rhsProblem ?rhs&:(neq ?rhs nil)))	  
+;;   (test (is-problem-from-passed-level ?lhs ?rhs (get-current-quiz-level)))						 
+;;   (test (can-solve-problem ?lhs ?rhs))
+;;	  (studentValues (selection ?sel) (input ?inp))
+;;	  (test (= ?sel "dorminTable2_C1R1"))
+;;   =>	
+;;  (predicted-sai DONT-CARE DONT-CARE DONT-CARE)
+;;  (construct-tutor-hint-message
+;;		"[ SimStName knows how to solve this problem. Why don't you give SimStName another problem to solve? ]"
+;;		"[ To give a new problem, you have to click the new problem button ]"
+;;		"[ Click the new problem button. ]"
+;;		"P[ SimStName knows how to solve this problem. Why don't you give SimStName another problem to solve? ]"
+;;		"P[ To give a new problem, you have to click the new problem button ]"
+;;		"P[ Click the new problem button. ]"
+;;		"F[ As I said, click the new problem button. ]"))
+		
+
+
+;;;;;;;;;;;;;;;;;;;;
+;; end of new rules
+;;;;;;;;;;;;;;;;;;;;
+
+
+;; Buggy / Suboptimal rule: If in the beginning instead of taking the quiz, they start to tutor a
+;; problem then let them finish the problem but remind them that they need to take a quiz.
+(defrule BUG-simst-enter-lhs-problem
+	(declare (salience 50))
+	?wm <- (or (ModelTraceWorkingMemory (APlusLaunched "true"))
+			   (ModelTraceWorkingMemory (quizTaken "true") 
+									(quizOutcome "pass"))
+			   (ModelTraceWorkingMemory (quizTaken "true")
+									(quizOutcome "fail"))
+			   (ModelTraceWorkingMemory (problemType "failedQuizProblem")
+									(problemStatus "solved"))
+			   (ModelTraceWorkingMemory (problemType "failedQuizProblem")
+									(problemStatus "abandoned"))
+			   (ModelTraceWorkingMemory (problemType "solvedQuizProblem")
+									(problemStatus "solved"))
+			   (ModelTraceWorkingMemory (problemType "solvedQuizProblem")
+									(problemStatus "abandoned")))
+	(studentValues (selection ?sel&:(eq ?sel "dorminTable1_C1R1")) (input ?inp&:(neq ?inp nil)))
+	=>
+	(predicted-sai ?sel DONT-CARE ?inp)
+	(modify ?wm (lhsProblem ?inp) (lhsQProblem nil) (rhsQProblem nil)))
+
+
+(defrule BUG-simst-enter-rhs-problem
+	(declare (salience 50))
+	?wm <- (or (ModelTraceWorkingMemory (APlusLaunched "true"))
+			   (ModelTraceWorkingMemory (quizTaken "true")
+									(quizOutcome "pass"))
+			   (ModelTraceWorkingMemory (quizTaken "true")
+									(quizOutcome "fail"))
+			   (ModelTraceWorkingMemory (problemType "failedQuizProblem")
+									(problemStatus "solved"))
+			   (ModelTraceWorkingMemory (problemType "failedQuizProblem")
+									(problemStatus "abandoned"))
+			   (ModelTraceWorkingMemory (problemType "solvedQuizProblem")
+									(problemStatus "solved"))
+			   (ModelTraceWorkingMemory (problemType "solvedQuizProblem")
+									(problemStatus "abandoned")))
+	(studentValues (selection ?sel&:(eq ?sel "dorminTable2_C1R1")) (input ?inp&:(neq ?inp nil)))
+	=>
+	(predicted-sai ?sel DONT-CARE ?inp)
+	(modify ?wm (rhsProblem ?inp) (lhsQProblem nil) (rhsQProblem nil)))
+
+
+(defrule BUG-simst-start-problem
+	(declare (salience 50))
+	?wm <- (or (ModelTraceWorkingMemory (APlusLaunched "true")
+							 (lhsProblem ?lhs&:(neq ?lhs nil))
+							 (rhsProblem ?rhs&:(neq ?rhs nil)))
+			   (ModelTraceWorkingMemory (quizTaken "true")
+							 (quizOutcome "pass")
+							 (lhsProblem ?lhs&:(neq ?lhs nil))
+							 (rhsProblem ?rhs&:(neq ?rhs nil)))
+			   (ModelTraceWorkingMemory (quizTaken "true")
+							 (quizOutcome "fail")
+							 (lhsProblem ?lhs&:(neq ?lhs nil))
+							 (rhsProblem ?rhs&:(neq ?rhs nil)))
+			   (ModelTraceWorkingMemory (problemType "failedQuizProblem")
+							 (problemStatus "solved")
+							 (lhsProblem ?lhs&:(neq ?lhs nil))
+							 (rhsProblem ?rhs&:(neq ?rhs nil)))
+			   (ModelTraceWorkingMemory (problemType "failedQuizProblem")
+							 (problemStatus "abandoned")
+							 (lhsProblem ?lhs&:(neq ?lhs nil))
+							 (rhsProblem ?rhs&:(neq ?rhs nil)))
+			   (ModelTraceWorkingMemory (problemType "solvedQuizProblem")
+							 (problemStatus "solved")
+							 (lhsProblem ?lhs&:(neq ?lhs nil))
+							 (rhsProblem ?rhs&:(neq ?rhs nil)))
+			   (ModelTraceWorkingMemory (problemType "solvedQuizProblem")
+							 (problemStatus "abandoned")
+							 (lhsProblem ?lhs&:(neq ?lhs nil))
+							 (rhsProblem ?rhs&:(neq ?rhs nil))))
+	(studentValues (selection ?sel&:(eq ?sel "yes")))
+	=>
+	(predicted-sai yes ButtonPressed -1)
+	(bind ?problem (get-problem ?lhs ?rhs))
+	(modify ?wm (studentEnteredProblem ?problem)))
+
+
+;; Buggy rule for when a student abandons a problem and takes a quiz
+(defrule BUG-simst-take-quiz-inopportunely 
+	(declare (salience 25)) ;; most low priority rule in the entire file
+	?wm <- (ModelTraceWorkingMemory (quizTaken ?qTaken))
+	(studentValues (selection ?sel&:(eq ?sel "quiz")))
+	=>
+	(predicted-sai quiz ButtonPressed -1)
+	(update-wm-if-ruleSAI-equals-studentSAI ?wm "(APlusLaunched false)" "(hintRequestSolvedQuizProblem nil)" "(lhsProblem nil)"
+		"(lhsQProblem nil)" "(rhsProblem nil)" "(rhsQProblem nil)" "(problemStatus nil)" "(problemType nil)" "(quizProblemsPassed nil)"
+		"(quizProblemsFailedList nil)" "(quizOutcome nil)" "(quizProblemsTutoredList nil)" "(quizTaken true)" "(solutionCheckError false)" "(afterQuiz true)" "(resourceViewed false)"  "(requestType nil)" 
+		"(studentEnteredProblem nil)" "(UOTabReviewed nil)" "(afterQuiz true)" "(resourceViewed false)" ))
+
+
+;;
+;; If [quizTaken == "true"] And [quizOutcome == "pass"]
+;; Then
+;; [Press Quiz Button]
+(defrule simst-quiz-pass-take-quiz
+	"If student took the quiz and passed it then take the quiz again"
+	(declare (salience 150))
+	?wm <- (ModelTraceWorkingMemory (quizTaken "true") 
+	 							 (quizOutcome "pass")
+								 (studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil)))
+	=>
+	(predicted-sai quiz ButtonPressed -1)
+	(update-wm-if-ruleSAI-equals-studentSAI ?wm "(quizTaken true)" "(afterQuiz true)" "(solutionCheckError false)" "(resourceViewed false)" "(studentEnteredProblem nil)")
+	(construct-tutor-hint-message
+		"[ Since SimStName passed this quiz section, it might be helpful to understand what else your student knows. So it would be a good idea to quiz SimStName again now. ]"
+		"[ Go to the Quiz tab and click the Quiz button  ]"
+		"P[ I see SimStName passed this quiz section, it might be helpful to understand what else your student knows. So it would be a good idea to quiz SimStName again now. ]"
+		"P[ Go to the Quiz tab and click the Quiz button  ]"
+		"F[ As I said, go to the Quiz tab and click the Quiz button  ]"))
+
+;;
+;; BUG rule: only models actions that the students should not do. Could explicitly 
+;; generate a hint message when the bug rule fires to alert the student.
+;; If [quizTaken == "true"] And [quizOutcome == "fail"]
+;; Then
+;; [Press Quiz Button]
+(defrule BUG-simst-quiz-fail-take-quiz
+	"If student took the quiz and failed it then take the quiz again"
+	(declare (salience 50))
+	?wm <- (ModelTraceWorkingMemory (quizTaken "true") 
+								 (quizOutcome "fail")
+								 (studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil)))
+	=>
+	(predicted-sai quiz ButtonPressed -1)
+	(update-wm-if-ruleSAI-equals-studentSAI ?wm "(quizTaken true)" "(afterQuiz true)" "(solutionCheckError false)" "(resourceViewed false)" "(studentEnteredProblem nil)"))
+
+
+(defrule simst-quiz-fail-again-enter-lhs-first-failed-quiz-problem-type
+	(declare (salience 200))
+	?wm <- (or (ModelTraceWorkingMemory (quizTaken "true")
+									(quizOutcome "fail")
+									(quizProblemsFailedList ?suggestedProblems&:(neq ?suggestedProblems nil))
+									(studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil))
+									;;(tutoredProblemCorrectness "true")
+									(quizProblemsTutoredListAllSections ?tutoredProblemsAllSections))
+			   (ModelTraceWorkingMemory  (problemType "failedQuizProblem")
+									(problemStatus "abandoned")
+									(studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil))
+									(quizProblemsFailedList ?suggestedProblems&:(neq ?suggestedProblems nil))
+									(quizProblemsTutoredList ?tutoredProblems&:(eq ?tutoredProblems nil))
+									(quizProblemsTutoredListAllSections ?tutoredProblemsAllSections)))
+	(studentValues (selection ?sel) (input ?inp))
+	(test (has-first-suggested-problem-been-tutored (get-first-problem ?suggestedProblems) ?tutoredProblemsAllSections)) 
+	=>
+	(bind ?firstFailedProblem (get-first-problem ?suggestedProblems))
+	(bind ?similarPType (get-similar-problem ?firstFailedProblem))
+	(bind ?lhsSimilarPType (get-lhs ?similarPType))
+	(bind ?rhsSimilarPType (get-rhs ?similarPType))
+	(bind ?problem (comp-problem-with-hindsight ?suggestedProblems ?inp ?sel dorminTable2_C1R1))
+	(bind ?lhs-problem (get-lhs ?problem))
+	(bind ?rhs-problem (get-rhs ?problem))
+	(predicted-sai dorminTable1_C1R1 UpdateTable ?lhs-problem)
+	(get-mt-problem-suggestion dorminTable1_C1R1 UpdateTable ?lhsSimilarPType)
+	(get-mt-problem-suggestion dorminTable2_C1R1 UpdateTable ?rhsSimilarPType)
+	(update-wm-if-ruleSAI-equals-student-entered-side ?wm lhsQProblem ?lhs-problem)
+	(construct-tutor-hint-message
+		"[ SimStName got some problems wrong on the quiz. It's a good strategy to teach those problems to help SimStName correct the mistakes. ]"
+		"[ Since " ?problem " was wrong on the quiz, you may want to give a similar problem like " ?similarPType " to SimStName. ]"
+		"[ Start by putting " ?lhsSimilarPType " on the left hand side and " ?rhsSimilarPType " on the right hand side of the tutoring interface. ]"
+		"P[ SimStName got some problems wrong on the quiz. It's a good strategy to teach those problems to help SimStName correct the mistakes. ]"
+		"P[ Since " ?problem " was wrong on the quiz, you may want to give a similar problem like " ?similarPType " to SimStName. ]"
+		"P[ Start by putting " ?lhsSimilarPType " on the left hand side and " ?rhsSimilarPType " on the right hand side of the tutoring interface. ]"
+		"F[ Start by putting " ?lhsSimilarPType " on the left hand side and " ?rhsSimilarPType " on the right hand side of the tutoring interface. ]"))
+
+
+(defrule simst-quiz-fail-again-enter-rhs-first-failed-quiz-problem-type
+	(declare (salience 175))
+	?wm <- (or (ModelTraceWorkingMemory  (quizTaken "true")
+									(quizOutcome "fail")
+									(quizProblemsFailedList ?suggestedProblems&:(neq ?suggestedProblems nil))
+									(studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil))
+									(quizProblemsTutoredListAllSections ?tutoredProblemsAllSections)
+									(lhsQProblem ?lhs&:(neq ?lhs nil)))
+			   (ModelTraceWorkingMemory  (problemType "failedQuizProblem")
+									(problemStatus "abandoned")
+									(studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil))
+									(quizProblemsFailedList ?suggestedProblems&:(neq ?suggestedProblems nil))
+									(quizProblemsTutoredList ?tutoredProblems&:(eq ?tutoredProblems nil))
+									(quizProblemsTutoredListAllSections ?tutoredProblemsAllSections)
+									(lhsQProblem ?lhs&:(neq ?lhs nil))))
+	(studentValues (selection ?sel) (input ?inp))
+	(test (has-first-suggested-problem-been-tutored (get-first-problem ?suggestedProblems) ?tutoredProblemsAllSections))
+	=>
+	(bind ?firstFailedProblem (get-first-problem ?suggestedProblems))
+	(bind ?similarPType (get-similar-problem ?firstFailedProblem))
+	(bind ?problem (comp-problem-with-hindsight ?suggestedProblems ?inp ?sel dorminTable1_C1R1))
+	(bind ?rhs-problem (get-rhs ?problem))
+	(predicted-sai dorminTable2_C1R1 UpdateTable ?rhs-problem)
+	(update-wm-if-ruleSAI-equals-student-entered-side ?wm rhsQProblem ?rhs-problem))
+
+
+;; Testing in Progress
+(defrule simst-undo-failed-quiz-problem
+	(declare (salience 100))
+	?wm <- (or (ModelTraceWorkingMemory (studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil))
+								(problemType ?pType&:(eq ?pType "failedQuizProblem"))
+								(quizProblemsTutoredList ?tutoredProblems)
+								(quizProblemsFailedList ?suggestedProblems))
+			   (ModelTraceWorkingMemory (studentEnteredProblem ?enteredProblem&:(neq ?enteredProblem nil))
+								(problemType ?pType&:(eq ?pType "failedQuizProblem"))
+								(quizProblemsTutoredList ?tutoredProblems)
+								(quizProblemsFailedList ?suggestedProblems)))
+	(studentValues (selection ?sel&:(eq ?sel "undo")))
+	(or 
+		(test (eq (get-abstracted-problem (get-current-student-entered-problem dorminTable1_C1R1 dorminTable2_C1R1))
+			(get-abstracted-problem (get-first-problem ?tutoredProblems))))
+		(test (is-problem-subset-of-list ?suggestedProblems (get-abstracted-problem (get-current-student-entered-problem 
+			dorminTable1_C1R1 dorminTable2_C1R1)))))
+	=>
+	(predicted-sai undo ButtonPressed -1)
+	(bind ?currentStudentProblem (get-current-student-entered-problem dorminTable1_C1R1 dorminTable2_C1R1))
+	(bind ?lhsCurrentStudentProblem (get-lhs ?currentStudentProblem))
+	(bind ?rhsCurrentStudentProblem (get-rhs ?currentStudentProblem))
+	(bind ?quizProblemsFList (add-problem-if-not-in-list ?suggestedProblems ?currentStudentProblem))
+	(bind ?quizProblemsTList (remove-problem-from-head-of-list ?tutoredProblems (get-abstracted-problem ?currentStudentProblem)))
+	(update-wm-if-ruleSAI-equals-student-entered-side ?wm lhsQProblem ?lhsCurrentStudentProblem rhsQProblem ?rhsCurrentStudentProblem problemStatus nil
+		problemType failedQuizProblem studentEnteredProblem ?currentStudentProblem quizProblemsFailedList ?quizProblemsFList quizProblemsTutoredList ?quizProblemsTList))
+
+
+;; Testing in progress
+(defrule simst-undo-solved-quiz-problem
+	(declare (salience 95))
+	?wm <- (or (ModelTraceWorkingMemory (studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil))
+								(problemType ?pType&:(eq ?pType "solvedQuizProblem")))
+			   (ModelTraceWorkingMemory (studentEnteredProblem ?enteredProblem&:(neq ?enteredProblem nil))
+								(problemType ?pType&:(eq ?pType "solvedQuizProblem"))))
+	(studentValues (selection ?sel&:(eq ?sel "undo")))
+	=>
+	(predicted-sai undo ButtonPressed -1)
+	(bind ?currentStudentProblem (get-current-student-entered-problem dorminTable1_C1R1 dorminTable2_C1R1))
+	(bind ?lhsCurrentStudentProblem (get-lhs ?currentStudentProblem))
+	(bind ?rhsCurrentStudentProblem (get-rhs ?currentStudentProblem))
+	(update-wm-if-ruleSAI-equals-student-entered-side ?wm lhsQProblem ?lhsCurrentStudentProblem rhsQProblem ?rhsCurrentStudentProblem problemStatus nil
+		problemType solvedQuizProblem studentEnteredProblem ?currentStudentProblem))
+
+
+;; Testing in progress
+(defrule simst-undo-problem
+	(declare (salience 90))
+	?wm <- (or  (ModelTraceWorkingMemory (studentEnteredProblem ?enteredProblem&:(neq ?enteredProblem nil)))
+				(ModelTraceWorkingMemory (studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil))))
+	(studentValues (selection ?sel&:(eq ?sel "undo")))
+	=>
+	(predicted-sai undo ButtonPressed -1)
+	(bind ?currentStudentProblem (get-current-student-entered-problem dorminTable1_C1R1 dorminTable2_C1R1))
+	(bind ?lhsCurrentStudentProblem (get-lhs ?currentStudentProblem))
+	(bind ?rhsCurrentStudentProblem (get-rhs ?currentStudentProblem))
+	(update-wm-if-ruleSAI-equals-student-entered-side ?wm lhsProblem ?lhsCurrentStudentProblem rhsProblem ?rhsCurrentStudentProblem 
+		studentEnteredProblem ?currentStudentProblem))
+
+
+;;
+;; If [quizTaken == "true"] And [quizOutcome == "fail"]
+;; Then
+;; [Enter left hand side of failed quiz problem type]
+;;
+(defrule simst-quiz-fail-enter-lhs-failed-quiz-problem
+	(declare (salience 150))
+	?wm <- (or (ModelTraceWorkingMemory (quizTaken "true") 
+									(quizOutcome "fail")
+									(quizProblemsFailedList ?suggestedProblems&:(neq ?suggestedProblems nil))
+									(studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil)))									
+				(ModelTraceWorkingMemory (problemType "failedQuizProblem")
+									(problemStatus "abandoned")
+									(studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil))
+									(quizProblemsFailedList ?suggestedProblems&:(neq ?suggestedProblems nil))
+									(quizProblemsTutoredList ?tutoredProblems&:(eq ?tutoredProblems nil))))
+	(studentValues (selection ?sel) (input ?inp))
+	=>
+	(bind ?problem (comp-problem-with-hindsight ?suggestedProblems ?inp ?sel dorminTable2_C1R1))
+	(bind ?lhs-problem (get-lhs ?problem))
+	(bind ?rhs-problem (get-rhs ?problem))
+	(predicted-sai dorminTable1_C1R1 UpdateTable ?lhs-problem)
+	(get-mt-problem-suggestion dorminTable1_C1R1 UpdateTable ?lhs-problem)
+	(get-mt-problem-suggestion dorminTable2_C1R1 UpdateTable ?rhs-problem)
+	(update-wm-if-ruleSAI-equals-student-entered-side ?wm lhsQProblem ?lhs-problem)
+	(construct-tutor-hint-message 
+		"[ SimStName got some problems wrong on the quiz. It's a good strategy to teach those problems to help SimStName correct the mistakes. ]"
+		"[ Since " ?problem " was wrong on the quiz, you may want to give " ?problem " to SimStName. ]"
+		"[ Start by putting " ?lhs-problem " on the left hand side and " ?rhs-problem " on the right hand side of the tutoring interface. ]"
+		"P[ SimStName got some problems wrong on the quiz. It's a good strategy to teach those problems to help SimStName correct the mistakes. ]"
+		"P[ Since " ?problem " was wrong on the quiz, you may want to give " ?problem " to SimStName. ]"
+		"P[ Start by putting " ?lhs-problem " on the left hand side and " ?rhs-problem " on the right hand side of the tutoring interface. ]"
+		"F[ As I said, start by putting " ?lhs-problem " on the left hand side and " ?rhs-problem " on the right hand side of the tutoring interface. ]"))
+
+
+;;
+;; If [quizTaken == "true"] And [quizOutcome == "fail"]
+;; Then
+;; [Enter right hand side of the failed quiz problem type]
+(defrule simst-quiz-fail-enter-rhs-failed-quiz-problem
+	(declare (salience 125))
+	?wm <- (or (ModelTraceWorkingMemory (quizTaken "true")
+									(quizOutcome "fail")
+									(quizProblemsFailedList ?suggestedProblems&:(neq ?suggestedProblems nil))
+									(studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil)))
+				(ModelTraceWorkingMemory (problemType "failedQuizProblem")
+									(problemStatus "abandoned")
+									(studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil))
+									(quizProblemsFailedList ?suggestedProblems&:(neq ?suggestedProblems nil))
+									(quizProblemsTutoredList ?tutoredProblems&:(eq ?tutoredProblems nil))))
+	(studentValues (selection ?sel) (input ?inp))
+	=>
+	(bind ?problem (comp-problem-with-hindsight ?suggestedProblems ?inp ?sel dorminTable1_C1R1))
+	(bind ?rhs-problem (get-rhs ?problem))
+	(predicted-sai dorminTable2_C1R1 UpdateTable ?rhs-problem)
+	(get-mt-problem-suggestion dorminTable2_C1R1 UpdateTable ?rhs-problem)
+	(update-wm-if-ruleSAI-equals-student-entered-side ?wm rhsQProblem ?rhs-problem))
+
+
+(defrule simst-start-failed-quiz-problem
+	(declare (salience 200))
+	?wm <- (ModelTraceWorkingMemory (quizProblemsFailedList ?suggestedProblems&:(neq ?suggestedProblems nil))
+								(studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil))
+								(lhsQProblem ?lhs&:(neq ?lhs nil))
+								(rhsQProblem ?rhs&:(neq ?rhs nil)))
+	(studentValues (selection ?sel&:(eq ?sel "yes")))
+	(test (problem-type ?suggestedProblems (get-problem ?lhs ?rhs)))
+	=>
+	(predicted-sai yes ButtonPressed -1)
+	(bind ?problem (get-problem ?lhs ?rhs))
+	(update-wm-if-student-problem-matches-list ?suggestedProblems dorminTable1_C1R1 dorminTable2_C1R1 ?wm
+		studentEnteredProblem ?problem problemType failedQuizProblem problemStatus nil requestType nil quizTaken nil afterQuiz nil))
+
+
+;; No hint message for these rules
+(defrule simst-hint-request-demonstrate-step
+	(declare (salience 100))
+	?wm <- (or (ModelTraceWorkingMemory (studentEnteredProblem ?enteredProblem&:(neq ?enteredProblem nil))
+									(requestType "hint-request")
+									(problemType "failedQuizProblem"))
+			   (ModelTraceWorkingMemory (studentEnteredProblem ?enteredProblem&:(neq ?enteredProblem nil))
+									(requestType "hint-request")
+									(problemType ?pType&:(neq ?pType "failedQuizProblem"))
+									(problemType ?pType&:(neq ?pType "solvedQuizProblem"))))
+	(studentValues (selection ?sel) (input ?inp)) ;; (action "UpdateTable")
+	=>
+	(bind ?ruleSAIHintMsg (get-correct-sai))
+;;	(bind ?correctSelection (get-correct-selection))
+	(predicted-sai ?sel UpdateTable ?inp)
+;;	(construct-tutor-hint-message	
+;;		"[ SimStName is asking for help. You should tell SimStName the next step should be. Show SimStName by filling in what needs to go "?correctSelection" ]")
+	(construct-tutor-hint-message	
+		"[ Remember, the video shows you how to teach SimStName. Why don't you watch the video again? ]")
+	(construct-cl-hint-message
+		"[ " ?ruleSAIHintMsg " ]")
+	(update-wm-if-ruleSAI-equals-studentSAI ?wm "(requestType nil)"))
+
+
+;; No hint message for these rules
+(defrule simst-hint-request-demonstrate-step-solvedQP
+	(declare (salience 100))
+	?wm <- (ModelTraceWorkingMemory (studentEnteredProblem ?enteredProblem&:(neq ?enteredProblem nil))
+									(requestType "hint-request")
+									(problemType "solvedQuizProblem"))
+	(studentValues (selection ?sel) (input ?inp)) ;; (action "UpdateTable")
+	=>
+	(bind ?ruleSAIHintMsg (get-correct-sai))
+	(predicted-sai ?sel UpdateTable ?inp)
+	(construct-tutor-hint-message	
+		"[ SimStName is asking for help. You should tell SimStName the next step. ]")
+	(construct-cl-hint-message
+		"[ " ?ruleSAIHintMsg " ]")
+	(update-wm-if-ruleSAI-equals-studentSAI ?wm "(requestType nil)" "(hintRequestSolvedQuizProblem true)"))
+
+
+;; No hint message for these rules
+(defrule simst-feedback-request-provide-positive-feedback
+	(declare (salience 125))
+	?wm <- (ModelTraceWorkingMemory (studentEnteredProblem ?enteredProblem&:(neq ?enteredProblem nil))
+									(requestType "feedback-request"))
+	=>
+	(bind ?result (check-correctness-simststep))
+	(predicted-sai yes ButtonPressed -1)
+	(construct-cl-hint-message
+		"[ " ?result " ]")
+	(update-wm-if-ruleSAI-equals-studentSAI ?wm "(requestType nil)"))
+
+
+;; No hint message for these rules
+(defrule simst-feedback-request-provide-negative-feedback
+	(declare (salience 125))
+	?wm <- (ModelTraceWorkingMemory (studentEnteredProblem ?enteredProblem&:(neq ?enteredProblem nil))
+									(requestType "feedback-request"))
+	=>
+	(bind ?result (check-correctness-simststep))
+	(predicted-sai no ButtonPressed -1)
+	(construct-cl-hint-message
+		"[ " ?result " ]")
+	(update-wm-if-ruleSAI-equals-studentSAI ?wm "(requestType nil)"))
+
+
+;; No hint message for these rules
+(defrule simst-hint-or-feedback-request-demonstrate-done-step
+	(declare (salience 150))
+	?wm <- (or (ModelTraceWorkingMemory (studentEnteredProblem ?enteredProblem&:(neq ?enteredProblem nil))
+										(problemType "failedQuizProblem")
+										(quizProblemsFailedList ?suggestedProblems)
+										(requestType "hint-request"))
+			   (ModelTraceWorkingMemory (studentEnteredProblem ?enteredProblem&:(neq ?enteredProblem nil))
+										(problemType "failedQuizProblem")
+										(quizProblemsFailedList ?suggestedProblems)
+										(requestType "feedback-request"))
+			   (ModelTraceWorkingMemory (studentEnteredProblem ?enteredProblem&:(neq ?enteredProblem nil))
+										(problemType "solvedQuizProblem")
+										(quizProblemsTutoredList ?suggestedProblems)
+;;										(quizProblemsFailedList ?suggestedProblems)
+										(requestType "hint-request"))
+			   (ModelTraceWorkingMemory (studentEnteredProblem ?enteredProblem&:(neq ?enteredProblem nil))
+   									    (problemType "solvedQuizProblem")
+										(quizProblemsTutoredList ?suggestedProblems)
+;;										(quizProblemsFailedList ?suggestedProblems)
+										(requestType "feedback-request")))
+	(studentValues (selection "done") (action "ButtonPressed") (input "-1"))
+	(test (problem-type ?suggestedProblems ?enteredProblem))
+	=>
+	(predicted-sai done ButtonPressed -1)
+	(update-wm-if-ruleSAI-equals-studentSAI ?wm "(requestType nil)" "(problemStatus solved)" "(studentEnteredProblem nil)"
+		"(lhsProblem nil)" "(rhsProblem nil)" "(lhsQProblem nil)" "(rhsQProblem nil)")
+	(update-failedQuizP-list-tutoredQuizP-list ?wm quizProblemsFailedList quizProblemsTutoredList ?enteredProblem))
+
+
+(defrule simst-hint-or-feedback-request-demonstrate-done-step2
+	(declare (salience 125))
+	?wm <- (or (ModelTraceWorkingMemory (studentEnteredProblem ?enteredProblem&:(neq ?enteredProblem nil))
+										(requestType "hint-request"))
+			   (ModelTraceWorkingMemory (studentEnteredProblem ?enteredProblem&:(neq ?enteredProblem nil))
+										(requestType "feedback-request")))
+	(studentValues (selection "done") (action "ButtonPressed") (input "-1"))
+	=>
+	(predicted-sai done ButtonPressed -1)
+	(update-wm-if-ruleSAI-equals-studentSAI ?wm "(requestType nil)" "(studentEnteredProblem nil)" "(lhsProblem nil)" 
+		"(rhsProblem nil)" "(lhsQProblem nil)" "(rhsQProblem nil)"))
+
+
+;; No hint message for these rules
+(defrule simst-quit-problem
+	(declare (salience 90))
+	?wm <- (or  (ModelTraceWorkingMemory (studentEnteredProblem ?enteredProblem&:(neq ?enteredProblem nil))
+										 (problemType "failedQuizProblem")
+										 (quizProblemsFailedList ?list))
+;;										 (requestType "feedback-request"))
+				(ModelTraceWorkingMemory (studentEnteredProblem ?enteredProblem&:(neq ?enteredProblem nil))
+										 (problemType "solvedQuizProblem")
+										 (quizProblemsTutoredList ?list))
+;;										 (requestType "feedback-request"))
+			    (ModelTraceWorkingMemory (studentEnteredProblem ?enteredProblem&:(neq ?enteredProblem nil))
+										 (problemType "failedQuizProblem")
+										 (quizProblemsFailedList ?list))
+;;										 (requestType "hint-request"))
+			    (ModelTraceWorkingMemory (studentEnteredProblem ?enteredProblem&:(neq ?enteredProblem nil))
+										 (problemType "solvedQuizProblem")
+										 (quizProblemsTutoredList ?list)))
+;;										 (requestType "hint-request")))
+	(test (problem-type ?list ?enteredProblem))
+	=>
+	(predicted-sai "next problem" ButtonPressed -1)
+	(update-wm-if-ruleSAI-equals-studentSAI ?wm "(problemStatus abandoned)" "(studentEnteredProblem nil)" "(requestType nil)"
+		"(lhsQProblem nil)" "(rhsQProblem nil)" "(lhsProblem nil)" "(rhsProblem nil)"))
+
+
+(defrule simst-quit-problem2
+	(declare (salience 75))
+	?wm <- (ModelTraceWorkingMemory (studentEnteredProblem ?enteredProblem&:(neq ?enteredProblem nil)))
+	=>
+	(predicted-sai "next problem" ButtonPressed -1)
+	(update-wm-if-ruleSAI-equals-studentSAI ?wm "(studentEnteredProblem nil)" "(requestType nil)"
+		"(lhsProblem nil)" "(rhsProblem nil)"))
+
+
+ 
+     
+(defrule simst-fail-quizP-solved-review-UO
+	(declare (salience 100))
+	?wm <- (or (ModelTraceWorkingMemory (problemType "failedQuizProblem")
+									(problemStatus "solved")
+									(studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil))
+									(UOTabReviewed ?tabClicked&:(neq ?tabClicked "true")))
+			   (ModelTraceWorkingMemory (problemType "solvedQuizProblem")
+									(problemStatus "solved")
+									(studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil))
+									(hintRequestSolvedQuizProblem "true")
+									(UOTabReviewed ?tabClicked&:(neq ?tabClicked "true")))
+			   (ModelTraceWorkingMemory (problemType "solvedQuizProblem")
+									(problemStatus "abandoned")
+									(quizProblemsTutoredList ?tutoredProblems&:(neq ?tutoredProblems nil))
+									(studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil))))
+	=>
+	(predicted-sai UnitOverview TabClicked -1)
+	(update-wm-if-ruleSAI-equals-studentSAI ?wm "(UOTabReviewed true)"))
+
+
+;; 
+;; Rule to trace every tab action on the interface.
+(defrule simst-tab-clicked
+	(declare (salience 50))
+	(studentValues (selection ?sel) (action "TabClicked") (input ?inp))
+	=>
+	(predicted-sai ?sel TabClicked ?inp))	
+
+
+(defrule simst-fail-quizP-solved-enter-lhs-solved-quizPType
+	(declare (salience 125))
+	?wm <- (or (ModelTraceWorkingMemory (problemType "failedQuizProblem")
+									(problemStatus "solved")
+									(UOTabReviewed ?tabClicked&:(neq ?tabClicked "true"))
+									(quizProblemsTutoredList ?tutoredProblems&:(neq ?tutoredProblems nil))
+									(studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil)))
+			   (ModelTraceWorkingMemory (problemType "solvedQuizProblem") 
+									(problemStatus "solved")
+									(hintRequestSolvedQuizProblem "true")
+									(quizProblemsTutoredList ?tutoredProblems&:(neq ?tutoredProblems nil))
+									(UOTabReviewed ?tabClicked&:(neq ?tabClicked "true"))
+									(studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil)))
+			   (ModelTraceWorkingMemory (problemType "solvedQuizProblem")
+									(problemStatus "abandoned")
+									(quizProblemsTutoredList ?tutoredProblems&:(neq ?tutoredProblems nil))
+									(studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil)))
+			   (ModelTraceWorkingMemory (problemStatus "solved")
+									(UOTabReviewed "true")
+									(quizProblemsTutoredList ?tutoredProblems&:(neq ?tutoredProblems nil))
+									(studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil))))
+	(studentValues (selection ?sel) (input ?inp))
+	=>
+	(bind ?firstTutoredProblem (get-first-problem ?tutoredProblems))
+	(bind ?similarPType (get-similar-problem ?firstTutoredProblem))
+	(bind ?lhsSimilarPType (get-lhs ?similarPType))
+	(bind ?rhsSimilarPType (get-rhs ?similarPType))
+	(bind ?problem (comp-problem-with-hindsight ?tutoredProblems ?inp ?sel dorminTable2_C1R1))
+	(bind ?lhs-problem (get-lhs ?problem))
+	(bind ?rhs-problem (get-rhs ?problem))
+	(predicted-sai dorminTable1_C1R1 UpdateTable ?lhs-problem)
+	(get-mt-problem-suggestion dorminTable1_C1R1 UpdateTable ?lhsSimilarPType)
+	(get-mt-problem-suggestion dorminTable2_C1R1 UpdateTable ?rhsSimilarPType)
+	(update-wm-if-ruleSAI-equals-student-entered-side ?wm lhsQProblem ?lhs-problem)
+;;	(update-wm-if-student-problem-matches-list ?tutoredProblems ?sel dorminTable2_C1R1 ?wm 
+;;		studentEnteredProblem ?similarP problemStatus nil problemType solvedQuizProblem hintRequestSolvedQuizProblem nil UOTabReviewed nil)
+	(construct-tutor-hint-message 
+		"[ It can help SimStName to get more practice on the same type of problem. ]"
+		"[ You may want to give " ?similarPType " , since it is similar to a problem that you already tutored SimStName. ]"
+		"[ Start by putting " ?lhsSimilarPType " on the left hand side and " ?rhsSimilarPType " on the right hand side of the tutoring interface. ]"
+		"P[ It can help SimStName to get more practice on the same type of problem. ]"
+		"P[ You may want to give " ?similarPType " , since it is similar to a problem that you already tutored SimStName. ]"
+		"P[ Start by putting " ?lhsSimilarPType " on the left hand side and " ?rhsSimilarPType " on the right hand side of the tutoring interface. ]"
+		"F[ As I sai, start by putting " ?lhsSimilarPType " on the left hand side and " ?rhsSimilarPType " on the right hand side of the tutoring interface. ]"))
+
+
+(defrule simst-fail-quizP-solved-enter-rhs-solved-quizPType
+	(declare (salience 100))
+	?wm <- (or (ModelTraceWorkingMemory (problemType "failedQuizProblem") 
+									(problemStatus "solved")
+									(UOTabReviewed ?tabClicked&:(neq ?tabClicked "true"))
+									(quizProblemsTutoredList ?tutoredProblems&:(neq ?tutoredProblems nil))
+									(studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil)))
+			   (ModelTraceWorkingMemory (problemType "solvedQuizProblem")	
+									(problemStatus "solved")
+									(hintRequestSolvedQuizProblem "true")
+									(quizProblemsTutoredList ?tutoredProblems&:(neq ?tutoredProblems nil))
+									(UOTabReviewed ?tabClicked&:(neq ?tabClicked "true"))
+									(studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil)))
+			   (ModelTraceWorkingMemory (problemType "solvedQuizProblem")
+									(problemStatus "abandoned")
+									(quizProblemsTutoredList ?tutoredProblems&:(neq ?tutoredProblems nil))
+									(studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil)))
+			   (ModelTraceWorkingMemory (problemStatus "solved")
+									(UOTabReviewed "true")
+									(quizProblemsTutoredList ?tutoredProblems&:(neq ?tutoredProblems nil))
+									(studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil))))
+	(studentValues (selection ?sel) (input ?inp))
+	=>
+	(bind ?firstTutoredProblem (get-first-problem ?tutoredProblems))
+	(bind ?similarPType (get-similar-problem ?firstTutoredProblem))
+	(bind ?problem (comp-problem-with-hindsight ?tutoredProblems ?inp ?sel dorminTable1_C1R1))
+	(bind ?rhs-problem (get-rhs ?problem))
+	(predicted-sai dorminTable2_C1R1 UpdateTable ?rhs-problem)
+	(update-wm-if-ruleSAI-equals-student-entered-side ?wm rhsQProblem ?rhs-problem))
+;;	(update-wm-if-student-problem-matches-list ?tutoredProblems dorminTable1_C1R1 ?sel ?wm 
+;;		studentEnteredProblem ?similarP problemStatus nil problemType solvedQuizProblem hintRequestSolvedQuizProblem nil UOTabReviewed nil))
+
+
+(defrule simst-start-solved-quiz-problem
+	(declare (salience 200))
+	?wm <- (ModelTraceWorkingMemory (quizProblemsTutoredList ?tutoredProblems&:(neq ?tutoredProblems nil))
+								(studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil))
+								(lhsQProblem ?lhs&:(neq ?lhs nil))
+								(rhsQProblem ?rhs&:(neq ?rhs nil)))
+	(studentValues (selection ?sel&:(eq ?sel "yes")))
+	(test (problem-type ?tutoredProblems (get-problem ?lhs ?rhs)))
+	=>
+	(predicted-sai yes ButtonPressed -1)
+	(bind ?problem (get-problem ?lhs ?rhs))
+	(update-wm-if-student-problem-matches-list ?tutoredProblems dorminTable1_C1R1 dorminTable2_C1R1 ?wm
+		studentEnteredProblem ?problem problemType solvedQuizProblem problemStatus nil requestType nil quizTaken nil afterQuiz nil hintRequestSolvedQuizProblem nil UOTabReviewed nil))
+
+
+;; Merged in the above rule simst-fail-quizP-solved-enter-lhs-solved-quizPType
+;;(defrule simst-UOReviewed-enter-lhs-solved-quizPType
+;;	(declare (salience 125))
+;;	?wm <- (ModelTraceWorkingMemory (problemStatus "solved")
+;;								(UOTabReviewed "true")
+;;								(quizProblemsTutoredList ?tutoredProblems&:(neq ?tutoredProblems nil))
+;;								(studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil)))
+;;	(studentValues (selection ?sel) (input ?inp))
+;;	=>
+;;	(bind ?problem (comp-problem-with-hindsight ?tutoredProblems ?inp ?sel dorminTable2_C1R1))
+;;	(bind ?lhs-problem (get-lhs ?problem))
+;;	(predicted-sai dorminTable1_C1R1 UpdateTable ?lhs-problem)
+;;	(update-wm-if-student-problem-matches-list ?tutoredProblems ?sel dorminTable2_C1R1 ?wm
+;;		studentEnteredProblem ?problem problemStatus nil problemType solvedQuizProblem UOTabReviewed nil)
+;;	(construct-tutor-hint-message 
+;;		"[ ]"))
+
+;; Merged in the above rule simst-fail-quizP-solved-enter-lhs-solved-quizPType
+;;(defrule simst-UOReviewed-enter-rhs-solved-quizPType
+;;	(declare (salience 100))
+;;	?wm <- (ModelTraceWorkingMemory (problemStatus "solved")
+;;								(UOTabReviewed "true")
+;;								(quizProblemsTutoredList ?tutoredProblems&:(neq ?tutoredProblems nil))
+;;								(studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil)))
+;;	(studentValues (selection ?sel) (input ?inp))
+;;	=>
+;;	(bind ?problem (comp-problem-with-hindsight ?tutoredProblems ?inp ?sel dorminTable1_C1R1))
+;;	(bind ?rhs-problem (get-rhs ?problem))
+;;	(predicted-sai dorminTable2_C1R1 UpdateTable ?rhs-problem)
+;;	(update-wm-if-student-problem-matches-list ?tutoredProblems dorminTable1_C1R1 ?sel ?wm
+;;		studentEnteredProblem ?problem problemStatus nil problemType solvedQuizProblem UOTabReviewed nil))
+
+
+
+							
+							 
+(defrule simst-fail-quizP-solved-enter-lhs-different-failed-quizP
+	(declare (salience 225))
+	?wm <- (or (ModelTraceWorkingMemory (problemType "failedQuizProblem")
+									(problemStatus "solved")
+									(UOTabReviewed ?tabClicked&:(neq ?tabClicked "true"))
+									;;(lhsProblem ?lhs&:(eq ?lhs nil))
+									(quizProblemsFailedList ?suggestedProblems&:(neq ?suggestedProblems nil))
+									(studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil)))
+				(ModelTraceWorkingMemory (problemType "solvedQuizProblem")
+									(problemStatus "solved")
+									(UOTabReviewed ?tabClicked&:(neq ?tabClicked "true"))
+									;;(lhsProblem ?lhs&:(eq ?lhs nil))
+									(quizProblemsFailedList ?suggestedProblems&:(neq ?suggestedProblems nil))
+									(studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil))
+									(hintRequestSolvedQuizProblem ?var&:(eq ?var nil)))
+				(ModelTraceWorkingMemory (problemType "failedQuizProblem")
+									(problemStatus "abandoned")
+									;;(lhsProblem ?lhs&:(eq ?lhs nil))
+									(quizProblemsFailedList ?suggestedProblems&:(neq ?suggestedProblems nil))
+									(studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil))
+									(quizProblemsTutoredList ?tutoredProblems&:(neq ?tutoredProblems nil))
+									(quizTaken ?var&:(eq ?var nil))))
+	(studentValues (selection ?sel) (input ?inp))
+	=>
+	(bind ?problem (comp-problem-with-hindsight ?suggestedProblems ?inp ?sel dorminTable2_C1R1))
+	(bind ?lhs-problem (get-lhs ?problem))
+	(bind ?rhs-problem (get-rhs ?problem))
+	(predicted-sai dorminTable1_C1R1 UpdateTable ?lhs-problem)
+	(get-mt-problem-suggestion dorminTable1_C1R1 UpdateTable ?lhs-problem)
+	(get-mt-problem-suggestion dorminTable2_C1R1 UpdateTable ?rhs-problem)
+	(update-wm-if-ruleSAI-equals-student-entered-side ?wm lhsQProblem ?lhs-problem)
+	(construct-tutor-hint-message 
+		"[ SimStName got some problems wrong on the quiz. Its a good strategy to teach those problems to help SimStName correct the mistakes. ]"
+		"[ Since " ?problem " was wrong on the quiz, you may want to give " ?problem " to SimStName. ]"
+		"[ Start by putting " ?lhs-problem " on the left hand side and " ?rhs-problem " on the right hand side of the tutoring interface. ]"))	
+;;	(update-wm-if-student-problem-matches-list ?suggestedProblems ?sel dorminTable2_C1R1 ?wm 
+;;		studentEnteredProblem ?problem problemStatus nil problemType failedQuizProblem))
+
+
+(defrule simst-fail-quizP-solved-enter-rhs-different-failed-quizP
+	(declare (salience 200))
+	?wm  <- (or (ModelTraceWorkingMemory (problemType "failedQuizProblem")
+									 (problemStatus "solved")
+									;;(rhsProblem ?rhs&:(neq ?rhs nil))
+									 (UOTabReviewed ?tabClicked&:(neq ?tabClicked "true"))
+									 (quizProblemsFailedList ?suggestedProblems&:(neq ?suggestedProblems nil))
+									 (studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil)))
+				(ModelTraceWorkingMemory (problemType "solvedQuizProblem")
+									 (problemStatus "solved")
+									 ;; (rhsProblem ?rhs&:(neq ?rhs nil))
+									 (UOTabReviewed ?tabClicked&:(neq ?tabClicked "true"))
+									 (quizProblemsFailedList ?suggestedProblems&:(neq ?suggestedProblems nil))
+									 (studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil))
+									 (hintRequestSolvedQuizProblem ?var&:(eq ?var nil)))
+				(ModelTraceWorkingMemory (problemType "failedQuizProblem") 
+									(problemStatus "abandoned")
+									;; (rhsProblem ?rhs&:(neq ?rhs nil))
+									(quizProblemsFailedList ?suggestedProblems&:(neq ?suggestedProblems nil))
+									(studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil))
+									(quizProblemsTutoredList ?tutoredProblems&:(neq ?tutoredProblems nil))
+									(quizTaken ?var&:(eq ?var nil))))
+	(studentValues (selection ?sel) (input ?inp))
+	=>
+	(bind ?problem (comp-problem-with-hindsight ?suggestedProblems ?inp ?sel dorminTable1_C1R1))
+	(bind ?rhs-problem (get-rhs ?problem))
+	(predicted-sai dorminTable2_C1R1 UpdateTable ?rhs-problem)
+	(update-wm-if-ruleSAI-equals-student-entered-side ?wm rhsQProblem ?rhs-problem))
+;;	(update-wm-if-student-problem-matches-list ?suggestedProblems dorminTable1_C1R1 ?sel ?wm 
+;;		studentEnteredProblem ?problem problemStatus nil problemType failedQuizProblem))
+
+
+;;(defrule simst-same-problem-type-solved
+;;	(declare (salience 100))
+;;	?wm <- (ModelTraceWorkingMemory (condition true)
+;;									(hint-request yes))
+;;	=>
+;;	(predicted-sai DONT-CARE DONT-CARE DONT-CARE))
+
+
+;;(defrule simst-same-problem-type-solved
+;;	(declare (salience 100))
+;;	?wm <- (ModelTraceWorkingMemory (condition true)
+;;									(hint-request no))
+;;	=>
+;;	(predicted-sai DONT-CARE DONT-CARE DONT-CARE))
+
+
+(defrule simst-hint-update-request
+	(declare (salience 200))
+	?wm <- (ModelTraceWorkingMemory (studentEnteredProblem ?enteredProblem&:(neq ?enteredProblem nil)))
+	(studentValues (selection ?sel&:(eq ?sel "sshint")))
+	=>
+	(predicted-sai ?sel DONT-CARE DONT-CARE)
+	(modify ?wm (requestType hint-request)))
+;;	(update-wm-if-ruleSAI-equals-studentSAI ?wm "(requestType hint-request)"))
+
+
+(defrule simst-feedback-update-request
+	(declare (salience 200))
+	?wm <- (ModelTraceWorkingMemory (studentEnteredProblem ?enteredProblem&:(neq ?enteredProblem nil)))
+	(studentValues (selection ?sel&:(eq ?sel "ssfeedback")))
+	=>
+	(predicted-sai ?sel DONT-CARE DONT-CARE)
+	(modify ?wm (requestType feedback-request)))
+;;	(update-wm-if-ruleSAI-equals-studentSAI ?wm "(requestType feedback-request)"))
+
+
+(defrule simst-quiz-status-and-problem-update-request
+	(declare (salience 200))
+	?wm <- (ModelTraceWorkingMemory (quizTaken "true"))
+	(studentValues (selection ?sel&:(eq ?sel "ssquizCompleted")) (input ?inp))
+	=>
+	(predicted-sai ?sel DONT-CARE DONT-CARE)
+	(bind ?status (get-quiz-status ?inp))
+	(bind ?problemsList (get-failed-quiz-items ?inp))
+	(modify ?wm (quizOutcome ?status) (quizProblemsFailedList ?problemsList) (quizProblemsTutoredList nil)))
+
+
+;;
+;; If [APlusLaunched]
+;; Then
+;; [Switch to SimSt Tab]
+;;(defrule simst-switch-tab
+;;	(declare (salience 100)) ;; salience determines the priority of the rules : higher the salience, higher the priority
+;;	?var <- (ModelTraceWorkingMemory (modelTracedEvents ?eventsList))
+;;	(test (eq (get-first-event ?var) "APlusLaunched"))
+;;	=>
+;;	(predict-tutor-action SimStName TabClicked -1)
+;;	(update-mt-working-memory ?var SimStName)
+;;	(construct-tutor-hint-message
+;;		"[ You should read through the Unit Overview. ]"
+;;		"[ Then switch to the SimStName tab and give SimStName the quiz ]"))
+
+
+
+;;
+;; If [SimSt Tab]
+;; Then
+;; [Quiz]
+;;(defrule simst-take-quiz
+;;	(declare (salience 100))
+;;	?var <- (ModelTraceWorkingMemory (modelTracedEvents ?eventsList))
+;;	(test (eq (get-first-event ?var) (get-member SimSt SimStName)))
+;;	=>
+;;	(predict-tutor-action quiz ButtonPressed -1)
+;;	(update-mt-working-memory ?var quiz)
+;;	(construct-tutor-hint-message
+;;		"[ Before you start teaching its a good strategy to quiz SimStName. ]"
+;;		"[ This would give you an idea of what SimStName already knows. ]"
+;;		"[ Click the Quiz SimStName button. ]"))
+
+
+
+;;
+;; If [Quiz] And not[Quiz Section Passed]
+;; Then
+;; enter {failed problem on Quiz}
+;;(defrule simst-quiz-fail-tutor-quiz-problem
+;;	(declare (salience 100))
+;;	?var <- (ModelTraceWorkingMemory {quizOutcome == "fail"} (modelTracedEvents ?eventsList) (currentProblem ?problemEntered)(quizProblemsFailed ?problemList))
+;;	(test (eq (get-first-event ?var) "quiz"))
+;;	=>
+;;	(bind ?problem (check-problem-started ?problemEntered ?problemList))
+;;	(bind ?firstProblem (get-first-quiz-failed-problem ?problemList)) 
+;;	;;(predict-tutor-action ?firstProblem StartProblem -1)
+;;	(update-mt-working-memory ?var ?problem quizProblem) 	
+;;	(construct-tutor-hint-message 
+;;		"[ SimStName got some problems wrong on the quiz. ]"
+;;		"[ Its a good strategy to teach those problems. This would help SimStName correct the mistakes. ]"
+;;		"[ You should give " ?firstProblem " . ]"))
+
+
+
+;;
+;; If [Quiz] And not[Quiz Section Passed]
+;; Then
+;; enter {second failed problem on Quiz}
+;;(defrule simst-quiz-fail-second
+;;	(declare (salience 75))
+;;	?var <- (ModelTraceWorkingMemory {quizOutcome == "fail"} (modelTracedEvents ?eventsList) (quizProblemsFailed ?problemList))
+;;	(test (eq (get-first-event ?var) "quiz"))
+;;	=>
+;;	(bind ?secondProblem (get-second-quiz-failed-problem ?problemList))
+;;	(predict-tutor-action StartStateElements StartProblem ?secondProblem)
+;;	(update-mt-working-memory ?var ?secondProblem))
+
+
+
+;;
+;; If [Quiz] And [Quiz Section Passed]
+;; Then
+;; [Quiz]
+;;(defrule simst-quiz-pass
+;;	(declare (salience 100))
+;;	?var <- (ModelTraceWorkingMemory {quizOutcome == "pass"} (modelTracedEvents ?eventsList))
+;;	(test (eq (get-first-event ?var) "quiz"))
+;;	=>
+;;	(predict-tutor-action quiz ButtonPressed -1)
+;;	(update-mt-working-memory ?var quiz)
+;;	(construct-tutor-hint-message
+;;		"[  Why don't you quiz SimStName again so that SimStName works on next section of the quiz. ]" ))
+
+
+
+;;
+;; (BUG) If [Quiz] And not[Quiz Section Passed]
+;; Then
+;; [Quiz]
+;;(defrule BUG-simst-quiz-fail
+;;	(declare (salience 50))
+;;	?var <- (ModelTraceWorkingMemory {quizOutcome == "fail"} (modelTracedEvents ?eventsList))
+;;	(test (eq (get-first-event ?var) "quiz"))
+;;	=>
+;;	(predict-tutor-action quiz ButtonPressed -1))
+
+
+
+;;
+;; If [Failed Quiz Problem Solved]
+;; Then
+;; enter {failed quiz problem type}
+;;(defrule simst-quiz-problem-solved-enter-problem-type
+;;	(declare (salience 150))
+;;	?var <- (ModelTraceWorkingMemory (quizProblemsFailed ?problemList) (modelTracedEvents ?eventsList))
+;;	(test (eq (get-first-event ?var) "quizProblem"))
+;;	=>
+;;	(bind ?failedQuizProblem (get-second-event ?var))
+;;	(bind ?failedProblemType (get-abstracted-problem ?failedQuizProblem))
+;;	(predict-tutor-action ?failedProblemType StartProblem -1)
+;;	(update-mt-working-memory ?var ?failedProblemType quizProblemType)
+;;	(construct-tutor-hint-message
+;;		"[	Why don't you teach a similar problem like" ?failedQuizProblem " to see if SimStName can solve it. ]" ))
+
+
+
+;;
+;; If [Failed Quiz Problem Solved]
+;; Then
+;; [Review Unit Overview]
+;;(defrule simst-quiz-problem-solved-review-unit-overview
+;;	(declare (salience 100))
+;;	?var <- (ModelTraceWorkingMemory (quizProblemsFailed ?problemList) (modelTracedEvents ?eventsList))
+;;	(test (eq (get-first-event ?var) "quizProblem"))
+;;	=>
+;;	(predict-tutor-action UnitOverview TabClicked -1)
+;;	(update-mt-working-memory ?var UnitOverview))
+
+
+
+;;
+;; If [Unit Overview]
+;; Then
+;; enter {failed quiz problem type}
+;;(defrule unit-overview-do-failed-quiz-problem-type
+;;	(declare (salience 100))
+;;	?var <- (ModelTraceWorkingMemory (quizProblemsFailed ?problemList) (modelTracedEvents ?eventsList))
+;;	(test (eq (get-first-event ?var) "UnitOverview"))
+;;	=>
+;;	)
+
+
+
+;;
+;; If [Failed Quiz Problem Solved]
+;; Then
+;; [Quiz]
+;;(defrule simst-quiz-problem-solved-take-quiz
+;;	(declare (salience 100))
+;;	?var <- (ModelTraceWorkingMemory (quizProblemsFailed ?problemList) (modelTracedEvents ?eventsList))
+;;	(test (eq (get-first-event ?var) "quizProblem"))
+;;	=>
+;;	(predict-tutor-action quiz ButtonPressed -1)
+;;	(update-mt-working-memory ?var quiz))
+
+
+
+;;
+;; If [Failed Quiz Problem Solved] And [Quiz Items Left]
+;; Then
+;; enter {failed quiz problem}
+;;(defrule simst-quiz-problem-solved-tutor-failed-problem
+;;	(declare (salience 100))
+;;	?var <- (ModelTraceWorkingMemory (quizProblemsFailed ?problemList) (modelTracedEvents ?eventsList) (currentProblem ?problemEntered)
+;;		(failedQuizProblemsSolved ?solvedList))
+;;	(test (eq (get-first-event ?var) "quizProblem"))
+;;	(test (quiz-items-left ?problemList ?solvedList))
+;;	=>
+;;	(bind ?problem (check-problem-started ?problemEntered ?problemList))
+;;	(update-mt-working-memory ?var ?problem quizProblem))
+
+
+
+;;
+;; If [Failed Quiz Problem Solved] And [Quiz Items Left]
+;; Then
+;; enter {first failed quiz problem}
+;;(defrule simst-quiz-problem-solved-tutor-first-failed-problem
+;;	(declare (salience 100))
+;;	?var <- (ModelTraceWorkingMemory {problemSolved == "true"} (quizProblemsFailed ?problemList) (failedQuizProblemsSolved ?solvedList)
+;;		(completedProblem ?compProblem))
+;;	(test (solved-problem-type ?problemList ?compProblem))
+;;	(test (quiz-items-left ?problemList ?solvedList))
+;;	=>
+;;	(bind ?firstProblem (get-first-quiz-failed-problem ?problemList)) 
+;;	(predict-tutor-action StartStateElements StartProblem ?firstProblem))
+
+
+
+;;
+;; If [Failed Quiz Problem Solved] And not[Quiz Items Left]
+;; Then
+;; [Quiz]
+;;(defrule simst-quiz-problem-solved-no-quiz-items-left-take-quiz
+;;	(declare (salience 100))
+;;	?var <- (ModelTraceWorkingMemory (quizProblemsFailed ?problemList) (modelTracedEvents ?eventsList) (failedQuizProblemsSolved ?solvedList))
+;;	(test (eq (get-first-event ?var) "quizProblem"))
+;;	(not (test (quiz-items-left ?problemList ?solvedList)))
+;;	=>
+;;	(predict-tutor-action quiz ButtonPressed -1)
+;;	(update-mt-working-memory ?var quiz))
+
+
+
+;;
+;; If [Failed Quiz Problem Type Solved] And not[Help given]
+;; Then
+;; [Quiz]
+;;(defrule simst-failed-quiz-problem-type-solved-nohelp-do-quiz
+;;	(declare (salience 100))
+;;	?var <- (ModelTraceWorkingMemory {hintRequestOnQuizProblemType == "false"} (modelTracedEvents ?eventsList))
+;;	(test (eq (get-first-event ?var) "quizProblemType"))
+;;	=>
+;;	(predict-tutor-action quiz ButtonPressed -1)
+;;	(update-mt-working-memory ?var quiz))
+
+
+
+;;
+;; If [Failed Quiz Problem Type Solved] And not[Help given] And [Quiz Items Left]
+;; Then
+;; enter {failed quiz problem}
+;;(defrule simst-failed-quiz-problem-type-solved-nohelp-quizitemsleft-do-failed-quiz-problem
+;;	(declare (salience 100))
+;;	?var <- (ModelTraceWorkingMemory {hintRequestOnQuizProblemType == "false"} (quizProblemsFailed ?problemList) (failedQuizProblemsSolved ?solvedList) 
+;;		(currentProblem ?problemEntered) (modelTracedEvents ?eventsList))
+;;	(test (eq (get-first-event ?var) "quizProblemType"))
+;;	(test (quiz-items-left ?problemList ?solvedList))
+;;	=>
+;;	(bind ?problem (check-problem-started ?problemEntered ?problemList))
+;;	(update-mt-working-memory ?var ?problem quizProblem))
+
+
+
+;;
+;; If [Failed Quiz Problem Type Solved] And not[Help given] And not[Quiz Items Left]
+;; Then
+;; [Quiz]
+;;(defrule simst-failed-quiz-problem-type-solved-nohelp-noquizitemsleft-do-quiz
+;;	(declare (salience 100))
+;;	?var <- (ModelTraceWorkingMemory {hintRequestOnQuizProblemType == "false"} (quizProblemsFailed ?problemList) (failedQuizProblemsSolved ?solvedList) 
+;;		(modelTracedEvents ?eventsList))
+;;	(test (eq (get-first-event ?var) "quizProblemType"))
+;;	(not (test (quiz-items-left ?problemList ?solvedList)))
+;;	=>
+;;	(predict-tutor-action quiz ButtonPressed -1)
+;;	(update-mt-working-memory ?var quiz))
+
+
+
+;;
+;; If [Failed Quiz Problem Solved] And [Unit Overview Reviewed]
+;; Then
+;; enter {failed quiz problem type}
+;;(defrule unit-overview-reviewed-tutor-failed-prob-type
+;;	(declare (salience 200))
+;;	(ModelTraceWorkingMemory {problemSolved == "true"} {unitOverviewTab == "TabClicked"} (completedProblem ?compProblem)
+;;		(quizProblemsFailed ?problemList))
+;;	(test (solved-problem-type ?problemList ?compProblem))
+;;	=>
+;;	(bind ?failedProblemType (get-abstracted-problem ?compProblem))
+;;	(predict-tutor-action StartStateElements StartProblem ?failedProblemType)
+;;	(bind ?ssName (get-member SimSt SimStName))
+;;	(construct-tutor-hint-message
+;;		"[	]" ))
+
+
+
+;;
+;; If [Failed Quiz Problem Type Solved] And not[Help given for the solved problem]
+;; Then
+;; [Quiz]
+;;(defrule failed-quiz-problem-solved-without-help
+;;	(declare (salience 100))
+;;	(ModelTraceWorkingMemory {problemSolved == "true"} {hintRequestOnProblem == "false"} (completedProblem ?compProblem)
+;;		(quizProblemsFailed ?problemList))
+;;	=>
+;;	(predict-tutor-action quiz ButtonPressed -1))
+
+
+
+;;
+;; If [Problem Solved] And not[Help given for the previous problem]
+;; Then
+;; [Quiz]
+;;(defrule problem-solved-without-help
+;;	(declare (salience 100))
+;;	(ModelTraceWorkingMemory {problemSolved == "true"} {hintRequestOnProblem == "false"})
+;;	=>
+;;	(predict-tutor-action quiz ButtonPressed -1)
+;;	(bind ?ssName (get-member SimSt SimStName))	
+;;	(construct-tutor-hint-message
+;;		"[ " ?ssName " did not get stuck. ]"
+;;		"[ You should give a quiz now to see how" ?ssName " does on the quiz.]"
+;;		"[ Click on Quiz " ?ssName " button. ]"))
+
+
+	
+;;
+;; If [Tutor Next Problem] And [Quiz] is not before [Tutor Next Problem]
+;; Then
+;; [Review Unit Overview] 
+;;(defrule review-unit-overview
+;;	(declare (salience 75))
+;;	?var <- (ModelTraceWorkingMemory {tutorNextProblem == "ButtonPressed"})
+;;	(not (test (quiz-before-tutor-next-problem ?var)))
+;;	=>
+;;	(predict-tutor-action UnitOverview TabClicked -1)
+;;	(construct-tutor-hint-message
+;;		"[ You should look at the Unit Overview for problems. ]"
+;;		"[ You should pick problems similar to the ones Stacy got wrong on the quiz.]"
+;;		"[ Select the Unit Overview Tab above. ]"))
+	
+	
+
+;;
+;; If [Unit Overview Reviewed]
+;; Then
+;; {select first problem in the Unit Overview in sync with the [Quiz Level]}
+;;(defrule tutor-problem
+;;	(declare (salience 85))
+;;	(ModelTraceWorkingMemory {unitOverviewTab == "TabClicked"})
+;;	=>
+;;	(bind ?ssName (get-member SimSt SimStName))
+;;	(construct-tutor-hint-message
+;;		"[ You should give the following problem to" ?ssName ". ]" ))
+
+
+
+;; USE-PROBLEM-BANK
+;;
+;; If a student should enter a new problem and did not just complete a quiz
+;; Then
+;; (Student tutor) should use the problem bank.
+;;(defrule use-problem-bank
+;;	"If a student should enter a new problem and did not just complete a quiz then use the problem bank"
+;;	(declare (salience 100))
+;;	(ModelTraceWorkingMemory {enterProblem == "true"} {lastAction != "Quiz"} {lastAction != "ProblemBank"} )
+;;	=>
+;;	(predict-tutor-action ProblemBank TabClicked -1)
+;;	(construct-tutor-hint-message
+;;		"[	You should look at the problem bank. ]"))
+
+
+
+;; TUTOR-PROBLEM
+;;
+;; If problem bank was just reviewed
+;; Then
+;; give a problem that has never been solved.
+;;(defrule tutor-problem
+;;	(declare (salience 100))
+;;	(ModelTraceWorkingMemory {enterProblem == "true"} {lastAction == "ProblemBank"} (problemEntered ?problemEntered) (suggestedProblem ?suggestedProblem))
+;;	=>
+;;	(bind ?ssName (get-member SimSt SimStName))
+;;	(check-problem-started ?problemEntered ?suggestedProblem)
+;;	(construct-tutor-hint-message
+;;		"[ You should give the following problem" ?suggestedProblem " to" ?ssName ". ]"))
+
+
+
+;; BUG-PROBLEM-SOLVED-ON-QUIZ
+;;
+;; If a student should enter a new problem
+;; Then
+;; (Student tutor) provides a exact problem which has been solved correctly on the quiz.
+;;(defrule BUG-problem-solved-on-quiz
+;;	"If a student should enter a new problem then provide an exact problem which has been solved correctly on the quiz"
+;;	(declare (salience 50))
+;;	(ModelTraceWorkingMemory {enterProblem == "true"} (problemEntered ?problemEntered) (quizProblemsPassed ?problemList))
+;;	=>
+;;	(check-problem-started ?problemEntered ?problemList)
+;;	(construct-tutor-hint-message
+;;		"[ ]"))
+
+
+
+;; SIMST-QUIZ-SOLVED-CORRECTLY
+;;
+;; If SimStudent solves all the quiz items correctly
+;; Then
+;; (Student tutor) should quiz SimStudent again
+;;(defrule simst-quiz-solved-correctly
+;;	"If SimStudent solves all the quiz items correctly then quiz SimStudent again"
+;;	(declare (salience 100))
+;;	(ModelTraceWorkingMemory {quizOutcome == "pass"})
+;;	=>
+;;	(bind ?ssName (get-member SimSt SimStName))
+;;	(predict-tutor-action quiz ButtonPressed -1)
+;;	(construct-tutor-hint-message
+;;		"[  Why don't you quiz" ?ssName " again so that" ?ssName " works on next section of the quiz. ]" ))
+	
+
+
+;; SIMST-QUIZ-FAIL
+;;
+;; If SimStudent fails on a quiz
+;; Then
+;; (Student tutor) should give type of problem which SimStudent got wrong on the quiz.
+;;(defrule simst-quiz-fail
+;;	"If SimStudent fails on a quiz, then tutor SimStudent type of problem which SimStudent got wrong on quiz"
+;;	(declare (salience 100))
+;;	(ModelTraceWorkingMemory {quizOutcome == "fail"} (problemEntered ?problemEntered) (quizProblemsFailed ?problemList) (suggestedProblems ?suggestedList))
+;;	=>
+;;	(bind ?ssName (get-member SimSt SimStName))
+;;	(check-problem-started ?problemEntered ?problemList)
+;;	(construct-tutor-hint-message 
+;;		"[ " ?ssName " got some problems wrong on the quiz. ]"
+;;		"[ Its a good strategy to teach those problems. This would help" ?ssName " correct the mistakes. ]"
+;;		"[ You should give " ?suggestedList " . ]"))
+
+	
+
+;; BUG-SIMST-QUIZ-FAIL
+;;
+;; If SimStudent fails on a quiz
+;; Then
+;; (Student tutor) quizzes SimStudent again
+;;(defrule BUG-simst-quiz-fail
+;;	(declare (salience 50))
+;;	(ModelTraceWorkingMemory {quizOutcome == "fail"})
+;;	=>
+;;	(bind ?ssName (get-member SimSt SimStName))
+;;	(predict-tutor-action quiz ButtonPressed -1)
+;;	(construct-tutor-hint-message 
+;;		"[  ]" ))
+
+
+
+;; SIMST-LAUNCH-QUIZ
+;;
+;; IF SimStudent is launched and Student tutor has not yet started teaching SimStudent
+;; Then
+;; (Student tutor) should quiz SimStudent
+;;(defrule simst-launch-quiz
+;;	(declare (salience 100))
+;;	(ModelTraceWorkingMemory {tutoringActivityStarted == "false"})
+;;	=>
+;;	(bind ?ssName (get-member SimSt SimStName))
+;;	(predict-tutor-action quiz ButtonPressed -1)
+;;	(construct-tutor-hint-message 
+;;		"[ Before you start teaching its a good strategy to quiz" ?ssName " . ]" 
+;;		"[ This would give you an idea of what" ?ssName " already knows. ]"
+;;		"[ Click the Quiz " ?ssName " button. ]"))
+
+
+
+;; QUIZ-SIMSTUDENT
+;;
+;; If SimStudent solves a problem without any hints from the Student tutor
+;; Then
+;; (Student tutor) should quiz SimStudent
+;;(defrule quiz-simst
+;;	(declare (salience 100))
+;;	(ModelTraceWorkingMemory {problemSolved == "true"} {hintRequestOnProblem == "false"})
+;;	=>
+;;	(bind ?ssName (get-member SimSt SimStName))	
+;;	(predict-tutor-action quiz ButtonPressed -1)
+;;	(construct-tutor-hint-message
+;;		"[ " ?ssName " did not get stuck. ]"
+;;		"[ You should give a quiz now to see how" ?ssName " does on the quiz.]"
+;;		"[ Click on Quiz " ?ssName " button. ]"))
+
+
+
+;; SIMST-CORRECT-STEP-PERFORMED
+;;
+;; If SimStudent does a step correctly
+;; Then
+;; (Student tutor) should give a positive feedback.
+;;
+;;(defrule simst-correct-step
+;;	"If SimStudent does a step correctly then give a positive feedback"
+;;	(declare (salience 100))
+;;	(ModelTraceWorkingMemory {stepCorrectness == "correct"} {actor ==  "simstudent"} (step ?step))
+;;	=>
+;;	(bind ?ssName (get-member SimSt SimStName))
+;;	(predict-tutor-action yes ButtonPressed -1)
+;;	(construct-tutor-hint-message 
+;;		"[ Do you know what to do when" ?ssName "does a step and asks for confirmation ? ]"
+;;		"[ " ?ssName "performed the step. You should provide a feedback. ]"
+;;		"[ You should click on Yes/No button. ]"))
+;;	(construct-cl-hint-message
+;;		"[ " ?ssName "has performed the step" ?step "correctly. ]" ))
+	
+
+;; SIMST-INCORRECT-STEP-PERFORMED
+;;
+;; If SimStudent does a step incorrectly
+;; Then
+;; (Student tutor) should give a negative feedback.
+;;
+;;(defrule simst-incorrect-step
+;;	"If SimStudent does a step incorrectly then give a negative feedback"
+;;	(declare (salience 100))
+;;	(ModelTraceWorkingMemory {stepCorrectness == "incorrect"} {actor == "simstudent"} (step ?step))
+;;	=>
+;;	(bind ?ssName (get-member SimSt SimStName))
+;;	(predict-tutor-action no ButtonPressed -1)
+;;	(construct-tutor-hint-message 
+;;		"[ Do you know what to do when" ?ssName "does a step and asks for confirmation ? ]"
+;;		"[ " ?ssName "performed the step. You should provide a feedback. ]"
+;;		"[ You should click on Yes/No button. ]"))
+;;	(construct-cl-hint-message
+;;		"[ " ?ssName "has performed the step" ?step "incorrectly. ]" ))
+	
+	
+;; SIMST-HELP-REQUEST
+;;
+;; If SimStudent makes a help request
+;; Then
+;; (Student tutor) should give a correct help.
+;;(defrule simst-help-request
+;;	"If SimStudent makes a help request then give a correct help"
+;;	(declare (salience 100)) ;; Should be preferred over BUG-rule
+;;	(ModelTraceWorkingMemory {helpRequested == "true"} {examplesTabClicked == "true"} {actor == "simstudent"} (problemNodeName ?name))
+;;	=>
+;;	(bind ?ssName (get-member SimSt SimStName))	
+;;	(bind ?ruleSAI (get-correct-sai ?name))
+;;	(predict-tutor-action ?ruleSAI  UpdateTable  ?ruleSAI)
+;;	(construct-tutor-hint-message 
+;;		"[ " ?ssName " is requesting for help. Demonstrate the next step correctly so " ?ssName "can learn. ]" ))
+;;	(construct-cl-hint-message 
+;;		"[ " ?ruleSAI " ]" ))
+	
+
+;; BUG-SIMST-HELP-REQUEST
+;;
+;; If SimStudent makes a help request
+;; Then
+;; (Student tutor) gives an incorrect help.
+;;(defrule BUG-simst-help-request
+;;	"If SimStudent makes a help request then give an incorrect help"
+;;	(declare (salience 50))
+;;	(ModelTraceWorkingMemory {helpRequested == "true"} {actor == "simstudent"} (problemNodeName ?name))
+;;	=>
+;;	(bind ?ruleSAI (get-correct-sai ?name))
+;;	(predict-tutor-action ?ruleSAI  UpdateTable  DONT-CARE))
+	
+	
+;; BUG-SIMST-QUIZ-SOLVED-CORRECTLY
+;;
+;; If SimStudent solves all the quiz items correctly
+;; Then
+;; (Student tutor) tutors SimStudent type of problems gotten correct on the quiz
+;;(defrule BUG-simst-quiz-solved-correctly
+;;	"If SimStudent solves all the quiz items correctly then tutor SimStudent type of problems which it got correct on the quiz"
+;;	(declare (salience 50))
+;;	(ModelTraceWorkingMemory {quizOutcome == "pass"} (ssName ?ssName) (problemEntered ?problemEntered) (quizProblemsPassed ?problemList))
+;;	=>
+;;	(check-problem-started ?problemEntered ?problemList)
+;;	(construct-tutor-hint-message
+;;		"[	]" ))
+
+	
+
+;; STUDENT-VIEW-EXAMPLES
+;; 
+;; If SimStudent makes a help request and Student tutor has not seen any examples yet
+;; Then
+;; (Student tutor) should look at the examples
+;;(defrule student-view-examples
+;;	(declare (salience 100))
+;;	(ModelTraceWorkingMemory {helpRequested == "true"} {examplesTabClicked == "false"} (ssName ?ssName))
+;;	=>
+;;	(predict-tutor-action example TabClicked -1)
+;;	(construct-tutor-hint-message
+;;		"[ You should go through all the examples using the tab above.  Make sure you understand all the examples.]"))
+
+
+
+
+
+;; TUTOR-SIMSTUDENT-PROBLEM
+;; 
+;; If SimStudent solves a problem using hints from the Student tutor
+;; Then
+;; (Student tutor) should give a similar type of problem
+;;(defrule tutor-simst-problem
+;;	(declare (salience 100))
+;;	(ModelTraceWorkingMemory {problemSolved == "true"} {hintRequestOnProblem == "true"} (suggestedProblem ?problem))
+;;	=>
+;;	(bind ?ssName (get-member SimSt SimStName))
+;;	(predict-tutor-action yes ButtonPressed -1)
+;;	(construct-tutor-hint-message
+;;		"[ Why don't you give" ?ssName " the problem" ?problem " to see if" ?ssName " can solve it.]"))
+
+
+
+;; HELP-REQUEST-AFTER-UNDO-STEP
+;;
+;; If Student tutor asks for next step to help SimStudent after undoing a step
+;; Then
+;; (Student tutor) should be explained that SimStudent still has the previous knowledge
+;; and (Student tutor) should demonstrate to SimStudent for it to replace the previous knowledge
+;;(defrule help-request-after-undo-step
+;;	(declare (salience 200))
+;;	(ModelTraceWorkingMemory {stepUndone == "true"})
+;;	=>
+;;	(bind ?ssName (get-member SimSt SimStName))	
+;;	(predict-tutor-action Selection UpdateTable Input)
+;;	(construct-tutor-hint-message
+;;		"[ After you undo a step" ?ssName " still remembers what you taught it previously. ]"
+;;		"[ You should demonstrate to" ?ssName " so she can learn and forget what you taught it previously.]"))
+
+
+
+;;
+;; If [APlusLaunched] And not[SimSt Tab]
+;; Then
+;; [Switch To SimSt Tab]
+;;(defrule simst-launch-switch-tab
+;;	(declare (salience 100))
+;;	?var <- (ModelTraceWorkingMemory (modelTracedEvents ?eventsList))
+;;	(test (eq (get-first-event ?var) "UnitOverview"))
+;;	=>
+;;	(bind ?ssName (get-member SimSt SimStName))
+;;	(predict-tutor-action ?ssName TabClicked -1)
+;;	(construct-tutor-hint-message
+;;		"[ You should read through the Unit Overview. ]"
+;;		"[ Then switch to the" ?ssName " tab and give" ?ssName " the quiz ]"))
+
+
+
+;;
+;; If [APlusLaunched] And [SimSt Tab]
+;; Then
+;; [Quiz]
+;;(defrule simst-launch-quiz
+;;	(declare (salience 100))
+;;	?var <- (ModelTraceWorkingMemory (modelTracedEvents ?eventsList))
+;;	(test (eq (get-first-event ?var) (get-member SimSt SimStName)))
+;;	=>
+;;	(predict-tutor-action quiz ButtonPressed -1)
+;;	(bind ?ssName (get-member SimSt SimStName))
+;;	(construct-tutor-hint-message
+;;		"[ Before you start teaching its a good strategy to quiz" ?ssName " . ]"
+;;		"[ This would give you an idea of what" ?ssName " already knows. ]"
+;;		"[ Click the Quiz" ?ssName "button. ]"))
+
+
+
+;;(defrule simst-launch-take-quiz
+;;	"If APlusLaunched is true then take the quiz"
+;;	(declare (salience 100))
+;;	?var100 <- (status (name aplusLaunched) (value true))
+;;	=>
+;;	(predicted-sai quiz ButtonPressed -1)
+;;	(modify ?var100 (name aplusLaunched) (value false))
+;;	(construct-tutor-hint-message
+;;		"[ Before you start teaching its a good strategy to quiz SimStName. ]"
+;;		"[ This would give you an idea of what SimStName already knows. ]"
+;;		"[ Click the Quiz SimStName button. ]")
+;;	(facts))
+
+
+
+;;(defrule simst-launch-quit-problem-started-take-quiz
+;;	(declare (salience 150)) ;; salience determines the priority of the rules : higher the salience, higher the priority
+;;	?wm <- (ModelTraceWorkingMemory (APlusLaunched "true") 
+;;									(studentEnteredProblem ?enteredProblem&:(neq ?enteredProblem nil)))
+;;	=>
+;;	(predicted-sai quiz ButtonPressed -1) ;; predicts-the-ruleSAI
+;;	(update-wm-if-ruleSAI-equals-studentSAI ?wm "(quizTaken true)" "(afterQuiz true)" "(solutionCheckError false)" "(resourceViewed false)" "(APlusLaunched false)" "(requestType nil)" "(studentEnteredProblem nil)")
+;;	(construct-tutor-hint-message
+;;		"[ It might help you to know what SimStName already knows. ]"
+;;		"[ You should finish the problem and then quiz SimStName. ]"))
+
+
+
+;;(defrule simst-thinking;;
+;;	"If SimStudent is thinking then wait until thinking stops"
+;;	(declare (salience 250)) 
+;;	?wm <- (ModelTraceWorkingMemory (thinking "true")
+;;									(studentEnteredProblem ?enteredProblem&:(neq ?enteredProblem nil)))
+;;	=>
+;;	(predicted-sai DONT-CARE DONT-CARE DONT-CARE) ;; predicts-the-ruleSAI
+;;	(construct-tutor-hint-message
+;;		"[ You should wait until SimStName stops thinking. ]"))									
+			
+									
+;;(defrule simst-self-explanation;;
+;;	"If SimStudent asks for self explanation then provide self explanation"
+;;	(declare (salience 260)) 
+;;	?wm <- (ModelTraceWorkingMemory (selfExplanation "true"))
+;;	=>
+;;	(predicted-sai submit ButtonPressed -1)
+;;	(update-wm-if-ruleSAI-equals-studentSAI ?wm "(selfExplanation false)" ) ;; updates the working memory when the rule's predicted values matches the student's values
+;;	(construct-tutor-hint-message
+;;		"[ SimStName is asking you to justify your answer. You should answer SimStName 's question. ]"))
+
+
+(defrule simst-problem-solved
+	(declare (salience 200))
+	?wm <- (ModelTraceWorkingMemory (studentEnteredProblem ?enteredProblem&:(neq ?enteredProblem nil)))
+	(studentValues (selection ?sel&:(eq ?sel "solved")) (input ?inp&:(neq ?inp nil)))
+	=>
+	(predicted-sai DONT-CARE DONT-CARE DONT-CARE)
+	(modify ?wm (studentEnteredProblem nil))
+	(update-wm-if-ruleSAI-equals-studentSAI ?wm "(APlusLaunched false)" "(hintRequestSolvedQuizProblem nil)" "(lhsProblem nil)"
+		"(lhsQProblem nil)" "(rhsProblem nil)" "(rhsQProblem nil)" "(problemStatus nil)" "(problemType nil)" "(quizProblemsPassed nil)"
+		"(quizProblemsFailedList nil)" "(quizOutcome nil)" "(quizProblemsTutoredList nil)" "(quizTaken true)" "(solutionCheckError false)" "(afterQuiz true)" "(resourceViewed false)"  "(requestType nil)" 
+		"(studentEnteredProblem nil)" "(UOTabReviewed nil)" "(afterQuiz true)" "(resourceViewed false)" ))
+	
+		
+
+		
+		
+	

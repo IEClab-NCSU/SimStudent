@@ -1,0 +1,20 @@
+;; Feature predicates
+;; 
+SimStAlgebraV8.userDefSymbols.IsNotNull
+SimStAlgebraV8.userDefSymbols.HasCoefficient
+SimStAlgebraV8.userDefSymbols.IsPolynomial
+SimStAlgebraV8.userDefSymbols.IsMonomial
+;;SimStAlgebraV8.userDefSymbols.IsLastConstTermNegative
+;;; SimStAlgebraV8.userDefSymbols.HasConstTerm
+;;; SimStAlgebraV8.userDefSymbols.HasParentheses
+;;SimStAlgebraV8.userDefSymbols.HasVarTerm
+;;SimStAlgebraV8.userDefSymbols.IsHomogeneous
+;;; SimStAlgebraV8.userDefSymbols.IsFractionTerm
+;;SimStAlgebraV8.userDefSymbols.IsConstTerm
+;;; SimStAlgebraV8.userDefSymbols.IsDenominatorOf
+;;; SimStAlgebraV8.userDefSymbols.IsNumeratorOf
+;;; SimStAlgebraV8.userDefSymbols.IsVarTerm
+SimStAlgebraV8.userDefSymbols.IsSkillAdd
+SimStAlgebraV8.userDefSymbols.IsSkillSubtract
+SimStAlgebraV8.userDefSymbols.IsSkillDivide
+SimStAlgebraV8.userDefSymbols.IsSkillMultiply

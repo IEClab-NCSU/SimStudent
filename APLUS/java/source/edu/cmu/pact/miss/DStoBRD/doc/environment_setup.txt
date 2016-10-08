@@ -1,0 +1,6 @@
+See "Getting Started.doc" for installation information:
+
+java jdk 5.0
+ant 1.6.2
+MySQL 4.1
+Cygwin

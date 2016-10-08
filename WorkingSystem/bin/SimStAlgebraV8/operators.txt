@@ -1,0 +1,15 @@
+SimStAlgebraV8.userDefSymbols.AddTerm
+SimStAlgebraV8.userDefSymbols.SubtractTerm
+SimStAlgebraV8.userDefSymbols.GetAllButFirstChar
+SimStAlgebraV8.userDefSymbols.GetFirstIntegerWithoutSign
+SimStAlgebraV8.userDefSymbols.GetOperand
+SimStAlgebraV8.userDefSymbols.GetFirstTerm
+SimStAlgebraV8.userDefSymbols.GetConstTerm
+SimStAlgebraV8.userDefSymbols.SkillSubtract
+SimStAlgebraV8.userDefSymbols.SkillAdd
+SimStAlgebraV8.userDefSymbols.Done
+;; SimStAlgebraV8.userDefSymbols.DivTerm
+;; SimStAlgebraV8.userDefSymbols.MultiplyTerm
+;; SimStAlgebraV8.userDefSymbols.SkillDivide
+;; SimStAlgebraV8.userDefSymbols.SkillMultiply
+;; SimStAlgebraV8.userDefSymbols.SkillDone

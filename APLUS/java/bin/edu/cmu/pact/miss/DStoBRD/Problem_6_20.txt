@@ -1,0 +1,1275 @@
+student_name	problem_name	skill	selection	actual input	subgoal_name	outcome
+STU_9kMr STU_9kMr	13.74 = -3.65y-9.75	subtract	SKILL	9.75	[13.74 = -3.65y-9.75]subtract	BUG
+STU_9kMr STU_9kMr	13.74 = -3.65y-9.75	add	SKILL	9.75	[13.74 = -3.65y-9.75]add	OK
+STU_9kMr STU_9kMr	13.74 = -3.65y-9.75	typein	LHS	23.49	[13.74+9.75 = -3.65y-9.75+9.75]typein	OK
+STU_9kMr STU_9kMr	13.74 = -3.65y-9.75	typein	RHS	-3.65Y-9.75+9.75	[13.74+9.75 = -3.65y-9.75+9.75]typein	OK
+STU_9kMr STU_9kMr	13.74 = -3.65y-9.75	clt	SKILL	-3.65y-9.75+9.75	[23.49 = -3.65y-9.75+9.75]clt	OK
+STU_9kMr STU_9kMr	13.74 = -3.65y-9.75	typein	RHS	-3.65Y	FinalAnswer	OK
+STU_9kMr STU_9kMr	13.74 = -3.65y-9.75	auto-fill	LHS	23.49	FinalAnswer	OK
+STU_9kMr STU_9kMr	13.74 = -3.65y-9.75	divide	SKILL	-3.65	[23.49 = -3.65Y]divide	OK
+STU_9kMr STU_9kMr	13.74 = -3.65y-9.75	typein	LHS	23.49/-3.65	[23.49/-3.65 = -3.65Y/-3.65]typein	OK
+STU_9kMr STU_9kMr	13.74 = -3.65y-9.75	typein	RHS	-3.65Y/-3.65	[23.49/-3.65 = -3.65Y/-3.65]typein	OK
+STU_9kMr STU_9kMr	13.74 = -3.65y-9.75	rf	SKILL	-3.65Y/-3.65	[23.49/-3.65 = -3.65Y/-3.65]rf	OK
+STU_9kMr STU_9kMr	13.74 = -3.65y-9.75	typein	RHS	y	FinalAnswer	OK
+STU_9kMr STU_9kMr	14 = -22x-94	add	SKILL	94	[14 = -22x-94]add	OK
+STU_9kMr STU_9kMr	14 = -22x-94	typein	LHS	108	[14+94 = -22x-94+94]typein	OK
+STU_9kMr STU_9kMr	14 = -22x-94	typein	RHS	-22x-94+94	[14+94 = -22x-94+94]typein	OK
+STU_9kMr STU_9kMr	14 = -22x-94	clt	SKILL	-22x-94+94	[108 = -22x-94+94]clt	OK
+STU_9kMr STU_9kMr	14 = -22x-94	typein	RHS	-22x	FinalAnswer	OK
+STU_9kMr STU_9kMr	14 = -22x-94	auto-fill	LHS	108	FinalAnswer	OK
+STU_9kMr STU_9kMr	14 = -22x-94	divide	SKILL	-22	[108 = -22x]divide	OK
+STU_9kMr STU_9kMr	14 = -22x-94	typein	LHS	108/-22	[108/-22 = -22x/-22]typein	OK
+STU_9kMr STU_9kMr	14 = -22x-94	typein	RHS	-22x/-22	[108/-22 = -22x/-22]typein	OK
+STU_9kMr STU_9kMr	14 = -22x-94	rf	SKILL	-22x/-22	[108/-22 = -22x/-22]rf	OK
+STU_9kMr STU_9kMr	14 = -22x-94	typein	RHS	x	FinalAnswer	OK
+STU_9kMr STU_9kMr	-3256 = 5886-8374x	add	SKILL	5886	[-3256 = 5886-8374x]add	BUG
+STU_9kMr STU_9kMr	-3256 = 5886-8374x	subtract	SKILL	5886	[-3256 = 5886-8374x]subtract	OK
+STU_9kMr STU_9kMr	-3256 = 5886-8374x	typein	LHS	-9142	[-3256-5886 = 5886-8374x-5886]typein	OK
+STU_9kMr STU_9kMr	-3256 = 5886-8374x	typein	RHS	-8374x	[-3256-5886 = 5886-8374x-5886]typein	OK
+STU_9kMr STU_9kMr	-3256 = 5886-8374x	divide	SKILL	-8374	[-9142 = -8374x]divide	OK
+STU_9kMr STU_9kMr	-3256 = 5886-8374x	typein	LHS	1.091712443	[-9142/-8374 = -8374x/-8374]typein	OK
+STU_9kMr STU_9kMr	-3256 = 5886-8374x	typein	RHS	-8374x/-8374	[-9142/-8374 = -8374x/-8374]typein	OK
+STU_9kMr STU_9kMr	-3256 = 5886-8374x	rf	SKILL	-8374x/-8374	[-9142/-8374 = -8374x/-8374]rf	OK
+STU_9kMr STU_9kMr	-3256 = 5886-8374x	typein	RHS	x	FinalAnswer	OK
+STU_9kMr STU_9kMr	-48/y-50 = 15	add	SKILL	50	[-48/y-50 = 15]add	OK
+STU_9kMr STU_9kMr	-48/y-50 = 15	typein	LHS	-48/y-50+50	[-48/y-50+50 = 15+50]typein	OK
+STU_9kMr STU_9kMr	-48/y-50 = 15	typein	RHS	15+50	[-48/y-50+50 = 15+50]typein	OK
+STU_9kMr STU_9kMr	-48/y-50 = 15	clt	SKILL	-48/y-50+50	[-48/y-50+50 = 15+50]clt	OK
+STU_9kMr STU_9kMr	-48/y-50 = 15	typein	LHS	-48/y	FinalAnswer	OK
+STU_9kMr STU_9kMr	-48/y-50 = 15	typein	RHS	65	FinalAnswer	OK
+STU_9kMr STU_9kMr	-48/y-50 = 15	multiply	SKILL	y	[-48/y = 65]multiply	OK
+STU_9kMr STU_9kMr	-48/y-50 = 15	typein	RHS	65y	[-48/y*y = 65y]typein	OK
+STU_9kMr STU_9kMr	-11/x+60 = 67	subtract	SKILL	60	[-11/x+60 = 67]subtract	OK
+STU_9kMr STU_9kMr	-11/x+60 = 67	typein	LHS	-11/x+60-60	[-11/x+60-60 = 67-60]typein	OK
+STU_9kMr STU_9kMr	-11/x+60 = 67	typein	RHS	7	[-11/x+60-60 = 67-60]typein	OK
+STU_9kMr STU_9kMr	-11/x+60 = 67	clt	SKILL	-11/x+60-60	[-11/x+60-60 = 7]clt	OK
+STU_9kMr STU_9kMr	-11/x+60 = 67	typein	LHS	-11/x	FinalAnswer	OK
+STU_9kMr STU_9kMr	-11/x+60 = 67	typein	RHS	7	FinalAnswer	OK
+STU_9kMr STU_9kMr	-11/x+60 = 67	multiply	SKILL	7	[-11/X = 7]multiply	BUG
+STU_9kMr STU_9kMr	-11/x+60 = 67	multiply	SKILL	11	[-11/X = 7]multiply	ERROR
+STU_9kMr STU_9kMr	-11/x+60 = 67	multiply	SKILL	X	[-11/X = 7]multiply	OK
+STU_9kMr STU_9kMr	-11/x+60 = 67	typein	RHS	7X	[-11/X*x = 7x]typein	OK
+STU_9kMr STU_9kMr	-11/x+60 = 67	typein	LHS	-11X	[-11/X*x = 7x]typein	ERROR
+STU_9kMr STU_9kMr	-11/x+60 = 67	typein	LHS	-11/X-11X	[-11/X*x = 7x]typein	ERROR
+STU_9kMr STU_9kMr	-11/x+60 = 67	multiply	SKILL	X	[-11/X = 7]multiply	OK
+STU_9kMr STU_9kMr	-11/x+60 = 67	typein	RHS	7X	[-11/X*x = 7x]typein	OK
+STU_9kMr STU_9kMr	-11/x+60 = 67	typein	LHS	-11	[-11/X*x = 7x]typein	OK
+STU_9kMr STU_9kMr	-11/x+60 = 67	divide	SKILL	7	[-11 = 7x]divide	OK
+STU_9kMr STU_9kMr	-11/x+60 = 67	typein	RHS	X	[-11/7 = 7x/7]typein	OK
+STU_9kMr STU_9kMr	-11/x+60 = 67	typein	LHS	-1.5714	[-11/7 = 7x/7]typein	OK
+STU_9kMr STU_9kMr	-220+948/x = -137	add	SKILL	-220	[-220+948/x = -137]add	BUG
+STU_9kMr STU_9kMr	-220+948/x = -137	add	SKILL	220	[-220+948/x = -137]add	OK
+STU_9kMr STU_9kMr	-220+948/x = -137	typein	LHS	948/X	[-220+948/x+220 = -137+220]typein	OK
+STU_9kMr STU_9kMr	-220+948/x = -137	typein	RHS	83	[-220+948/x+220 = -137+220]typein	OK
+STU_Hrje STU_Hrje	61.23+34.19x = -36.58	subtract	SKILL	61.23	[61.23+34.19x = -36.58]subtract	OK
+STU_Hrje STU_Hrje	61.23+34.19x = -36.58	typein	LHS	34.19X	[61.23+34.19x-61.23 = -36.58-61.23]typein	OK
+STU_Hrje STU_Hrje	61.23+34.19x = -36.58	typein	RHS	-97.81	[61.23+34.19x-61.23 = -36.58-61.23]typein	OK
+STU_Hrje STU_Hrje	61.23+34.19x = -36.58	divide	SKILL	34.19	[34.19X = -97.81]divide	OK
+STU_Hrje STU_Hrje	61.23+34.19x = -36.58	typein	LHS	X	[34.19X/34.19 = -97.81/34.19]typein	OK
+STU_Hrje STU_Hrje	61.23+34.19x = -36.58	typein	RHS	-2.860778005	[34.19X/34.19 = -97.81/34.19]typein	OK
+STU_Hrje STU_Hrje	-9545 = 343+6727x	subtract	SKILL	343	[-9545 = 343+6727x]subtract	OK
+STU_Hrje STU_Hrje	-9545 = 343+6727x	typein	RHS	6727X	[-9545-343 = 343+6727x-343]typein	OK
+STU_Hrje STU_Hrje	-9545 = 343+6727x	typein	LHS	-9888	[-9545-343 = 343+6727x-343]typein	OK
+STU_Hrje STU_Hrje	-9545 = 343+6727x	divide	SKILL	6727	[-9888 = 6727X]divide	OK
+STU_Hrje STU_Hrje	-9545 = 343+6727x	typein	RHS	X	[-9888/6727 = 6727X/6727]typein	OK
+STU_Hrje STU_Hrje	-9545 = 343+6727x	typein	LHS	-1.469897428	[-9888/6727 = 6727X/6727]typein	OK
+STU_Hrje STU_Hrje	31+31x = -50	subtract	SKILL	31	[31+31x = -50]subtract	OK
+STU_Hrje STU_Hrje	31+31x = -50	typein	LHS	31X	[31+31x-31 = -50-31]typein	OK
+STU_Hrje STU_Hrje	31+31x = -50	typein	RHS	-81	[31+31x-31 = -50-31]typein	OK
+STU_Hrje STU_Hrje	31+31x = -50	divide	SKILL	31	[31X = -81]divide	OK
+STU_Hrje STU_Hrje	31+31x = -50	typein	LHS	X	[31X/31 = -81/31]typein	OK
+STU_Hrje STU_Hrje	31+31x = -50	typein	RHS	-2.612903226	[31X/31 = -81/31]typein	OK
+STU_Hrje STU_Hrje	95/y+76 = 10	subtract	SKILL	76	[95/y+76 = 10]subtract	OK
+STU_Hrje STU_Hrje	95/y+76 = 10	typein	LHS	95/y	[95/y+76-76 = 10-76]typein	OK
+STU_Hrje STU_Hrje	95/y+76 = 10	typein	RHS	-66	[95/y+76-76 = 10-76]typein	OK
+STU_Hrje STU_Hrje	95/y+76 = 10	multiply	SKILL	y	[95/y = -66]multiply	OK
+STU_Hrje STU_Hrje	95/y+76 = 10	typein	LHS	95	[95/y*y = -66y]typein	OK
+STU_Hrje STU_Hrje	95/y+76 = 10	typein	RHS	-66y	[95/y*y = -66y]typein	OK
+STU_Hrje STU_Hrje	95/y+76 = 10	divide	SKILL	-66	[95 = -66y]divide	OK
+STU_Hrje STU_Hrje	95/y+76 = 10	typein	RHS	y	[95/-66 = -66y/-66]typein	OK
+STU_Hrje STU_Hrje	95/y+76 = 10	typein	LHS	-1.4393	[95/-66 = -66y/-66]typein	OK
+STU_Hrje STU_Hrje	-361 = 542-79/x	subtract	SKILL	542	[-361 = 542-79/x]subtract	OK
+STU_Hrje STU_Hrje	-361 = 542-79/x	typein	RHS	-79/x	[-361-542 = 542-79/x-542]typein	OK
+STU_Hrje STU_Hrje	-361 = 542-79/x	typein	LHS	-903	[-361-542 = 542-79/x-542]typein	OK
+STU_Hrje STU_Hrje	-361 = 542-79/x	multiply	SKILL	x	[-903 = -79/x]multiply	OK
+STU_Hrje STU_Hrje	-361 = 542-79/x	typein	RHS	-79	[-903x = -79/x*x]typein	OK
+STU_Hrje STU_Hrje	-361 = 542-79/x	typein	LHS	-903x	[-903x = -79/x*x]typein	OK
+STU_Hrje STU_Hrje	-361 = 542-79/x	divide	SKILL	-903	[-903x = -79]divide	OK
+STU_Hrje STU_Hrje	-361 = 542-79/x	typein	LHS	x	[-903x/-903 = -79/-903]typein	OK
+STU_Hrje STU_Hrje	-361 = 542-79/x	typein	RHS	0.0874	[-903x/-903 = -79/-903]typein	OK
+STU_Hrje STU_Hrje	-41 = -74/y-28	add	SKILL	28	[-41 = -74/y-28]add	OK
+STU_Hrje STU_Hrje	-41 = -74/y-28	typein	RHS	-74/y	[-41+28 = -74/y-28+28]typein	OK
+STU_Hrje STU_Hrje	-41 = -74/y-28	typein	LHS	69	[-41+28 = -74/y-28+28]typein	ERROR
+STU_Hrje STU_Hrje	-41 = -74/y-28	typein	LHS	6-13	[-41+28 = -74/y-28+28]typein	ERROR
+STU_Hrje STU_Hrje	-41 = -74/y-28	typein	LHS	-13	[-41+28 = -74/y-28+28]typein	OK
+STU_Hrje STU_Hrje	-41 = -74/y-28	multiply	SKILL	y	[-13 = -74/y]multiply	OK
+STU_Hrje STU_Hrje	-41 = -74/y-28	typein	LHS	-13y	[-13y = -74/y*y]typein	OK
+STU_Hrje STU_Hrje	-41 = -74/y-28	typein	RHS	-74	[-13y = -74/y*y]typein	OK
+STU_Hrje STU_Hrje	-41 = -74/y-28	divide	SKILL	-13	[-13y = -74]divide	OK
+STU_Hrje STU_Hrje	-41 = -74/y-28	typein	LHS	y	[-13y/-13 = -74/-13]typein	OK
+STU_Hrje STU_Hrje	-41 = -74/y-28	typein	RHS	5.6923	[-13y/-13 = -74/-13]typein	OK
+STU_Hrje STU_Hrje	-5x-4 = -6-4x	add	SKILL	4x	[-5x-4 = -6-4x]add	OK
+STU_Hrje STU_Hrje	-5x-4 = -6-4x	typein	RHS	-6	[-5x-4+4x = -6-4x+4x]typein	OK
+STU_Hrje STU_Hrje	-5x-4 = -6-4x	typein	LHS	-1x	[-5x-4+4x = -6-4x+4x]typein	ERROR
+STU_Hrje STU_Hrje	-5x-4 = -6-4x	typein	LHS	-1x-4	[-5x-4+4x = -6-4x+4x]typein	OK
+STU_Hrje STU_Hrje	-5x-4 = -6-4x	add	SKILL	4	[-1x-4 = -6]add	OK
+STU_Hrje STU_Hrje	-5x-4 = -6-4x	typein	LHS	-1x	[-1x-4+4 = -6+4]typein	OK
+STU_Hrje STU_Hrje	-5x-4 = -6-4x	typein	RHS	-2	[-1x-4+4 = -6+4]typein	OK
+STU_Hrje STU_Hrje	-5x-4 = -6-4x	divide	SKILL	-1	[-1x = -2]divide	OK
+STU_Hrje STU_Hrje	-5x-4 = -6-4x	typein	LHS	x	[-1x/-1 = -2/-1]typein	OK
+STU_Hrje STU_Hrje	-5x-4 = -6-4x	typein	RHS	-2	[-1x/-1 = -2/-1]typein	BUG
+STU_Hrje STU_Hrje	-5x-4 = -6-4x	typein	RHS	2	[-1x/-1 = -2/-1]typein	OK
+STU_Hrje STU_Hrje	6y-2 = 3y+5	subtract	SKILL	5	[6y-2 = 3y+5]subtract	OK
+STU_Hrje STU_Hrje	6y-2 = 3y+5	typein	RHS	3y	[6y-2-5 = 3y+5-5]typein	OK
+STU_Hrje STU_Hrje	6y-2 = 3y+5	typein	LHS	6y-(-3)	[6y-2-5 = 3y+5-5]typein	BUG
+STU_Hrje STU_Hrje	6y-2 = 3y+5	typein	LHS	6y-5	[6y-2-5 = 3y+5-5]typein	ERROR
+STU_Hrje STU_Hrje	6y-2 = 3y+5	typein	LHS	6y-(-5)	[6y-2-5 = 3y+5-5]typein	ERROR
+STU_Hrje STU_Hrje	6y-2 = 3y+5	typein	LHS	6y-(-7)	[6y-2-5 = 3y+5-5]typein	ERROR
+STU_Hrje STU_Hrje	6y-2 = 3y+5	typein	LHS	6y-3	[6y-2-5 = 3y+5-5]typein	ERROR
+STU_Hrje STU_Hrje	6y-2 = 3y+5	typein	LHS	6y--3	[6y-2-5 = 3y+5-5]typein	BUG
+STU_Hrje STU_Hrje	6y-2 = 3y+5	typein	LHS	6y-2-5	[6y-2-5 = 3y+5-5]typein	OK
+STU_Hrje STU_Hrje	6y-2 = 3y+5	clt	SKILL	6y-2-5	[6y-2-5 = 3y]clt	OK
+STU_Hrje STU_Hrje	-8x+1 = -4+8x	add	SKILL	8X	[-8x+1 = -4+8x]add	OK
+STU_Hrje STU_Hrje	-8x+1 = -4+8x	typein	LHS	1	[-8x+1+8x = -4+8x+8x]typein	OK
+STU_Hrje STU_Hrje	-8x+1 = -4+8x	typein	RHS	-4+16X	[-8x+1+8x = -4+8x+8x]typein	OK
+STU_Hrje STU_Hrje	-8x+1 = -4+8x	add	SKILL	4	[1 = -4+16X]add	OK
+STU_Hrje STU_Hrje	-8x+1 = -4+8x	typein	LHS	5	[1+4 = -4+16X+4]typein	OK
+STU_Hrje STU_Hrje	-8x+1 = -4+8x	typein	RHS	20X	[1+4 = -4+16X+4]typein	ERROR
+STU_Hrje STU_Hrje	-8x+1 = -4+8x	typein	RHS	20X	[1+4 = -4+16X+4]typein	ERROR
+STU_Hrje STU_Hrje	-8x+1 = -4+8x	typein	RHS	16X	[1+4 = -4+16X+4]typein	OK
+STU_Hrje STU_Hrje	-8x+1 = -4+8x	divide	SKILL	16	[5 = 16X]divide	OK
+STU_Hrje STU_Hrje	-8x+1 = -4+8x	typein	RHS	X	[5/16 = 16X/16]typein	OK
+STU_Hrje STU_Hrje	-8x+1 = -4+8x	typein	LHS	0.3125	[5/16 = 16X/16]typein	OK
+STU_Hrje STU_Hrje	0+4x = 3+5x	add	SKILL	5X	[0+4x = 3+5x]add	ERROR
+STU_Hrje STU_Hrje	0+4x = 3+5x	subtract	SKILL	4X	[0+4x = 3+5x]subtract	OK
+STU_Hrje STU_Hrje	0+4x = 3+5x	typein	LHS	0	[0+4x-4x = 3+5x-4x]typein	OK
+STU_Hrje STU_Hrje	0+4x = 3+5x	typein	RHS	1X	[0+4x-4x = 3+5x-4x]typein	ERROR
+STU_Hrje STU_Hrje	0+4x = 3+5x	typein	RHS	3+1X	[0+4x-4x = 3+5x-4x]typein	OK
+STU_Hrje STU_Hrje	0+4x = 3+5x	subtract	SKILL	3	[0 = 3+1X]subtract	OK
+STU_Hrje STU_Hrje	0+4x = 3+5x	typein	LHS	-3	[0-3 = 3+1X-3]typein	OK
+STU_Hrje STU_Hrje	0+4x = 3+5x	typein	RHS	1X	[0-3 = 3+1X-3]typein	OK
+STU_Hrje STU_Hrje	0+4x = 3+5x	divide	SKILL	1	[-3 = 1X]divide	OK
+STU_Hrje STU_Hrje	0+4x = 3+5x	typein	RHS	X	[-3/1 = 1X/1]typein	OK
+STU_Hrje STU_Hrje	0+4x = 3+5x	typein	LHS	-3	[-3/1 = 1X/1]typein	OK
+STU_Hrje STU_Hrje	-2.86y-0.83 = -7.35y-6.21	add	SKILL	0.83	[-2.86y-0.83 = -7.35y-6.21]add	OK
+STU_Hrje STU_Hrje	-2.86y-0.83 = -7.35y-6.21	typein	LHS	-2.86y	[-2.86y-0.83+0.83 = -7.35y-6.21+0.83]typein	OK
+STU_Hrje STU_Hrje	-2.86y-0.83 = -7.35y-6.21	typein	RHS	7.04	[-2.86y-0.83+0.83 = -7.35y-6.21+0.83]typein	ERROR
+STU_Hrje STU_Hrje	-2.86y-0.83 = -7.35y-6.21	typein	RHS	-7.35y-7.04	[-2.86y-0.83+0.83 = -7.35y-6.21+0.83]typein	BUG
+STU_Hrje STU_Hrje	8.61-6.4y = -9.89y+9.89	add	SKILL	6.4y	[8.61-6.4y = -9.89y+9.89]add	OK
+STU_Hrje STU_Hrje	8.61-6.4y = -9.89y+9.89	typein	LHS	8.61	[8.61-6.4y+6.4y = -9.89y+9.89+6.4y]typein	OK
+STU_Hrje STU_Hrje	8.61-6.4y = -9.89y+9.89	typein	RHS	-3.49y+9.89	[8.61-6.4y+6.4y = -9.89y+9.89+6.4y]typein	OK
+STU_Hrje STU_Hrje	8.61-6.4y = -9.89y+9.89	subtract	SKILL	8.61	[8.61 = -3.49y+9.89]subtract	BUG
+STU_Hrje STU_Hrje	8.61-6.4y = -9.89y+9.89	subtract	SKILL	9.89	[8.61 = -3.49y+9.89]subtract	OK
+STU_Hrje STU_Hrje	8.61-6.4y = -9.89y+9.89	typein	RHS	-3.49y	[8.61-9.89 = -3.49y+9.89-9.89]typein	OK
+STU_Hrje STU_Hrje	8.61-6.4y = -9.89y+9.89	typein	LHS	-1.28	[8.61-9.89 = -3.49y+9.89-9.89]typein	OK
+STU_Hrje STU_Hrje	8.61-6.4y = -9.89y+9.89	divide	SKILL	-3.49	[-1.28 = -3.49y]divide	OK
+STU_Hrje STU_Hrje	8.61-6.4y = -9.89y+9.89	typein	RHS	y	[-1.28/-3.49 = -3.49y/-3.49]typein	OK
+STU_Hrje STU_Hrje	8.61-6.4y = -9.89y+9.89	typein	LHS	-4.77	[-1.28/-3.49 = -3.49y/-3.49]typein	ERROR
+STU_Hrje STU_Hrje	8.61-6.4y = -9.89y+9.89	typein	LHS	0.3667	[-1.28/-3.49 = -3.49y/-3.49]typein	OK
+STU_Hrje STU_Hrje	5.38x-7.57 = -0.86+7.39x	subtract	SKILL	5.38x	[5.38x-7.57 = -0.86+7.39x]subtract	OK
+STU_Hrje STU_Hrje	5.38x-7.57 = -0.86+7.39x	typein	LHS	7.57	[5.38x-7.57-5.38x = -0.86+7.39x-5.38x]typein	BUG
+STU_Hrje STU_Hrje	5.38x-7.57 = -0.86+7.39x	typein	LHS	-7.57	[5.38x-7.57-5.38x = -0.86+7.39x-5.38x]typein	OK
+STU_Hrje STU_Hrje	5.38x-7.57 = -0.86+7.39x	typein	RHS	2.01x	[5.38x-7.57-5.38x = -0.86+7.39x-5.38x]typein	ERROR
+STU_Hrje STU_Hrje	5.38x-7.57 = -0.86+7.39x	typein	RHS	-0.86+2.01x	[5.38x-7.57-5.38x = -0.86+7.39x-5.38x]typein	OK
+STU_Hrje STU_Hrje	5.38x-7.57 = -0.86+7.39x	add	SKILL	0.86	[-7.57 = -0.86+2.01x]add	OK
+STU_Hrje STU_Hrje	5.38x-7.57 = -0.86+7.39x	typein	RHS	2.01x	[-7.57+0.86 = -0.86+2.01x+0.86]typein	OK
+STU_Hrje STU_Hrje	5.38x-7.57 = -0.86+7.39x	typein	LHS	-6.71	[-7.57+0.86 = -0.86+2.01x+0.86]typein	OK
+STU_Hrje STU_Hrje	5.38x-7.57 = -0.86+7.39x	divide	SKILL	2.01	[-6.71 = 2.01x]divide	OK
+STU_Hrje STU_Hrje	5.38x-7.57 = -0.86+7.39x	typein	RHS	x	[-6.71/2.01 = 2.01x/2.01]typein	OK
+STU_Hrje STU_Hrje	5.38x-7.57 = -0.86+7.39x	typein	LHS	-3.3383	[-6.71/2.01 = 2.01x/2.01]typein	OK
+STU_Hrje STU_Hrje	-8.47x-4.85 = 4.04+4.01x	subtract	SKILL	4.01x	[-8.47x-4.85 = 4.04+4.01x]subtract	OK
+STU_Hrje STU_Hrje	-8.47x-4.85 = 4.04+4.01x	typein	RHS	4.04	[-8.47x-4.85-4.01x = 4.04+4.01x-4.01x]typein	OK
+STU_Hrje STU_Hrje	-8.47x-4.85 = 4.04+4.01x	typein	LHS	-12.48	[-8.47x-4.85-4.01x = 4.04+4.01x-4.01x]typein	ERROR
+STU_Hrje STU_Hrje	-8.47x-4.85 = 4.04+4.01x	typein	LHS	-12.48x	[-8.47x-4.85-4.01x = 4.04+4.01x-4.01x]typein	ERROR
+STU_Hrje STU_Hrje	-8.47x-4.85 = 4.04+4.01x	typein	LHS	-12.48x-4.85	[-8.47x-4.85-4.01x = 4.04+4.01x-4.01x]typein	OK
+STU_Hrje STU_Hrje	-8.47x-4.85 = 4.04+4.01x	add	SKILL	4.85	[-12.48x-4.85 = 4.04]add	OK
+STU_Hrje STU_Hrje	-8.47x-4.85 = 4.04+4.01x	typein	LHS	-12.48	[-12.48x-4.85+4.85 = 4.04+4.85]typein	BUG
+STU_Hrje STU_Hrje	-8.47x-4.85 = 4.04+4.01x	typein	LHS	-12.48x	[-12.48x-4.85+4.85 = 4.04+4.85]typein	OK
+STU_Hrje STU_Hrje	-8.47x-4.85 = 4.04+4.01x	typein	RHS	8.89	[-12.48x-4.85+4.85 = 4.04+4.85]typein	OK
+STU_Hrje STU_Hrje	-8.47x-4.85 = 4.04+4.01x	divide	SKILL	-12.48	[-12.48x = 8.89]divide	OK
+STU_Hrje STU_Hrje	-8.47x-4.85 = 4.04+4.01x	typein	LHS	x	[-12.48x/-12.48 = 8.89/-12.48]typein	OK
+STU_Hrje STU_Hrje	-8.47x-4.85 = 4.04+4.01x	typein	RHS	-0.7123	[-12.48x/-12.48 = 8.89/-12.48]typein	OK
+STU_Hrje STU_Hrje	-9.99-7.2y = -4.03y+7.91	add	SKILL	-9.99	[-9.99-7.2y = -4.03y+7.91]add	BUG
+STU_Hrje STU_Hrje	-9.99-7.2y = -4.03y+7.91	subtract	SKILL	7.91	[-9.99-7.2y = -4.03y+7.91]subtract	OK
+STU_Hrje STU_Hrje	-9.99-7.2y = -4.03y+7.91	typein	RHS	-4.03Y	[-9.99-7.2y-7.91 = -4.03y+7.91-7.91]typein	OK
+STU_Hrje STU_Hrje	-9.99-7.2y = -4.03y+7.91	typein	LHS	-17.9-7.2y	[-9.99-7.2y-7.91 = -4.03y+7.91-7.91]typein	OK
+STU_Hrje STU_Hrje	-9.99-7.2y = -4.03y+7.91	add	SKILL	7.2y	[-17.9-7.2y = -4.03Y]add	OK
+STU_Hrje STU_Hrje	-9.99-7.2y = -4.03y+7.91	typein	LHS	-17.9	[-17.9-7.2y+7.2y = -4.03Y+7.2y]typein	OK
+STU_Hrje STU_Hrje	-9.99-7.2y = -4.03y+7.91	typein	RHS	3.17	[-17.9-7.2y+7.2y = -4.03Y+7.2y]typein	ERROR
+STU_Hrje STU_Hrje	-9.99-7.2y = -4.03y+7.91	typein	RHS	3.17y	[-17.9-7.2y+7.2y = -4.03Y+7.2y]typein	OK
+STU_Hrje STU_Hrje	-9.99-7.2y = -4.03y+7.91	divide	SKILL	3.17	[-17.9 = 3.17y]divide	OK
+STU_Hrje STU_Hrje	-9.99-7.2y = -4.03y+7.91	typein	RHS	y	[-17.9/3.17 = 3.17y/3.17]typein	OK
+STU_Hrje STU_Hrje	-9.99-7.2y = -4.03y+7.91	typein	LHS	-5.6466	[-17.9/3.17 = 3.17y/3.17]typein	OK
+STU_Hrje STU_Hrje	483.45y-8567.76 = -14.06y-4407.57	add	SKILL	4407.57	[483.45y-8567.76 = -14.06y-4407.57]add	OK
+STU_Hrje STU_Hrje	483.45y-8567.76 = -14.06y-4407.57	typein	RHS	-14.06y	[483.45y-8567.76+4407.57 = -14.06y-4407.57+4407.57]typein	OK
+STU_Hrje STU_Hrje	483.45y-8567.76 = -14.06y-4407.57	typein	LHS	483.45y-4160.19	[483.45y-8567.76+4407.57 = -14.06y-4407.57+4407.57]typein	OK
+STU_Hrje STU_Hrje	483.45y-8567.76 = -14.06y-4407.57	subtract	SKILL	483.45y	[483.45y-4160.19 = -14.06y]subtract	OK
+STU_Hrje STU_Hrje	483.45y-8567.76 = -14.06y-4407.57	typein	LHS	-4130.19	[483.45y-4160.19-483.45y = -14.06y-483.45y]typein	ERROR
+STU_Hrje STU_Hrje	483.45y-8567.76 = -14.06y-4407.57	typein	LHS	-4160.19	[483.45y-4160.19-483.45y = -14.06y-483.45y]typein	OK
+STU_Hrje STU_Hrje	483.45y-8567.76 = -14.06y-4407.57	typein	RHS	-497.51	[483.45y-4160.19-483.45y = -14.06y-483.45y]typein	ERROR
+STU_Hrje STU_Hrje	483.45y-8567.76 = -14.06y-4407.57	typein	RHS	-497.51y	[483.45y-4160.19-483.45y = -14.06y-483.45y]typein	OK
+STU_Hrje STU_Hrje	483.45y-8567.76 = -14.06y-4407.57	divide	SKILL	-497.51	[-4160.19 = -497.51y]divide	OK
+STU_Hrje STU_Hrje	483.45y-8567.76 = -14.06y-4407.57	typein	RHS	y	[-4160.19/-497.51 = -497.51y/-497.51]typein	OK
+STU_Hrje STU_Hrje	483.45y-8567.76 = -14.06y-4407.57	typein	LHS	8.362	[-4160.19/-497.51 = -497.51y/-497.51]typein	OK
+STU_Hrje STU_Hrje	-61.08-9.61x = -29.02-15.97x	add	SKILL	-15.97x	[-61.08-9.61x = -29.02-15.97x]add	ERROR
+STU_Hrje STU_Hrje	-61.08-9.61x = -29.02-15.97x	add	SKILL	15.97x	[-61.08-9.61x = -29.02-15.97x]add	OK
+STU_Hrje STU_Hrje	-61.08-9.61x = -29.02-15.97x	typein	RHS	-29.02	[-61.08-9.61x+15.97x = -29.02-15.97x+15.97x]typein	OK
+STU_Hrje STU_Hrje	-61.08-9.61x = -29.02-15.97x	typein	LHS	-67.44	[-61.08-9.61x+15.97x = -29.02-15.97x+15.97x]typein	ERROR
+STU_Hrje STU_Hrje	-61.08-9.61x = -29.02-15.97x	typein	LHS	-61.08-6.36x	[-61.08-9.61x+15.97x = -29.02-15.97x+15.97x]typein	ERROR
+STU_Hrje STU_Hrje	-61.08-9.61x = -29.02-15.97x	typein	LHS	-61.08+6.36x	[-61.08-9.61x+15.97x = -29.02-15.97x+15.97x]typein	OK
+STU_Hrje STU_Hrje	-61.08-9.61x = -29.02-15.97x	add	SKILL	-61.08	[-61.08+6.36x = -29.02]add	BUG
+STU_Hrje STU_Hrje	-61.08-9.61x = -29.02-15.97x	subtract	SKILL	61.08	[-61.08+6.36x = -29.02]subtract	BUG
+STU_Hrje STU_Hrje	-61.08-9.61x = -29.02-15.97x	add	SKILL	-61.08	[-61.08+6.36x = -29.02]add	BUG
+STU_Hrje STU_Hrje	-61.08-9.61x = -29.02-15.97x	add	SKILL	61.08	[-61.08+6.36x = -29.02]add	OK
+STU_Hrje STU_Hrje	-61.08-9.61x = -29.02-15.97x	typein	LHS	6.36x	[-61.08+6.36x+61.08 = -29.02+61.08]typein	OK
+STU_Hrje STU_Hrje	-61.08-9.61x = -29.02-15.97x	typein	RHS	32.06	[-61.08+6.36x+61.08 = -29.02+61.08]typein	OK
+STU_Hrje STU_Hrje	-61.08-9.61x = -29.02-15.97x	divide	SKILL	6.36	[6.36x = 32.06]divide	OK
+STU_Hrje STU_Hrje	-61.08-9.61x = -29.02-15.97x	typein	LHS	x	[6.36x/6.36 = 32.06/6.36]typein	OK
+STU_Hrje STU_Hrje	-61.08-9.61x = -29.02-15.97x	typein	RHS	5.0408	[6.36x/6.36 = 32.06/6.36]typein	OK
+STU_Hrje STU_Hrje	-111.97x-5395.16 = 718.09x-539.07	add	SKILL	5395.16	[-111.97x-5395.16 = 718.09x-539.07]add	OK
+STU_Hrje STU_Hrje	-111.97x-5395.16 = 718.09x-539.07	typein	LHS	-111.97x	[-111.97x-5395.16+5395.16 = 718.09x-539.07+5395.16]typein	OK
+STU_Hrje STU_Hrje	-111.97x-5395.16 = 718.09x-539.07	typein	RHS	718.09x+4856.09	[-111.97x-5395.16+5395.16 = 718.09x-539.07+5395.16]typein	OK
+STU_Hrje STU_Hrje	-111.97x-5395.16 = 718.09x-539.07	subtract	SKILL	718.09x	[-111.97x = 718.09x+4856.09]subtract	OK
+STU_Hrje STU_Hrje	-111.97x-5395.16 = 718.09x-539.07	typein	RHS	4856.09	[-111.97x-718.09x = 718.09x+4856.09-718.09x]typein	OK
+STU_Hrje STU_Hrje	-111.97x-5395.16 = 718.09x-539.07	typein	LHS	-830.06	[-111.97x-718.09x = 718.09x+4856.09-718.09x]typein	ERROR
+STU_Hrje STU_Hrje	-111.97x-5395.16 = 718.09x-539.07	typein	LHS	-830.06x	[-111.97x-718.09x = 718.09x+4856.09-718.09x]typein	OK
+STU_Hrje STU_Hrje	-111.97x-5395.16 = 718.09x-539.07	divide	SKILL	-830.06	[-830.06x = 4856.09]divide	OK
+STU_Hrje STU_Hrje	-111.97x-5395.16 = 718.09x-539.07	typein	LHS	x	[-830.06x/-830.06 = 4856.09/-830.06]typein	OK
+STU_Hrje STU_Hrje	-111.97x-5395.16 = 718.09x-539.07	typein	RHS	-5.8502	[-830.06x/-830.06 = 4856.09/-830.06]typein	OK
+STU_Hrje STU_Hrje	-1095.95-380.94x = 7687.07+986.18x	subtract	SKILL	986.18	[-1095.95-380.94x = 7687.07+986.18x]subtract	ERROR
+STU_Hrje STU_Hrje	-1095.95-380.94x = 7687.07+986.18x	subtract	SKILL	986.18x	[-1095.95-380.94x = 7687.07+986.18x]subtract	OK
+STU_Hrje STU_Hrje	-1095.95-380.94x = 7687.07+986.18x	typein	RHS	7687.07	[-1095.95-380.94x-986.18x = 7687.07+986.18x-986.18x]typein	OK
+STU_Hrje STU_Hrje	-1095.95-380.94x = 7687.07+986.18x	typein	LHS	-2463.07	[-1095.95-380.94x-986.18x = 7687.07+986.18x-986.18x]typein	ERROR
+STU_Hrje STU_Hrje	-1095.95-380.94x = 7687.07+986.18x	typein	LHS	-1095.95-1367.12x	[-1095.95-380.94x-986.18x = 7687.07+986.18x-986.18x]typein	OK
+STU_Hrje STU_Hrje	-1095.95-380.94x = 7687.07+986.18x	subtract	SKILL	1095.95	[-1095.95-1367.12x = 7687.07]subtract	BUG
+STU_Hrje STU_Hrje	-1095.95-380.94x = 7687.07+986.18x	add	SKILL	1095.95	[-1095.95-1367.12x = 7687.07]add	OK
+STU_Hrje STU_Hrje	-1095.95-380.94x = 7687.07+986.18x	typein	LHS	-1367.12x	[-1095.95-1367.12x+1095.95 = 7687.07+1095.95]typein	OK
+STU_Hrje STU_Hrje	-1095.95-380.94x = 7687.07+986.18x	typein	RHS	8783.02	[-1095.95-1367.12x+1095.95 = 7687.07+1095.95]typein	OK
+STU_Hrje STU_Hrje	-1095.95-380.94x = 7687.07+986.18x	divide	SKILL	-1367.12	[-1367.12x = 8783.02]divide	OK
+STU_Hrje STU_Hrje	-1095.95-380.94x = 7687.07+986.18x	typein	LHS	x	[-1367.12x/-1367.12 = 8783.02/-1367.12]typein	OK
+STU_Hrje STU_Hrje	-1095.95-380.94x = 7687.07+986.18x	typein	RHS	-6.4244	[-1367.12x/-1367.12 = 8783.02/-1367.12]typein	OK
+STU_kEGk STU_kEGk	-9105 = -1874y+4173	subtract	SKILL	4173	[-9105 = -1874y+4173]subtract	OK
+STU_kEGk STU_kEGk	-9105 = -1874y+4173	typein	LHS	-13278	[-9105-4173 = -1874y+4173-4173]typein	OK
+STU_kEGk STU_kEGk	-9105 = -1874y+4173	typein	RHS	-1874y+4173-4173	[-9105-4173 = -1874y+4173-4173]typein	OK
+STU_kEGk STU_kEGk	-9105 = -1874y+4173	clt	SKILL	-1874y+4173-4173	[-9105-4173 = -1874y+4173-4173]clt	OK
+STU_kEGk STU_kEGk	-9105 = -1874y+4173	typein	RHS	-1874y	FinalAnswer	OK
+STU_kEGk STU_kEGk	-9105 = -1874y+4173	typein	LHS	-13278	FinalAnswer	OK
+STU_kEGk STU_kEGk	-9105 = -1874y+4173	divide	SKILL	-1874	[-13278 = -1874y]divide	OK
+STU_kEGk STU_kEGk	-9105 = -1874y+4173	typein	LHS	7.085378869	[-13278/-1874 = -1874y/-1874]typein	OK
+STU_kEGk STU_kEGk	-9105 = -1874y+4173	typein	RHS	-1874y/-1874	[-13278/-1874 = -1874y/-1874]typein	OK
+STU_kEGk STU_kEGk	-9105 = -1874y+4173	rf	SKILL	7.085378869	[-13278/-1874 = -1874y/-1874]rf	OK
+STU_kEGk STU_kEGk	-9105 = -1874y+4173	typein	LHS	7.085378869	FinalAnswer	OK
+STU_kEGk STU_kEGk	-9105 = -1874y+4173	typein	RHS	y	FinalAnswer	OK
+STU_kEGk STU_kEGk	-6.08 = 2.38+0.84y	subtract	SKILL	2.38	[-6.08 = 2.38+0.84y]subtract	OK
+STU_kEGk STU_kEGk	-6.08 = 2.38+0.84y	typein	LHS	-8.46	[-6.08-2.38 = 2.38+0.84y-2.38]typein	OK
+STU_kEGk STU_kEGk	-6.08 = 2.38+0.84y	typein	RHS	2.38+0.84y-2.38	[-6.08-2.38 = 2.38+0.84y-2.38]typein	OK
+STU_kEGk STU_kEGk	-6.08 = 2.38+0.84y	clt	SKILL	2.38+0.84y-2.38	[-6.08-2.38 = 2.38+0.84y-2.38]clt	OK
+STU_kEGk STU_kEGk	-6.08 = 2.38+0.84y	typein	RHS	0.84y	FinalAnswer	OK
+STU_kEGk STU_kEGk	-6.08 = 2.38+0.84y	typein	LHS	-8.46	FinalAnswer	OK
+STU_kEGk STU_kEGk	-6.08 = 2.38+0.84y	divide	SKILL	0.84	[-8.46 = 0.84y]divide	OK
+STU_kEGk STU_kEGk	-6.08 = 2.38+0.84y	typein	LHS	-10.07142857	[-8.46/0.84 = 0.84y/0.84]typein	OK
+STU_kEGk STU_kEGk	-6.08 = 2.38+0.84y	typein	RHS	0.84y/0.84	[-8.46/0.84 = 0.84y/0.84]typein	OK
+STU_kEGk STU_kEGk	-6.08 = 2.38+0.84y	clt	SKILL		[-8.46/0.84 = 0.84y/0.84]clt	ERROR
+STU_kEGk STU_kEGk	-6.08 = 2.38+0.84y	rf	SKILL	0.84y/0.84	[-8.46/0.84 = 0.84y/0.84]rf	OK
+STU_kEGk STU_kEGk	-6.08 = 2.38+0.84y	typein	RHS	y	FinalAnswer	OK
+STU_kEGk STU_kEGk	16-36y = 65	subtract	SKILL	16	[16-36y = 65]subtract	OK
+STU_kEGk STU_kEGk	16-36y = 65	typein	LHS	16-36y-16	[16-36y-16 = 65-16]typein	OK
+STU_kEGk STU_kEGk	16-36y = 65	typein	RHS	65-16	[16-36y-16 = 65-16]typein	OK
+STU_kEGk STU_kEGk	16-36y = 65	clt	SKILL	16-36y-16	[16-36y-16 = 65-16]clt	OK
+STU_kEGk STU_kEGk	16-36y = 65	typein	LHS	36y	FinalAnswer	BUG
+STU_kEGk STU_kEGk	16-36y = 65	typein	LHS	36y	FinalAnswer	BUG
+STU_kEGk STU_kEGk	16-36y = 65	typein	LHS	36y	FinalAnswer	BUG
+STU_kEGk STU_kEGk	16-36y = 65	typein	LHS	-36y	FinalAnswer	OK
+STU_kEGk STU_kEGk	16-36y = 65	auto-fill	rhs	65-16	FinalAnswer	OK
+STU_kEGk STU_kEGk	16-36y = 65	mt	SKILL		[-36y = 65-16]mt	ERROR
+STU_kEGk STU_kEGk	16-36y = 65	clt	SKILL	65-16	[-36y = 65-16]clt	OK
+STU_kEGk STU_kEGk	16-36y = 65	typein	RHS	49	FinalAnswer	OK
+STU_kEGk STU_kEGk	16-36y = 65	auto-fill	LHS	-36y	FinalAnswer	OK
+STU_kEGk STU_kEGk	16-36y = 65	divide	SKILL	-36	[-36y = 49]divide	OK
+STU_kEGk STU_kEGk	16-36y = 65	typein	LHS	-36y/-36	[-36y/-36 = 49/-36]typein	OK
+STU_kEGk STU_kEGk	16-36y = 65	typein	RHS	49/-36	[-36y/-36 = 49/-36]typein	OK
+STU_kEGk STU_kEGk	16-36y = 65	rf	SKILL	-36y/-36	[-36y/-36 = 49/-36]rf	OK
+STU_kEGk STU_kEGk	16-36y = 65	typein	LHS	y	FinalAnswer	OK
+STU_kEGk STU_kEGk	2293x+8992 = -7181	subtract	SKILL	8992	[2293x+8992 = -7181]subtract	OK
+STU_kEGk STU_kEGk	2293x+8992 = -7181	typein	LHS	2293x+8992-8992	[2293x+8992-8992 = -7181-8992]typein	OK
+STU_kEGk STU_kEGk	2293x+8992 = -7181	typein	RHS	-16172	[2293x+8992-8992 = -7181-8992]typein	ERROR
+STU_kEGk STU_kEGk	2293x+8992 = -7181	typein	RHS	-16173	[2293x+8992-8992 = -7181-8992]typein	OK
+STU_kEGk STU_kEGk	2293x+8992 = -7181	clt	SKILL	2293x+8992-8992	[2293x+8992-8992 = -7181-8992]clt	OK
+STU_kEGk STU_kEGk	2293x+8992 = -7181	typein	LHS	2293x	FinalAnswer	OK
+STU_kEGk STU_kEGk	2293x+8992 = -7181	typein	RHS	-16173	FinalAnswer	OK
+STU_kEGk STU_kEGk	2293x+8992 = -7181	divide	SKILL	2293	[2293x = -16173]divide	OK
+STU_kEGk STU_kEGk	2293x+8992 = -7181	typein	RHS	-7.053205408	[2293x/2293 = -16173/2293]typein	OK
+STU_kEGk STU_kEGk	2293x+8992 = -7181	typein	LHS	x	[2293x/2293 = -16173/2293]typein	OK
+STU_kEGk STU_kEGk	-59.48 = 14.87x-20.4	add	SKILL	20.4	[-59.48 = 14.87x-20.4]add	OK
+STU_kEGk STU_kEGk	-59.48 = 14.87x-20.4	typein	LHS	-39.08	[-59.48+20.4 = 14.87x-20.4+20.4]typein	OK
+STU_kEGk STU_kEGk	-59.48 = 14.87x-20.4	typein	RHS	14.87x-20.4+20.4	[-59.48+20.4 = 14.87x-20.4+20.4]typein	OK
+STU_kEGk STU_kEGk	-59.48 = 14.87x-20.4	clt	SKILL	14.87x-20.4+20.4	[-59.48+20.4 = 14.87x-20.4+20.4]clt	OK
+STU_kEGk STU_kEGk	-59.48 = 14.87x-20.4	typein	RHS	14.87x	FinalAnswer	OK
+STU_kEGk STU_kEGk	-59.48 = 14.87x-20.4	typein	LHS	-39.08	FinalAnswer	OK
+STU_kEGk STU_kEGk	-59.48 = 14.87x-20.4	divide	SKILL	14.87x	[-39.08 = 14.87x]divide	BUG
+STU_kEGk STU_kEGk	-59.48 = 14.87x-20.4	divide	SKILL	14.87	[-39.08 = 14.87x]divide	OK
+STU_kEGk STU_kEGk	-59.48 = 14.87x-20.4	typein	LHS	-2.628110289	[-39.08/14.87 = 14.87x/14.87]typein	OK
+STU_kEGk STU_kEGk	-59.48 = 14.87x-20.4	typein	RHS	14.87x/14.87	[-39.08/14.87 = 14.87x/14.87]typein	OK
+STU_kEGk STU_kEGk	-59.48 = 14.87x-20.4	rf	SKILL	14.87x/14.87	[-39.08/14.87 = 14.87x/14.87]rf	OK
+STU_kEGk STU_kEGk	-59.48 = 14.87x-20.4	typein	RHS	y	FinalAnswer	ERROR
+STU_kEGk STU_kEGk	-59.48 = 14.87x-20.4	typein	RHS	x	FinalAnswer	OK
+STU_kEGk STU_kEGk	-6859 = -1944y-3780	add	SKILL	3780	[-6859 = -1944y-3780]add	OK
+STU_kEGk STU_kEGk	-6859 = -1944y-3780	typein	LHS	-3079	[-6859+3780 = -1944y-3780+3780]typein	OK
+STU_kEGk STU_kEGk	-6859 = -1944y-3780	typein	RHS	-1944y-3780+3780	[-6859+3780 = -1944y-3780+3780]typein	OK
+STU_kEGk STU_kEGk	-6859 = -1944y-3780	clt	SKILL	-1944y-3780+3780	[-6859+3780 = -1944y-3780+3780]clt	OK
+STU_kEGk STU_kEGk	-6859 = -1944y-3780	typein	RHS	-1944y	FinalAnswer	OK
+STU_kEGk STU_kEGk	-6859 = -1944y-3780	clt	SKILL	-3079	[-6859+3780 = -1944y]clt	OK
+STU_kEGk STU_kEGk	1778 = -1706y-2070	add	SKILL	2070	[1778 = -1706y-2070]add	OK
+STU_kEGk STU_kEGk	1778 = -1706y-2070	typein	LHS	1778+2070	[1778+2070 = -1706y-2070+2070]typein	OK
+STU_kEGk STU_kEGk	1778 = -1706y-2070	typein	RHS	-1706y-2070+2070	[1778+2070 = -1706y-2070+2070]typein	OK
+STU_kEGk STU_kEGk	1778 = -1706y-2070	clt	SKILL	-1706y-2070+2070	[1778+2070 = -1706y-2070+2070]clt	OK
+STU_kEGk STU_kEGk	1778 = -1706y-2070	typein	RHS	-1706y	FinalAnswer	OK
+STU_kEGk STU_kEGk	1778 = -1706y-2070	typein	LHS	3848	FinalAnswer	OK
+STU_kEGk STU_kEGk	1778 = -1706y-2070	divide	SKILL	-1706	[3848 = -1706y]divide	OK
+STU_kEGk STU_kEGk	1778 = -1706y-2070	typein	LHS	3848/-1706	[3848/-1706 = -1706y/-1706]typein	OK
+STU_kEGk STU_kEGk	1778 = -1706y-2070	typein	RHS	1	[3848/-1706 = -1706y/-1706]typein	ERROR
+STU_kEGk STU_kEGk	1778 = -1706y-2070	typein	RHS	-1706y/-1706	[3848/-1706 = -1706y/-1706]typein	OK
+STU_kEGk STU_kEGk	1778 = -1706y-2070	rf	SKILL	-1706y/-1706	[3848/-1706 = -1706y/-1706]rf	OK
+STU_kEGk STU_kEGk	1778 = -1706y-2070	auto-fill	LHS	3848/-1706	[3848/-1706 = -1706y/-1706]rf	OK
+STU_kEGk STU_kEGk	1778 = -1706y-2070	typein	RHS	y	FinalAnswer	OK
+STU_kEGk STU_kEGk	1778 = -1706y-2070	rds	SKILL		[3848/-1706 = -1706y/-1706]rds	ERROR
+STU_kEGk STU_kEGk	1778 = -1706y-2070	rf	SKILL	-1706y/-1706	[3848/-1706 = -1706y/-1706]rf	OK
+STU_kEGk STU_kEGk	1778 = -1706y-2070	typein	RHS	y	FinalAnswer	OK
+STU_kEGk STU_kEGk	14.95-5.09y = -3.76	subtract	SKILL	14.95	[14.95-5.09y = -3.76]subtract	OK
+STU_kEGk STU_kEGk	14.95-5.09y = -3.76	typein	LHS	14.95-5.09y-14.95	[14.95-5.09y-14.95 = -3.76-14.95]typein	OK
+STU_kEGk STU_kEGk	14.95-5.09y = -3.76	typein	RHS	-18.71	[14.95-5.09y-14.95 = -3.76-14.95]typein	OK
+STU_kEGk STU_kEGk	14.95-5.09y = -3.76	clt	SKILL	14.95-5.09y-14.95	[14.95-5.09y-14.95 = -3.76-14.95]clt	OK
+STU_kEGk STU_kEGk	14.95-5.09y = -3.76	typein	LHS	-5.09y	FinalAnswer	OK
+STU_kEGk STU_kEGk	14.95-5.09y = -3.76	typein	RHS	-18.71	FinalAnswer	OK
+STU_kEGk STU_kEGk	14.95-5.09y = -3.76	divide	SKILL	-5.09	[-5.09y = -18.71]divide	OK
+STU_kEGk STU_kEGk	14.95-5.09y = -3.76	typein	LHS	1	[-5.09y/-5.09 = -18.71/-5.09]typein	ERROR
+STU_kEGk STU_kEGk	14.95-5.09y = -3.76	typein	LHS	-5.09y/-5.09	[-5.09y/-5.09 = -18.71/-5.09]typein	OK
+STU_kEGk STU_kEGk	14.95-5.09y = -3.76	typein	RHS	3.675834971	[-5.09y/-5.09 = -18.71/-5.09]typein	OK
+STU_kEGk STU_kEGk	14.95-5.09y = -3.76	rf	SKILL	-5.09y/-5.09	[-5.09y/-5.09 = -18.71/-5.09]rf	OK
+STU_kEGk STU_kEGk	14.95-5.09y = -3.76	typein	LHS	y	FinalAnswer	OK
+STU_kEGk STU_kEGk	-6316 = 6890+3711y	subtract	SKILL	6890	[-6316 = 6890+3711y]subtract	OK
+STU_kEGk STU_kEGk	-6316 = 6890+3711y	typein	LHS	-13206	[-6316-6890 = 6890+3711y-6890]typein	OK
+STU_kEGk STU_kEGk	-6316 = 6890+3711y	typein	RHS	6890+3711y-6890	[-6316-6890 = 6890+3711y-6890]typein	OK
+STU_kEGk STU_kEGk	-6316 = 6890+3711y	clt	SKILL	6890+3711y-6890	[-6316-6890 = 6890+3711y-6890]clt	OK
+STU_kEGk STU_kEGk	-6316 = 6890+3711y	typein	RHS	3711y	FinalAnswer	OK
+STU_kEGk STU_kEGk	-6316 = 6890+3711y	typein	LHS	574	FinalAnswer	ERROR
+STU_kEGk STU_kEGk	-6316 = 6890+3711y	typein	LHS	-574	FinalAnswer	ERROR
+STU_kEGk STU_kEGk	-6316 = 6890+3711y	typein	LHS	-13206	FinalAnswer	OK
+STU_kEGk STU_kEGk	-6316 = 6890+3711y	divide	SKILL	3711	[-13206 = 3711y]divide	OK
+STU_kEGk STU_kEGk	-6316 = 6890+3711y	typein	LHS	-3.558609539	[-13206/3711 = 3711y/3711]typein	OK
+STU_kEGk STU_kEGk	-6316 = 6890+3711y	typein	RHS	3711y/3711	[-13206/3711 = 3711y/3711]typein	OK
+STU_kEGk STU_kEGk	-6316 = 6890+3711y	rf	SKILL	3711y/3711	[-13206/3711 = 3711y/3711]rf	OK
+STU_kEGk STU_kEGk	-6316 = 6890+3711y	typein	RHS	y	FinalAnswer	OK
+STU_kEGk STU_kEGk	-86.22y+18.57 = -40.74	subtract	SKILL	18.57	[-86.22y+18.57 = -40.74]subtract	OK
+STU_kEGk STU_kEGk	-86.22y+18.57 = -40.74	typein	LHS	-86.22y+18.57-18.57	[-86.22y+18.57-18.57 = -40.74-18.57]typein	OK
+STU_kEGk STU_kEGk	-86.22y+18.57 = -40.74	typein	RHS	-59.31	[-86.22y+18.57-18.57 = -40.74-18.57]typein	OK
+STU_kEGk STU_kEGk	-86.22y+18.57 = -40.74	clt	SKILL	-86.22y+18.57-18.57	[-86.22y+18.57-18.57 = -40.74-18.57]clt	OK
+STU_kEGk STU_kEGk	-86.22y+18.57 = -40.74	typein	LHS	-86.22y	FinalAnswer	OK
+STU_kEGk STU_kEGk	-86.22y+18.57 = -40.74	typein	RHS	-22.17	FinalAnswer	ERROR
+STU_kEGk STU_kEGk	-86.22y+18.57 = -40.74	typein	RHS	-59.31	FinalAnswer	OK
+STU_kEGk STU_kEGk	-86.22y+18.57 = -40.74	divide	SKILL	-86.22y	[-86.22y = -59.31]divide	BUG
+STU_kEGk STU_kEGk	-86.22y+18.57 = -40.74	divide	SKILL	-86.22	[-86.22y = -59.31]divide	OK
+STU_kEGk STU_kEGk	-86.22y+18.57 = -40.74	typein	LHS	-86.22	[-86.22y/-86.22 = -59.31/-86.22]typein	ERROR
+STU_kEGk STU_kEGk	-86.22y+18.57 = -40.74	typein	LHS	-86.22/86.22y	[-86.22y/-86.22 = -59.31/-86.22]typein	BUG
+STU_kEGk STU_kEGk	-86.22y+18.57 = -40.74	typein	LHS	-86.22y/-86.22	[-86.22y/-86.22 = -59.31/-86.22]typein	OK
+STU_kEGk STU_kEGk	-86.22y+18.57 = -40.74	typein	RHS	0.687891441	[-86.22y/-86.22 = -59.31/-86.22]typein	OK
+STU_kEGk STU_kEGk	-86.22y+18.57 = -40.74	rf	SKILL	-86.22y/-86.22	[-86.22y/-86.22 = -59.31/-86.22]rf	OK
+STU_kEGk STU_kEGk	-86.22y+18.57 = -40.74	typein	LHS	y	FinalAnswer	OK
+STU_kEGk STU_kEGk	-9704x-9976 = 7413	add	SKILL	9976	[-9704x-9976 = 7413]add	OK
+STU_kEGk STU_kEGk	-9704x-9976 = 7413	typein	LHS	-9704x-9976+9976	[-9704x-9976+9976 = 7413+9976]typein	OK
+STU_kEGk STU_kEGk	-9704x-9976 = 7413	typein	RHS	7413+9976	[-9704x-9976+9976 = 7413+9976]typein	OK
+STU_kEGk STU_kEGk	-9704x-9976 = 7413	clt	SKILL	-9704x-9976+9976	[-9704x-9976+9976 = 7413+9976]clt	OK
+STU_kEGk STU_kEGk	-9704x-9976 = 7413	typein	LHS	-9704x	FinalAnswer	OK
+STU_kEGk STU_kEGk	-9704x-9976 = 7413	typein	RHS	8409	FinalAnswer	ERROR
+STU_kEGk STU_kEGk	-9704x-9976 = 7413	typein	RHS	8409	FinalAnswer	ERROR
+STU_kEGk STU_kEGk	-9704x-9976 = 7413	typein	RHS	17389	FinalAnswer	OK
+STU_kEGk STU_kEGk	-9704x-9976 = 7413	divide	SKILL	-9704	[-9704x = 17389]divide	OK
+STU_kEGk STU_kEGk	-9704x-9976 = 7413	typein	LHS	-9704x/9704	[-9704x/-9704 = 17389/-9704]typein	BUG
+STU_kEGk STU_kEGk	-9704x-9976 = 7413	typein	LHS	-9704x/-9704	[-9704x/-9704 = 17389/-9704]typein	OK
+STU_kEGk STU_kEGk	-9704x-9976 = 7413	typein	RHS	17389/-9704	[-9704x/-9704 = 17389/-9704]typein	OK
+STU_kEGk STU_kEGk	-9704x-9976 = 7413	rf	SKILL	-9704x/-9704	[-9704x/-9704 = 17389/-9704]rf	OK
+STU_kEGk STU_kEGk	-9704x-9976 = 7413	typein	LHS	x	FinalAnswer	OK
+STU_kEGk STU_kEGk	-245-201/y = 415	add	SKILL	245	[-245-201/y = 415]add	OK
+STU_kEGk STU_kEGk	-245-201/y = 415	typein	LHS	-245-201/y+245	[-245-201/y+245 = 415+245]typein	OK
+STU_kEGk STU_kEGk	-245-201/y = 415	typein	RHS	415+245	[-245-201/y+245 = 415+245]typein	OK
+STU_kEGk STU_kEGk	-245-201/y = 415	clt	SKILL	415+245	[-245-201/y+245 = 415+245]clt	OK
+STU_kEGk STU_kEGk	-245-201/y = 415	typein	RHS	660	FinalAnswer	OK
+STU_kEGk STU_kEGk	-245-201/y = 415	typein	LHS	-201/y	FinalAnswer	OK
+STU_kEGk STU_kEGk	-245-201/y = 415	multiply	SKILL	y	[-201/y = 660]multiply	OK
+STU_kEGk STU_kEGk	-245-201/y = 415	typein	LHS	-201/y*y	[-201/y*y = 660y]typein	OK
+STU_kEGk STU_kEGk	-245-201/y = 415	typein	RHS	660y	[-201/y*y = 660y]typein	OK
+STU_kEGk STU_kEGk	-245-201/y = 415	mt	SKILL	-201/y*y	[-201/y*y = 660y]mt	OK
+STU_kEGk STU_kEGk	556/y+608 = 343	subtract	SKILL	608	[556/y+608 = 343]subtract	OK
+STU_kEGk STU_kEGk	556/y+608 = 343	typein	LHS	556/y+608-608	[556/y+608-608 = 343-608]typein	OK
+STU_kEGk STU_kEGk	556/y+608 = 343	typein	RHS	343-608	[556/y+608-608 = 343-608]typein	OK
+STU_kEGk STU_kEGk	556/y+608 = 343	clt	SKILL	556/y+608-608	[556/y+608-608 = 343-608]clt	OK
+STU_kEGk STU_kEGk	556/y+608 = 343	typein	LHS	556/y	FinalAnswer	OK
+STU_kEGk STU_kEGk	556/y+608 = 343	typein	RHS	-265	FinalAnswer	OK
+STU_kEGk STU_kEGk	556/y+608 = 343	multiply	SKILL	y	[556/y = -265]multiply	OK
+STU_kEGk STU_kEGk	556/y+608 = 343	typein	LHS	556/y*y	[556/y*y = -265y]typein	OK
+STU_kEGk STU_kEGk	556/y+608 = 343	typein	RHS	-265y	[556/y*y = -265y]typein	OK
+STU_kEGk STU_kEGk	556/y+608 = 343	mt	SKILL	556/y*y	[556/y*y = -265y]mt	OK
+STU_kEGk STU_kEGk	556/y+608 = 343	typein	LHS	556	FinalAnswer	OK
+STU_kEGk STU_kEGk	556/y+608 = 343	auto-fill	RHS	-265y	FinalAnswer	OK
+STU_kEGk STU_kEGk	556/y+608 = 343	divide	RHS	-265	[556 = -265y]divide	OK
+STU_kEGk STU_kEGk	556/y+608 = 343	typein	LHS	556/-265	[556/-265 = -265y/-265]typein	OK
+STU_kEGk STU_kEGk	556/y+608 = 343	typein	RHS	-265y/-265	[556/-265 = -265y/-265]typein	OK
+STU_kEGk STU_kEGk	556/y+608 = 343	rf	SKILL	-265y/-265	[556/-265 = -265y/-265]rf	OK
+STU_kEGk STU_kEGk	556/y+608 = 343	typein	LHS	y	FinalAnswer	OK
+STU_kEGk STU_kEGk	10+90/x = 46	subtract	SKILL	10	[10+90/x = 46]subtract	OK
+STU_kEGk STU_kEGk	10+90/x = 46	typein	LHS	10+90/x-10	[10+90/x-10 = 46-10]typein	OK
+STU_kEGk STU_kEGk	10+90/x = 46	typein	RHS	46-10	[10+90/x-10 = 46-10]typein	OK
+STU_kEGk STU_kEGk	10+90/x = 46	clt	SKILL	10+90/x-10	[10+90/x-10 = 46-10]clt	OK
+STU_kEGk STU_kEGk	10+90/x = 46	typein	LHS	90/x	FinalAnswer	OK
+STU_kEGk STU_kEGk	10+90/x = 46	typein	RHS	36	FinalAnswer	OK
+STU_kEGk STU_kEGk	10+90/x = 46	multiply	SKILL	x	[90/x = 36]multiply	OK
+STU_kEGk STU_kEGk	10+90/x = 46	typein	LHS	90/x*x	[90/x*x = 36x]typein	OK
+STU_kEGk STU_kEGk	10+90/x = 46	typein	RHS	36x	[90/x*x = 36x]typein	OK
+STU_kEGk STU_kEGk	10+90/x = 46	mt	SKILL	90/x*x	[90/x*x = 36x]mt	OK
+STU_kEGk STU_kEGk	10+90/x = 46	typein	LHS	90	FinalAnswer	OK
+STU_kEGk STU_kEGk	10+90/x = 46	auto-fill	RHS	36x	FinalAnswer	OK
+STU_kEGk STU_kEGk	10+90/x = 46	divide	SKILL	36	[90 = 36x]divide	OK
+STU_kEGk STU_kEGk	10+90/x = 46	typein	LHS	90/36	[90/36 = 36x/36]typein	OK
+STU_kEGk STU_kEGk	10+90/x = 46	typein	RHS	36x/36	[90/36 = 36x/36]typein	OK
+STU_kEGk STU_kEGk	10+90/x = 46	rf	SKILL	36x/36	[90/36 = 36x/36]rf	OK
+STU_kEGk STU_kEGk	10+90/x = 46	typein	RHS	x	FinalAnswer	OK
+STU_kEGk STU_kEGk	-37/y+69 = -17	subtract	SKILL	69	[-37/y+69 = -17]subtract	OK
+STU_kEGk STU_kEGk	-37/y+69 = -17	typein	LHS	-37/y+69-69	[-37/y+69-69 = -17-69]typein	OK
+STU_kEGk STU_kEGk	-37/y+69 = -17	typein	RHS	-86	[-37/y+69-69 = -17-69]typein	OK
+STU_kEGk STU_kEGk	-37/y+69 = -17	clt	SKILL	-37/y+69-69	[-37/y+69-69 = -17-69]clt	OK
+STU_kEGk STU_kEGk	-37/y+69 = -17	typein	LHS	-37/y	FinalAnswer	OK
+STU_kEGk STU_kEGk	-37/y+69 = -17	typein	RHS	-86	FinalAnswer	OK
+STU_kEGk STU_kEGk	-37/y+69 = -17	multiply	SKILL	y	[-37/y = -86]multiply	OK
+STU_kEGk STU_kEGk	-37/y+69 = -17	typein	LHS	-37/y*y	[-37/y*y = -86y]typein	OK
+STU_kEGk STU_kEGk	-37/y+69 = -17	typein	RHS	-86y	[-37/y*y = -86y]typein	OK
+STU_kEGk STU_kEGk	-37/y+69 = -17	mt	SKILL	-37/y*y	[-37/y*y = -86y]mt	OK
+STU_kEGk STU_kEGk	-37/y+69 = -17	typein	LHS	-37	FinalAnswer	OK
+STU_kEGk STU_kEGk	-37/y+69 = -17	auto-fill	RHS	-86y	FinalAnswer	OK
+STU_kEGk STU_kEGk	-37/y+69 = -17	divide	SKILL	-86	[-37 = -86y]divide	OK
+STU_kEGk STU_kEGk	-37/y+69 = -17	typein	LHS	0.430232558	[-37/-86 = -86y/-86]typein	OK
+STU_kEGk STU_kEGk	-37/y+69 = -17	typein	RHS	-86y/-86	[-37/-86 = -86y/-86]typein	OK
+STU_kEGk STU_kEGk	-37/y+69 = -17	rf	SKILL	-86y/-86	[-37/-86 = -86y/-86]rf	OK
+STU_kEGk STU_kEGk	-37/y+69 = -17	typein	RHS	y	FinalAnswer	OK
+STU_kEGk STU_kEGk	-82+14/y = -14	add	SKILL	82	[-82+14/y = -14]add	OK
+STU_kEGk STU_kEGk	-82+14/y = -14	typein	LHS	-82+14/y+82	[-82+14/y+82 = -14+82]typein	OK
+STU_kEGk STU_kEGk	-82+14/y = -14	typein	RHS	68	[-82+14/y+82 = -14+82]typein	OK
+STU_kEGk STU_kEGk	-82+14/y = -14	clt	SKILL	-82+14/y+82	[-82+14/y+82 = -14+82]clt	OK
+STU_kEGk STU_kEGk	-82+14/y = -14	typein	LHS	14y	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-82+14/y = -14	typein	LHS	14/y	FinalAnswer	OK
+STU_kEGk STU_kEGk	-82+14/y = -14	typein	RHS	68	FinalAnswer	OK
+STU_kEGk STU_kEGk	-82+14/y = -14	multiply	SKILL	y	[14/y = 68]multiply	OK
+STU_kEGk STU_kEGk	-82+14/y = -14	typein	LHS	14/y*y	[14/y*y = 68y]typein	OK
+STU_kEGk STU_kEGk	-82+14/y = -14	typein	RHS	68y	[14/y*y = 68y]typein	OK
+STU_kEGk STU_kEGk	-82+14/y = -14	mt	SKILL	14/y*y	[14/y*y = 68y]mt	OK
+STU_kEGk STU_kEGk	-82+14/y = -14	typein	LHS	14/y	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-82+14/y = -14	typein	LHS	14	FinalAnswer	OK
+STU_kEGk STU_kEGk	-82+14/y = -14	auto-fill	RHS	68y	FinalAnswer	OK
+STU_kEGk STU_kEGk	-82+14/y = -14	divide	SKILL	68	[14 = 68y]divide	OK
+STU_kEGk STU_kEGk	-82+14/y = -14	typein	LHS	14/68	[14/68 = 68y/68]typein	OK
+STU_kEGk STU_kEGk	-82+14/y = -14	typein	RHS	68y/68	[14/68 = 68y/68]typein	OK
+STU_kEGk STU_kEGk	-82+14/y = -14	rf	SKILL	68y/68	[14/68 = 68y/68]rf	OK
+STU_kEGk STU_kEGk	-82+14/y = -14	typein	RHS	y	FinalAnswer	OK
+STU_kEGk STU_kEGk	13 = -68/y-16	add	SKILL	16	[13 = -68/y-16]add	OK
+STU_kEGk STU_kEGk	13 = -68/y-16	typein	LHS	13+16	[13+16 = -68/y-16+16]typein	OK
+STU_kEGk STU_kEGk	13 = -68/y-16	typein	RHS	-68/y-16+16	[13+16 = -68/y-16+16]typein	OK
+STU_kEGk STU_kEGk	13 = -68/y-16	clt	SKILL	-68/y-16+16	[13+16 = -68/y-16+16]clt	OK
+STU_kEGk STU_kEGk	13 = -68/y-16	typein	RHS	-68/y	FinalAnswer	OK
+STU_kEGk STU_kEGk	13 = -68/y-16	typein	LHS	29	FinalAnswer	OK
+STU_kEGk STU_kEGk	13 = -68/y-16	multiply	SKILL	y	[29 = -68/y]multiply	OK
+STU_kEGk STU_kEGk	63/x-46 = 71	add	SKILL	46	[63/x-46 = 71]add	OK
+STU_kEGk STU_kEGk	63/x-46 = 71	typein	LHS	63/x-46+46	[63/x-46+46 = 71+46]typein	OK
+STU_kEGk STU_kEGk	63/x-46 = 71	typein	RHS	71+46	[63/x-46+46 = 71+46]typein	OK
+STU_kEGk STU_kEGk	63/x-46 = 71	clt	SKILL	63/x-46+46	[63/x-46+46 = 71+46]clt	OK
+STU_kEGk STU_kEGk	63/x-46 = 71	typein	LHS	63/x	FinalAnswer	OK
+STU_kEGk STU_kEGk	63/x-46 = 71	typein	RHS	117	FinalAnswer	OK
+STU_kEGk STU_kEGk	63/x-46 = 71	multiply	SKILL	x	[63/x = 117]multiply	OK
+STU_kEGk STU_kEGk	63/x-46 = 71	typein	LHS	63/x*x	[63/x*x = 117x]typein	OK
+STU_kEGk STU_kEGk	63/x-46 = 71	typein	RHS	117x	[63/x*x = 117x]typein	OK
+STU_kEGk STU_kEGk	63/x-46 = 71	mt	SKILL	63/x*x	[63/x*x = 117x]mt	OK
+STU_kEGk STU_kEGk	63/x-46 = 71	typein	LHS	63	FinalAnswer	OK
+STU_kEGk STU_kEGk	63/x-46 = 71	auto-fill	RHS	117x	FinalAnswer	OK
+STU_kEGk STU_kEGk	63/x-46 = 71	divide	SKILL	117	[63 = 117x]divide	OK
+STU_kEGk STU_kEGk	63/x-46 = 71	typein	LHS	63/117	[63/117 = 117x/117]typein	OK
+STU_kEGk STU_kEGk	63/x-46 = 71	typein	RHS	117x/117	[63/117 = 117x/117]typein	OK
+STU_kEGk STU_kEGk	63/x-46 = 71	rf	SKILL	117x/117	[63/117 = 117x/117]rf	OK
+STU_kEGk STU_kEGk	63/x-46 = 71	typein	RHS	x	FinalAnswer	OK
+STU_kEGk STU_kEGk	32/x+91 = 0	subtract	SKILL	91	[32/x+91 = 0]subtract	OK
+STU_kEGk STU_kEGk	32/x+91 = 0	typein	LHS	32/x+91-91	[32/x+91-91 = 0-91]typein	OK
+STU_kEGk STU_kEGk	32/x+91 = 0	typein	RHS	0-91	[32/x+91-91 = 0-91]typein	OK
+STU_kEGk STU_kEGk	32/x+91 = 0	clt	SKILL	32/x+91-91	[32/x+91-91 = 0-91]clt	OK
+STU_kEGk STU_kEGk	32/x+91 = 0	typein	LHS	32/x	FinalAnswer	OK
+STU_kEGk STU_kEGk	32/x+91 = 0	typein	RHS	-91	FinalAnswer	OK
+STU_kEGk STU_kEGk	32/x+91 = 0	multiply	SKILL	x	[32/x = -91]multiply	OK
+STU_kEGk STU_kEGk	32/x+91 = 0	typein	LHS	32/x*x	[32/x*x = -91x]typein	OK
+STU_kEGk STU_kEGk	32/x+91 = 0	typein	RHS	-91x	[32/x*x = -91x]typein	OK
+STU_kEGk STU_kEGk	32/x+91 = 0	mt	SKILL	32/x*x	[32/x*x = -91x]mt	OK
+STU_kEGk STU_kEGk	32/x+91 = 0	typein	LHS	32	FinalAnswer	OK
+STU_kEGk STU_kEGk	32/x+91 = 0	auto-fill	RHS	-91x	FinalAnswer	OK
+STU_kEGk STU_kEGk	32/x+91 = 0	divide	SKILL	-91	[32 = -91x]divide	OK
+STU_kEGk STU_kEGk	32/x+91 = 0	typein	LHS	32/-91	[32/-91 = -91x/-91]typein	OK
+STU_kEGk STU_kEGk	32/x+91 = 0	typein	RHS	1	[32/-91 = -91x/-91]typein	ERROR
+STU_kEGk STU_kEGk	32/x+91 = 0	typein	RHS	-91x/-91	[32/-91 = -91x/-91]typein	OK
+STU_kEGk STU_kEGk	32/x+91 = 0	rf	SKILL	-91x/-91	[32/-91 = -91x/-91]rf	OK
+STU_kEGk STU_kEGk	32/x+91 = 0	typein	RHS	x	FinalAnswer	OK
+STU_kEGk STU_kEGk	-15/x-8 = 75	add	SKILL	8	[-15/x-8 = 75]add	OK
+STU_kEGk STU_kEGk	-15/x-8 = 75	typein	LHS	-15/x-8+8	[-15/x-8+8 = 75+8]typein	OK
+STU_kEGk STU_kEGk	-15/x-8 = 75	typein	RHS	75+8	[-15/x-8+8 = 75+8]typein	OK
+STU_kEGk STU_kEGk	-15/x-8 = 75	clt	SKILL	-15/x-8+8	[-15/x-8+8 = 75+8]clt	OK
+STU_kEGk STU_kEGk	-15/x-8 = 75	typein	LHS	-15/x	FinalAnswer	OK
+STU_kEGk STU_kEGk	-15/x-8 = 75	typein	RHS	83	FinalAnswer	OK
+STU_kEGk STU_kEGk	-15/x-8 = 75	multiply	SKILL	x	[-15/x = 83]multiply	OK
+STU_kEGk STU_kEGk	-15/x-8 = 75	typein	LHS	-15/x*x	[-15/x*x = 83x]typein	OK
+STU_kEGk STU_kEGk	-15/x-8 = 75	typein	RHS	83x	[-15/x*x = 83x]typein	OK
+STU_kEGk STU_kEGk	-15/x-8 = 75	mt	SKILL	-15/x*x	[-15/x*x = 83x]mt	OK
+STU_kEGk STU_kEGk	-15/x-8 = 75	typein	LHS	-15	FinalAnswer	OK
+STU_kEGk STU_kEGk	-15/x-8 = 75	auto-fill	RHS	83x	FinalAnswer	OK
+STU_kEGk STU_kEGk	-15/x-8 = 75	divide	SKILL	83	[-15 = 83x]divide	OK
+STU_kEGk STU_kEGk	-15/x-8 = 75	typein	RHS	83x/83	[-15/83 = 83x/83]typein	OK
+STU_kEGk STU_kEGk	-15/x-8 = 75	typein	LHS	-0.180722892	[-15/83 = 83x/83]typein	OK
+STU_kEGk STU_kEGk	-15/x-8 = 75	rf	SKILL	83x/83	[-15/83 = 83x/83]rf	OK
+STU_kEGk STU_kEGk	-15/x-8 = 75	typein	RHS	x	FinalAnswer	OK
+STU_kEGk STU_kEGk	-351 = -68-2/y	add	SKILL	68	[-351 = -68-2/y]add	OK
+STU_kEGk STU_kEGk	-351 = -68-2/y	typein	LHS	-283	[-351+68 = -68-2/y+68]typein	OK
+STU_kEGk STU_kEGk	-351 = -68-2/y	typein	RHS	-68-2/y	[-351+68 = -68-2/y+68]typein	BUG
+STU_kEGk STU_kEGk	-351 = -68-2/y	typein	RHS	-68-2/y + 68	[-351+68 = -68-2/y+68]typein	OK
+STU_kEGk STU_kEGk	-351 = -68-2/y	clt	SKILL	-68-2/y + 68	[-351+68 = -68-2/y+68]clt	OK
+STU_kEGk STU_kEGk	-351 = -68-2/y	typein	RHS	-2/y	FinalAnswer	OK
+STU_kEGk STU_kEGk	-351 = -68-2/y	typein	LHS	-283	FinalAnswer	OK
+STU_kEGk STU_kEGk	-351 = -68-2/y	multiply	SKILL	y	[-283 = -2/y]multiply	OK
+STU_kEGk STU_kEGk	-351 = -68-2/y	typein	LHS	-283y	[-283y = -2/y*y]typein	OK
+STU_kEGk STU_kEGk	-351 = -68-2/y	typein	RHS	-2/y*y	[-283y = -2/y*y]typein	OK
+STU_kEGk STU_kEGk	-351 = -68-2/y	mt	SKILL	-2/y*y	[-283y = -2/y*y]mt	OK
+STU_kEGk STU_kEGk	-351 = -68-2/y	typein	RHS	-2	FinalAnswer	OK
+STU_kEGk STU_kEGk	-351 = -68-2/y	auto-fill	LHS	-283y	FinalAnswer	OK
+STU_kEGk STU_kEGk	-351 = -68-2/y	divide	SKILL	-283	[-283y = -2]divide	OK
+STU_kEGk STU_kEGk	-351 = -68-2/y	typein	LHS	-283y/-283	[-283y/-283 = -2/-283]typein	OK
+STU_kEGk STU_kEGk	-351 = -68-2/y	typein	RHS	0.007067138	[-283y/-283 = -2/-283]typein	OK
+STU_kEGk STU_kEGk	-351 = -68-2/y	rf	SKILL	-283y/-283	[-283y/-283 = -2/-283]rf	OK
+STU_kEGk STU_kEGk	-351 = -68-2/y	typein	LHS	y	FinalAnswer	OK
+STU_kEGk STU_kEGk	-121 = 402/y+15	subtract	SKILL	15	[-121 = 402/y+15]subtract	OK
+STU_kEGk STU_kEGk	-121 = 402/y+15	typein	LHS	-136	[-121-15 = 402/y+15-15]typein	OK
+STU_kEGk STU_kEGk	-121 = 402/y+15	typein	RHS	402/y+15-15	[-121-15 = 402/y+15-15]typein	OK
+STU_kEGk STU_kEGk	-121 = 402/y+15	clt	SKILL	402/y+15-15	[-121-15 = 402/y+15-15]clt	OK
+STU_kEGk STU_kEGk	-121 = 402/y+15	typein	RHS	402/y	FinalAnswer	OK
+STU_kEGk STU_kEGk	-121 = 402/y+15	typein	LHS	-136	FinalAnswer	OK
+STU_kEGk STU_kEGk	-121 = 402/y+15	multiply	SKILL	y	[-136 = 402/y]multiply	OK
+STU_kEGk STU_kEGk	-121 = 402/y+15	typein	LHS	-136y	[-136y = 402/y*y]typein	OK
+STU_kEGk STU_kEGk	-121 = 402/y+15	typein	RHS	402/y*y	[-136y = 402/y*y]typein	OK
+STU_kEGk STU_kEGk	-121 = 402/y+15	mt	SKILL	402/y*y	[-136y = 402/y*y]mt	OK
+STU_kEGk STU_kEGk	-121 = 402/y+15	typein	RHS	402	FinalAnswer	OK
+STU_kEGk STU_kEGk	-121 = 402/y+15	auto-fill	LHS	-136y	FinalAnswer	OK
+STU_kEGk STU_kEGk	-121 = 402/y+15	divide	SKILL	-136	[-136y = 402]divide	OK
+STU_kEGk STU_kEGk	-121 = 402/y+15	typein	LHS	-136y/-136	[-136y/-136 = 402/-136]typein	OK
+STU_kEGk STU_kEGk	-121 = 402/y+15	typein	RHS	402/-136	[-136y/-136 = 402/-136]typein	OK
+STU_kEGk STU_kEGk	-121 = 402/y+15	rf	SKILL	-136y/-136	[-136y/-136 = 402/-136]rf	OK
+STU_kEGk STU_kEGk	-121 = 402/y+15	typein	LHS	y	FinalAnswer	OK
+STU_kEGk STU_kEGk	-104 = -442-77/y	add	SKILL	442	[-104 = -442-77/y]add	OK
+STU_kEGk STU_kEGk	-104 = -442-77/y	typein	LHS	338	[-104+442 = -442-77/y+442]typein	OK
+STU_kEGk STU_kEGk	-104 = -442-77/y	typein	RHS	-442-77/y+442	[-104+442 = -442-77/y+442]typein	OK
+STU_kEGk STU_kEGk	-104 = -442-77/y	clt	SKILL	-442-77/y+442	[-104+442 = -442-77/y+442]clt	OK
+STU_kEGk STU_kEGk	-104 = -442-77/y	typein	RHS	-77/y	FinalAnswer	OK
+STU_kEGk STU_kEGk	-104 = -442-77/y	typein	LHS	338	FinalAnswer	OK
+STU_kEGk STU_kEGk	-104 = -442-77/y	multiply	SKILL	y	[338 = -77/y]multiply	OK
+STU_kEGk STU_kEGk	-104 = -442-77/y	typein	LHS	338y	[338y = -77/y*y]typein	OK
+STU_kEGk STU_kEGk	-104 = -442-77/y	typein	RHS	-77/y*y	[338y = -77/y*y]typein	OK
+STU_kEGk STU_kEGk	-104 = -442-77/y	mt	SKILL	-77/y*y	[338y = -77/y*y]mt	OK
+STU_kEGk STU_kEGk	-104 = -442-77/y	typein	RHS	-77	FinalAnswer	OK
+STU_kEGk STU_kEGk	-104 = -442-77/y	auto-fill	LHS	338y	FinalAnswer	OK
+STU_kEGk STU_kEGk	-104 = -442-77/y	divide	SKILL	338	[338y = -77]divide	OK
+STU_kEGk STU_kEGk	-104 = -442-77/y	typein	LHS	338y/338	[338y/338 = -77/338]typein	OK
+STU_kEGk STU_kEGk	-104 = -442-77/y	typein	RHS	-0.198453608	[338y/338 = -77/338]typein	ERROR
+STU_kEGk STU_kEGk	-104 = -442-77/y	typein	RHS	-0.227810651	[338y/338 = -77/338]typein	OK
+STU_kEGk STU_kEGk	-104 = -442-77/y	rf	SKILL	338y/338	[338y/338 = -77/338]rf	OK
+STU_kEGk STU_kEGk	-104 = -442-77/y	typein	LHS	y	FinalAnswer	OK
+STU_kEGk STU_kEGk	-897 = -889/x+534	subtract	SKILL	534	[-897 = -889/x+534]subtract	OK
+STU_kEGk STU_kEGk	-897 = -889/x+534	typein	LHS	-1431	[-897-534 = -889/x+534-534]typein	OK
+STU_kEGk STU_kEGk	-897 = -889/x+534	typein	RHS	-889/x+534-534	[-897-534 = -889/x+534-534]typein	OK
+STU_kEGk STU_kEGk	-897 = -889/x+534	clt	SKILL	-889/x+534-534	[-897-534 = -889/x+534-534]clt	OK
+STU_kEGk STU_kEGk	-897 = -889/x+534	typein	RHS	-889/x	FinalAnswer	OK
+STU_kEGk STU_kEGk	-897 = -889/x+534	typein	LHS	-1431	FinalAnswer	OK
+STU_kEGk STU_kEGk	-897 = -889/x+534	multiply	SKILL	x	[-1431 = -889/x]multiply	OK
+STU_kEGk STU_kEGk	-897 = -889/x+534	typein	LHS	-1431x	[-1431x = -889/x*x]typein	OK
+STU_kEGk STU_kEGk	-897 = -889/x+534	typein	RHS	-889/x*x	[-1431x = -889/x*x]typein	OK
+STU_kEGk STU_kEGk	-897 = -889/x+534	rf	SKILL		[-1431x = -889/x*x]rf	ERROR
+STU_kEGk STU_kEGk	-897 = -889/x+534	mt	SKILL	-889/x*x	[-1431x = -889/x*x]mt	OK
+STU_kEGk STU_kEGk	-897 = -889/x+534	typein	RHS	-889	FinalAnswer	OK
+STU_kEGk STU_kEGk	-897 = -889/x+534	auto-fill	LHS	-1431x	FinalAnswer	OK
+STU_kEGk STU_kEGk	-897 = -889/x+534	divide	SKILL	-1431	[-1431x = -889]divide	OK
+STU_kEGk STU_kEGk	-897 = -889/x+534	typein	LHS	-1431x/-1431	[-1431x/-1431 = -889/-1431]typein	OK
+STU_kEGk STU_kEGk	-897 = -889/x+534	typein	RHS	0.621243885	[-1431x/-1431 = -889/-1431]typein	OK
+STU_kEGk STU_kEGk	-897 = -889/x+534	rf	SKILL	-1431x/-1431	[-1431x/-1431 = -889/-1431]rf	OK
+STU_kEGk STU_kEGk	-897 = -889/x+534	typein	LHS	x	FinalAnswer	OK
+STU_kEGk STU_kEGk	11-36/x = -51	subtract	SKILL	11	[11-36/x = -51]subtract	OK
+STU_kEGk STU_kEGk	11-36/x = -51	typein	LHS	11-36/x-11	[11-36/x-11 = -51-11]typein	OK
+STU_kEGk STU_kEGk	11-36/x = -51	typein	RHS	-62	[11-36/x-11 = -51-11]typein	OK
+STU_kEGk STU_kEGk	11-36/x = -51	clt	SKILL	11-36/x-11	[11-36/x-11 = -51-11]clt	OK
+STU_kEGk STU_kEGk	11-36/x = -51	typein	LHS	-36/x	FinalAnswer	OK
+STU_kEGk STU_kEGk	11-36/x = -51	typein	RHS	-62	FinalAnswer	OK
+STU_kEGk STU_kEGk	11-36/x = -51	multiply	SKILL	x	[-36/x = -62]multiply	OK
+STU_kEGk STU_kEGk	11-36/x = -51	typein	LHS	-36/x*x	[-36/x*x = -62x]typein	OK
+STU_kEGk STU_kEGk	11-36/x = -51	typein	RHS	-62x	[-36/x*x = -62x]typein	OK
+STU_kEGk STU_kEGk	11-36/x = -51	mt	SKILL	-36/x*x	[-36/x*x = -62x]mt	OK
+STU_kEGk STU_kEGk	11-36/x = -51	typein	LHS	-36	FinalAnswer	OK
+STU_kEGk STU_kEGk	11-36/x = -51	auto-fill	RHS	-62x	FinalAnswer	OK
+STU_kEGk STU_kEGk	11-36/x = -51	divide	SKILL	-62	[-36 = -62x]divide	OK
+STU_kEGk STU_kEGk	11-36/x = -51	typein	LHS	0.580645161	[-36/-62 = -62x/-62]typein	OK
+STU_kEGk STU_kEGk	11-36/x = -51	typein	RHS	-62x/-62	[-36/-62 = -62x/-62]typein	OK
+STU_kEGk STU_kEGk	11-36/x = -51	rf	SKILL	-62x/-62	[-36/-62 = -62x/-62]rf	OK
+STU_kEGk STU_kEGk	11-36/x = -51	typein	RHS	x	FinalAnswer	OK
+STU_kEGk STU_kEGk	11-36/x = -51	auto-fill	LHS	0.580645161	FinalAnswer	OK
+STU_kEGk STU_kEGk	8 = -15/x-21	add	SKILL	21	[8 = -15/x-21]add	OK
+STU_kEGk STU_kEGk	8 = -15/x-21	typein	LHS	8+21	[8+21 = -15/x-21+21]typein	OK
+STU_kEGk STU_kEGk	8 = -15/x-21	typein	RHS	-15/x-21+21	[8+21 = -15/x-21+21]typein	OK
+STU_kEGk STU_kEGk	8 = -15/x-21	add	SKILL	21	[8 = -15/x-21]add	OK
+STU_kEGk STU_kEGk	8 = -15/x-21	typein	LHS	8+21	[8+21 = -15/x-21+21]typein	OK
+STU_kEGk STU_kEGk	8 = -15/x-21	typein	RHS	-15/x-21+21	[8+21 = -15/x-21+21]typein	OK
+STU_kEGk STU_kEGk	8 = -15/x-21	clt	SKILL	-15/x-21+21	[8+21 = -15/x-21+21]clt	OK
+STU_kEGk STU_kEGk	8 = -15/x-21	typein	RHS	-15/x	FinalAnswer	OK
+STU_kEGk STU_kEGk	8 = -15/x-21	typein	LHS	29	FinalAnswer	OK
+STU_kEGk STU_kEGk	8 = -15/x-21	multiply	SKILL	x	[29 = -15/x]multiply	OK
+STU_kEGk STU_kEGk	8 = -15/x-21	typein	LHS	29x	[29x = -15/x*x]typein	OK
+STU_kEGk STU_kEGk	8 = -15/x-21	typein	RHS	-15/x*x	[29x = -15/x*x]typein	OK
+STU_kEGk STU_kEGk	8 = -15/x-21	mt	SKILL	-15/x*x	[29x = -15/x*x]mt	OK
+STU_kEGk STU_kEGk	8 = -15/x-21	typein	RHS	-15	FinalAnswer	OK
+STU_kEGk STU_kEGk	8 = -15/x-21	auto-fill	LHS	29x	FinalAnswer	OK
+STU_kEGk STU_kEGk	8 = -15/x-21	divide	SKILL	29	[29x = -15]divide	OK
+STU_kEGk STU_kEGk	8 = -15/x-21	typein	LHS	29x/29	[29x/29 = -15/29]typein	OK
+STU_kEGk STU_kEGk	8 = -15/x-21	typein	RHS	-0.517241379	[29x/29 = -15/29]typein	OK
+STU_kEGk STU_kEGk	8 = -15/x-21	rf	SKILL	29x/29	[29x/29 = -15/29]rf	OK
+STU_kEGk STU_kEGk	8 = -15/x-21	typein	LHS	x	FinalAnswer	OK
+STU_kEGk STU_kEGk	-76 = 929/x-282	add	SKILL	282	[-76 = 929/x-282]add	OK
+STU_kEGk STU_kEGk	-76 = 929/x-282	typein	LHS	206	[-76+282 = 929/x-282+282]typein	OK
+STU_kEGk STU_kEGk	-76 = 929/x-282	typein	RHS	929/x-282+282	[-76+282 = 929/x-282+282]typein	OK
+STU_kEGk STU_kEGk	-76 = 929/x-282	clt	SKILL	929/x-282+282	[-76+282 = 929/x-282+282]clt	OK
+STU_kEGk STU_kEGk	-76 = 929/x-282	typein	RHS	929	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-76 = 929/x-282	typein	RHS	929/x	FinalAnswer	OK
+STU_kEGk STU_kEGk	-76 = 929/x-282	typein	LHS	206	FinalAnswer	OK
+STU_kEGk STU_kEGk	-76 = 929/x-282	clt	SKILL	206	[-76+282 = 929/x]clt	OK
+STU_kEGk STU_kEGk	-76 = 929/x-282	typein	LHS	206	FinalAnswer	OK
+STU_kEGk STU_kEGk	-76 = 929/x-282	auto-fill	RHS	929/x	FinalAnswer	OK
+STU_kEGk STU_kEGk	-76 = 929/x-282	multiply	SKILL	x	[206 = 929/x]multiply	OK
+STU_kEGk STU_kEGk	-76 = 929/x-282	typein	LHS	206x	[206x = 929/x*x]typein	OK
+STU_kEGk STU_kEGk	-76 = 929/x-282	typein	RHS	929/x*x	[206x = 929/x*x]typein	OK
+STU_kEGk STU_kEGk	-76 = 929/x-282	mt	SKILL	929/x*x	[206x = 929/x*x]mt	OK
+STU_kEGk STU_kEGk	-76 = 929/x-282	typein	RHS	929	FinalAnswer	OK
+STU_kEGk STU_kEGk	-76 = 929/x-282	auto-fill	LHS	929/x*x	FinalAnswer	OK
+STU_kEGk STU_kEGk	-76 = 929/x-282	divide	SKILL	206	[206x = 929]divide	OK
+STU_kEGk STU_kEGk	-76 = 929/x-282	typein	LHS	206x/206	[206x/206 = 929/206]typein	OK
+STU_kEGk STU_kEGk	-76 = 929/x-282	typein	RHS	929/206	[206x/206 = 929/206]typein	OK
+STU_kEGk STU_kEGk	-76 = 929/x-282	rf	SKILL	206x/206	[206x/206 = 929/206]rf	OK
+STU_kEGk STU_kEGk	-76 = 929/x-282	typein	LHS	x	FinalAnswer	OK
+STU_kEGk STU_kEGk	-689 = -244/x-90	add	SKILL	90	[-689 = -244/x-90]add	OK
+STU_kEGk STU_kEGk	-689 = -244/x-90	typein	LHS	-599	[-689+90 = -244/x-90+90]typein	OK
+STU_kEGk STU_kEGk	-689 = -244/x-90	typein	RHS	-244/x-90+90	[-689+90 = -244/x-90+90]typein	OK
+STU_kEGk STU_kEGk	-689 = -244/x-90	clt	SKILL	-244/x-90+90	[-689+90 = -244/x-90+90]clt	OK
+STU_kEGk STU_kEGk	-689 = -244/x-90	typein	RHS	-244/x	FinalAnswer	OK
+STU_kEGk STU_kEGk	-689 = -244/x-90	typein	LHS	-599	FinalAnswer	OK
+STU_kEGk STU_kEGk	-689 = -244/x-90	multiply	SKILL	x	[-599 = -244/x]multiply	OK
+STU_kEGk STU_kEGk	-689 = -244/x-90	typein	LHS	-599x	[-599x = -244/x*x]typein	OK
+STU_kEGk STU_kEGk	-689 = -244/x-90	typein	RHS	-244/x*x	[-599x = -244/x*x]typein	OK
+STU_kEGk STU_kEGk	-689 = -244/x-90	mt	SKILL	-244/x*x	[-599x = -244/x*x]mt	OK
+STU_kEGk STU_kEGk	-689 = -244/x-90	typein	RHS	-244	FinalAnswer	OK
+STU_kEGk STU_kEGk	-689 = -244/x-90	auto-fill	LHS	-599x	FinalAnswer	OK
+STU_kEGk STU_kEGk	-689 = -244/x-90	divide	SKILL	-559	[-599x = -244]divide	ERROR
+STU_kEGk STU_kEGk	-689 = -244/x-90	divide	SKILL	559	[-599x = -244]divide	ERROR
+STU_kEGk STU_kEGk	-689 = -244/x-90	divide	SKILL	-599	[-599x = -244]divide	OK
+STU_kEGk STU_kEGk	-689 = -244/x-90	typein	LHS	-599x/-599	[-599x/-599 = -244/-599]typein	OK
+STU_kEGk STU_kEGk	-689 = -244/x-90	typein	RHS	0.407345576	[-599x/-599 = -244/-599]typein	OK
+STU_kEGk STU_kEGk	-689 = -244/x-90	rf	SKILL	-599x/-599	[-599x/-599 = -244/-599]rf	OK
+STU_kEGk STU_kEGk	-689 = -244/x-90	typein	LHS	x	FinalAnswer	OK
+STU_kEGk STU_kEGk	-7y+3 = -6y-5	add	SKILL	6y	[-7y+3 = -6y-5]add	OK
+STU_kEGk STU_kEGk	-7y+3 = -6y-5	typein	LHS	-7y+3+6y	[-7y+3+6y = -6y-5+6y]typein	OK
+STU_kEGk STU_kEGk	-7y+3 = -6y-5	typein	RHS	-6y-5+6y	[-7y+3+6y = -6y-5+6y]typein	OK
+STU_kEGk STU_kEGk	-7y+3 = -6y-5	clt	SKILL	-7y+3+6y	[-7y+3+6y = -6y-5+6y]clt	OK
+STU_kEGk STU_kEGk	-7y+3 = -6y-5	typein	LHS	-10	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-7y+3 = -6y-5	typein	LHS	-13y+3	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-7y+3 = -6y-5	typein	LHS	                                                                                                              -                                             -	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-7y+3 = -6y-5	typein	LHS	                                                                                                              -                                             -	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-7y+3 = -6y-5	typein	LHS	-13y	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-7y+3 = -6y-5	typein	LHS	3	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-7y+3 = -6y-5	typein	LHS	-13y+3	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-7y+3 = -6y-5	typein	LHS	-13y+3	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-7y+3 = -6y-5	typein	LHS	-13y+3	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-7y+3 = -6y-5	typein	LHS	-13y+3	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-7y+3 = -6y-5	typein	LHS	-13y+3	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-7y+3 = -6y-5	typein	LHS	-13y+3	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-7y+3 = -6y-5	typein	LHS	-13y+3	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-7y+3 = -6y-5	typein	LHS	-13y+3	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-7y+3 = -6y-5	typein	LHS	-1y+3	FinalAnswer	OK
+STU_kEGk STU_kEGk	-7y+3 = -6y-5	typein	RHS	-5	FinalAnswer	OK
+STU_kEGk STU_kEGk	-7y+3 = -6y-5	subtract	SKILL	3	[-y+3 = -5]subtract	OK
+STU_kEGk STU_kEGk	-7y+3 = -6y-5	typein	LHS	-y+3-3	[-y+3-3 = -5-3]typein	OK
+STU_kEGk STU_kEGk	-7y+3 = -6y-5	typein	RHS	-8	[-y+3-3 = -5-3]typein	OK
+STU_kEGk STU_kEGk	-7y+3 = -6y-5	clt	SKILL	-y+3-3	[-y+3-3 = -5-3]clt	OK
+STU_kEGk STU_kEGk	-7y+3 = -6y-5	typein	LHS	-y	FinalAnswer	OK
+STU_kEGk STU_kEGk	-7y+3 = -6y-5	typein	RHS	-2	FinalAnswer	ERROR
+STU_kEGk STU_kEGk	-7y+3 = -6y-5	typein	RHS	2	FinalAnswer	ERROR
+STU_kEGk STU_kEGk	-7y+3 = -6y-5	typein	RHS	8	FinalAnswer	ERROR
+STU_kEGk STU_kEGk	-7y+3 = -6y-5	typein	RHS	-8	FinalAnswer	OK
+STU_kEGk STU_kEGk	-7y+3 = -6y-5	divide	SKILL	-1	[-y = -8]divide	OK
+STU_kEGk STU_kEGk	-7y+3 = -6y-5	typein	LHS	-y/-1	[-y/-1 = -8/-1]typein	OK
+STU_kEGk STU_kEGk	-7y+3 = -6y-5	typein	RHS	8	[-y/-1 = -8/-1]typein	OK
+STU_kEGk STU_kEGk	-7y+3 = -6y-5	rf	SKILL	-y/-1	[-y/-1 = -8/-1]rf	OK
+STU_kEGk STU_kEGk	-7y+3 = -6y-5	typein	LHS	-y	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-7y+3 = -6y-5	typein	LHS	y	FinalAnswer	OK
+STU_kEGk STU_kEGk	-2+6y = -5-1y	add	SKILL	y	[-2+6y = -5-1y]add	OK
+STU_kEGk STU_kEGk	-2+6y = -5-1y	typein	LHS	-2+6y+y	[-2+6y+y = -5-1y+y]typein	OK
+STU_kEGk STU_kEGk	-2+6y = -5-1y	typein	RHS	-5-1y+y	[-2+6y+y = -5-1y+y]typein	OK
+STU_kEGk STU_kEGk	-2+6y = -5-1y	clt	SKILL	-5-1y+y	[-2+6y+y = -5-1y+y]clt	OK
+STU_kEGk STU_kEGk	-2+6y = -5-1y	typein	RHS	-5-2y	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-2+6y = -5-1y	typein	RHS	-5	FinalAnswer	OK
+STU_kEGk STU_kEGk	-2+6y = -5-1y	typein	LHS	-2+6y	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-2+6y = -5-1y	typein	LHS	-2	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-2+6y = -5-1y	typein	LHS	4	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-2+6y = -5-1y	typein	LHS	2	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-2+6y = -5-1y	typein	LHS	2+6	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-2+6y = -5-1y	typein	LHS	2+7y	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-2+6y = -5-1y	typein	LHS	-2+7y	FinalAnswer	OK
+STU_kEGk STU_kEGk	-2+6y = -5-1y	add	SKILL	2	[-2+7y = -5]add	OK
+STU_kEGk STU_kEGk	-2+6y = -5-1y	typein	LHS	-2+7y+2	[-2+7y+2 = -5+2]typein	OK
+STU_kEGk STU_kEGk	-2+6y = -5-1y	typein	RHS	-3	[-2+7y+2 = -5+2]typein	OK
+STU_kEGk STU_kEGk	-2+6y = -5-1y	clt	SKILL	-2+7y+2	[-2+7y+2 = -5+2]clt	OK
+STU_kEGk STU_kEGk	-2+6y = -5-1y	typein	LHS	7y	FinalAnswer	OK
+STU_kEGk STU_kEGk	-2+6y = -5-1y	typein	RHS	-7	FinalAnswer	ERROR
+STU_kEGk STU_kEGk	-2+6y = -5-1y	typein	RHS	-3	FinalAnswer	OK
+STU_kEGk STU_kEGk	-2+6y = -5-1y	divide	SKILL	7	[7y = -3]divide	OK
+STU_kEGk STU_kEGk	-2+6y = -5-1y	typein	LHS	7y/7	[7y/7 = -3/7]typein	OK
+STU_kEGk STU_kEGk	-2+6y = -5-1y	typein	RHS	3/7	[7y/7 = -3/7]typein	BUG
+STU_kEGk STU_kEGk	-2+6y = -5-1y	typein	RHS	-0.428571429	[7y/7 = -3/7]typein	OK
+STU_kEGk STU_kEGk	-2+6y = -5-1y	rf	SKILL	7y/7	[7y/7 = -3/7]rf	OK
+STU_kEGk STU_kEGk	-2+6y = -5-1y	typein	LHS	y	FinalAnswer	OK
+STU_kEGk STU_kEGk	-4y-7 = 2y-6	subtract	SKILL	2y	[-4y-7 = 2y-6]subtract	OK
+STU_kEGk STU_kEGk	-4y-7 = 2y-6	typein	LHS	-4y-7-2y	[-4y-7-2y = 2y-6-2y]typein	OK
+STU_kEGk STU_kEGk	-4y-7 = 2y-6	typein	RHS	2y-6-2y	[-4y-7-2y = 2y-6-2y]typein	OK
+STU_kEGk STU_kEGk	-4y-7 = 2y-6	clt	SKILL	2y-6-2y	[-4y-7-2y = 2y-6-2y]clt	OK
+STU_kEGk STU_kEGk	-4y-7 = 2y-6	typein	RHS	-6	FinalAnswer	OK
+STU_kEGk STU_kEGk	-4y-7 = 2y-6	typein	LHS	6y-7	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-4y-7 = 2y-6	typein	LHS	-6y-7	FinalAnswer	OK
+STU_kEGk STU_kEGk	-4y-7 = 2y-6	add	SKILL	7	[-6y-7 = -6]add	OK
+STU_kEGk STU_kEGk	-4y-7 = 2y-6	typein	LHS	-6y-7+7	[-6y-7+7 = -6+7]typein	OK
+STU_kEGk STU_kEGk	-4y-7 = 2y-6	typein	RHS	1	[-6y-7+7 = -6+7]typein	OK
+STU_kEGk STU_kEGk	-4y-7 = 2y-6	clt	SKILL	-6y-7+7	[-6y-7+7 = -6+7]clt	OK
+STU_kEGk STU_kEGk	-4y-7 = 2y-6	typein	LHS	-6	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-4y-7 = 2y-6	typein	LHS	-6y	FinalAnswer	OK
+STU_kEGk STU_kEGk	-4y-7 = 2y-6	typein	RHS	-13	FinalAnswer	ERROR
+STU_kEGk STU_kEGk	-4y-7 = 2y-6	typein	RHS	1	FinalAnswer	OK
+STU_kEGk STU_kEGk	-4y-7 = 2y-6	divide	SKILL	-6	[-6y = 1]divide	OK
+STU_kEGk STU_kEGk	-4y-7 = 2y-6	typein	LHS	1	[-6y/-6 = 1/-6]typein	BUG
+STU_kEGk STU_kEGk	-4y-7 = 2y-6	typein	LHS	-6y/-6	[-6y/-6 = 1/-6]typein	OK
+STU_kEGk STU_kEGk	-4y-7 = 2y-6	typein	RHS	1/-6	[-6y/-6 = 1/-6]typein	OK
+STU_kEGk STU_kEGk	-4y-7 = 2y-6	rf	SKILL	-6y/-6	[-6y/-6 = 1/-6]rf	OK
+STU_kEGk STU_kEGk	-4y-7 = 2y-6	typein	LHS	y	FinalAnswer	OK
+STU_kEGk STU_kEGk	-1-3x = 10+3x	subtract	SKILL	3x	[-1-3x = 10+3x]subtract	OK
+STU_kEGk STU_kEGk	-1-3x = 10+3x	typein	LHS	-1-3x-3x	[-1-3x-3x = 10+3x-3x]typein	OK
+STU_kEGk STU_kEGk	-1-3x = 10+3x	typein	RHS	10+3x-3x	[-1-3x-3x = 10+3x-3x]typein	OK
+STU_kEGk STU_kEGk	-1-3x = 10+3x	clt	SKILL	10+3x-3x	[-1-3x-3x = 10+3x-3x]clt	OK
+STU_kEGk STU_kEGk	-1-3x = 10+3x	typein	RHS	10	FinalAnswer	OK
+STU_kEGk STU_kEGk	-1-3x = 10+3x	typein	LHS	-1	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-1-3x = 10+3x	typein	LHS	1	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-1-3x = 10+3x	typein	LHS	-1-9x	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-1-3x = 10+3x	typein	LHS	-1x.	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-1-3x = 10+3x	typein	LHS	-1x	FinalAnswer	BUG
+STU_kEGk STU_kEGk	9y-8 = -7-4y	add	SKILL	4y	[9y-8 = -7-4y]add	OK
+STU_kEGk STU_kEGk	9y-8 = -7-4y	typein	LHS	9y-8+4y	[9y-8+4y = -7-4y+4y]typein	OK
+STU_kEGk STU_kEGk	9y-8 = -7-4y	add	SKILL	9x	[4x+9 = -6-9x]add	OK
+STU_kEGk STU_kEGk	9y-8 = -7-4y	typein	LHS	4x+9+9x	[4x+9+9x = -6-9x+9x]typein	OK
+STU_kEGk STU_kEGk	9y-8 = -7-4y	typein	RHS	-6-9x+9x	[4x+9+9x = -6-9x+9x]typein	OK
+STU_kEGk STU_kEGk	9y-8 = -7-4y	clt	SKILL	4x+9+9x	[4x+9+9x = -6-9x+9x]clt	OK
+STU_kEGk STU_kEGk	9y-8 = -7-4y	typein	LHS	4x	FinalAnswer	BUG
+STU_kEGk STU_kEGk	9y-8 = -7-4y	typein	LHS	9	FinalAnswer	BUG
+STU_kEGk STU_kEGk	9y-8 = -7-4y	typein	LHS	9x	FinalAnswer	BUG
+STU_kEGk STU_kEGk	9y-8 = -7-4y	typein	LHS	13x+9	FinalAnswer	OK
+STU_kEGk STU_kEGk	9y-8 = -7-4y	mt	SKILL		[13x+9 = -6-9x+9x]mt	ERROR
+STU_kEGk STU_kEGk	9y-8 = -7-4y	clt	SKILL	-6-9x+9x	[13x+9 = -6-9x+9x]clt	OK
+STU_kEGk STU_kEGk	9y-8 = -7-4y	typein	RHS	-6	FinalAnswer	OK
+STU_kEGk STU_kEGk	9y-8 = -7-4y	subtract	SKILL	9	[13x+9 = -6]subtract	OK
+STU_kEGk STU_kEGk	9y-8 = -7-4y	typein	LHS	13x+9-9	[13x+9-9 = -6-9]typein	OK
+STU_kEGk STU_kEGk	9y-8 = -7-4y	typein	RHS	-15	[13x+9-9 = -6-9]typein	OK
+STU_kEGk STU_kEGk	9y-8 = -7-4y	clt	SKILL	13x+9-9	[13x+9-9 = -6-9]clt	OK
+STU_kEGk STU_kEGk	9y-8 = -7-4y	typein	LHS	13x	FinalAnswer	OK
+STU_kEGk STU_kEGk	9y-8 = -7-4y	typein	RHS	-15	FinalAnswer	OK
+STU_kEGk STU_kEGk	9y-8 = -7-4y	divide	SKILL	13	[13x = -15]divide	OK
+STU_kEGk STU_kEGk	9y-8 = -7-4y	typein	LHS	13x/13	[13x/13 = -15/13]typein	OK
+STU_kEGk STU_kEGk	9y-8 = -7-4y	typein	RHS	-1.153846154	[13x/13 = -15/13]typein	OK
+STU_kEGk STU_kEGk	9y-8 = -7-4y	rf	SKILL	13x/13	[13x/13 = -15/13]rf	OK
+STU_kEGk STU_kEGk	9y-8 = -7-4y	typein	LHS	x	FinalAnswer	OK
+STU_kEGk STU_kEGk	-5x+3 = 10-5x	add	SKILL	5x	[-5x+3 = 10-5x]add	OK
+STU_kEGk STU_kEGk	-5x+3 = 10-5x	typein	LHS	-5x+3+5x	[-5x+3+5x = 10-5x+5x]typein	OK
+STU_kEGk STU_kEGk	-5x+3 = 10-5x	typein	RHS	10-5x+5x	[-5x+3+5x = 10-5x+5x]typein	OK
+STU_kEGk STU_kEGk	-5x+3 = 10-5x	clt	SKILL	10-5x+5x	[-5x+3+5x = 10-5x+5x]clt	OK
+STU_kEGk STU_kEGk	-5x+3 = 10-5x	typein	RHS	10	FinalAnswer	OK
+STU_kEGk STU_kEGk	-5x+3 = 10-5x	typein	LHS	3	FinalAnswer	OK
+STU_kEGk STU_kEGk	-5x+3 = 10-5x	divide	SKILL	3	[3 = 10]divide	BUG
+STU_kEGk STU_kEGk	2+2y = -9y+9	subtract	SKILL	2y	[2+2y = -9y+9]subtract	OK
+STU_kEGk STU_kEGk	2+2y = -9y+9	typein	LHS	2+2y-2y	[2+2y-2y = -9y+9-2y]typein	OK
+STU_kEGk STU_kEGk	2+2y = -9y+9	typein	RHS	-9y+9-2y	[2+2y-2y = -9y+9-2y]typein	OK
+STU_kEGk STU_kEGk	2+2y = -9y+9	clt	SKILL	2+2y-2y	[2+2y-2y = -9y+9-2y]clt	OK
+STU_kEGk STU_kEGk	2+2y = -9y+9	typein	LHS	2	FinalAnswer	OK
+STU_kEGk STU_kEGk	2+2y = -9y+9	typein	RHS	2	FinalAnswer	BUG
+STU_kEGk STU_kEGk	2+2y = -9y+9	typein	RHS	9+7y	FinalAnswer	BUG
+STU_kEGk STU_kEGk	2+2y = -9y+9	typein	RHS	9+-11y	FinalAnswer	OK
+STU_kEGk STU_kEGk	2+2y = -9y+9	subtract	SKILL	9	[2 = 9-11y]subtract	OK
+STU_kEGk STU_kEGk	2+2y = -9y+9	typein	LHS	2-9	[2-9 = 9-11y-9]typein	OK
+STU_kEGk STU_kEGk	2+2y = -9y+9	typein	RHS	9-11y-9	[2-9 = 9-11y-9]typein	OK
+STU_kEGk STU_kEGk	2+2y = -9y+9	clt	SKILL	9-11y-9	[2-9 = 9-11y-9]clt	OK
+STU_kEGk STU_kEGk	2+2y = -9y+9	typein	RHS	11y	FinalAnswer	BUG
+STU_kEGk STU_kEGk	2+2y = -9y+9	typein	RHS	-11y	FinalAnswer	OK
+STU_kEGk STU_kEGk	2+2y = -9y+9	typein	LHS	7	FinalAnswer	ERROR
+STU_kEGk STU_kEGk	2+2y = -9y+9	typein	LHS	-11	FinalAnswer	ERROR
+STU_kEGk STU_kEGk	2+2y = -9y+9	typein	LHS	11	FinalAnswer	ERROR
+STU_kEGk STU_kEGk	2+2y = -9y+9	typein	LHS	-7	FinalAnswer	OK
+STU_kEGk STU_kEGk	2+2y = -9y+9	divide	SKILL	-11	[-7 = -11y]divide	OK
+STU_kEGk STU_kEGk	2+2y = -9y+9	typein	LHS	0.636363636	[-7/-11 = -11y/-11]typein	OK
+STU_kEGk STU_kEGk	2+2y = -9y+9	typein	RHS	-11y/-11	[-7/-11 = -11y/-11]typein	OK
+STU_kEGk STU_kEGk	2+2y = -9y+9	rf	SKILL	-11y/-11	[-7/-11 = -11y/-11]rf	OK
+STU_kEGk STU_kEGk	2+2y = -9y+9	typein	RHS	y	FinalAnswer	OK
+STU_kEGk STU_kEGk	-4y-6 = -10y-6	add	SKILL	10y	[-4y-6 = -10y-6]add	OK
+STU_kEGk STU_kEGk	-4y-6 = -10y-6	typein	LHS	-4y-6+10y	[-4y-6+10y = -10y-6+10y]typein	OK
+STU_kEGk STU_kEGk	-4y-6 = -10y-6	typein	RHS	-10y*6-10y	[-4y-6+10y = -10y-6+10y]typein	ERROR
+STU_kEGk STU_kEGk	-4y-6 = -10y-6	typein	RHS	-10y*-6-10y	[-4y-6+10y = -10y-6+10y]typein	ERROR
+STU_kEGk STU_kEGk	-4y-6 = -10y-6	typein	RHS	-10y-6+10y	[-4y-6+10y = -10y-6+10y]typein	OK
+STU_kEGk STU_kEGk	-4y-6 = -10y-6	clt	SKILL	-10y-6+10y	[-4y-6+10y = -10y-6+10y]clt	OK
+STU_kEGk STU_kEGk	-4y-6 = -10y-6	typein	RHS	-6	FinalAnswer	OK
+STU_kEGk STU_kEGk	-4y-6 = -10y-6	typein	LHS	6y+10y	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-4y-6 = -10y-6	typein	LHS	6+10y	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-4y-6 = -10y-6	typein	LHS	-6+10y	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-4y-6 = -10y-6	typein	LHS	-6+2y	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-4y-6 = -10y-6	typein	LHS	-6+-2y	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-4y-6 = -10y-6	typein	LHS	-6+-10y	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-4y-6 = -10y-6	typein	LHS	6y+-6	FinalAnswer	OK
+STU_kEGk STU_kEGk	-4y-6 = -10y-6	add	SKILL	6	[6y-6 = -6]add	OK
+STU_kEGk STU_kEGk	-4y-6 = -10y-6	typein	LHS	6y-6+6	[6y-6+6 = -6+6]typein	OK
+STU_kEGk STU_kEGk	-4y-6 = -10y-6	typein	RHS	0	[6y-6+6 = -6+6]typein	OK
+STU_kEGk STU_kEGk	-4y-6 = -10y-6	clt	SKILL	6y-6+6	[6y-6+6 = -6+6]clt	OK
+STU_kEGk STU_kEGk	-4y-6 = -10y-6	typein	LHS	6y	FinalAnswer	OK
+STU_kEGk STU_kEGk	-4y-6 = -10y-6	typein	RHS	-12	FinalAnswer	ERROR
+STU_kEGk STU_kEGk	-4y-6 = -10y-6	typein	RHS	-1	FinalAnswer	ERROR
+STU_kEGk STU_kEGk	-4y-6 = -10y-6	typein	RHS	6	FinalAnswer	ERROR
+STU_kEGk STU_kEGk	-4y-6 = -10y-6	typein	RHS	0	FinalAnswer	OK
+STU_kEGk STU_kEGk	-4y-6 = -10y-6	divide	SKILL	6	[6y = 0]divide	OK
+STU_kEGk STU_kEGk	-4y-6 = -10y-6	typein	LHS	6y/6	[6y/6 = 0/6]typein	OK
+STU_kEGk STU_kEGk	-4y-6 = -10y-6	typein	RHS	0/6	[6y/6 = 0/6]typein	OK
+STU_kEGk STU_kEGk	3x-5 = -6+10x	subtract	SKILL	10x	[3x-5 = -6+10x]subtract	OK
+STU_kEGk STU_kEGk	3x-5 = -6+10x	typein	LHS	3x-5-10x	[3x-5-10x = -6+10x-10x]typein	OK
+STU_kEGk STU_kEGk	3x-5 = -6+10x	typein	RHS	-6+10x-10x	[3x-5-10x = -6+10x-10x]typein	OK
+STU_kEGk STU_kEGk	3x-5 = -6+10x	clt	SKILL	-6+10x-10x	[3x-5-10x = -6+10x-10x]clt	OK
+STU_kEGk STU_kEGk	3x-5 = -6+10x	typein	RHS	-6	FinalAnswer	OK
+STU_kEGk STU_kEGk	3x-5 = -6+10x	typein	LHS	3x-10x	FinalAnswer	BUG
+STU_kEGk STU_kEGk	3x-5 = -6+10x	typein	LHS	-5	FinalAnswer	BUG
+STU_kEGk STU_kEGk	3x-5 = -6+10x	typein	LHS	7x-5	FinalAnswer	BUG
+STU_kEGk STU_kEGk	3x-5 = -6+10x	typein	LHS	-7x-5	FinalAnswer	OK
+STU_kEGk STU_kEGk	3x-5 = -6+10x	add	SKILL	5	[-7x-5 = -6]add	OK
+STU_kEGk STU_kEGk	3x-5 = -6+10x	typein	LHS	-7x-5+5	[-7x-5+5 = -6+5]typein	OK
+STU_kEGk STU_kEGk	3x-5 = -6+10x	typein	RHS	-1	[-7x-5+5 = -6+5]typein	OK
+STU_kEGk STU_kEGk	3x-5 = -6+10x	clt	SKILL	-7x-5+5	[-7x-5+5 = -6+5]clt	OK
+STU_kEGk STU_kEGk	3x-5 = -6+10x	typein	LHS	-7x	FinalAnswer	OK
+STU_kEGk STU_kEGk	3x-5 = -6+10x	typein	RHS	1	FinalAnswer	ERROR
+STU_kEGk STU_kEGk	3x-5 = -6+10x	typein	RHS	-1	FinalAnswer	OK
+STU_kEGk STU_kEGk	3x-5 = -6+10x	divide	SKILL	-7	[-7x = -1]divide	OK
+STU_kEGk STU_kEGk	3x-5 = -6+10x	typein	LHS	-7x/-7	[-7x/-7 = -1/-7]typein	OK
+STU_kEGk STU_kEGk	3x-5 = -6+10x	typein	RHS	0.142857143	[-7x/-7 = -1/-7]typein	OK
+STU_kEGk STU_kEGk	3x-5 = -6+10x	rf	SKILL	-7x/-7	[-7x/-7 = -1/-7]rf	OK
+STU_kEGk STU_kEGk	3x-5 = -6+10x	typein	LHS	x	FinalAnswer	OK
+STU_kEGk STU_kEGk	3x-5 = -6+10x	auto-fill	RHS	0.142857143	FinalAnswer	OK
+STU_kEGk STU_kEGk	-2x+0 = 9-8x	clt	SKILL	-2x+0	[-2x+0 = 9-8x]clt	OK
+STU_kEGk STU_kEGk	-2x+0 = 9-8x	typein	LHS	-2x	FinalAnswer	OK
+STU_kEGk STU_kEGk	-2x+0 = 9-8x	auto-fill	RHS	9-8x	FinalAnswer	OK
+STU_kEGk STU_kEGk	-2x+0 = 9-8x	subtract	SKILL	-8	[-2x = 9-8x]subtract	ERROR
+STU_kEGk STU_kEGk	-2x+0 = 9-8x	subtract	SKILL	-8x	[-2x = 9-8x]subtract	OK
+STU_kEGk STU_kEGk	-2x+0 = 9-8x	typein	LHS	-2x-(-8x)	[-2x-(-8x) = 9-8x-(-8x)]typein	OK
+STU_kEGk STU_kEGk	-2x+0 = 9-8x	typein	RHS	9-8x-(-8x)	[-2x-(-8x) = 9-8x-(-8x)]typein	OK
+STU_kEGk STU_kEGk	-2x+0 = 9-8x	clt	SKILL	9-8x+8x	[-2x+8x = 9-8x+8x]clt	OK
+STU_kEGk STU_kEGk	-2x+0 = 9-8x	typein	RHS	9	FinalAnswer	OK
+STU_kEGk STU_kEGk	-2x+0 = 9-8x	typein	LHS	-6	FinalAnswer	ERROR
+STU_kEGk STU_kEGk	-2x+0 = 9-8x	typein	LHS	-6	FinalAnswer	ERROR
+STU_kEGk STU_kEGk	-2x+0 = 9-8x	typein	LHS	6	FinalAnswer	ERROR
+STU_kEGk STU_kEGk	-2x+0 = 9-8x	typein	LHS	6x	FinalAnswer	OK
+STU_kEGk STU_kEGk	-2x+0 = 9-8x	rf	SKILL		[6x = 9]rf	ERROR
+STU_kEGk STU_kEGk	-2x+0 = 9-8x	divide	SKILL	6	[6x = 9]divide	OK
+STU_kEGk STU_kEGk	-2x+0 = 9-8x	typein	LHS	6x/6	[6x/6 = 9/6]typein	OK
+STU_kEGk STU_kEGk	-2x+0 = 9-8x	typein	RHS	9/6	[6x/6 = 9/6]typein	OK
+STU_kEGk STU_kEGk	-2x+0 = 9-8x	rf	SKILL	6x/6	[6x/6 = 9/6]rf	OK
+STU_kEGk STU_kEGk	-2x+0 = 9-8x	typein	LHS	x	FinalAnswer	OK
+STU_kEGk STU_kEGk	8x-4 = 4+1x	subtract	SKILL	1x	[8x-4 = 4+1x]subtract	OK
+STU_kEGk STU_kEGk	8x-4 = 4+1x	typein	LHS	8x-4-1x	[8x-4-1x = 4+1x-1x]typein	OK
+STU_kEGk STU_kEGk	8x-4 = 4+1x	typein	RHS	4+1x-1x	[8x-4-1x = 4+1x-1x]typein	OK
+STU_kEGk STU_kEGk	8x-4 = 4+1x	clt	SKILL	4+1x-1x	[8x-4-1x = 4+1x-1x]clt	OK
+STU_kEGk STU_kEGk	8x-4 = 4+1x	typein	RHS	4	FinalAnswer	OK
+STU_kEGk STU_kEGk	8x-4 = 4+1x	typein	LHS	-7x-4	FinalAnswer	BUG
+STU_kEGk STU_kEGk	8x-4 = 4+1x	typein	LHS	7x-4	FinalAnswer	OK
+STU_kEGk STU_kEGk	8x-4 = 4+1x	add	SKILL	4	[7x-4 = 4]add	OK
+STU_kEGk STU_kEGk	8x-4 = 4+1x	typein	LHS	7x-4+4	[7x-4+4 = 4+4]typein	OK
+STU_kEGk STU_kEGk	8x-4 = 4+1x	typein	RHS	4+4	[7x-4+4 = 4+4]typein	OK
+STU_kEGk STU_kEGk	8x-4 = 4+1x	clt	SKILL	7x-4+4	[7x-4+4 = 4+4]clt	OK
+STU_kEGk STU_kEGk	8x-4 = 4+1x	typein	LHS	7x	FinalAnswer	OK
+STU_kEGk STU_kEGk	8x-4 = 4+1x	typein	RHS	8	FinalAnswer	OK
+STU_kEGk STU_kEGk	8x-4 = 4+1x	divide	SKILL	7	[7x = 8]divide	OK
+STU_kEGk STU_kEGk	8x-4 = 4+1x	typein	LHS	7x/7	[7x/7 = 8/7]typein	OK
+STU_kEGk STU_kEGk	8x-4 = 4+1x	typein	RHS	8/7	[7x/7 = 8/7]typein	OK
+STU_kEGk STU_kEGk	8x-4 = 4+1x	rf	SKILL	7x/7	[7x/7 = 8/7]rf	OK
+STU_kEGk STU_kEGk	8x-4 = 4+1x	typein	LHS	x	FinalAnswer	OK
+STU_kEGk STU_kEGk	-5y-7 = -5-1y	add	SKILL	y	[-5y-7 = -5-1y]add	OK
+STU_kEGk STU_kEGk	-5y-7 = -5-1y	typein	LHS	-5y-7+y	[-5y-7+y = -5-1y+y]typein	OK
+STU_kEGk STU_kEGk	-5y-7 = -5-1y	typein	RHS	-5-1y+y	[-5y-7+y = -5-1y+y]typein	OK
+STU_kEGk STU_kEGk	-5y-7 = -5-1y	clt	SKILL	-5-1y+y	[-5y-7+y = -5-1y+y]clt	OK
+STU_kEGk STU_kEGk	-5y-7 = -5-1y	typein	RHS	-5+2y	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-5y-7 = -5-1y	typein	RHS	-5+-1y	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-5y-7 = -5-1y	typein	RHS	-5+1y	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-5y-7 = -5-1y	typein	RHS	-5-1y	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-5y-7 = -5-1y	typein	RHS	-5	FinalAnswer	OK
+STU_kEGk STU_kEGk	-5y-7 = -5-1y	typein	LHS	-5y+y	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-5y-7 = -5-1y	typein	LHS	-4y+-7	FinalAnswer	OK
+STU_kEGk STU_kEGk	-5y-7 = -5-1y	add	SKILL	7	[-4y-7 = -5]add	OK
+STU_kEGk STU_kEGk	-5y-7 = -5-1y	typein	LHS	-4y-7+7	[-4y-7+7 = -5+7]typein	OK
+STU_kEGk STU_kEGk	-5y-7 = -5-1y	typein	RHS	2	[-4y-7+7 = -5+7]typein	OK
+STU_kEGk STU_kEGk	-5y-7 = -5-1y	clt	SKILL	2	[-4y-7+7 = -5+7]clt	OK
+STU_kEGk STU_kEGk	-5y-7 = -5-1y	typein	RHS	2	FinalAnswer	OK
+STU_kEGk STU_kEGk	-5y-7 = -5-1y	typein	LHS	-4y	FinalAnswer	OK
+STU_kEGk STU_kEGk	-5y-7 = -5-1y	divide	SKILL	-4	[-4y = 2]divide	OK
+STU_kEGk STU_kEGk	-5y-7 = -5-1y	typein	LHS	1	[-4y/-4 = 2/-4]typein	ERROR
+STU_kEGk STU_kEGk	-5y-7 = -5-1y	typein	LHS	-4y/-4	[-4y/-4 = 2/-4]typein	OK
+STU_kEGk STU_kEGk	-5y-7 = -5-1y	typein	RHS	2/-4	[-4y/-4 = 2/-4]typein	OK
+STU_kEGk STU_kEGk	-5y-7 = -5-1y	rf	SKILL	-4y/-4	[-4y/-4 = 2/-4]rf	OK
+STU_kEGk STU_kEGk	-5y-7 = -5-1y	typein	LHS	y	FinalAnswer	OK
+STU_kEGk STU_kEGk	-5x+4 = -8-4x	add	SKILL	4x	[-5x+4 = -8-4x]add	OK
+STU_kEGk STU_kEGk	-5x+4 = -8-4x	typein	LHS	-5x+4+4x	[-5x+4+4x = -8-4x+4x]typein	OK
+STU_kEGk STU_kEGk	-5x+4 = -8-4x	typein	RHS	-8-4x+4x	[-5x+4+4x = -8-4x+4x]typein	OK
+STU_kEGk STU_kEGk	-5x+4 = -8-4x	clt	SKILL	-8-4x+4x	[-5x+4+4x = -8-4x+4x]clt	OK
+STU_kEGk STU_kEGk	-5x+4 = -8-4x	typein	RHS	-8	FinalAnswer	OK
+STU_kEGk STU_kEGk	-5x+4 = -8-4x	typein	LHS	-1x+4	FinalAnswer	OK
+STU_kEGk STU_kEGk	-5x+4 = -8-4x	subtract	SKILL	4	[-x+4 = -8]subtract	OK
+STU_kEGk STU_kEGk	-5x+4 = -8-4x	typein	LHS	-x+4-4	[-x+4-4 = -8-4]typein	OK
+STU_kEGk STU_kEGk	-5x+4 = -8-4x	typein	RHS	-12	[-x+4-4 = -8-4]typein	OK
+STU_kEGk STU_kEGk	-5x+4 = -8-4x	clt	SKILL	-x+4-4	[-x+4-4 = -8-4]clt	OK
+STU_kEGk STU_kEGk	-5x+4 = -8-4x	typein	LHS	-x	FinalAnswer	OK
+STU_kEGk STU_kEGk	-5x+4 = -8-4x	typein	RHS	12	FinalAnswer	ERROR
+STU_kEGk STU_kEGk	-5x+4 = -8-4x	typein	RHS	-12	FinalAnswer	OK
+STU_kEGk STU_kEGk	-5x+4 = -8-4x	divide	SKILL	-1	[-x = -12]divide	OK
+STU_kEGk STU_kEGk	-5x+4 = -8-4x	typein	LHS	-x/-1	[-x/-1 = -12/-1]typein	OK
+STU_kEGk STU_kEGk	-5x+4 = -8-4x	typein	RHS	12	[-x/-1 = -12/-1]typein	OK
+STU_kEGk STU_kEGk	-5x+4 = -8-4x	rf	SKILL	12	[-x/-1 = -12/-1]rf	OK
+STU_kEGk STU_kEGk	-5x+4 = -8-4x	typein	RHS	-12	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-5x+4 = -8-4x	typein	RHS	12	FinalAnswer	OK
+STU_kEGk STU_kEGk	-5x+4 = -8-4x	typein	LHS	x	FinalAnswer	OK
+STU_kEGk STU_kEGk	5y-1 = -6+2y	subtract	SKILL	2y	[5y-1 = -6+2y]subtract	OK
+STU_kEGk STU_kEGk	5y-1 = -6+2y	typein	LHS	5y-1-2y	[5y-1-2y = -6+2y-2y]typein	OK
+STU_kEGk STU_kEGk	5y-1 = -6+2y	typein	RHS	-6+2y-2y	[5y-1-2y = -6+2y-2y]typein	OK
+STU_kEGk STU_kEGk	5y-1 = -6+2y	clt	SKILL	-6+2y-2y	[5y-1-2y = -6+2y-2y]clt	OK
+STU_kEGk STU_kEGk	5y-1 = -6+2y	typein	RHS	-6	FinalAnswer	OK
+STU_kEGk STU_kEGk	5y-1 = -6+2y	typein	LHS	7y-1	FinalAnswer	BUG
+STU_kEGk STU_kEGk	5y-1 = -6+2y	typein	LHS	3y-1	FinalAnswer	OK
+STU_kEGk STU_kEGk	5y-1 = -6+2y	add	SKILL	1	[3y-1 = -6]add	OK
+STU_kEGk STU_kEGk	5y-1 = -6+2y	typein	LHS	3y-1+1	[3y-1+1 = -6+1]typein	OK
+STU_kEGk STU_kEGk	5y-1 = -6+2y	typein	RHS	-5	[3y-1+1 = -6+1]typein	OK
+STU_kEGk STU_kEGk	5y-1 = -6+2y	clt	SKILL	3y-1+1	[3y-1+1 = -6+1]clt	OK
+STU_kEGk STU_kEGk	5y-1 = -6+2y	typein	LHS	3y	FinalAnswer	OK
+STU_kEGk STU_kEGk	5y-1 = -6+2y	typein	RHS	-5	FinalAnswer	OK
+STU_kEGk STU_kEGk	5y-1 = -6+2y	divide	SKILL	3	[3y = -5]divide	OK
+STU_kEGk STU_kEGk	5y-1 = -6+2y	typein	LHS	3y/3	[3y/3 = -5/3]typein	OK
+STU_kEGk STU_kEGk	5y-1 = -6+2y	typein	RHS	-1.666666667	[3y/3 = -5/3]typein	OK
+STU_kEGk STU_kEGk	5y-1 = -6+2y	rf	SKILL	3y/3	[3y/3 = -5/3]rf	OK
+STU_kEGk STU_kEGk	5y-1 = -6+2y	typein	LHS	y	FinalAnswer	OK
+STU_kEGk STU_kEGk	5y-1 = -6+2y	auto-fill	RHS	-1.666666667	FinalAnswer	OK
+STU_kEGk STU_kEGk	9-4x = -6-3x	add	SKILL	3x	[9-4x = -6-3x]add	OK
+STU_kEGk STU_kEGk	9-4x = -6-3x	typein	LHS	9-4x+3x	[9-4x+3x = -6-3x+3x]typein	OK
+STU_kEGk STU_kEGk	9-4x = -6-3x	typein	RHS	-6-3x+3x	[9-4x+3x = -6-3x+3x]typein	OK
+STU_kEGk STU_kEGk	9-4x = -6-3x	clt	SKILL	-6-3x+3x	[9-4x+3x = -6-3x+3x]clt	OK
+STU_kEGk STU_kEGk	9-4x = -6-3x	typein	RHS	-6	FinalAnswer	OK
+STU_kEGk STU_kEGk	9-4x = -6-3x	typein	LHS	9-7x	FinalAnswer	BUG
+STU_kEGk STU_kEGk	9-4x = -6-3x	typein	LHS	9-1x	FinalAnswer	OK
+STU_kEGk STU_kEGk	9-4x = -6-3x	subtract	SKILL	9	[9-x = -6]subtract	OK
+STU_kEGk STU_kEGk	9-4x = -6-3x	typein	LHS	9-x-9	[9-x-9 = -6-9]typein	OK
+STU_kEGk STU_kEGk	9-4x = -6-3x	typein	RHS	-15	[9-x-9 = -6-9]typein	OK
+STU_kEGk STU_kEGk	9-4x = -6-3x	clt	SKILL	9-x-9	[9-x-9 = -6-9]clt	OK
+STU_kEGk STU_kEGk	9-4x = -6-3x	typein	LHS	-x	FinalAnswer	BUG
+STU_kEGk STU_kEGk	9-4x = -6-3x	typein	LHS	-x	FinalAnswer	OK
+STU_kEGk STU_kEGk	9-4x = -6-3x	typein	RHS	-3	FinalAnswer	ERROR
+STU_kEGk STU_kEGk	9-4x = -6-3x	typein	RHS	3	FinalAnswer	ERROR
+STU_kEGk STU_kEGk	9-4x = -6-3x	typein	RHS	3	FinalAnswer	ERROR
+STU_kEGk STU_kEGk	4x-6 = 4-1x	add	SKILL	x	[4x-6 = 4-1x]add	OK
+STU_kEGk STU_kEGk	4x-6 = 4-1x	typein	LHS	4x-6+x	[4x-6+x = 4-1x+x]typein	OK
+STU_kEGk STU_kEGk	4x-6 = 4-1x	typein	RHS	4-1x+x	[4x-6+x = 4-1x+x]typein	OK
+STU_kEGk STU_kEGk	4x-6 = 4-1x	clt	SKILL	4-1x+x	[4x-6+x = 4-1x+x]clt	OK
+STU_kEGk STU_kEGk	4x-6 = 4-1x	typein	RHS	4-2x	FinalAnswer	BUG
+STU_kEGk STU_kEGk	4x-6 = 4-1x	typein	RHS	4-1x	FinalAnswer	BUG
+STU_kEGk STU_kEGk	4x-6 = 4-1x	typein	RHS	4-1x	FinalAnswer	BUG
+STU_kEGk STU_kEGk	4x-6 = 4-1x	typein	RHS	4x	FinalAnswer	BUG
+STU_kEGk STU_kEGk	4x-6 = 4-1x	typein	RHS	-4x	FinalAnswer	BUG
+STU_kEGk STU_kEGk	4x-6 = 4-1x	typein	RHS	0+4	FinalAnswer	OK
+STU_kEGk STU_kEGk	4x-6 = 4-1x	auto-fill	LHS	4x-6+x	FinalAnswer	OK
+STU_kEGk STU_kEGk	4x-6 = 4-1x	clt	SKILL	0+4	[4x-6+x = 0+4]clt	OK
+STU_kEGk STU_kEGk	4x-6 = 4-1x	typein	RHS	4	FinalAnswer	OK
+STU_kEGk STU_kEGk	4x-6 = 4-1x	typein	LHS	5x-6	FinalAnswer	OK
+STU_kEGk STU_kEGk	4x-6 = 4-1x	add	SKILL	6	[5x-6 = 4]add	OK
+STU_kEGk STU_kEGk	4x-6 = 4-1x	typein	LHS	5x-6+6	[5x-6+6 = 4+6]typein	OK
+STU_kEGk STU_kEGk	4x-6 = 4-1x	typein	RHS	4+6	[5x-6+6 = 4+6]typein	OK
+STU_kEGk STU_kEGk	4x-6 = 4-1x	clt	SKILL	5x-6+6	[5x-6+6 = 4+6]clt	OK
+STU_kEGk STU_kEGk	4x-6 = 4-1x	typein	LHS	5x	FinalAnswer	OK
+STU_kEGk STU_kEGk	4x-6 = 4-1x	typein	RHS	10	FinalAnswer	OK
+STU_kEGk STU_kEGk	4x-6 = 4-1x	divide	SKILL	5	[5x = 10]divide	OK
+STU_kEGk STU_kEGk	4x-6 = 4-1x	typein	LHS	5x/5x	[5x/5 = 10/5]typein	ERROR
+STU_kEGk STU_kEGk	4x-6 = 4-1x	typein	LHS	5/5x	[5x/5 = 10/5]typein	OK
+STU_kEGk STU_kEGk	4x-6 = 4-1x	typein	RHS	10/5	[5x/5 = 10/5]typein	OK
+STU_kEGk STU_kEGk	4x-6 = 4-1x	rf	SKILL	5/5	[5/5*x = 10/5]rf	OK
+STU_kEGk STU_kEGk	4x-6 = 4-1x	typein	LHS	x	FinalAnswer	BUG
+STU_kEGk STU_kEGk	4x-6 = 4-1x	typein	LHS	10	FinalAnswer	BUG
+STU_kEGk STU_kEGk	4x-6 = 4-1x	typein	LHS	1	FinalAnswer	OK
+STU_kEGk STU_kEGk	4x-6 = 4-1x	typein	RHS	2	FinalAnswer	OK
+STU_kEGk STU_kEGk	4x-6 = 4-1x	divide	SKILL	1	[1x = 2]divide	OK
+STU_kEGk STU_kEGk	4x-6 = 4-1x	typein	LHS	1x/1	[1x/1 = 2/1]typein	OK
+STU_kEGk STU_kEGk	4x-6 = 4-1x	typein	RHS	2/1	[1x/1 = 2/1]typein	OK
+STU_kEGk STU_kEGk	4x-6 = 4-1x	rf	SKILL	1x/1	[1x/1 = 2/1]rf	OK
+STU_kEGk STU_kEGk	4x-6 = 4-1x	typein	LHS	x	FinalAnswer	OK
+STU_kEGk STU_kEGk	7-6y = 3-6y	add	SKILL	6y	[7-6y = 3-6y]add	OK
+STU_kEGk STU_kEGk	7-6y = 3-6y	typein	LHS	7-6y+6y	[7-6y+6y = 3-6y+6y]typein	OK
+STU_kEGk STU_kEGk	7-6y = 3-6y	typein	RHS	3-6y+6y	[7-6y+6y = 3-6y+6y]typein	OK
+STU_kEGk STU_kEGk	7-6y = 3-6y	clt	SKILL	7-6y+6y	[7-6y+6y = 3-6y+6y]clt	OK
+STU_kEGk STU_kEGk	7-6y = 3-6y	typein	LHS	7	FinalAnswer	OK
+STU_kEGk STU_kEGk	7-6y = 3-6y	typein	RHS	3	FinalAnswer	OK
+STU_kEGk STU_kEGk	7-6y = 3-6y	divide	SKILL	7	[7 = 3]divide	BUG
+STU_kEGk STU_kEGk	7-6y = 3-6y	divide	SKILL	3	[7 = 3]divide	BUG
+STU_kEGk STU_kEGk	9+10x = -2-5x	add	SKILL	5x	[9+10x = -2-5x]add	OK
+STU_kEGk STU_kEGk	9+10x = -2-5x	typein	LHS	9+10x+5x	[9+10x+5x = -2-5x+5x]typein	OK
+STU_kEGk STU_kEGk	9+10x = -2-5x	typein	RHS	-2-5x+5x	[9+10x+5x = -2-5x+5x]typein	OK
+STU_kEGk STU_kEGk	9+10x = -2-5x	clt	SKILL	9+10x+5x	[9+10x+5x = -2-5x+5x]clt	OK
+STU_kEGk STU_kEGk	9+10x = -2-5x	typein	LHS	9+15x	FinalAnswer	OK
+STU_kEGk STU_kEGk	9+10x = -2-5x	typein	RHS	-2-10x	FinalAnswer	BUG
+STU_kEGk STU_kEGk	9+10x = -2-5x	typein	RHS	-2-5x	FinalAnswer	BUG
+STU_kEGk STU_kEGk	9+10x = -2-5x	typein	RHS	-2-0x	FinalAnswer	OK
+STU_kEGk STU_kEGk	9+10x = -2-5x	mt	SKILL	0x	[9+15x = -2-0x]mt	OK
+STU_kEGk STU_kEGk	9+10x = -2-5x	typein	LHS	0	FinalAnswer	OK
+STU_kEGk STU_kEGk	9+10x = -2-5x	auto-fill	RHS	-2-0x	FinalAnswer	OK
+STU_kEGk STU_kEGk	9+10x = -2-5x	clt	SKILL	-2	[9+15x = -2-0]clt	OK
+STU_kEGk STU_kEGk	9+10x = -2-5x	typein	RHS	-2	FinalAnswer	OK
+STU_kEGk STU_kEGk	9+10x = -2-5x	auto-fill	LHS	0	FinalAnswer	OK
+STU_kEGk STU_kEGk	9+10x = -2-5x	subtract	SKILL	9	[9+15x = -2]subtract	OK
+STU_kEGk STU_kEGk	9+10x = -2-5x	typein	LHS	9+15x-9	[9+15x-9 = -2-9]typein	OK
+STU_kEGk STU_kEGk	9+10x = -2-5x	typein	RHS	-11	[9+15x-9 = -2-9]typein	OK
+STU_kEGk STU_kEGk	9+10x = -2-5x	clt	SKILL	9+15x-9	[9+15x-9 = -2-9]clt	OK
+STU_kEGk STU_kEGk	9+10x = -2-5x	typein	LHS	15x	FinalAnswer	OK
+STU_kEGk STU_kEGk	9+10x = -2-5x	typein	RHS	-7	FinalAnswer	ERROR
+STU_kEGk STU_kEGk	9+10x = -2-5x	typein	RHS	-11	FinalAnswer	OK
+STU_kEGk STU_kEGk	9+10x = -2-5x	divide	SKILL	15	[15x = -11]divide	OK
+STU_kEGk STU_kEGk	9+10x = -2-5x	typein	LHS	15x/15	[15x/15 = -11/15]typein	OK
+STU_kEGk STU_kEGk	9+10x = -2-5x	typein	RHS	-0.733333333	[15x/15 = -11/15]typein	OK
+STU_kEGk STU_kEGk	9+10x = -2-5x	rf	SKILL	15x/15	[15x/15 = -11/15]rf	OK
+STU_kEGk STU_kEGk	9+10x = -2-5x	typein	LHS	x	FinalAnswer	OK
+STU_kEGk STU_kEGk	7.49x-4.1 = -6.34x-1.35	add	SKILL	6.34x	[7.49x-4.1 = -6.34x-1.35]add	OK
+STU_kEGk STU_kEGk	7.49x-4.1 = -6.34x-1.35	typein	LHS	7.49x-4.1+6.34x	[7.49x-4.1+6.34x = -6.34x-1.35+6.34x]typein	OK
+STU_kEGk STU_kEGk	7.49x-4.1 = -6.34x-1.35	typein	RHS	-6.34x-1.35+6.34x	[7.49x-4.1+6.34x = -6.34x-1.35+6.34x]typein	OK
+STU_kEGk STU_kEGk	7.49x-4.1 = -6.34x-1.35	clt	SKILL	-6.34x-1.35+6.34x	[7.49x-4.1+6.34x = -6.34x-1.35+6.34x]clt	OK
+STU_kEGk STU_kEGk	7.49x-4.1 = -6.34x-1.35	typein	RHS	-1.35x	FinalAnswer	BUG
+STU_kEGk STU_kEGk	7.49x-4.1 = -6.34x-1.35	typein	RHS	-1.35x	FinalAnswer	BUG
+STU_kEGk STU_kEGk	7.49x-4.1 = -6.34x-1.35	typein	RHS	-1.35x	FinalAnswer	BUG
+STU_kEGk STU_kEGk	7.49x-4.1 = -6.34x-1.35	typein	RHS	-1.35	FinalAnswer	OK
+STU_kEGk STU_kEGk	7.49x-4.1 = -6.34x-1.35	typein	LHS	-4.1+13.83x	FinalAnswer	OK
+STU_kEGk STU_kEGk	7.49x-4.1 = -6.34x-1.35	add	SKILL	4.1	[-4.1+13.83x = -1.35]add	OK
+STU_kEGk STU_kEGk	7.49x-4.1 = -6.34x-1.35	typein	LHS	-4.1+13.83x+4.1	[-4.1+13.83x+4.1 = -1.35+4.1]typein	OK
+STU_kEGk STU_kEGk	7.49x-4.1 = -6.34x-1.35	typein	RHS	2.75	[-4.1+13.83x+4.1 = -1.35+4.1]typein	OK
+STU_kEGk STU_kEGk	7.49x-4.1 = -6.34x-1.35	clt	SKILL	-4.1+13.83x+4.1	[-4.1+13.83x+4.1 = -1.35+4.1]clt	OK
+STU_kEGk STU_kEGk	7.49x-4.1 = -6.34x-1.35	typein	LHS	13.83	FinalAnswer	BUG
+STU_kEGk STU_kEGk	7.49x-4.1 = -6.34x-1.35	typein	LHS	13.83x	FinalAnswer	OK
+STU_kEGk STU_kEGk	7.49x-4.1 = -6.34x-1.35	typein	RHS	2.75	FinalAnswer	OK
+STU_kEGk STU_kEGk	7.49x-4.1 = -6.34x-1.35	divide	SKILL	13.83x	[13.83x = 2.75]divide	BUG
+STU_kEGk STU_kEGk	7.49x-4.1 = -6.34x-1.35	divide	SKILL	13.83	[13.83x = 2.75]divide	OK
+STU_kEGk STU_kEGk	7.49x-4.1 = -6.34x-1.35	typein	LHS	13.83x/13.83	[13.83x/13.83 = 2.75/13.83]typein	OK
+STU_kEGk STU_kEGk	7.49x-4.1 = -6.34x-1.35	typein	RHS	2.75	[13.83x/13.83 = 2.75/13.83]typein	BUG
+STU_kEGk STU_kEGk	-6.37-9.76y = 5.5-1.32y	add	SKILL	y	[-6.37-9.76y = 5.5-1.32y]add	ERROR
+STU_kEGk STU_kEGk	-6.37-9.76y = 5.5-1.32y	add	SKILL	1.32y	[-6.37-9.76y = 5.5-1.32y]add	OK
+STU_kEGk STU_kEGk	-6.37-9.76y = 5.5-1.32y	typein	LHS	-6.37-9.76y+1.32y	[-6.37-9.76y+1.32y = 5.5-1.32y+1.32y]typein	OK
+STU_kEGk STU_kEGk	-6.37-9.76y = 5.5-1.32y	typein	RHS	5.5-1.32y+1.32y	[-6.37-9.76y+1.32y = 5.5-1.32y+1.32y]typein	OK
+STU_kEGk STU_kEGk	-6.37-9.76y = 5.5-1.32y	clt	SKILL	5.5-1.32y+1.32y	[-6.37-9.76y+1.32y = 5.5-1.32y+1.32y]clt	OK
+STU_kEGk STU_kEGk	-6.37-9.76y = 5.5-1.32y	typein	RHS	5.5	FinalAnswer	OK
+STU_kEGk STU_kEGk	-6.37-9.76y = 5.5-1.32y	typein	LHS	-16.13	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-6.37-9.76y = 5.5-1.32y	clt	SKILL	-6.37-9.76y+1.32y	[-6.37-9.76y+1.32y = 5.5]clt	OK
+STU_kEGk STU_kEGk	-6.37-9.76y = 5.5-1.32y	typein	LHS	-14.81	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-6.37-9.76y = 5.5-1.32y	typein	LHS	-6.37-8.44y	FinalAnswer	OK
+STU_kEGk STU_kEGk	-6.37-9.76y = 5.5-1.32y	auto-fill	RHS	5.5	FinalAnswer	OK
+STU_kEGk STU_kEGk	-6.37-9.76y = 5.5-1.32y	add	SKILL	6.37	[-6.37-8.44y = 5.5]add	OK
+STU_kEGk STU_kEGk	-6.37-9.76y = 5.5-1.32y	typein	LHS	-8.44	[-6.37-8.44y+6.37 = 5.5+6.37]typein	BUG
+STU_kEGk STU_kEGk	-6.37-9.76y = 5.5-1.32y	typein	LHS	-6.37-8.44y+6.37	[-6.37-8.44y+6.37 = 5.5+6.37]typein	OK
+STU_kEGk STU_kEGk	-6.37-9.76y = 5.5-1.32y	typein	RHS	5.5+6.37	[-6.37-8.44y+6.37 = 5.5+6.37]typein	OK
+STU_kEGk STU_kEGk	-6.37-9.76y = 5.5-1.32y	clt	SKILL	5.5+6.37	[-6.37-8.44y+6.37 = 5.5+6.37]clt	OK
+STU_kEGk STU_kEGk	-6.37-9.76y = 5.5-1.32y	typein	RHS	11.87	FinalAnswer	OK
+STU_kEGk STU_kEGk	-6.37-9.76y = 5.5-1.32y	typein	LHS	-8.44y	FinalAnswer	OK
+STU_kEGk STU_kEGk	-6.37-9.76y = 5.5-1.32y	divide	SKILL	-8.44	[-8.44y = 11.87]divide	OK
+STU_kEGk STU_kEGk	-6.37-9.76y = 5.5-1.32y	typein	LHS	-8.44y/-8.44	[-8.44y/-8.44 = 11.87/-8.44]typein	OK
+STU_kEGk STU_kEGk	-6.37-9.76y = 5.5-1.32y	typein	RHS	11.87/-8.44	[-8.44y/-8.44 = 11.87/-8.44]typein	OK
+STU_kEGk STU_kEGk	-6.37-9.76y = 5.5-1.32y	rf	SKILL	-8.44y/-8.44	[-8.44y/-8.44 = 11.87/-8.44]rf	OK
+STU_kEGk STU_kEGk	-6.37-9.76y = 5.5-1.32y	typein	LHS	y	FinalAnswer	OK
+STU_kEGk STU_kEGk	-6.84y-2.23 = 7.74y+3.54	subtract	SKILL	7.74y	[-6.84y-2.23 = 7.74y+3.54]subtract	OK
+STU_kEGk STU_kEGk	-6.84y-2.23 = 7.74y+3.54	typein	LHS	-6.84y-2.23-7.374y	[-6.84y-2.23-7.74y = 7.74y+3.54-7.74y]typein	ERROR
+STU_kEGk STU_kEGk	-6.84y-2.23 = 7.74y+3.54	typein	LHS	-6.84y-2.23-7.744y	[-6.84y-2.23-7.74y = 7.74y+3.54-7.74y]typein	OK
+STU_kEGk STU_kEGk	-6.84y-2.23 = 7.74y+3.54	typein	RHS	7.74y+3.54-7.74y	[-6.84y-2.23-7.74y = 7.74y+3.54-7.74y]typein	OK
+STU_kEGk STU_kEGk	-6.84y-2.23 = 7.74y+3.54	clt	SKILL	7.74y+3.54-7.74y	[-6.84y-2.23-7.74y = 7.74y+3.54-7.74y]clt	OK
+STU_kEGk STU_kEGk	-6.84y-2.23 = 7.74y+3.54	typein	RHS	3.54	FinalAnswer	OK
+STU_kEGk STU_kEGk	-6.84y-2.23 = 7.74y+3.54	typein	LHS	-14.58y+-2.23	FinalAnswer	OK
+STU_kEGk STU_kEGk	-6.84y-2.23 = 7.74y+3.54	add	SKILL	2.23	[-14.58y-2.23 = 3.54]add	OK
+STU_kEGk STU_kEGk	-6.84y-2.23 = 7.74y+3.54	typein	LHS	-14.58y+2.23-2.23	[-14.58y-2.23+2.23 = 3.54+2.23]typein	OK
+STU_kEGk STU_kEGk	-6.84y-2.23 = 7.74y+3.54	typein	RHS	3.54+2.23	[-14.58y-2.23+2.23 = 3.54+2.23]typein	OK
+STU_kEGk STU_kEGk	-6.84y-2.23 = 7.74y+3.54	clt	SKILL	-14.58y+2.23-2.23	[-14.58y+2.23-2.23 = 3.54+2.23]clt	OK
+STU_kEGk STU_kEGk	-6.84y-2.23 = 7.74y+3.54	typein	LHS	-14.58y	FinalAnswer	OK
+STU_kEGk STU_kEGk	-6.84y-2.23 = 7.74y+3.54	typein	RHS	5.77	FinalAnswer	OK
+STU_kEGk STU_kEGk	-6.84y-2.23 = 7.74y+3.54	divide	SKILL	-14.5	[-14.58y = 5.77]divide	ERROR
+STU_kEGk STU_kEGk	-6.84y-2.23 = 7.74y+3.54	divide	SKILL	5.77	[-14.58y = 5.77]divide	BUG
+STU_kEGk STU_kEGk	-6.84y-2.23 = 7.74y+3.54	divide	SKILL	-14.58	[-14.58y = 5.77]divide	OK
+STU_kEGk STU_kEGk	-6.84y-2.23 = 7.74y+3.54	typein	LHS	y	[-14.58y/-14.58 = 5.77/-14.58]typein	OK
+STU_kEGk STU_kEGk	-6.84y-2.23 = 7.74y+3.54	typein	RHS	0.004	[-14.58y/-14.58 = 5.77/-14.58]typein	ERROR
+STU_kEGk STU_kEGk	-6.84y-2.23 = 7.74y+3.54	typein	RHS	2.52	[-14.58y/-14.58 = 5.77/-14.58]typein	ERROR
+STU_kEGk STU_kEGk	-6.84y-2.23 = 7.74y+3.54	typein	RHS	-2.52	[-14.58y/-14.58 = 5.77/-14.58]typein	ERROR
+STU_kEGk STU_kEGk	-6.84y-2.23 = 7.74y+3.54	typein	RHS	-2.526863	[-14.58y/-14.58 = 5.77/-14.58]typein	BUG
+STU_kEGk STU_kEGk	-6.84y-2.23 = 7.74y+3.54	typein	RHS	0.395	[-14.58y/-14.58 = 5.77/-14.58]typein	BUG
+STU_kEGk STU_kEGk	-6.84y-2.23 = 7.74y+3.54	typein	RHS	-0.395	[-14.58y/-14.58 = 5.77/-14.58]typein	ERROR
+STU_kEGk STU_kEGk	-6.84y-2.23 = 7.74y+3.54	typein	RHS	-0.395	[-14.58y/-14.58 = 5.77/-14.58]typein	ERROR
+STU_kEGk STU_kEGk	-6.84y-2.23 = 7.74y+3.54	typein	RHS	-0.3957	[-14.58y/-14.58 = 5.77/-14.58]typein	OK
+STU_kEGk STU_kEGk	-3.77+1.07y = 6.37y+3.13	subtract	SKILL	1.07y	[-3.77+1.07y = 6.37y+3.13]subtract	OK
+STU_kEGk STU_kEGk	-3.77+1.07y = 6.37y+3.13	typein	LHS	-3.77	[-3.77+1.07y-1.07y = 6.37y+3.13-1.07y]typein	OK
+STU_kEGk STU_kEGk	-3.77+1.07y = 6.37y+3.13	typein	RHS	5.3y+3.13	[-3.77+1.07y-1.07y = 6.37y+3.13-1.07y]typein	OK
+STU_kEGk STU_kEGk	-3.77+1.07y = 6.37y+3.13	subtract	SKILL	3.13	[-3.77 = 5.3y+3.13]subtract	OK
+STU_kEGk STU_kEGk	-3.77+1.07y = 6.37y+3.13	typein	LHS	-6.9	[-3.77-3.13 = 5.3y+3.13-3.13]typein	OK
+STU_kEGk STU_kEGk	-3.77+1.07y = 6.37y+3.13	typein	RHS	5.3y	[-3.77-3.13 = 5.3y+3.13-3.13]typein	OK
+STU_kEGk STU_kEGk	-3.77+1.07y = 6.37y+3.13	divide	SKILL	5.3	[-6.9 = 5.3y]divide	OK
+STU_kEGk STU_kEGk	-3.77+1.07y = 6.37y+3.13	typein	RHS	y	[-6.9/5.3 = 5.3y/5.3]typein	OK
+STU_kEGk STU_kEGk	-3.77+1.07y = 6.37y+3.13	typein	LHS	-1.3018	[-6.9/5.3 = 5.3y/5.3]typein	OK
+STU_kEGk STU_kEGk	6.55-9.6x = -5.54-4.49x	add	SKILL	9.6x	[6.55-9.6x = -5.54-4.49x]add	OK
+STU_kEGk STU_kEGk	6.55-9.6x = -5.54-4.49x	typein	LHS	6.55	[6.55-9.6x+9.6x = -5.54-4.49x+9.6x]typein	OK
+STU_kEGk STU_kEGk	6.55-9.6x = -5.54-4.49x	typein	RHS	-10.65	[6.55-9.6x+9.6x = -5.54-4.49x+9.6x]typein	ERROR
+STU_kEGk STU_kEGk	6.55-9.6x = -5.54-4.49x	typein	RHS	-5.54-5.11x	[6.55-9.6x+9.6x = -5.54-4.49x+9.6x]typein	ERROR
+STU_kEGk STU_kEGk	6.55-9.6x = -5.54-4.49x	typein	RHS	-5.54+5.11x	[6.55-9.6x+9.6x = -5.54-4.49x+9.6x]typein	OK
+STU_kEGk STU_kEGk	6.55-9.6x = -5.54-4.49x	add	SKILL	5.54	[6.55 = -5.54+5.11x]add	OK
+STU_kEGk STU_kEGk	6.55-9.6x = -5.54-4.49x	typein	LHS	11.09	[6.55+5.54 = -5.54+5.11x+5.54]typein	ERROR
+STU_kEGk STU_kEGk	-9.49-0.2y = 1.22y-7.25	subtract	SKILL	1.22y	[-9.49-0.2y = 1.22y-7.25]subtract	OK
+STU_kEGk STU_kEGk	-9.49-0.2y = 1.22y-7.25	typein	LHS	-9.49-0.2y-1.22y	[-9.49-0.2y-1.22y = 1.22y-7.25-1.22y]typein	OK
+STU_kEGk STU_kEGk	-9.49-0.2y = 1.22y-7.25	typein	RHS	-1.22y-7.25-1.22y	[-9.49-0.2y-1.22y = 1.22y-7.25-1.22y]typein	ERROR
+STU_kEGk STU_kEGk	-9.49-0.2y = 1.22y-7.25	typein	RHS	1.22y-7.25-1.22y	[-9.49-0.2y-1.22y = 1.22y-7.25-1.22y]typein	OK
+STU_kEGk STU_kEGk	-9.49-0.2y = 1.22y-7.25	clt	SKILL	1.22y-7.25-1.22y	[-9.49-0.2y-1.22y = 1.22y-7.25-1.22y]clt	OK
+STU_kEGk STU_kEGk	-9.49-0.2y = 1.22y-7.25	typein	RHS	-7.25	FinalAnswer	OK
+STU_kEGk STU_kEGk	-9.49-0.2y = 1.22y-7.25	typein	LHS	-10.91	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-9.49-0.2y = 1.22y-7.25	typein	LHS	-10.91	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-9.49-0.2y = 1.22y-7.25	typein	LHS	-1.42y-9.49	FinalAnswer	OK
+STU_kEGk STU_kEGk	-9.49-0.2y = 1.22y-7.25	add	SKILL	9.49	[-1.42y-9.49 = -7.25]add	OK
+STU_kEGk STU_kEGk	-9.49-0.2y = 1.22y-7.25	typein	LHS	-1.46	[-1.42y-9.49+9.49 = -7.25+9.49]typein	ERROR
+STU_kEGk STU_kEGk	-9.49-0.2y = 1.22y-7.25	typein	LHS	-1.42y-9.49+9.45	[-1.42y-9.49+9.49 = -7.25+9.49]typein	ERROR
+STU_kEGk STU_kEGk	-9.49-0.2y = 1.22y-7.25	typein	LHS	-1.42y-9.49+9.49	[-1.42y-9.49+9.49 = -7.25+9.49]typein	OK
+STU_kEGk STU_kEGk	-9.49-0.2y = 1.22y-7.25	typein	RHS	2.24	[-1.42y-9.49+9.49 = -7.25+9.49]typein	OK
+STU_kEGk STU_kEGk	-9.49-0.2y = 1.22y-7.25	clt	SKILL	-1.42y-9.49+9.49	[-1.42y-9.49+9.49 = -7.25+9.49]clt	OK
+STU_kEGk STU_kEGk	-9.49-0.2y = 1.22y-7.25	typein	LHS	-1.42y	FinalAnswer	OK
+STU_kEGk STU_kEGk	-9.49-0.2y = 1.22y-7.25	typein	RHS	2.2	FinalAnswer	ERROR
+STU_kEGk STU_kEGk	-9.49-0.2y = 1.22y-7.25	typein	RHS	2.24	FinalAnswer	OK
+STU_kEGk STU_kEGk	-9.49-0.2y = 1.22y-7.25	clt	SKILL	2.24	[-1.42y = -7.25+9.49]clt	OK
+STU_kEGk STU_kEGk	-9.49-0.2y = 1.22y-7.25	typein	RHS	1.99	FinalAnswer	ERROR
+STU_kEGk STU_kEGk	-9.49-0.2y = 1.22y-7.25	typein	RHS	-1.99	FinalAnswer	ERROR
+STU_kEGk STU_kEGk	-9.49-0.2y = 1.22y-7.25	typein	RHS	2.24	FinalAnswer	OK
+STU_kEGk STU_kEGk	-9.49-0.2y = 1.22y-7.25	auto-fill	LHS	-1.42y	FinalAnswer	OK
+STU_kEGk STU_kEGk	-9.49-0.2y = 1.22y-7.25	divide	SKILL	-1.42	[-1.42y = 2.24]divide	OK
+STU_kEGk STU_kEGk	-9.49-0.2y = 1.22y-7.25	typein	LHS	y	[-1.42y/-1.42 = 2.24/-1.42]typein	OK
+STU_kEGk STU_kEGk	-9.49-0.2y = 1.22y-7.25	typein	RHS	2.24	[-1.42y/-1.42 = 2.24/-1.42]typein	BUG
+STU_kEGk STU_kEGk	-9.49-0.2y = 1.22y-7.25	typein	RHS	2.24/-1.42	[-1.42y/-1.42 = 2.24/-1.42]typein	OK
+STU_kEGk STU_kEGk	-5.04+4.69y = 8.02y+4.15	subtract	SKILL	8.02y	[-5.04+4.69y = 8.02y+4.15]subtract	OK
+STU_kEGk STU_kEGk	-5.04+4.69y = 8.02y+4.15	typein	LHS	-5.04+4.69y-8.02y	[-5.04+4.69y-8.02y = 8.02y+4.15-8.02y]typein	OK
+STU_kEGk STU_kEGk	-5.04+4.69y = 8.02y+4.15	typein	RHS	8.02y+4.15-8.02y	[-5.04+4.69y-8.02y = 8.02y+4.15-8.02y]typein	OK
+STU_kEGk STU_kEGk	-5.04+4.69y = 8.02y+4.15	clt	SKILL	8.02y+4.15-8.02y	[-5.04+4.69y-8.02y = 8.02y+4.15-8.02y]clt	OK
+STU_kEGk STU_kEGk	-5.04+4.69y = 8.02y+4.15	typein	RHS	4.15	FinalAnswer	OK
+STU_kEGk STU_kEGk	-5.04+4.69y = 8.02y+4.15	typein	LHS	-3.33	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-5.04+4.69y = 8.02y+4.15	typein	LHS	-3.33y+-5.04	FinalAnswer	OK
+STU_kEGk STU_kEGk	-5.04+4.69y = 8.02y+4.15	add	SKILL	5.04	[-3.33y-5.04 = 4.15]add	OK
+STU_kEGk STU_kEGk	-5.04+4.69y = 8.02y+4.15	typein	LHS	-3.33y-5.04+5.04	[-3.33y-5.04+5.04 = 4.15+5.04]typein	OK
+STU_kEGk STU_kEGk	-5.04+4.69y = 8.02y+4.15	typein	RHS	4.15+5.04	[-3.33y-5.04+5.04 = 4.15+5.04]typein	OK
+STU_kEGk STU_kEGk	-5.04+4.69y = 8.02y+4.15	clt	SKILL	-3.33y-5.04+5.04	[-3.33y-5.04+5.04 = 4.15+5.04]clt	OK
+STU_kEGk STU_kEGk	-5.04+4.69y = 8.02y+4.15	typein	LHS	-3.33	FinalAnswer	BUG
+STU_kEGk STU_kEGk	-5.04+4.69y = 8.02y+4.15	typein	LHS	-3.33y	FinalAnswer	OK
+STU_kEGk STU_kEGk	-5.04+4.69y = 8.02y+4.15	typein	RHS	9.19	FinalAnswer	OK
+STU_kEGk STU_kEGk	-5.04+4.69y = 8.02y+4.15	rf	SKILL		[-3.33y = 9.19]rf	ERROR
+STU_kEGk STU_kEGk	-5.04+4.69y = 8.02y+4.15	divide	SKILL	-3.33y	[-3.33y = 9.19]divide	BUG
+STU_kEGk STU_kEGk	-5.04+4.69y = 8.02y+4.15	divide	SKILL	-3.33	[-3.33y = 9.19]divide	OK
+STU_kEGk STU_kEGk	-5.04+4.69y = 8.02y+4.15	typein	LHS	y	[-3.33y/-3.33 = 9.19/-3.33]typein	OK
+STU_kEGk STU_kEGk	-5.04+4.69y = 8.02y+4.15	typein	RHS	9.19/3.33	[-3.33y/-3.33 = 9.19/-3.33]typein	BUG
+STU_kEGk STU_kEGk	-5.04+4.69y = 8.02y+4.15	typein	RHS	9.19/-3.33	[-3.33y/-3.33 = 9.19/-3.33]typein	OK
+STU_kEGk STU_kEGk	5.77-6.63y = 3.18y+4.54	add	SKILL	6.63y	[5.77-6.63y = 3.18y+4.54]add	OK
+STU_kEGk STU_kEGk	5.77-6.63y = 3.18y+4.54	typein	LHS	5.77-6.63y+6.63y	[5.77-6.63y+6.63y = 3.18y+4.54+6.63y]typein	OK
+STU_kEGk STU_kEGk	5.77-6.63y = 3.18y+4.54	typein	RHS	3.18y+4.54+6.63	[5.77-6.63y+6.63y = 3.18y+4.54+6.63y]typein	ERROR
+STU_kEGk STU_kEGk	5.77-6.63y = 3.18y+4.54	typein	RHS	3.18y+4.54+6.63y	[5.77-6.63y+6.63y = 3.18y+4.54+6.63y]typein	OK
+STU_kEGk STU_kEGk	5.77-6.63y = 3.18y+4.54	clt	SKILL	5.77-6.63y+6.63y	[5.77-6.63y+6.63y = 3.18y+4.54+6.63y]clt	OK
+STU_kEGk STU_kEGk	5.77-6.63y = 3.18y+4.54	typein	LHS	5.77	FinalAnswer	OK
+STU_kEGk STU_kEGk	5.77-6.63y = 3.18y+4.54	auto-fill	RHS	3.18y+4.54+6.63y	FinalAnswer	OK
+STU_kEGk STU_kEGk	5.77-6.63y = 3.18y+4.54	clt	SKILL	3.18y+4.54+6.63y	[5.77 = 3.18y+4.54+6.63y]clt	OK
+STU_tUhq STU_tUhq	-8261-924.29y = 85.08y+8682.91	add	SKILL	8261	[-8261-924.29y = 85.08y+8682.91]add	OK
+STU_tUhq STU_tUhq	-8261-924.29y = 85.08y+8682.91	typein	LHS	-924.29y	[-8261-924.29y+8261 = 85.08y+8682.91+8261]typein	OK
+STU_tUhq STU_tUhq	-8261-924.29y = 85.08y+8682.91	typein	RHS	85.08+16943.91	[-8261-924.29y+8261 = 85.08y+8682.91+8261]typein	ERROR
+STU_tUhq STU_tUhq	-8261-924.29y = 85.08y+8682.91	typein	RHS	85.08y+16943.91	[-8261-924.29y+8261 = 85.08y+8682.91+8261]typein	OK
+STU_tUhq STU_tUhq	-8261-924.29y = 85.08y+8682.91	subtract	SKILL	16943.91	[-924.29y = 85.08y+16943.91]subtract	ERROR
+STU_tUhq STU_tUhq	-8261-924.29y = 85.08y+8682.91	subtract	SKILL	16943.91	[-924.29y = 85.08y+16943.91]subtract	ERROR
+STU_tUhq STU_tUhq	-8261-924.29y = 85.08y+8682.91	subtract	SKILL	85.08y	[-924.29y = 85.08y+16943.91]subtract	OK
+STU_tUhq STU_tUhq	-8261-924.29y = 85.08y+8682.91	typein	LHS	839.21	[-924.29y-85.08y = 85.08y+16943.91-85.08y]typein	ERROR
+STU_tUhq STU_tUhq	-8261-924.29y = 85.08y+8682.91	typein	LHS	839.21y	[-924.29y-85.08y = 85.08y+16943.91-85.08y]typein	BUG
+STU_tUhq STU_tUhq	-8261-924.29y = 85.08y+8682.91	typein	LHS	-1009.37	[-924.29y-85.08y = 85.08y+16943.91-85.08y]typein	ERROR
+STU_tUhq STU_tUhq	-8261-924.29y = 85.08y+8682.91	typein	LHS	-1009.37y	[-924.29y-85.08y = 85.08y+16943.91-85.08y]typein	OK
+STU_tUhq STU_tUhq	-8261-924.29y = 85.08y+8682.91	typein	RHS	16943.91	[-924.29y-85.08y = 85.08y+16943.91-85.08y]typein	OK
+STU_tUhq STU_tUhq	-8261-924.29y = 85.08y+8682.91	divide	SKILL	-1009.37	[-1009.37y = 16943.91]divide	OK
+STU_tUhq STU_tUhq	-8261-924.29y = 85.08y+8682.91	typein	LHS	y	[-1009.37y/-1009.37 = 16943.91/-1009.37]typein	OK
+STU_tUhq STU_tUhq	-8261-924.29y = 85.08y+8682.91	typein	RHS	-16.7866	[-1009.37y/-1009.37 = 16943.91/-1009.37]typein	OK
+STU_tUhq STU_tUhq	20.76-20.75y = 61.86+12.58y	subtract	SKILL	61.86	[20.76-20.75y = 61.86+12.58y]subtract	OK
+STU_tUhq STU_tUhq	20.76-20.75y = 61.86+12.58y	typein	RHS	12.58y	[20.76-20.75y-61.86 = 61.86+12.58y-61.86]typein	OK
+STU_tUhq STU_tUhq	20.76-20.75y = 61.86+12.58y	typein	LHS	41.1-20.75y	[20.76-20.75y-61.86 = 61.86+12.58y-61.86]typein	ERROR
+STU_tUhq STU_tUhq	20.76-20.75y = 61.86+12.58y	typein	LHS	-41.1-20.75y	[20.76-20.75y-61.86 = 61.86+12.58y-61.86]typein	OK
+STU_tUhq STU_tUhq	20.76-20.75y = 61.86+12.58y	add	SKILL	-41.1	[-41.1-20.75y = 12.58y]add	BUG
+STU_tUhq STU_tUhq	20.76-20.75y = 61.86+12.58y	add	SKILL	41.1	[-41.1-20.75y = 12.58y]add	ERROR
+STU_tUhq STU_tUhq	20.76-20.75y = 61.86+12.58y	add	SKILL	20.75y	[-41.1-20.75y = 12.58y]add	OK
+STU_tUhq STU_tUhq	20.76-20.75y = 61.86+12.58y	typein	LHS	-41.1y	[-41.1-20.75y+20.75y = 12.58y+20.75y]typein	ERROR
+STU_tUhq STU_tUhq	20.76-20.75y = 61.86+12.58y	typein	LHS	-41.1y	[-41.1-20.75y+20.75y = 12.58y+20.75y]typein	ERROR
+STU_tUhq STU_tUhq	20.76-20.75y = 61.86+12.58y	typein	LHS	-41.1	[-41.1-20.75y+20.75y = 12.58y+20.75y]typein	OK
+STU_tUhq STU_tUhq	20.76-20.75y = 61.86+12.58y	typein	RHS	33.33y	[-41.1-20.75y+20.75y = 12.58y+20.75y]typein	OK
+STU_tUhq STU_tUhq	20.76-20.75y = 61.86+12.58y	divide	SKILL	33.333	[-41.1 = 33.33y]divide	OK
+STU_tUhq STU_tUhq	20.76-20.75y = 61.86+12.58y	typein	RHS	y	[-41.1/33.33 = 33.33y/33.33]typein	OK
+STU_tUhq STU_tUhq	20.76-20.75y = 61.86+12.58y	typein	LHS	-1.233	[-41.1/33.33 = 33.33y/33.33]typein	OK
+STU_tUhq STU_tUhq	72.86y-60.47 = 44.09y-73.26	add	SKILL	60.47	[72.86y-60.47 = 44.09y-73.26]add	OK
+STU_tUhq STU_tUhq	72.86y-60.47 = 44.09y-73.26	typein	LHS	72.86y	[72.86y-60.47+60.47 = 44.09y-73.26+60.47]typein	OK
+STU_tUhq STU_tUhq	72.86y-60.47 = 44.09y-73.26	typein	RHS	44.09y-12.79	[72.86y-60.47+60.47 = 44.09y-73.26+60.47]typein	OK
+STU_tUhq STU_tUhq	72.86y-60.47 = 44.09y-73.26	add	SKILL	12.79	[72.86y = 44.09y-12.79]add	ERROR
+STU_tUhq STU_tUhq	72.86y-60.47 = 44.09y-73.26	divide	SKILL	44.09y	[72.86y = 44.09y-12.79]divide	OK
+STU_tUhq STU_tUhq	72.86y-60.47 = 44.09y-73.26	typein	LHS	1.6525	[72.86y/(44.09y) = (44.09y-12.79)/(44.09y)]typein	OK
+STU_tUhq STU_tUhq	72.86y-60.47 = 44.09y-73.26	typein	RHS	-12.79y	[72.86y/(44.09y) = (44.09y-12.79)/(44.09y)]typein	ERROR
+STU_tUhq STU_tUhq	72.86y-60.47 = 44.09y-73.26	typein	RHS	y-12.79	[72.86y/(44.09y) = (44.09y-12.79)/(44.09y)]typein	ERROR
+STU_tUhq STU_tUhq	72.86y-60.47 = 44.09y-73.26	subtract	SKILL	44.09	[72.86y = 44.09y-12.79]subtract	ERROR
+STU_tUhq STU_tUhq	72.86y-60.47 = 44.09y-73.26	subtract	SKILL	44.09y	[72.86y = 44.09y-12.79]subtract	OK
+STU_tUhq STU_tUhq	72.86y-60.47 = 44.09y-73.26	typein	LHS	28.77y	[72.86y-44.09y = 44.09y-12.79-44.09y]typein	OK
+STU_tUhq STU_tUhq	72.86y-60.47 = 44.09y-73.26	typein	RHS	-12.79	[72.86y-44.09y = 44.09y-12.79-44.09y]typein	OK
+STU_tUhq STU_tUhq	72.86y-60.47 = 44.09y-73.26	divide	SKILL	28.77	[28.77y = -12.79]divide	OK
+STU_tUhq STU_tUhq	72.86y-60.47 = 44.09y-73.26	typein	LHS	y	[28.77y/28.77 = -12.79/28.77]typein	OK
+STU_tUhq STU_tUhq	72.86y-60.47 = 44.09y-73.26	typein	RHS	-0.44456	[28.77y/28.77 = -12.79/28.77]typein	OK
+STU_tUhq STU_tUhq	22.13-22.61y = 3.12y-17.3	subtract	SKILL	22.13	[22.13-22.61y = 3.12y-17.3]subtract	OK
+STU_tUhq STU_tUhq	22.13-22.61y = 3.12y-17.3	typein	LHS	-22.61y	[22.13-22.61y-22.13 = 3.12y-17.3-22.13]typein	OK
+STU_tUhq STU_tUhq	-6.5+39.04x = 44.88x+81.51	subtract	SKILL	44.88x	[-6.5+39.04x = 44.88x+81.51]subtract	OK
+STU_tUhq STU_tUhq	-6.5+39.04x = 44.88x+81.51	typein	LHS	-12.34	[-6.5+39.04x-44.88x = 44.88x+81.51-44.88x]typein	ERROR
+STU_tUhq STU_tUhq	-6.5+39.04x = 44.88x+81.51	typein	LHS	-6.5+-5.84x	[-6.5+39.04x-44.88x = 44.88x+81.51-44.88x]typein	OK
+STU_tUhq STU_tUhq	-6.5+39.04x = 44.88x+81.51	typein	RHS	81.51	[-6.5+39.04x-44.88x = 44.88x+81.51-44.88x]typein	OK
+STU_tUhq STU_tUhq	-6.5+39.04x = 44.88x+81.51	add	SKILL	6.5	[-6.5+(-5.84x) = 81.51]add	OK
+STU_tUhq STU_tUhq	-6.5+39.04x = 44.88x+81.51	typein	LHS	-5.84x	[-6.5+(-5.84x)+6.5 = 81.51+6.5]typein	OK
+STU_tUhq STU_tUhq	-6.5+39.04x = 44.88x+81.51	typein	RHS	88.01	[-6.5+(-5.84x)+6.5 = 81.51+6.5]typein	OK
+STU_tUhq STU_tUhq	-6.5+39.04x = 44.88x+81.51	divide	SKILL	-5.84	[-5.84x = 88.01]divide	OK
+STU_tUhq STU_tUhq	-6.5+39.04x = 44.88x+81.51	typein	LHS	x	[-5.84x/-5.84 = 88.01/-5.84]typein	OK
+STU_tUhq STU_tUhq	-6.5+39.04x = 44.88x+81.51	typein	RHS	-15.0702	[-5.84x/-5.84 = 88.01/-5.84]typein	OK
+STU_tUhq STU_tUhq	-44.97x-98.94 = 9.93x+25.59	add	SKILL	98.93	[-44.97x-98.94 = 9.93x+25.59]add	ERROR
+STU_tUhq STU_tUhq	-44.97x-98.94 = 9.93x+25.59	subtract	SKILL	9.93	[-44.97x-98.94 = 9.93x+25.59]subtract	ERROR
+STU_tUhq STU_tUhq	-44.97x-98.94 = 9.93x+25.59	add	SKILL	44.97x	[-44.97x-98.94 = 9.93x+25.59]add	OK
+STU_tUhq STU_tUhq	-44.97x-98.94 = 9.93x+25.59	typein	LHS	-98.94	[-44.97x-98.94+44.97x = 9.93x+25.59+44.97x]typein	OK
+STU_tUhq STU_tUhq	-44.97x-98.94 = 9.93x+25.59	typein	RHS	54.9	[-44.97x-98.94+44.97x = 9.93x+25.59+44.97x]typein	ERROR
+STU_tUhq STU_tUhq	-44.97x-98.94 = 9.93x+25.59	typein	RHS	54.9x+25.59	[-44.97x-98.94+44.97x = 9.93x+25.59+44.97x]typein	OK
+STU_tUhq STU_tUhq	-44.97x-98.94 = 9.93x+25.59	subtract	SKILL	25.59	[-98.94 = 54.9x+25.59]subtract	OK
+STU_tUhq STU_tUhq	-44.97x-98.94 = 9.93x+25.59	typein	LHS	-124.53	[-98.94-25.59 = 54.9x+25.59-25.59]typein	OK
+STU_tUhq STU_tUhq	-44.97x-98.94 = 9.93x+25.59	typein	RHS	54.94	[-98.94-25.59 = 54.9x+25.59-25.59]typein	ERROR
+STU_tUhq STU_tUhq	-44.97x-98.94 = 9.93x+25.59	typein	RHS	54.94x	[-98.94-25.59 = 54.9x+25.59-25.59]typein	ERROR
+STU_tUhq STU_tUhq	-44.97x-98.94 = 9.93x+25.59	typein	RHS	54.9x	[-98.94-25.59 = 54.9x+25.59-25.59]typein	OK
+STU_tUhq STU_tUhq	-44.97x-98.94 = 9.93x+25.59	divide	SKILL	54.9	[-124.53 = 54.9x]divide	OK
+STU_tUhq STU_tUhq	-44.97x-98.94 = 9.93x+25.59	typein	RHS	x	[-124.53/54.9 = 54.9x/54.9]typein	OK
+STU_tUhq STU_tUhq	-44.97x-98.94 = 9.93x+25.59	typein	LHS	-2.2683	[-124.53/54.9 = 54.9x/54.9]typein	OK
+STU_tUhq STU_tUhq	22.06x-81.5 = -3.1+30.58x	add	SKILL	81.5	[22.06x-81.5 = -3.1+30.58x]add	OK
+STU_tUhq STU_tUhq	22.06x-81.5 = -3.1+30.58x	typein	LHS	22.06x	[22.06x-81.5+81.5 = -3.1+30.58x+81.5]typein	OK
+STU_tUhq STU_tUhq	22.06x-81.5 = -3.1+30.58x	typein	RHS	78.4+30.58x	[22.06x-81.5+81.5 = -3.1+30.58x+81.5]typein	OK
+STU_tUhq STU_tUhq	22.06x-81.5 = -3.1+30.58x	subtract	SKILL	30.58	[22.06x = 78.4+30.58x]subtract	ERROR
+STU_tUhq STU_tUhq	22.06x-81.5 = -3.1+30.58x	subtract	SKILL	30.58x	[22.06x = 78.4+30.58x]subtract	OK
+STU_tUhq STU_tUhq	22.06x-81.5 = -3.1+30.58x	typein	LHS	-8.52x	[22.06x-30.58x = 78.4+30.58x-30.58x]typein	OK
+STU_tUhq STU_tUhq	22.06x-81.5 = -3.1+30.58x	typein	RHS	78.4	[22.06x-30.58x = 78.4+30.58x-30.58x]typein	OK
+STU_tUhq STU_tUhq	22.06x-81.5 = -3.1+30.58x	divide	SKILL	-8.52	[-8.52x = 78.4]divide	OK
+STU_tUhq STU_tUhq	22.06x-81.5 = -3.1+30.58x	typein	LHS	x	[-8.52x/-8.52 = 78.4/-8.52]typein	OK
+STU_tUhq STU_tUhq	22.06x-81.5 = -3.1+30.58x	typein	RHS	-9.2018	[-8.52x/-8.52 = 78.4/-8.52]typein	OK

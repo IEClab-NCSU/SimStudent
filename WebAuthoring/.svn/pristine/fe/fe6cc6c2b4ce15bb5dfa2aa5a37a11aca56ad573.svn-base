@@ -1,0 +1,285 @@
+Requirements: 
+Have Tomcat 7 installed. http://www3.ntu.edu.sg/home/ehchua/programming/howto/tomcat_howto.html
+Have Eclipse EE installed.
+
+DEPLOYING THE SERVLET
+1. Open the eclipse project the servlet is contained in.
+2. Right click on the project
+3. Click export > Web > War file
+4. For destination, navigate to the webapps folder of the Tomcat directory and choose that
+5. Click finish
+6. Run Tomcat using the start.bat file located in the bin folder of the Tomcat directory
+7. The servlet is now running on Tomcat.
+For example, if Tomcat is running on port 80 and the project is called SimStudent, 
+then the project can be found on http://localhost:80/SimStudent
+
+WRITING A BACKEND USING THE SERVLET:
+Write the class extends Backend, which is an abstract class. Backend contains defined 
+methods for the implemented backend to use as well as methods that the backend must 
+define. In order to use these methods, certain classes have been implemented to represent 
+specific information in a single object
+
+PREDEFINED CLASSES AND METHODS
+There are predefined classes that are used to wrap information in a single object.
+These include:
+  SAI
+  Color
+  InterfaceAttribute
+  InterfaceEvent
+  
+An SAI object is a wrapper for SAIs. It is simply used to contain the strings used
+for sai. Its constructors are:
+  SAI()
+  SAI(List<String> selection, List<String> action, List<String> input)
+
+If you use the former constructor, the object is initialized with empty lists for the s,a,i. The
+latter constructor will set the s,a,i to its arguments. The methods you can call are simple accessors and mutators:
+  List<String> getSelection()
+  List<String> getAction()
+  List<String> getInput()
+  void setSelection(List<String> selection)
+  void setAction(List<String> action)
+  void setInput(List<String> input)  
+
+  
+A Color object is a wrapper for an RGB color value. Its constructors are:
+  Color()
+  Color(Color c)
+  Color(int R, int G, int B)
+  
+If the first constructor is used, the default RGB value is 0 0 0, which is completely
+black. If the second constructor is used, the RGB value is the same as the one passed as an argument.
+Otherwise the RGB values represented by this object are those passed in by the 
+third constructor. Note that RGB values only range from 0 to 255 inclusive, so a 
+NumberFormatException is thrown if values not in that range are set using the constructor.
+The methods available to this object are simple accessors and mutators, along with a toCSS():
+  int getR()
+  int getG()
+  int getB()
+  void setR(int R)
+  void setG(int G)
+  void setB(int B)
+  String toCSS()
+  static Color parseCSS(String css)
+toCSS() returns the RGB value in the form "#RRGGBB", where RR, GG, BB
+are the hex values of R,G,B. For example, if R,G,B = 255 then toString() would return 
+"#FFFFFF", and if R,G,B = 0 it returns "#000000". This format is the one used by CSS. A 
+NumberFormatException is thrown if the mutator methods are invoked with out of range values, 
+just like with the constructor. parseCSS is just a convenience method to convert a 
+css color string to a Color object.
+
+
+An InterfaceAttribute object is used to contain attributes of a single interface component.
+The fields of an InterfaceAttribute object directly correspond to the component's attributes
+on the interface, for example the component's background color. Setting a field in an InterfaceAttribute 
+object means that you want to make a modification to that component on the interface. However, it is
+important to note that the component is not actually modified until you send the InterfaceAttribute object
+back to the interface by invoking the modifyInterface() method (detailed later).
+The list of methods to set fields are:
+  void setBackgroundColor(Color c) : sets the background color of the component to the color represented by c       
+  void setBorderColor(Color c) : sets the border color of the component to the color represented by c
+  void setBorderStyle(Style s) : sets the border style of the component according to the argument
+  void setBorderWidth(int width) : sets the border width, in pixels
+  void setIsEnabled(boolean enabled) : enables or disabled the component depending on the argument
+  void setFontColor(Color c) : changes the font color of the component according to c
+  void setFontSize(int size) : changes the size of the font on the text of the component
+  void setHeight(int height) : changes the height of the component
+  void setIsHintHighlight(boolean highlight) : turns on or off the hint highlight of the component
+  void setWidth(int width) : changes the width of the component
+  void setX(int x_coor) : sets the x coordinate of the component. (0,0) is the top left, x going horizontal and y vertical
+  void setY(int y_coor) : sets the y coordinate of the component. (0,0) is the top left, x going horizontal and y vertical
+
+Style is defined to be the enum type containing:
+  HIDDEN, DOTTED, DASHED, SOLID, DOUBLE
+If you want to change a component's border style to dotted, for example, you would use
+  comp.setBorderStyle(Style.DOTTED);
+  
+As always, there are accessor methods to accompany the mutator methods so that you can access the
+fields of the object.
+  Color getBorderColor()
+  boolean getIsEnabled()
+  Color getFontColor()
+  int getFontSize()
+  int getHeight()
+  Boolean getIsHintHighlight()
+  Boolean getIsShowBorder()
+  String getText() 
+  int getWidth()
+  int getX()
+  int getY()
+  
+
+An InterfaceEvent object is simply an object to wrap information about an event that
+occurs on the interface side. Right now, these events include only Double Click and
+SAI. Double Click means some textbox has been doubled clicked, and SAI means an interface
+component as sent an SAI to the servlet. InterfaceEvent consists of two accessor and mutator methods:
+  SAI getEvent()
+  Event getType()
+  void setEvent(SAI sai)
+  void setType(Event type)
+Event is an enum consisting of
+  DOUBLE_CLICK, SAI
+and which identifies what kind of event has occurred on the interface. The event is of type SAI
+because SAI is a convenient vehicle for expressing interface actions, but note that double
+clicking is not considered an original SAI. 
+
+DEFINED METHODS AVAILABLE FOR USE  
+Backend has methods that SimBackend can call. These methods allow SimBackend
+to interact with the interface by sending messages. The methods you can call are:
+  void sendSai(SAI sai)
+  void modifyInterface(IntefaceAttribute ia)
+  InterfaceAttribute getComponent(String name)
+  List<String> getWME()
+
+sendSai() will send the given SAI to the interface. 
+modifyInterface() will modify the interface based on the properties of the InterfaceAttribute argument
+getComponent() will give you an InterfaceAttribute object representing the component with the given name.
+  More specifically, it gives you a fresh copy of the InterfaceAttribute object stored in memory, so
+  modifications that weren't sent to the interface using modifyInterface() are not represented in the
+  object returned by getComponent()
+getWME() will give you a list of the text of all the wme files.
+
+  
+METHODS TO OVERRIDE
+Backend expects SimBackend to override certain methods. The methods you should override are:
+  void processInterfaceEvent(InterfaceEvent ie)
+  init()
+
+processInterfaceEvent() is used to process the given InterfaceEvent. This will cover
+  all actions that will occur on the interface, which for now is double clicking and
+  SAI. Override this method to process these events.
+init() is used in place of a constructor. Override to execute any initialization code
+  when the backend implementation starts up.
+  
+USING THE SERVLET
+The servlet will be running on a Tomcat server. The project is called SimStudentServlet,
+so wherever the tomcat server is running, let's say at ip address 128.2.176.208 on port 80,
+the interface can be found on http://128.2.176.208/SimStudentServlet .
+
+On startup, you will see a form to fill in. The main boxes to fill out are question file,
+directory, and entry point. The question file is the brd file, like for example http://128.237.186.200/Demo2.brd .
+The directory is the directory where all the .class files for your backend are. For example,
+they may be located at http://128.237.186.200/backend/ . The entry point is simply the
+class that actually extends Backend, so for example mypackage.SimBackend . 
+
+One package in BackendDemo is interaction. This is where all the objects provided by the api
+reside, and there should be no need to look at or modify that source code. For an example
+of how to build a backend, look at mypackage.SimBackend, which is a backend made for 
+a specific interface but which can still serve as an example of how to use the api.
+  
+EXTENDING THE SERVLET (for the next person to work on the api)
+Messages sent between the interface and the servlet are in xml format. Because the interface
+originated from CTAT, these messages use the same protocol. In order to extend the api,
+it is first necessary to extend these messages and their parsers. The structure of
+a message is:
+
+<message>
+  <verb>SOMETHING DEPRECATED NOW</verb>
+  <properties>
+    <MessageType>SOME MESSAGE TYPE</MessageType>
+    <prop1>SOME PROPERTY</prop1>
+    <prop2><value>MULTIPLE</value><value>VALUES</value></prop2>
+    <prop3>
+       <xml element>
+    </prop3>
+    .
+    .
+    .
+  </properties>
+</message>
+
+As you can see, the entire message is wrapped in <message></message>. There is a single
+verb between <verb></verb> that is ignored. The important part is in the <properties></properties>.
+There should be a <MessageType><MessageType> which specifies the type of message. Then there
+are a series of <prop></prop> tags that contains a value corresponding to that property. For example,
+<question_file>1416.brd</question_file> indicates that the question file property of the message is
+"1416.brd". The value of a property can be one of three forms. The first is as a single value,
+like in <question_file>1416.brd</question_file>. This is the most common one. Another form is
+as a list of values. One example would be <Input><value>1</value><value>2</value></Input>, where the
+two inputs are "1" and "2". The last form is where the values are themselves xml elements, and there is
+no restriction on what these can be. These are very rare and currently the servlet does not rely
+on messages containing these, though they may show up (and it does in Set Preferences).
+Sometimes multiple messages are sent, in which case the messages are bundled together using
+<MessageBundle></MessageBundle>, in which each <message></message> is placed one after another.
+
+From the servlet side, these messages are received in doPost() and are sent to the RequestParser.
+The request parser will push the message through an xml parser (currently using DOM, but a more
+efficient alternative may be implemented in the future if necessary), and the properties will
+be extracted into a map from the property to the value of that property. The value is
+stored as an XMLValue, which contains a String, a List<String>, and a Node. Only one of
+these is ever non-null at a time, and that depends on the value it represents. String is for
+single values, List<String> is for multiple values, and Node is for xml elements. Next,
+the map is used to create a robust RequestMessage object, which is an object that contains the values
+of the message. For any message, the properties and their types should already be known to you,
+the developer, so you can create new RequestMessage subclasses and set their values as needed.
+For example, we know that all SetPreference request messages contains a question file, so the 
+corresponding SetPreferenceRequest object will have a field called questionFile, and it will
+be set to the value given by the request message if it is not null. In summary, in order to
+parse a (new) message from the interface, the following steps are to be taken:
+  find out which properties are included in the message
+  create an instance of the corresponding RequestMessage subclass
+  set the fields of the object
+  return that object
+See RequestParser.parseRequest for more details.
+
+From the interface side, the message is received in CTATCommLibrary, and it is 
+passed around until it eventually reaches CTATMessageHandler's processSingleMessage method.
+The argument to the function is the message in DOM format. Parse the DOM directly and
+add in code for the type of message you want to specify. 
+
+In order to extend the functionality of the servlet, you should know about the different
+types of messages that currently exist. 
+  SetPreference is sent to the servlet right when the interface starts up. It contains 
+information about the brd file and the backend to use, among other things, to the servlet. 
+The servlet will reply by sending back a StartStateMessage, which contains all the 
+information needed to actually create the interface elements. 
+  InterfaceAction is sent to the servlet whenever an interface action occurs. This
+includes any SAI and double clicking. Even though double clicking is not actually an
+SAI, InterfaceAction sends SAI as the message because of its convenient format.
+  InterfaceAttribute messages are sent to the servlet after the interface is built.
+These include information about the different interface components, such as its width and height.
+Each component has its own InterfaceAttribute message, and they are send in a bundle.
+  The rest should not matter for the purposes of the servlet.
+  
+IMPORTANT: every message should include the session id of the interface. Reasons will be explained later.
+
+Now that the messages are explained, the rest is straightforward. Each message is created in
+CTATTutoringServiceMessageBuilder. If you need to send a message, indicating that something
+has happened on the interface, to the servlet, either use one of the preexisting messages 
+implemented there or add a new one. The messages are sent using commLibrary.send_post().
+send_post takes in two arguments, the destination url and the message itself. Since the 
+interface lives inside the server that the servlet uses, the url will always be "serv".
+So if you want to send the message "amessage", the exact line of code is 
+  commLibrary.send_post("serv","amessage");
+The contents of the message obviously depend on what you are trying to do. For example,
+if you need to send a message indicating that the user has pressed backspace, the steps would
+be:
+  locate where the interface is listening for key presses
+  create a message indicating that the backspace button has been pressed
+  send message using send_post()
+From there, the servlet will receive the message and parse it as necessary.
+
+On the servlet side, the message will result in a RequestMessage object as described above.
+RequestParser.parseRequest() actually returns to getResponse() in SimStudentBaseServlet,
+where afterwards it cases on the type of message. SetPreference messages are handled
+by the servlet, and InterfaceAction (Log messages aside) is handled by the backend.
+The servlet may or may not send a response to the message. If it is a SetPreference
+message, then it will immediately respond with the start state bundle. Otherwise the backend
+may opt to send a message later using Backend methods.
+
+In order to create the actual methods for the api, the methods should be introduced in
+the Backend class, which is what the backend should extend. Some methods should not be
+exposed to the backend, like getServlet, but that is unavoidable. Any abstract method
+is to be implemented by the backend, and any method you create is one that the backend
+can call.
+
+Some of the methods contained in Backend are not part of the api but are necessary to
+interact with the servlet. If they are not listed in this document above, they are 
+not a part of the api exposed to the backend. One of these is getServlet/setServlet, which
+is used to set the servlet property to the SimStudentBaseServlet that created it. getSession/
+setSession is used to associate the backend with a specific session. This way, the servlet
+can serve multiple interfaces at the same time, as each interface will have a different session
+associated with it. This is the reason each request must contain the sessionId: the
+servlet must have some way to associate a message with the corresponding session. Some of the
+InterfaceAttribute methods are not exposed since in the backend implementer should
+not need to access the set of InterfaceAttribute objects.

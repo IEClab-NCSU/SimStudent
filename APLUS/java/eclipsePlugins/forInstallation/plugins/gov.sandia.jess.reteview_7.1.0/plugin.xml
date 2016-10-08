@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin
+   id="gov.sandia.jess.reteview"
+   name="Jess Rete Network Viewer"
+   version="7.1.0"
+   provider-name="Sandia National Laboratories"
+   class="gov.sandia.jess.reteview.ReteViewPlugin">
+
+   <runtime>
+      <library name="reteview.jar">
+         <export name="*"/>
+      </library>
+   </runtime>
+
+   <requires>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.gef"/>
+      <import plugin="gov.sandia.jess.editor"/>
+      <import plugin="gov.sandia.jess"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.junit"/>
+   </requires>
+   <extension
+         id="gov.sandia.jess.reteview.reteView"
+         name="Jess Rete Network Viewer"
+         point="org.eclipse.ui.views">
+      <view
+            icon="icons/jess-16x16.gif"
+            class="gov.sandia.jess.reteview.ReteViewPart"
+            category="gov.sandia.jess.debug.viewCategory"
+            name="Rete Network"
+            id="gov.sandia.jess.reteview.reteView"/>
+   </extension>
+
+</plugin>

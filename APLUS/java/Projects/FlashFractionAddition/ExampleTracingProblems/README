@@ -1,0 +1,22 @@
+This folder contains a 1-4plus1-6.html that you can open to view a tutor.  It also contains the problem file 1416.brd.
+
+The user interface, fractionAddition-mx, is available in the parent directory FractionAddition.  You can edit the source in Flash MX 2004 or later.
+
+This folder contains a folder named 'loggingLibrary' that contains the CTAT logging library (CommLoggingLibrary.swf).  This library powers the logging of tutors.  The supplied tutor (1-4plus1-6.html) logs by default.  More information about logging with CTAT can be found at: http://ctat.pact.cs.cmu.edu/index.php?id=logging-flash
+
+This folder also contains four folders that contain materials for producing problems with the CTAT Mass Production, spreadsheet authoring technology.
+
+Template and problems table.
+
+Denom1MultipleOfDenom2		First fraction denominator is a multiple
+				of the second fraction's denominator.
+Denom1MultipledbyDenom2		LCD is found by multiplying the two
+				denominators.
+HintsAsVariables		Copies of BRDs and BRD Templates from
+				other directories for use later.
+SameDenominator			Both fractions have the same denominator
+		
+Files ending in -template.brd are BRD Templates with variables.
+		-table.txt    are problems tables with a single problem
+			      filled in.
+Within each Mass Production folder, a Problems sub-directory contains a single mass-produced file using the BRD

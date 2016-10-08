@@ -1,0 +1,16 @@
+;;WME Structure file, search control for searching WME paths
+;;Hierarchy
+;;(parent child+)+(each parent gets it's own line
+;;---------------(seperator)
+;;terminal WMEs
+;;WME+
+;;--------------
+;;Ignored WMEs
+;; WME*
+MAIN::problem interface-elements
+MAIN::table columns
+MAIN::column cells
+------------
+MAIN::cell
+MAIN::button
+-----------

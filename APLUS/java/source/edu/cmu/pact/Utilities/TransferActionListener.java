@@ -1,0 +1,37 @@
+package edu.cmu.pact.Utilities;
+import java.awt.KeyboardFocusManager;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+import javax.swing.Action;
+import javax.swing.JComponent;
+public class TransferActionListener implements ActionListener, PropertyChangeListener {
+  private JComponent focusOwner = null;   
+  public TransferActionListener() {
+    KeyboardFocusManager manager = KeyboardFocusManager
+        .getCurrentKeyboardFocusManager();
+    manager.addPropertyChangeListener("permanentFocusOwner", this);
+  }
+  public void propertyChange(PropertyChangeEvent e) {
+    Object o = e.getNewValue();
+    if (o instanceof JComponent) {
+      focusOwner = (JComponent) o;
+    } else {
+      focusOwner = null;
+    }
+  if (trace.getDebugCode("log")) trace.out("log", "propertyChange focusOwner =" + focusOwner);
+  }
+  public void actionPerformed(ActionEvent e) {
+    if (focusOwner == null)
+      return;
+    String action = (String) e.getActionCommand();
+    Action a = focusOwner.getActionMap().get(action);
+    if (trace.getDebugCode("log")) trace.out("log", "actionPerformed focusOwner =" + focusOwner.getName());
+    if (a != null) {
+      a.actionPerformed(new ActionEvent(focusOwner,
+          ActionEvent.ACTION_PERFORMED, null));
+    }
+  }
+}

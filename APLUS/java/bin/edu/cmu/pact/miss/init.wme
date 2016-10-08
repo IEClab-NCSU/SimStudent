@@ -1,0 +1,237 @@
+;;;; Fact assertions: slot assignments are below.
+
+(bind ?var1 (assert(MAIN::initial-fact)))
+(bind ?var2 (assert(MAIN::selection-action-input)))
+(bind ?var3 (assert(MAIN::special-wme)))
+(bind ?var4 (assert(MAIN::special-tutor-fact)))
+(bind ?var5 (assert(MAIN::special-tutor-fact-correct)))
+(bind ?var6 (assert(MAIN::special-tutor-fact-buggy)))
+(bind ?var7 (assert(MAIN::cell (name commTable2_C1R1))))
+(bind ?var8 (assert(MAIN::cell (name commTable2_C1R2))))
+(bind ?var9 (assert(MAIN::cell (name commTable2_C1R3))))
+(bind ?var10 (assert(MAIN::cell (name commTable2_C1R4))))
+(bind ?var11 (assert(MAIN::cell (name commTable2_C1R5))))
+(bind ?var12 (assert(MAIN::cell (name commTable2_C1R6))))
+(bind ?var13 (assert(MAIN::cell (name commTable2_C1R7))))
+(bind ?var14 (assert(MAIN::cell (name commTable2_C1R8))))
+(bind ?var15 (assert(MAIN::column (name commTable2_Column1))))
+(bind ?var16 (assert(MAIN::table (name commTable2))))
+(bind ?var17 (assert(MAIN::cell (name commTable1_C1R1))))
+(bind ?var18 (assert(MAIN::cell (name commTable1_C1R2))))
+(bind ?var19 (assert(MAIN::cell (name commTable1_C1R3))))
+(bind ?var20 (assert(MAIN::cell (name commTable1_C1R4))))
+(bind ?var21 (assert(MAIN::cell (name commTable1_C1R5))))
+(bind ?var22 (assert(MAIN::cell (name commTable1_C1R6))))
+(bind ?var23 (assert(MAIN::cell (name commTable1_C1R7))))
+(bind ?var24 (assert(MAIN::cell (name commTable1_C1R8))))
+(bind ?var25 (assert(MAIN::column (name commTable1_Column1))))
+(bind ?var26 (assert(MAIN::table (name commTable1))))
+(bind ?var27 (assert(MAIN::button (name hint))))
+(bind ?var28 (assert(MAIN::button (name done))))
+(bind ?var29 (assert(MAIN::problem (name p1))))
+
+;;;; Slot assignments
+
+; MAIN::selection-action-input
+(modify ?var2
+    (selection NotSpecified)
+    (action NotSpecified)
+    (input -99999999)
+)
+; MAIN::special-wme
+(modify ?var3
+    (selection NotSpecified)
+    (action NotSpecified)
+    (input -99999999)
+    (hint-message)
+    (buggy-message)
+)
+; MAIN::special-tutor-fact
+(modify ?var4
+    (selection NotSpecified)
+    (action NotSpecified)
+    (input -99999999)
+)
+; MAIN::special-tutor-fact-correct
+(modify ?var5
+    (selection NotSpecified)
+    (action NotSpecified)
+    (input -99999999)
+    (hint-message)
+)
+; MAIN::special-tutor-fact-buggy
+(modify ?var6
+    (selection NotSpecified)
+    (action NotSpecified)
+    (input -99999999)
+    (buggy-message)
+)
+; MAIN::cell
+(modify ?var7
+    (name commTable2_C1R1)
+    (value nil)
+    (description nil)
+    (row-number 1)
+    (column-number 1)
+)
+; MAIN::cell
+(modify ?var8
+    (name commTable2_C1R2)
+    (value nil)
+    (description nil)
+    (row-number 2)
+    (column-number 1)
+)
+; MAIN::cell
+(modify ?var9
+    (name commTable2_C1R3)
+    (value nil)
+    (description nil)
+    (row-number 3)
+    (column-number 1)
+)
+; MAIN::cell
+(modify ?var10
+    (name commTable2_C1R4)
+    (value nil)
+    (description nil)
+    (row-number 4)
+    (column-number 1)
+)
+; MAIN::cell
+(modify ?var11
+    (name commTable2_C1R5)
+    (value nil)
+    (description nil)
+    (row-number 5)
+    (column-number 1)
+)
+; MAIN::cell
+(modify ?var12
+    (name commTable2_C1R6)
+    (value nil)
+    (description nil)
+    (row-number 6)
+    (column-number 1)
+)
+; MAIN::cell
+(modify ?var13
+    (name commTable2_C1R7)
+    (value nil)
+    (description nil)
+    (row-number 7)
+    (column-number 1)
+)
+; MAIN::cell
+(modify ?var14
+    (name commTable2_C1R8)
+    (value nil)
+    (description nil)
+    (row-number 8)
+    (column-number 1)
+)
+; MAIN::column
+(modify ?var15
+    (name commTable2_Column1)
+    (cells ?var7 ?var8 ?var9 ?var10 ?var11 ?var12 ?var13 ?var14)
+    (position 1)
+    (description nil)
+)
+; MAIN::table
+(modify ?var16
+    (name commTable2)
+    (columns ?var15)
+)
+; MAIN::cell
+(modify ?var17
+    (name commTable1_C1R1)
+    (value nil)
+    (description nil)
+    (row-number 1)
+    (column-number 1)
+)
+; MAIN::cell
+(modify ?var18
+    (name commTable1_C1R2)
+    (value nil)
+    (description nil)
+    (row-number 2)
+    (column-number 1)
+)
+; MAIN::cell
+(modify ?var19
+    (name commTable1_C1R3)
+    (value nil)
+    (description nil)
+    (row-number 3)
+    (column-number 1)
+)
+; MAIN::cell
+(modify ?var20
+    (name commTable1_C1R4)
+    (value nil)
+    (description nil)
+    (row-number 4)
+    (column-number 1)
+)
+; MAIN::cell
+(modify ?var21
+    (name commTable1_C1R5)
+    (value nil)
+    (description nil)
+    (row-number 5)
+    (column-number 1)
+)
+; MAIN::cell
+(modify ?var22
+    (name commTable1_C1R6)
+    (value nil)
+    (description nil)
+    (row-number 6)
+    (column-number 1)
+)
+; MAIN::cell
+(modify ?var23
+    (name commTable1_C1R7)
+    (value nil)
+    (description nil)
+    (row-number 7)
+    (column-number 1)
+)
+; MAIN::cell
+(modify ?var24
+    (name commTable1_C1R8)
+    (value nil)
+    (description nil)
+    (row-number 8)
+    (column-number 1)
+)
+; MAIN::column
+(modify ?var25
+    (name commTable1_Column1)
+    (cells ?var17 ?var18 ?var19 ?var20 ?var21 ?var22 ?var23 ?var24)
+    (position 1)
+    (description nil)
+)
+; MAIN::table
+(modify ?var26
+    (name commTable1)
+    (columns ?var25)
+)
+; MAIN::button
+(modify ?var27
+    (name hint)
+)
+; MAIN::button
+(modify ?var28
+    (name done)
+)
+; MAIN::problem
+(modify ?var29
+    (name p1)
+    (interface-elements ?var28 ?var26 ?var16 ?var27)
+    (subgoals)
+    (done nil)
+    (description nil)
+    (turn nil)
+)

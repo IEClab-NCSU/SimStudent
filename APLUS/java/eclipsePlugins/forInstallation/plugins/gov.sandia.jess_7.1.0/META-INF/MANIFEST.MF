@@ -1,0 +1,24 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Jess
+Bundle-SymbolicName: gov.sandia.jess
+Bundle-Version: 7.1.0
+Bundle-ClassPath: jess.jar,jsr94.jar,jessplugin.jar
+Bundle-Activator: gov.sandia.jess.JessPlugin
+Bundle-Vendor: Sandia National Laboratories
+Bundle-Localization: plugin
+Export-Package: gov.sandia.jess,
+ jess,
+ jess.awt,
+ jess.factory,
+ jess.jsr94,
+ jess.server,
+ jess.swing,
+ jess.xml,
+ xmlsrc
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.ui.ide,
+ org.eclipse.core.runtime
+Eclipse-AutoStart: true
+Eclipse-BuddyPolicy: registered
+

@@ -1,0 +1,342 @@
+
+
+    <HTML>
+    <HEAD>
+    <style>
+    h1, h2{
+    font-family:Verdana, Arial, Helvetica, sans-serif;
+     font-size:13px;
+     
+    }
+    .move
+    {
+     width:100%;
+     background-color:#99CCFF;
+     border-bottom:1px solid blue;
+     font-size:14px;
+     font-family:vardana;
+     font-color:"#33CCAA";
+     text-align:center;
+    }
+     
+    .info
+    {
+     width:100%;
+     background-color:#99CCFF;
+     border-top:1px solid blue;
+     font-size:13px;
+     font-family:vardana;
+     font-color:"#33CCAA";
+    }
+     
+    .panel2{
+     width:150; position:absolute; border:1px solid blue; left:500; top:200; font-size:13px; font-family:vardana;}
+     
+    .panel{
+     width:150; position:absolute; border:1px solid blue; left:350; top:200; font-size:13px; font-family:vardana;}
+    .panel a:visited{color:blue;}
+     
+    .panel a{text-decoration:none;color:blue}
+     
+    .panel a:hover{text-decoration:none;}
+     
+     
+     
+    #panel a.visited{
+     
+    text-decoration:none;
+     
+    }
+     
+    .menu
+     
+    {
+     
+     width:100%;
+     
+     background-color:lightyellow;
+     
+     font-size:13px;
+     
+     font-family:vardana;
+     
+    }
+     
+    </style>
+     
+          <!--[if IE]>
+          <style type="text/css">
+             div.scrollable {
+                   /* shrink the window, adjust for the 2 border pixels */
+                  height:expression( this.getElementsByTagName('TABLE')[0].clientHeight >= 80  ? "80px": "auto" );  
+                  overflow-x: visible;
+                  overflow-y: auto;
+             }
+     
+             div.scrollable table {
+                /* adjust for the 17 pixels for the scrollbar */
+                width: expression(this.parentNode.offsetWidth-17);
+             }
+     
+             /* set the table row */
+             div.scrollable table thead tr {
+             position: relative;
+               /* this fixes IE header jumping bug */
+               top: expression( this.parentNode.parentNode.parentNode.scrollTop + 'px' );   
+             }
+          </style>
+          <![endif]-->
+     
+          <!-- if mozilla -->
+          <style type="text/css">
+             html>body div.scrollable tbody {
+                height: 80px;
+                overflow: auto;
+             }
+     
+             /* add 17 for the scrollbar */
+             html>body th.scrollbarCol {
+                width:17px;
+             }
+     
+          </style>
+     
+    <script type="text/javascript" src="http://www.kryogenix.org/code/browser/sorttable/sorttable.js" >    
+    </script>
+     
+    <SCRIPT LANGUAGE="JavaScript">
+    var ob;
+    var over = false;
+    var over_id ="";
+    var iEdgeThreshold = 10;
+     
+    function findPos(obj) {
+      var curleft = curtop = 0;
+      if (obj.offsetParent) {
+          curleft = obj.offsetLeft;
+          curtop = obj.offsetTop;
+          while (obj = obj.offsetParent) {
+             curleft += obj.offsetLeft;
+             curtop += obj.offsetTop;
+          }
+       }
+       return [curleft,curtop];
+    }
+     
+    /* Function that tells me if on the border or not */
+    function isOnBorderLeft(objTable,objTh,event){
+        var left = objTh.offsetLeft;
+        var pos = findPos(objTable);
+        var absLeft = pos[0] + left;
+     
+        if( event.clientX < (absLeft + iEdgeThreshold) ){
+           return 1;
+        }
+        return 0;
+    }
+     
+    function isOnBorderRight(objTable,objTh,event){
+      var width = objTh.offsetWidth;
+      var left = objTh.offsetLeft;
+      var pos = findPos(objTable);
+      var absRight = pos[0] + left + width;
+     
+      if( event.clientX > (absRight - iEdgeThreshold) ){
+          return 1;
+      }
+      return 0;
+    } 
+     
+    function getNodeName(objReference,nodeName){
+       var oElement = objReference;
+       while (oElement != null && oElement.tagName != null && oElement.tagName != "BODY") {
+          if (oElement.tagName.toUpperCase() == nodeName) {
+             return oElement;
+          }
+          oElement = oElement.parentNode;
+       }
+       return null;
+    }
+     
+     
+    function do_resize(objTh,event){
+        if(!event) event = window.event;
+        var objTable = getNodeName(objTh,"TABLE");
+        if( isOnBorderLeft(objTable, objTh,event) ){ 
+           objTh.style.cursor="e-resize";
+           return true;
+        }
+        else if( isOnBorderRight(objTable,objTh,event) ){ 
+           objTh.style.cursor="e-resize";
+           return true;
+        }
+     
+        objTh.style.cursor="";
+        return false;
+    }
+     
+    function MD(event) {
+       if(!event) event = window.event;
+     
+       MOUSTSTART_X=event.clientX;
+       MOUSTSTART_Y=event.clientY;
+     
+       if (over){      
+           ob = document.getElementById(over_id);
+           ob2 = getNodeName(ob,"TABLE");
+           obwidth=parseInt(ob.style.width);
+           obwidth2=parseInt(ob2.style.width);
+       }        
+    }
+     
+    function MM(event) {
+        if(!event) event = window.event;
+     
+        if (ob) {
+            st=event.clientX-MOUSTSTART_X+obwidth;
+            st2=event.clientX-MOUSTSTART_X+obwidth2;
+     
+            if(st>=30){
+                ob.style.width=st;
+                ob2.style.width=st2;
+                document.getElementById("status").innerHTML=st;
+            }
+            if(event.stopPropagation)event.stopPropagation();
+            if(document.selection) document.selection.empty();
+            else if(window.getSelection)window.getSelection().removeAllRanges();
+        }
+    }
+     
+    function MU(event) {
+        if(!event) event = window.event;
+        if(ob != null){
+            if(event.stopPropagation)event.stopPropagation();
+            if(document.selection) document.selection.empty();
+            else if(window.getSelection)window.getSelection().removeAllRanges();
+            ob = null;
+        }
+    }
+     
+    document.onmousedown = MD;
+    document.onmousemove = MM;
+    document.onmouseup = MU;
+    </script>
+     
+     
+    </HEAD>
+     
+    <BODY>
+    <!-- 
+    YOU MUST HAVE TO DEFINE WIDTH ON STYLE TAB.. if you leave NULL
+    IT RETURNS .. ERROR..
+    -->
+    <H1>RESIZABLE TABLE COLUMN</H1>
+     
+    <table style="border: 1px gray solid">
+    <tr>
+    <td>
+    <div class="scrollable">
+    <TABLE border="1" STYLE="width:500px; overflow:hidden; table-layout:fixed" class="sortable">
+     
+    <THEAD>
+     
+    <TR>
+     
+    <TH id="panel0"  class='move' onmousemove="over=do_resize(this,event);over_id='panel0'"  onmouseover="over=do_resize(this,event);over_id='panel0'" onmouseout='over=false;' style='width:100px; overflow:hidden'>CO0</TH>
+     
+    <TH id="panel1"  class='move' onmousemove="over=do_resize(this,event);over_id='panel1'"  onmouseover="over=do_resize(this,event);over_id='panel1'" onmouseout='over=false;' style='width:100px; overflow:hidden'>CO1</TH>
+     
+    <TH id="panel2"  class='move' onmousemove="over=do_resize(this,event);over_id='panel2'"  onmouseover="over=do_resize(this,event);over_id='panel2'" onmouseout='over=false;' style='width:100px; overflow:hidden'>CO2</TH>
+     
+    <TH id="panel3"  class='move' onmousemove="over=do_resize(this,event);over_id='panel3'"  onmouseover="over=do_resize(this,event);over_id='panel3'" onmouseout='over=false;' style='width:100px; overflow:hidden'>CO3</TH>
+     
+    <TH id="panel4"  class='move' onmousemove="over=do_resize(this,event);over_id='panel4'"  onmouseover="over=do_resize(this,event);over_id='panel4'" onmouseout='over=false;' style='width:100px; overflow:hidden'>CO4</TH>
+     
+    <TH class="sorttable_nosort scrollbarCol"></TH>
+     
+    </TR>
+    </THEAD> 
+    <TBODY>
+    <TR>
+     
+    <TD>1_0</TD>
+     
+     
+    <TD><input type="text" value="this is a very long text string" style="width:100%" ></TD>
+     
+     
+    <TD>1_2</TD>
+     
+     
+    <TD>1_3</TD>
+     
+     
+    <TD>1_4</TD>
+     
+     
+    </TR>
+     
+     
+    <TR>
+     
+    <TD>2_0</TD>
+     
+     
+    <TD>2_1</TD>
+     
+     
+    <TD>2_2</TD>
+     
+     
+    <TD>2_3</TD>
+     
+     
+    <TD>2_4</TD>
+     
+     
+    </TR>
+     
+     
+    <TR>
+     
+    <TD>3_0</TD>
+     
+     
+    <TD>3_1</TD>
+     
+     
+    <TD>3_2</TD>
+     
+     
+    <TD>3_3</TD>
+     
+     
+    <TD>3_4</TD>
+     
+     
+    </TR>
+     
+     
+    <TR>
+     
+    <TD>4_0</TD>
+     
+     
+    <TD>4_1</TD>
+     
+     
+    <TD>4_2</TD>
+     
+    <TD>4_3</TD>
+    <TD>4_4</TD>
+     
+    </TR>
+    </TBODY>
+    </table>
+    </div>
+    </td>
+    </tr>
+    </table>
+    <div id="status"></div>
+    </HTML>
+

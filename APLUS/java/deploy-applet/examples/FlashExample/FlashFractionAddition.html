@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Fraction Addition Tutor</title>
+</head>
+<script type="text/javascript" src="./javascript/deployJava.js"></script>
+<script type="text/javascript" src="./javascript/appletTS.js"></script>
+
+<body bgcolor="#FFFFFF">
+<div style="font-family:arial;font-size:10pt;align:center">
+<table style=border-style:solid;border-width:thin;padding:2pt;background-color:LightYellow>
+<tr><td>Flash example using the Tutoring Service applet.</td></tr>
+</table>
+</div>
+
+<SCRIPT language="JavaScript"><!--
+deployJava.runApplet({id: 'TSApplet', width: 100, height: 10}, {jnlp_href: '/ctat_applet/TSApplet.jnlp'}, '1.6');
+
+var movie = "./fractionAddition.swf";
+var flashWidth="555";
+var flashHeight="495";
+var allFlashVars = "BehaviorRecorderMode=AuthorTimeTutoring&question_file=/FlashExample/1416.brd&problem_name=1416&tutoring_service_communication=javascript&user_guid=TSappletTester";
+var swfTag;
+if (navigator.appName.indexOf("Explorer") > 0) {
+  // use object tag for IE
+  ieFlashVars = '<param name="FlashVars" value="'+allFlashVars+'"/>';
+  swfTag = '<object id="FractionAddition" classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=10,0,0,0" width="'+flashWidth+'" height="'+flashHeight+'" align="middle"> <param name="allowScriptAccess" value="sameDomain" /> <param name="SeamlessTabbing" value="false" />'+ieFlashVars+'<param name="movie" value="'+movie+'" /> <param name="quality" value="high" /> <param name="bgcolor" value="#ffffff" /></object>';
+} else {
+  // use embed tag for all other browsers
+  swfTag = '<embed id="FractionAddition" src="'+movie+'" quality="high" bgcolor="#ffffff" FlashVars="'+allFlashVars+'" width="'+flashWidth+'" height="'+flashHeight+'" name="FractionAddition" align="middle" allowScriptAccess="sameDomain" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />';
+}
+document.write('<div id="tutor">'+swfTag+'</div>');
+
+-->
+</SCRIPT>
+
+
+
+<!-- .  .  .  .  .  .  .  .  .     Documentation      .  .  .  .  .  .  .  .  .  .  .
+
+See 
+http://ctat.pact.cs.cmu.edu/index.php?id=logging-flash
+http://ctat.pact.cs.cmu.edu/index.php?id=flashvars
+http://ctat.pact.cs.cmu.edu/index.php?id=tutor_delivery-flash
+
+
+-->
+	
+</body>
+</html>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scenario version="$Revision: 1.1 $" default-language="en">
+
+<configuration> 
+	<module kind="model" name="clever" classname="edu.cmu.cs.lti.tutalk.module.SidePredictor"> 
+		<param key="path" value="./Model-2.ser" /> 
+		<param key="prediction" value="predicted" />
+		<param key="currentAnnotation" value="Category" />
+	</module> 
+</configuration>
+
+
+<concepts>
+  <concept label="unanticipated-response">
+   <phrase>anything else</phrase>
+  </concept>
+
+
+  <concept label="final-thanks">
+   <phrase>Okay, thanks!  Let's go back to working now.</phrase>
+  </concept>
+  <concept label="first-question">
+   <phrase>How did you know that that was the right thing to do?</phrase>
+  </concept>
+  
+  
+  <concept label="explain-why" model="clever"/>
+  <concept label="right-action-response-simst">
+   <phrase>Can you explain what I should look for in the future to know that that is the right thing to do?</phrase>
+  </concept>
+
+  <concept label="undo" model="clever" />
+  <concept label="mistake-response-simst">
+   <phrase>I'm a bit confused.  Let's go back to working on the problem.  If you mean that I shouldn't put that, can you please hit the erase button and show me what it should really be?</phrase>
+  </concept>
+  
+  <concept label="okay" model="clever" />
+  <concept label="nature-response-simst">
+   <phrase>Okay, I think I see...</phrase>
+  </concept>
+
+  <concept label="unhelpful" model="clever" />
+  <concept label="unhelpful-response-simst">
+   <phrase>That doesn't really help me.  Could you please try to answer my question thoughtfully?  It's okay if you aren't completely sure.</phrase>
+  </concept>
+
+
+</concepts>
+
+<script>
+ <goal name="start">
+  <step><subgoal>reasons</subgoal></step>
+  <!--<step>
+   <initiation>first-question</initiation>
+   </step>-->
+ </goal>
+ 
+ <goal name="reasons">
+  <step>
+   <initiation>first-question</initiation>
+   <response push="right-action-response-action">explain-why</response>
+   <response push="unhelpful-response-action">unhelpful</response>
+   
+   <response say="nature-response-simst">okay</response>
+   <response say="mistake-response-simst">undo</response> 
+   <response say="final-thanks">unanticipated-response</response>
+  </step>
+ </goal>
+ 
+ <goal name="right-action-response-action">
+  <step>
+   <initiation>right-action-response-simst</initiation>
+   <response say="final-thanks">unanticipated-response</response>
+  </step>
+ </goal>
+
+ <goal name="unhelpful-response-action">
+  <step>
+   <initiation>unhelpful-response-simst</initiation>
+   <response say="final-thanks">unanticipated-response</response>
+  </step>
+ </goal>
+ 
+</script>
+</scenario>
+

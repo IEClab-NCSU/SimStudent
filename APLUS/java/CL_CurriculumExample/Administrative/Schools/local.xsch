@@ -1,0 +1,9 @@
+<LMS:School id="Local" name="Local" >
+<LMS:Preferences>
+<LMS:AttValue attribute="RequireStudentPasswords" value="false" />
+<LMS:AttValue attribute="AllowStudentRepairOfData" value="true" />
+<LMS:AttValue attribute="CheckInstructorPrivilege" value="false" />
+<LMS:AttValue attribute="LockStudentData" value="false" />
+<LMS:AttValue attribute="LOGROOT" value="DISABLED" />
+</LMS:Preferences>
+</LMS:School>

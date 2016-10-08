@@ -1,0 +1,27 @@
+<stateGraph firstCheckAllStates="true" caseInsensitive="true" unordered="true"
+			lockWidget="true" highlightRightSelection="true" version="1.0">
+<startNodeMessages>
+	<message>
+		<verb>SendNoteProperty</verb>
+		<properties>
+			<MessageType>StartProblem</MessageType>
+			<ProblemName>aaa</ProblemName>
+		</properties>
+	</message>
+	
+</startNodeMessages>
+
+<node locked="false" doneState ="false">
+	<text>aaa</text>
+	<uniqueID>1</uniqueID>
+	<dimension>
+		<x>233</x>
+		<y>30</y>
+		<width>34</width>
+		<height>25</height>
+	</dimension>
+</node>
+
+	<EdgesGroups>
+	</EdgesGroups>
+</stateGraph>

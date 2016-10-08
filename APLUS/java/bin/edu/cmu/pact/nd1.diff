@@ -1,0 +1,14 @@
+Index: miss/PeerLearning/SimStLogger.java
+===================================================================
+--- miss/PeerLearning/SimStLogger.java	(revision 20592)
++++ miss/PeerLearning/SimStLogger.java	(working copy)
+@@ -255,6 +255,9 @@
+     		String expAction, String expInput, int duration, String feedback, String opponent, String info, int myRating)
+     {
+     
++    	
++  
++    	
+ 		String problemName = brController.getProblemModel().getProblemName();
+     	if(!loggingEnabled)
+     	{

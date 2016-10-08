@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ENGAGE</string>
+    <string name="no_notes">No Notes Yet</string>
+    <string name="menu_insert">Add Note</string>
+    <string name="menu_delete">Delete Note</string>
+    <string name="title">Title</string>
+    <string name="body">Body</string>
+    <string name="confirm">Confirm</string>
+    <string name="edit_note">Edit Note</string>
+    <string name="HTDOCS_DIR">htdocs/</string>
+	<string name="ETC_DIR">etc/</string>
+    <string name="LOGS_DIR">etc/</string>
+    <string name="CTAT_ROOT_DIR">/sdcard/CTAT/</string>
+    <string name="PROBLEM_SET_DIR">FlashTutors/PreTest/</string>
+    <string name="BRD_DIR">FinalBRDs/</string>
+    <string name="username">"User name: "</string>
+    <string name="go">Go!</string>
+    <string name="alert_dialog_ok">OK</string>
+    <string name="i_am_a_boy">I am a boy</string>
+    <string name="i_am_a_girl">I am a girl</string>
+    <string name="my_age_is">"My age is "</string>
+    <string name="login">"Login"</string>
+    <string name="Welcome_to_ENGAGE">Welcome to ENGAGE</string>
+</resources>
