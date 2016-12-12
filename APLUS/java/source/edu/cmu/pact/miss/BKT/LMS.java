@@ -334,7 +334,7 @@ public class LMS {
 			logResult+="["+split[0]+" "+split[1]+"],";
 			
 		}
-		
+		System.out.println("Log Result : "+logResult);
 		simStLogger.simStLog(SimStLogger.LMS_PROBLEM, SimStLogger.LMS_PROBLEM_CONSIDERED, "",logResult , lmsID);		
 		
 		

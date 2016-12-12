@@ -304,7 +304,7 @@ public class StudentAvatarDesigner extends JPanel implements ActionListener {
         add(getButtonPanel());
         
         frame.setPreferredSize(new Dimension(300,400));
-        
+        frame.setResizable(false);
         Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         frame.setLocation((int)screenSize.width/2,(int)screenSize.height/4);
     }

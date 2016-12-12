@@ -38,7 +38,7 @@
   <preference>
     <name>frame0 Location Y</name>
     <class>java.lang.Integer</class>
-    <value>171</value>
+    <value>188</value>
   </preference>
   <preference>
     <name>Show Tutor Type Save Popup</name>
@@ -138,7 +138,7 @@
   <preference>
     <name>frame1 Location Y</name>
     <class>java.lang.Integer</class>
-    <value>171</value>
+    <value>188</value>
   </preference>
   <preference>
     <name>frame2 Width</name>
@@ -158,7 +158,7 @@
   <preference>
     <name>frame2 Location Y</name>
     <class>java.lang.Integer</class>
-    <value>171</value>
+    <value>188</value>
   </preference>
   <preference>
     <name>frame3 Width</name>
@@ -178,7 +178,7 @@
   <preference>
     <name>frame3 Location Y</name>
     <class>java.lang.Integer</class>
-    <value>171</value>
+    <value>188</value>
   </preference>
   <preference>
     <name>frame4 Width</name>
@@ -198,7 +198,7 @@
   <preference>
     <name>frame4 Location Y</name>
     <class>java.lang.Integer</class>
-    <value>171</value>
+    <value>188</value>
   </preference>
   <preference>
     <name>frame5 Width</name>
@@ -218,7 +218,7 @@
   <preference>
     <name>frame5 Location Y</name>
     <class>java.lang.Integer</class>
-    <value>171</value>
+    <value>188</value>
   </preference>
   <preference>
     <name>frame6 Width</name>
@@ -238,7 +238,7 @@
   <preference>
     <name>frame6 Location Y</name>
     <class>java.lang.Integer</class>
-    <value>171</value>
+    <value>188</value>
   </preference>
   <preference>
     <name>frame7 Width</name>
@@ -258,7 +258,7 @@
   <preference>
     <name>frame7 Location Y</name>
     <class>java.lang.Integer</class>
-    <value>171</value>
+    <value>188</value>
   </preference>
   <preference>
     <name>frame11 Width</name>
@@ -278,7 +278,7 @@
   <preference>
     <name>frame11 Location Y</name>
     <class>java.lang.Integer</class>
-    <value>171</value>
+    <value>188</value>
   </preference>
   <preference>
     <name>frame14 Width</name>
@@ -298,7 +298,7 @@
   <preference>
     <name>frame14 Location Y</name>
     <class>java.lang.Integer</class>
-    <value>171</value>
+    <value>188</value>
   </preference>
   <preference>
     <name>frame13 Width</name>
@@ -318,7 +318,7 @@
   <preference>
     <name>frame13 Location Y</name>
     <class>java.lang.Integer</class>
-    <value>171</value>
+    <value>188</value>
   </preference>
   <preference>
     <name>frame15 Width</name>
@@ -338,7 +338,7 @@
   <preference>
     <name>frame15 Location Y</name>
     <class>java.lang.Integer</class>
-    <value>171</value>
+    <value>188</value>
   </preference>
   <preference>
     <name>frame16 Width</name>
@@ -358,7 +358,7 @@
   <preference>
     <name>frame16 Location Y</name>
     <class>java.lang.Integer</class>
-    <value>171</value>
+    <value>188</value>
   </preference>
   <preference>
     <name>frame17 Width</name>
@@ -378,7 +378,7 @@
   <preference>
     <name>frame17 Location Y</name>
     <class>java.lang.Integer</class>
-    <value>171</value>
+    <value>188</value>
   </preference>
   <preference>
     <name>frame18 Width</name>
@@ -398,7 +398,7 @@
   <preference>
     <name>frame18 Location Y</name>
     <class>java.lang.Integer</class>
-    <value>171</value>
+    <value>188</value>
   </preference>
   <preference>
     <name>frame19 Width</name>
@@ -418,7 +418,7 @@
   <preference>
     <name>frame19 Location Y</name>
     <class>java.lang.Integer</class>
-    <value>171</value>
+    <value>188</value>
   </preference>
   <preference>
     <name>frame20 Width</name>
@@ -438,7 +438,7 @@
   <preference>
     <name>frame20 Location Y</name>
     <class>java.lang.Integer</class>
-    <value>171</value>
+    <value>188</value>
   </preference>
   <preference>
     <name>frame21 Width</name>
@@ -458,7 +458,7 @@
   <preference>
     <name>frame21 Location Y</name>
     <class>java.lang.Integer</class>
-    <value>171</value>
+    <value>188</value>
   </preference>
   <preference>
     <name>frame22 Width</name>
@@ -478,7 +478,7 @@
   <preference>
     <name>frame22 Location Y</name>
     <class>java.lang.Integer</class>
-    <value>171</value>
+    <value>188</value>
   </preference>
   <preference>
     <name>frame23 Width</name>
@@ -498,7 +498,7 @@
   <preference>
     <name>frame23 Location Y</name>
     <class>java.lang.Integer</class>
-    <value>171</value>
+    <value>188</value>
   </preference>
   <preference>
     <name>frame24 Width</name>
@@ -518,7 +518,7 @@
   <preference>
     <name>frame24 Location Y</name>
     <class>java.lang.Integer</class>
-    <value>171</value>
+    <value>188</value>
   </preference>
   <preference>
     <name>frame25 Width</name>
@@ -538,7 +538,7 @@
   <preference>
     <name>frame25 Location Y</name>
     <class>java.lang.Integer</class>
-    <value>171</value>
+    <value>188</value>
   </preference>
   <preference>
     <name>frame26 Width</name>
@@ -558,7 +558,7 @@
   <preference>
     <name>frame26 Location Y</name>
     <class>java.lang.Integer</class>
-    <value>171</value>
+    <value>188</value>
   </preference>
   <preference>
     <name>frame27 Width</name>
@@ -578,7 +578,7 @@
   <preference>
     <name>frame27 Location Y</name>
     <class>java.lang.Integer</class>
-    <value>171</value>
+    <value>188</value>
   </preference>
   <preference>
     <name>frame28 Width</name>
@@ -598,7 +598,7 @@
   <preference>
     <name>frame28 Location Y</name>
     <class>java.lang.Integer</class>
-    <value>171</value>
+    <value>188</value>
   </preference>
   <preference>
     <name>frame29 Width</name>
@@ -618,7 +618,7 @@
   <preference>
     <name>frame29 Location Y</name>
     <class>java.lang.Integer</class>
-    <value>171</value>
+    <value>188</value>
   </preference>
   <preference>
     <name>frame30 Width</name>
@@ -638,7 +638,7 @@
   <preference>
     <name>frame30 Location Y</name>
     <class>java.lang.Integer</class>
-    <value>171</value>
+    <value>188</value>
   </preference>
   <preference>
     <name>frame31 Width</name>
@@ -658,7 +658,7 @@
   <preference>
     <name>frame31 Location Y</name>
     <class>java.lang.Integer</class>
-    <value>171</value>
+    <value>188</value>
   </preference>
   <preference>
     <name>frame32 Width</name>
@@ -678,7 +678,7 @@
   <preference>
     <name>frame32 Location Y</name>
     <class>java.lang.Integer</class>
-    <value>171</value>
+    <value>188</value>
   </preference>
   <preference>
     <name>frame33 Width</name>
@@ -698,7 +698,7 @@
   <preference>
     <name>frame33 Location Y</name>
     <class>java.lang.Integer</class>
-    <value>171</value>
+    <value>188</value>
   </preference>
   <preference>
     <name>frame8 Width</name>
@@ -718,7 +718,7 @@
   <preference>
     <name>frame8 Location Y</name>
     <class>java.lang.Integer</class>
-    <value>171</value>
+    <value>188</value>
   </preference>
 </preferences>
 

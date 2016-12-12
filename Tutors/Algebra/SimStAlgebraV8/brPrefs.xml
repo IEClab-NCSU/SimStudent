@@ -18,7 +18,7 @@
   <preference>
     <name>frame0 Location Y</name>
     <class>java.lang.Integer</class>
-    <value>171</value>
+    <value>195</value>
   </preference>
   <preference>
     <name>Show Action Labels</name>
@@ -43,12 +43,12 @@
   <preference>
     <name>Docked Window Location X</name>
     <class>java.lang.Integer</class>
-    <value>281</value>
+    <value>157</value>
   </preference>
   <preference>
     <name>Docked Window Location Y</name>
     <class>java.lang.Integer</class>
-    <value>23</value>
+    <value>32</value>
   </preference>
   <preference>
     <name>Docked Window Width</name>
@@ -63,12 +63,12 @@
   <preference>
     <name>Student Interface Location X</name>
     <class>java.lang.Integer</class>
-    <value>426</value>
+    <value>1039</value>
   </preference>
   <preference>
     <name>Student Interface Location Y</name>
     <class>java.lang.Integer</class>
-    <value>23</value>
+    <value>206</value>
   </preference>
   <preference>
     <name>Use OLI Logging</name>

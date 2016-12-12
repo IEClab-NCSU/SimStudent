@@ -15,8 +15,11 @@
 package edu.cmu.pact.miss;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -163,11 +166,25 @@ public class LhsSearchSuccessorFn implements SuccessorFunction {
     }
 
     public void parse(String fileName) {
+    	InputStreamReader isr = null;
+    	if(SimSt.WEBSTARTENABLED){
+    		ClassLoader cl = this.getClass().getClassLoader();  
+            trace.out("miss","LHSSearch reading file " + fileName);
+            InputStream is = cl.getResourceAsStream(fileName);
+            isr = new InputStreamReader(is);
+    	}
+    	else{
+    		InputStream is = null;
+			try {
+				  trace.out("miss","LHSSearch reading file " + fileName);
+				is = new FileInputStream(fileName);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			isr = new InputStreamReader(is);
+    	}
     	
-        ClassLoader cl = this.getClass().getClassLoader();  
-        trace.out("miss","LHSSearch reading file " + fileName);
-        InputStream is = cl.getResourceAsStream(fileName);
-        InputStreamReader isr = new InputStreamReader(is);
         BufferedReader br = new BufferedReader(isr);
         try {
 			getRete().parse(br, false);
@@ -179,9 +196,22 @@ public class LhsSearchSuccessorFn implements SuccessorFunction {
     
     public void loadWMEStructureFromReader(String fileName) {
 
-    	ClassLoader cl = this.getClass().getClassLoader();
-        InputStream is = cl.getResourceAsStream(fileName);
-        InputStreamReader isr = new InputStreamReader(is);
+    	InputStreamReader isr = null;
+    	if(SimSt.WEBSTARTENABLED){
+        	ClassLoader cl = this.getClass().getClassLoader();
+            InputStream is = cl.getResourceAsStream(fileName);
+            isr = new InputStreamReader(is);
+        }
+    	else{
+    		InputStream is = null;
+			try {
+				is = new FileInputStream(fileName);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			isr = new InputStreamReader(is);
+    	}
         BufferedReader br = new BufferedReader(isr);
 		getRete().loadWMEStructureFromReader(br);
     }

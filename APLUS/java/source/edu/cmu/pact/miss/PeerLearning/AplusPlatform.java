@@ -746,9 +746,9 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 		SimStPLE.setOverviewPageName("curriculum.html");
 		
 		if(SimStPLE.overviewPageName != null && SimStPLE.overviewPageName.length() > 0)
-        	browser.setHtmlSource(brController.getMissController().getSimSt().getProjectDir()+"/"+SimStPLE.overviewPageName);
-		Component overview = browser.getBrowserPane();
+				browser.setHtmlSource(SimStPLE.overviewPageName);
 		
+		Component overview = browser.getBrowserPane();
 		overviewTab.setLayout(new GridBagLayout());
 		
 		GridBagConstraints ovConst = new GridBagConstraints();

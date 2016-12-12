@@ -355,6 +355,7 @@ public class Logger implements AsyncStreamLogger.Listener, LogContext, PropertyC
         try {
             if (doDisk && diskLogger != null) {
                 diskResult = diskLogger.logActionLog(alog);
+               // System.out.println("--------------------- The end of this log ");
 //                trace.out("log", "disk log result " + diskResult
 //                        + ", last error " + diskLogger.getLastError());
                 if (!diskResult.booleanValue())
@@ -565,7 +566,11 @@ public class Logger implements AsyncStreamLogger.Listener, LogContext, PropertyC
 	/** Cached value for school name. */
 	private String schoolName = null;
 
+	
 	/** Cached value for course name. */
+	private String courseName;
+	
+	/** Cached value for dataset name. */
 	private String datasetName = "UndefinedCourse";
 
 	/** Top-level object. */
@@ -1083,17 +1088,19 @@ public class Logger implements AsyncStreamLogger.Listener, LogContext, PropertyC
 	}
 
 	/** set value for course name.
-		@param courseName The new value for {@link #datasetName}
-		@deprecated use {@link #setDatasetName(String)} instead */
+		@param courseName*/
+	//	@deprecated use {@link #setDatasetName(String)} instead
 	public void setCourseName(String  courseName) {
-		setDatasetName(courseName);
+		 this.courseName = courseName;
+		//setDatasetName(courseName);
 	}
 	
 	/** Get value for course name.
-		@return {@link #datasetName}
-		@deprecated use {@link #getDatasetName()} instead */
+		@return {@link #courseName}*/
+	//	@deprecated use {@link #getDatasetName()} instead 
 	public String getCourseName() {
-		return getDatasetName();
+		 return courseName;
+		//return getDatasetName();
 	}
 
 	/** Set value for course name.
@@ -1253,8 +1260,10 @@ public class Logger implements AsyncStreamLogger.Listener, LogContext, PropertyC
         //If levelElt is still null, just create a default "Course" level
     	if (levelElt == null)
         	levelElt = new LevelElement("Course", getCourseName(), problemElt);
-
-        result.setDataset(new DatasetElement(getCourseName(), levelElt));
+        if(getDatasetName().equalsIgnoreCase("UndefinedCourse"))
+        	    result.setDataset(new DatasetElement(getCourseName(),levelElt));
+        else 
+        		result.setDataset(new DatasetElement(getDatasetName(), levelElt));
 
         if (experimentalConditions != null) {
         	for (int i = 0; i < experimentalConditions.length; ++i)
@@ -1619,7 +1628,7 @@ public class Logger implements AsyncStreamLogger.Listener, LogContext, PropertyC
 		
 
 		if (trace.getDebugCode("miss")) trace.out("miss", "Logging it with a Message obj+++++++++++++++"+dsMsg.toString());
-		
+		System.out.println(" The following is logged at LogIt : "+dsMsg.toString());
 		StreamLogger sLogger = getOLILogger();
 		DiskLogger dLogger = getDiskLogger();
 		boolean result = true;

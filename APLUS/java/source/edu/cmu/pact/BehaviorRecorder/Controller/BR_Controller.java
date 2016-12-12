@@ -4664,6 +4664,7 @@ public class BR_Controller extends TutorController implements PropertyChangeList
 	    if (problemName != null && problemName.length() >0)
 	    	messageObject.setProperty("ProblemName", problemName);
 	    messageObject.setProperty("AuthorMode", getCtatModeModel().getCurrentAuthorMode());
+	    getLoggingSupport().setDatasetName(getLogger().getCourseName());
 	    getLogger().oliLog(messageObject, true);
 	}
 
@@ -6309,7 +6310,7 @@ public class BR_Controller extends TutorController implements PropertyChangeList
 	if (this.missController == null) {
 	    initializeSimSt();
 	}
-	*/
+	*/ // System.out.println("MissControllerExternal : "+getLauncher().getMissController());
         return getLauncher().getMissController();
     }
 

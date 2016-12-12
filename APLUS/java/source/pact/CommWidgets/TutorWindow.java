@@ -111,7 +111,7 @@ public class TutorWindow extends AbstractCtatWindow implements MouseListener {
         setTitle("Student Interface");
 
         setName("Student Interface");
-
+        setResizable(false);
         wrapperSupport.setController(controller);
         this.utp = wrapperSupport.getController().getUniversalToolProxy();
         setDockable(false);

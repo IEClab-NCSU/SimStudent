@@ -14,14 +14,16 @@ public class WebStartFileDownloader {
 	public static final  String output_folder = System.getProperty("user.home");
 	public static final  String separator = System.getProperty("file.separator");
 	public static final String SimStWebStartDir = output_folder + separator + "Public" + separator + SimStAlgebraPackage + separator;
-
+    private String packageName = "SimStAlgebraV8";
+    
 	public String findFile(String name) {
 		
 		if(checkFileExistsLocally(name))
 			return name;
 		else {
 	    	ClassLoader cl = this.getClass().getClassLoader();
-	    	InputStream is = cl.getResourceAsStream(SimStAlgebraPackage + "/" + name);
+	    	InputStream is = cl.getResourceAsStream(SimStAlgebraPackage+"/"+name);
+	    	
 	    	if(is != null) { 
 		        FileOutputStream fos = null;
 		        String file = null;
@@ -63,7 +65,7 @@ public class WebStartFileDownloader {
 			return name;
 		else {
 	    	ClassLoader cl = this.getClass().getClassLoader();
-	    	InputStream is = cl.getResourceAsStream("TabbedPreTest" + "/" + name);
+	    	InputStream is = cl.getResourceAsStream("TabbedTest" + "/" + name);
 	    	if(is != null) { 
 		        FileOutputStream fos = null;
 		        String file = null;
@@ -107,5 +109,13 @@ public class WebStartFileDownloader {
             return true;
         else
         	return false;
+	}
+
+	public String getPackageName() {
+		return packageName;
+	}
+
+	public void setPackageName(String packageName) {
+		this.packageName = packageName;
 	}
 }

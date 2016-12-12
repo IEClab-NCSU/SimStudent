@@ -178,6 +178,7 @@ public class OLIMessageObjectV4 extends OLIMessageObject {
 			// getLogger().setProblemName(localProblemName);
 
 			// revise ContextMessage in logger
+		
 			ContextMessage msg = logger.getContextMessage(getSemanticEvt());
 			TutorActionLogV4 result = new TutorActionLogV4(msg);
 			return result;

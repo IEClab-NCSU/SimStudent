@@ -89,6 +89,8 @@ public class MissController implements MissControllerExternal {
     
     
     public SimSt getSimSt() {
+    	//System.out.println(" this : "+this);
+    	//System.out.println("SimSt : "+this.simSt);
     	return this.simSt;
     }
     
@@ -1244,7 +1246,7 @@ public class MissController implements MissControllerExternal {
         	} else { 
         		
         		WebStartFileDownloader ff = new WebStartFileDownloader();
-        		String path = ff.findFile("simst.ser");
+        		String path = ff.findFile("SimStDefault.ser");
         		trace.err("Object not found, loading file " + path);
         		if(path != null) {
         			getBrController().setDeletePrFile(true);
@@ -1972,7 +1974,7 @@ public class MissController implements MissControllerExternal {
                     } else if (keyStem.equalsIgnoreCase("ssOperatorFile")) {
                         setSsOperatorFile(parameter[0]);
 
-                    } else if (keyStem.equalsIgnoreCase("ssProjectDir")) {
+                    } else if (keyStem.equalsIgnoreCase("ssProjectDirectory")) {
                         setSsProjectDir(parameter[0]);
 
                     } 
@@ -2075,6 +2077,9 @@ public class MissController implements MissControllerExternal {
                     	
                     } else if (keyStem.equalsIgnoreCase("ssRunInPLE")) {
                         setSimStPleOn(true);
+                    }else if (keyStem.equalsIgnoreCase("ssNoLogging")) {
+                        setSimStLogging(false);
+                        setSimStLocalLogging(false);
                     } else if (keyStem.equalsIgnoreCase("ssLogging")) {
                         setSimStLogging(true);
                     } else if (keyStem.equalsIgnoreCase("ssLocalLogging")) {
@@ -2119,6 +2124,8 @@ public class MissController implements MissControllerExternal {
                     	setSsGeneralWmePaths();
                     } else if (keyStem.equalsIgnoreCase("ssTypeMatcher")){
                     	 setSsTypeMatcher(parameter[0]);
+                    } else if(keyStem.equalsIgnoreCase("ssLogFolder")){
+                    	setSsLogFolder(parameter[0]);
                     }
                     else {	
                         throw new IllegalArgumentException ("Unknown SimStudent command line argument: " + keyStem);
@@ -2131,7 +2138,17 @@ public class MissController implements MissControllerExternal {
         }
     }
 
-    // Thu Oct 27 15:20:09 2005:: Noboru
+    private void setSsLogFolder(String logFolder) {
+		// TODO Auto-generated method stub
+    	//@author Vishnu Priya Chandra Sekar
+    	// enable to specify the log folder structure
+		trace.out("miss", "Setting the log folder :  " +logFolder);
+
+    	PreferencesModel pm = getBrController().getPreferencesModel();
+    	pm.setStringValue(BR_Controller.DISK_LOGGING_DIR, logFolder);
+	}
+
+	// Thu Oct 27 15:20:09 2005:: Noboru
     //
     // Run a validation test for Sim. Student to validate production rules
     // against a test problems
@@ -2499,7 +2516,7 @@ public class MissController implements MissControllerExternal {
     public void setSsPrefsFile(String filename)
     {
     	// Check if the filename exists on the local file system or is in jar
-    	File brPrefsFile = new File(new File(".").getAbsolutePath(), filename);
+    	/*File brPrefsFile = new File(new File(".").getAbsolutePath(), filename);
     	if(brPrefsFile != null && brPrefsFile.exists() && brPrefsFile.isAbsolute()) {
     		trace.out("miss", "Loading the prefs file locally:  " + filename);
     		getBrController().getPreferencesModel().setPreferenceFile(filename);
@@ -2510,8 +2527,24 @@ public class MissController implements MissControllerExternal {
     		trace.out("miss", "Loading the prefs file:  " + file);
     		getBrController().getPreferencesModel().setPreferenceFile(file);
     		getBrController().getPreferencesModel().loadFromDisk();
+    	}*/
+    	if(SimSt.WEBSTARTENABLED){
+    		WebStartFileDownloader finder = new WebStartFileDownloader();
+    		String file = "";
+    		if(getSimSt().getPackageName().equals("TabbedTest"))
+    			file = finder.findTabbedTestPrefsFile(filename);
+    		else
+    			file = finder.findFile(filename);
+    		trace.out("miss", "*Loading the prefs file webstart:  " + filename);
+    		getBrController().getPreferencesModel().setPreferenceFile(file);
     	}
+    	else{
+    		trace.out("miss", "*Loading the prefs file locally:  " + getSimSt().getProjectDir()+System.getProperty("file.separator")+filename);
+    		getBrController().getPreferencesModel().setPreferenceFile(getSimSt().getProjectDir()+System.getProperty("file.separator")+filename);
+    	}
+    		getBrController().getPreferencesModel().loadFromDisk();
     }
+    
     
     public void setSsActivationList(String name)
     {
@@ -2575,7 +2608,7 @@ public class MissController implements MissControllerExternal {
     private void setSsCacheOracleInquiry(String flag) {
         setSsCacheOracleInquiry(!flag.equalsIgnoreCase("false"));
     }
-    
+  
     private void setSsPreservePrFile(boolean flag) {
         setClArgumentSetToProtectProdRules(flag);
     }

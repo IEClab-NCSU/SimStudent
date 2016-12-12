@@ -302,7 +302,7 @@ public class SimStPLEActionListener implements ActionListener, ChangeListener {
 			//If there wasn't a previously viewed tab, say it was the first tab
 			if(lastTabViewed.length() == 0)
 			{
-				lastTabViewed = tabPane.getTitleAt(0);
+				lastTabViewed = "Tutor";
 			}
 			int duration = (int) (Calendar.getInstance().getTimeInMillis() - lastTabViewStart);
 	        lastTabViewStart = Calendar.getInstance().getTimeInMillis(); 
@@ -316,7 +316,7 @@ public class SimStPLEActionListener implements ActionListener, ChangeListener {
         			brController.getAmt().handleInterfaceAction(tabText, "TabClicked", "-1");
 	        	}
 	        }
-
+	        
 	        logger.simStLog(SimStLogger.SIM_STUDENT_ACTION_LISTENER, SimStLogger.TAB_LEFT_ACTION, "",lastTabViewed,"",duration);
 
 	        if (tabPane.getTitleAt(tabPane.getSelectedIndex()).contains(AplusPlatform.exampleTabTitle)){
@@ -370,7 +370,11 @@ public class SimStPLEActionListener implements ActionListener, ChangeListener {
 			
 			
 	        //and going to the new tab
-			logger.simStLog(SimStLogger.SIM_STUDENT_ACTION_LISTENER, SimStLogger.TAB_SWITCH_ACTION, tabPane.getTitleAt(tabPane.getSelectedIndex()));
+			
+			String title = "Tutor";
+			if(tabPane.getSelectedIndex() > 0)
+				title = tabPane.getTitleAt(tabPane.getSelectedIndex());
+			logger.simStLog(SimStLogger.SIM_STUDENT_ACTION_LISTENER, SimStLogger.TAB_SWITCH_ACTION, title);
 			if(trace.getDebugCode("miss"))trace.out("miss", "In stateChanged and calling setUpTab");
 			
 			
@@ -453,8 +457,10 @@ public class SimStPLEActionListener implements ActionListener, ChangeListener {
             
 			
 			//track the tab you are looking at for next time, as the one you left
-            lastTabViewed = tabPane.getTitleAt(tabPane.getSelectedIndex());
-            
+			if(tabPane.getSelectedIndex() > 0)
+				lastTabViewed = tabPane.getTitleAt(tabPane.getSelectedIndex());
+			else
+				lastTabViewed = "Tutor";
             //if switched to example tab and an example was open, now looking at it
             if(lastTabViewed.equals(AplusPlatform.exampleTabTitle))
 			{

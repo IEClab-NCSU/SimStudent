@@ -390,7 +390,7 @@ public class Instruction implements Serializable{
     	
     	Collection val =  fpCache.values();
     	Iterator itr = val.iterator();
-    	    	
+    	
     	RhsState initState = new RhsState( wmeTypeFile, getSeeds(), matcher );
 
     	

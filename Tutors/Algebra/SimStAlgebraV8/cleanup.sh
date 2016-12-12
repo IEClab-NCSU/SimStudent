@@ -1,5 +1,5 @@
 echo "Remove the files";
-rm -rf foil-log/ log/ PR-age/ instructions-TestSS.txt productionRules-TestSS.pr productionRules.pr TestSS.account simst-TestSS.ser *.bload
+rm -rf foil-log/ log/ PR-age/ instructions-* productionRules-* productionRules.pr *.account simst-* *.bload bkt_params-*
 
 #echo "Compile the tutor files";
 #./compileTutor.sh

@@ -28,6 +28,7 @@ import javax.swing.text.html.HTMLEditorKit;
 import javax.media.*;
 
 import edu.cmu.pact.Utilities.trace;
+import edu.cmu.pact.miss.SimSt;
 import edu.cmu.pact.miss.WebStartFileDownloader;
 
 /**
@@ -147,13 +148,15 @@ public class CurriculumBrowser {
     public void setHtmlSource(String src)
     {
     	
-    	String fileName = this.getFileFinder().findFile(src);
-    	if(trace.getDebugCode("miss"))trace.out("miss", "Inside setHtmlSource with fileName: " + fileName);
+    	
+    	if(trace.getDebugCode("miss"))trace.out("miss", "Inside setHtmlSource with fileName: " + src);
     	try
     	{
     		cbView.getBrowserPane().setEditorKit(new HTMLEditorKit());
-    		//cbView.getBrowserPane().read(new FileReader(fileName), cbView.getBrowserPane().getDocument());
-    		cbView.getBrowserPane().read(new FileReader(src), cbView.getBrowserPane().getDocument());
+    		if(SimSt.WEBSTARTENABLED)
+    			cbView.getBrowserPane().read(new FileReader(this.fileFinder.findFile(src)), cbView.getBrowserPane().getDocument());
+    		else
+    				cbView.getBrowserPane().read(new FileReader(src), cbView.getBrowserPane().getDocument());
     		htmlSet = true;
     	}
     	catch(IOException e)

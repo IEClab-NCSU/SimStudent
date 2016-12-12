@@ -12,6 +12,11 @@ import edu.cmu.pact.Utilities.trace;
  */
 public class SimStProblemGraph extends ProblemGraph{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6868470341773141981L;
+
 	/**	 */
 	private SimStNode startNode;
 	

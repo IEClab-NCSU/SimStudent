@@ -146,7 +146,7 @@ public class SimStLogger {
    public static final String EXAMPLE_VIEW_END = "Finished Example Solution View";
    public static final String QUIZ_VIEW_END_TAB = "Finished Quiz Solution View by Leaving Tab";
    public static final String EXAMPLE_VIEW_END_TAB = "Finished Example Solution View by Leaving Tab";
-   public static final String QUIZ_VIEW_TAB = "Quiz Solution Viewed on New Tab";
+   public static final String QUIZ_VIEW_TAB = "Quiz Solution Viewed";
    public static final String EXAMPLE_VIEW_TAB = "Example Solution Viewed on New Tab";
    public static final String UNTAKEN_QUIZ_EXPAND_ACTION = "Student Tried to Expand Untaken Quiz";
    public static final String UNTAKEN_QUIZ_INITIATE_ACTION = "Student Initiated Quiz on Untaken Quiz Expand";
@@ -266,7 +266,9 @@ public class SimStLogger {
    public SimStLogger(BR_Controller br)
    {
    	brController = br;
-   	datasetBasename = brController.getLoggingSupport().getDatasetName();
+   	System.out.println("Inital Dataset Basename : "+datasetBasename);
+   	datasetBasename = brController.getLoggingSupport().getCourseName();
+   	System.out.println("In SimStLogger : "+datasetBasename);
    }
 	
    public static final String UNPAIRED_LOG_ITEM = "UNPAIRED_LOG_ITEM";
@@ -419,9 +421,10 @@ public class SimStLogger {
  
    	correctness = checkCorrectness(action, sai, problemName, result, node, correctness);
   
-	if (action.equals(LMS_PROBLEM_CONSIDERED)) 
+	if (action.equals(LMS_PROBLEM_CONSIDERED)) {
 		problemName=step;
-	
+		System.out.println("LMS problem :"+step);
+	}
 	
 	//if (action.equals(this.LMS_PROBLEM_CONSIDERED)) {
 	//if (action.equals(this.PROBLEM_ENTERED_ACTION)) {
@@ -466,6 +469,7 @@ public class SimStLogger {
    	addLogItem(ACTION_TYPE_PROPERTY, actionType,logMessage);
    	addLogItem(ACTION_PROPERTY, action,logMessage);
    	//addLogItem(STEP_PROPERTY, "'"+step,logMessage);
+   	System.out.println("Result : "+result);
    	addLogItem(RESULT_PROPERTY, result,logMessage);
    	
    	if (action.equals(LMS_PROBLEM_CONSIDERED))
@@ -703,10 +707,12 @@ public class SimStLogger {
    	    	
    	
    	//Determine which type of context message to use, depending on the dataset it should go to
+   	System.out.println(" Action : "+action);
    	if( HINT_REQUEST_ACTION.equalsIgnoreCase(action) || CONFIRMATION_REQUEST_ACTION.equalsIgnoreCase(action)
    			|| CONFIRMATION_REQUEST_CL_ACTION.equalsIgnoreCase(action) || STEP_INPUT_ACTION.equals(action)
    			|| QUIZ_QUESTION_ANSWER_ACTION.equals(action))
    	{
+   	
    		context = simStContext;
    	}
    	else if( HINT_RECEIVED.equalsIgnoreCase(action) || STUDENT_STEP_ENTERED.equalsIgnoreCase(action) || INPUT_VERIFY_ACTION.equalsIgnoreCase(action)
@@ -714,7 +720,7 @@ public class SimStLogger {
    	{
    		context = studentContext;
    	}
-   	else if (this.LMS_PROBLEM_CONSIDERED.equals(action)){
+   	else if (LMS_PROBLEM_CONSIDERED.equals(action)){
    		context = lmsContext;
    	}
    	else
@@ -725,8 +731,10 @@ public class SimStLogger {
    	if(context == null)
    	{
 			context= brController.getLoggingSupport().getContextMessage();
+			System.out.println("Get the current contextMessage");
    	}
-   	
+   	System.out.println(" Context :   "+context);
+   	System.out.println("End of Context details");
    	return context;
 	}
 	
@@ -738,19 +746,34 @@ public class SimStLogger {
 	private void createContextMessages()
 	{
 		LoggingSupport logging = brController.getLoggingSupport();
-
+        
 		logging.setDatasetName(datasetBasename+SIMST_APPEND);
 		simStContext= logging.getContextMessage();
+		System.out.println("--------Logging the following in SimStudent database-----------");
+		System.out.println(simStContext.toString());
 		logThis(simStContext);
+		System.out.println("--------End of storing the log in SimStudent database----------");
+		
 		logging.setDatasetName(datasetBasename+STUDENT_APPEND);
 		studentContext= logging.getContextMessage();
+		System.out.println("---------Logging the following in Student database--------");
+		System.out.println(studentContext.toString());
 		logThis(studentContext);
+		System.out.println("----------End of storing the log in Student database ----------");
+		
 		logging.setDatasetName(datasetBasename);
 		flowContext= logging.getContextMessage();
+		System.out.println("-----------Logging the following in APLUS database--------------");
+		System.out.println(flowContext.toString());
 		logThis(flowContext);
+		System.out.println("------------End of storing the log in APLUS database -------------\n");
+		
 		logging.setDatasetName(datasetBasename+LMS_APPEND);
 		lmsContext= logging.getContextMessage();
+		System.out.println("-------------Logging the following in LMS database----------------");
+		System.out.println(lmsContext.toString());
 		logThis(lmsContext);
+		System.out.println("-------------End of storing the following in the LMS database -------------");
 	}
 	
 	

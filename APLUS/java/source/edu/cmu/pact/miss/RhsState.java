@@ -13,8 +13,11 @@
 package edu.cmu.pact.miss;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -341,19 +344,37 @@ public class RhsState implements Cloneable {
 	try {
 	    getAmlRete().reset();
 	    //getAmlRete().executeCommand( "(batch \"" + wmeTypeFile + "\")");
-        ClassLoader cl = this.getClass().getClassLoader();
-        trace.out("miss","RhsState reading file " + wmeTypeFile);
-        InputStream is = cl.getResourceAsStream(wmeTypeFile);
-        InputStreamReader isr = new InputStreamReader(is);
-        BufferedReader br = new BufferedReader(isr);
-        try {
-        		trace.out("miss","Paring wmeTypes file with AmlRete....");
-				Value val = getAmlRete().parse(br, false);
-			} catch (JessException e) {
+	    //***//
+	    InputStreamReader isr = null;
+	    BufferedReader br = null;
+	    if(SimSt.WEBSTARTENABLED){
+	    	ClassLoader cl = this.getClass().getClassLoader();
+	        trace.out("miss","RhsState reading file " + wmeTypeFile);
+	        InputStream is = cl.getResourceAsStream(wmeTypeFile);
+	        isr = new InputStreamReader(is);
+	    }
+	    else{
+	    	InputStream is = null;
+			try {
+				trace.out("miss","RhsState reading file " + wmeTypeFile);
+				is = new FileInputStream(wmeTypeFile);
+			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		} catch (JessException e) {
+			isr = new InputStreamReader(is);
+	    }
+	    
+	    br = new BufferedReader(isr);
+	    try {
+	        		trace.out("miss","Paring wmeTypes file with AmlRete....");
+					Value val = getAmlRete().parse(br, false);
+			} catch (JessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+		  }
+	    //***//
+	     } catch (JessException e) {
 			e.printStackTrace();
 		}
 

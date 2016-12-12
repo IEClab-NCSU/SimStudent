@@ -1,19 +1,20 @@
 #!/bin/bash
+CVSDIR=$(pwd)
 cd SimStAlgebraV8
-
-if [ "${CVSDIR}" = "" ]
-then
+ProjectDir=$(pwd)
+#if [ "${CVSDIR}" = "" ]
+#then
     if [ "${OS}" = "Windows_NT" ]; then
-	CVSDIR="c:/pact-cvs-tree"
+#	CVSDIR="c:/pact-cvs-tree"
 	CPS=";"
     fi
     if [ "${OS}" != "Windows_NT" ]; then
-	CVSDIR="${HOME}/Desktop/SimStudentGithub/SimStudent-master"
+#	CVSDIR="${HOME}/Desktop/SimStudentGithub/SimStudent-master"
 	CPS=":"
     fi
-fi
+#fi
 
-CtatJar="${CVSDIR}/APLUS/java/lib/ctat.jar${CPS}${CVSDIR}/APLUS/java/lib/jess.jar"
+CtatJar="${CVSDIR}/lib/ctat.jar${CPS}${CVSDIR}/lib/jess.jar"
 
 
 if [ "${OS}" = "Windows_NT" ]; then
@@ -29,8 +30,26 @@ for i do
 case $i in
 "-noPle") PLE="off";;
 "-noSe") SE="off";;
-"-log") AddArgs="${AddArgs} -ssLogging";;
-"-local") AddArgs="${AddArgs} -ssLocalLogging";;
+"-noLogging") AddArgs="${AddArgs} -ssNoLogging";;
+"-datashopLogging") AddArgs="${AddArgs} -ssLogging "
+if [[ ! "$2" ]] || [[ $2 == -* ]];
+then 
+    echo "Provide an argument for DataShop logging";
+    echo "-datashopLogging <coursename>";
+    exit 1;
+else
+    AddArgs="${AddArgs} -ssLogURL http://pslc-qa.andrew.cmu.edu/log/server"
+	AddArgs="${AddArgs} -Dcourse_name=${2}";
+fi;;
+"-localLogging") AddArgs="${AddArgs} -ssLocalLogging"
+if [[ ! "$2" ]] || [[ $2 == -* ]];
+then 
+    echo "Provide an argument for local logging";
+    echo "-localLogging <coursename>";
+    exit 1;
+else
+	AddArgs="${AddArgs} -Dcourse_name=${2}";
+fi;;
 "-mt") AddArgs="${AddArgs} -ssMetaTutorMode";;
 "-ct") AddArgs="${AddArgs} -ssCogTutorMode";;
 "-cta") AddArgs="${AddArgs} -ssAplusCtrlCogTutorMode";;
@@ -39,19 +58,20 @@ case $i in
 "-u"|"-user") AddArgs="${AddArgs} -ssUserID";;
 "-o"|"-output") redir="on";;
 "-h"|"-help") echo "Usage: $0"
-echo "-noPle - turns PLE off"
-echo "-noSe - turn Self Explanation off"
-echo "-log - turns logging to datashop on"
-echo "-local - turns local logging on"
-echo "-mt - turns metatutor on"
-echo "-mtc - turns metatutor on with cognitive hint only"
-echo "-mtmc - turns metatutor on with meta-cognitive hint only"
-echo "-cta - launch APLUS in AplusControl mode"
-echo "-ct - launch APLUS in Cognitive Tutor mode"
-echo "-tt - turns Tutalk on"
-echo "-br - displays Behavior Recorder window"
-echo "-u or -user <name> - sets the user ID"
-echo "-o or -output <filename> - redirects output to file"
+echo "	-datashopLogging <coursename> - turns logging to datashop on"
+echo "	-localLogging <coursename>    - turns local logging on"
+echo "	-noLogging - turns off logging"
+#echo "	-noPle - turns PLE off"
+echo "	-noSe - turn Self Explanation off"
+echo "	-mt - turns metatutor on"
+echo "	-mtc - turns metatutor on with cognitive hint only"
+echo "	-mtmc - turns metatutor on with meta-cognitive hint only"
+echo "	-cta - launch APLUS in AplusControl mode"
+echo "	-ct - launch APLUS in Cognitive Tutor mode"
+echo "	-tt - turns Tutalk on"
+echo "	-br - displays Behavior Recorder window"
+echo "	-u or -user <name> - sets the user ID"
+echo "	-o or -output <filename> - redirects output to file"
 exit;;
 *) 
 if [ ${redir} == "on" ];
@@ -68,7 +88,28 @@ fi;;
 esac
 done
 
+echo "${AddArgs}";
 
+#Checking whether the command line has logging options
+if	[[ "${AddArgs}" != *-ssLocalLogging* ]] && [[ "${AddArgs}" != *-ssLogging* ]] && [[ "${AddArgs}" != *-ssNoLogging* ]];
+then
+    echo "Provide any one of the logging options";
+    echo "	-datashopLogging <coursename> - turns logging to datashop on";
+	echo "	-localLogging <coursename>    - turns local logging on";
+	echo "	-noLogging - turns off logging";
+#	echo "	-noPle - turns PLE off";
+	echo "	-noSe - turn Self Explanation off"
+	echo "	-mt - turns metatutor on"
+	echo "	-mtc - turns metatutor on with cognitive hint only"
+	echo "	-mtmc - turns metatutor on with meta-cognitive hint only"
+	echo "	-cta - launch APLUS in AplusControl mode"
+	echo "	-ct - launch APLUS in Cognitive Tutor mode"
+	echo "	-tt - turns Tutalk on"
+	echo "	-br - displays Behavior Recorder window"
+	echo "	-u or -user <name> - sets the user ID"
+	echo "	-o or -output <filename> - redirects output to file"
+    exit 1;
+fi
 # VmOption="-cp ${CPATH} -DnoCtatWindow -Xmx512m"
 if [ -z $br ];
 then
@@ -121,11 +162,12 @@ fi
 
 #TutorArg="${TutorArg} -ssIntroVideo metatutor.mov"
 #TutorArg="${TutorArg} -ssIntroVideo aplus_controlS7.mov"
+TutorArg="${TutorArg} -ssProjectDirectory ${ProjectDir}"
 TutorArg="${TutorArg} -ssIntroVideo cogTutor.mov"
 TutorArg="${TutorArg} -ssOverviewPage curriculum.html"
 TutorArg="${TutorArg} -ssLoadPrefsFile brPrefsStacy.xml"
 TutorArg="${TutorArg} -ssCacheOracleInquiry false"
-TutorArg="${TutorArg} -ssLocalLogging true"
+#TutorArg="${TutorArg} -ssLocalLogging true"
 #TutorArg="${TutorArg} -ssMetaTutorModeLevel Cognitive"
 #TutorArg="${TutorArg} -ssMetaTutorModeLevel MetaCognitive"
 #TutorArg="${TutorArg} -ssLogging true"
@@ -144,14 +186,14 @@ TutorArg="${TutorArg} -ssSelectionOrderGetterClass SimStAlgebraV8.AlgebraV8Adhoc
 TutorArg="${TutorArg} -ssClSolverTutorSAIConverter SimStAlgebraV8.AlgebraV8AdhocSAIConverter"
 TutorArg="${TutorArg} -ssActivationList AccuracySortedActivationList"
 TutorArg="${TutorArg} -ssFoaClickDisabled"
-TutorArg="${TutorArg} -ssProjectDir ."
 TutorArg="${TutorArg} -ssNumBadInputRetries 2"
 TutorArg="${TutorArg} -ssProblemsPerQuizSection 2"
-TutorArg="${TutorArg} -Dcourse_name=SimStudent_StudyVII_Preparation"
+#TutorArg="${TutorArg} -Dcourse_name=SimStudent_StudyVII_Preparation"
 TutorArg="${TutorArg} -Dschool_name=someSchool"
 TutorArg="${TutorArg} -Dclass_name=someClass"
 TutorArg="${TutorArg} -ssCondition devTesting"
 TutorArg="${TutorArg} ${AddArgs}"
+
 
 cmd="java ${VmOption} SimStAlgebraV8/SimStAlgebraV8 ${TutorArg}"
 if [ ${redir} == "on" ];
@@ -163,7 +205,18 @@ else
 	${cmd};
 fi
 
-for bload in *.bload
-do
-    rm -f ./"$bload"
-done
+#for bload in *.bload
+#do
+#    rm -f ./"$bload"
+#done
+
+
+#TutorArg="${TutorArg} -Dcourse_name=LoggingTest"
+#TutorArg="${TutorArg} -Dschool_name=someSchool"
+#TutorArg="${TutorArg} -Dclass_name=someClass"
+#TutorArg="${TutorArg} -ssCondition devTesting"
+#TutorArg="${TutorArg} ${AddArgs}"
+
+#if[["${TutorArg}" == *-ssLocalLogging true*] -a ["${TutorArg}" != *-Dcourse_name=*]]
+#then 
+#    echo "To enable Local Logging, use '-Dcourse_name' argument to specify the course name"

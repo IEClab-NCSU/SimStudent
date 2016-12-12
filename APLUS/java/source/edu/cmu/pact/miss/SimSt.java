@@ -3125,6 +3125,7 @@ public final class SimSt implements Serializable {
 	private transient ModelTraceWorkingMemory modelTraceWM = null;
 
 	public ModelTraceWorkingMemory getModelTraceWM() {
+		System.out.println("Model Trace Working Memory : "+modelTraceWM);
 		return modelTraceWM;
 	}
 	public void setModelTraceWM(ModelTraceWorkingMemory modelTraceWM) {

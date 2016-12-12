@@ -1144,6 +1144,7 @@ public class TutorActionLog extends ActionLog {
 	 */
 	private void setMetaData(MetaElement meta) {
 		// trace.out("log", "meta TutorActionLog.setMetaData("+meta+")");
+		System.out.println("Time zone in meta : "+meta.getTimeZone());
 		if (meta == null)
 			return;
 		String s = meta.getUserId();
