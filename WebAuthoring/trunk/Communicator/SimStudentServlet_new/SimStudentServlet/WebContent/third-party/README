@@ -1,0 +1,12 @@
+DO NOT MODIFY FILES IN THIS TREE!!!
+
+These are from GitHub (and potentially other external sites).  Though it is
+possible to modify files here, committing/pushing them will try to commit to
+the third party site.
+
+To add/delete/modify these links, change the svn property svn:externals on this
+directory.
+
+Note: many of these are links to specific tagged versions in the repository
+so that we can make sure to use stable versions.  Again, modify svn:externals
+if you would like to change versions.

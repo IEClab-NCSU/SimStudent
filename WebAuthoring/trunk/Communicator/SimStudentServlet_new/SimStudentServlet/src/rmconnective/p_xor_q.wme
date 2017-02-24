@@ -1,0 +1,69 @@
+;; for Eclipse, etc., specify templates to read
+(require* wmeTypes "wmeTypes.clp")
+
+;;;; Fact assertions: slot assignments are below.
+
+(bind ?var1 (assert(MAIN::textField (name rightOperandField))))
+(bind ?var2 (assert(MAIN::label (name ans_label))))
+(bind ?var3 (assert(MAIN::button (name hint))))
+(bind ?var4 (assert(MAIN::button (name done))))
+(bind ?var5 (assert(MAIN::textField (name rm_connective_field))))
+(bind ?var6 (assert(MAIN::textField (name connective_field))))
+(bind ?var7 (assert(MAIN::label (name prob_label))))
+(bind ?var8 (assert(MAIN::textField (name simplified_field))))
+(bind ?var9 (assert(MAIN::textField (name leftOperand_field))))
+(bind ?var10 (assert(MAIN::problem (name p_xor_q))))
+
+;;;; Slot assignments
+
+; MAIN::textField
+(modify ?var1
+    (name rightOperandField)
+    (value q)
+)
+; MAIN::label
+(modify ?var2
+    (name ans_label)
+    (value "Negation Normal Form")
+)
+; MAIN::button
+(modify ?var3
+    (name hint)
+)
+; MAIN::button
+(modify ?var4
+    (name done)
+)
+; MAIN::textField
+(modify ?var5
+    (name rm_connective_field)
+    (value nil)
+)
+; MAIN::textField
+(modify ?var6
+    (name connective_field)
+    (value "⊕")
+)
+; MAIN::label
+(modify ?var7
+    (name prob_label)
+    (value Formula)
+)
+; MAIN::textField
+(modify ?var8
+    (name simplified_field)
+    (value nil)
+)
+; MAIN::textField
+(modify ?var9
+    (name leftOperand_field)
+    (value p)
+)
+; MAIN::problem
+(modify ?var10
+    (name p_xor_q)
+    (interface-elements ?var7 ?var2 ?var6 ?var4 ?var3 ?var9 ?var1 ?var5 ?var8)
+    (subgoals)
+    (done nil)
+    (description nil)
+)

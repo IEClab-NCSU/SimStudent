@@ -1,0 +1,167 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='line'>  1</span> <span class="COMM">/**------------------------------------------------------------------------------------
+<span class='line'>  2</span>  $Author$ 
+<span class='line'>  3</span>  $Date$ 
+<span class='line'>  4</span>  $Header$ 
+<span class='line'>  5</span>  $Name$ 
+<span class='line'>  6</span>  $Locker$ 
+<span class='line'>  7</span>  $Log$
+<span class='line'>  8</span>  
+<span class='line'>  9</span>  -
+<span class='line'> 10</span>  License:
+<span class='line'> 11</span>  -
+<span class='line'> 12</span>  ChangeLog:
+<span class='line'> 13</span>  -
+<span class='line'> 14</span>  Notes:
+<span class='line'> 15</span>  
+<span class='line'> 16</span>   Events: click, mousemove, mouseover, mouseout, keyup, keydown, 
+<span class='line'> 17</span>   		  focus, blur, select, load
+<span class='line'> 18</span> 
+<span class='line'> 19</span>   CSS: http://tutobx.com/post/24806696944/raised-and-pressed-div-using-css
+<span class='line'> 20</span>        http://stackoverflow.com/questions/5662178/opacity-of-divs-background-without-affecting-contained-element-in-ie-8
+<span class='line'> 21</span>  
+<span class='line'> 22</span>   Js:  http://www.quirksmode.org/js/this.html
+<span class='line'> 23</span>        http://unschooled.org/2012/03/understanding-javascript-this/   
+<span class='line'> 24</span>  
+<span class='line'> 25</span>   CTAT:
+<span class='line'> 26</span>   
+<span class='line'> 27</span>  		[48] [07:14:14] [CTATTextField] Processing style labelTextValue,
+<span class='line'> 28</span> 		[49] [07:14:14] [CTATTextField] Processing style inspBackgroundColor,ffffff
+<span class='line'> 29</span> 		[50] [07:14:14] [CTATTextField] Processing style inspBorderColor,999999
+<span class='line'> 30</span> 		[51] [07:14:14] [CTATTextField] Processing style inspFontName,Arial
+<span class='line'> 31</span> 		[52] [07:14:14] [CTATTextField] Processing style inspFontSize,20
+<span class='line'> 32</span> 		[53] [07:14:14] [CTATTextField] Processing style inspFontColor,0
+<span class='line'> 33</span> 		[54] [07:14:14] [CTATTextField] Processing style inspBold,FALSE
+<span class='line'> 34</span> 		[55] [07:14:14] [CTATTextField] Processing style inspItalic,FALSE
+<span class='line'> 35</span> 		[56] [07:14:14] [CTATTextField] Processing style inspUnderline,FALSE
+<span class='line'> 36</span> 		[57] [07:14:14] [CTATTextField] Processing style inspAlignment,left
+<span class='line'> 37</span> 		[58] [07:14:14] [CTATTextField] Processing style inspShowHintHighlight,true
+<span class='line'> 38</span> 		[59] [07:14:14] [CTATTextField] Processing style blockOnCorrect,true
+<span class='line'> 39</span> 		[60] [07:14:14] [CTATTextField] Processing style _tutorComponent,Tutor
+<span class='line'> 40</span> 		[61] [07:14:14] [CTATTextField] Processing style disabledBackgroundColor,ffffff
+<span class='line'> 41</span> 		[62] [07:14:14] [CTATTextField] Processing style disabledTextColor,0
+<span class='line'> 42</span> 		[63] [07:14:14] [CTATTextField] Processing style tutorComponent,Tutor  
+<span class='line'> 43</span> */</span><span class="WHIT">
+<span class='line'> 44</span> 
+<span class='line'> 45</span> </span><span class="COMM">/**
+<span class='line'> 46</span>  * 
+<span class='line'> 47</span>  */</span><span class="WHIT">
+<span class='line'> 48</span> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">CTATComboBox</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">aCanvas</span><span class="PUNC">,</span><span class="NAME">aContext</span><span class="PUNC">,</span><span class="NAME">aDescription</span><span class="PUNC">,</span><span class="NAME">aX</span><span class="PUNC">,</span><span class="NAME">aY</span><span class="PUNC">,</span><span class="NAME">aWidth</span><span class="PUNC">,</span><span class="NAME">aHeight</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 49</span> </span><span class="PUNC">{</span><span class="WHIT">		</span><span class="WHIT">
+<span class='line'> 50</span> </span><span class="WHIT">	</span><span class="WHIT">
+<span class='line'> 51</span> </span><span class="WHIT">	</span><span class="NAME">CTATCompBase.call</span><span class="PUNC">(</span><span class="KEYW">this</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="WHIT">
+<span class='line'> 52</span> </span><span class="WHIT">					  </span><span class="STRN">"CTATComboBox"</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="WHIT">
+<span class='line'> 53</span> </span><span class="WHIT">					  </span><span class="STRN">"__undefined__"</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 54</span> </span><span class="WHIT">					  </span><span class="NAME">aCanvas</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 55</span> </span><span class="WHIT">					  </span><span class="NAME">aContext</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 56</span> </span><span class="WHIT">					  </span><span class="NAME">aDescription</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 57</span> </span><span class="WHIT">					  </span><span class="NAME">aX</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 58</span> </span><span class="WHIT">					  </span><span class="NAME">aY</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 59</span> </span><span class="WHIT">					  </span><span class="NAME">aWidth</span><span class="PUNC">,</span><span class="WHIT">
+<span class='line'> 60</span> </span><span class="WHIT">					  </span><span class="NAME">aHeight</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 61</span> 
+<span class='line'> 62</span> </span><span class="WHIT">	</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">pointer</span><span class="PUNC">=</span><span class="KEYW">this</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 63</span> 
+<span class='line'> 64</span> </span><span class="WHIT">	</span><span class="NAME">this.debug</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">pointer.getClassName</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">" ("</span><span class="PUNC">+</span><span class="NAME">pointer.getX</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">+</span><span class="STRN">","</span><span class="PUNC">+</span><span class="NAME">pointer.getY</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">+</span><span class="STRN">","</span><span class="PUNC">+</span><span class="NAME">pointer.getWidth</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">+</span><span class="STRN">","</span><span class="PUNC">+</span><span class="NAME">pointer.getHeight</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">+</span><span class="STRN">")"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 65</span> 
+<span class='line'> 66</span> </span><span class="WHIT">	</span><span class="NAME">this.configFromDescription</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 67</span> 
+<span class='line'> 68</span> </span><span class="WHIT">	</span><span class="NAME">this.init</span><span class="PUNC">=</span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">init</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="WHIT">
+<span class='line'> 69</span> </span><span class="WHIT">	</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 70</span> </span><span class="WHIT">	    </span><span class="NAME">pointer.debug</span><span class="PUNC">(</span><span class="STRN">"init ("</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">pointer.getName</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">")"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 71</span> 
+<span class='line'> 72</span> </span><span class="WHIT">	    </span><span class="NAME">pointer.setZIndex</span><span class="PUNC">(</span><span class="NAME">currentZIndex</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 73</span> 
+<span class='line'> 74</span> </span><span class="WHIT">	    </span><span class="NAME">pointer.setComponent</span><span class="PUNC">(</span><span class="NAME">document.createElement</span><span class="PUNC">(</span><span class="STRN">"select"</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 75</span> </span><span class="WHIT">	    </span><span class="NAME">pointer.getComponent</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">name</span><span class="PUNC">=</span><span class="NAME">pointer.getName</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="COMM">// might be wrong</span><span class="WHIT">
+<span class='line'> 76</span> </span><span class="WHIT">	    </span><span class="NAME">pointer.getComponent</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">setAttribute</span><span class="PUNC">(</span><span class="STRN">'id'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="STRN">'ctatdiv'</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">currentIDIndex</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 77</span> </span><span class="WHIT">	    </span><span class="NAME">pointer.getComponent</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">setAttribute</span><span class="PUNC">(</span><span class="STRN">'onkeypress'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'return noenter(event)'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 78</span> 
+<span class='line'> 79</span> </span><span class="WHIT">	    </span><span class="NAME">pointer.addComponentReference</span><span class="PUNC">(</span><span class="NAME">pointer</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">pointer.getComponent</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 80</span> 
+<span class='line'> 81</span> </span><span class="WHIT">		</span><span class="NAME">pointer.assignEditable</span><span class="PUNC">(</span><span class="KEYW">true</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 82</span> 
+<span class='line'> 83</span> </span><span class="WHIT">	    </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">pointer.getEditable</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">==</span><span class="KEYW">true</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'> 84</span> </span><span class="WHIT">	        </span><span class="NAME">pointer.getComponent</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">disabled</span><span class="PUNC">=</span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 85</span> </span><span class="WHIT">	    </span><span class="KEYW">else</span><span class="WHIT">
+<span class='line'> 86</span> </span><span class="WHIT">	        </span><span class="NAME">pointer.getComponent</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">disabled</span><span class="PUNC">=</span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 87</span> 
+<span class='line'> 88</span> </span><span class="WHIT">	    </span><span class="NAME">pointer.debug</span><span class="PUNC">(</span><span class="STRN">"Final location: "</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">pointer.getX</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">","</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">pointer.getY</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">" with text: "</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">pointer.getText</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 89</span> 
+<span class='line'> 90</span> </span><span class="WHIT">	    </span><span class="NAME">pointer.setInitialized</span><span class="PUNC">(</span><span class="KEYW">true</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 91</span> 
+<span class='line'> 92</span> </span><span class="WHIT">	    </span><span class="NAME">document.getElementById</span><span class="PUNC">(</span><span class="STRN">"container"</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">appendChild</span><span class="PUNC">(</span><span class="NAME">pointer.getComponent</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 93</span> </span><span class="WHIT">	    </span><span class="WHIT">
+<span class='line'> 94</span> </span><span class="WHIT">		</span><span class="NAME">pointer.addCSSAttribute</span><span class="PUNC">(</span><span class="STRN">"width"</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">pointer.getWidth</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 95</span> </span><span class="WHIT">		</span><span class="NAME">pointer.addCSSAttribute</span><span class="PUNC">(</span><span class="STRN">"height"</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">pointer.getHeight</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 96</span> </span><span class="WHIT">		</span><span class="NAME">pointer.addCSSAttribute</span><span class="PUNC">(</span><span class="STRN">"background-color"</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">pointer.getBackgroundColor</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 97</span> 
+<span class='line'> 98</span> </span><span class="WHIT">	    </span><span class="NAME">pointer.styleComponent</span><span class="PUNC">(</span><span class="NAME">pointer.getComponent</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 99</span> 
+<span class='line'>100</span> </span><span class="WHIT">	    </span><span class="NAME">currentZIndex</span><span class="PUNC">++</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>101</span> </span><span class="WHIT">	    </span><span class="NAME">currentIDIndex</span><span class="PUNC">++</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>102</span> 
+<span class='line'>103</span> </span><span class="WHIT">	    </span><span class="NAME">pointer.getComponent</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">addEventListener</span><span class="PUNC">(</span><span class="STRN">'keypress'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">e</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="WHIT">
+<span class='line'>104</span> </span><span class="WHIT">	    </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>105</span> </span><span class="WHIT">	        </span><span class="NAME">pointer.processKeypress</span><span class="PUNC">(</span><span class="NAME">e</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>106</span> </span><span class="WHIT">	    </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>107</span> 
+<span class='line'>108</span> </span><span class="WHIT">	    </span><span class="NAME">pointer.getComponent</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">addEventListener</span><span class="PUNC">(</span><span class="STRN">'focus'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">e</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="WHIT">
+<span class='line'>109</span> </span><span class="WHIT">	    </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>110</span> </span><span class="WHIT">	        </span><span class="NAME">pointer.processFocus</span><span class="PUNC">(</span><span class="NAME">e</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>111</span> </span><span class="WHIT">	    </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>112</span> 
+<span class='line'>113</span> </span><span class="WHIT">	    </span><span class="NAME">pointer.getComponent</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">addEventListener</span><span class="PUNC">(</span><span class="STRN">'click'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">e</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="WHIT">
+<span class='line'>114</span> </span><span class="WHIT">	    </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>115</span> </span><span class="WHIT">	        </span><span class="NAME">pointer.processClick</span><span class="PUNC">(</span><span class="NAME">e</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>116</span> </span><span class="WHIT">	    </span><span class="PUNC">}</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>117</span> 
+<span class='line'>118</span> </span><span class="WHIT">	    </span><span class="COMM">/*
+<span class='line'>119</span> 	    function noenter(e) 
+<span class='line'>120</span> 	    {
+<span class='line'>121</span> 	    debug ("noenter ()");
+<span class='line'>122</span> 			
+<span class='line'>123</span> 	    currentComponent=component.getAttribute ("id");
+<span class='line'>124</span> 			
+<span class='line'>125</span> 	    e = e || window.event;
+<span class='line'>126</span> 	    var key = e.keyCode || e.charCode;
+<span class='line'>127</span> 		    
+<span class='line'>128</span> 	    commShell.focusNextComponent ();
+<span class='line'>129</span> 		    
+<span class='line'>130</span> 	    return key !== 13;		    						
+<span class='line'>131</span> 	    }
+<span class='line'>132</span> 	    */</span><span class="WHIT">
+<span class='line'>133</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>134</span> 
+<span class='line'>135</span> </span><span class="WHIT">	</span><span class="NAME">this.addItem</span><span class="PUNC">=</span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">addItem</span><span class="PUNC">(</span><span class="NAME">aValue</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="WHIT">
+<span class='line'>136</span> </span><span class="WHIT">	</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>137</span> </span><span class="WHIT">	    </span><span class="NAME">pointer.debug</span><span class="PUNC">(</span><span class="STRN">"addItem ("</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">aValue</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="STRN">")"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>138</span> 
+<span class='line'>139</span> </span><span class="WHIT">	    </span><span class="NAME">option</span><span class="PUNC">=</span><span class="NAME">document.createElement</span><span class="PUNC">(</span><span class="STRN">"option"</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>140</span> </span><span class="WHIT">	    </span><span class="NAME">option.setAttribute</span><span class="PUNC">(</span><span class="STRN">"value"</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">aValue</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>141</span> </span><span class="WHIT">	    </span><span class="NAME">option.innerHTML</span><span class="PUNC">=</span><span class="NAME">aValue</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>142</span> 
+<span class='line'>143</span> </span><span class="WHIT">	    </span><span class="NAME">pointer.getComponent</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">appendChild</span><span class="PUNC">(</span><span class="NAME">option</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>144</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>145</span> </span><span class="WHIT">	</span><span class="WHIT">
+<span class='line'>146</span> </span><span class="WHIT">	</span><span class="NAME">this.setEditable</span><span class="PUNC">=</span><span class="KEYW">function</span><span class="WHIT"> </span><span class="NAME">setEditable</span><span class="PUNC">(</span><span class="NAME">aValue</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>147</span> </span><span class="WHIT">	</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>148</span> </span><span class="WHIT">		</span><span class="NAME">pointer.assignEditable</span><span class="PUNC">(</span><span class="NAME">aValue</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>149</span> </span><span class="WHIT">	</span><span class="WHIT">
+<span class='line'>150</span> </span><span class="WHIT">		</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">pointer.getComponent</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">==</span><span class="KEYW">null</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>151</span> </span><span class="WHIT">			</span><span class="KEYW">return</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>152</span> </span><span class="WHIT">		</span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">pointer.getEditable</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">==</span><span class="KEYW">true</span><span class="PUNC">)</span><span class="WHIT">
+<span class='line'>153</span> </span><span class="WHIT">			</span><span class="NAME">pointer.getComponent</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">disabled</span><span class="PUNC">=</span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>154</span> </span><span class="WHIT">		</span><span class="KEYW">else</span><span class="WHIT">
+<span class='line'>155</span> </span><span class="WHIT">			</span><span class="NAME">pointer.getComponent</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">.</span><span class="NAME">disabled</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">true</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>156</span> </span><span class="WHIT">	</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>157</span> </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>158</span> 
+<span class='line'>159</span> </span><span class="NAME">CTATComboBox.prototype</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">Object.create</span><span class="PUNC">(</span><span class="NAME">CTATCompBase.prototype</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>160</span> </span><span class="NAME">CTATComboBox.prototype.constructor</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">CTATComboBox</span><span class="PUNC">;</span></pre></body></html>

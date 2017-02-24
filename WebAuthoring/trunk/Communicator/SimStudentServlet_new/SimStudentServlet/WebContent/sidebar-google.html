@@ -1,0 +1,347 @@
+<div id="tutorSidebar">
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATDateTime.js"></script>
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATUtil/jstz.js"></script>
+
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTAT/CTATConfig.js"></script>
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATUtil/CTATSandboxDriver.js"></script>
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATUtil/CTATGuid.js"></script>
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATGlobals.js"></script>	
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATGlobalFunctions.js"></script>	
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/TutorShopAPIProxy.js"></script>	
+
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATComponentHierarchy/CTATBase.js"></script>
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATHTMLManager.js"></script>
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATUtil/CTATShellTools.js"></script>
+
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATUtil/CTATVariable.js"></script>		
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATStringUtil.js"></script>
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATHTMLManager.js"></script>
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTAT/CTATXML.js"></script>		
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATSerialization/CTATArgument.js"></script>
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATSerialization/CTATSAI.js"></script>	
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATSerialization/CTATComplexSAI.js"></script>		
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATGraphicsTools.js"></script>
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATShape.js"></script>
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATCanvasComponent.js"></script>
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATScrim.js"></script>
+
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTAT/CTATConnection.js"></script>
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATCommunication/CTATMessage.js"></script>
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATCommunication/CTATActionEvaluationData.js"></script>
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATComponentHierarchy/CTATCompBase.js"></script>
+
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATComponentHierarchy/CTATClickableComponent.js"></script>
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATComponentHierarchy/CTATTutorableComponent.js"></script>
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATComponentHierarchy/CTATButtonBasedComponent.js"></script>
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATComponentHierarchy/CTATTextBasedComponent.js"></script>
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATComponentHierarchy/CTATImageButtonComponent.js"></script>
+
+
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATCSS.js"></script>	
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATTools.js"></script>
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATLinkData.js"></script>
+
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATSerialization/CTATComponentReference.js"></script>
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATSerialization/CTATComponentDescription.js"></script>    
+
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATFlashVars.js"></script>
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATContextData.js"></script>
+
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTAT/CTATCommLibrary.js"></script>
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATCommunication/CTATCurriculumService.js"></script>
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATCommunication/CTATLogMessageBuilder.js"></script>
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATCommunication/CTATLoggingLibrary.js"></script>
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATCommunication/CTATTutoringServiceMessageBuilder.js"></script>
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATCommunication/CTATMessageHandler.js"></script>
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATCommunication/CTATCommShell.js"></script>
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATBinaryImages.js"></script>
+
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATComponents/CTATComponent.js"></script>
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATComponents/CTATSkill.js"></script>
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATComponents/CTATSkillSet.js"></script>
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATComponents/CTATTextField.js"></script>
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATComponents/CTATTextInput.js"></script>	
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATComponents/CTATButton.js"></script>	
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATComponents/CTATRadioButton.js"></script>
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATComponents/CTATCheckBox.js"></script>
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATComponents/CTATComboBox.js"></script>
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATComponents/CTATImageButton.js"></script>
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATComponents/CTATHintWindow.js"></script>
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATComponents/CTATSkillWindow.js"></script>
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATComponents/CTATAudioButton.js"></script>
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATComponents/CTATVideo.js"></script>
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATComponents/CTATTable.js"></script>
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATComponents/CTATPlayButton.js"></script>
+
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATUtil/CTATNameTranslator.js"></script>
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/CTATTutor.js"></script>
+
+<style type="text/css">
+		
+.container 
+{ 
+	z-index: 0;
+	position: relative;
+	margin: 2px;
+	vertical-align: middle;
+}
+		
+canvas
+{
+	border: 1px solid black; 
+	background-color: #ffffff;
+	z-index: 1;
+	position: relative;		
+}	
+	
+.console 
+{ 
+	background-color: #ffffff;
+	width: 280px;  		  
+	height: 0px;
+	text-align: left;
+	overflow: auto;
+	font-family: courier; 
+	font-size: 10px;
+	border: 1px solid black;
+	margin: 2px;
+	position: relative;
+}
+
+.info
+{
+  width: 270px;  		  
+  height: 25px;
+  text-align: center;
+  overflow: auto;
+  font-family: Verdana; 
+  font-size: 10px;
+  border: 0px;
+  margin: 2px;
+  position: relative;
+}
+			
+</style>
+
+<script>
+
+</script>
+
+<script>
+
+var consoleFolded=true;
+
+/*
+var rawFlashVars=
+{
+  remoteSocketPort:"8080",
+  remoteSocketURL:"augustus.pslc.cs.cmu.edu",
+  question_file:"http://augustus.pslc.cs.cmu.edu/html5/HTML5TestFiles/GoogleSheets.brd",
+  session_id:"FF"
+};
+*/
+
+var rawFlashVars=
+{
+    	admit_code:"ies",
+    	authenticity_token:"none",
+    	auth_token:"none",
+    	BehaviorRecorderMode:"'AuthorTimeTutoring",
+    	class_name:"'Default Class",
+    	curriculum_service_url:"none",
+    	dataset_level_name:"none",
+    	dataset_level_type:"ProblemSet",
+    	dataset_name:"none",
+    	expire_logout_url:"none",
+        info:"%3Cdiv+id%3D%27label%27%3EFactors%3A%3C%2Fdiv%3E%3Cdiv+id%3D%27caption%27%3E+Problem+1+of+2%3C%2Fdiv%3E",
+    	instructor_name:"none",
+    	instrumentation_log:"off",
+    	lcId:"none",
+    	Logging:"ClientToService", // 'ClientToService' or 'ClientToLogServer'
+    	log_service_url:"http:pslc-qa.andrew.cmu.edu/log/server",
+    	problem_name:"none",
+    	problem_position:"none",
+    	problem_started_url:"none",
+    	problem_state_status:"empty", //  'empty', 'complete', or 'incomplete'
+    	question_file:"http://augustus.pslc.cs.cmu.edu/html5/HTML5TestFiles/GoogleSheets.brd",
+    	refresh_session_url:"none",
+    	remoteSocketPort:"8080",
+    	remoteSocketURL:"augustus.pslc.cs.cmu.edu",
+    	restore_problem_url:"none",
+    	reuse_swf:"false",
+    	run_problem_url:"none",
+    	school_name:"none",
+    	SessionLog:"true",
+    	session_id:"none",
+    	session_timeout:"none",
+    	/*skills:"%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22UTF-8%22%3F%3E%3CSkills%3E%3CSkill%20opportunityCount%3D%222%22%20category%3D%22fraction-addition%22%20name%3D%22add-numerators%22%20label%3D%22add-numerators%22%20description%3D%22add-numerators%22%20pGuess%3D%220.15%22%20pSlip%3D%220.3%22%20pLearn%3D%220.25%22%20pKnown%3D%220.2%22%3E%3C%2FSkill%3E%3CSkill%20opportunityCount%3D%222%22%20category%3D%22fraction-addition%22%20name%3D%22multiply-denominators%22%20label%3D%22multiply-denominators%22%20description%3D%22multiply-denominators%22%20pGuess%3D%220.15%22%20pSlip%3D%220.3%22%20pLearn%3D%220.25%22%20pKnown%3D%220.98%22%3E%3C%2FSkill%3E%09%3CSkill%20opportunityCount%3D%222%22%20category%3D%22fraction-addition%22%20name%3D%22convert-numerator%22%20label%3D%22convert-numerator%22%20description%3D%22convert-numerator%22%20pGuess%3D%220.15%22%20pSlip%3D%220.3%22%20pLearn%3D%220.25%22%20pKnown%3D%220.1%22%3E%3C%2FSkill%3E%09%3CSkill%20opportunityCount%3D%222%22%20category%3D%22fraction-addition%22%20name%3D%22determine-lcd%22%20label%3D%22determine-lcd%22%20description%3D%22determine-lcd%22%20pGuess%3D%220.15%22%20pSlip%3D%220.3%22%20pLearn%3D%220.25%22%20pKnown%3D%220.6%22%3E%3C%2FSkill%3E%3C%2FSkills%3E",*/
+        /*skills:"<value>determine-lcd fraction-addition=0.26769233=0</value><value>determine-lcd fraction-subtraction=0.50=0</value>",*/
+        skills:"",
+    	source_id:"'FLASH_PSEUDO_TUTOR", // 'FLASH_PSEUDO_TUTOR' or 'CTAT_JAVA_TUTOR'
+    	student_interface:"none",
+    	student_problem_id:"none",
+    	study_condition_name:"none",
+    	study_condition_type:"none",
+    	study_conditon_description:"none",
+    	study_name:"Study1",
+    	target_frame:"none",
+    	TutorShopDeliveryMethod:"sendandload",
+    	user_guid:"none",
+    	wmode:"opaque",
+    	log_to_disk_directory:"none",
+    	DeliverUsingOLI:"none"
+};
+
+var generator=new CTATGuid ();
+rawFlashVars.session_id=generator.guid ();
+
+//alert (rawFlashVars.session_id);
+
+/**
+ *
+ */
+function clearConsole ()
+{
+	console=document.getElementById("console");
+		
+	console.innerHTML="";
+}
+/**
+ *
+ */
+function foldConsole ()
+{    
+	console=document.getElementById('console');
+		
+    if (console!=null)
+    {            
+	  if (consoleFolded==false)
+	  {
+		 consoleFolded=true;
+		 console.style.height="0px";
+	 }
+	 else
+	 {
+		consoleFolded=false;
+		console.style.height="200px";
+     }
+   }
+   else
+   {
+     alert ('Error: no console available');
+   }
+}    
+/**
+ *
+ */
+function toggleDebugging(cb) 
+{				
+	if (cb.checked==true)
+		useDebugging=true;
+	else
+		useDebugging=false;        
+}
+
+/**
+ *
+ */
+function listCTATComponents() 
+{				
+	var tempValue=useDebugging;
+    
+    debug ('listCTATComponents ()');
+		
+	useDebugging=true;	
+	var tools=new CTATShellTools ();
+	tools.listComponents ();	
+	useDebugging=tempValue;
+}
+
+/**
+*
+*/
+function selectConsoleText ()
+{
+    selectText('console');
+}
+
+/**
+*
+*/
+function processSheetGrading (aMessage)
+{
+	var sel=aMessage.getSelection ();
+    
+    debug ("Proceeding");
+    
+    if (aMessage.getGradeResult ()=="correct")
+    {
+      debug ("Processing correct message for cell: " + sel);
+    }
+    
+    if (aMessage.getGradeResult ()=="incorrect")
+    {
+      debug ("Processing incorrect message for cell: " + sel);
+    }    
+}
+
+/**
+*
+*/
+function init ()
+{		
+	assignNameTranslator (new CTATNameTranslator ());
+
+	initTutorSidebar (rawFlashVars);
+    
+    assignAnonymousGradingProcessor (processSheetGrading);
+    
+    document.getElementById("starter").disabled = true;
+}
+
+/**
+*
+*/
+function unitTests ()
+{
+	//alert ("useDebugging = " + useDebugging);
+	
+	testTutor (FlashVars);
+}
+
+</script>
+
+</div>
+
+<table cellpadding="0" cellspacing="2" height="100%" style="width:270px; margin:2px; padding:1px; border:1px solid #000000; background-color:#ffffff;">
+<tr>
+	<td style="margin:0px; padding:2px; background-color:#eeeeee; text-align:center;">
+    
+        <div id="info" class="info">&nbsp;</div>
+    
+		<div id="container" name="container" class="container">
+			<canvas id="main-canvas" width="270" height="400">Your browser does not support CTAT.<br> Please update or replace your browser.</canvas>
+		</div>
+			
+		<div width="270">
+			<center>
+				<input type="checkbox" id="debugtraces" name="debugtraces" value="debugtraces" onclick='toggleDebugging(this);'>Debug
+                <button type="button" onclick="init ()" id="starter"><img src="http://augustus.pslc.cs.cmu.edu/html5/play.png" alt="Start Tutor" /></button>
+				<button type="button" onclick="unitTests ()"><img src="http://augustus.pslc.cs.cmu.edu/html5/check_mark.png" alt="Unit Tests" /></button>
+				<button type="button" onclick="listCTATComponents ()"><img src="http://augustus.pslc.cs.cmu.edu/html5/list.png" alt="List CTAT Components" /></button>
+				<button type="button" onclick="clearConsole ()"><img src="http://augustus.pslc.cs.cmu.edu/html5/edit-clear.png" alt="Clear Console" /></button>
+				<button type="button" onclick="foldConsole ()"><img src="http://augustus.pslc.cs.cmu.edu/html5/fold.png" alt="Fold Console" /></button>
+			</center>
+		</div>		
+        
+        <div id="console" class="console" width="280"></div>
+	</td>
+</tr>			
+</table>	
+	
+<div style="width:270px; margin:0px; padding:0px; border:0px; text-align:center; font-size:8pt;">
+Built with <a href="http://ctat.pact.cs.cmu.edu/">CTAT</a>
+</div>

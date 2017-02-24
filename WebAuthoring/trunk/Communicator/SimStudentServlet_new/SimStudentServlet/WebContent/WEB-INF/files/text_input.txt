@@ -1,0 +1,1 @@
+<message><verb>SendNoteProperty</verb><properties><MessageType>CorrectAction</MessageType><Selection><value>firstDenConv</value></Selection><Action><value>UpdateTextArea</value></Action><Input><value>12</value></Input><transaction_id>7d9b49ec-8c2e-08fa-abfb-cfde265c7d62</transaction_id></properties></message>

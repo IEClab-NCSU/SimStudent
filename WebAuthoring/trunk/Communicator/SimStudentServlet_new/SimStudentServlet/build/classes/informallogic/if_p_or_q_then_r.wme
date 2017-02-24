@@ -1,0 +1,105 @@
+;; for Eclipse, etc., specify templates to read
+(require* wmeTypes "wmeTypes.clp")
+
+;;;; Fact assertions: slot assignments are below.
+
+(bind ?var1 (assert(MAIN::textField (name prob_table_c1))))
+(bind ?var2 (assert(MAIN::textField (name ans_table_c6))))
+(bind ?var3 (assert(MAIN::textField (name ans_table_c5))))
+(bind ?var4 (assert(MAIN::label (name ans_label))))
+(bind ?var5 (assert(MAIN::button (name hint))))
+(bind ?var6 (assert(MAIN::button (name done))))
+(bind ?var7 (assert(MAIN::textField (name ans_table_c4))))
+(bind ?var8 (assert(MAIN::textField (name ans_table_c3))))
+(bind ?var9 (assert(MAIN::textField (name ans_table_c2))))
+(bind ?var10 (assert(MAIN::label (name prob_label))))
+(bind ?var11 (assert(MAIN::textField (name prob_table_c6))))
+(bind ?var12 (assert(MAIN::textField (name prob_table_c5))))
+(bind ?var13 (assert(MAIN::textField (name prob_table_c4))))
+(bind ?var14 (assert(MAIN::textField (name prob_table_c3))))
+(bind ?var15 (assert(MAIN::textField (name prob_table_c2))))
+(bind ?var16 (assert(MAIN::problem (name if_p_or_q_then_r))))
+
+;;;; Slot assignments
+
+; MAIN::textField
+(modify ?var1
+    (name prob_table_c1)
+    (value if)
+)
+; MAIN::textField
+(modify ?var2
+    (name ans_table_c6)
+    (value nil)
+)
+; MAIN::textField
+(modify ?var3
+    (name ans_table_c5)
+    (value nil)
+)
+; MAIN::label
+(modify ?var4
+    (name ans_label)
+    (value "Assertion in Propositional Logic")
+)
+; MAIN::button
+(modify ?var5
+    (name hint)
+)
+; MAIN::button
+(modify ?var6
+    (name done)
+)
+; MAIN::textField
+(modify ?var7
+    (name ans_table_c4)
+    (value nil)
+)
+; MAIN::textField
+(modify ?var8
+    (name ans_table_c3)
+    (value nil)
+)
+; MAIN::textField
+(modify ?var9
+    (name ans_table_c2)
+    (value nil)
+)
+; MAIN::label
+(modify ?var10
+    (name prob_label)
+    (value "Assertion in Informal Language")
+)
+; MAIN::textField
+(modify ?var11
+    (name prob_table_c6)
+    (value r)
+)
+; MAIN::textField
+(modify ?var12
+    (name prob_table_c5)
+    (value then)
+)
+; MAIN::textField
+(modify ?var13
+    (name prob_table_c4)
+    (value q)
+)
+; MAIN::textField
+(modify ?var14
+    (name prob_table_c3)
+    (value or)
+)
+; MAIN::textField
+(modify ?var15
+    (name prob_table_c2)
+    (value p)
+)
+; MAIN::problem
+(modify ?var16
+    (name if_p_or_q_then_r)
+    (interface-elements ?var10 ?var4 ?var9 ?var8 ?var7 ?var3 ?var2 ?var6 ?var5 ?var1 ?var15 ?var14 ?var13 ?var12 ?var11)
+    (subgoals)
+    (done nil)
+    (description nil)
+)
