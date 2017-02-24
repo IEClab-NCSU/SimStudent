@@ -1,0 +1,46 @@
+html, body {
+        width: 100%;
+}
+ table.center {
+    margin: 0px auto;
+}
+body {margin: 0px; overflow: hidden; background-color: #ffffff; vertical-align: top;}
+.img {z-index: 1;}
+.box {z-index: 2; position: absolute; width: 100%; height: 260px;}
+.set {z-index: 3; position: absolute; font-family: tahoma, arial; line-height: 22px; top: 30px; font-size: 14px;}
+
+
+#customBtn {
+      position:absolute;
+      top: 40%;
+      left: 40%;
+      display: inline-block;
+      background: #4285f4;
+      color: white;
+      width: 275px;
+      border-radius: 8px;
+      white-space: nowrap;
+    }
+    #customBtn:hover {
+      cursor: hand;
+    }
+    span.label {
+      font-weight: bold;
+    }
+    span.icon {
+      background: url('https://google-developers.appspot.com/identity/sign-in/g-normal.png') transparent 5px 50% no-repeat;
+      display: inline-block;
+      vertical-align: middle;
+      width: 42px;
+      height: 42px;
+      border-right: #2265d4 1px solid;
+    }
+    span.buttonText {
+      display: inline-block;
+      vertical-align: middle;
+      padding-left: 40px;
+      padding-right: 40px;
+      font-size: 14px;
+      font-weight: bold;
+      font-family: sans-serif;
+    }

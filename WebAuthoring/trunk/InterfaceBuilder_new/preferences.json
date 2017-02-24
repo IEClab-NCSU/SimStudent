@@ -1,0 +1,10 @@
+{"rows":[
+		{"name":"Stay Logged In","value":"true","group":"Preferences","editor":{
+			"type":"checkbox",
+			"options":
+			{
+				"on":true,
+				"off":false
+			}
+		}}			
+]}

@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<head>
+<!-- @author - Hardik Vasa -->
+<!-- New -->
+<link rel="stylesheet" type="text/css" href="styles/main.css">
+<link rel="stylesheet" type="text/css" href="styles/easyui.css">
+<link rel="stylesheet" type="text/css" href="styles/icon.css">
+<script type="text/javascript" src="scripts/jquery.min.js"></script>
+ <script type="text/javascript" src="scripts/jquery.easyui.min.js"></script>
+
+<title>Watson - Authoring Tool</title>
+
+<!---------------------- Previous ---------------------->
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<script type="text/javascript" src="raphael/raphael-min.js"></script>
+
+<script type="text/javascript" src="src/ctat/CTATDateTime.js"></script>
+<script type="text/javascript" src="src/ctat/CTATUtil/jstz.js"></script>
+
+<script type="text/javascript" src="src/ctat/CTAT/CTATConfig.js"></script>
+<script type="text/javascript" src="src/ctat/CTATUtil/CTATSandboxDriver.js"></script>
+<script type="text/javascript" src="src/ctat/CTATUtil/CTATGuid.js"></script>
+<script type="text/javascript" src="src/ctat/CTATGlobals.js"></script>	
+<script type="text/javascript" src="src/ctat/CTATGlobalFunctions.js"></script>	
+<script type="text/javascript" src="src/ctat/TutorShopAPIProxy.js"></script>	
+<script type="text/javascript" src="src/ctat/appletTS.js"></script>
+
+<script type="text/javascript" src="src/ctat/CTATComponentHierarchy/CTATBase.js"></script>
+<script type="text/javascript" src="src/ctat/CTATHTMLManager.js"></script>
+<script type="text/javascript" src="src/ctat/CTATUtil/CTATShellTools.js"></script>
+
+<script type="text/javascript" src="src/ctat/CTATUtil/CTATVariable.js"></script>		
+<script type="text/javascript" src="src/ctat/CTATStringUtil.js"></script>
+<script type="text/javascript" src="src/ctat/CTAT/CTATXML.js"></script>		
+<script type="text/javascript" src="src/ctat/CTATSerialization/CTATArgument.js"></script>
+<script type="text/javascript" src="src/ctat/CTATSerialization/CTATSAI.js"></script>	
+<script type="text/javascript" src="src/ctat/CTATSerialization/CTATComplexSAI.js"></script>		
+<script type="text/javascript" src="src/ctat/CTATGraphicsTools.js"></script>
+<script type="text/javascript" src="src/ctat/CTATShape.js"></script>
+<script type="text/javascript" src="src/ctat/CTATCanvasComponent.js"></script>
+<script type="text/javascript" src="src/ctat/CTATScrim.js"></script>
+
+<script type="text/javascript" src="src/ctat/CTAT/CTATConnection.js"></script>
+<script type="text/javascript" src="src/ctat/CTATCommunication/CTATMessage.js"></script>
+<script type="text/javascript" src="src/ctat/CTATCommunication/CTATActionEvaluationData.js"></script>
+<script type="text/javascript" src="src/ctat/CTATComponentHierarchy/CTATCompBase.js"></script>
+
+<script type="text/javascript" src="src/ctat/CTATComponentHierarchy/CTATClickableComponent.js"></script>
+<script type="text/javascript" src="src/ctat/CTATComponentHierarchy/CTATTutorableComponent.js"></script>
+<script type="text/javascript" src="src/ctat/CTATComponentHierarchy/CTATButtonBasedComponent.js"></script>
+<script type="text/javascript" src="src/ctat/CTATComponentHierarchy/CTATTextBasedComponent.js"></script>
+<script type="text/javascript" src="src/ctat/CTATComponentHierarchy/CTATImageButtonComponent.js"></script>
+
+
+<script type="text/javascript" src="src/ctat/CTATCSS.js"></script>	
+<script type="text/javascript" src="src/ctat/CTATTools.js"></script>
+<script type="text/javascript" src="src/ctat/CTATLinkData.js"></script>
+
+<script type="text/javascript" src="src/ctat/CTATSerialization/CTATComponentReference.js"></script>
+<script type="text/javascript" src="src/ctat/CTATSerialization/CTATComponentDescription.js"></script>    
+
+<script type="text/javascript" src="src/ctat/CTATFlashVars.js"></script>
+<script type="text/javascript" src="src/ctat/CTATContextData.js"></script>
+
+<!-- Communication Libraries -->
+<script type="text/javascript" src="src/ctat/CTAT/CTATCommLibrary.js"></script>
+<script type="text/javascript" src="src/ctat/CTATCommunication/CTATCurriculumService.js"></script>
+<script type="text/javascript" src="src/ctat/CTATCommunication/CTATLogMessageBuilder.js"></script>
+<script type="text/javascript" src="src/ctat/CTATCommunication/CTATLoggingLibrary.js"></script>
+<script type="text/javascript" src="src/ctat/CTATCommunication/CTATTutoringServiceMessageBuilder.js"></script>
+<script type="text/javascript" src="src/ctat/CTATCommunication/CTATMessageHandler.js"></script>
+<script type="text/javascript" src="src/ctat/CTATCommunication/CTATCommShell.js"></script>
+<script type="text/javascript" src="src/ctat/CTATBinaryImages.js"></script>
+
+<!-- Components Libraries -->
+<script type="text/javascript" src="src/ctat/CTATComponents/CTATComponent.js"></script>
+<script type="text/javascript" src="src/ctat/CTATComponents/CTATSkill.js"></script>
+<script type="text/javascript" src="src/ctat/CTATComponents/CTATSkillSet.js"></script>
+<script type="text/javascript" src="src/ctat/CTATComponents/CTATTextField.js"></script>
+<script type="text/javascript" src="src/ctat/CTATComponents/CTATTextInput.js"></script>	
+<script type="text/javascript" src="src/ctat/CTATComponents/CTATButton.js"></script>	
+<script type="text/javascript" src="src/ctat/CTATComponents/CTATRadioButton.js"></script>
+<script type="text/javascript" src="src/ctat/CTATComponents/CTATCheckBox.js"></script>
+<script type="text/javascript" src="src/ctat/CTATComponents/CTATComboBox.js"></script>
+<script type="text/javascript" src="src/ctat/CTATComponents/CTATImageButton.js"></script>
+<script type="text/javascript" src="src/ctat/CTATComponents/CTATHintWindow.js"></script>
+<script type="text/javascript" src="src/ctat/CTATComponents/CTATSkillWindow.js"></script>
+<script type="text/javascript" src="src/ctat/CTATComponents/CTATAudioButton.js"></script>
+<script type="text/javascript" src="src/ctat/CTATComponents/CTATVideo.js"></script>
+<script type="text/javascript" src="src/ctat/CTATComponents/CTATTable.js"></script>
+<script type="text/javascript" src="src/ctat/CTATComponents/CTATPlayButton.js"></script>
+
+<!-- Example Tracer Libraries -->
+<script type="text/javascript" src="src/ctat/CTATExampleTracer/CTATExampleTracerGraphVisualData.js"></script>
+<script type="text/javascript" src="src/ctat/CTATExampleTracer/CTATExampleTracerLinkVisualData.js"></script>
+<script type="text/javascript" src="src/ctat/CTATExampleTracer/CTATExampleTracerNodeVisualData.js"></script>
+
+<script type="text/javascript" src="src/ctat/CTATUtil/CTATNameTranslator.js"></script>
+<script type="text/javascript" src="src/ctat/CTATMobileTutorHandler.js"></script>
+<script type="text/javascript" src="src/ctat/CTATTutor.js"></script>	
+
+<!-- Main -->	
+<script type="text/javascript" src="src/OTBGlobal.js"></script>
+<script type="text/javascript" src="src/OTBGraphics.js"></script>
+<script type="text/javascript" src="src/OTBGraph.js"></script>
+<script type="text/javascript" src="src/OTBMain.js"></script>
+<script type="text/javascript" src="src/OTBEditor.js"></script>
+
+<!-- Google Drive Integration -->
+<script type="text/javascript" src="src/drive/GoogleDrive.js"></script>
+<script type="text/javascript" src="src/drive/DriveUI.js"></script>
+	
+<script type="text/javascript">
+mxBasePath = 'mxgraph/';
+</script>
+<script type="text/javascript" src="mxgraph/mxClient.js"></script>
+	
+	
+<!-- Sign In Scripts -->
+<script src="https://apis.google.com/js/api:client.js"></script>
+<script>
+function signOut() {
+    var ifr = document.createElement('iframe');
+    ifr.src = 'https://accounts.google.com/logout';
+    document.body.appendChild(ifr);
+    //location.reload();
+    window.location.href = "index.html";
+  }
+
+gapi.load('auth2', function() {
+  auth2 = gapi.auth2.init({
+    client_id: '647226128255-v13oivftpdv8pf14np5p1mglidt2nq52.apps.googleusercontent.com',
+    fetch_basic_profile: true,
+    scope: 'profile'
+  });
+
+  // Sign the user in, and then retrieve their ID.
+  auth2.signIn().then(function() {
+    if (auth2.isSignedIn.get()) {
+    var profile = auth2.currentUser.get().getBasicProfile();
+    console.log('ID: ' + profile.getId());
+    console.log('Name: ' + profile.getName());
+    document.getElementById('name').innerHTML = profile.getEmail();
+    console.log('Image URL: ' + profile.getImageUrl());
+    console.log('Email: ' + profile.getEmail());
+    }
+  });
+});
+</script>
+<!-- End of Sign In Scripts -->
+
+
+
+
+<!-- Google Drive Script -->
+<script>
+	
+	var canvasBkgdColor = "white";
+	var mygraphic = null; // this is the "canvas"
+		
+	var drive = new GoogleDrive();
+
+	var rootFolderName="TutorInterfaceFiles";
+	var preferenceFileName="preferences.json";
+	
+	//Google Drive Connection
+	function initDrive()
+	{
+		drive.authorize(true,function(authorized)
+		{
+			debug("Authorization:"+authorized);
+			
+			if(!authorized)
+			{		
+				window.parent.setAppStatus ("Google authorization failed. Please login and authorize.");
+				
+				window.parent.setFail (true);
+				
+				return;
+			}
+			
+			//status bar
+			var request = gapi.client.plus.people.get(
+			{
+				'userId' : 'me'
+			});
+		  
+			request.execute(function(me)
+			{
+				//window.parent.setAppStatus ("Logged in as: "+me.displayName);
+				//setStatus("Logged in as: "+me.displayName);
+			});
+				  
+			//setting default folder for tutor interface files 
+			var setRootFolder = function(rootFile)
+			{
+				rootFolder=rootFile.id;
+				
+				debug("Set rootFolder to "+rootFolder);
+				
+				drive.retrieveFile(preferenceFileName,rootFolder,managePreferences);//sets the preferences files, code below
+			};
+			
+			var manageRootFolder = function(files)
+			{
+				//debug(files);
+				
+				if(!files[0])
+				{
+					debug("Folder does not exist. Creating.");
+					drive.insertFolder(rootFolderName,null,setRootFolder);
+				}
+				else
+				{
+					debug("Folder exists.");
+					rootFolder=files[0].id;
+					debug("Set rootFolder to "+rootFolder);
+					drive.retrieveFile(preferenceFileName,rootFolder,managePreferences);//sets the preferences files, code below
+				}
+			};
+			
+			drive.retrieveFile(rootFolderName,null,manageRootFolder);
+		  
+			//sets the preferences file
+			//called above after setting the root folder
+			var setPreferenceFileId = function(preferenceF)
+			{
+				preferenceFileId=preferenceF.id;
+				
+				debug("Set preferences to "+preferenceFileId);
+				
+				drive.downloadFile(preferenceFileId,setPreferenceFile);
+			};
+			
+			var managePreferences = function(files)
+			{
+				//debug(files);
+				
+				if(!files[0])
+				{
+					debug(preferenceFileName+" does not exist. Creating.");
+					//drive.insertFile(preferenceFileName,"",null,[{id:rootFolder}],setPreferenceFileId); // TODO should this be here?
+				}
+				else
+				{
+					debug(preferenceFileName+" exists.");
+					preferenceFileId=files[0].id;
+					debug("Set preferences to "+preferenceFileId);
+					drive.downloadFile(preferenceFileId,setPreferenceFile);
+				}
+			};
+		  
+			var setPreferenceFile = function(preferenceFileText)
+			{
+				preferenceFile=preferenceFileText;
+				
+				debug("Text in "+preferenceFileName + " is "+preferenceFileText);
+				//saves preferences every 30 minutes
+				window.setInterval(savePreferences,30*60*1000);
+			};            
+		});    
+	}
+	/*
+	* Method to save the preferences file on drive
+	*/
+	var savePreferences = function()
+	{
+		var callback = function(file)
+		{
+			if(!file)
+			{
+				debug("Save preferences failed.");
+			}
+			else
+			{
+				debug("Save preferences success.");
+		}
+		}
+		
+		drive.updateFile(preferenceFileId,preferenceFile,callback);
+	}
+			
+	</script>
+
+<!-- This script must come after authorize since it calls authorize on loading the api -->
+		
+	<script type="text/javascript" src="https://apis.google.com/js/client.js?onload=initDrive"></script> 	
+
+<!-- End of Google Drive Script -->
+
+</head>
+
+<body onload="initIDE();">
+<div id="top">
+<div id="logo">
+<img src="images/logo.png" width="100%" height="100%">
+</div>
+
+<div id="up">
+
+<div id="title">
+<h1>Web Authoring Tool</h1>
+</div>
+
+<div id="signin">
+<h1><a href="https://mail.google.com/" target="_blank"> <span id="name"></span> </a> | <a href="#" onclick="signOut();">Sign Out</a></h1>
+</div>
+
+</div>  <!-- End of Up -->
+
+<div id="menubar">
+
+	<div class="easyui-panel" style="padding:3px;">
+        <a href="#" class="easyui-menubutton" data-options="menu:'#mm1',iconCls:'icon-file'">File</a>
+        <a href="#" class="easyui-menubutton" data-options="menu:'#mm2',iconCls:'icon-edit'">Edit</a>
+        <a href="#" class="easyui-menubutton" data-options="menu:'#mm3',iconCls:'icon-help'">Help</a>
+    </div>
+    
+	<div id="mm1" style="width:150px;">
+        <div iconCls="icon-new" onClick="file_new();">New</div>
+        <div iconCls="icon-open" onClick="file_open(loadInterfaceDescription);">Open</div>
+        <div iconCls="icon-save" onClick="file_save();">Save</div>
+	<div iconCls="icon-saveas" onClick="file_saveas();">Save As</div>
+        <div class="menu-sep"></div>
+		<div>Import</div>
+        <div>
+            <span>Export</span>
+            <div>
+                <div>Moodle</div>
+                <div>Embedded in Page</div>
+                <div>OpenEdX</div>
+                <div>ShareThis</div>
+                <div>Zip Archive</div>
+            </div>
+        </div>
+		<div class="menu-sep"></div>
+        <div>Preferences</div>
+    </div>
+	
+	<div id="mm2" style="width:150px;">
+        <div data-options="iconCls:'icon-undo'">Undo</div>
+        <div data-options="iconCls:'icon-redo'">Redo</div>
+        <div class="menu-sep"></div>
+        <div>Cut</div>
+        <div>Copy</div>
+        <div>Paste</div>
+        <div class="menu-sep"></div>
+        <div>
+            <span>Toolbar</span>
+            <div>
+                <div>New Toolbar</div>
+            </div>
+        </div>
+        <div data-options="iconCls:'icon-remove'">Delete</div>
+        <div>Select All</div>
+    </div>
+    <div id="mm3" style="width:100px;">
+        <div><a href="help.html">Help</a></div>
+        <div>About</div>
+    </div>
+    	
+</div>
+
+
+</div>  <!-- End of top (entire top section) -->
+
+<div id="shortcuts">
+<table style="margin-left: 3px;">
+	<tr>
+		<td height="24" class="toolbardiv" style="border: 1px solid #CCCCFF; margin-left: 0px; padding:0px;" colspan="3">
+		
+			<input type='image' id='file_new' class="iconbutton" src="css/images/gtk-new.png" onclick="file_new ()"></input>
+			<input type='image' id='file_open' class="iconbutton" src="css/images/gtk-open.png" onclick="file_open (loadInterfaceDescription)"></input>
+			
+			<div class="separator_vertical"></div>
+			
+			<input type='image' id='file_save' class="iconbutton" src="css/images/gtk-save.png" onclick="file_save ()"></input>
+			<input type='image' id='file_saveas' class="iconbutton" src="css/images/gtk-save-as.png" onclick="file_saveas ()"></input>
+			
+			<div class="separator_vertical"></div>
+			
+			<input type='image' id='undo' class="iconbutton" src="css/images/gtk-undo-ltr.png" onclick="edit_undo()"></input>
+			<input type='image' id='redo' class="iconbutton" src="css/images/gtk-redo-ltr.png" onclick="edit_redo()"></input>
+			
+			<div class="separator_vertical"></div>
+			
+			<input type='image' id='cut' class="iconbutton" src="css/images/gtk-cut.png" onclick="edit_cut()"></input>
+			<input type='image' id='paste' class="iconbutton" src="css/images/gtk-paste.png" onclick="edit_paste()"></input>
+			
+		</td>
+	</tr>
+</table>
+</div>
+
+<div id="left">
+	<div style="margin:5 0 0 0;"></div>
+    <div class="easyui-tabs" style="width:100%;height:400px">
+        
+		<div title="Shapes" style="padding-top:5px">
+		
+
+
+
+		
+		<table width="200" border="0" cellpadding="3">
+		<!-- Row 1 -->
+		<tr>
+		<td align="center" valign="center">
+		<img id="toolbox_textbox" src="css/images/toolbox/text_box.png" width="91" height="40" alt="label" draggable="true" ondragstart="drag(event)" onclick="clickOnIcon(event)" />
+		<br>
+		Text Input
+		</td>
+
+		<td align="center" valign="center">
+		<img id="toolbox_label" src="css/images/toolbox/label.png" width="91" height="38" alt="textbox" draggable="true" ondragstart="drag(event)" onclick="clickOnIcon(event)" />
+		<br>
+		Label/Text
+		</td>
+		</tr>
+		
+		<!--Row 2 -->
+		<tr>
+		<td align="center" valign="center">
+		<img id="toolbox_button" src="css/images/toolbox/button.png" width="91" height="38" alt="button" draggable="true" ondragstart="drag(event)" onclick="clickOnIcon(event)" />
+		<br>
+		Button
+		</td>
+
+		<td align="center" valign="center">
+		<img id="toolbox_line" src="css/images/toolbox/line.png" width="91" height="38" alt="line" draggable="true" ondragstart="drag(event)" onclick="clickOnIcon(event)" />
+		<br>
+		Line Tool
+		</td>
+		</tr>
+		
+		
+		<!--Row 3 -->
+		<tr>
+		<td align="center" valign="center">
+		<img id="toolbox_dropdown" src="css/images/toolbox/dropdown.jpg" width="91" height="30" alt="button" draggable="true" ondragstart="drag(event)" onclick="clickOnIcon(event)" />
+		<br>
+		Dropdown Menu
+		</td>
+
+		<td align="center" valign="center">
+		<img id="toolbox_radiobutton" src="css/images/toolbox/radiobutton.png" width="91" height="30" alt="line" draggable="true" ondragstart="drag(event)" onclick="clickOnIcon(event)" />
+		<br>
+		Radio Button
+		</td>
+		</tr>
+		
+		<!--Row 4 -->
+		<tr>
+		<td align="center" valign="center" colspan="2">
+		<img id="toolbox_table" src="css/images/toolbox/table.png" width="91" height="40" alt="button" draggable="true" ondragstart="drag(event)" onclick="clickOnIcon(event)" />
+		<br>
+		Table
+		</td>
+		</tr>
+		
+		</table>
+		
+		<hr/>
+		
+		<table width="200" border="0" cellpadding="3">
+		<!-- Row 1 -->
+		<tr>
+		<td align="center" valign="center">
+		<img id="toolbox_donebutton" src="src/images/done_button.png" width="55" height="50" alt="label" draggable="true" ondragstart="drag(event)" onclick="clickOnIcon(event)" />
+		<br>
+		Done Button
+		</td>
+
+		<td align="center" valign="center">
+		<img id="toolbox_hintbutton" src="src/images/hint_button.png" width="55" height="50" border="1" alt="textbox" draggable="true" ondragstart="drag(event)" onclick="clickOnIcon(event)" />
+		<br>
+		Hint Button
+		</td>
+		</tr>
+		</table>
+
+			
+        </div>
+        
+		<div title="Symbols">
+			<p>This section contains all the symbols</p>
+		</div>
+    </div>
+	
+	<div style="margin:5 0 0 0;"></div>
+    <div class="easyui-tabs" style="width:100%;height:150px;">
+        <div title="Files" style="padding:10px">
+            <p>This section contains all the previously saved files</p>
+        </div>
+        <div title="Templates">
+			<p>This section contains all the saved templates</p>
+		</div>
+    </div>
+</div>
+
+<div id="canvas">
+<!-- <div id="rcorners">Canvas</div> -->
+
+
+
+
+<td id="mainPanel"  style="border: 1px solid #000000; margin: 0px; padding:0px;" align="left" valign="middle" style=" height:100%;">
+			<!--Main content goes here-->
+
+			<div class="easyui-layout" data-options="fit:true" class="styleddiv" style="width:110% !important; height:110% !important;">
+				<div id="contenttabs"  class="easyui-tabs" data-options="region:'center'" style="background: #000000;">
+
+					<div title="Tutor Interface" style="padding-top:10px;margin-left:0px;">
+						<div id="mygraphiccontainer" class="tutorcontainer" style="margin: auto; text-align: center;" ondrop="dropOnCanvas(event)" ondragover="allowDrop(event)" onclick="clickOnCanvas(event)" onmousedown="mouseDownOnCanvas(event)" onmouseout="mouseOutOfCanvas(event)" onmouseup="mouseUpOnCanvas(event)">
+						<!--
+							<canvas id="tutorbackground" width="550" height="450" style="width: 100%; height: 100%; border:0px;" ondrop="dropOnCanvas(event)" ondragover="allowDrop(event)" draggable="true" ondragstart="canvasDrag(event)">
+							Browser does not support canvas
+							</canvas>
+						-->
+									<div id="container" name="container" class="container">
+									<canvas id="main-canvas" width="0" height="0">Your browser does not support CTAT. Please update or replace your browser.</canvas>
+									</div>
+						</div>
+					</div>
+										
+				</div>
+			</div>
+						
+			<!--You are not currently editing a tutor interface. <br> To get started, you can create a new interface (File>New) or open an existing one (File>Open).-->
+		</td>
+
+
+
+
+</div> <!--End of Canvas -->
+
+<div id="right">
+	<div style="margin:5 0 0 0;"></div>
+    <div class="easyui-tabs" style="width:100%;height:350px">
+        <div title="Properties" style="padding:0px">
+            
+			<div id="rightpanel" data-options="region:'north',title:'Properties',split:true, border: true" title="Navigator" style="width:250px; height:300px;">
+				
+					<!--
+					A property grid to show component and tutor properties. For more
+					information on how to use this and how to add data manually:
+					
+					http://www.jeasyui.com/documentation/propertygrid.php
+					-->
+							
+					<table id="pg" class="easyui-propertygrid" style="width:250px; height: 318px;">
+					</table>				
+				
+				</div>
+				
+        </div>
+    </div>
+</div>
+
+<div id="footer">
+&copy; 2015 - Carnegie Mellon University
+</div>
+
+</body>
+</html>
