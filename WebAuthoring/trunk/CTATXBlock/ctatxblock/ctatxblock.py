@@ -71,12 +71,10 @@ class CTATXBlock(XBlock):
 
     # **** Basic interface variables ****
     src = String(help="The source html file for CTAT interface.",
-                 default="https://cdn.rawgit.com/CMUCTAT/CTAT/v4.0.0" +
-                 "/Examples/FractionAddition.html",
+                 default="http://165.91.233.250:8080/if_p_or_q_then_r/HTML/if_p_or_q_then_r.html",
                  scope=Scope.settings)
     brd = String(help="The behavior graph.",
-                 default="https://cdn.rawgit.com/CMUCTAT/CTAT/v4.0.0" +
-                 "/Examples/FractionAddition.brd",
+                 default="http://165.91.233.250:8080/if_p_or_q_then_r/FinalBRDs/if_p_or_q_then_r.brd",
                  scope=Scope.settings)
 
     # **** CTATConfiguration variables ****

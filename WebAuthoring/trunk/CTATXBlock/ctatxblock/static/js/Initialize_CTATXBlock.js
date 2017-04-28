@@ -41,10 +41,13 @@ function Initialize_CTATXBlock(runtime, element) {
   					/*"headers": {
     						"content-type": "application/xml"
   					},*/
-  					"data": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><message><verb>NotePropertySet</verb><properties><MessageType>InterfaceAction</MessageType><transaction_id>ce84270a-f527-0988-c717-3c817ed4c127</transaction_id><Selection><value>ans_table_c4</value></Selection><Action><value>UpdateTextField</value></Action><Input><value><![CDATA[q]]></value></Input><session_id>8ce23101-481c-e7bb-e4f3-534b7102b0ae</session_id></properties></message>"
+  					"data": "<?xml version=\"1.0\" encoding=\"UTF-8\"?><message><verb>NotePropertySet</verb><properties><MessageType>InterfaceAction</MessageType><transaction_id>ce84270a-f527-0988-c717-3c817ed4c127</transaction_id><Selection><value>"+data1['selection']+"</value></Selection><Action><value>"+data1['action']+"</value></Action><Input><value>"+data1['input']+"</value></Input><session_id>d62e0111-a494-4d5c-1bbc-3ec5b1bd2088</session_id></properties></message>"
 				}
 				$.ajax(settings).done(function (response) {
   					alert(response);
+                    //get the reponse from the servlet
+                    //send this response back to the ctatxblock.py to a new method
+                    //log the required things in that method
 				});
 			}
 		    }});
