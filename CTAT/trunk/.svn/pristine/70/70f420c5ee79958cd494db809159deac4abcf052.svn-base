@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+
+<head>
+
+	<link rel="stylesheet" type="text/css" href="android_keyboard.css">
+
+	<!--meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no">-->
+
+	<script>
+
+	var inputblur;
+	var empt;
+
+	function type(element){
+	
+	var holder = element;
+
+	}
+
+	function back(){
+	inputblur.value=inputblur.value.substring(0,inputblur.value.length-1);
+	//inputblur.value="";
+	}
+
+	function set(textelement){
+	inputblur = textelement;
+	console.log("inputblur should be set now; it's: "+inputblur.toString());
+	console.log("the id is: "+inputblur.id);
+	}
+
+	function dothis(){
+
+		if(inputblur!=null){
+		//document.getElementById("ingo").value  = "The function works";
+		console.log(inputblur);	//problem supposedly fixed %%something isn't quite right, inputblur is supposed to be the object containing the input element id=ingo, but I can't access its attributes w/ convention such as inputblur.id or inputblur.value
+		//console.log(empt);
+		console.log("in dothis() value: "+inputblur.value);
+
+		}
+	}
+	
+	function pushChar(character){
+		if(inputblur!=null){
+			if(character=='0'){
+			inputblur.value = inputblur.value+'0';
+			}
+			else if(character=='1'){
+			inputblur.value = inputblur.value+'1';
+			}
+			else if(character=='2'){
+			inputblur.value = inputblur.value+'2';
+			}
+			else if(character=='3'){
+			inputblur.value = inputblur.value+'3';
+			}
+			else if(character=='4'){
+			inputblur.value = inputblur.value+'4';
+			}
+			else if(character=='5'){
+			inputblur.value = inputblur.value+'5';
+			}
+			else if(character=='6'){
+			inputblur.value = inputblur.value+'6';
+			}
+			else if(character=='7'){
+			inputblur.value = inputblur.value+'7';
+			}
+			else if(character=='8'){
+			inputblur.value = inputblur.value+'8';
+			}
+			else if(character=='9'){
+			inputblur.value = inputblur.value+'9';
+			}
+			else if(character=='x'){
+			inputblur.value = inputblur.value+'x';
+			}
+			else if(character=='('){
+			inputblur.value = inputblur.value+'(';
+			}
+			else if(character==')'){
+			inputblur.value = inputblur.value+')';
+			}
+			else if(character=='/'){
+			inputblur.value = inputblur.value+'/';
+			}
+			else if(character=='+'){
+			inputblur.value = inputblur.value+'+';
+			}
+			else if(character=='-'){
+			inputblur.value = inputblur.value+'-';
+			}
+
+		}
+	}
+	//var change = document.activeElement;
+	//change.setAttribute("readonly","true");	
+	//alert(document.activeElement);
+	
+
+	</script>
+
+</head>
+
+<body>
+
+<p>2+3(x+2)</p>
+<input id="ingo" type="text" onfocus="dothis(); this.style.backgroundColor='yellow';" onblur="set(this)" readonly></input>
+<br>
+<p>2+3(x)+3(2)</p>
+<input type="text" onfocus="dothis(); this.style.backgroundColor='yellow';" onblur="set(this)" readonly></input>
+<br>
+<p>2+3x+6</p>
+<input type="text" onfocus="dothis(); this.style.backgroundColor='yellow';" onblur="set(this)" readonly></input>
+<br>
+<p>8+3x</p>
+<input type="text" onfocus="dothis(); this.style.backgroundColor='yellow';" onblur="set(this)" readonly></input>
+<br>
+<p>8-8+3x</p>
+<input type="text" onfocus="dothis(); this.style.backgroundColor='yellow';" onblur="set(this)" readonly></input>
+<br>
+<p>3x</p>
+<input type="text" onfocus="dothis(); this.style.backgroundColor='yellow';" onblur="set(this)" readonly></input>
+<br>
+<p>3x/3</p>
+<input type="text" onfocus="dothis(); this.style.backgroundColor='yellow';" onblur="set(this)" readonly></input>
+<br>
+<p>x</p>
+<input type="text" onfocus="dothis(); this.style.backgroundColor='yellow';" onblur="set(this)" readonly></input>
+<br>
+
+<div id="keyboardUI">
+	<div>
+		<div class="cssBG"></div>
+		<div class="onlay"></div>
+
+		<div class="numbers" id="zero" onclick="dothis(); pushChar('0')">0</div><!--these events should be placed correctly so they aren't obtrusive JavaScript-->
+		<div class="numbers" id="one" onclick="dothis(); pushChar('1')">1</div>
+		<div class="numbers" id="two" onclick="dothis(); pushChar('2')">2</div>
+		<div class="numbers" id="three" onclick="dothis(); pushChar('3')">3</div>
+		<div class="numbers" id="four" onclick="dothis(); pushChar('4')">4</div>
+		<div class="numbers" id="five" onclick="dothis(); pushChar('5')">5</div>
+		<div class="numbers" id="six" onclick="dothis(); pushChar('6')">6</div>
+		<div class="numbers" id="seven" onclick="dothis(); pushChar('7')">7</div>
+		<div class="numbers" id="eight" onclick="dothis(); pushChar('8')">8</div>
+		<div class="numbers" id="nine" onclick="dothis(); pushChar('9')">9</div>
+		<div class="xvar" style="left:535px;bottom:78px;" onclick="dothis(); pushChar('x')"><span style="font-family:times new roman;">x</span><br><span style="font-size:20px;">variable</span></div>
+		<div class="parenthesesDivision" id="openparen" onclick="dothis(); pushChar('(')">(</div>
+		<div class="parenthesesDivision" id="closeparen" onclick="dothis(); pushChar(')')">)</div>
+		<div class="parenthesesDivision" id="division" onclick="dothis(); pushChar('/')">/
+		</div>
+		<div class="plusMinus" id="plus" onclick="dothis(); pushChar('+')">+</div>
+		<div class="plusMinus" id="minus" onclick="dothis(); pushChar('-')">-</div>
+		<div class="close">close</div>
+		<div class="enter">Enter</div>
+		<div class="backspace" onclick="back()">Backspace</div>
+		<div id="triangle-left"></div>
+		<div id="triangle-right"></div>
+	</div>
+<div>
+
+	<div style="height:270px">
+	</div>
+</body>
+</html>

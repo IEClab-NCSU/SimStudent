@@ -1,0 +1,540 @@
+<html>
+<head>
+<title>CTAT Flash Tutor</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!-- This file must be loaded from a web server. Loading it directly from your local disk will cause all AJAX calls to fail in some browsers,
+		and the tutor will not load. Browsers restrict AJAX calls from html files on the local disk as a security feature -->
+
+<link rel="stylesheet" type="text/css" href="css/android_keyboard.css">
+
+<script type="text/javascript"
+	src="node_modules/jquery/dist/jquery.min.js"></script>
+
+<!-- Required CTAT libraries -->
+
+<script type="text/javascript" src="src/CTATDateTime.js"></script>
+<script type="text/javascript" src="src/CTATUtil/jstz.js"></script>
+
+<script src="node_modules/google-closure-library/closure/goog/base.js"></script>
+<script src="CTAT-deps.js"></script>
+
+<script>
+	goog.require('CTATExampleTracer');  // no longer required by ctattutor
+	goog.require('CTATTutor');
+	goog.require('CTATForBrowsers');  // needed until Flash knows about CTAT.ToolTutor.sendToTutor(), etc.
+</script>
+
+<style type="text/css">
+body {
+	margin: 0;
+	padding: 0;
+	text-align: center; /* !!! */
+	background-color: #cccccc;
+}
+
+.container {
+	width: 1024px;
+	height: 720px;
+	z-index: 0;
+	position: relative;
+	border: 1px solid black;
+}
+
+#main-canvas {
+	
+}
+
+canvas {
+	border: 1px solid black;
+	background-color: #ffffff;
+	z-index: 1;
+	position: relative;
+}
+
+.ctatconsole {
+	background-color: #ffffff;
+	width: 600px;
+	height: 0px;
+	box-shadow: 10px 10px 5px #888888;
+	text-align: left;
+	overflow: auto;
+	font-family: courier;
+	font-size: 11px;
+	border: 1px solid black;
+	/*white-space: nowrap;*/
+}
+
+.classname {
+	/*-moz-box-shadow:inset 0px 1px 0px 0px #ffffff;*/
+	/*-webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;*/
+	box-shadow: inset 0px 1px 0px 0px #ffffff;
+	/*background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ededed), color-stop(1, #dfdfdf) );*/
+	/*background:-moz-linear-gradient( center top, #ededed 5%, #dfdfdf 100% );*/
+	/*filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#dfdfdf');*/
+	background-color: #ededed;
+	/*-moz-border-radius:6px;*/
+	/*-webkit-border-radius:6px;*/
+	border-radius: 6px;
+	border: 1px solid #dcdcdc;
+	display: inline-block;
+	color: #777777;
+	font-family: arial;
+	font-size: 15px;
+	font-weight: bold;
+	padding: 6px 24px;
+	text-decoration: none;
+	text-shadow: 1px 1px 0px #ffffff;
+}
+
+.classname:hover {
+	/*
+                background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #dfdfdf), color-stop(1, #ededed) );
+                background:-moz-linear-gradient( center top, #dfdfdf 5%, #ededed 100% );
+                filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#dfdfdf', endColorstr='#ededed');
+                */
+	background-color: #dfdfdf;
+}
+
+.classname:active {
+	position: relative;
+	top: 1px;
+}
+
+.shadow {
+	box-shadow: 5px 5px 5px #888888;
+}
+
+.ui-widget-content {
+	border: 1px solid #aaaaaa;
+	background: #ffffff url(skindata/ui-bg_flat_75_ffffff_40x100.png) 50%
+		50% repeat-x;
+	color: #222222;
+	font-size: 10px;
+}
+
+.ui-widget-content a {
+	color: #222222;
+	font-size: 12px;
+}
+
+#closeKeyboard {
+	background-color: red;
+	width: 40px;
+	margin-top: 5px;
+}
+
+#openKeyboard {
+	background-color: green;
+	width: 40px;
+	margin-top: 5px;
+}
+</style>
+
+<script language="JavaScript">
+
+	var user="";
+
+	function parseQueryString(str)
+	{
+		str = str ? str : location.search;
+		var query = str.charAt(0) == '?' ? str.substring(1) : str;
+		var args = new Object();
+		if (query)
+		{
+			var fields = query.split('&');
+
+			for (var f = 0; f < fields.length; f++)
+			{
+				var field = fields[f].split('=');
+				args[unescape(field[0].replace(/\+/g, ' '))] = unescape(field[1].replace(/\+/g, ' '));
+			}
+		}
+
+		return args;
+	}
+
+	var mobileAPI = null;
+	var ctatconsoleFolded = true;
+	var args = parseQueryString();
+	var allFlashVars = '';
+	var arrayFlashVars = [];
+
+	function addToFlashVars(varName, value)
+	{
+		if (value == '')
+		{
+			arrayFlashVars[varName] = "";
+		}
+		else
+		{
+			if (allFlashVars != '')
+			{
+				allFlashVars = allFlashVars + '&' + varName + '=' + value;
+			}
+			else
+			{
+				allFlashVars = varName + '=' + value;
+			}
+			arrayFlashVars[varName] = value;
+		}
+	}
+
+	var argString="";
+	
+	for (var arg in args)
+	{
+		// display all the values (for testing)
+		//document.write(arg + ': ' + args[arg] + '<BR>');
+		argString = argString + '<BR>' + arg + '=';
+		// assign values from the query string to variables
+		switch (arg)
+		{
+			case "MOVIE":
+				var movie = args[arg];
+				argString = argString + movie;
+				break;
+			case "BRD":
+				var brd = args[arg];
+				argString = argString + brd;
+				addToFlashVars('question_file', brd);
+				break;
+			case "BRMODE":
+				var brmode = args[arg];
+				argString = argString + brmode;
+				addToFlashVars('BehaviorRecorderMode', brmode);
+				break;
+			case "PROBLEM":
+				var problem = encodeURIComponent(args[arg]);
+				argString = argString + problem;
+				addToFlashVars('problem_name', problem);
+				break;
+			case "DATASET":
+				var dataset = args[arg];
+				argString = argString + dataset;
+				addToFlashVars('dataset_name', dataset);
+				break;
+			case "LEVEL1":
+				var level1 = args[arg];
+				argString = argString + level1;
+				addToFlashVars('dataset_level_name1', level1);
+				break;
+			case "TYPE1":
+				var type1 = args[arg];
+				argString = argString + type1;
+				addToFlashVars('dataset_level_type1', type1);
+				break;
+			case "USER":
+				user = args[arg];
+				argString = argString + user;
+				addToFlashVars('user_guid', user);
+				break;
+			case "SESSION":
+				var session = args[arg];
+				argString = argString + session;
+				addToFlashVars('session_id', session);
+				break;
+			case "SOURCE":
+				var source = args[arg];
+				argString = argString + source;
+				addToFlashVars('source_id', source);
+				break;
+			case "LOGTYPE":
+				var logtype = args[arg];
+				argString = argString + logtype;
+				addToFlashVars('Logging', logtype);
+				break;
+			case "SLOG":
+				var sessionLog = args[arg];
+				argString = argString + sessionLog;
+				addToFlashVars('SessionLog', sessionLog);
+				break;
+			case "PORT":
+				var port = args[arg];
+				argString = argString + port;
+				addToFlashVars('remoteSocketPort', port);
+				break;
+			case "REMOTEURL":
+				var remoteurl = args[arg];
+				argString = argString + remoteurl;
+				addToFlashVars('remoteSocketURL', remoteurl);
+				break;
+			case "SKILLS":
+				var skills = encodeURIComponent(args[arg]);
+				argString = argString + skills;
+				addToFlashVars('skills', skills);
+				break;
+			case "DISKDIR":
+				var diskdir = args[arg];
+				argString = argString + diskdir;
+				addToFlashVars('log_to_disk_directory', diskdir);
+				break;
+			case "USEOLI":
+				var useoli = args[arg];
+				argString = argString + useoli;
+				addToFlashVars('DeliverUsingOLI', useoli);
+				break;
+			case "COLLABORATOR":
+				var othercollab = args[arg];
+				argString = argString + othercollab;
+				addToFlashVars('collaborators', user+","+othercollab);
+				break;						
+			case "URL":
+				var url = args[arg];
+				argString = argString + url;
+				addToFlashVars('log_service_url', url);
+				break;
+			case "VAR1":
+				var var1 = args[arg];
+				argString = argString + var1;
+				break;
+			case "VAL1":
+				var val1 = args[arg];
+				argString = argString + val1;
+				addToFlashVars(var1, val1);
+				break;
+			case "VAR2":
+				var var2 = args[arg];
+				argString = argString + var2;
+				break;
+			case "VAL2":
+				var val2 = args[arg];
+				argString = argString + val2;
+				addToFlashVars(var2, val2);
+				break;
+			case "VAR3":
+				var var3 = args[arg];
+				argString = argString + var3;
+				break;
+			case "VAL3":
+				var val3 = args[arg];
+				argString = argString + val3;
+				addToFlashVars(var3, val3);
+				break;
+			case "VAR4":
+				var var4 = args[arg];
+				argString = argString + var4;
+				break;
+			case "VAL4":
+				var val4 = args[arg];
+				argString = argString + val4;
+				addToFlashVars(var4, val4);
+				break;
+
+			case "tutoring_service_communication":
+				var conn = args[arg];
+				argString = argString + conn;
+				addToFlashVars('tutoring_service_communication', conn);
+				break;
+
+			case "scorm_enabled":
+				var scorm_enabled = args[arg];
+				argString = argString + scorm_enabled;
+				addToFlashVars('scorm_enabled', scorm_enabled);
+				break;
+			case "curriculum_service_url":
+				var curriculum_service_url = args[arg];
+				argString = argString + curriculum_service_url;
+				addToFlashVars('curriculum_service_url', curriculum_service_url);
+				break;
+			case "KEYBOARDGROUP":
+				var mobile_keyboard = args[arg];
+				argString = argString + mobile_keyboard;
+				//alert ("KEYBOARDGROUP: " + mobile_keyboard);
+				addToFlashVars("keyboard", mobile_keyboard);
+				break;
+			case "info":
+				var info = args[arg];
+				argString = argString + info;
+				addToFlashVars('info', info);
+				break;
+			case "reuse_swf":
+				var reuse_swf = args[arg];
+				argString = argString + reuse_swf;
+				addToFlashVars('reuse_swf', reuse_swf);
+				break;
+			case "submit":
+				break;
+		}
+	}
+
+
+	if (args ['tutoring_service_communication'] == 'javascript')
+	{
+
+//		//deployJava.runApplet({id: 'TSApplet', width: 150, height: 10}, {jnlp_href: '/ctat_applet/TSApplet.jnlp'}, '1.6');
+	}
+
+	/**
+	 *
+	 */
+	function clearConsole()
+	{
+		var ctatconsole = document.getElementById("ctatconsole");
+
+		ctatconsole.innerHTML = "";
+	}
+	/**
+	 *
+	 */
+	function foldConsole()
+	{
+		var ctatconsole = document.getElementById("ctatconsole");
+
+		if (ctatconsoleFolded == false)
+		{
+			ctatconsoleFolded = true;
+			ctatconsole.style.height = 0;
+		}
+		else
+		{
+			ctatconsoleFolded = false;
+			ctatconsole.style.height = 300;
+		}
+	}
+	/**
+	 *
+	 */
+	function toggleDebugging(cb)
+	{
+		useDebugging = (cb.checked == true);  // global defined in CTATGlobals.js
+	}
+
+	/**
+	 *
+	 */
+	function startFlashtutor()
+	{
+		//mobileAPI=new CTATMobileTutorHandler ("QA_Test","on");
+
+		var container = document.getElementById("container");
+
+		initTutor(arrayFlashVars, null, null, true);  // true => usingFlash
+
+		ctatdebug("Starting Flash tutor ...");
+
+		CTATConfig.external = "none";
+		CTATConfig.parserType = "xml";
+
+		console.log ("allFlashVars: " + allFlashVars); // getDebugger.ctatdebug (allFlashVars);
+
+		ctatdebug (argString);
+
+		flashWidth = '1024';
+		flashHeight = '720';
+		embedElement = '<embed name="QA_Test" id="QA_Test" src="' + movie + '" quality="high" bgcolor="#ffffff" FlashVars="' + allFlashVars + '" width="' + flashWidth + '" height="' + flashHeight + '" align="middle" allowScriptAccess="always" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />';
+		ieFlashVars = '<param name="FlashVars" value="' + allFlashVars + '"/>';
+		flashVarsList = '<div id="flashvars" style="font-family:arial;font-size:80%;"><p><b>FlashVars=</b>' + allFlashVars + '</p></div>';
+		argList = '<div id="args" style="font-family:arial;font-size:80%;"><p><b>Arguments</b>' + argString + '</p></div>';
+		container.innerHTML = '<div id="swf"><object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,0,0" width="' + flashWidth + '" height="' + flashHeight + '" align="middle"> <param name="allowScriptAccess" value="always" /> <param name="SeamlessTabbing" value="false" />' + ieFlashVars + '<param name="movie" value="' + movie + '" /> <param name="quality" value="high" /> <param name="bgcolor" value="#ffffff" />' + embedElement + '</object></div>';
+	}
+
+	//>-------------------------------------------------------------------	
+
+	function openK()
+	{
+		document.getElementById("keyboardUI").style.visibility = "visible";
+	}
+
+	function closeK()
+	{
+		document.getElementById("keyboardUI").style.visibility = "hidden";
+	}
+
+	function closeKeyboardOnBlur()
+	{
+		document.getElementById("keyboardUI").style.visibility = "hidden";
+		var ctatconsole = document.getElementById("ctatconsole");
+		ctatconsole.log("keyboard onblur");
+	}
+
+	function init()
+	{
+		setOrientation(180);
+		//hideKeyboard ();
+	}
+
+	/*
+	function getClipboardData ()
+	{
+		console.log ("getClipboardData ()");
+		
+		return ("Hello Clipboard");
+	}
+	*/
+	
+	//>-------------------------------------------------------------------		
+
+</script>
+
+</head>
+<body>
+
+	<table cellpadding="0" cellspacing="0" width="100%" height="100%"
+		align="center" valign="middle" border="0">
+		<tr>
+			<td align="center" valign="middle">
+				<div width="600" id="info" name="info"></div>
+				<div id="container" name="container" class="container"></div> <br>
+				<div width="600">
+					<input type="checkbox" id="debugtraces" name="debugtraces"
+						value="debugtraces" onclick='toggleDebugging(this);'>Show
+					Debug Traces
+					<button type="button" onclick="startFlashtutor()">
+						<img src="run.png" alt="Start Flash Tutor" />
+					</button>
+					<button type="button" onclick="clearConsole()">
+						<img src="edit-clear.png" alt="Clear Console" />
+					</button>
+					<button type="button" onclick="foldConsole()">
+						<img src="fold.png" alt="Fold Console" />
+					</button>
+					<img id="pageor" name="pageor" src="skindata/portrait.png"
+						border="0"> <br>
+					<div id="ctatconsole" class="ctatconsole"></div>
+				</div>
+			</td>
+		</tr>
+	</table>
+
+	<div id="keyboardUI" onblur="closeKeyboardOnBlur()">
+		<div>
+			<div class="cssBG"></div>
+			<div class="onlay"></div>
+
+			<div class="numbers" id="zero" onclick="mobileAPI.setText('0')">0</div>
+			<div class="numbers" id="one" onclick="mobileAPI.setText('1')">1</div>
+			<div class="numbers" id="two" onclick="mobileAPI.setText('2')">2</div>
+			<div class="numbers" id="three" onclick="mobileAPI.setText('3')">3</div>
+			<div class="numbers" id="four" onclick="mobileAPI.setText('4')">4</div>
+			<div class="numbers" id="five" onclick="mobileAPI.setText('5')">5</div>
+			<div class="numbers" id="six" onclick="mobileAPI.setText('6')">6</div>
+			<div class="numbers" id="seven" onclick="mobileAPI.setText('7')">7</div>
+			<div class="numbers" id="eight" onclick="mobileAPI.setText('8')">8</div>
+			<div class="numbers" id="nine" onclick="mobileAPI.setText('9')">9</div>
+			<div class="xvar" style="left: 535px; bottom: 78px;"
+				onclick="mobileAPI.setText('x')">
+				<span style="font-family: times new roman;">x</span><br> <span
+					style="font-size: 20px;">variable</span>
+			</div>
+			<div class="parenthesesDivision" id="openparen"
+				onclick="mobileAPI.setText('(')">(</div>
+			<div class="parenthesesDivision" id="closeparen"
+				onclick="mobileAPI.setText(')')">)</div>
+			<div class="parenthesesDivision" id="division"
+				onclick="mobileAPI.setText('/')">/</div>
+			<div class="plusMinus" id="plus" onclick="mobileAPI.setText('+')">+</div>
+			<div class="plusMinus" id="minus" onclick="mobileAPI.setText('-')">-</div>
+			<div class="close" onclick="closeK()">close</div>
+			<div class="enter" onclick="mobileAPI.processEnter()">Enter</div>
+			<div class="backspace">Backspace</div>
+			<div id="triangle-left"></div>
+			<div id="triangle-right"></div>
+		</div>
+	</div>
+	<div>
+		<canvas id="main-canvas"></canvas>
+	</div>
+</body>
+</html>
+

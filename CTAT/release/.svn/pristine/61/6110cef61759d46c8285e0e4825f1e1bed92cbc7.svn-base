@@ -1,0 +1,23 @@
+# System calls from formula expressions
+
+goog.provide('CTATFormulaActions')
+goog.require('CTATTutoringServiceMessageBuilder')
+goog.require('CTATMessage')
+goog.require('CTATSAI')
+goog.require('CTAT.ToolTutor')
+
+class CTATFormulaActions
+
+  # Tutor control
+  @goToState: (stateName) ->
+    CTAT.ToolTutor.tutor.goToState(stateName)
+
+  @goToStartState: () ->
+    CTAT.ToolTutor.tutor.goToStartState()
+
+  # UI messages
+  @performInterfaceAction: (selection, action, input) ->
+    CTAT.ToolTutor.sendToInterface((new CTATTutoringServiceMessageBuilder).
+      createInterfaceActionMessage(CTATMessage.makeTransactionId(), new CTATSAI(selection, action, input)))
+
+if module? then module.exports = CTATFormulaActions else @CTATFormulaActions = CTATFormulaActions

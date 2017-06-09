@@ -1,0 +1,632 @@
+/* This object represents a CTATMessageTank */
+/* LastModify: FranceskaXhakaj 11/14*/
+
+goog.provide('CTATMessageTank');
+
+goog.require('CTATGlobalFunctions');
+goog.require('CTATBase');
+goog.require('CTATSAI');
+goog.require('CTATMessage');
+goog.require('CTATTutoringServiceMessageBuilder');
+goog.require('CTATMsgType');
+goog.require('CTATExampleTracerEvent');
+goog.require('CTATExampleTracerLink');
+goog.require('CTAT.ToolTutor');
+
+/**
+ * Represents the CTATMessageTank.
+ * @constructor
+ * @augments CTATBase
+ * @param {CTATExampleTracer} givenTutorObject
+ */
+CTATMessageTank = function(givenTutorObject)
+{
+
+/**************************** INHERITED CONSTRUCTOR ******************************************************/
+
+	//calling the constructor of the super class
+	CTATBase.call(this, "CTATMessageTank", null);
+
+/**************************** PUBLIC INSTANCE VARIABLES ******************************************************/
+
+
+/**************************** PRIVATE INSTANCE VARIABLES ******************************************************/
+
+   /**
+    * Reference to the example tracer.
+    * @type {CTATExampleTracer}
+    */
+    var et = givenTutorObject;
+
+   /**
+    * Holds the response Comm messages.
+    * @type {array with triples (msgType: string, msg: string, evt: CTATExampleTracerEvent)}
+    */
+	var messageTank = null;
+
+   /**
+    * MessageTypes in the tank.
+    */
+    var msgTypes = null;
+
+   /**
+    * Result types in the tank, from CTATExampleTracerEvent.getResult().
+    */
+    var resultTypes = null;
+
+   /**
+    * Message types to defer.
+    * @type {Set of strings}
+    */
+	var msgTypesToDefer = new Set();
+	msgTypesToDefer.add("SuccessMessage");
+	msgTypesToDefer.add("BuggyMessage");
+	msgTypesToDefer.add("HighlightMsg");
+	msgTypesToDefer.add("NotDoneMessage");
+
+   /**
+    * To turn off logging: use with care. Values true & false have effect; no-op if null.
+    * @type {boolean}
+    */
+	var suppressLogging = null;
+
+	/**
+     * Make the object available to private methods
+     */
+	var that = this;
+
+/***************************** PRIVATE METHODS *****************************************************/
+
+    /**
+     * Send a message to the student interface. This API is meant for tutor-performed actions and
+     * side effects generated from a link match. Creates a new transaction_id value for the message.
+     * Adds the new message to the tank.
+     * @param {String} messageType
+     * @param {array} selection
+     * @param {array} action
+     * @param {array} input
+     * @param {String} subtype
+     * @return {String} new message's transaction_id
+     */
+	function enqueueMessageToStudent (messageType, selection, action, input, subtype)
+	{
+		that.ctatdebug("entering enqueueMessageToStudent()");
+
+		var transactionID = CTATMessage.makeTransactionId();
+		var sai = new CTATSAI(selection, action, input);
+		var builder = new CTATTutoringServiceMessageBuilder();
+		var msg = builder.createInterfaceActionMessage(transactionID, sai)
+
+		msg = CTATMsgType.setProperty(msg, CTATTutorMessageBuilder.TRIGGER, "DATA");
+		msg = CTATMsgType.setProperty(msg, CTATTutorMessageBuilder.SUBTYPE, (subtype === null || typeof(subtype) === 'undefined' || subtype.length < 1 ? CTATTutorMessageBuilder.TUTOR_PERFORMED : subtype));
+
+		var evt = new CTATExampleTracerEvent(et, sai, CTATMsgType.DEFAULT_TOOL_ACTOR);
+		evt.setTransactionID(transactionID);
+
+		that.addToMessageTank(messageType, msg, evt, sai);
+
+		return transactionID;
+	};
+
+	/**
+	 * For selected messages, set selection variables to input values in the
+	 * ProblemModel's variable table.
+	 * @param {string} msgType
+	 * @param {CTATExampleTracerEvent} evt
+	 * @return {undefined}
+	 */
+	function processInterfaceVariables(msgType, evt)
+	{
+		that.ctatdebug("entering processInterfaceVariables() msgType "+msgType+", evt "+evt);
+
+		if(!msgType)
+		{
+			return;
+		}
+		var tracer = et ? et.getTracer() : null;
+		that.ctatdebug("entering processInterfaceVariables() et "+et+", tracer "+tracer);
+		
+		msgType = msgType.toLowerCase();
+		if(msgType.indexOf("correct") === 0 || msgType.indexOf("interfaceaction") === 0)
+		{
+			tracer && tracer.addInterfaceVariablesFromEvent(evt);
+		}
+	};
+
+    /**
+     * Send a message by forwarding it through the {@link #controller}.
+     * @param {CTATMessage} newMessage
+     * @param {boolean} endOfTx true if this is the last message in the transaction
+     * @return {undefined}
+     */
+	function sendMessage(newMessage, endOfTx)
+	{
+		that.ctatdebug("entering sendMessage()");
+
+		if (suppressLogging !== null || typeof(suppressLogging) !== 'undefined')
+		{
+			newMessage.suppressLogging(suppressLogging);
+		}
+
+		//request is always an HTTPMessageObject in our case
+		//we call sendToInterface method from handlers.js
+	};
+
+	/**
+	 * Update the summary counts for this problem according to the results of the
+	 * current transaction
+	 * @param {CTATProblemSummary} ps
+	 */
+	function updateProblemSummary(ps)
+	{
+		that.ctatdebug("entering updateProblemSummary()");
+
+		if(!ps)
+		{
+			return;
+		}
+
+		//Suppressed student feedback code goes here
+
+		//mimics the get method given a key
+		messageTank.forEach(function(messg)
+		{
+			if(messg.msgType == CTATMsgType.ASSOCIATED_RULES)
+			{
+				updateProblemSummaryWithEvent(ps, messg.evt);
+			}
+		});
+	};
+
+	/**
+	 * Update the summary counts for this problem according to the results of the
+	 * current transaction
+	 * @param {CTATProblemSummary} ps
+	 */
+	function updateProblemSummaryWithEvent(ps, evt)
+	{
+		that.ctatdebug("entering updateProblemSummaryWithEvent("+evt+")");
+		if(!evt)
+		{
+			return;
+		}
+		if(et && et.getOutputStatus().isComplete())
+		{
+			ps.setCompletionStatus(CTATMsgType.CompletionValue[1], false);
+			ps.setShowCounts(false);
+			return;  // do not update problem summary if already complete
+		}
+
+		var indicatorObj = evt.getResult();
+		if(evt.getHintRequest())
+		{
+			indicatorObj = CTATExampleTracerLink.HINT_ACTION;
+		}
+
+		// The completion status could change to 'complete' when the student presses
+    	// Done with feedback suppressed. If the student then replies "no" to the
+    	// ConfirmDone prompt, then we'll reset the completion status to 'incomplete'
+    	// with the very next request.
+		var cv = CTATMsgType.CompletionValue[0]; //0 is incomplete, 1 is complete
+		var correct = (indicatorObj && (indicatorObj == CTATExampleTracerLink.CORRECT_ACTION));
+		var doneStep = false, studentSelection = null, studentAction = null, studentSAI = evt.getStudentSAI();
+		if(studentSAI && (studentSelection = studentSAI.getSelection()) && (studentAction = studentSAI.getAction()))
+		{
+			doneStep = ((String(studentSelection)).toLowerCase() == "done" && (String(studentAction)).toLowerCase() == "buttonpressed");
+		}
+
+		ps.setCompletionStatus(cv, CTATGlobals.confirmDone);
+		that.ctatdebug("updateProblemSummary() Completion status " + cv + ", doneStep " + doneStep + ", correct " + correct);
+		if(doneStep)
+		{
+			cv = (correct ? CTATMsgType.CompletionValue[1] : CTATMsgType.CompletionValue[0]);
+
+			//Suppress Student Feedback goes here
+
+			ps.setCompletionStatus(cv, true);
+		}
+
+		if(cv == CTATMsgType.CompletionValue[1])
+		{
+			ps.stopTimer(); // sewall 2012/12/04: stop timer here: could finish on tutor-performed step
+			if(et)
+			{
+				et.setOutputStatus(CTATProblemStateStatus.complete);
+			}
+		}
+		else
+		{
+			ps.restartTimer();
+		}
+
+		var actor = evt.getActor();
+		that.ctatdebug("updateProblemSummmary() actor "+actor+", indicatorObj "+indicatorObj);
+
+		if(CTATMatcher.isTutorActor(actor) || !et.getOutputStatus().countForProblemSummary())
+		{
+			return; // sewall 2012/12/04: don't let tutor-performed steps affect the problem summary
+		}
+		var stepID = evt.getStepID();
+		if(CTATTutorMessageBuilder.isHint(indicatorObj))
+		{
+			ps.addHint(stepID);
+		}
+		else if(!CTATTutorMessageBuilder.isCorrect(indicatorObj))
+		{
+			ps.addError(stepID);
+		}
+		else if(indicatorObj !== null && typeof(indicatorObj) !== 'undefined')
+		{
+			ps.addCorrect(stepID);
+		}
+	};
+
+    /**
+     * Add this message to the delayed feedback tank, creating it if necessary.
+     * @param {string} msg
+     */
+    function addToDelayedFeedbackTank(msg)
+    {
+        var selection = CTATMsgType.getProperty(msg, "Selection");
+		that.ctatdebug("CTATMessageTank.addToDelayedFeedbackTank(\n  "+msg+") selection "+selection);
+        if (!selection) return;
+        (et.getDelayedFeedback())[selection.toLowerCase()] = msg;
+    };
+
+    /**
+     * Deal with suppressed feedback.
+     * @param {object} mto entry in message list
+     * @return {boolean} true if message should be suppressed
+     */
+    function suppressThisMessage(mto)
+    {
+        var dispose = that.suppressFeedback(mto, et.getFeedbackPolicy());
+        switch (dispose) {
+        case CTATMsgType.SHOW_ALL_FEEDBACK:
+            return false;
+        case CTATMsgType.DELAY_FEEDBACK:
+            addToDelayedFeedbackTank(mto.msg);
+            return true;
+        case CTATMsgType.HIDE_ALL_FEEDBACK:
+            return true;
+        case CTATMsgType.HIDE_BUT_COMPLETE:
+            return true;
+        case CTATMsgType.HIDE_BUT_ENFORCE:
+            return true;
+        default:
+            return false;  // do not suppress
+        }
+    };
+
+	/**
+     * Check whether the given action has a delay setting. If so, invoke setTimer()
+     * to process a message of this description after the delay. A delay setting is an
+     * suffix ":N" to the action, where N is an integer specifying a delay in milliseconds
+     * before the message should be sent to the user interface.
+     * @param {object} mto message tuple
+     * @param {Array<{{Number}timeout,{Array<{object}>}msgTuples}>} delayedMsgsBundle to store delayed messages
+     * @return true if this is a delayed action
+	 */
+	function delayThisMessage(mto, delayedMsgsBundle)
+	{
+		if(!CTATConfiguration.usingFlash())
+		{
+			return false;
+		}
+		var a, aParsed;
+		if(!mto || !mto.sai || !(a = mto.sai.getAction()) || !(aParsed = CTATSAI.delayedActionRegExp.exec(a)) || aParsed.length < 3 || aParsed[2] <= 1)
+		{
+			return false;
+		}
+		var last = delayedMsgsBundle.length-1;
+		var delayedMsgs = (last < 0 ? null : delayedMsgsBundle[last]);
+		mto.msg = mto.msg.replace(a, aParsed[1]);                          // remove delay from msg's action
+		if(!delayedMsgs || delayedMsgs.timeout != aParsed[2])
+		{
+			delayedMsgsBundle.push(delayedMsgs = {timeout:Number(aParsed[2]), msgTuples:[mto]});
+		} else {
+			delayedMsgs.msgTuples.push(mto);
+		}
+		return true;
+	};
+
+	/**
+	 * Send a bunch of messages after a delay.
+	 * @param {{Number}timeout,{Array<{object}>}msgTuples} delayedMsgs
+	 */
+	function processDelayedMsgs(delayedMsgs)
+	{
+		that.ctatdebug("processDelayedMsgs() delayedMsgs.timeout "+delayedMsgs.timeout+", .msgTuples.length "+delayedMsgs.msgTuples.length);
+		setTimeout(sendNewTankful, delayedMsgs.timeout, et, delayedMsgs.msgTuples)
+	};
+
+	/**
+	 * Invoked from timeout: create a temporary message tank and send the given msg tuples.
+	 * @param {CTATExampleTracer} exTracer
+	 * @param {Array<{msgType: string, msg: string, evt: CTATExampleTracerEvent}>}
+	 */
+	function sendNewTankful(exTracer, msgTuples)
+	{
+		var newTank = new CTATMessageTank(exTracer, null);
+		for(var i = 0; i < msgTuples.length; ++i)
+		{
+			var mto = msgTuples[i];
+			that.ctatdebug("sendNewTankful() mto["+i+"] msgType "+mto.msgType);
+			newTank.addToMessageTank(mto.msgType, mto.msg, mto.evt, null);
+		}
+		newTank.flushMessageTank(null, true);
+	};
+
+	/**
+	 * Tell whether the contents of the message tank indicate that it is time to save the problem state.
+	 * @return {boolean} true if should save
+     */
+	function shouldSaveNow()
+	{
+		that.ctatdebug("CTATMessageTank.shouldSaveNow() resultTypes "+resultTypes+", msgTypes "+msgTypes);
+		if(resultTypes[CTATExampleTracerLink.CORRECT_ACTION] || resultTypes[CTATExampleTracerLink.FIREABLE_BUGGY_ACTION])
+			return true;
+		if(msgTypes["CorrectAction"] || msgTypes["InterfaceAction"] || msgTypes["UntutoredAction"])
+			return true;
+		if(et.isFeedbackSuppressed() && msgTypes["AssociatedRules"])
+			return true;
+		return false;
+	};
+
+/***************************** PRIVILEDGED METHODS *****************************************************/
+
+   /**
+    * Print the message types in the tank.
+    */
+	this.toString = function()
+	{
+		that.ctatdebug("toString tank "+messageTank);
+		if(!messageTank || messageTank.length < 1)
+			return "MessageTank empty";
+		var sb = "";
+		messageTank.forEach(function(message)
+		{
+			sb += (message.msgType + ", ");
+		});
+		return "MessageTank[" + sb.substr(0, sb.length-2) + "]";
+	};
+
+    /**
+     * Create a CTATMsgType.INTERFACE_ACTION message for a tutor-performed step and
+     * add it to the tank.
+     * @param {array} selection
+     * @param {array} action
+     * @param {array} input
+     * @param {String} subtype
+     * @return {String} new message's transactionID
+     */
+	this.enqueueToolActionToStudent = function(selection, action, input, subtype)
+	{
+		that.ctatdebug("Entering enqueueToolActionToStudent("+selection+", "+action+", "+input+", "+subtype+")");
+
+		return enqueueMessageToStudent(CTATMsgType.INTERFACE_ACTION, selection, action, input, subtype);
+	};
+
+    /**
+     * Add a new entry to the messageTank with a (possibly null) CTATExampleTracerEvent instance.
+	 * @param {string} msgType
+     * @param {string} newMessage
+     * @param {CTATExampleTracerEvent} givenEvent example tracer result describing the creation of this message
+	 * @param {CTATSAI} sai
+     * @return {undefined}
+     */
+	this.addToMessageTank = function(msgType, newMessage, givenEvent, sai)
+	{
+		that.ctatdebug("Entering addToMessageTank("+msgType+", "+newMessage+", "+givenEvent+")");
+
+		if(!newMessage)
+		{
+			return;
+		}
+
+		if(!messageTank)
+		{
+			messageTank = []; //array with tuples {msgType: string, msg: string, evt: CTATExampleTracerEvent, sai: CTATSAI} object
+			msgTypes = {};
+			resultTypes = {};
+		}
+
+		//creating and adding new triple
+		var newTuple = {};
+		newTuple.msgType = msgType;
+		newTuple.msg = newMessage;
+		newTuple.evt = givenEvent;
+		newTuple.sai = sai;
+
+		messageTank.push(newTuple);
+
+		if(!msgTypes[msgType])
+			msgTypes[msgType] = 1;
+		else
+			msgTypes[msgType] += 1;
+
+		var resultType = givenEvent.getResult();
+		if(givenEvent.getHintRequest())
+			resultType = CTATExampleTracerLink.HINT_ACTION;
+		if(!resultTypes[resultType])
+			resultTypes[resultType] = 1;
+		else
+			resultTypes[resultType] += 1;
+
+		that.ctatdebug("Exiting addToMessageTank() this "+that.toString());
+	};
+
+	/**
+	 * Send all the messages in the tank to the student interface.
+	 * @param {CTATProblemSummary} ps if not null, problem summary to update
+	 * @param {boolean} endOfTransaction set to false if this is not the end of the transaction
+	 * @return {undefined}
+	 */
+	this.flushMessageTank = function(ps, endOfTransaction)
+	{
+		that.ctatdebug("Entering flushMessageTank("+ps+", "+endOfTransaction+")");
+
+		if(!messageTank || messageTank.length < 1)
+		{
+			return;
+		}
+
+		updateProblemSummary(ps);
+
+		that.ctatdebug("flushMessageTank() after updateProblemSummary; messageTank.length "+messageTank.length);
+		var msgBundle = [];
+		var delayedMsgsBundle = [];
+		for(var i = 0; i < messageTank.length; ++i)
+		{
+			var mto = messageTank[i];
+			if(mto.msg)
+			{
+				processInterfaceVariables(mto.msgType, mto.evt);
+
+				if(suppressThisMessage(mto) || delayThisMessage(mto, delayedMsgsBundle))
+				{
+					continue;
+				}
+				msgBundle.push(mto.msg);
+			}
+		}
+		that.ctatdebug("flushMessageTank(): msgBundle.length "+msgBundle.length +", delayedMsgsBundle.length "+delayedMsgsBundle.length);
+		for(var i = 0; i < delayedMsgsBundle.length; ++i)
+		{
+			processDelayedMsgs(delayedMsgsBundle[i]);
+		}
+
+		//Leaving out suppressed student feedback
+		//Tgether with the big loop that decides whether to SHOW_ALL_FEEDBACK, DELAY_FEEDBACK, HIDE_ALL_FEEDBACK
+
+		if(msgBundle.length > 0)
+		{
+			that.ctatdebug("Bottom of flushMessageTank(); to send bundle of length "+msgBundle.length+" via "+et);
+
+			if(et.sendBundle(msgBundle))
+			{
+				if(shouldSaveNow() && et.isSendingSavedMsgsForRestore())
+				{
+					if (CTATGlobalFunctions.isInstructorMode())
+					{
+						that.ctatdebug("We're in reviewer mode: we shouldn't save as we go");
+					}
+					else
+					{
+						et.getProblemStateSaver().saveAsYouGo(ps);
+					}
+				}
+			}
+
+			that.ctatdebug("Exiting flushMessageTank() #CorrectAction "+msgTypes["CorrectAction"]+", #InterfaceAction "+msgTypes["InterfaceAction"]+", #UntutoredAction "+msgTypes["UntutoredAction"]);
+		}
+		messageTank = null;    // housekeep buffer
+		msgTypes = null;
+	};
+
+	/**
+	 * Send contents of delayedFeedback list and clear the list.
+	 * @return {undefined}
+	 */
+	this.flushDelayedFeedback = function()
+	{
+		that.ctatdebug("Entering flushDelayedFeedback()");
+		var df = et.getDelayedFeedback();
+		for(var selection in df)  // at most 1 msg per selection
+		{
+			if(df.hasOwnProperty(selection))
+    		{
+				CTAT.ToolTutor.sendToInterface(df[selection]);
+    		}
+		}
+		et.clearDelayedFeedback();		//clearing the map
+	};
+
+    /**
+     * Method telling whether to suppress feedback. <b>Always</b> passes the Done response,
+     * for the UI needs it to know whether to end the problem.
+     * @param {object} mto messageTank object
+     * @param {string} suppress whether all feedback is suppressed
+     * @return whether to show, hide or delay
+     */
+    this.suppressFeedback = function(mto, suppress)
+    {
+        that.ctatdebug("CTATMessageTank.suppressFeedback("+mto.msgType+", "+suppress+")");
+        var result = null;
+
+        if(suppress == CTATMsgType.SHOW_ALL_FEEDBACK)
+        {
+			that.ctatdebug("if.1");
+            result = suppress;                               // hide nothing
+        }
+        else if(CTATMsgType.hasTextFeedback(mto.msgType))
+        {
+			that.ctatdebug("if.2");
+            if (suppress == CTATMsgType.HIDE_ALL_FEEDBACK || suppress == CTATMsgType.HIDE_BUT_ENFORCE)
+            {				that.ctatdebug("if.2.1");
+                result = suppress;                           // always hide text
+            }
+            else                                             // feedback delayed or all steps required
+            {
+				that.ctatdebug("if.2.2");
+                var buggyMsg = CTATMsgType.getProperty(mto.msg, CTATMsgType.BUGGY_MSG);
+                if (buggyMsg && (buggyMsg.toLowerCase().indexOf(CTATMsgType.NOT_DONE_MSG.toLowerCase()) != -1))
+                {
+					that.ctatdebug("if.2.2.1");
+                    result = CTATMsgType.SHOW_ALL_FEEDBACK;  // display "you are not done" -- don't delay
+                }
+                else
+                {
+					that.ctatdebug("if.2.2.2");
+                    result = CTATMsgType.HIDE_ALL_FEEDBACK;  // hide any other text
+                }
+            }
+        }
+        else if(CTATMsgType.isCorrectOrIncorrect(mto.msgType))
+        {
+			that.ctatdebug("if.3: "+mto.msg);
+            if(CTATMsgType.isDoneMessage(mto.msg))
+            {
+				that.ctatdebug("if.3.1");
+                result = CTATMsgType.SHOW_ALL_FEEDBACK;      // *always* pass the Done response
+            }
+            else
+            {
+				that.ctatdebug("if.3.2");
+                result = suppress;                           // delay for delay, hide for hide
+            }
+        }
+        else
+        {
+			that.ctatdebug("if.4");
+            result = CTATMsgType.SHOW_ALL_FEEDBACK;          // default
+        }
+
+        that.ctatdebug("CTATMessageTank.suppressFeedback() returning "+result);
+        return result;
+    };
+
+/****************************** PUBLIC METHODS ****************************************************/
+
+/****************************** CONSTRUCTOR CALLS ****************************************************/
+
+};
+
+/****************************** CONSTANTS ****************************************************/
+
+	/**
+	 *
+	 * @param {String}
+	 */
+	Object.defineProperty(CTATMessageTank, "END_OF_TRANSACTION", {enumerable: false, configurable: false, writable: false, value: "end_of_transaction"});
+
+
+/**************************** SETTING UP INHERITANCE ******************************************************/
+
+CTATMessageTank.prototype = Object.create(CTATBase.prototype);
+CTATMessageTank.prototype.constructor = CTATMessageTank;
+
+if(typeof module !== 'undefined')
+{
+	module.exports = CTATMessageTank;
+}

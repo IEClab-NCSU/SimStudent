@@ -1,0 +1,36 @@
+# Parse tree node for relations
+
+goog.provide('CTATRelationNode')
+goog.require('CTATTreeNode')
+
+class CTATRelationNode extends CTATTreeNode
+  constructor: (@operator, @left, @right, @parens = 0, @sign = 1, @exp = 1) ->
+  clone: -> new CTATRelationNode @operator, @left.clone(), @right.clone(), @parens, @sign, @exp
+  toString: ->
+    @left.setParens @operator; @right.setParens @operator
+    operator = CTATTreeNode.toOperatorString(@operator)
+    super string = "#{@left.toString()}#{operator}#{@right.toString()}"
+  evaluate: ->
+    left = @left.evaluate(); right = @right.evaluate()
+    switch @operator
+      when 'LESS' then left < right
+      when 'GREATER' then left > right
+      when 'LESSEQUAL' then left <= right
+      when 'GREATEREQUAL' then left >= right
+      when 'EQUAL' then left == right
+      when 'NOTEQUAL' then left != right
+  equals: (node) -> super(node) and @left.equals(node.left) and @right.equals(node.right)
+  simplify: (@methods) -> @left = @left.simplify(@methods); @right = @right.simplify(@methods); super
+
+  computeConstants: ->
+    if @left.constant() and @right.constant() then new CTATConstantNode @evaluate() else @
+
+  sort: ->
+    switch @operator
+      when 'GREATER' then @operator = 'LESS'; [@left, @right] = [@right, @left]
+      when 'GREATEREQUAL' then @operator = 'LESSEQUAL'; [@left, @right] = [@right, @left]
+      when 'EQUAL', 'NOTEQUAL' then [@left, @right] = [@right, @left] if @left.compare(@right) < 0
+    @
+  countVariables: -> @left.countVariables() + @right.countVariables()
+
+if module? then module.exports = CTATRelationNode else @CTATRelationNode = CTATRelationNode

@@ -1,0 +1,199 @@
+/**
+ * @fileoverview Adds to Javascript's DOMRect @link{http://dev.w3.org/fxtf/geometry/}
+ * some of the functionality of AS3's flash.geom.Rectangle
+ * @link{http://help.adobe.com/en_US/FlashPlatform/reference/actionscript/3/flash/geom/Rectangle.html}.
+ * This should be checked when DOMRect's specification changes.
+ *
+ * @author $Author: vvelsen $
+ * @version $Revision: 24406 $
+ */
+goog.provide('CTAT.Geom.Rectangle');
+goog.require('CTAT.Geom.Point');
+
+// Shim for DOMRect.  This should never be necessary as DOMRect should be in
+// everything that supports Element.getClientBoundingBox(), which is essentially
+// universal.
+try {
+	new DOMRect();
+} catch (e) {
+	console.log("WARNING: new DOMRect():", e, typeof(e));
+	if (e instanceof ReferenceError || e instanceof TypeError) {
+		console.log("    Using shim!");
+		var DOMRect = function (x,y,w,h) {
+			this.x = x || 0;
+			this.y = y || 0;
+			this.width = w || 0;
+			this.height = h || 0;
+			return this;
+		};
+	}
+}
+// Shims for extra functionality not in all implementations of DOMRect, mostly
+// these are the implementations that reference an old specification based on
+// the old SVGRect.
+if (!('left' in DOMRect.prototype))
+	Object.defineProperty(DOMRect.prototype, 'left', {get: function() { return Math.min(this.x,this.x+this.width); }});
+if (!('right' in DOMRect.prototype))
+	Object.defineProperty(DOMRect.prototype, 'right', {get: function() { return Math.max(this.x,this.x+this.width); }});
+if (!('top' in DOMRect.prototype))
+	Object.defineProperty(DOMRect.prototype, 'top', {get: function() { return Math.min(this.y,this.y+this.height); }});
+if (!('bottom' in DOMRect.prototype))
+	Object.defineProperty(DOMRect.prototype, 'bottom', {get: function() { return Math.max(this.y,this.y+this.height); }});
+
+//**************** CTAT Extensions and functions on DOMRect ******************//
+/**
+ * Checks if the given rectangle contains x,y
+ * @param {DOMRect} rect
+ * @param {DOMRect|DOMPoint|Number} x
+ * @param {DOMPoint|Number} y
+ * @returns {Boolean}
+ */
+CTAT.Geom.Rectangle.contains = function(rect,x,y) { // only used function
+	var contains = CTAT.Geom.Rectangle.contains;
+	if (x instanceof DOMRect) { // another rectangle
+		return contains(rect, x.left, x.top) &
+			   contains(rect, x.right, x.bottom);
+	} else if (x instanceof DOMPoint) { // first is a point
+		var y_check = true;
+		if (y instanceof DOMPoint) { // two points: line
+			y_check = contains(rect, y.x/y.w, y.y/y.w);
+		} else if (typeof(y) == "number") { // point+radius: circle
+			return contains(rect, x.x-y, x.y-y) &
+				   contains(rect, x.x+y, x.y+y);
+		}
+		return y_check & contains(rect,x.x,x.y); // check x
+	} else { // x,y as coordinates
+		return rect.left<=x & rect.right>=x & rect.top<=y & rect.bottom>=y;
+	}
+};
+if (!DOMRect.prototype.contains)
+{
+	Object.defineProperty(DOMRect.prototype, 'contains', {value: function(x,y) {
+		return CTAT.Geom.Rectangle.contains(this,x,y);}});
+}
+if (!DOMRect.prototype.clone)
+{
+	Object.defineProperty(DOMRect.prototype, 'clone', {
+		/**
+		* Clones the instance of the rectangle.
+		* @name clone
+		* @methodOf DOMRect.prototype
+		* @returns {DOMRect}
+		*/
+		value: function() { return new DOMRect(this.x,this.y,this.width,this.height); }
+	});
+}
+if (!DOMRect.prototype.copyFrom)
+{
+	Object.defineProperty(DOMRect.prototype, 'copyFrom', {
+		/**
+		* Destructively copies the values of the given rectangle.
+		* @name copyFrom
+		* @methodOf DOMRect.prototype
+		* @param {DOMRect} rect	The given rectangle.
+		* @returns {DOMRect}
+		*/
+		value: function(rect) {
+			this.x=rect.x; this.y=rect.y; this.width=rect.width; this.height=rect.height;
+			return this; }
+	});
+}
+/**
+ * Tests if the location and dimensions of the given rectangles are the same.
+ * @param {DOMRect} a
+ * @param {DOMRect} b
+ * @returns {Boolean}
+ */
+CTAT.Geom.Rectangle.equals = function(a,b) {
+	return a.left==b.left && a.top==b.top && a.right==b.right && a.bottom==b.bottom;
+};
+/**
+ * Generate a new rectangle, expanding it by the given dimensions.
+ * @methodOf CTAT.Geom.Rectangle.prototype
+ * @param {Number} [dx=0]	The given delta x.
+ * @param {Number} [dy=0]	The given delta y.
+ * @returns {DOMRect}
+ */
+CTAT.Geom.Rectangle.inflate = function(rect,dx,dy) {
+	dx = dx?dx:0;
+	dy = dy?dy:0;
+	if (dx instanceof DOMPoint) {
+		dy = dx.y;
+		dx = dx.x;
+	}
+	var r = rect.clone();
+	r.x -= dx;
+	r.y -= dy;
+	r.width += 2*dx;
+	r.height += 2*dy;
+	return r;
+};
+/**
+ * Test if the rectangle has a 0 width or height.
+ * @param {DOMRect}
+ * @returns {Boolean}
+ */
+CTAT.Geom.Rectangle.isEmpty = function(rect) {
+	return rect.width===0 || rect.height===0;
+};
+/**
+ * Destructively sets all of the rectangle's coordinates to 0.
+ * @param {DOMRect} rect
+ * @returns {DOMRect}
+ */
+CTAT.Geom.Rectangle.setEmpty = function(rect) {
+	rect.x=0;
+	rect.y=0;
+	rect.width=0;
+	rect.height=0;
+	return rect;
+};
+/**
+ * Destructively sets all of the rectangle's coordinates to the given values.
+ * @param {DOMRect} rect
+ * @param {Number} x 	The new x coordinate.
+ * @param {Number} y 	The new x coordinate.
+ * @param {Number} width 	The new width.
+ * @param {Number} height 	The new height.
+ * @returns {DOMRect}
+ */
+CTAT.Geom.Rectangle.setTo = function(rect,x,y,width,height) {
+	rect.x = x;
+	rect.y = y;
+	rect.width = width;
+	rect.height = height;
+	return rect;
+};
+/**
+ * Produces a rectangle that has been transposed.
+ * @param {DOMRect} rect
+ * @param {Number|DOMPoint} [dx=0]
+ * @param {Number} [dy=0]
+ * @returns {DOMRect}
+ */
+CTAT.Geom.Rectangle.offset = function(rect,dx,dy) {
+	dx = dx?dx:0;
+	dy = dy?dy:0;
+	if (dx instanceof DOMPoint) {
+		dy = dx.y;
+		dx = dx.x;
+	}
+	var o = rect.clone();
+	o.x+=dx;
+	o.y+=dy;
+	return o;
+};
+/**
+ * Produces a new rectangle that contains both the given rectangles.
+ * @param {DOMRect} a
+ * @param {DOMRect} b
+ * @returns {DOMRect}
+ */
+CTAT.Geom.Rectangle.union = function(a,b) {
+	var u = new DOMRect();
+	u.x = Math.min(a.x,b.x);
+	u.y = Math.min(a.y,b.y);
+	u.width = Math.max(a.right,b.right) - u.x;
+	u.height = Math.max(a.bottom,b.bottom) - u.y;
+	return u;
+};

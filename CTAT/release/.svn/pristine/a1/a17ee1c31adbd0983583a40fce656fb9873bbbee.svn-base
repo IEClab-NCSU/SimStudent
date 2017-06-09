@@ -1,0 +1,47 @@
+
+Example Tracer Sources:
+src/set.js
+src/CTATExampleTracer/CTATExampleTracerLink.js
+src/CTATExampleTracer/CTATExampleTracerTracer.js
+src/CTATExampleTracer/CTATFeedbackEnum.js
+src/CTATExampleTracer/CTATExampleTracerEnums.js
+src/CTATExampleTracer/CTATMatcher.js
+src/CTATExampleTracer/CTATExactMatcher.js
+src/CTATExampleTracer/CTATRegexMatcher.js
+src/CTATExampleTracer/CTATAnyMatcher.js
+src/CTATExampleTracer/CTATRangeMatcher.js
+src/CTATExampleTracer/CTATWildcardMatcher.js
+src/CTATExampleTracer/CTATExampleTracerEvent.js
+src/CTATExampleTracer/CTATExampleTracerGraph.js
+src/CTATExampleTracer/CTATExampleTracerGraphVisualData.js
+src/CTATExampleTracer/CTATExampleTracerInterpretation.js
+src/CTATExampleTracer/CTATExampleTracerInterpretationComparator.js
+src/CTATExampleTracer/CTATExampleTracerLinkComparator.js
+src/CTATExampleTracer/CTATExampleTracerLinkVisualData.js
+src/CTATExampleTracer/CTATExampleTracerNode.js
+src/CTATExampleTracer/CTATExampleTracerNodeVisualData.js
+src/CTATExampleTracer/CTATExampleTracerPath.js
+src/CTATExampleTracer/CTATExampleTracerPathComparator.js
+src/CTATExampleTracer/CTATExampleTracerSAI.js
+src/CTATExampleTracer/CTATHintMessagesManager.js
+src/CTATExampleTracer/CTATExpressionMatcher.js
+src/CTATExampleTracer/CTATMsgType.js
+src/CTATExampleTracer/CTATVariableTable.js
+src/CTATExampleTracer/CTATVectorMatcher.js
+src/CTATExampleTracer/CTATGroupIterator.js
+src/CTATExampleTracer/CTATGroupModel.js
+src/CTATExampleTracer/CTATDefaultGroupModel.js
+src/CTATExampleTracer/CTATLinkGroup.js
+src/CTATExampleTracer/CTATDefaultLinkGroup.js
+src/CTATExampleTracer/CTATGraphParser.js
+src/CTATExampleTracer.js
+
+Sources required when running in browsers
+src/NopeJS.js
+src/CTATExampleTracer/CTATForBrowsers.js
+
+Martin's source files required, in Node:
+src/CTATComponentHierarchy/CTATBase.js
+src/CTAT/CTATXML.js
+src/CTATCommunication/CTATMessage.js
+src/CTATUtil/CTATGuid.js

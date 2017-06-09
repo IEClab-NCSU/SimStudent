@@ -1,0 +1,147 @@
+# Parse tree node for multiplications & divisions
+
+goog.provide('CTATMultiplicationNode')
+goog.require('CTATTreeNode')
+
+class CTATMultiplicationNode extends CTATTreeNode
+  constructor: (@operator, @factors, @parens = 0, @sign = 1, @exp = 1) ->
+    @factors[1].invert() if @division(); @operator = 'TIMES'
+  clone: -> new CTATMultiplicationNode @operator, @factors.map((factor) -> factor.clone()),
+    @parens, @sign, @exp
+  toString: ->
+    super @factors.reduce ((result, factor) =>
+      factor.setParens @operator
+      operator = if factor.inverted() then factor.invert(); '/' 
+      else if /^\d/.test(factor = factor.toString()) and /\d$/.test(result) then '*' else ''
+      "#{result}#{operator}#{factor}"), if @factors[0].inverted() then '1' else ''
+
+  evaluate: -> super @factors.reduce ((result, factor) -> result * factor.evaluate()), 1
+  equals: (node) -> super(node) and @factors.length is node.factors.length and
+    @factors.every((factor, index) -> factor.equals node.factors[index])
+  simplify: (@methods) -> @factors = @factors.map((factor) => factor.simplify(@methods)); super
+
+  simpleFlatten: ->
+    @factors = @factors.reduce ((result, factor) ->
+      if factor.parented() or not factor.multiplication() then result.push factor
+      else result.push factor.pushNegation().pushInversion().factors...
+      result), []
+    @
+  flatten: -> super; @simpleFlatten(); @popNegation()
+
+  computeConstants: -> 
+    constant = 1
+    @factors = @factors.filter (factor) ->
+      if factor.constant() then constant *= factor.evaluate(); false else true
+    if constant isnt 1 or @factors.length is 0 then @factors.unshift(new CTATConstantNode constant)
+    if @factors.length > 1 then @ else @pushNegation().pushInversion().factors[0]
+
+  combineSimilar: ->
+    groups = []
+    @factors.forEach (factor) ->
+      splitPair = if factor.constant() then [null, factor]
+      else unless factor.power()
+        factor = factor.powerOne(); [factor.base, factor.exponent]
+      else if factor.exponent.constant()
+        factor.pushInversion(); [factor.base, factor.exponent]
+      else
+        factor.exponent = factor.exponent.multiplyOne()
+        [factor, factor.exponent.factors.shift()]
+      if group = groups.find((group) -> group[0]?.equals(splitPair[0]))
+        group[1] += splitPair[1]?.evaluate() || 1
+      else groups.push [splitPair[0], splitPair[1]?.evaluate() || 1]
+    @factors = groups.reduce ((result, group) ->
+      unless group[1] is 0
+        group[1] = new CTATConstantNode(group[1]).popNegation()
+        unless group[0] then result.push group[1]
+        else if group[1].constant(1) then result.push group[0]
+        else unless group[0].power() then result.push new CTATPowerNode('EXP', group[0], group[1])
+        else group[0].exponent.factors.unshift(group[1]); result.push group[0]
+      result), []
+    if @factors.length > 1 then @
+    else if @factors.length is 1 then @pushNegation().pushInversion().factors[0]
+    else @factors[0] = new CTATConstantNode(1); @pushNegation().pushInversion().factors[0]
+
+  distribute: ->
+    directFactors = @factors.filter (factor) -> not factor.inverted()
+    invertedFactors = @factors.filter (factor) -> factor.inverted()
+    if @distributedOrSingle(directFactors) and @distributedOrSingle(invertedFactors) and
+        not (@single(directFactors) and invertedFactors.length and @distributed(invertedFactors))
+      @
+    else
+      if @distributed(invertedFactors)
+        directTerms = @distributeFactors(@factors); invertedTerms = []
+      else if @distributed(directFactors)
+        invertedTerms = @distributeFactors(@factors); directTerms = []
+      else
+        directTerms = @distributeFactors(directFactors)
+        invertedTerms = @distributeFactors(invertedFactors)
+      unless invertedTerms.length then @factors = [@packTerms(directTerms)]
+      else unless directTerms.length then @factors = [@packTerms(invertedTerms).invert()]
+      else @factors = [@packTerms(directTerms), @packTerms(invertedTerms).invert()]
+      if @factors.length > 1 then @ else @pushNegation().pushInversion().factors[0]
+  distributedOrSingle: (factors) -> @distributed(factors) or @single(factors)
+  distributed: (factors) -> factors.every (factor) -> not factor.addition()
+  single: (factors) -> factors.length is 1 and factors[0].addition()
+  distributeFactors: (factors) ->
+    terms = if not factors[0].addition() then [[factors[0]]]
+    else factors[0].terms.map (term) ->
+      unless term.multiplication() then [term] else term.pushNegation().factors
+    factors[1..].forEach (newFactor) -> 
+      unless newFactor.addition()
+        if terms.length is 1
+          unless newFactor.multiplication() then terms[0].push newFactor
+          else terms[0].push newFactor.pushNegation().factors...
+        else terms.forEach (term, index) ->
+          unless newFactor.multiplication() then terms[index].push newFactor.clone()
+          else terms[index].push newFactor.pushNegation().factors.map((factor) -> factor.clone())...
+      else if terms.length is 1
+        terms = newFactor.terms.map (newTerm) ->
+          term = terms[0].map (factor) -> factor.clone()
+          unless newTerm.multiplication() then term.push newTerm
+          else term.push newTerm.pushNegation().factors...
+          term
+      else
+        terms = terms.reduce ((result, term) ->
+          result.push newFactor.terms.map((newTerm) ->
+            copyTerm = term.map (factor) -> factor.clone()
+            unless newTerm.multiplication() then copyTerm.push newTerm.clone()
+            else copyTerm.push newTerm.pushNegation().factors.map((factor) -> factor.clone())...
+            copyTerm)...; result), []
+    terms
+  packTerms: (terms) ->
+    methods = ['computeConstants', 'combineSimilar', 'expand', 'removeIdentity', 'sort']
+    new CTATAdditionNode('PLUS', terms.map((term) ->
+      new CTATMultiplicationNode('TIMES', term).popNegation().simplifyNode methods)).
+        popNegation().simplifyNode methods
+
+  removeIdentity: ->
+    @popNegation()
+    factors = @factors.filter (factor) -> not factor.constant(1)
+    @factors = if factors.length then factors else @factors[..0]
+    if (zero = @factors.find (factor) -> factor.constant(0)) and @factors.every((factor) ->
+        not factor.inverted() and (not factor.power() or factor.exponent.constant()))
+      @factors = [zero]
+    if @factors.length > 1 then @ else @pushNegation().pushInversion().factors[0]
+
+  sort: ->
+    @spreadIdentity()
+    @factors = @factors.sort((node1, node2) -> node1.compare(node2))
+    @stripIdentity()
+  spreadIdentity: -> @factors = @factors.map((factor) -> factor.powerOne()); @
+  stripIdentity: -> @factors = @factors.map((factor) -> factor.removeIdentity()); @popNegation()
+  multiplyOne: ->
+    @factors.unshift new CTATConstantNode(1) unless @factors[0].constant(); @pushNegation()
+  compare: (node, reverse) ->
+    (value = super) or @countVariables() - node.countVariables() or
+    (nodefactors = node.factors[..].reverse()) and @factors[..].reverse().
+      some((factor, index) -> value = factor.compare nodefactors[index], reverse) and value or
+    @compareSigns(node, reverse)
+  countVariables: -> @factors.reduce ((result, factor) -> result + factor.countVariables()), 0
+
+  pushNegation: -> (@negate(); @factors[0].negate()) if @negated(); @
+  popNegation: -> @factors.forEach((factor) => (@negate(); factor.negate()) if factor.negated()); @
+  pushInversion: -> (@invert(); @factors.forEach (factor) -> factor.invert()) if @inverted(); @
+  even: -> not @inverted() and @factors.every((factor) -> factor.integer()) and
+    @factors.some((factor) -> factor.even())
+
+if module? then module.exports = CTATMultiplicationNode else @CTATMultiplicationNode = CTATMultiplicationNode

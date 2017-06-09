@@ -1,0 +1,26 @@
+/**-----------------------------------------------------------------------------
+ $Author$
+ $Date$
+ $HeadURL$
+ $Revision$
+
+ -
+ License:
+ -
+ ChangeLog:
+ -
+ Notes:
+
+ */
+
+goog.provide('CTATSandboxDriver');
+
+/**
+*
+*/
+function getSafeElementById(anID)
+{
+	//console.log ("getSafeElementById ("+anID+")");
+
+    return (document.getElementById(anID));
+}

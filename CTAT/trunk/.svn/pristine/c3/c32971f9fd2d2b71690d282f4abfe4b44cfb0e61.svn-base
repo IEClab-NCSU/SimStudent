@@ -1,0 +1,766 @@
+<project name="HTML5" default="compile" basedir=".">
+	<description>
+		This buildfile is used to build various JavaScript libraries
+	    necessary to run CTAT HTML5 tutors.
+	</description>
+	<!--
+
+	These are the dependencies by which the ant script was build. Please be
+	careful which js library you use because there may be some side-effects
+	if you don't carefully list the correct files in your html page.
+	
+	Target: compileNodeJs
+		This the standalone version of our javascript
+		libraries that should only have enough code to run the example tracer
+		within the NodeJs environment. So no HTML5 components or CommShell, etc
+		
+	Target:	createTutorJs
+		The code needed to run a full HTML5 tutor in a browser or a standalone
+		web page connecting to a Java based tutoring service. This version of
+		the code depends on the JQuery parser and the communications library
+		found in the CTAT platform specific directory.
+
+	Target: createTutorSidebarJs
+	    Alternate version of createTutorJs intended to run in a Google sidebar.
+			
+	Target: compileTracerJs
+		A version of the code that contains only files required to run the tracer
+		in a browser environment. If you want to run the tracer in the browser
+		for an HTML5 tutor then you will need the output of createTutorJs.
+				
+	Target:	compileFlashJs
+		A barebones version of the glue code needed to run either the applet version
+		of the tracer or the Javascript version of the tracer.
+
+	Target: compileCoffee
+		Compiles all CoffeeScript (.coffee) files into native JavaScript (.js) files.
+		Requires "npm install -g coffee-script", to put the coffee executable on the PATH.
+
+	Target: compileJison
+		Compiles all grammars (.jison files) written in Jison's production notation
+		into native JavaScript (.js) files, to put the jison executable on the PATH.
+		Requires "npm install -g jison".
+	-->
+	<!-- *** External Properties and overrides *** -->
+	<property file="build.properties" />
+	<!-- Set this in build.properties they are defined here to provide defaults. -->
+	<property name="webserver.dir" location="${basedir}/dist"/>
+	<property name="node.exe.dir" location="C:/Program Files/nodejs"/>
+
+	<condition property="on_unix">
+		<os family="unix"/>
+	</condition>
+	<condition property="on_windows">
+		<os family="windows"/>
+	</condition>
+	<target name="set_nodejs_unix" if="${on_unix}">
+		<property name="nodejs" value="nodejs"/>
+		<property name="npm" location="/usr/share/npm/bin/npm-cli.js"/>
+	</target>
+	<target name="set_nodejs_windows" if="${on_windows}">
+		<property name="nodejs" value="node"/>
+		<property name="npm" location="${node.exe.dir}/node_modules/npm/bin/npm-cli.js"/>
+	</target>
+	<target name="set_nodejs" depends="set_nodejs_unix,set_nodejs_windows"/>
+
+	<!-- *** Source and resource locations *** -->
+	<property name="src.dir" value="${basedir}/src"/>
+	<property name="svg.dir" value="${basedir}/svg"/>
+	<property name="css.dir" value="${basedir}/css"/>
+	<property name="ctatjslib.dir" value="${basedir}/ctatjslib"/>
+	<property name="thirdparty.dir" location="${basedir}/third-party"/>
+	<property name="dist.dir" location="${basedir}/dist"/>
+	<property name="dist-dev.dir" location="${basedir}/dist-dev"/>
+
+	<property name="closure-lib.dir"
+		location="${thirdparty.dir}/google/closure-library" />
+	<property name="depswriter"
+		location="${closure-lib.dir}/closure/bin/build/depswriter.py" />
+	<property name="closurebuilder"
+		location="${closure-lib.dir}/closure/bin/build/closurebuilder.py" />
+
+	<!-- Source Paths -->
+	<path id="src.CTAT">
+		<fileset dir="${src.dir}/CTAT">
+    		<include name="*.js"/>
+		</fileset>
+	</path>
+	<path id="src.CTATCommunication">
+		<fileset dir="${src.dir}/CTATCommunication">
+    		<include name="*.js"/>
+		</fileset>
+	</path>
+	<path id="src.CTATComponentHierarchy">
+		<fileset dir="${src.dir}/CTATComponentHierarchy">
+    		<include name="*.js"/>
+		</fileset>
+	</path>
+	<path id="src.CTATComponents">
+		<fileset dir="${src.dir}/CTATComponents">
+    		<include name="*.js"/>
+		</fileset>
+	</path>
+	<path id="src.CTATExampleTracer">
+		<fileset dir="${src.dir}/CTATExampleTracer">
+			<include name="*.js"/>
+		</fileset>
+	</path>
+	<path id="src.CTATMath">
+		<fileset dir="${src.dir}/CTATMath">
+			<include name="*.js"/>
+		</fileset>
+	</path>
+	<path id="src.CTATSerialization">
+		<fileset dir="${src.dir}/CTATSerialization">
+    		<include name="*.js"/>
+		</fileset>
+	</path>
+	<path id="src.CTATUtil">
+		<fileset dir="${src.dir}/CTATUtil">
+    		<include name="*.js"/>
+		</fileset>
+	</path>
+	<path id="src.Google">
+		<fileset dir="${src.dir}/Google">
+			<include name="*.js"/>
+		</fileset>
+	</path>
+	<path id="src.Node">
+		<fileset dir="${src.dir}/Node">
+			<include name="*.js"/>
+		</fileset>
+	</path>
+	<path id="third-party.svg">
+		<filelist dir="${thirdparty.dir}/wout/svg/dist">
+			<file name="svg.min.js"/>
+		</filelist>
+	</path>
+	<path id="Full.src">
+		<fileset dir="${src.dir}">
+			<include name="*.js"/>
+			<include name="CTAT*/**.js"/>
+			<exclude name="test.js"/>
+			<exclude name="Dummy*.js"/>
+			<exclude name="polyfills.js"/>
+			<exclude name="iterator.js"/>
+			<exclude name="set.js"/>
+			<exclude name="sprintf.js"/>
+			<exclude name="deployJava.js"/>
+			<exclude name="appletTS.js"/>
+			<exclude name="TutorBridge.js"/>
+			<exclude name="CollapsibleLists.js"/>
+			<exclude name="CTATExternals.js"/>
+		</fileset>
+	</path>
+
+	<path id="Tracer.src">
+		<path refid="Tutor.src"/>
+<!--				<fileset refid="src.coffee"/>-->
+<!--				<fileset refid="src.jison"/>-->
+		<filelist dir="${src.dir}">
+<!--
+			<file name="iterator.js"/>
+			<file name="set.js"/>
+-->
+			<file name="polyfills.js"/>
+			<file name="CTATExampleTracer/NopeJS.js" />
+			<file name="CTATExampleTracer/CTATHintPolicyEnum.js" />
+<!-- exclude for Rails	<file name="CTATExampleTracer/CTATForBrowsers.js" /> -->
+			<file name="CTATExampleTracer/CTATExampleTracerException.js" />
+			<file name="CTATExampleTracer/CTATMsgType.js" />
+			<file name="CTATExampleTracer/CTATVariableTable.js" />
+			<file name="CTATExampleTracer/CTATExampleTracerLink.js" />
+			<file name="CTATExampleTracer/CTATLinkGroup.js" />
+			<file name="CTATExampleTracer/CTATVersionComparator.js" />
+			<file name="CTATExampleTracer/CTATExampleTracerGraphVisualData.js" />
+			<file name="CTATExampleTracer/CTATExampleTracerLinkVisualData.js" />
+			<file name="CTATExampleTracer/CTATExampleTracerNodeVisualData.js" />
+			<file name="CTATExampleTracer/CTATExampleTracerTracer.js" />
+			<file name="CTATExampleTracer/CTATMatcher.js" />
+			<file name="CTATExampleTracer/CTATAnyMatcher.js" />
+			<file name="CTATExampleTracer/CTATExactMatcher.js" />
+			<file name="CTATExampleTracer/CTATRegexMatcher.js" />
+			<file name="CTATExampleTracer/CTATMatcherComparator.js" />
+			<file name="CTATExampleTracer/CTATExampleTracerSAI.js" />
+			<file name="CTATExampleTracer/CTATExampleTracerSkill.js" />
+			<file name="CTATExampleTracer/CTATSkills.js" />
+<!--	
+			<file name="CTATExampleTracer/FormulaParser/CTATFormulaFunctions.js" />
+			<file name="CTATExampleTracer/FormulaParser/CTATFormulaGrammar.js" />
+			<file name="CTATExampleTracer/FormulaParser/CTATFormulaTree.js" />
+			<file name="CTATExampleTracer/FormulaParser/CTATFormulaParser.js" />
+			<file name="CTATExampleTracer/FormulaParser/CTATJSFormulaParser.js" />
+-->
+			<file name="CTATExampleTracer/CTATDefaultLinkGroup.js" />
+			<file name="CTATExampleTracer/CTATExampleTracerNode.js" />
+			<file name="CTATExampleTracer/CTATExampleTracerPathComparator.js" />
+			<file name="CTATExampleTracer/CTATExampleTracerEvent.js" />
+			<file name="CTATExampleTracer/CTATExpressionMatcher.js" />
+			<file name="CTATExampleTracer/CTATGroupIterator.js" />
+			<file name="CTATExampleTracer/CTATGroupModel.js" />
+			<file name="CTATExampleTracer/CTATRangeMatcher.js" />
+<!--
+			<file name="CTATExampleTracer/FormulaParser/generateJSFormulaParser.js" />
+-->
+			<file name="CTATExampleTracer/CTATExampleTracerPath.js" />
+			<file name="CTATExampleTracer/CTATProblemSummary.js" />
+			<file name="CTATExampleTracer/CTATWildcardMatcher.js" />
+			<file name="CTATExampleTracer/CTATExampleTracerInterpretationComparator.js" />
+			<file name="CTATExampleTracer/CTATExampleTracerLinkComparator.js" />
+			<file name="CTATExampleTracer/CTATVectorMatcher.js" />
+<!--
+			<file name="CTATExampleTracer/FormulaParser/generateFormulaParser.js" />
+-->
+			<file name="CTATExampleTracer/CTATExampleTracerInterpretation.js" />
+			<file name="CTATExampleTracer/CTATDefaultGroupModel.js" />
+			<file name="CTATExampleTracer/CTATExampleTracerGraph.js" />
+			<file name="CTATExampleTracer/CTATGraphParser.js" />
+			<file name="CTATExampleTracer.js" />
+		</filelist>
+	</path>
+
+	<path id="Tutor.src">
+		<fileset dir="${src.dir}">
+    		<include name="*.js"/>
+			<exclude name="test.js"/>
+			<exclude name="CTATExample*.js"/>
+			<exclude name="Dummy*.js"/>
+			<exclude name="goog_stub.js"/>
+			<exclude name="polyfills.js"/>
+			<exclude name="iterator.js"/>
+			<exclude name="set.js"/>
+			<exclude name="set2.js"/>
+			<exclude name="sprintf.js"/>
+			<exclude name="deployJava.js"/>
+			<exclude name="appletTS.js"/>
+			<exclude name="TutorBridge.js"/>
+			<exclude name="CollapsibleLists.js"/>
+			<exclude name="CTATTutorGoogleSideBar.js"/>
+			<!--<exclude name="CTATTutor.js"/>-->
+			<exclude name="CTATDateTime.js"/>
+			<exclude name="CTATExternals.js"/>
+		</fileset>
+		<path refid="src.CTAT"/>
+		<path refid="src.CTATCommunication"/>
+		<path refid="src.CTATComponentHierarchy"/>
+		<path refid="src.CTATComponents"/>
+		<path refid="src.CTATMath"/>
+		<path refid="src.CTATSerialization"/>
+		<path refid="src.CTATUtil"/>
+	</path>
+	<path id="Tutor_sidebar.src">
+		<!-- this should eventually be removed and separate namespaces for
+			 CTATTutor and CTATTutorGoogleSideBar should be used -->
+		<fileset dir="${src.dir}">
+    		<include name="*.js"/>
+			<exclude name="test.js"/>
+			<exclude name="goog_stub.js"/>
+			<exclude name="CTATExample*.js"/>
+			<exclude name="IncludeExampleTracer.js"/>
+			<exclude name="Dummy*.js"/>
+			<exclude name="polyfills.js"/>
+			<exclude name="iterator.js"/>
+			<exclude name="set.js"/>
+			<exclude name="sprintf.js"/>
+			<exclude name="deployJava.js"/>
+			<exclude name="appletTS.js"/>
+			<exclude name="TutorBridge.js"/>
+			<exclude name="CollapsibleLists.js"/>
+			<exclude name="CTATDateTime.js"/>
+			<exclude name="CTATTutor.js"/>
+			<exclude name="CTATExternals.js"/>
+			<exclude name="IncludeExampleTracer.js"/>
+		</fileset>
+		<path refid="src.CTAT"/>
+		<path refid="src.CTATCommunication"/>
+		<path refid="src.CTATComponentHierarchy"/>
+		<path refid="src.CTATComponents"/>
+		<path refid="src.CTATMath"/>
+		<path refid="src.CTATSerialization"/>
+		<path refid="src.CTATUtil"/>
+	</path>
+
+	<!-- *** Destinations *** -->
+	<!-- For *TracerJs -->
+	<property name="lib.ctat-tracer" location="${ctatjslib.dir}/ctat-tracer.min.js"/>
+	<property name="lib.ctat-tracer-uncompressed" location="${ctatjslib.dir}/ctat-tracer.js"/>
+	<property name="lib.ctat-tracer-uncompressed-deps" location="${ctatjslib.dir}/ctat-tracer-deps.js"/>
+	<!-- For *FlashJs -->
+	<property name="lib.ctat-flash" location="${ctatjslib.dir}/ctat-flash.min.js"/>
+	<!-- For dep -->
+	<property name="CTAT.deps" location="CTAT-deps.js"/>
+	<!-- For *Tutor* -->
+	<property name="lib.ctat-tutor" location="${ctatjslib.dir}/ctat-tutor.min.js"/>
+	<property name="lib.ctat-tutor-sidebar" location="${ctatjslib.dir}/ctat-tutor-sidebar.min.js"/>
+	<!-- For *NodeJs -->
+	<property name="lib.ctat-nodejs" location="${ctatjslib.dir}/ctat-nodejs.min.js"/>
+
+	<!-- Options -->
+	<property name="closure-compiler-level" value="simple"/><!-- whitespace,simple,advanced -->
+
+	<!-- ******** Setup for closure compiler ********* -->
+	<property name="closure-compiler.dir" location="${thirdparty.dir}/google/closure-compiler"/>
+	<property name="compiler.jar" value="${closure-compiler.dir}/build/compiler.jar"/>
+	<uptodate property="closure-compiler-built" targetfile="${compiler.jar}">
+		<srcfiles dir="${closure-compiler.dir}/src" includes="**/*.java"/>
+	</uptodate>
+	<!-- - - - - - - - - - - - - - - - - - 
+          target: build-closure-compiler
+         - - - - - - - - - - - - - - - - - -->
+    <target name="build-closure-compiler" unless="closure-compiler-built"
+    	    description="Build Google's compiler.jar using the provided ant script.">
+        <ant antfile="build.xml" dir="${closure-compiler.dir}" target="jar" inheritAll="false"/>
+    </target>
+	<target name="clean-closure-compiler" description="Cleans compiler.jar.">
+        <ant antfile="build.xml" dir="${closure-compiler.dir}" target="clean" inheritAll="false"/>
+	</target>
+	<!-- - - - - - - - - - - - - - - - - - 
+          target: closure-compiler
+          Defining the taskdef inside a target makes it so that this target
+          can be used as a depend in targets that used the closure-compile task
+          and build compiler.jar if required.
+         - - - - - - - - - - - - - - - - - -->
+    <target name="closure-compiler" depends="build-closure-compiler"
+    	description="Defines the closure-compile task using Google's closure-compiler">
+    	<taskdef name="closure-compile" classname="com.google.javascript.jscomp.ant.CompileTask"
+    			 classpath="${compiler.jar}" />            
+    </target>
+
+	<!-- ******** Nodejs helper targets and macros ******** -->
+	<macrodef name="exec_npm">
+		<!-- This macro executes nodejs npm -->
+		<attribute name="action" default="help"/>
+		<attribute name="package"/>
+		<sequential>
+			<exec executable="${nodejs}" failonerror="true">
+				<arg value="${npm}"/><arg value="@{action}"/><arg value="@{package}"/>
+			</exec>
+		</sequential>
+	</macrodef>
+	<macrodef name="npm_install">
+		<!-- Uses npm to install a package -->
+		<attribute name="package"/>
+		<sequential><exec_npm action="install" package="@{package}"/></sequential>
+	</macrodef>
+	<macrodef name="npm_uninstall">
+		<!-- Uses npm to uninstall a package -->
+		<attribute name="package"/>
+		<sequential><exec_npm action="rm" package="@{package}"/></sequential>
+	</macrodef>
+	<target name="find_npm_install_path" depends="set_nodejs"
+		description="Helper target for finding out where node modules are installed by npm.">
+		<exec executable="${nodejs}" outputproperty="node_modules.dir" failonerror="true">
+			<arg value="${npm}"/>
+			<arg value="root"/>
+		</exec>
+		<echo>${node_modules.dir}</echo>
+	</target>
+	<target name="check_coffee.exists" depends="find_npm_install_path"
+		description="Helper target for checking for the existence of coffee.">
+		<property name="coffee.bin" location="${node_modules.dir}/coffee-script/bin/coffee"/>
+		<available file="${coffee.bin}" property="coffee.exists"/>
+		<echo>Checking for coffee at ${coffee.bin}</echo>
+	</target>
+	<target name="check_jison.exists" depends="find_npm_install_path"
+		description="Helper target for checking he existence of jison.">
+		<property name="jison.bin" location="${node_modules.dir}/jison/lib/cli.js"/>
+		<available file="${jison.bin}" property="jison.exists"/>
+		<echo>Checking for Jison at ${jison.bin}</echo>
+	</target>
+	<target name="install_coffee" depends="check_coffee.exists" unless="${coffee.exists}"
+		description="Installes coffee-script if it is not found.">
+		<npm_install package="coffee-script"/>
+	</target>
+	<target name="uninstall_coffee" depends="set_nodejs"><npm_uninstall package="coffee-script"/></target>
+	<target name="install_jison" depends="check_jison.exists" unless="${jison.exists}"
+		description="Installs jison if it is not found.">
+		<npm_install package="jison"/>
+	</target>
+	<target name="uninstall_jison" depends="set_nodejs"><npm_uninstall package="jison"/></target>
+
+	<!-- ******** Coffee Targets ******** -->
+	<target name="compileCoffee" description="Compile all .coffee files to .js files."
+		depends="install_coffee">
+		<apply executable="${nodejs}" verbose="true" failonerror="true"
+			relative="true" dir="${src.dir}" parallel="true">
+			<arg path="${coffee.bin}"/>
+			<arg value="-c"/>
+			<srcfile/>
+			<fileset dir="${src.dir}"><!-- source files -->
+				<include name="**/*.coffee"/>
+			</fileset>
+		</apply>
+		<fileset id="src.coffee" dir="${src.dir}">
+			<!-- targets the .js files that have the same name as .coffee files --> 
+			<include name="**/*.js"/>
+			<present present="both" targetdir="${basedir}/src">
+				<mapper>
+					<chainedmapper>
+						<mapper type="identity"/>
+						<mapper type="glob" from="*.js" to="*.coffee"/>
+					</chainedmapper>
+				</mapper>
+			</present>
+		</fileset>
+	</target>
+	<target name="cleanCoffee" description="Cleans all of the resulting .js files from the .coffee files.">
+		<delete>
+			<fileset dir="${src.dir}">
+				<!-- targets the .js files that have the same name as .coffee files --> 
+				<include name="**/*.js"/>
+				<present present="both" targetdir="${basedir}/src">
+					<mapper>
+						<chainedmapper>
+							<mapper type="identity"/>
+							<mapper type="glob" from="*.js" to="*.coffee"/>
+						</chainedmapper>
+					</mapper>
+				</present>
+			</fileset>
+		</delete>
+	</target>
+
+	<!-- ******** Jison targets ******** -->
+	<target name="compileJison" description="Compile all .jison files to .js files."
+		depends="install_jison">
+		<apply executable="${nodejs}" verbose="true" failonerror="true"
+			relative="true" dir="${src.dir}" parallel="false">
+			<arg path="${jison.bin}"/>
+			<arg value="-o"/>
+			<targetfile/>
+			<srcfile/>
+			<fileset dir="${src.dir}"><!-- sourcefiles -->
+				<include name="**/*.jison"/>
+			</fileset>
+			<mapper type="glob" from="*.jison" to="*.js"/><!-- targetfiles mapping -->
+		</apply>
+		<fileset id="src.jison" dir="${src.dir}">
+			<!-- targets the .js files that have the same name as .jison files --> 
+			<include name="**/*.js"/>
+			<present present="both" targetdir="${basedir}/src">
+				<mapper>
+					<chainedmapper>
+						<mapper type="identity"/>
+						<mapper type="glob" from="*.js" to="*.jison"/>
+					</chainedmapper>
+				</mapper>
+			</present>
+		</fileset>
+	</target>
+	<!-- - - - - - - - - - - - - - - - - - 
+          target: cleanJison                      
+         - - - - - - - - - - - - - - - - - -->
+    <target name="cleanJison">
+		<delete>
+			<fileset dir="${src.dir}">
+				<!-- targets the .js files that have the same name as .jison files --> 
+				<include name="**/*.js"/>
+				<present present="both" targetdir="${basedir}/src">
+					<mapper>
+						<chainedmapper>
+							<mapper type="identity"/>
+							<mapper type="glob" from="*.js" to="*.jison"/>
+						</chainedmapper>
+					</mapper>
+				</present>
+			</fileset>
+    	</delete>
+    </target>
+
+	<!-- ******** Tracer Targets ******** -->
+	<target name="compileTracerJs" description="Compile example tracer javascript to a single file"
+		depends="closure-compiler"><!-- depends="closure-compiler,compileJison,compileCoffee" -->
+		<closure-compile compilationLevel="simple" output="${lib.ctat-tracer}"
+				languageIn="ECMASCRIPT5">
+			<path refid="Tracer.src"/>
+		</closure-compile>
+	</target>
+	
+	<!-- This target creates a un-minified ctat-tracer.js, with formatted code -->
+	<target name="compileTracerJsUncompressed" description="Compile example tracer javascript to a single file, without compression"
+		depends="closure-compiler"><!-- depends="closure-compiler,compileJison,compileCoffee" -->
+		<closure-compile compilationLevel="whitespace" prettyPrint="true" output="${lib.ctat-tracer-uncompressed}"
+				languageIn="ECMASCRIPT5">
+			<path refid="Tracer.src"/>
+		</closure-compile>
+	</target>
+
+	<target name="cleanTracerJs">
+		<delete file="${lib.ctat-tracer}"/>
+	</target>
+	
+	<!-- ******** Flash Targets ******** -->
+	<target name="compileFlashJs" depends="closure-compiler"
+		    description="Compile Javascript for Flash interfaces" >
+		<!-- This build is needs its file list updated, but will likely end being removed -->
+		<closure-compile compilationLevel="simple" output="${lib.ctat-flash}"
+			languageIn="ECMASCRIPT5">
+			<path>
+				<filelist dir="${src.dir}">
+					<file name="CTATUtil/jstz.js"/>
+					<file name="CTAT/CTATConfig.js"/>
+					<file name="CTATUtil/CTATSandboxDriver.js"/>
+					<file name="CTATBinaryImages.js"/>
+					<file name="CTATCanvasComponent.js"/>
+					<file name="CTATContextData.js"/>
+					<file name="CTATCSS.js"/>
+					<file name="CTATDateTime.js"/>
+					<file name="CTATDialogBox.js"/>
+					<file name="CTATFlashVars.js"/>
+					<file name="CTATGlobalFunctions.js"/>
+					<file name="CTATGlobals.js"/>
+					<file name="CTATGraphicsTools.js"/>
+					<file name="CTATHTMLManager.js"/>
+					<file name="CTATLinkData.js"/>
+					<file name="CTATMobileTutorHandler.js"/>
+					<file name="CTATScrim.js"/>
+					<file name="CTATShape.js"/>
+					<file name="CTATStringUtil.js"/>
+					<file name="CTATStyle.js"/>
+					<file name="CTATTools.js"/>
+					<file name="CTATTutor.js"/>
+					<file name="DummySCORMAPIWrapper.js"/>
+					<file name="TutorShopAPIProxy.js"/>
+					<file name="CTATComponents/CTATSkillSet.js"/>
+					<file name="CTATCommunication/CTATActionEvaluationData.js"/>
+					<file name="CTATCommunication/CTATCurriculumService.js"/>
+					<file name="CTATCommunication/CTATLoggingLibrary.js"/>
+					<file name="CTATCommunication/CTATLogMessageBuilder.js"/>
+					<file name="CTATCommunication/CTATMessage.js"/>
+					<file name="CTATCommunication/CTATMessageHandler.js"/>
+					<file name="CTATCommunication/CTATTutorMessageBuilder.js"/>
+					<file name="CTATCommunication/CTATTutoringServiceMessageBuilder.js"/>
+					<file name="CTATComponentHierarchy/CTATBase.js"/>
+					<file name="CTATSerialization/CTATArgument.js"/>
+					<file name="CTATSerialization/CTATComplexSAI.js"/>
+					<file name="CTATSerialization/CTATComponentDescription.js"/>
+					<file name="CTATSerialization/CTATComponentReference.js"/>
+					<file name="CTATSerialization/CTATSAI.js"/>
+					<file name="CTATUtil/CTATGuid.js"/>
+					<file name="CTATUtil/CTATNameTranslator.js"/>
+					<file name="CTATUtil/CTATShellTools.js"/>
+					<file name="CTATUtil/CTATVariable.js"/>
+					<file name="CTAT/CTATXML.js"/>
+				</filelist>
+			</path>
+		</closure-compile>
+	</target>
+	<target name="cleanFlashJs">
+		<delete file="${lib.ctat-flash}"/>
+	</target>
+	
+	<!-- ******** dep Targets ******** -->
+	<target name="dep" description="Create dependency file necessary for goog.provide/require to work.">
+		<!-- This is intended for the development environment where 
+		     third-party/google/closure-library/closure/goog/base.js and
+		     CTAT-deps.js
+		     are included in the html file that drives the tutor. -->
+		<delete file="${CTAT.deps}"/>
+		<echo>Building ${CTAT.deps}</echo>
+		<exec dir="${basedir}" executable="python" failonerror="true" output="${CTAT.deps}">
+			<arg value="${depswriter}" />
+			<arg value="--root_with_prefix=src ../../../../../src" /><!-- This has to be relative to closure-lib.dir. -->
+		</exec>
+	</target>
+	<target name="clean-dep"><delete file="${CTAT.deps}"/></target>
+	<target name="deploy-dep" description="Create necessary for goog.provide/require dependency file and copy to web site."
+			depends="dep">
+		<copy file="${CTAT.deps}" todir="${webserver.dir}" />
+		<copy todir="${webserver.dir}/src" verbose="true">
+			<fileset dir="${src.dir}">
+				<exclude name="Node/**" />
+				<exclude name="*/old_code/*" />
+			</fileset>
+		</copy>
+	</target>
+
+	<!-- ******** Tutor Targets ******** -->
+	<target name="helpCompilerOptions" description="Prints out a list of command line options for the closure-compiler."
+		    depends="closure-compiler">
+		<java jar="${compiler.jar}" fork="true">
+			<arg line="--help"/>
+		</java>
+	</target>
+	<pathconvert property="Tutor.src-space" refid="Tutor.src" pathsep=" "/>
+	<target name="manifestTutorJs" description="Experimental build using the command line version of the closure compiler, which has more options"
+		    depends="closure-compiler">
+		<java jar="${compiler.jar}" fork="true" failonerror="true" logError="true" outputproperty="devnull">
+			<arg line="--js ${Tutor.src-space}"/>
+			<!--<arg prefix="-js " pathref="Tutor.src"/>-->
+			<!--<arg line="- -compilation_level WHITESPACE_ONLY"/>-->
+			<!--<arg line="- -manage_closure_dependencies true"/>-->
+			<!--<arg line="- -process_closure_primitives true"/>-->
+			<arg line="--output_manifest manifest.MF"/>
+			<!--<arg line="- -js_output_file foo.js"/>-->
+		</java>
+	</target>
+	<pathconvert property="Tracer.src-space" refid="Tracer.src" pathsep=" "/>
+	<target name="compileTracerJsUncompressedDeps"
+			description="Compile and pretty-print example tracer javascript to a single file, without compression, and respecting dependencies"
+			depends="closure-compiler">
+		<java jar="${compiler.jar}" fork="true" failonerror="true" logError="true" outputproperty="devnull">
+			<arg line="--js ${Tracer.src-space}"/>
+			<!--<arg prefix="-js " pathref="Tutor.src"/>-->
+			<arg line="--formatting PRETTY_PRINT"/>
+			<arg line="--compilation_level WHITESPACE_ONLY"/>
+			<arg line="--manage_closure_dependencies"/>
+			<arg line="--language_in ECMASCRIPT5"/>
+			<!--<arg line="- -process_closure_primitives true"/>-->
+			<arg line="--closure_entry_point CTATExampleTracer"/>
+			<arg line="--output_manifest manifest.MF"/>
+			<arg line="--js_output_file ${lib.ctat-tracer-uncompressed-deps}"/>
+		</java>
+	</target>
+	<target name="manifestJs" description="Experimental build using the command line version of the closure compiler, which has more options"
+		    depends="closure-compiler">
+		<pathconvert property="manifestJs.src" refid="Full.src" pathsep=" "/>
+		<java jar="${compiler.jar}" fork="true" failonerror="true" logError="true" outputproperty="devnull">
+			<arg line="--js ${manifestJs.src}"/>
+			<!--<arg prefix="-js " pathref="Tutor.src"/>-->
+			<!--<arg line="- -compilation_level WHITESPACE_ONLY"/>-->
+			<!--<arg line="- -manage_closure_dependencies true"/>-->
+			<!--<arg line="- -process_closure_primitives true"/>-->
+			<arg line="--output_manifest manifest.MF"/>
+			<!--<arg line="- -js_output_file foo.js"/>-->
+		</java>
+	</target>
+	<target name="compileTutorJs" description="Compiles the tutor interface source code into a single bundle."
+		    depends="closure-compiler">
+		<!-- This target will concatenate, minimize, and attempt some syntax
+			 checking the files in dependency order and only the resulting
+			 file and certain thrid-party files need to be included in the
+			 calling html.  In other words, neither ${CTAT.deps} nor
+			 third-party/google/closure-library/closure/goog/base.js
+			 need to be included. -->
+		<!-- To enable more checking, set warning="verbose" and debug="true" -->
+		<closure-compile compilationLevel="simple" warning="default" debug="true"
+						 languageIn="ECMASCRIPT5"
+			             output="${lib.ctat-tutor}"><!-- prettyPrint="true">-->
+
+			<path refid="Tutor.src"/>
+			<externs dir="${src.dir}">
+				<file name="CTATExternals.js"/>
+			</externs>
+<!--			<entrypoint name="CTATShellTools"/> -->
+			<entrypoint name="CTATTutor"/>
+<!--			<entrypoint name="CTATNameTranslator"/>-->
+		</closure-compile>
+	</target>
+	<target name="compileTutorSidebarJs"
+		    description="Compiles the tutor interface source code into a single bundle for google sidebar tutors."
+		    depends="closure-compiler">
+		<!-- To enable more checking, set warning="verbose" and debug="true" -->
+		<closure-compile compilationLevel="simple" warning="quiet" debug="false"
+			             languageIn="ECMASCRIPT5"
+			             output="${lib.ctat-tutor-sidebar}" prettyPrint="true">
+			<!-- This target will concatenate, minimize, and attempt some syntax
+			     checking the files in dependency order and only the resulting
+			     file and certain thrid-party files need to be included in the
+			     calling html.  In other words, neither ${CTAT.deps} nor
+			     third-party/google/closure-library/closure/goog/base.js
+			     need to be included. --> 
+			<path refid="Tutor_sidebar.src"/>
+			<externs dir="${src.dir}">
+				<file name="CTATExternals.js"/>
+			</externs>
+		</closure-compile>
+	</target>
+	<target name="cleanTutorJs">
+		<delete file="${lib.ctat-tutor}"/>
+		<delete file="${lib.ctat-tutor-sidebar}"/>
+	</target>
+
+	<!-- ******** Node Targets ******** -->
+	<target name="compileNodeJs" depends="closure-compiler" description="" >
+		<!-- This target cleanly compiles but is likely to be removed. -->
+		<closure-compile compilationLevel="simple" output="${lib.ctat-nodejs}">
+			<path>
+				<filelist dir="${src.dir}">
+					<file name="CTATUtil/jstz.js" />
+					<file name="CTATDateTime.js" />
+					<file name="CTATExampleTracer/NopeJS.js"/>
+					<file name="CTATComponents/CTATSkillSet.js"/>
+					<file name="CTATComponents/CTATSkill.js"/>
+					<file name="CTATBinaryImages.js"/>
+					<file name="CTATStyle.js"/>
+					<file name="CTAT/CTATJSON.js"/>
+					<file name="CTATSerialization/CTATParameter.js"/>
+					<file name="CTAT/CTATConfig.js"/>
+					<file name="CTATUtil/CTATSandboxDriver.js"/>
+					<file name="CTATUtil/CTATGuid.js"/>
+					<file name="CTATGlobals.js"/>
+					<file name="CTATGlobalFunctions.js"/>
+					<file name="TutorShopAPIProxy.js"/>
+					<file name="CTATComponentHierarchy/CTATBase.js"/>
+					<file name="CTATComponentHierarchy/CTATMovieClip.js"/>
+					<file name="CTATHTMLManager.js"/>
+					<file name="CTATUtil/CTATShellTools.js"/>
+					<file name="CTATUtil/CTATVariable.js"/>
+					<file name="CTATStringUtil.js"/>
+					<file name="CTAT/CTATXML.js"/>
+					<file name="CTATSerialization/CTATArgument.js"/>
+					<file name="CTATSerialization/CTATSAI.js"/>
+					<file name="CTATSerialization/CTATComplexSAI.js"/>
+					<file name="CTATGraphicsTools.js"/>
+					<file name="CTATShape.js"/>
+					<file name="CTATCanvasComponent.js"/>
+					<file name="CTATScrim.js"/>
+					<file name="CTAT/CTATConnection.js"/>
+					<file name="CTATCommunication/CTATMessage.js"/>
+					<file name="CTATCommunication/CTATActionEvaluationData.js"/>			
+					<file name="CTATComponentHierarchy/CTATCompBase.js"/>
+					<file name="CTATUtil/CTATNameTranslator.js"/>
+					<file name="CTATMobileTutorHandler.js"/>
+					<file name="CTATComponentHierarchy/CTATClickableComponent.js"/>
+					<file name="CTATComponentHierarchy/CTATTutorableComponent.js"/>
+					<file name="CTATComponentHierarchy/CTATButtonBasedComponent.js"/>
+					<file name="CTATComponentHierarchy/CTATTextBasedComponent.js"/>
+					<file name="CTATComponentHierarchy/CTATImageButtonComponent.js"/>
+					<file name="CTATCSS.js"/>
+					<file name="CTATTools.js"/>
+					<file name="CTATLinkData.js"/>
+					<file name="CTATSerialization/CTATComponentReference.js"/>
+					<file name="CTATSerialization/CTATComponentDescription.js"/>
+					<file name="CTATFlashVars.js"/>
+					<file name="CTATContextData.js"/>
+					<file name="CTAT/CTATCommLibrary.js"/>
+					<file name="CTATCommunication/CTATCurriculumService.js"/>
+					<file name="CTATCommunication/CTATLogMessageBuilder.js"/>
+					<file name="CTATCommunication/CTATLoggingLibrary.js"/>
+					<file name="CTATCommunication/CTATTutoringServiceMessageBuilder.js"/>
+					<file name="CTATCommunication/CTATTutorMessageBuilder.js"/>
+					<file name="CTATCommunication/CTATMessageHandler.js"/>
+					<file name="CTATCommunication/CTATCommShell.js"/>
+				</filelist>
+			</path>
+		</closure-compile>
+	</target>
+	<target name="cleanNodeJs"><delete file="${lib.ctat-nodejs}"/></target>
+
+	<!-- ******** Top Level Targets ******** -->
+	<target name="deploy-dev" description="Deploy contents of dist-dev directory to ${webserver.dev.dir}">
+		<echo message="Deploying to ${webserver.dev.dir}"/>
+		<mkdir dir="${webserver.dev.dir}"/>
+		<copy todir="${webserver.dev.dir}" verbose="true">
+			<fileset dir="${dist-dev.dir}" />
+		</copy>
+	</target>
+	
+	<target name="deploy-dist" description="Deploy contents of dist directory to ${webserver.dir}">
+		<echo message="Deploying to ${webserver.dir}"/>
+		<mkdir dir="${webserver.dir}"/>
+		<copy todir="${webserver.dir}" verbose="true">
+			<fileset dir="${dist.dir}"/>
+		</copy>
+	</target>
+	
+	<target name="compile" depends="compileTracerJs,compileFlashJs,compileNodeJs,compileTutorJs,compileTutorSidebarJs"
+		description="Build CTAT Javascript Libraries"/>
+
+	<target name="clean" description="Cleans up all of the generated files."
+		depends="cleanCoffee,cleanJison,cleanTracerJs,cleanFlashJs,clean-dep,cleanTutorJs,cleanNodeJs">
+	</target>
+	<target name="dist-clean" description="Clean up all the generated files, including third-party."
+		depends="clean,clean-closure-compiler,uninstall_jison,uninstall_coffee">
+	</target>
+</project>

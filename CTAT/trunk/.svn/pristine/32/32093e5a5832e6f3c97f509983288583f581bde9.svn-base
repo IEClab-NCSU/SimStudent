@@ -1,0 +1,268 @@
+<html>
+	<head>
+    <title>HTML5 Tutor Launcher</title>
+	
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="cache-control" content="no-cache">
+			
+    <style type="text/css">
+		
+	body 
+	{
+		margin: 0;
+		padding: 0;
+		text-align: center; /* !!! */
+		background-color:#cccccc;
+	}
+	
+	.container 
+	{ 
+		width: 320px; 
+		height: 200px; 		  
+		box-shadow: 10px 10px 5px #888888;
+		z-index: 0;
+		position: relative;
+	}
+	
+	canvas
+	{
+	 	width: 320px; 
+		height: 200px; 	
+		border: 1px solid black; 
+		background-color: #ffffff;
+		z-index: 1;
+		position: relative;		
+	}	
+	
+	.console 
+	{ 
+		background-color: #ffffff;
+		width: 600px;  		  
+		height: 0px;
+		box-shadow: 10px 10px 5px #888888;
+		text-align: left;
+		overflow: auto;
+		font-family: courier; 
+		font-size: 11px;
+		border: 1px solid black;
+		/*white-space: nowrap;*/
+	}	
+	
+	.classname 
+	{
+		/*-moz-box-shadow:inset 0px 1px 0px 0px #ffffff;*/
+		/*-webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;*/
+		box-shadow:inset 0px 1px 0px 0px #ffffff;
+		/*background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ededed), color-stop(1, #dfdfdf) );*/
+		/*background:-moz-linear-gradient( center top, #ededed 5%, #dfdfdf 100% );*/
+		/*filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#dfdfdf');*/
+		background-color:#ededed;
+		/*-moz-border-radius:6px;*/
+		/*-webkit-border-radius:6px;*/
+		border-radius:6px;
+		border:1px solid #dcdcdc;
+		display:inline-block;
+		color:#777777;
+		font-weight:bold;
+		padding:6px 24px;
+		text-decoration:none;
+		text-shadow:1px 1px 0px #ffffff;
+	}
+	
+	.classname:hover 
+	{
+		/*
+		background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #dfdfdf), color-stop(1, #ededed) );
+		background:-moz-linear-gradient( center top, #dfdfdf 5%, #ededed 100% );
+		filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#dfdfdf', endColorstr='#ededed');
+		*/
+		background-color:#dfdfdf;
+	}
+	
+	.classname:active 
+	{
+		position:relative;
+		top:1px;
+	}	
+	
+	.shadow
+	{
+		box-shadow: 5px 5px 5px #888888;	
+	}
+	
+	.highlightdiv
+	{
+		background-color:#b0c4de;
+	}
+	
+	.mainborder
+	{
+		border-style:solid;
+		border-width:3px;
+		
+		-webkit-box-shadow: 10px 10px 5px -4px rgba(0,0,0,0.75);
+		-moz-box-shadow: 10px 10px 5px -4px rgba(0,0,0,0.75);
+		box-shadow: 10px 10px 5px -4px rgba(0,0,0,0.75);		
+	}
+	
+	td
+	{
+		font-family: Verdana;
+		font-size: 10pt;	
+	}
+			
+    </style>
+    
+    <script language="javascript">
+    	
+	function handleGenerate(cb) 
+	{		
+		var sessInput=document.getElementById("SESSION");
+		
+		if (cb.checked==true)
+			sessInput.disabled=true;
+		else
+			sessInput.disabled=false;
+	}		
+	
+	function processConnectionChange(cb) 
+	{		
+		var connType=cb.options[cb.selectedIndex].text;
+	
+		var portInput=document.getElementById("port");
+		var urlInput=document.getElementById("remoteurl");
+		
+		if (connType=="javascript")
+		{
+			portInput.disabled = true;
+			urlInput.disabled = true;
+		}
+		else
+		{
+			portInput.disabled = false;
+			urlInput.disabled = false;
+			
+			if (connType=="https")
+			{
+				portInput.value='443';
+			}
+			else
+			{
+				portInput.value='8080';
+			}
+		}	
+	}	
+	
+	function configure()
+	{
+		var sessInput=document.getElementById("SESSION");
+		
+		sessInput.disabled=true;
+	}
+	
+	function validateForm()
+	{		
+		var connDropdown=document.getElementById("CONNECTION");
+		var connType=connDropdown.options[connDropdown.selectedIndex].text;
+			
+		if (connType=="socket")
+		{
+			alert("Socket communication is not supported yet in our javascript tutors, please change your selection");
+			return false;
+		}
+	}
+		
+	</script>
+    
+	</head>
+	<body onload="configure ()">	
+  
+	<table cellpadding="0" cellspacing="0" width="100%" height="100%" align="center" valign="middle">
+	<tr>
+		<td align="center" valign="middle">  
+
+		<FORM ACTION="html5_tutor.html" METHOD="GET" TARGET="_blank">
+		<table col=2 class="mainborder">
+		<tr><td colspan="2"><div class="highlightdiv"> <font face="Arial"><b>Tutor (HTML5)</b></font></div></td></tr>						
+		<tr><td>question_file: </td><td><INPUT TYPE="TEXT" NAME="BRD" VALUE="http://augustus.pslc.cs.cmu.edu/html5/HTML5TestFiles/HTML5TableJSON.brd" SIZE="100" MAXLENGTH="150" title="Path to .brd relative to this form (mode=RunTime) or TService (mode=AuthorTimeTutoring)"></td></tr>
+		<tr><td>interface file (sui): </td><td><INPUT TYPE="TEXT" NAME="SUI" VALUE="" SIZE="100" MAXLENGTH="150" title="A url pointing to a CTAT interface file (.sui)"></td></tr>
+		<tr><td>Style Sheet (optional): </td><td><INPUT TYPE="TEXT" NAME="CSS" VALUE="" SIZE="100" MAXLENGTH="150" title="Path to .css relative to this form. Or a full url"></td></tr>		
+		<tr><td>Info Field: </td><td><INPUT TYPE="TEXT" NAME="INFO" VALUE="" SIZE="100" MAXLENGTH="150" title="The info field that will go above the tutor"></td></tr>	
+       <tr><td>BehaviorRecorderMode: </td>
+       		<td><SELECT NAME="BRMODE" title="AuthorTimeTutoring (Tutoring Service)">
+			<OPTION SELECTED>AuthorTimeTutoring
+			<OPTION>AuthorTime
+		</SELECT></td>
+		<tr><td>Autorun Tutor</td><td><INPUT TYPE="CHECKBOX" ID="AUTORUN" NAME="AUTORUN" checked></td></tr></tr>
+		<tr><td>Math Keyboard</td><td>
+			<input type="radio" name="KEYBOARDGROUP" value="Disabled" checked>Disabled
+			<input type="radio" name="KEYBOARDGROUP" value="On">On
+			<input type="radio" name="KEYBOARDGROUP" value="Auto">Automatic
+		</td></tr></tr>
+		<tr><td colspan="2"><div class="highlightdiv"> <font face="Arial"><b>Logging</b></font></div></td></tr>
+		<tr><td>problem_name: </td><td><INPUT TYPE="TEXT" NAME="PROBLEM" VALUE="xxx" SIZE="50" MAXLENGTH="50" title="Problem name to log"></td></tr>
+		<tr><td>dataset_name: </td><td><INPUT TYPE="TEXT" NAME="DATASET" VALUE="FlashLoggingTest_xxx" SIZE="50" MAXLENGTH="50" title="Dataset name to log"></td></tr>
+		<tr><td>dataset_level_name1: </td><td><INPUT TYPE="TEXT" NAME="LEVEL1" VALUE="Unit1" SIZE="50" MAXLENGTH="50" title="Level name to log"></td></tr>
+		<tr><td>dataset_level_type1: </td><td><INPUT TYPE="TEXT" NAME="TYPE1" VALUE="unit" SIZE="50" MAXLENGTH="50"title="Level type to log"></td></tr>
+		<tr><td>dataset_level_name2: </td><td><INPUT TYPE="TEXT" NAME="LEVEL2" VALUE="Unit2" SIZE="50" MAXLENGTH="50" title="Level name to log"></td></tr>
+		<tr><td>dataset_level_type2: </td><td><INPUT TYPE="TEXT" NAME="TYPE2" VALUE="unit" SIZE="50" MAXLENGTH="50"title="Level type to log"></td></tr>		
+		<tr><td>user_guid: </td><td><INPUT TYPE="TEXT" NAME="USER" VALUE="qa-test" SIZE="50" MAXLENGTH="50" title="User name to log"></td></tr>
+		<tr>
+			<td>session_id: </td>
+			<td>
+				<INPUT TYPE="TEXT" ID="SESSION" NAME="SESSION" VALUE="qa-test_xxx" SIZE="50" MAXLENGTH="50" title="Session ID to log">
+				<INPUT TYPE="checkbox" id="GENERATED" name="GENERATED" checked onclick='handleGenerate(this);'>Auto Generate
+			</td>
+		</tr>
+		<tr><td>source_id: </td><td><INPUT TYPE="TEXT" NAME="SOURCE" VALUE="PACT_CTAT_HTML5" SIZE="50" MAXLENGTH="50" title="Source name to log"></td></tr>
+		<tr><td>DeliverUsingOLI: </td><td><INPUT TYPE="TEXT" ID="USEOLI" NAME="USEOLI" VALUE="false" SIZE="25" MAXLENGTH="50"></td></tr>
+		<tr><td>log_service_url: </td><td><INPUT TYPE="TEXT" ID="LOGURL" NAME="LOGURL" VALUE="http://localhost" SIZE="100" MAXLENGTH="150" title="URL of the logging service"> </td>
+	</tr>
+    <tr><td>SessionLog: </td><td><INPUT TYPE="TEXT" NAME="SLOG" VALUE="true" SIZE="25" MAXLENGTH="25" title="Log the session ID?"> </td></tr>
+	<tr><td>Logging Type:</td>
+		<td><SELECT NAME="LOGTYPE">
+			<OPTION SELECTED>None
+			<OPTION>ClientToService			
+			<OPTION>ClientToLogServer
+			<OPTION>ServiceToLogServer
+			<OPTION>ServiceToDisk
+			<OPTION>ServiceToDiskAndLogServer
+		</SELECT></td>
+	</tr>
+    <tr><td colspan="2"><div class="highlightdiv"> <font face="Arial"><b>Tutoring Service</b></font></div></td></tr>
+       <tr><td>log_to_disk_directory: </td><td><INPUT TYPE="TEXT" NAME="DISKDIR" VALUE="." SIZE="25" MAXLENGTH="50" title="Directory for log files relative to the Tutoring Service"></td></tr>
+       <tr><td>remoteSocketPort: </td><td><INPUT TYPE="TEXT" id="port" NAME="PORT" VALUE="8080" SIZE="25" MAXLENGTH="50" title="Port used by the Tutoring Service"></td></tr>
+       <tr><td>remoteSocketURL: </td><td><INPUT TYPE="TEXT" id="remoteurl" NAME="REMOTEURL" VALUE="localhost" SIZE="100" MAXLENGTH="150" title="Location of the Tutoring Service (localhost or domain name)"></td></tr>
+       <tr><td>connection: </td>
+		<td><SELECT id="CONNECTION" NAME="CONNECTION" onchange="processConnectionChange (this);">
+			<OPTION>socket
+			<OPTION>javascript
+			<OPTION SELECTED>http
+			<OPTION>https
+			<OPTION>applet
+			<OPTION>websocket
+			</SELECT>
+		</td></tr>	   
+       <tr><td>skills: </td><td><textarea cols="75" rows="5" NAME="SKILLS" VALUE="" title="XML Skills of interest"></textarea></td></tr>
+	</table>
+
+	<br>
+	
+	<table col=2  class="mainborder">
+		<tr><td colspan="2"><div class="highlightdiv"> <font face="Arial"><b>Other</b></font></div></td></tr>
+		<tr><td><INPUT TYPE="TEXT" NAME="VAR1" VALUE="xxx_xxx" SIZE="20" MAXLENGTH="30" title="A FlashVar variable"> </td><td> <INPUT TYPE="TEXT" NAME="VAL1" VALUE="xxx" SIZE="100" MAXLENGTH="150" title="A FlashVar value"></td></tr>
+		<tr><td><INPUT TYPE="TEXT" NAME="VAR2" VALUE="xxx_xxx" SIZE="20" MAXLENGTH="30" title="A FlashVar variable"> </td><td> <INPUT TYPE="TEXT" NAME="VAL2" VALUE="xxx" SIZE="100" MAXLENGTH="150" title="A FlashVar value"></td></tr>
+		<tr><td><INPUT TYPE="TEXT" NAME="VAR3" VALUE="xxx_xxx" SIZE="20" MAXLENGTH="30" title="A FlashVar variable"> </td><td> <INPUT TYPE="TEXT" NAME="VAL3" VALUE="xxx" SIZE="100" MAXLENGTH="150" title="A FlashVar value"></td></tr>
+		<tr><td><INPUT TYPE="TEXT" NAME="VAR4" VALUE="xxx_xxx" SIZE="20" MAXLENGTH="30" title="A FlashVar variable"> </td><td> <INPUT TYPE="TEXT" NAME="VAL4" VALUE="xxx" SIZE="100" MAXLENGTH="150" title="A FlashVar value"></td></tr>
+	</table>
+	 
+	<p><input type="submit" name="submit" value="Launch HTML5 Tutor" onClick="return validateForm();"></p>
+	
+	</FORM>
+		
+	</td>
+	</tr>
+	</table>
+					
+	</body>
+</html>

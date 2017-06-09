@@ -1,0 +1,50 @@
+{
+  "name": "make-livereload",
+  "description": "Livereload target for make",
+  "version": "0.1.2",
+  "homepage": "https://github.com/mklabs/make-livereload",
+  "bugs": {
+    "url": "https://github.com/mklabs/make-livereload/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mklabs/make-livereload.git"
+  },
+  "bin": {
+    "tiny-lr": "./bin/tiny-lr"
+  },
+  "dependencies": {
+    "commander": "~2.3.0",
+    "debug": "~2.0.0",
+    "tiny-lr": "~0.1.1"
+  },
+  "licenses": [
+    {
+      "type": "MIT"
+    }
+  ],
+  "gitHead": "2c6987e7cfdbccb09319d6a1a9c04ca7bcb34531",
+  "_id": "make-livereload@0.1.2",
+  "scripts": {},
+  "_shasum": "24a4bcc7053d9cbe92f71a9b619503996961cc37",
+  "_from": "make-livereload@0.1.2",
+  "_npmVersion": "2.10.1",
+  "_nodeVersion": "0.12.4",
+  "_npmUser": {
+    "name": "mklabs",
+    "email": "daniel.mickael@gmail.com"
+  },
+  "maintainers": [
+    {
+      "name": "mklabs",
+      "email": "daniel.mickael@gmail.com"
+    }
+  ],
+  "dist": {
+    "shasum": "24a4bcc7053d9cbe92f71a9b619503996961cc37",
+    "tarball": "https://registry.npmjs.org/make-livereload/-/make-livereload-0.1.2.tgz"
+  },
+  "directories": {},
+  "_resolved": "https://registry.npmjs.org/make-livereload/-/make-livereload-0.1.2.tgz",
+  "readme": "ERROR: No README data found!"
+}

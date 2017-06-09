@@ -1,0 +1,139 @@
+.silex-settings-dialog {
+  position: absolute;
+  width: 80%;
+  max-width: 929px;
+  z-index: 110;
+  /* ************** */
+  /* pane selection */
+  /* ************** */
+  .right-pane > div {
+    display: none;
+  }
+  &.general-pane-visible {
+    .right-pane .general-pane {
+      display: initial;
+    }
+    .left-pane .general-pane {
+      font-weight: bold;
+    }
+  }
+  &.publish-pane-visible {
+    .right-pane .publish-pane {
+      display: initial;
+    }
+    .left-pane .publish-pane {
+      font-weight: bold;
+    }
+  }
+  &.social-pane-visible {
+    .right-pane .social-pane {
+      display: initial;
+    }
+    .left-pane .social-pane {
+      font-weight: bold;
+    }
+  }
+  /* **************** */
+  /* left pane styles */
+  /* **************** */
+  .left-pane {
+    width: 25%;
+    height: 100%;
+    border-right: 1px solid @silexdarkgrey;
+    float: left;
+    ul {
+      list-style: none;
+      margin:0;
+      padding: 0;
+      li {
+        padding: 15px;
+        cursor: pointer;
+      }
+    }
+  }
+  .dialog a:link, .dialog a:visited {
+      color: white;
+    }
+  .dialog {
+    color: white;
+    font-style: normal;
+    font-size: 13px;
+    line-height: normal;
+    max-width: 929px;
+    height: 580px;
+    position: static;
+    margin: auto;
+    background-color: @silexmediumdarkgrey;
+    border-color: @silexdarkgrey;
+    border-style: solid;
+    border-width: 1px;
+    -moz-box-shadow: rgba(0, 0, 0, 0.2) 0 4px 16px 0;
+    -webkit-box-shadow: rgba(0, 0, 0, 0.2) 0 4px 16px 0;
+    box-shadow: rgba(0, 0, 0, 0.2) 0 4px 16px 0;
+  }
+  .close-btn {
+    background: url("../assets/goog-ui/close.png") no-repeat center center;
+    width: 30px;
+    display: inline-block;
+    border: 0;
+    padding: 0;
+    margin-right: 15px;
+    margin-right: 10px;
+    height: 30px;
+    cursor: pointer;
+    right: 15px;
+    position: absolute;
+  }
+  .body {
+    border-top: 1px solid @silexdarkgrey;
+    overflow: hidden;
+    height: 524px;
+    width: 100%;
+  }
+  .right-pane {
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 524px;
+    width: 74%;
+    .pane > p {
+      margin: 10px;
+    }
+    ul {
+      list-style: none;
+      margin:0;
+      padding: 0;
+      li {
+        color: white;
+        font-style: normal;
+        font-size: 13px;
+        line-height: normal;
+        .input-text {
+          width: 100%;
+        }
+        .input-url {
+          width: 85%;
+        }
+        .input-url, .input-text {
+          background-color: @silexdarkgrey;
+          color: white;
+        }
+        fieldset {
+          border: 1px solid @silexlightergrey;
+          margin: 10px;
+          padding: 10px;
+        }
+      }
+    }
+  }
+  h1.title {
+    border-top: 1px solid @silexdarkgrey;
+    height: 20px;
+    padding: 17px 20px;
+    margin: 0;
+    font-size: 20px;
+    font-weight: 100;
+  }
+  h3.title {
+    font-weight: 100;
+  }
+}

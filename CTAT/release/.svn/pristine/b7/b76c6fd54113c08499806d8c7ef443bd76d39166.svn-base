@@ -1,0 +1,9 @@
+<html>
+    <head>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.1/jquery.min.js" type="text/javascript"/></script>
+    </head>
+    <body>
+        <div id="xy" style="border:1px solid #f00; width:100px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque sollicitudin tortor in lacus tincidunt volutpat. Integer dignissim imperdiet mollis. Suspendisse quis tortor velit, placerat tempor neque. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Praesent bibendum auctor lorem vitae tempor. Nullam condimentum aliquam elementum. Nullam egestas gravida elementum. Maecenas mattis molestie nisl sit amet vehicula. Donec semper tristique blandit. Vestibulum adipiscing placerat mollis.</div>
+        <button onclick="alert($('#xy').height());">Show</button>
+    </body>
+</html>

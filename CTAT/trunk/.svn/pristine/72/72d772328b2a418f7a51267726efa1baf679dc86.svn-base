@@ -1,0 +1,25 @@
+# Parse tree node for constants
+
+goog.provide('CTATConstantNode')
+goog.require('CTATTreeNode')
+
+class CTATConstantNode extends CTATTreeNode
+  constructor: (@value, @parens = 0, @sign = 1, @exp = 1) -> @operator = 'CONST'
+  clone: -> new CTATConstantNode @value, @parens, @sign, @exp
+  toString: -> super @value.toString()
+  evaluate: -> super @value
+  equals: (node) -> super(node) and @value is node.value
+
+  multiplyOne: -> @
+  powerOne: -> @
+  compare: (node, reverse) ->
+    reverse = if reverse? then 1 else -1
+    super or (Math.sign(Math.abs(@evaluate()) - Math.abs(node.evaluate()))) * reverse or
+    @compareSigns(node, reverse)
+
+  popNegation: -> (@negate(); @value = - @value) if @value < 0; @
+  constant: (value) -> not value? or @evaluate() is value
+  integer: -> Math.floor(@evaluate()) is @value
+  even: -> @evaluate() % 2 is 0
+
+if module? then module.exports = CTATConstantNode else @CTATConstantNode = CTATConstantNode

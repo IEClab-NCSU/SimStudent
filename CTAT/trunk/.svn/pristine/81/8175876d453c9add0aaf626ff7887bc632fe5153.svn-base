@@ -1,0 +1,120 @@
+{
+	"kind" : "drive#file",
+	"id" : string,
+	"name" : string,
+	"mimeType" : string,
+	"description" : string,
+	"starred" : boolean,
+	"trashed" : boolean,
+	"explicitlyTrashed" : boolean,
+	"parents" : [
+		string
+	],
+	"properties" : {
+		(key) : string
+	},
+	"appProperties" : {
+		(key) : string
+	},
+	"spaces" : [
+		string
+	],
+	"version" : long,
+	"webContentLink" : string,
+	"webViewLink" : string,
+	"iconLink" : string,
+	"thumbnailLink" : string,
+	"viewedByMe" : boolean,
+	"viewedByMeTime" : datetime,
+	"createdTime" : datetime,
+	"modifiedTime" : datetime,
+	"modifiedByMeTime" : datetime,
+	"sharedWithMeTime" : datetime,
+	"sharingUser" : {
+		"kind" : "drive#user",
+		"displayName" : string,
+		"photoLink" : string,
+		"me" : boolean,
+		"permissionId" : string,
+		"emailAddress" : string
+	},
+	"owners" : [{
+			"kind" : "drive#user",
+			"displayName" : string,
+			"photoLink" : string,
+			"me" : boolean,
+			"permissionId" : string,
+			"emailAddress" : string
+		}
+	],
+	"lastModifyingUser" : {
+		"kind" : "drive#user",
+		"displayName" : string,
+		"photoLink" : string,
+		"me" : boolean,
+		"permissionId" : string,
+		"emailAddress" : string
+	},
+	"shared" : boolean,
+	"ownedByMe" : boolean,
+	"capabilities" : {
+		"canEdit" : boolean,
+		"canComment" : boolean,
+		"canShare" : boolean,
+		"canCopy" : boolean,
+		"canReadRevisions" : boolean
+	},
+	"viewersCanCopyContent" : boolean,
+	"writersCanShare" : boolean,
+	"permissions" : [
+		permissions Resource
+	],
+	"folderColorRgb" : string,
+	"originalFilename" : string,
+	"fullFileExtension" : string,
+	"fileExtension" : string,
+	"md5Checksum" : string,
+	"size" : long,
+	"quotaBytesUsed" : long,
+	"headRevisionId" : string,
+	"contentHints" : {
+		"thumbnail" : {
+			"image" : bytes,
+			"mimeType" : string
+		},
+		"indexableText" : string
+	},
+	"imageMediaMetadata" : {
+		"width" : integer,
+		"height" : integer,
+		"rotation" : integer,
+		"location" : {
+			"latitude" : double,
+			"longitude" : double,
+			"altitude" : double
+		},
+		"time" : string,
+		"cameraMake" : string,
+		"cameraModel" : string,
+		"exposureTime" : float,
+		"aperture" : float,
+		"flashUsed" : boolean,
+		"focalLength" : float,
+		"isoSpeed" : integer,
+		"meteringMode" : string,
+		"sensor" : string,
+		"exposureMode" : string,
+		"colorSpace" : string,
+		"whiteBalance" : string,
+		"exposureBias" : float,
+		"maxApertureValue" : float,
+		"subjectDistance" : integer,
+		"lens" : string
+	},
+	"videoMediaMetadata" : {
+		"width" : integer,
+		"height" : integer,
+		"durationMillis" : long
+	},
+	"isAppAuthorized" : boolean
+}

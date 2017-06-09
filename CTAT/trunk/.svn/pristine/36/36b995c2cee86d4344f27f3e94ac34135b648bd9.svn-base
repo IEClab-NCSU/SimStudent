@@ -1,0 +1,82 @@
+/**-----------------------------------------------------------------------------
+ $Author$
+ $Date$
+ $HeadURL$
+ $Revision$
+
+ -
+ License:
+ -
+ ChangeLog:
+ -
+ Notes:
+
+ */
+goog.provide('CTATComponentReference');
+/**
+ *
+ */
+CTATComponentReference = function(aRef,aDiv)
+{
+	var compReference=aRef;
+	var div=aDiv;
+
+	/**
+	 * @param aComponent
+	 */
+	this.setElement=function setElement (aComponent)
+	{
+		compReference=aComponent;
+	};
+	/**
+	 *
+	 * @returns
+	 */
+	this.getElement=function getElement ()
+	{
+		return (compReference);
+	};
+	/**
+	 *
+	 * @param aDiv
+	 */
+	this.setDiv=function setDiv (aDiv)
+	{
+		div=aDiv;
+	};
+	/**
+	 *
+	 * @returns
+	 */
+	this.getDiv=function getDiv ()
+	{
+		return (div);
+	};
+};
+
+CTATComponentReference.components = {};
+CTATComponentReference.list = function() {
+	for (var comp in CTATComponentReference.components) {
+		var ref = CTATComponentReference.components[comp];
+		ctatdebug("Component: "+ref.getElement().getName()+", with div: "+ref.getDiv().id);
+	}
+};
+CTATComponentReference.getComponentFromID = function(anId) {
+	var components = CTATComponentReference.components;
+	if (components.hasOwnProperty(anId)) {
+		var ref = components[anId];
+		if (!ref.getElement()) {
+			return null;
+		}
+		return ref.getElement();
+	}
+	return null;
+};
+
+CTATComponentReference.add = function(aComponent,aDiv)
+{
+	var ref = new CTATComponentReference(aComponent,aDiv);
+	CTATComponentReference.components[ref.getDiv().getAttribute("id")] = ref;
+
+	return ref;
+};

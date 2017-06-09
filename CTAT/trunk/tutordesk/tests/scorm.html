@@ -1,0 +1,145 @@
+<html>
+<head>
+	<title>CTAT Lesson Package Generator</title>
+
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta property="og:title" content="Share your tutors on the web!">
+	<meta property="og:site_name" content="CTAT">
+	<meta property="og:description" content="Share tutors with fellow students or build your own.">
+	<meta property="og:type" content="Website">	
+	<meta property="og:image" content="logo.png">
+
+	<link rel="stylesheet" type="text/css" href="css/windows7.css"/>	
+	<link rel="stylesheet" type="text/css" href="css/envwizard.css"/>
+		
+	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script src="http://code.jquery.com/ui/1.11.2/jquery-ui.min.js"></script>
+	
+	<script src="js/jquery.filedrop.js"></script>	
+	<script src="js/script.js"></script>
+	<script src="js/windows7.js"></script>
+	
+	<style>	
+	
+	html
+	{
+		margin: 0px;
+		padding: 0px;
+	}
+
+	body 
+	{
+
+		margin: 0px;
+		padding: 0px;
+				
+		background: rgb(226,226,226); /* Old browsers */
+	}
+
+	area
+	{
+		cursor:pointer; 
+	}
+
+	#dropbox 
+	{
+		border: 2px dashed #aaa;
+		background: #ffffff;
+		-webkit-border-radius: 5px;
+		border-radius: 5px;
+		padding: 50px;
+		text-align: center;
+		font: 21pt bold arial;
+		color: #aaa;
+		margin: auto;
+	}	
+	
+	.boxer 
+	{
+	   display: table;
+	   border-collapse: collapse;
+	   width: 100%;
+	   height: 100%;
+	   margin: 0px;
+	   padding: 0px;
+	}
+	 
+	.boxer .box-row 
+	{
+	   display: table-row;
+	}
+	 
+	.boxer .box 
+	{
+	   display: table-cell;
+	   text-align: left;
+	   vertical-align: top;
+	   border: 0px solid black;
+	}	
+	
+	</style>
+	
+	<script>
+	/**
+	*
+	*/	 
+	$(document).ready(function() 
+	{
+		console.log ("ready ()");
+			
+		var prevButton=$("#previous");
+		prevButton.button();
+		prevButton.click(function()
+		{	
+
+		});
+		
+		var nextButton=$("#next");
+		nextButton.button();
+		nextButton.click(function()
+		{	
+
+		});
+
+		var cancelButton=$("#cancel");
+		cancelButton.button();
+		cancelButton.click(function()
+		{	
+			window.parent.closeWizard ();
+		});	
+	});	
+	</script>
+</head>
+<body>
+
+	<div class="boxer">
+		<div class="box-row">
+			<div class="box">
+			
+				<div class="area">
+					<div id="dropbox" style="width: 320px; height: 320px;">
+					<br>
+					Drop files here
+					<br>
+					<br>
+					<img src="css/images/file-icon.png" style="padding: 0px; margin: auto;">
+					</div>
+				</div>		
+									
+			</div>
+		</div>
+		<div class="box-row">
+			<div class="box" style="height: 25px;">
+			
+				<div style="width: 200px; padding: 2px; margin: auto; text-align:center;">
+					<button id="previous" style="margin: 0 auto; padding: 3px;">Previous</button>
+					<button id="next" style="margin: 0 auto; padding: 3px;">Next</button>
+					<button id="cancel" style="margin: 0 auto; padding: 3px;">Cancel</button>
+				</div>						
+			
+			</div>
+		</div>
+	</div>
+</body>
+</html>

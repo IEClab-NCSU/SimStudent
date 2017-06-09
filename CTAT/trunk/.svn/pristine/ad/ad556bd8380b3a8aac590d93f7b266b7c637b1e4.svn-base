@@ -1,0 +1,167 @@
+h1.title1 Properties
+.big-separator
+.element-type-field
+.main-container
+  span.attr-container
+    span.tab-page
+      .attr-editor
+        fieldset.small-font
+          legend Attributes
+          button#collapse-attributes.prop-container-collapse(title="collapse attributes pane") -
+          div#attr-list.input-container.pane-container
+  span.style-container
+    span.tab-page
+      .background-editor
+        fieldset.small-font.background-property
+          legend Colors / Background
+          button#collapse-color-bg.prop-container-collapse(title="collapse color/bg pane") -
+          div#color-bg-container.pane-container
+            h4 Foreground
+            div
+              span#color-fg-button.color-fg-button.color-button
+            span#color-fg-palette.color-fg-palette
+            h4 Background
+            div
+              span#color-bg-button.color-bg-button.color-button
+              span#enable-color-bg-button.enable-color-bg-button.goog-checkbox-unchecked
+              | Transparent
+            span#color-bg-palette.color-bg-palette
+            div#bg-image-container
+              button#bg-image-btn.property-tool-btn Background Image
+              .bg-image-style-container  
+                .border-type-label BG Img Size
+                #bg-image-size.bg-image-size.combobox.goog-select
+                  ul.goog-menu  
+                    li#auto.goog-menuitem auto
+                    li#contain.goog-menuitem contain
+                    li#cover.goog-menuitem cover
+              .bg-image-style-container  
+                .border-type-label BG Img Repeat
+                #bg-image-repeat.bg-image-repeat.combobox.goog-select
+                  ul.goog-menu
+                    li#repeat.goog-menuitem repeat
+                    li#repeat-x.goog-menuitem repeat-x
+                    li#repeat-y.goog-menuitem repeat-y
+                    li#space.goog-menuitem space
+                    li#round.goog-menuitem round
+                    li#no-repeat.goog-menuitem no repeat
+              .bg-image-style-container  
+                .border-type-label BG Img Position
+                #bg-image-position.bg-image-position.combobox.goog-select
+                  ul.goog-menu
+                    li#left-top.goog-menuitem left top
+                    li#left-center.goog-menuitem left ctr
+                    li#left-bottom.goog-menuitem left btm
+                    li#right-top.goog-menuitem right top
+                    li#right-center.goog-menuitem right ctr
+                    li#right-bottom.goog-menuitem right btm
+                    li#center-top.goog-menuitem ctr top
+                    li#center-center.goog-menuitem ctr
+                    li#center-bottom.goog-menuitem ctr btm
+      .border-editor
+        fieldset.small-font.border-property
+          legend Border
+          button#collapse-border.prop-container-collapse(title="collapse border pane") -
+          #border-container.pane-container
+            .border-width-container
+              label.border-width-label Width
+              input#border-width-input.border-width-input(placeholder='-', type='number', min='0')
+            .border-color-container  
+              label.border-color-label Color
+              span#border-color-button.border-color-button.color-button
+            span#border-color-palette.border-color-palette
+            .border-type-conainer
+              .border-type-label Style
+              #border-type-combo-box.border-type-combo-box.combobox.goog-select
+                ul.goog-menu
+                  li#solid.goog-menuitem solid
+                  li#dotted.goog-menuitem dotted
+                  li#dashed.goog-menuitem dashed
+                  li#double.goog-menuitem double
+                  li#groove.goog-menuitem groove
+                  li#ridge.goog-menuitem ridge
+                  li#inset.goog-menuitem inset
+                  li#outset.goog-menuitem outset
+            .border-placement-container
+              .half-col
+                span#border-placement-top-check.border-placement-check.goog-checkbox
+                label.border-placement-label Top
+              .half-col
+                span#border-placement-right-check.border-placement-check.goog-checkbox
+                label.border-placement-label Right
+              .half-col
+                span#border-placement-btm-check.border-placement-check.goog-checkbox
+                label.border-placement-label Btm
+              .half-col
+                span#border-placement-left-check.border-placement-check.goog-checkbox
+                label.border-placement-label Left
+            .little-separator
+            .border-radius-container
+              .border-radius-width-container
+                label.border-radius-label Radius
+                input#corner-radius-input.corner-radius-input(placeholder='-', type='number', min='0')
+      .font-editor
+        fieldset.small-font.font-property
+          legend Font
+          button#collapse-font.prop-container-collapse(title="collapse font pane") -
+          #font-container.pane-container
+            #font-size-container.input-container Size
+              input#font-size-input.input-numeric
+            #font-style-container
+              .half-col
+                span#font-style-italic-check.font-style-check.goog-checkbox
+                label.font-style-label Italic
+              .half-col
+                span#font-style-bold-check.font-style-check.goog-checkbox
+                label.font-style-label Bold
+            #font-align-container Alignment
+              select#font-align-select
+                option(value="left") left
+                option(value="center") center
+                option(value="right") right
+            #font-family-container
+              #property-tool-font-select.fontSelect
+                .arrow-down
+      .margin-editor
+        fieldset.small-font.margin-property
+          legend Margin / Padding
+          button#collapse-margin-padding.prop-container-collapse(title="collapse margin pane") -
+          div#margin-container.pane-container
+            #margin-padding-select
+                input#margin-radio-btn.margin-padding-radio(type="radio" name="margin-padding-btn" value="margin")
+                label(for="margin-radio-btn" style="margin-right: 15px") margin
+                input#padding-radio-btn.margin-padding-radio(type="radio" name="margin-padding-btn" value="padding")
+                label(for="padding-radio-btn") padding
+            .margin-placement-container
+              .half-col
+                label#margin-top-label.margin-placement-label Top
+                input#margin-top-val
+              .half-col
+                label#margin-right-label.margin-placement-label Right
+                input#margin-right-val
+              .half-col
+                label#margin-btm-label.margin-placement-label Btm
+                input#margin-bottom-val
+              .half-col
+                label#margin-left-label.margin-placement-label Left
+                input#margin-left-val
+  span.attr-container
+      span.tab-page
+         .position-editor
+             fieldset.small-font.position-property
+                 legend Position / Size
+                 button#collapse-pos-size.prop-container-collapse(title="collapse pos/size pane") -
+                 #pos-size-container.pane-container
+                   div#pos-container.input-container
+                       div Distance from left
+                          input#pos-x-input.input-numeric
+                       div Distance from top
+                          input#pos-y-input.input-numeric
+                   .little-separator 
+                   div#size-container.input-container
+                       div Width
+                          input#width-input.input-numeric
+                       div Height
+                          input#height-input.input-numeric
+
+datalist#property-tool-classlist

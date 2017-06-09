@@ -1,0 +1,23 @@
+/**-----------------------------------------------------------------------------
+ $Author$
+ $Date$
+ $HeadURL$
+ $Revision$
+
+ -
+ License:
+ -
+ ChangeLog:
+ -
+ Notes:
+
+ */
+goog.provide('CTATVariable');
+/**
+ *
+ */
+CTATVariable = function()
+{
+	this.name="";
+	this.value="";
+};

@@ -1,0 +1,459 @@
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+<script type="text/javascript" src="https://smu-tutor.cs.cmu.edu/ctatjslib/ctat-tutor-sidebar.min.js"></script>
+<script type="text/javascript" src="https://smu-tutor.cs.cmu.edu/js/RPCObject.js"></script>
+<script type="text/javascript" src="https://smu-tutor.cs.cmu.edu/js/Queue.js"></script>
+<script type="text/javascript" src="https://smu-tutor.cs.cmu.edu/js/GASQueue.js"></script>
+<script type="text/javascript" src="https://smu-tutor.cs.cmu.edu/js/CTATTableGoogle.js"></script>
+<link rel="stylesheet" type="text/css" href="https://smu-tutor.cs.cmu.edu/css/CTAT.css">
+<link rel="stylesheet" type="text/css" href="https://smu-tutor.cs.cmu.edu/css/google-sidebar.css">	
+
+<!--
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/ctatjslib/ctat-tutor-sidebar.min.js"></script>
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/google/rpcobject.js"></script>
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/google/queue.js"></script>
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/google/gasqueue.js"></script>
+<script type="text/javascript" src="http://augustus.pslc.cs.cmu.edu/html5/src/google/ctattablegoogle.js"></script>
+<link rel="stylesheet" type="text/css" href="http://augustus.pslc.cs.cmu.edu/HTML5/css/google-sidebar.css">	
+-->
+
+<script type="text/javascript" src="https://drive.google.com/uc?export=view&id=0BwGsdDsj8yYcbGFyY1o2eGY1LWs"></script>
+<script type="text/javascript" src="https://drive.google.com/uc?export=view&id=0BwGsdDsj8yYccTlkdk5vSzIwRk0"></script>
+<script type="text/javascript" src="https://drive.google.com/uc?export=view&id=0BwGsdDsj8yYcQVpidlNFb0tLX1U"></script>
+<script type="text/javascript" src="https://drive.google.com/uc?export=view&id=0BwGsdDsj8yYcZE14TVV0RERXbzQ"></script>
+<script type="text/javascript" src="https://drive.google.com/uc?export=view&id=0BwGsdDsj8yYcY1FYbExEODNRUms"></script>
+<link rel="stylesheet" type="text/css" href="https://drive.google.com/uc?export=view&id=0BwGsdDsj8yYcZXRJYURVdE96UEE">
+<link rel="stylesheet" type="text/css" href="https://drive.google.com/uc?export=view&id=0BwGsdDsj8yYcZWdMNjZVY3RaSTQ">	
+
+<script language="javascript">
+
+var FlashVars=
+{    
+	admit_code:"ies",
+	authenticity_token:"none",
+	auth_token:"none",
+	BehaviorRecorderMode:"'AuthorTimeTutoring",
+	class_name:"Default Class",
+	curriculum_service_url:"none",
+	dataset_level_name:"none",
+	dataset_level_type:"ProblemSet",
+	dataset_name:"none",
+	expire_logout_url:"none",
+	info:"%3Cdiv+id%3D%27label%27%3EFactors%3A%3C%2Fdiv%3E%3Cdiv+id%3D%27caption%27%3E+Problem+1+of+2%3C%2Fdiv%3E",
+	instructor_name:"none",
+	instrumentation_log:"off",
+	lcId:"none",
+	Logging:"ClientToService", // 'ClientToService' or 'ClientToLogServer'
+	log_service_url:"http://pslc-qa.andrew.cmu.edu/log/server",
+	problem_name:"none",
+	problem_position:"none",
+	problem_started_url:"none",
+	problem_state_status:"empty", //  'empty', 'complete', or 'incomplete'
+    question_file:"https://smu-tutor.cs.cmu.edu/brds/DataCenterAssetsWE.brd", // or https://smu-tutor.cs.cmu.edu/brds/CallCenterWE.brd
+	refresh_session_url:"none",
+	remoteSocketPort:"1501",
+	remoteSocketURL:"https://preview.pact.cs.cmu.edu",
+	restore_problem_url:"none",
+	reuse_swf:"false",
+	run_problem_url:"none",
+	school_name:"none",
+	SessionLog:"true",
+	session_id:"none",
+	session_timeout:"none",
+	skills:"",
+	source_id:"FLASH_PSEUDO_TUTOR", // 'FLASH_PSEUDO_TUTOR' or 'CTAT_JAVA_TUTOR'
+	student_interface:"none",
+	student_problem_id:"none",
+	study_condition_name:"none",
+	study_condition_type:"none",
+	study_conditon_description:"none",
+	study_name:"Study1",
+	target_frame:"none",
+	TutorShopDeliveryMethod:"sendandload",
+	user_guid:"none",
+	wmode:"opaque",
+	log_to_disk_directory:"logfiles/",
+	DeliverUsingOLI:"none"
+};
+
+var sidebarrunning=false;
+var blocked=false;
+var useTimer=true;
+var useGrading=true;
+var gradeCheck="";
+var grading=false;
+var trans=new CTATNameTranslator ();
+var sidebarTimeout=10000;
+
+/**
+*
+*/
+function toggleGrading(cb) 
+{				
+	if (cb.checked==true)
+		useGrading=true;
+	else
+		useGrading=false;						
+}
+
+/**
+*
+*/
+function toggleDebugging(cb) 
+{				
+	if (cb.checked==true)
+		useDebugging=true;
+	else
+		useDebugging=false;						
+}
+
+//>-----------------------------------------------------------------
+// CTAT access methods
+//>-----------------------------------------------------------------
+
+/**
+*
+*/
+function listCTATComponents() 
+{				
+	var tempValue=useDebugging;
+	
+	//useDebugging=true;	
+	var tools=new CTATShellTools ();
+	tools.listComponents ();	
+	//useDebugging=tempValue;
+}	
+			
+/**
+*
+*/
+function selectConsoleText ()
+{
+	selectText('console');
+}
+
+//>-----------------------------------------------------------------
+// Google specific code
+//>-----------------------------------------------------------------
+
+var intervalId;
+
+/**
+* Google specific function
+*/
+function onNOPFailure(error) 
+{
+	ctatdebug ("onNOPFailure ("+error.message+")");
+	
+}
+
+/**
+* Google specific function
+*/
+function onFailure(error) 
+{
+	ctatdebug ("onFailure ("+error.message+")");	
+}
+
+/**
+* Sheet methods available for API-ification:
+* https://developers.google.com/apps-script/reference/spreadsheet/sheet
+*/
+function onNOPSuccess(editedRange) 
+{
+    ctatdebug ("onNOPSuccess ("+editedRange+")");  
+}
+
+/**
+* Sheet methods available for API-ification:
+* https://developers.google.com/apps-script/reference/spreadsheet/sheet
+*/
+function onInitialSuccess(editedRange) 
+{
+    ctatdebug ("onInitialSuccess ()");
+  
+    initContinue ();
+}
+
+/**
+* Google specific function
+*/
+function onInitialFailure(error) 
+{
+	ctatdebug ("onInitialFailure ()");
+	
+    ctatdebug ("Checking initial error: " + error.message);
+}
+
+/**
+* Sheet methods available for API-ification:
+* https://developers.google.com/apps-script/reference/spreadsheet/sheet
+* 
+* Input parameter: editedRange: Object
+* 
+*   Object attributes:
+*   editedRange.cells String (a1 notation);
+*   editedRange.values [][];
+*/
+function onEditSuccess(editedRange) 
+{    
+    console.log ("onEditSuccess ("+editedRange+")");
+ 
+    if (grading==true)
+    {
+       ctatdebug ("We're already grading, bump: ("+editedRange+")");
+       startTimer();
+       return;
+    }
+    
+    grading=true;
+    
+    if (blocked==true)
+    {
+		//ctatdebug ("blocked==true");
+        ctatdebug ("blocked");
+        startTimer();
+        grading=false;
+		return;
+    }
+    
+    if (editedRange==null)
+    {
+        ctatdebug ("Nothing to grade -> editedRange==null");
+        startTimer();
+        grading=false;
+		return;
+    }
+    
+    if (typeof editedRange === "undefined")
+    {
+        console.log ("Nothing to grade -> typeof editedRange === undefined");
+        startTimer();
+        grading=false;
+		return;
+    }
+    
+    if (editedRange === "")
+    {
+        ctatdebug ("Nothing to grade -> editedRange == empty");
+        startTimer();
+        grading=false;
+		return;
+    }     
+    
+    ctatdebug ("Final check: " + editedRange.length);
+    
+    var entries=editedRange.split ("#");
+    var i=0;
+    var j=0;
+        
+    ctatdebug ("Valid range, processing ...");
+  
+    for (i=0;i<entries.length;i++)
+    {
+		var saipre=entries [i].split (";");
+            
+		ctatdebug ("Entry " + i + " : S ("+saipre [0]+") A (UpdateTextField) I ("+saipre [1]+")");
+      
+        if ((saipre [1] == undefined) || (saipre [1] == "[[\"\"]]"))
+        {
+          ctatdebug ("((saipre [1] == undefined) || (saipre [1] == \"[[\"\"]]\"))");
+        }
+        else
+        {      
+			var selections=saipre [0].split (":");
+			var inputs    =JSON.parse(saipre [1]);
+		  
+			if (selections.length>1)
+			{        
+				var fromCol=trans.getA1Col (selections [0]);
+				var fromRow=trans.getA1Row (selections [0]);
+			
+				var toCol=trans.getA1Col (selections [1]);
+				var toRow=trans.getA1Row (selections [1]);
+		   
+				ctatdebug ("Grading range: Rows "+fromRow+" to "+toRow+", Cols "+fromCol+" to "+toCol+" ...");
+
+				ctatdebug ("Grading range ...");
+		   
+				var x=0;
+				var y=0;
+			
+				for (x=fromCol;x<=toCol;x++)
+				{
+					for (y=fromRow;y<=toRow;y++)
+					{          
+						var zeroCol=x-fromCol;
+						var zeroRow=y-fromRow;
+			  
+						var transString=("R"+y+":C"+x);
+						var transA1=trans.translateFromCTAT (transString);
+						
+						var value=inputs [zeroRow][zeroCol];
+											
+						ctatdebug ("Grading single cell: S ("+transA1+") A (UpdateTextField) I ("+value+")");
+						
+						if ((value=="") || (typeof value === "undefined"))
+						{
+						  ctatdebug ("Cell is empty, probably a clearing or reset action");
+						}
+						else
+						{
+						   if (useGrading==true)
+						   {
+							  ctatdebug ("processExternalGrading ()");
+						   
+							  table.processExternalGrading (transA1,value);
+						   }
+						}
+					}               
+				}       
+			}
+			else
+			{            
+				if (useGrading==true)
+				{
+				  ctatdebug ("processExternalGrading: S ("+selections [0]+") A (UpdateTextField) I ("+inputs [0]+")");
+				
+				  table.processExternalGrading (selections [0],inputs [0]);
+				}
+				else
+				{
+				  ctatdebug ("Grading single cell: useGrading==false");
+				}
+			}
+		}	
+    }
+
+    startTimer(); 
+    
+    grading=false;
+}
+
+/**
+*
+*/
+function checkOnEditQueue() 
+{
+	ctatdebug ("checkOnEditQueue ()");
+ 
+    google.script.run.withSuccessHandler(onEditSuccess).
+	  			      withFailureHandler(onFailure).
+					  dequeueOnEdit();
+}
+
+/**
+* Google specific function
+*/
+function startTimer() 
+{
+	ctatdebug ("startTimer ()");
+    
+    stopTimer(); // clear out the old one first
+    
+    if (useWorkedExample==true)
+    {
+       ctatdebug ("Not using timer (worked example), bump");
+       return;    
+    }
+    
+    if (useTimer==false)
+    {
+       ctatdebug ("Not using timer (disabled), bump");
+       return;
+    }
+	
+	intervalId = window.setTimeout("checkOnEditQueue()", sidebarTimeout);    
+}
+
+/**
+* Google specific function
+*/
+function stopTimer() 
+{
+	ctatdebug ("stopTimer ()");
+	
+	window.clearTimeout(intervalId);
+}
+
+/**
+*
+*/
+function init ()
+{
+    ctatdebug ("init ()");
+    
+    google.script.run.withSuccessHandler(onInitialSuccess).withFailureHandler(onInitialFailure).resetSheet();	
+}
+
+/**
+*
+*/
+function clearSheet ()
+{
+   ctatdebug ("clearSheet ()");
+   
+   table.resetInternal ("E27:K41");
+   table.resetInternal ("E19:K23");	
+   table.resetInternal ("A1");
+}
+
+/**
+*
+*/
+function initContinue ()
+{
+    console.log ("initContinue ()");
+        
+	initTutorSidebar (FlashVars);
+    
+    commShell.assignDoneProcessor ("processTutorDone");
+    
+    clearSheet ();
+        
+    startTimer();
+    
+    google.script.run.withSuccessHandler(onNOPSuccess).withFailureHandler(onNOPFailure).jumpToProblem ();
+    
+    sidebarrunning=true;
+}
+
+/**
+*
+*/
+function processTutorDone ()
+{
+  console.log ("processTutordone ()");
+  
+}
+
+</script>
+	
+<table cellpadding="0" cellspacing="2" height="100%" style="width:280px; margin:2px; padding:1px; border:1px solid #000000; background-color:#ffffff;">
+<tr>
+	<td style="margin:0px; padding:2px; background-color:#ffffff;" valign="top">            
+		<div id="container" name="container" class="container">
+			<canvas id="main-canvas" width="280" height="400">Your browser does not support CTAT. Please update or replace your browser.</canvas>
+		</div>		
+        
+        <!--
+		<div width="280">
+			<center>
+			<input type="checkbox" id="ctatdebugtraces" name="ctatdebugtraces" value="ctatdebugtraces" onclick='toggleDebugging(this);'>Debug
+			<button type="button" onclick="clearSheet ()"><img src="http://augustus.pslc.cs.cmu.edu/html5/check_mark.png" alt="Grade" /></button>
+			</center>								
+		</div>
+        -->
+        
+	</td>
+</tr>
+</table>
+
+<script>
+useBundling=false;
+loggingDisabled=true;
+useDebugging=true;
+useWorkedExample=true;
+init ();
+</script>

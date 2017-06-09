@@ -1,0 +1,1 @@
+java -jar jsdoc-toolkit\jsrun.jar jsdoc-toolkit\app\run.js -d=..\documentation\html -a -r -t=jsdoc-toolkit\templates\jsdoc ..\src\

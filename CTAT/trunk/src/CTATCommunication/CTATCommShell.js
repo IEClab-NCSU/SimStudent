@@ -1,0 +1,2068 @@
+/**-----------------------------------------------------------------------------
+ $Author: sdemi $
+ $Date: 2017-06-02 14:02:52 -0500 (週五, 02 六月 2017) $
+ $HeadURL: svn://pact-cvs.pact.cs.cmu.edu/usr5/local/svnroot/AuthoringTools/trunk/HTML5/src/CTATCommunication/CTATCommShell.js $
+ $Revision: 24780 $
+
+ -
+ License:
+ -
+ ChangeLog:
+ -
+ Notes:
+
+ */
+
+goog.provide('CTATCommShell');
+
+goog.require('CTATActionEvaluationData');
+goog.require('CTATBase');
+goog.require('CTATCommLibrary');
+//goog.require('CTAT.Component.Base.SAIHandler');
+//goog.require('CTAT.Component.Base.Tutorable');
+goog.require('CTATCurriculumService');
+goog.require('CTATGlobalFunctions');
+goog.require('CTATGlobals');
+goog.require('CTATGuid');
+goog.require('CTATHTMLManager');
+goog.require('CTATLMS');
+goog.require('CTATLoggingLibrary');
+goog.require('CTATLogMessageBuilder');
+goog.require('CTATMessage');
+//goog.require('CTATMessageEvent');
+goog.require('CTATMessageHandler');
+goog.require('CTATSAI');
+goog.require('CTATScrim');
+goog.require('CTATShellTools');
+goog.require('CTATSkillSet');
+goog.require('CTATTutoringServiceMessageBuilder');
+goog.require('CTATTransactionListener');
+goog.require('CTATXML');
+goog.require('CTATNameTranslator');
+//goog.require('CTATLanguageManager');
+
+/**
+ *
+ */
+CTATCommShell = function()
+{
+	CTATBase.call(this, "CTATCommShell", "theShell");
+
+	var commLibrary = null;
+	var commLMSService = null;
+	var commMessageBuilder = null;
+	var tutorPointer=null;
+	var pointer=this;
+	var doneProcessor=null;
+	var messageParser=null;
+	var externalComponents={};
+	var gradingProcessor=null;
+	var feedbackProcessor=null;
+	var summaryRequestCallback=null;
+	var anonymousGradingProcessor=null;
+	var eventListeners={};
+	var eventListenersGlobal=[];
+	var gotProblemRestoreEnd=false;
+
+	if (CTATConfig.parserType=="xml")
+	{
+		messageParser=new CTATXML ();
+	}
+	else
+	{
+		messageParser=new CTATJSON ();
+	}
+
+	/**
+	 *
+	 */
+	this.init=function init (aTutor)
+	{
+		this.ctatdebug ("init ()");
+
+		var vars=CTATConfiguration.getRawFlashVars ();
+
+		var prefix="http://";
+
+		if (vars ['tutoring_service_communication']=='https')
+		{
+			prefix="https://";
+		}
+
+		var rsURL = vars ["remoteSocketURL"];
+		if (rsURL)
+		{
+			rsURL = String(rsURL).toLowerCase();
+			if (rsURL.indexOf("http") == 0 || rsURL.indexOf("ws") == 0)
+			{
+				prefix="";  // no prefix if already have a protocol
+			}
+		}
+
+		tutorPointer=aTutor;
+
+		//var generator=new CTATGuid ();
+
+		CTATLogMessageBuilder.contextGUID=CTATGuid.guid ();
+
+		processSkills ();
+
+		if (commMessageHandler==null) // If it's not NULL then Octav has created it in TutorShop (or any other system that needs that kind of control)
+		{
+			commMessageHandler=new CTATMessageHandler (this);
+			CTAT.ToolTutor.registerInterface(commMessageHandler);
+		}
+
+		commMessageHandler.assignHandler (this);
+		commMessageBuilder=new CTATTutoringServiceMessageBuilder ();
+
+		// Check a special case when we're running in OLI. If we have
+		// this variable defined and it's set to 'review' then we
+		// should not log. This might change in the future
+		if (vars ['deliverymode'])
+		{
+			if (vars ['deliverymode']=='review')
+			{
+				vars ['Logging']='None';
+			}
+		}
+
+		CTATLogMessageBuilder.commLogMessageBuilder=new CTATLogMessageBuilder ();
+		commLibrary=new CTATCommLibrary ();
+		commLibrary.setConnectionRefusedMessage ("ERROR_CONN_TS");
+		commLibrary.setSocketType (vars['tutoring_service_communication']+(vars['collaborators'] ? " websocket" : ""));
+		commLibrary.assignHandler (this);
+		commLMSService=new CTATCurriculumService (commLibrary);
+		if (commLoggingLibrary==null)
+		{
+			commLoggingLibrary=new CTATLoggingLibrary (true);
+		}
+		commLoggingLibrary.getLoggingCommLibrary ().setFixedURL (flashVars.getRawFlashVars ()["log_service_url"]);
+
+		flashVars.setTimeZone (null); // Force detection of timezone
+
+		var htmlManager=new CTATHTMLManager ();
+
+		this.ctatdebug("CTATCommShell.init() FlashVar info: "+vars ['info']);
+		if (vars ['info'] != null)
+		{
+			try {
+				if (parent.javaScriptInfo)
+				{
+					parent.javaScriptInfo(/*htmlManager.entitiesConvert*/ decodeURIComponent(vars ['info']));
+				}
+			} catch(err) {
+				// inaccessable javaScriptInfo due to cross site scripting.
+			}
+		}
+		else
+			this.ctatdebug ("There is no info flash var");
+
+		console.log ("Connecting to: " + prefix + vars ["remoteSocketURL"] + ":" + vars ["remoteSocketPort"]);
+
+		var prefMessage=commMessageBuilder.createSetPreferencesMessage (version);
+
+		////console.log.log ("Sending preference message: " + prefMessage);
+
+		commLibrary.sendXMLURL (prefMessage,prefix + vars ["remoteSocketURL"] + ":" + vars ["remoteSocketPort"], true); // true: send only to collaborators
+
+		initializeScrimForCollaboration();
+
+		pointer.addGlobalEventListener(CTATTransactionListener.create(vars [CTATTransactionListener.scriptParam]));
+	};
+
+	/**
+	 * Forward a message to the JavaScript tracer.
+	 * @param {CTATMessageObject} msg message to forward
+	 */
+	this.forwardToTutor=function(msg)
+	{
+		if(commLibrary && commLibrary.hasJavaScriptConnection())
+		{
+			CTAT.ToolTutor.sendToTutor (msg.getXMLString());
+		}
+	}
+
+	/**
+	*
+	*/
+	this.getLoggingLibrary=function getLoggingLibrary ()
+	{
+		return (commLoggingLibrary);
+	};
+
+	/**
+	*
+	*/
+	this.propagateShellEvent=function propagateShellEvent (anEvent,aMessage,actor)
+	{
+		ctatdebug ("propagateShellEvent ("+anEvent+", "+typeof(aMessage)+")");
+
+		for (var i=0;i<eventListenersGlobal.length;i++)
+		{
+			eventListenersGlobal [i].processCommShellEvent (anEvent,aMessage,actor);
+		}
+	};
+	/**
+	 *
+	 */
+	this.reset=function reset ()
+	{
+		pointer.ctatdebug ("reset ()");
+
+		CTATGlobals.interfaceElement=null;
+
+		commMessageHandler.reset ();
+	};
+	/**
+	 *
+	 */
+	this.getMessageHandler=function getMessageHandler ()
+	{
+		return (this.commMessageHandler);
+	};
+	/**
+	*
+	*/
+	this.addStartStateHandler=function addStartStateHandler (aHandler)
+	{
+		pointer.ctatdebug ("addStartStateHandler ()");
+
+		if (CTATMessageHandler.startStateHandlers==null)
+		{
+			CTATMessageHandler.startStateHandlers=[];
+		}
+
+		CTATMessageHandler.startStateHandlers.push (aHandler);
+	};
+	/**
+	 * If collaborating, revise the scrim to show something like "awaiting other collaborators."
+	 */
+	function initializeScrimForCollaboration ()
+	{
+		var collabs = CTATConfiguration.get("collaborators");
+		if(collabs && collabs.length > 1)
+		{
+			CTATScrim.scrim.scrimDown ();
+			CTATScrim.scrim.scrimUp (CTATGlobals.languageManager.getString("AWAITING_OTHER_COLLABORATORS"));
+		}
+	};
+	/**
+	 *
+	 */
+	function processSkills ()
+	{
+		pointer.ctatdebug ("processSkills ()");
+
+		CTATSkillSet.skills=new CTATSkillSet ();
+
+		var vars=flashVars.getRawFlashVars ();
+
+		if (vars ['skills']!=null)
+		{
+			CTATSkillSet.skills.fromXMLString(vars ['skills']);
+		}
+
+		pointer.updateSkillWindow (null);
+	}
+	/**
+	 *
+	 * @param anX
+	 * @param anY
+	 */
+	/*function drawText (aString,anX,anY)
+	{
+		pointer.ctatdebug ("drawText ()");
+
+    	ctx.fillText(aString,anX,anY);
+	}*/
+	/**
+	 * UNUSED
+	 */
+	/*this.focusNextComponent=function focusNextComponent (aComponent)
+	{
+		//useDebugging=true;
+
+		this.ctatdebug ("focusNextComponent ()");
+
+		if (CTATGlobals.Tab.Focus!==null)
+		{
+			if (
+				(CTATGlobals.Tab.Focus instanceof CTAT.Component.Base.Tutorable) ||
+				(CTATGlobals.Tab.Focus instanceof CTATCompBase)
+				)
+			{
+				CTATGlobals.Tab.Focus.moveHintHighlight (false,null,null);
+			}
+		}
+
+		var currentTabIndex=aComponent.getTabIndex ();
+		var newComponent=null;
+
+		currentTabIndex++;
+
+		this.ctatdebug ("Finding next component with tab index: "+ currentTabIndex
+				+ " or higher, examining "
+				+ Object.keys(CTATShellTools.component_descriptions).length
+				+ " components ...");
+
+		for (var i in CTATShellTools.component_descriptions)
+		{
+			var ref=CTATShellTools.component_descriptions [i];
+
+			var component=ref.getComponentPointer ();
+
+			if (component!=null)
+			{
+				// getDebugger.ctatdebug ("Component: " + component.getName () + " of instance: " + component.getClassName ());
+
+				if (component.getTabIndex ()==currentTabIndex)
+				{
+					this.ctatdebug ("Found a candidate component for new focus");
+					newComponent=component;
+				}
+			}
+			else
+				this.ctatdebug ("Error: component pointer is null");
+		}
+
+		if (newComponent==null)
+		{
+			this.ctatdebug ("Internal error, unable to resolve currentComponentPointer");
+			return false;
+		} else if (newComponent.getName()==='hint' || newComponent.getClassName() == 'CTATHintButton') {
+			newComponent.getComponent().focus();
+			return false; // TODO: fix this hack to deal with the hint button.
+		}
+		else
+		{
+			//useDebugging=true;
+			this.ctatdebug ("From: " + aComponent.getName () + ", to: " + newComponent.getName ());
+			//useDebugging=false;
+
+			if (newComponent.getComponent() && newComponent.getComponent() instanceof HTMLElement) {
+				// need to check that the component is an HTMLElement because tags like svg and mathml do not have .focus()
+				newComponent.getComponent().focus();
+				return true;
+			}
+
+			//newComponent.setHintHighlight (true);
+		}
+		return false; // unable to focus on next component
+
+		//useDebugging=false;
+	};*/
+	/**
+	 * DEPRECATED: This functionality is now handled in CTAT.Component.Base.Tutorable
+	 * in processAction(...).
+	 */
+	this.gradeComponent=function gradeComponent (aComponent)
+	{
+		this.ctatdebug ("gradeComponent ("+aComponent.getName ()+","+aComponent.getClassName ()+")");
+
+		// First let's reset the done button
+
+		var doneButton=CTATShellTools.findComponentByClass ("CTATDoneButton");
+
+		if ((doneButton!=null) && (doneButton!=aComponent))
+		{
+			doneButton.moveHintHighlight (false,null);
+		}
+		else
+			pointer.ctatdebug("Info: no done button available to reset");
+
+		// Make sure we clear the hint window
+
+		pointer.clearFeedbackComponents ();
+
+		// Next well run a name translation in case this is needed. For example in the
+		// case of a spreadsheet where the cell name can have multiple designations
+
+		if (nameTranslator!=null)
+		{
+			nameTranslator.translateFromCTAT (aComponent.getName ()); // FIXME: as return is not captured in a var, this is kind of useless
+		}
+		else
+		{
+			this.ctatdebug ("Info: no name translator provided, using as-is");
+		}
+
+		if (aComponent==null)
+		{
+			this.ctatdebug ("Internal error, provided component is null");
+			return;
+		}
+		else
+		{
+			this.ctatdebug ("Info: we have a valid component, grading ...");
+		}
+
+		if (aComponent.getTutorComponent ()=="Do not tutor")
+		{
+			// need to send messages untutored even if it is "Do not tutor"
+			// to maintain state in the BR.  Also necessary for collaboration.
+			pointer.processComponentAction(aComponent.getSAI(),false);
+			return;
+		}
+
+
+		this.ctatdebug ("Checking for back grading: " + aComponent.getName ());
+
+		if ((aComponent.getClassName ()=="CTATTextArea") ||
+				(aComponent.getClassName ()=="CTATTextInput") ||
+				(aComponent.getClassName ()=="CTATTextField"))
+		{
+			//useDebugging=true;
+
+			this.ctatdebug ("Backgrading ...");
+
+			this.ctatdebug ("Grading "+aComponent.getClassName () + " with value: " + aComponent.getValue ());
+
+			if (CTATGlobalFunctions.isBlank (aComponent.getValue ())===true)
+			{
+				this.ctatdebug ("Empty component, nothing to grade");
+				return;
+			}
+
+			aComponent.updateSAI();
+			var textSAI=aComponent.getSAI();
+
+			pointer.processComponentAction(textSAI);
+
+			//useDebugging=false;
+
+			return;
+		}
+
+
+		if(aComponent.getClassName ()=="CTATTableGoogle")
+		{
+			var tgMessage=new CTATSAI(aComponent.getCurrentSelection (),
+									  "UpdateTextArea",
+									  aComponent.getCurrentValue ());
+
+			pointer.processComponentAction(tgMessage);
+
+			return;
+		}
+
+		var dtsMessage=aComponent.getSAI();
+
+		pointer.processComponentAction(dtsMessage);
+	};
+	/**
+	 *
+	 */
+	this.processMessage=function processMessage(aMessage)
+	{
+		this.ctatdebug ("processMessage ()");
+
+		commMessageHandler.processMessage (aMessage);
+
+		this.ctatdebug ("processMessage () done");
+	};
+	/**
+	 *
+	 */
+	this.processStartProblem=function processStartProblem ()
+	{
+		this.ctatdebug ("processStartProblem ()");
+
+		if (CTATConfig.external=="google")
+		{
+			this.showFeedback ("The tutor is starting, please wait ...");
+		}
+
+		// This may be the wrong place to put this!!
+		if (CTATLMS.initLMSConnection)
+		{
+			CTATLMS.initLMSConnection();
+		}
+	};
+	/**
+	 *
+	 */
+	this.processStartState=function processStartState ()
+	{
+		this.ctatdebug ("processStartState ()");
+
+		//return;
+
+		CTATMessageHandler.inStartState=true;
+
+		if (tutorPointer!=null)
+		{
+			this.ctatdebug ("Calling tutor.createInterface () ...");
+
+			//useDebugging=true;
+			tutorPointer.createInterface ();
+			//useDebugging=false;
+		}
+		else
+		{
+			this.ctatdebug ("Error: no tutor object available, calling createInterface globally ...");
+
+			if (window.hasOwnProperty('createInterface'))
+			{
+				//useDebugging=true;
+				window.createInterface ();
+				//useDebugging=false;
+			}
+		}
+
+		this.ctatdebug ("Logging start of problem ...");
+
+		if (commLoggingLibrary!=null)
+		{
+			commLoggingLibrary.startProblem ();
+		}
+		else
+		{
+			this.ctatdebug ("Info: no logging library available!");
+		}
+
+		pointer.propagateShellEvent("StartProblem", null);
+
+		this.ctatdebug ("End of start state, inspecting suppressStudentFeedback ...");
+
+		if (CTATGlobals.suppressStudentFeedback===true)
+		{
+			this.ctatdebug ("Hiding hint button ...");
+
+			//var tools=new CTATShellTools ();
+			var hintButton=CTATShellTools.findComponentByClass ("CTATHintButton");
+
+			if (hintButton!=null)
+			{
+				hintButton.SetVisible (false);
+			}
+		}
+
+		if (CTATConfig.external=="google")
+		{
+			pointer.ctatdebug("Calling google app script hint request driver ...");
+
+			/*
+			try
+			{
+				google.script.run.withSuccessHandler(pointer.onNOPSuccess).
+								  withFailureHandler(pointer.onNOPFailure).
+								  resetOnEditQueue();
+			}
+			catch (err)
+			{
+				pointer.ctatdebug ("google.script.run: " + err.message);
+			}
+			*/
+
+			addCall (new RPCObject ("resetOnEditQueue","dummy","dummy"));
+
+			//this.showFeedback ("The tutor is ready, you can now freely interact with the spreadsheet");
+
+			return;
+		}
+
+		this.ctatdebug ("processStartState () done");
+	};
+	/**
+	 * Ported from AS3
+	 */
+	this.sendStartProblemMessage=function sendStartProblemMessage()
+	{
+		pointer.ctatdebug ("sendStartProblemMessage()");
+
+		/*
+		var problemName:String = context.ProblemName;
+		var message:String = CTATTutoringServiceMessageBuilder.createStartProblemMessage(problemName);
+		connectionManager.sendMainConnectionMessage(message);
+		*/
+
+		// Not relevant for HTML5
+	};
+	/**
+	 * Ported from AS3. Used by automated test code (in Selenium, e.g.).
+	 */
+	this.sendProblemSummaryRequest=function sendProblemSummaryRequest (callBack)
+	{
+		pointer.ctatdebug ("sendProblemSummaryRequest()");
+
+		summaryRequestCallback=callBack;
+
+		var builder = new CTATTutoringServiceMessageBuilder ();
+
+		var tsMessage = builder.createProblemSummaryRequestMessage();
+
+		commLibrary.sendXML (tsMessage, false);
+	};
+	/**
+	*
+	*/
+	this.getAllInterfaceDescriptions=function getAllInterfaceDescriptions ()
+	{
+		pointer.ctatdebug("getAllInterfaceDescriptions ()");
+
+		pointer.sendInterfaceDescriptionMessages ();
+	};
+	/**
+	* Ported from AS3
+	*/
+	this.sendInterfaceDescriptionMessages=function sendInterfaceDescriptionMessages()
+	{
+		pointer.ctatdebug("sendInterfaceDescriptionMessages ()");
+
+		var cList=CTATShellTools.getAllComponents ();
+
+		var descMessages="<?xml version=\"1.0\" encoding=\"UTF-8\"?><message><verb>NotePropertySet</verb><properties><MessageType>MessageBundle</MessageType><messages>";
+		var builder=new CTATTutoringServiceMessageBuilder ();
+
+		var interface_actions = [];
+		//var generator=new CTATGuid ();
+
+		for (var i=0;i<cList.length;i++)
+		{
+			var aComponent=cList [i];
+
+			pointer.ctatdebug ("Getting component interface description message for: " + aComponent.getName ());
+			//console.log("Getting component interface description message for: " + aComponent.getName ());
+
+			descMessages+=builder.createInterfaceDescriptionMessage (aComponent);
+			if (aComponent.getConfigurationActions) {
+				var cas = aComponent.getConfigurationActions();
+				cas.forEach(function(sai) {
+					//console.log(sai);
+					//console.log(sai.getSelection(),sai.getAction(),sai.getInput());
+					descMessages+=builder.createInterfaceActionMessage(CTATGuid.guid(),sai);
+				});
+			}
+		}
+
+		descMessages+="</messages></properties></message>";
+
+		pointer.ctatdebug ("Final bundle: " + descMessages);
+		//console.log(descMessages);
+
+		commLibrary.sendXMLNoBundle (descMessages); // Because we already manually bundled it
+	};
+	/**
+	 *
+	 */
+	this.processSerialization=function processSerialization()
+	{
+		pointer.ctatdebug ("processSerialization()");
+
+		// Process component specific pre-defined styles ...
+
+		pointer.setText (this.label);
+
+		// Process component custom styles ...
+
+		//this.styles=aDescription.styles;
+
+		// Use css instead!
+		/*this.styles=pointer.getGrDescription().styles;
+
+		pointer.ctatdebug ("Processing " + this.styles.length + " styles ...");
+
+		for (var styleName in this.styles)
+		{
+			var aStyleValue = this.styles[styleName];
+
+			if(styleName=="CorrectColor")
+			{
+				correctColor=styleValue;
+			}
+
+			if(styleName=="IncorrectColor")
+			{
+				incorrectColor=styleValue;
+			}
+
+			if(styleName=="HintColor")
+			{
+				hintColor=styleValue;
+			}*/
+
+			/*
+			if(aStyle.styleName=="EnableDebugging")
+			{
+				pointer.setUseDebugging(aStyle.styleValue);
+			};
+			*/
+		//}
+	};
+	/**
+	 *
+	 */
+	this.processComponentAction=function processComponentAction (sai,tutorComponent,behaviorRecord,component,logType,aTrigger)
+	{
+		pointer.ctatdebug("processComponentAction(" +sai.getName() + " -> " +sai.getSelection() + "," + sai.getAction() + "," + sai.getInput() + ")");
+
+		// Clear the hint window
+		this.showFeedback ("");
+
+		//var generator=new CTATGuid ();
+
+		var transactionID = CTATGuid.guid ();
+
+		// First we log
+
+		if (commLoggingLibrary!=null)
+		{
+			if (gotProblemRestoreEnd)   // was if (inStartState==false)
+			{
+				//if ((useFlashSideLogging) && (!inAuthorTime))
+				//{
+					pointer.ctatdebug("We're not in the start state, logging the action ...");
+
+					if (sai.getSelection()=="scrim")
+					{
+						ctatdebug ("Not logging any scrim actions (for now)");
+					}
+					else
+					{
+						if (logType!=undefined)
+						{
+							commLoggingLibrary.logSemanticEvent(transactionID, sai, logType, "", "", "",aTrigger);
+						}
+						else
+						{
+							// We should never see null.nextButton or null.previousButton. It is only here to be backwards compatible and we should take it out soon
+							if ((sai.getSelection() == "hint") || (sai.getSelection()=="null.nextButton") || (sai.getSelection()=="null.previousButton"))
+							{
+								commLoggingLibrary.logSemanticEvent(transactionID, sai, "HINT_REQUEST", "", "", "", aTrigger);
+							}
+							else
+							{
+								commLoggingLibrary.logSemanticEvent(transactionID, sai, "ATTEMPT", "", "", "", aTrigger);
+							}
+						}
+					}
+				//}
+			}
+		}
+		else
+		{
+			this.ctatdebug ("Info: no logging library available!");
+		}
+
+		// Then we send to the TS
+
+		//useDebugging=true;
+
+		var builder = new CTATTutoringServiceMessageBuilder ();
+		var tsMessage="";
+		if (tutorComponent!==false 
+		&&  tutorComponent!==CTAT.Component.Base.Tutorable.Options.TutorComponent.DO_NOT_TUTOR)
+		{
+			tsMessage = builder.createInterfaceActionMessage(transactionID,sai);
+	        pointer.propagateShellEvent("InterfaceAction", tsMessage);
+		}
+		else
+		{
+			tsMessage = builder.createUntutoredActionMessage(transactionID,sai);
+			pointer.propagateShellEvent("UntutoredAction", tsMessage);
+		}
+
+
+		commLibrary.sendXML (tsMessage);
+		// Et Voila!
+
+		//useDebugging=false;
+	};
+	/**
+	 * This is the method accessed by CTATComponents to inform all of CTAT's resources of actions. The
+	 * CommShell will use parameters set at run time to determine how to process logging and will use parameters passed by the component
+	 * in question to determine how to process tutoring. The default tutoring behavior is the be recorded and send InterfaceAction
+	 * messages, which will be reflected within a brd in CTAT. If tutorComponent is set to false then the action will be recorded as
+	 * Untutored, in which case CTAT will be informed of the action but will not consider it as correct or incorrect. This is useful for
+	 * providing more contextual hints. There is also an option to have the action not be recorded by CTAT at all. In this case a log
+	 * message will be sent to the logging service but CTAT will not be aware of the action.
+	 *
+	 * @param	sai				A CTATSAI containing the selection, action, and input of the action taken by a component
+	 * @param	tutorComponent	A boolean for whether you want the action to be tutored (InterfaceAction), or untutored (UntutoredAction)
+	 * @param	behaviorRecord	A boolean for whether you want the action recorded by the Java side behavior recorder. Useful for actions you only want logged, in which case you would set this to false.
+	 * @eventType CTATMessageEvent.sendingMessage
+	 * @eventType CTATMessageEvent.messageSent
+	 */
+	/*
+	this.processComponentAction=function processComponentAction (sai,
+													 			 tutorComponent,
+													 			 behaviorRecord,
+													 			 component)
+	{
+		debug("processComponentAction(" +sai.getSelection() + "," + sai.getAction() + "," + sai.getInput() + ")","commShell");
+		debug("ProcessingConfirmDone : " + processingConfirmDone + " sai.getSelection().toLowerCase() = " +sai.getSelection().toLowerCase());
+		debug("confirmdone = " + confirmDone);
+
+		if (!processingConfirmDone && sai.getSelection().toLowerCase() == "done" && confirmDone)
+		{
+			showConfirmDoneDialog(sai, tutorComponent, behaviorRecord, component);
+			return;
+		}
+
+		if(processingConfirmDone)
+			processingConfirmDone = false;
+
+		lastStudentAction = getCurrentMs();
+		var transactionID = CTATGuid.create(16);
+
+		if ((useFlashSideLogging) && (!inAuthorTime))
+		{
+			debug("logging the action" + logger,"commShell");
+
+			if (sai.getSelection()=="scrim")
+			{
+				ctatdebug ("Not logging any scrim actions (for now)");
+			}
+			else
+			{
+				//if ((sai.getSelection() == "hint") || (sai.getSelection()=="null.nextButton") || (sai.getSelection()=="null.previousButton"))
+				//{
+				//	logger.logSemanticEvent(transactionID, sai, "HINT_REQUEST", "");
+				//}
+				//else
+				//	logger.logSemanticEvent(transactionID, sai, "ATTEMPT", "");
+			}
+		}
+
+		if (behaviorRecord)
+		{
+			debug("recording the action","commShell");
+			debug(sai.toXMLString(true));
+
+			var tsMessage="";
+			var ctatMess=null;
+
+			if (tutorComponent)
+			{
+				tsMessage = CTATTutoringServiceMessageBuilder.createInterfaceActionMessage(transactionID, sai);
+				ctatMess = new CTATMessage(tsMessage);
+
+				if (CTATLinkData.messageHistory != null)
+					CTATLinkData.messageHistory.addToolMessage(ctatMess);
+			}
+			else
+			{
+				tsMessage = CTATTutoringServiceMessageBuilder.createUntutoredActionMessage(transactionID, sai);
+				ctatMess = new CTATMessage(tsMessage);
+
+				if (CTATLinkData.messageHistory != null)
+					CTATLinkData.messageHistory.addUnpairedMessage(ctatMess);
+			}
+
+			dispatchEvent(new CTATMessageEvent(CTATMessageEvent.SENDING_MESSAGE, ctatMess));
+
+			try
+			{
+				debug("connectionManager ....");
+
+				if(connectionManager.isConnected("MAIN"))
+					connectionManager.sendMainConnectionMessage(tsMessage);
+			}
+			catch (error:Error)
+			{
+				if (error.errorID == 2002)
+				{
+					displayWarning("The socket to the behavior recorder was closed, make sure the authoring tools are open and try again.");
+				}
+				else
+					handleFlashError(error);
+				return;
+			}
+
+			//dispatchEvent(new CTATMessageEvent(CTATMessageEvent.MESSAGE_SENT, ctatMess));
+		}
+	};
+	*/
+	/**
+	*
+	*/
+	this.onEditSuccess=function onEditSuccess (selectedRange)
+	{
+		pointer.ctatdebug ("onEditSuccess ("+selectedRange+")");
+
+		if (nameTranslator==null)
+		{
+			pointer.ctatdebug ("Error: CTAT name translator not available");
+			return;
+		}
+
+		if (selectedRange.indexOf (":")!=-1)
+		{
+			pointer.ctatdebug ("Bump");
+			pointer.showFeedback ("You're asking for a hint for multiple cells, please select only a single cell.");
+
+			return;
+		}
+		else
+		{
+			var mapped=nameTranslator.translateToCTAT (selectedRange);
+
+			pointer.ctatdebug ("Info A1 notiation mapped to (if needed): " + mapped);
+
+			var hintSAI = new CTATSAI("hint", "ButtonPressed", mapped);
+
+			pointer.processComponentAction(hintSAI);
+
+			pointer.propagateShellEvent ("REQUESTHINT",null);
+		}
+
+		pointer.ctatdebug ("onEditSuccess () done");
+	};
+
+	/**
+	*
+	*/
+	this.onFailure=function onFailure (error)
+	{
+		pointer.ctatdebug ("onFailure ("+error.message+")");
+	};
+
+	/**
+	*
+	*/
+	this.onNOPEditSuccess=function onNOPEditSuccess (selectedRange)
+	{
+		pointer.ctatdebug ("onNOPEditSuccess ("+selectedRange+")");
+	};
+	/**
+	*
+	*/
+	this.onNOPFailure=function onNOPFailure (error)
+	{
+		pointer.ctatdebug ("onNOPFailure ("+error.message+")");
+	};
+
+	/**
+	 * Requests a hint from the tutoring service.
+	 * <p>Hint requests and normal component actions are very similar, however, a hint request requires knowledge of
+	 * of the previous focus to help with tutoring service decide which hints to send in response.</p>
+	 */
+	this.requestHint=function requestHint()
+	{
+		pointer.ctatdebug("requestHint(external -> "+CTATConfig.external+")");
+
+		// Note: convert SAI to Complex SAI
+		var hintSAI=null;
+
+		if (CTATConfig.external=="none")
+		{
+			pointer.ctatdebug("Calling built-in hint request driver ...");
+
+			if (CTATGlobals.Tab.previousFocus)
+			{
+				hintSAI = new CTATSAI("hint", "ButtonPressed", "hint request");
+				if (CTATGlobals.Tab.previousFocus.getSAI)// instanceof CTAT.Component.Base.SAIHandler)
+				{
+					////console.log.log ("CTATGlobals.Tab.previousFocus!==null, requesting hint for: " + CTATGlobals.Tab.previousFocus.getSAI().getSelection());
+					hintSAI.addSelection(CTATGlobals.Tab.previousFocus.getSAI().getSelection()); // needs to be selection for group components
+					hintSAI.addAction("PreviousFocus");
+				}
+				else
+				{
+					pointer.ctatdebug ("Current focus is not a CTAT component, can't ask for a hint yet");
+
+					//hintSAI.addSelectionActionInput((previousFocus as DisplayObject).name, "PreviousFocus");
+				}
+			}
+			else
+			{
+				pointer.ctatdebug ("CTATGlobals.Tab.previousFocus===null");
+
+				hintSAI = new CTATSAI("hint", "ButtonPressed", "hint request");
+			}
+
+			this.processComponentAction(hintSAI);
+
+			this.propagateShellEvent ("RequestHint",null);
+
+			return;
+		}
+
+		pointer.clearFeedbackComponents ();
+
+		//unhighlightall ("-1");
+
+		if (CTATConfig.external=="google")
+		{
+			pointer.ctatdebug("Calling google app script hint request driver ...");
+
+			try
+			{
+				google.script.run.withSuccessHandler(pointer.onEditSuccess).
+								  withFailureHandler(pointer.onFailure).
+								  getSheetSelectedRange();
+			}
+			catch (err)
+			{
+				pointer.ctatdebug ("google.script.run: " + err.message);
+			}
+
+			return;
+		}
+
+		pointer.ctatdebug ("'external' has configuration that doesn't match anything: " + CTATConfig.external);
+	};
+	/**
+	 *
+	 */
+	this.processDone=function processDone()
+	{
+		pointer.ctatdebug("processDone()");
+
+		if (CTATGlobals.confirmDone===true)
+		{
+			CTATScrim.scrim.confirmScrimUp (CTATGlobals.languageManager.getString("SURE_YOU_ARE_DONE"),this.processDoneContinue,this.processDoneCancel);
+		}
+		else
+		{
+			var doneSAI=new CTATSAI("done", "ButtonPressed", "-1");
+
+			pointer.processComponentAction(doneSAI);
+
+			//CTATScrim.scrim.scrimUp ("Please wait, wrapping up ...");
+		}
+	};
+	/**
+	 *
+	 */
+	this.processDoneContinue=function processDoneContinue(aResult)
+	{
+		pointer.ctatdebug("processDoneContinue()");
+
+		CTATScrim.scrim.scrimDown();
+
+		var doneSAI=new CTATSAI("done", "ButtonPressed", "-1");
+
+		pointer.processComponentAction(doneSAI);
+
+		pointer.propagateShellEvent ("DonePressed",null);
+
+	};
+	/**
+	 *
+	 */
+	this.processDoneCancel=function processDoneCancel(aResult)
+	{
+		pointer.ctatdebug("processDoneCancel()");
+
+		CTATScrim.scrim.scrimDown();
+
+		//var generator=new CTATGuid ();
+		var transactionID = CTATGuid.guid ();
+		var doneSAI=new CTATSAI("ConfirmDone", "ButtonPressed", "no");
+
+		commLoggingLibrary.logSemanticEvent(transactionID, doneSAI, "ATTEMPT", "");
+	};
+	/**
+	*
+	*/
+	this.processGetURL=function processGetURL (aMessage)
+	{
+		pointer.ctatdebug("processGetURL()");
+
+		var cleaner=aMessage.getURL ();
+
+		if (cleaner.indexOf ("http://")!=-1)
+		{
+			commLibrary.retrieveFile (aMessage.getURL ().substring (7),pointer.processClientBRDLoad);
+		}
+		else
+		{
+			commLibrary.retrieveFile (aMessage.getURL (),pointer.processClientBRDLoad);
+		}
+	};
+	/**
+	*
+	*/
+	this.processClientBRDLoad=function processClientBRDLoad (aFile)
+	{
+		pointer.ctatdebug("processClientBRDLoad()");
+
+		var url=commLibrary.getURL ();
+
+		commLibrary.sendXML ("<message><verb>NotePropertySet</verb><properties><MessageType>GetURLResponse</MessageType><URL><![CDATA[ "+url+" ]]></URL><content><![CDATA[ "+window.btoa(aFile)+" ]]></content></properties></message>");
+	};
+	/**
+	 *
+	 */
+	this.processCorrectAction=function processCorrectAction (aMessage)
+	{
+		pointer.ctatdebug("processCorrectAction()");
+
+		aMessage.setGradeResult ("correct");
+
+		pointer.clearFeedbackComponents ();
+
+		// First let's check if anyone wants to hear about this in general ...
+
+		if (anonymousGradingProcessor!=null)
+		{
+			ctatdebug ("Calling custom grading processor ...");
+
+			anonymousGradingProcessor ("CORRECT",aMessage);
+		}
+
+		var sel=aMessage.getSelection ();
+
+		// Next, see if there exists a non-CTAT component to which the result
+		// should go
+
+		if (externalComponents [sel])
+		{
+			if (gradingProcessor!=null)
+			{
+				gradingProcessor ("CORRECT",aMessage);
+
+				this.propagateShellEvent ("CORRECT",aMessage);
+
+				return;
+			}
+		}
+
+		var compList=CTATShellTools.findComponent (sel);
+
+		if (compList!=null)
+		{
+			ctatdebug ("Processing " + compList.length + " components ...");
+
+			for (var t=0;t<compList.length;t++)
+			{
+				ctatdebug ("Check " + compList [t].getName());
+
+				if (compList [t])
+				{
+					if (compList[t].setCorrect)
+						compList [t].setCorrect (aMessage);
+				}
+				else
+				{
+					pointer.ctatdebug ("Internal error, component pointer is null");
+				}
+			}
+			// ProblemSummaryRequest on correct Done: moved to AssociatedRules processing
+		}
+		else
+			pointer.ctatdebug("Error: component is null for selection " + sel);
+
+		//this.propagateShellEvent ("CORRECT",aMessage);
+	};
+
+	/**
+	 *
+	 */
+	this.processInCorrectAction=function processInCorrectAction (aMessage)
+	{
+		pointer.ctatdebug("processInCorrectAction()");
+
+		//this.clearFeedbackComponents ();
+
+		aMessage.setGradeResult ("incorrect");
+
+		// First let's check if anyone wants to hear about this in general ...
+
+		if (anonymousGradingProcessor!=null)
+		{
+			ctatdebug ("Calling custom grading processor ...");
+			anonymousGradingProcessor ("INCORRECT",aMessage);
+		}
+
+		var sel=aMessage.getSelection ();
+
+		// Next, see if there exists a non-CTAT component to which the result
+		// should go
+
+		if (externalComponents [sel])
+		{
+			if (gradingProcessor!=null)
+			{
+				gradingProcessor ("INCORRECT",aMessage);
+
+				//this.propagateShellEvent ("INCORRECT",aMessage);
+
+				return;
+			}
+		}
+
+		var comp=CTATShellTools.findComponent (sel);
+
+		if (comp!==null)
+		{
+			for (var t=0;t<comp.length;t++) // FIXME: do something smart when length==0
+			{
+				ctatdebug ("Calling setIncorrect on component ("+comp[t].getClassName ()+")...");
+				if (comp[t].setIncorrect)
+					comp[t].setIncorrect (aMessage);
+			}
+		}
+		else
+			pointer.ctatdebug("Error: component is null for selection " + sel);
+
+		//this.propagateShellEvent ("INCORRECT",aMessage);
+	};
+
+	/**
+	 *
+	 */
+	this.processHighlightMsg=function processHighlightMsg (aMessage)
+	{
+		pointer.ctatdebug("processHighlightMsg()");
+
+		var sel=aMessage.getSelection ();
+
+		var comp=CTATShellTools.findComponent (sel);
+
+		if (comp!=null)
+		{
+			for (var t=0;t<comp.length;t++)
+			{
+				comp [t].setHintHighlight (true,aMessage);
+			}
+		}
+		else
+			pointer.ctatdebug("Error: component is null for selection " + sel);
+
+		this.showFeedback (aMessage.getHighlightMsg ());
+	};
+
+	/**
+	 *
+	 */
+	this.processUnHighlightMsg=function processUnHighlightMsg (aMessage)
+	{
+		pointer.ctatdebug("processUnHighlightMsg()");
+
+		var sel=aMessage.getSelection ();
+
+		var comp=CTATShellTools.findComponent (sel);
+
+		if (comp!=null)
+		{
+			for (var t=0;t<comp.length;t++)
+			{
+				comp [t].setHintHighlight (false,null,aMessage);
+			}
+		}
+		else
+			pointer.ctatdebug("Error: component is null for selection " + sel);
+
+		//this.propagateShellEvent ("UNHIGHLIGHT",aMessage);
+	};
+
+	/**
+	 *
+	 */
+	this.processAssociatedRules=function processAssociatedRules (aMessage,indicator,advice)
+	{
+		//useDebugging=true;
+		pointer.ctatdebug("processAssociatedRules()");
+		// Log the message ...
+		if (commMessageHandler.getInStartState ()==false)
+		{
+			logHintSAI=aMessage.getSAI();
+
+			var semanticEvent="";
+			var evalObj=new CTATActionEvaluationData("");
+
+			pointer.ctatdebug ("Found tutor advice: " + advice);
+
+			if ((indicator == "Hint") || (indicator == "HintWindow"))
+			{
+				ctatdebug ("Preparing log message to indicate a hint response","commShell");
+				evalObj.setCurrentHintNumber (hintIndex+1);
+				evalObj.setTotalHintsAvailable (hints.length);
+				evalObj.setEvaluation ("HINT");
+				semanticEvent = "HINT_MSG";
+				if (hints [hintIndex])
+				{
+					advice=hints [hintIndex];
+				}
+			}
+			else
+			{
+				if (aMessage.getIndicator() == "Correct")
+					evalObj.setEvaluation("CORRECT");
+				else
+					evalObj.setEvaluation("INCORRECT");
+
+				semanticEvent = "RESULT";
+			}
+			ctatdebug ("Adding custom field names ...");
+
+			var customFieldNames=new Array ();
+			var customFieldValues=new Array ();
+
+			customFieldNames.push ("step_id");
+			customFieldValues.push (aMessage.getProperty("StepID"));
+
+			var customFields=aMessage.getCustomFields();
+			for(var cfName in customFields)
+			{
+				customFieldNames.push (cfName);
+				customFieldValues.push (customFields[cfName]);
+			}
+
+			var skillObject=aMessage.getSkillsObject ();
+
+			pointer.updateSkillWindow (skillObject);
+
+			ctatdebug ("Sending log message ...");
+
+			if (commLoggingLibrary!=null)
+			{
+				if (gotProblemRestoreEnd)  // was (inStartState==false) && (inProcessStartStateActions==false))
+				{
+					commLoggingLibrary.logTutorResponse (aMessage.getTransactionID(),
+														 logHintSAI,
+														 semanticEvent,
+														 "",
+														 evalObj,
+														 advice,
+														 skillObject,
+														 customFieldNames,
+														 customFieldValues);
+				}
+			}
+			else
+			{
+				this.ctatdebug ("Info: no logging library available!");
+			}
+			if (logHintSAI.getSelection ()=="done" && logHintSAI.getAction() == "ButtonPressed")
+			{
+				if (aMessage.getIndicator() == "Correct")
+				{
+					//CTATScrim.scrim.scrimUp ("Please wait, wrapping up ...");
+					var problemSummary=commMessageBuilder.createProblemSummaryRequestMessage();
+					commLibrary.sendXML (problemSummary, false);
+
+					/* We need this for tutors that do not talk to tutorshop, in which case we allow
+					   them to provide their own done processor. Google and Moodle are good examples
+					*/
+					// Moved to the code that processes the problem summary response
+					/*
+					if (doneProcessor!=null)
+					{
+						window [doneProcessor] (problemSummary);
+					}
+					*/
+				}
+			}
+		}
+		else
+		{
+			pointer.updateSkillWindow (null);
+		}
+		/*
+		if (semanticEvent=="HINT_MSG")
+		{
+			this.showFeedback (advice);
+		}
+		*/
+		pointer.ctatdebug("processAssociatedRules() done");
+		//useDebugging=false;
+	};
+
+	/**
+	 *
+	 */
+	this.processBuggyMessage=function processBuggyMessage (aMessage)
+	{
+		pointer.ctatdebug("processBuggyMessage()");
+
+		this.showFeedback (aMessage.getBuggyMsg ());
+	};
+
+	/**
+	 *
+	 */
+	this.processSuccessMessage=function processSuccessMessage (aMessage)
+	{
+		pointer.ctatdebug("processSuccessMessage()");
+
+		this.showFeedback (aMessage.getSuccessMessage ());
+	};
+
+	/**
+	 * Send the SAI from an UntutoredAction message to the proper component(s). Calls processInterfaceAction().
+	 * @param {CTATMessage} aMessage original message
+	 * @param {boolean} lockWidgetsSetInStartState if true, lock the component after setting its value
+	 */
+	this.processUntutoredAction = function(aMessage, lockWidgetsSetInStartState)
+	{
+	    pointer.processInterfaceAction(aMessage, lockWidgetsSetInStartState);
+	};
+
+	/**
+	 * Send the SAI from an InterfaceAction or UntutoredAction message to the proper component(s).
+	 * @param {CTATMessage} aMessage original message
+	 * @param {boolean} lockWidgetsSetInStartState if true, lock the component after setting its value
+	 */
+	this.processInterfaceAction=function processInterfaceAction (aMessage, lockWidgetsSetInStartState)
+	{
+		//console.log("processInterfaceAction("+aMessage.getSelection ()+","+aMessage.getAction ()+","+aMessage.getInput ()+")","commShell");
+
+		//>-------------------------------------------------------------
+
+		//console.log ("Log the message ("+inStartState+","+inProcessStartStateActions+") ...");
+
+		pointer.ctatdebug("CTATCommShell.processInterfaceAction (\""+aMessage.getMessageType()+"\")");
+
+		var trigger = aMessage.getProperty("trigger");
+		var subtype = (aMessage.getProperty("subtype") || (trigger && trigger.toLowerCase() == "data" ? "tutor-performed" : ""));
+	    
+		if (commLoggingLibrary!=null)
+		{
+			if (gotProblemRestoreEnd)  // was (inStartState==false) && (inProcessStartStateActions==false)
+			{
+				//console.log.log ("Logging ...");
+
+				commLoggingLibrary.logSemanticEvent (aMessage.getTransactionID(),
+													 aMessage.getSAI(),
+													 "ATTEMPT",
+													 subtype);
+			}
+			else
+			{
+				//console.log.log ("Logging prohibited in current tutor state");
+			}
+		}
+		else
+		{
+			this.ctatdebug ("Info: no logging library available!");
+		}
+
+		//>-------------------------------------------------------------
+
+		if ((aMessage.getSelection ()=="root") || (aMessage.getSelection ()=="_root"))
+		{
+			pointer.ctatdebug ("Info: selection is 'root', we'll call the function straight up ...");
+
+			var pseudoComponent = [ window, CTATCommShell.commShell ];
+			var anAction=aMessage.getAction ();
+			var anInput =aMessage.getInput ();
+
+			for(var i = 0; i < pseudoComponent.length && typeof((pseudoComponent[i])[anAction]) != "function"; ++i);
+			if(i >= pseudoComponent.length)
+			{
+				pointer.ctatdebug ("Internal error: unable to find function: " + anAction);
+				return;
+			}
+			pointer.ctatdebug ("Calling as: " + anAction +"(" + anInput + ")");
+
+			try
+			{
+				(pseudoComponent[i]) [anAction] (anInput);
+			}
+			catch (err)
+			{
+				pointer.ctatdebug ("Internal error: unable to execute function: " + err.message);
+			}
+
+			return;
+		}
+
+		//>-------------------------------------------------------------
+
+		var targetComponent=CTATShellTools.findComponent (aMessage.getSelection ());
+
+		if (targetComponent===null)
+		{
+			pointer.ctatdebug ("Internal error: unable to find pointer to component object");
+
+			return;
+		}
+
+		if(targetComponent.length==0)
+		{
+			pointer.ctatdebug ("Error: no component found to call interface action on");
+			return;
+		}
+
+		var nrComponents=targetComponent.length;
+
+		pointer.ctatdebug ("Call the action on the component(s) -> ("+nrComponents+")...");
+
+		for (var t=0;t<nrComponents;t++)
+		{
+			pointer.ctatdebug ("About to call " + aMessage.getAction () + " ("+aMessage.getInput ()+") on: " + aMessage.getSelection ());
+
+			var target=targetComponent [t];
+
+			target.executeSAI(aMessage);
+
+			pointer.ctatdebug ("Method executed, continuing with post-processing ...");
+
+			if (commMessageHandler.getInStartState ()==true)
+			{
+				// Commented out as per Ticket #511
+				//if (lockWidget==true) // From the StateGraph message
+
+				var action = aMessage.getAction ();  // Trac #863
+				if(action && action.toLowerCase().startsWith("updatetext"))
+				{
+					target.setEnabled (!Boolean(lockWidgetsSetInStartState));
+				}
+			}
+		}
+
+		//>-------------------------------------------------------------
+
+		pointer.ctatdebug("processInterfaceAction() Done");
+	};
+
+	/**
+	 *
+	 */
+	this.processInterfaceIdentification=function processInterfaceIdentification (aMessage)
+	{
+		pointer.ctatdebug("processInterfaceIdentification()");
+
+		// Not relevant for HTML5?
+	};
+
+	/**
+	 *
+	 */
+	this.processAuthorModeChange=function processAuthorModeChange (aMessage)
+	{
+		pointer.ctatdebug("processAuthorModeChange()");
+
+		// Not relevant for HTML5 (yet)?
+	};
+
+	/**
+	 *
+	 */
+	this.processShowHintsMessage=function processShowHintsMessage (aMessage)
+	{
+		pointer.ctatdebug("processShowHintsMessage()");
+
+		// Instead handled by associated rules
+	};
+
+	/**
+	 *
+	 */
+	this.processConfirmDone=function processConfirmDone (aMessage)
+	{
+		pointer.ctatdebug("processConfirmDone()");
+
+	};
+
+	/**
+	 *
+	 */
+	this.processVersionInfo=function processVersionInfo (messageProperties)
+	{
+		pointer.ctatdebug("processVersionInfo()");
+
+		// Not relevant?
+	};
+
+	/**
+	 *
+	 */
+	this.processTutoringServiceAlert=function processTutoringServiceAlert (messageProperties)
+	{
+		pointer.ctatdebug("processTutoringServiceAlert()");
+
+		var aTitle="";
+		var aMessage="";
+
+		for (var t=0;t<messageProperties.length;t++)
+		{
+			var propNode=messageProperties [t];
+
+			if (messageParser.getElementName (propNode)=="ErrorType")
+			{
+				aTitle=messageParser.getNodeTextValue (propNode);
+			}
+
+			if (messageParser.getElementName (propNode)=="Details")
+			{
+				aMessage=messageParser.getNodeTextValue (propNode);
+			}
+		}
+
+		CTATScrim.scrim.scrimUp (aMessage);
+	};
+
+	/**
+	 *
+	 */
+	this.processTutoringServiceError=function processTutoringServiceError (aMessage)
+	{
+		pointer.ctatdebug("processTutoringServiceError()");
+
+		var aTitle=aMessage.getProperty("ErrorType");
+		var details=aMessage.getProperty("Details");
+
+		CTATScrim.scrim.scrimDown();
+		CTATScrim.scrim.errorScrimUp(aTitle+" - "+details);
+	};
+
+	/**
+	 *
+	 */
+	this.processProblemSummaryResponse=function processProblemSummaryResponse (aMessage)
+	{
+		pointer.ctatdebug("processProblemSummaryResponse()");
+
+		if (CTATLMS.processProblemSummary)
+			CTATLMS.processProblemSummary(aMessage.getXMLObject());
+		if (CTATLMS.closeLMSConnection)
+			CTATLMS.closeLMSConnection();
+		/*if (lmsDriver)
+		{
+			var problemXML=aMessage.getXMLObject ();
+			var scorm_lesson_status_raw=problemXML.getElementsByTagName("cmi.core.lesson_status");
+			var scorm_score_raw=problemXML.getElementsByTagName("cmi.core.score.raw");
+			var scorm_exit_raw=problemXML.getElementsByTagName("cmi.core.exit");
+			var scorm_session_time_raw=problemXML.getElementsByTagName("cmi.core.session_time");
+
+			lmsDriver.setValue ("cmi.core.lesson_status",scorm_lesson_status_raw);
+			lmsDriver.setValue ("cmi.core.score.raw",scorm_score_raw);
+			lmsDriver.setValue ("cmi.core.exit",scorm_exit_raw);
+			lmsDriver.setValue ("cmi.core.session_time",scorm_session_time_raw);
+			lmsDriver.closeLMSConnection ();
+		}*/
+
+		if (summaryRequestCallback!=null)
+		{
+			var problemXML=aMessage.getXMLObject ();
+			var problemRaw=problemXML.getElementsByTagName("ProblemSummary");
+			var scorm_lesson_status_raw=problemXML.getElementsByTagName("cmi.core.lesson_status");
+			var scorm_score_raw=problemXML.getElementsByTagName("cmi.core.score.raw");
+			var scorm_exit_raw=problemXML.getElementsByTagName("cmi.core.exit");
+			var scorm_session_time_raw=problemXML.getElementsByTagName("cmi.core.session_time");
+			var problemStr=$('<div>').html(problemRaw [0].innerHTML).text();
+			var scorm_lesson_status="<cmi.core.lesson_status>" + $('<div>').html(scorm_lesson_status_raw [0].innerHTML).text() + "</cmi.core.lesson_status>";
+			var scorm_score="<cmi.core.score.raw>" + $('<div>').html(scorm_score_raw [0].innerHTML).text() + "</cmi.core.score.raw>";
+			var scorm_exit="<cmi.core.exit>" + $('<div>').html(scorm_exit_raw [0].innerHTML).text() + "</cmi.core.exit>";
+			var scorm_session_time="<cmi.core.session_time>" + $('<div>').html(scorm_session_time_raw [0].innerHTML).text() + "</cmi.core.session_time>";
+			//var problemSummary=generator.xmlToString (problemStr);
+
+			summaryRequestCallback (problemStr,"<scorm>"+scorm_lesson_status+scorm_score+scorm_exit+scorm_session_time+"</scorm>");
+			summaryRequestCallback=null;
+			return;
+		}
+
+		var generator=new CTATXML ();
+
+		if (doneProcessor!=null)
+		{
+			doneProcessor(generator.xmlToString (aMessage.getXMLObject ()));
+		}
+		else
+		{
+			commLMSService.sendSummary	(aMessage);
+		}
+
+		//lastMessage=true; // no functional use
+	};
+
+	/**
+	 * @param {boolean} gotit true if ProblemRestoreEnd has been received
+	 */
+	this.setGotProblemRestoreEnd = function(gotit)
+	{
+		gotProblemRestoreEnd = gotit;
+	};
+
+	/**
+	 * Sets gotProblemRestoreEnd=true, to enable logging. The tutor now is obligated to always send ProblemRestoreEnd.
+	 */
+	this.processProblemRestoreEnd=function processProblemRestoreEnd (aMessage)
+	{
+		pointer.ctatdebug("processProblemRestoreEnd() scrimIsUp "+scrimIsUp);
+
+		gotProblemRestoreEnd=true;  // Trac #718 moved from CTATMessageHandler.processSingleMessage(StartStateEnd)
+		
+		CTATScrim.scrim.scrimDown ();
+	};
+	/**
+	*
+	*/
+	this.clearFeedbackComponents=function clearFeedbackComponents ()
+	{
+		pointer.ctatdebug ("clearFeedbackComponents ()");
+		CTATShellTools.showHints(null);
+		/*for (var i=0;i<CTATShellTools.feedback_components.length;i++)
+		{
+			var feedbackComponent=CTATShellTools.feedback_components[i].component;
+
+			feedbackComponent.showHint (null);
+		}*/
+	};
+	/**
+	 *
+	 */
+	this.processHintResponse=function processHintResponse (aMessage,aHintArray)
+	{
+		//useDebugging=true;
+
+		pointer.ctatdebug("processHintResponse()");
+
+		// Clear all highlights ...
+
+		unhighlightall ();
+
+		// First process the array of hints ...
+
+		CTATShellTools.showHints(aHintArray);
+
+		// Next show any hints if necessary ...
+
+		var highlightSAI=aMessage.getSAI();
+
+		if (highlightSAI!=null)
+		{
+			var highlightSelection=highlightSAI.getSelection ();
+
+			if (highlightSelection!=null)
+			{
+				pointer.ctatdebug ("Highlighting selection for hint: " + highlightSelection);
+
+				var aComponent=CTATShellTools.findComponent (highlightSelection);
+
+				if (aComponent!=null)
+				{
+					for(var t=0;t<aComponent.length;t++)
+					{
+						if (CTATCommShell.detailedFeedback==true)
+						{
+							/*
+							if (t===0) {
+								if (aComponent[t].moveHintHighlight)
+								{
+									aComponent [t].moveHintHighlight (true,aMessage);
+								}
+							} else {
+								if (aComponent[t].setHintHighlight) {
+									aComponent[t].setHintHighlight(true,aMessage);
+								}
+							}
+							*/
+
+							aComponent[t].setHintHighlight(true,aMessage);
+						}
+					}
+				}
+				else
+					pointer.ctatdebug ("Unable to find component name in list: " + aComponent);
+			}
+			else
+				pointer.ctatdebug ("Error: no highlight selection present in SAI");
+		}
+		else
+			pointer.ctatdebug ("Warning: no SAI found in highlight message");
+
+		// All done
+
+		//useDebugging=false;
+
+		CTATCommShell.detailedFeedback=true;
+
+		pointer.ctatdebug("processHintResponse() done");
+	};
+	/**
+	*
+	*/
+	this.showHighlightSelection=function showHighlightSelection (highlightSelection,aMessage)
+	{
+		pointer.ctatdebug ("showHighlightSelection ("+highlightSelection+")");
+
+		var aComponent=CTATShellTools.findComponent (highlightSelection);
+
+		if (aComponent!=null)
+		{
+			for(var t=0;t<aComponent.length;t++)
+			{
+				if (CTATCommShell.detailedFeedback==true)
+				{
+					if (t===0) {
+						if (aComponent[t].moveHintHightlight)
+							aComponent [t].moveHintHighlight (true,aMessage);
+					} else {
+						if (aComponent[t].setHintHighlight)
+							aComponent[t].setHintHighlight(true,aMessage);
+					}
+				}
+			}
+		}
+		else
+			pointer.ctatdebug ("Unable to find component name in list: " + aComponent);
+	};
+	/**
+	 *
+	 */
+	this.globalReset=function globalReset ()
+	{
+		pointer.ctatdebug ("globalReset ()");
+
+		// Reset global variables ...
+
+		CTATMessageHandler.scriptElement="";
+
+		//var tools=new CTATShellTools ();  FIXME commented-out 2016-03-16
+		/*
+		CTATShellTools.listComponents ();
+
+		// First iterate through all the regular gradeable components ...
+
+		for (var i=0;i<components.length;i++)
+		{
+			var aDesc=components [i];
+
+			var component=aDesc.getComponentPointer ();
+
+			if (component!=null)
+			{
+				pointer.ctatdebug ("Calling reset on regular component ...");
+
+				component.reset ();
+			}
+		}
+        */
+		// Next iterate through all components that are not in our main list ...
+
+		/*
+		for (var j=0;j<feedbackComponents.length;j++)
+		{
+			var feedbackComponent=feedbackComponents [j];
+
+			pointer.ctatdebug ("Calling reset on feedback component ...");
+
+			feedbackComponent.reset ();
+		}
+		*/
+
+		// Finally reset the CommShell ...
+
+		// this.reset ();  FIXME commented out 2016-03-16
+	};
+	/**
+	* See the following url for more information on the tutor <-> tutoring service protocol:
+	* https://docs.google.com/document/d/1B4r8jf4vv8dDkL5ULl1aSMngpmS5TevB1qsGyjSweho/edit
+	*/
+	this.nextProblem=function nextProblem (aMessage)
+	{
+		pointer.ctatdebug("nextProblem ()");
+
+		if (CTATGlobalFunctions.isBlank (aMessage))
+		{
+			pointer.ctatdebug("Message is blank, requesting next problem ...");
+
+			var vars=flashVars.getRawFlashVars ();
+
+			var url=vars ['run_problem_url'];
+
+			commLibrary.send (url);
+		}
+		else
+		{
+			pointer.ctatdebug("Message contains html data, writing ...");
+
+			try
+			{
+				document.close(); // if open
+			}
+			catch (err)
+			{
+				alert ("Error closing document: " + err.message);
+			}
+
+			try
+			{
+				document.write (aMessage);
+			}
+			catch (err)
+			{
+				alert ("Error writing document: " + err.message);
+			}
+		}
+	};
+	/**
+	 *
+	 */
+	this.updateSkillWindow=function updateSkillWindow (aNewSkillObject)
+	{
+		pointer.ctatdebug("updateSkillWindow()");
+
+		CTATSkillSet.skills.untouchSkills();
+
+		var skillWindow=CTATShellTools.findComponentByClass ("CTATSkillWindow");
+
+		if (skillWindow!==null)
+		{
+			if (aNewSkillObject!=null)
+			{
+				//useDebugging=true;
+				skillWindow.updateSkillSet (aNewSkillObject);
+				//useDebugging=false;
+			}
+			else
+			{
+				skillWindow.drawComponent ();
+			}
+		}
+		else
+			pointer.ctatdebug("Info: no skill window available");
+	};
+	/**
+	 *
+	 */
+	this.processComponentFocus=function processComponentFocus(aComponent)
+	{
+		//useDebugging=true;
+
+		pointer.ctatdebug("processComponentFocus("+aComponent.getName ()+","+aComponent.getClassName ()+")");
+
+		if ((aComponent.getClassName ()=="CTATTextInput") || (aComponent.getClassName ()=="CTATTextField") || (aComponent.getClassName ()=="CTATTextArea"))
+		{
+			CTATGlobals.selectedTextInput=aComponent;
+
+			// Trigger custom keyboard on mobile devices ...
+
+			if (mobileAPI!==null)
+			{
+				if (mobileAPI.getEnabled()===true)
+				{
+					mobileAPI.processTextFocus (aComponent.getX (),
+												aComponent.getY (),
+												aComponent.getWidth (),
+												aComponent.getHeight ());
+				}
+			}
+		}
+		else
+			CTATGlobals.selectedTextInput=null;
+
+		pointer.ctatdebug("processComponentFocus() done");
+
+		//useDebugging=false;
+	};
+
+	//------------------------------------------------------------------------------
+	// Public API methods start here
+	//------------------------------------------------------------------------------
+
+	/**
+	*
+	*/
+	this.showFeedback=function showFeedback(aMessage)
+	{
+		if ((aMessage==null) || (aMessage==undefined) || !(/\S/.test(aMessage)) || (aMessage==' '))
+		{
+			pointer.ctatdebug ("showFeedback(): False alarm: empty message. This can happen when the commshell is trying to clear the hint window and there is no hint window.");
+			return;
+		}
+		else
+		{
+			pointer.ctatdebug("showFeedback("+aMessage+") -> l: " + aMessage.length);
+		}
+
+		CTATShellTools.showFeedback(aMessage);
+
+		if (feedbackProcessor!=null)
+		{
+			feedbackProcessor (aMessage);
+		}
+	};
+
+	/**
+	*
+	*/
+	this.assignFeedbackHandler=function assignFeedbackHandler (aHandler)
+	{
+		pointer.ctatdebug("assignFeedbackHandler()");
+
+		feedbackProcessor=aHandler;
+	};
+
+	/**
+	*
+	*/
+	this.gradeSAI=function gradeSAI (aSelection,anAction,anInput)
+	{
+		pointer.ctatdebug("gradeSAI()");
+
+		externalComponents [aSelection]=anInput;
+
+		var anSAI = new CTATSAI(aSelection,anAction,anInput);
+
+		pointer.processComponentAction(anSAI,true,true);
+	};
+
+	/**
+	*
+	*/
+	this.assignGradingHandler=function assignGradingHandler (aHandler)
+	{
+		pointer.ctatdebug("assignGradingHandler()");
+
+		gradingProcessor=aHandler;
+	};
+
+	/**
+	*
+	*/
+	this.assignAnonymousGradingProcessor=function assignAnonymousGradingProcessor (aFunction)
+	{
+		anonymousGradingProcessor=aFunction;
+	};
+	/**
+	*
+	*/
+	this.assignDoneProcessor=function assignDoneProcessor (aProcessor)
+	{
+		doneProcessor=aProcessor;
+	};
+
+	/**
+	*
+	*/
+	this.addEventListener=function addEventListener (anEvent,aCallback)
+	{
+		eventListeners [anEvent]=Callback;
+	};
+
+	/**
+	*
+	*/
+	this.addGlobalEventListener=function addGlobalEventListener (aListenerComponent)
+	{
+		pointer.ctatdebug("addGlobalEventListener( "+aListenerComponent+")");
+		if(aListenerComponent)
+		{
+			eventListenersGlobal.push (aListenerComponent);
+		}
+	};
+	
+	this.closeWSConnection = function(aUrl, opt_cbk, reason)
+	{
+		//console.log('closeWSConnection: '+aUrl);
+		let connection = commLibrary.findWSConnection(aUrl);
+		if (connection)
+		{
+			//console.log('connection found, closing...');
+			connection.close(reason, opt_cbk);
+		}
+		else
+			console.warn('connection not found');
+	};
+};
+
+CTATCommShell.prototype = Object.create(CTATBase.prototype);
+CTATCommShell.prototype.constructor = CTATCommShell;
+
+CTATCommShell.commShell = null;
+CTATCommShell.detailedFeedback=true;
+
+/**
+ * @param {Boolean}
+ */
+function enableDetailedFeedback (aValue)
+{
+	CTATCommShell.detailedFeedback=aValue;
+}

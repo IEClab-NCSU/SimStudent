@@ -1,0 +1,36 @@
+.rightclick-context-menu {
+	position: absolute;
+	width: 100px;
+	display: none;
+	background-color: #e6e5e5;
+	border: 1px solid #c9c9c9;
+	border-bottom: none;
+}
+
+.silex-rightclick-context-menu-item, .file-rightclick-context-menu-item {
+	border-bottom: 1px solid #c9c9c9;
+	cursor: default;
+	padding: 5px;
+	font-size: 13px;
+}
+
+.rightclick-context-menu-item-disabled {
+	color: gray !important;
+}
+
+.rightclick-context-menu-item-disabled:hover {
+	background-color: #e6e5e5 !important;
+}
+
+.silex-rightclick-context-menu-item:hover, .file-rightclick-context-menu-item:hover {
+	background-color: #c5c4c4;
+}
+
+.rightclick-context-menu-list {
+	list-style: none;
+}
+
+.rightclick-context-menu--active {
+	display: block !important;
+	z-index: 10000;
+}

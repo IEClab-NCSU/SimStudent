@@ -1,0 +1,257 @@
+﻿<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>CTAT HTML5 Tutor</title>
+
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta property="og:title" content="Share your tutors on the web!">
+	<meta property="og:site_name" content="CTAT">
+	<meta property="og:description" content="Share tutors with fellow students or build your own.">
+	<meta property="og:type" content="Website">	
+	<meta property="og:image" content="logo.png">
+
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
+	<link rel="stylesheet" type="text/css" href="css/android_keyboard.css">	
+	<link rel="stylesheet" type="text/css" href="css/CTAT.css"/>
+
+	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<script src="http://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+
+	<script>
+	/*
+	var CTATLanguagePack = 
+	{
+		"HORIZONTAL" : "LR", // Accepted values are: LR, RL
+		"VERTICAL" : "TB",	// Accepted values are TB, BT
+		"LOADING" : "Bitte warten Sie, während die Software geladen wird",
+		"NEXTPROBLEM" : "Lädt das nächste Problem...",
+		"TUTORDISCONNECTED" : "Der Tutor hat getrennt. Bitte aktualisieren Sie die Seite.",
+		"OUTOFORDER" : "Sie müssen andere Schritte zuerst tun, bevor Sie den Schritt, den Sie gerade in Arbeit. Sie könnten einen Hinweis für weitere Hilfe anfordern.",
+		"DONE" : "Fertig",
+		"HINT" : "Andeutung",
+		"NEXT" : "Nächster",
+		"PREVIOUS": "Zurück",
+		"HIGHLIGHTEDSTEP" : "Anstelle der Schritt auf dem Sie arbeiten, arbeiten Sie auf dem markierten Schritt.",
+		"NOTDONE" : "Es tut mir leid, aber Sie sind noch nicht fertig. Bitte weiterarbeiten."
+	};
+	*/
+	</script>
+	
+	<!-- Required CTAT libraries -->
+	<script src="node_modules/spin.js/spin.min.js"></script>
+	<script type="text/javascript" src="src/CTATDateTime.js"></script>
+	<script type="text/javascript" src="node_modules/jstz/dist/jstz.min.js"></script>
+
+	<script src="node_modules/google-closure-library/closure/goog/base.js"></script>
+	<script src="CTAT-deps.js"></script>
+
+	<script>
+	    goog.require('TutorShopAPIProxy');
+	    goog.require('CTATGlobalFunctions');
+		goog.require('CTATForBrowsers');
+		goog.require('CTATBase');
+		goog.require('CTATConfig');
+		goog.require('CTATTutor');
+		goog.require('CTATNameTranslator');
+		goog.require('CTATExampleTracer'); // in case of jstracer
+	</script>
+
+	<style type="text/css">
+
+		* {
+			margin:0;
+			padding:0;
+		}
+		html {
+			height:100%;
+			width:100%;
+		}
+		
+		body 
+		{
+			-moz-background-size:cover;
+			-webkit-background-size:cover;
+			background-size:cover;
+			height:100%;
+			width:100%;
+			overflow:hidden;
+		}			
+
+		.container 
+		{ 
+			width: 320px; 
+			height: 200px; 		  
+			box-shadow: 10px 10px 5px #888888;
+			z-index: 0;
+			position: relative;
+			margin: auto;
+			vertical-align: middle;
+		}
+
+	</style>
+
+	<script language="javascript">
+
+		useDebugging=true;
+	
+		CTATTarget="CTAT";
+		CTATConfig.external = "none";
+		CTATConfig.parserType = "xml";
+
+		registerTutor(new CTATExampleTracer());
+
+		var consoleFolded = true;
+
+		/**
+		 *
+		 */
+		function clearConsole()
+		{
+			var ctatConsole = document.getElementById("ctatconsole");
+
+			ctatConsole.innerHTML = "";
+		}
+		/**
+		 *
+		 */
+		function foldConsole()
+		{
+			var ctatConsole = document.getElementById("console");
+
+			if (consoleFolded == false)
+			{
+				consoleFolded = true;
+				ctatConsole.style.height = "0px";
+			}
+			else
+			{
+				consoleFolded = false;
+				ctatConsole.style.height = "300px";
+			}
+		}
+		/**
+		 *
+		 */
+		function toggleDebugging(cb)
+		{
+			if (cb.checked == true)
+				useDebugging = true;
+			else
+				useDebugging = false;
+		}
+		/**
+		 *
+		 */
+		function listCTATComponents()
+		{
+			var tempValue = useDebugging;
+
+			useDebugging = true;
+			var tools = new CTATShellTools();
+			tools.listComponents();
+			useDebugging = tempValue;
+		}
+
+		//>-------------------------------------------------------------------	
+
+		function openK()
+		{
+			document.getElementById("keyboardUI").style.visibility = "visible";
+		}
+
+		function closeK()
+		{
+			document.getElementById("keyboardUI").style.visibility = "hidden";
+		}
+
+		function closeKeyboardOnBlur()
+		{
+			document.getElementById("keyboardUI").style.visibility = "hidden";
+			var ctatConsole = document.getElementById("console");
+			ctatConsole.log("keyboard onblur");
+		}
+
+		function init()
+		{			
+			setOrientation(180);
+
+			//assignNameTranslator(new CTATNameTranslator());
+
+			//hideKeyboard ();
+		}
+
+		/**
+		* Test function to see if we can call global functions as TPAs from the
+		* graph
+		*/
+		/*
+		function myCustomFunction (aString)
+		{
+			alert ("myCustomFunction ("+aString+")");
+		}
+		*/
+		
+	</script>
+
+    </head>
+    <body onload='init();'>
+
+        <table cellpadding="0" cellspacing="0" width="100%" height="100%" border="0" style="vertical-align: middle;">
+            <tr>
+                <td id="table element">  
+                    <div width="600" id="info" name="info">
+                    </div>
+                    <div id="container" name="container" class="container">
+                    </div>
+					<!--
+                    <div width="600">
+                        <input type="checkbox" id="debugtraces" name="debugtraces" value="debugtraces" onclick='toggleDebugging(this);'>Show Debug Traces 
+                        <button type="button" onclick="listCTATComponents()"><img src="list.png" alt="List CTAT Components" /></button>
+                        <button type="button" onclick="clearConsole()"><img src="edit-clear.png" alt="Clear Console" /></button>
+                        <button type="button" onclick="foldConsole()"><img src="fold.png" alt="Fold Console" /></button>
+                        <img id="pageor" name="pageor" src="skindata/portrait.png" border="0">
+                        <br>
+                        <div id="ctatconsole" class="console" style="margin: auto; position: relative;"></div>
+                    </div>			
+					-->
+                </td>
+            </tr>
+        </table>
+
+        <script>
+			//useDebugging=true;
+            prepTutorArea();
+        </script>		
+
+        <div id="keyboardUI" onblur="closeKeyboardOnBlur()">
+            <div>
+                <div class="cssBG"></div>
+                <div class="onlay"></div>
+
+                <div class="numbers" id="zero" onclick="mobileAPI.setText('0')">0</div>
+                <div class="numbers" id="one" onclick="mobileAPI.setText('1')">1</div>
+                <div class="numbers" id="two" onclick="mobileAPI.setText('2')">2</div>
+                <div class="numbers" id="three" onclick="mobileAPI.setText('3')">3</div>
+                <div class="numbers" id="four" onclick="mobileAPI.setText('4')">4</div>
+                <div class="numbers" id="five" onclick="mobileAPI.setText('5')">5</div>
+                <div class="numbers" id="six" onclick="mobileAPI.setText('6')">6</div>
+                <div class="numbers" id="seven" onclick="mobileAPI.setText('7')">7</div>
+                <div class="numbers" id="eight" onclick="mobileAPI.setText('8')">8</div>
+                <div class="numbers" id="nine" onclick="mobileAPI.setText('9')">9</div>
+                <div class="xvar" style="left:535px;bottom:78px;" onclick="mobileAPI.setText('x')"><span style="font-family:times new roman;">x</span><br><span style="font-size:20px;">variable</span></div>
+                <div class="parenthesesDivision" id="openparen" onclick="mobileAPI.setText('(')">(</div>
+                <div class="parenthesesDivision" id="closeparen" onclick="mobileAPI.setText(')')">)</div>
+                <div class="parenthesesDivision" id="division" onclick="mobileAPI.setText('/')">/</div>
+                <div class="plusMinus" id="plus" onclick="mobileAPI.setText('+')">+</div>
+                <div class="plusMinus" id="minus" onclick="mobileAPI.setText('-')">-</div>
+                <div class="close" onclick="closeK()">close</div>
+                <div class="enter" onclick="mobileAPI.processEnter()">Enter</div>
+                <div class="backspace">Backspace</div>
+                <div id="triangle-left"></div>
+                <div id="triangle-right"></div>
+            </div>
+		</div>
+</body>
+</html>

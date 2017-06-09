@@ -1,0 +1,151 @@
+/**
+ * @fileoverview Defines the CTATNumericStepper component.
+ * @author $Author$
+ * @version $Revision$
+ */
+goog.provide('CTATNumericStepper');
+
+goog.require('CTAT.Component.Base.Tutorable');
+goog.require('CTAT.ComponentRegistry');
+goog.require('CTATSAI');
+
+CTATNumericStepper = function(aDescription,aX,aY,aWidth,aHeight) {
+	CTAT.Component.Base.Tutorable.call(this,'CTATNumericStepper',"__undefined__",
+			aDescription,aX,aY,aWidth,aHeight);
+
+	this.setAction('Update');
+	var spinner = document.createElement('input');
+	spinner.type = "number";
+
+	/**
+	 * Set the maximum value that the stepper can reach.
+	 * @param {Number|String} max: the maximum value. NaN's will be ignored.
+	 */
+	this.set_maximum = function(max) {
+		max = Number(max);
+		if (!isNaN(max)) { spinner.max = max; }
+	};
+	this.setParameterHandler('maximum', this.set_maximum);
+	/**
+	 * Set the minimum value that the stepper can reach.
+	 * @param {Number|String} min: the minimum value. NaN's will be ignored.
+	 */
+	this.set_minimum = function(min) {
+		min = Number(min);
+		if (!isNaN(min)) { spinner.min = min; }
+	};
+	this.setParameterHandler('minimum', this.set_minimum);
+	/**
+	 * Set the step value. This will be the increment value when the buttons
+	 * are pressed.
+	 * @param {Number|String} step: the step value. NaN's will be ignored.
+	 */
+	this.set_step = function(step) {
+		step = Number(step);
+		if (!isNaN(step)) { spinner.step = step; }
+	};
+	this.setParameterHandler('stepSize', this.set_step);
+	/**
+	 * Change the value.
+	 * @param {Number|String} val: new value of the stepper.
+	 *  NaN's will be ignored.
+	 */
+	this.update_value = function(val) {
+		val = Number(val);
+		if (!isNaN(val)) {
+			spinner.value = val;
+			this.setInput(val);
+		}
+	};
+	this.setParameterHandler('value', this.update_value);
+	this.updateSAI = function() { this.setInput(spinner.value); };
+
+	this.Update = this.update_value; // Action
+
+	this.init = function() {
+		spinner.id = this.getName() + '_spinner';
+		this.setComponent(spinner);
+		this.setInitialized(true);
+		var $div = $(this.getDivWrap());
+		var $spinner = $(spinner);
+		['autofocus','defaultValue','placeholder','value','max','min','readOnly','step'].forEach(
+				function(attr) {
+					var av = $div.attr(attr);
+					if (av) {
+						$spinner.attr(attr,av);
+					}
+		});
+	    this.getDivWrap().innerHTML = ''; // clear any stray content.
+
+		this.getDivWrap().appendChild(spinner);
+	    this.component.addEventListener('focus', this.processFocus);
+	    var pointer = this;
+	    spinner.addEventListener('change', function(e) {
+	    	// This event listener forces the value to be valid even under
+	    	// the assault of malicious students.
+	    	var min = Number(this.min);
+	    	if (isNaN(min)) { min = 0; } // check if there is a valid min
+	    	var value = Number(this.value);
+	    	if (isNaN(value)) { this.value = min; } // check for valid value
+	    	else if (this.min!=='' && value<min) { this.value = min; }
+	    	else if (this.max!=='' && !isNaN(Number(this.max)) && value>Number(this.max)) {
+	    		// checks if max is valid and value is greater than it.
+	    		this.value = this.max;
+	    	} else {
+		    	var step = Number(this.step);
+		    	if (isNaN(step) || step<=0) step = 1; // valid step
+	    		var mod = (value-min)%step;
+	    		if (mod !== 0) {
+	    			this.value = value-mod;
+	    		}
+	    	}
+	    	// fall through is to not modify this.value
+			pointer.updateSAI();
+			pointer.processAction();
+	    	return false;
+	    });
+	};
+	/**
+	 * This is run during the generation of InterfaceDescription messages and
+	 * it generates interface actions for options set by the author in the
+	 * html code.
+	 * @returns {Array<CTATSAI>} of SAIs.
+	 */
+	this.getConfigurationActions = function () {
+		var actions = [];
+		var sai;
+		var $div = $(this.getDivWrap());
+		if ($div.attr('min')) {
+			sai = new CTATSAI();
+			sai.setSelection(this.getName());
+			sai.setAction('set_minimum');
+			sai.setInput($div.attr('min'));
+			actions.push(sai);
+		}
+		if ($div.attr('max')) {
+			sai = new CTATSAI();
+			sai.setSelection(this.getName());
+			sai.setAction('set_maximum');
+			sai.setInput($div.attr('max'));
+			actions.push(sai);
+		}
+		if ($div.attr('step')) {
+			sai = new CTATSAI();
+			sai.setSelection(this.getName());
+			sai.setAction('set_step');
+			sai.setInput($div.attr('step'));
+			actions.push(sai);
+		}
+		if ($div.attr('value')) {
+			sai = new CTATSAI();
+			sai.setSelection(this.getName());
+			sai.setAction('Update');
+			sai.setInput($div.attr('value'));
+			actions.push(sai);
+		}
+	    return actions;
+	};
+};
+CTATNumericStepper.prototype = Object.create(CTAT.Component.Base.Tutorable.prototype);
+CTATNumericStepper.prototype.constructor = CTATNumericStepper;
+CTAT.ComponentRegistry.addComponentType('CTATNumericStepper', CTATNumericStepper);

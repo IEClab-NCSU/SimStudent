@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ProblemSet initial_sequence="0" selection_algorithm="sequential" description="The student is asked to compare two options using different scaled amounts to determine which is better." max_count="1000" label="7.15 Proportional Reasoning" max_repeat="1" name="7.15">
+  <Problems>
+    <Problem selection_features="" description="Which option of tickets is a better buy?" problem_file="1.brd" name="Problem1" student_interface="Unit15.swf" tutor_flag="tutor">
+      <Skills>
+        <Skill category="Proportional-Reasoning" occurrences="12" name="Choose-correct-Operator"/>
+        <Skill category="Proportional-Reasoning" occurrences="6" name="Calculate-Y-Given-X"/>
+        <Skill category="Proportional-Reasoning" occurrences="1" name="Choose-Correct-Option"/>
+        <Skill category="Proportional-Reasoning" occurrences="12" name="Enter-correct-Multiplier/Divisor"/>
+      </Skills>
+    </Problem>
+    <Problem selection_features="" description="Which Phone Company offers a better deal?" problem_file="2.brd" name="Problem2" student_interface="Unit15.swf" tutor_flag="tutor">
+      <Skills>
+        <Skill category="Proportional-Reasoning" occurrences="12" name="Choose-correct-Operator"/>
+        <Skill category="Proportional-Reasoning" occurrences="6" name="Calculate-Y-Given-X"/>
+        <Skill category="Proportional-Reasoning" occurrences="1" name="Choose-Correct-Option"/>
+        <Skill category="Proportional-Reasoning" occurrences="12" name="Enter-correct-Multiplier/Divisor"/>
+      </Skills>
+    </Problem>
+    <Problem selection_features="" description="Which theme park pass is a better buy?" problem_file="3.brd" name="Problem3" student_interface="Unit15.swf" tutor_flag="tutor">
+      <Skills>
+        <Skill category="Proportional-Reasoning" occurrences="12" name="Choose-correct-Operator"/>
+        <Skill category="Proportional-Reasoning" occurrences="6" name="Calculate-Y-Given-X"/>
+        <Skill category="Proportional-Reasoning" occurrences="1" name="Choose-Correct-Option"/>
+        <Skill category="Proportional-Reasoning" occurrences="12" name="Enter-correct-Multiplier/Divisor"/>
+      </Skills>
+    </Problem>
+    <Problem selection_features="" description="Which truck gets better mileage?" problem_file="9.brd" name="Problem4" student_interface="Unit15.swf" tutor_flag="tutor">
+      <Skills>
+        <Skill category="Proportional-Reasoning" occurrences="12" name="Choose-correct-Operator"/>
+        <Skill category="Proportional-Reasoning" occurrences="6" name="Calculate-Y-Given-X"/>
+        <Skill category="Proportional-Reasoning" occurrences="1" name="Choose-Correct-Option"/>
+        <Skill category="Proportional-Reasoning" occurrences="12" name="Enter-correct-Multiplier/Divisor"/>
+      </Skills>
+    </Problem>
+    <Problem selection_features="" description="Which option of lollipops is a better buy?" problem_file="5.brd" name="Problem5" student_interface="Unit15.swf" tutor_flag="tutor">
+      <Skills>
+        <Skill category="Proportional-Reasoning" occurrences="12" name="Choose-correct-Operator"/>
+        <Skill category="Proportional-Reasoning" occurrences="6" name="Calculate-Y-Given-X"/>
+        <Skill category="Proportional-Reasoning" occurrences="1" name="Choose-Correct-Option"/>
+        <Skill category="Proportional-Reasoning" occurrences="12" name="Enter-correct-Multiplier/Divisor"/>
+      </Skills>
+    </Problem>
+    <Problem selection_features="" description="Which option of soda cans is a better buy?" problem_file="6.brd" name="Problem6" student_interface="Unit15.swf" tutor_flag="tutor">
+      <Skills>
+        <Skill category="Proportional-Reasoning" occurrences="12" name="Choose-correct-Operator"/>
+        <Skill category="Proportional-Reasoning" occurrences="6" name="Calculate-Y-Given-X"/>
+        <Skill category="Proportional-Reasoning" occurrences="1" name="Choose-Correct-Option"/>
+        <Skill category="Proportional-Reasoning" occurrences="12" name="Enter-correct-Multiplier/Divisor"/>
+      </Skills>
+    </Problem>
+    <Problem selection_features="" description="Who made the most money working?" problem_file="4.brd" name="Problem7" student_interface="Unit15.swf" tutor_flag="tutor">
+      <Skills>
+        <Skill category="Proportional-Reasoning" occurrences="12" name="Choose-correct-Operator"/>
+        <Skill category="Proportional-Reasoning" occurrences="6" name="Calculate-Y-Given-X"/>
+        <Skill category="Proportional-Reasoning" occurrences="1" name="Choose-Correct-Option"/>
+        <Skill category="Proportional-Reasoning" occurrences="12" name="Enter-correct-Multiplier/Divisor"/>
+      </Skills>
+    </Problem>
+    <Problem selection_features="" description="Which is the faster painter?" problem_file="11.brd" name="Problem8" student_interface="Unit15.swf" tutor_flag="tutor">
+      <Skills>
+        <Skill category="Proportional-Reasoning" occurrences="12" name="Choose-correct-Operator"/>
+        <Skill category="Proportional-Reasoning" occurrences="6" name="Calculate-Y-Given-X"/>
+        <Skill category="Proportional-Reasoning" occurrences="1" name="Choose-Correct-Option"/>
+        <Skill category="Proportional-Reasoning" occurrences="12" name="Enter-correct-Multiplier/Divisor"/>
+      </Skills>
+    </Problem>
+    <Problem selection_features="" description="What size of Fruit-Oh Box is a better buy?" problem_file="7.brd" name="Problem9" student_interface="Unit15.swf" tutor_flag="tutor">
+      <Skills>
+        <Skill category="Proportional-Reasoning" occurrences="12" name="Choose-correct-Operator"/>
+        <Skill category="Proportional-Reasoning" occurrences="6" name="Calculate-Y-Given-X"/>
+        <Skill category="Proportional-Reasoning" occurrences="1" name="Choose-Correct-Option"/>
+        <Skill category="Proportional-Reasoning" occurrences="12" name="Enter-correct-Multiplier/Divisor"/>
+      </Skills>
+    </Problem>
+    <Problem selection_features="" description="Which option of macaroni is a better buy?" problem_file="10.brd" name="Problem10" student_interface="Unit15.swf" tutor_flag="tutor">
+      <Skills>
+        <Skill category="Proportional-Reasoning" occurrences="12" name="Choose-correct-Operator"/>
+        <Skill category="Proportional-Reasoning" occurrences="6" name="Calculate-Y-Given-X"/>
+        <Skill category="Proportional-Reasoning" occurrences="1" name="Choose-Correct-Option"/>
+        <Skill category="Proportional-Reasoning" occurrences="12" name="Enter-correct-Multiplier/Divisor"/>
+      </Skills>
+    </Problem>
+    <Problem selection_features="" description="Which option of cookies is a better buy?" problem_file="8.brd" name="Problem11" student_interface="Unit15.swf" tutor_flag="tutor">
+      <Skills>
+        <Skill category="Proportional-Reasoning" occurrences="12" name="Choose-correct-Operator"/>
+        <Skill category="Proportional-Reasoning" occurrences="6" name="Calculate-Y-Given-X"/>
+        <Skill category="Proportional-Reasoning" occurrences="1" name="Choose-Correct-Option"/>
+        <Skill category="Proportional-Reasoning" occurrences="12" name="Enter-correct-Multiplier/Divisor"/>
+      </Skills>
+    </Problem>
+  </Problems>
+  <Categories>
+    <Collection name="general"/>
+    <Standard category="standard" name="PA"/>
+    <Standard category="standard" name="NCTM"/>
+    <Standard category="standard" name="CommonCore"/>
+    <Standard category="standard" name="Student"/>
+    <Grade name="7"/>
+    <Standard category="reporting_category" name="PA.A"/>
+    <Standard category="assessment_anchor" name="PA.A.2"/>
+    <Standard category="strand" name="NCTM.A"/>
+    <Standard category="grade_level" name="CommonCore.7"/>
+    <Standard category="strand" name="CommonCore.7.RP"/>
+    <Standard category="strand" name="Student.USFR"/>
+    <Collection name="individual"/>
+    <Collection name="random_hints"/>
+  </Categories>
+  <Skills>
+    <Skill pLearn="0.2" category="Proportional-Reasoning" pGuess="0.2" pSlip="0.1" description="Calculate Y Given X" label="Calculate Y Given X" name="Calculate-Y-Given-X" pKnown="0.25"/>
+    <Skill pLearn="0.2" category="Proportional-Reasoning" pGuess="0.2" pSlip="0.1" description="Choose Correct Operator" label="Choose Correct Operator" name="Choose-correct-Operator" pKnown="0.25"/>
+    <Skill pLearn="0.2" category="Proportional-Reasoning" pGuess="0.2" pSlip="0.1" description="Choose Correct Option" label="Choose Correct Option" name="Choose-Correct-Option" pKnown="0.25"/>
+    <Skill pLearn="0.2" category="Proportional-Reasoning" pGuess="0.2" pSlip="0.1" description="Enter Correct Multiplier/Divisor" label="Enter Correct Multiplier/Divisor" name="Enter-correct-Multiplier/Divisor" pKnown="0.25"/>
+  </Skills>
+  <Assets>
+  </Assets>
+</ProblemSet>

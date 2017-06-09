@@ -1,0 +1,52 @@
+{
+  "name": "connect-fs2",
+  "description": "FileSystem session store for Connect",
+  "version": "0.1.7",
+  "author": {
+    "name": "tnantoka",
+    "email": "bornneet@livedoor.com"
+  },
+  "main": "lib/connect-fs",
+  "dependencies": {
+    "json-string": "0.0.1"
+  },
+  "devDependencies": {
+    "connect": "1.4.x",
+    "express-session": "1.7.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lexoyo/connect-fs.git"
+  },
+  "engines": {
+    "node": ">= 0.1.98"
+  },
+  "gitHead": "43d33f0e1888d1c17b00433303ab1991ea0ba17b",
+  "bugs": {
+    "url": "https://github.com/lexoyo/connect-fs/issues"
+  },
+  "homepage": "https://github.com/lexoyo/connect-fs",
+  "_id": "connect-fs2@0.1.7",
+  "scripts": {},
+  "_shasum": "7e3e11ffbbbbeba1561babea72211f3a60481d5a",
+  "_from": "connect-fs2@*",
+  "_npmVersion": "2.5.1",
+  "_nodeVersion": "0.12.0",
+  "_npmUser": {
+    "name": "lexoyo",
+    "email": "a.hoyau@silexlabs.org"
+  },
+  "maintainers": [
+    {
+      "name": "lexoyo",
+      "email": "a.hoyau@silexlabs.org"
+    }
+  ],
+  "dist": {
+    "shasum": "7e3e11ffbbbbeba1561babea72211f3a60481d5a",
+    "tarball": "https://registry.npmjs.org/connect-fs2/-/connect-fs2-0.1.7.tgz"
+  },
+  "directories": {},
+  "_resolved": "https://registry.npmjs.org/connect-fs2/-/connect-fs2-0.1.7.tgz",
+  "readme": "ERROR: No README data found!"
+}

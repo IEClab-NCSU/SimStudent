@@ -1,0 +1,129 @@
+/* This object represents an CTATGroupIterator */
+
+
+goog.provide('CTATGroupIterator');
+goog.require('CTATBase');
+
+//goog.require('CTATLinkGroup');//
+
+/* LastModify: FranceskaXhakaj 07/14*/
+
+/**
+ * Internal class: an iterator that recurses depth-first down through subgroups. The object
+ * returned by next() is either {value: this, done: false} or the return from a recursive next().
+ */
+var InternalGroupIterator = function(grp, stack)
+{
+	CTATBase.call(this, "InternalGroupIterator", grp);
+
+	/** Stable self-reference. */
+	var that = this;
+
+	/** Value to finally return. */
+	var myGroup = grp;
+
+	/** Position in stack; negative if never actually pushed. */
+	var stackIndex = stack.length;
+
+	/** @type {Array<CTATDefaultLinkGroup>} subgroups to iterate over, as an array. */
+	var sgList = [];
+
+	/** Current position in sgList. */
+	var sgli = 0;
+
+	myGroup.getSubgroups().forEach(function(g) {
+		if(g) { sgList.push(g); }                 // allow no null elements
+	});
+
+	stack.push(that);  // newest iterator, so deepest in chain
+
+	that.ctatdebug("InternalGroupIterator() constructor group "+myGroup+", stack.length "+stack.length+", sgList.length "+sgList.length);
+
+	/**
+	 * @returns "{"myGroup" at "stackIndex" with "sgList.length" subgroups}"
+	 */
+	this.toString = function()
+	{
+		 return "{"+myGroup+" at "+stackIndex+" with "+sgList.length+" subgroups}" ;
+	};
+
+	/**
+	 * @returns {object} with properties value (type CTATDefaultLinkGroup), done (type boolean)
+	 */
+	this.next = function()
+	{
+		if(sgli >= sgList.length)  // on last call to next(), return self & clean up
+		{
+			var topIterator = stack.pop();
+			//if(topIterator !== that)
+			//{
+				//console.log("InternalGroupIterator "+that+" error: at end of recursion, top element of stack !== me.");
+				// leave item off stack to avoid infinite loop
+			//}
+			that.ctatdebug("InternalGroupIterator at deepest next() returning "+myGroup+" with stack.length "+stack.length);
+			return { value: myGroup, done: false };
+		}
+		var igi = new InternalGroupIterator(sgList[sgli++], stack);
+		return igi.next();
+	};
+};
+InternalGroupIterator.prototype = Object.create(CTATBase.prototype);
+InternalGroupIterator.prototype.constructor = InternalGroupIterator;
+
+/**
+ * @constructor
+ * @param {CTATLinkGroup} group
+ */
+CTATGroupIterator = function(group)
+{
+
+	CTATBase.call(this, "CTATGroupIterator", group);
+
+/**************************** PUBLIC INSTANCE VARIABLES ******************************************************/
+
+
+/**************************** PRIVATE INSTANCE VARIABLES ******************************************************/
+
+	/**
+     * Make the object available to private methods
+     */
+	var that = this;
+    that.ctatdebug("CTATGroupIterator(" + group + ") begin constructor");
+
+	/**
+	 * The top-level group whose subgroups we're returning.
+	 */
+	var originGroup = group;
+
+	/**
+	 * A stack of InternalGroupIterators whose top is the deepest-nested.
+	 */
+	var groupIteratorStack = null;
+
+	/**
+	 * @returns {object} with properties value (type CTATDefaultLinkGroup), done (type boolean)
+	 */
+	this.next = function()
+	{
+		if(groupIteratorStack === null)  // object pushes self onto stack if group has subgroups
+		{
+			groupIteratorStack = [];
+			new InternalGroupIterator(originGroup, groupIteratorStack);
+		}
+		if(groupIteratorStack.length <= 0)
+		{
+			return {value: null, done: true};
+		}
+		return groupIteratorStack[groupIteratorStack.length-1].next();
+	};
+
+/****************************** PUBLIC METHODS ****************************************************/
+};
+
+CTATGroupIterator.prototype = Object.create(CTATBase.prototype);
+CTATGroupIterator.prototype.constructor = CTATGroupIterator;
+
+if(typeof module !== 'undefined')
+{
+	module.exports = CTATGroupIterator;
+}

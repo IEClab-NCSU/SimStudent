@@ -1,0 +1,452 @@
+<html>
+<head>
+	<title>CTAT Desktop</title>
+
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta property="og:title" content="Share your tutors on the web!">
+	<meta property="og:site_name" content="CTAT">
+	<meta property="og:description" content="Share tutors with fellow students or build your own.">
+	<meta property="og:type" content="Website">	
+	<meta property="og:image" content="logo.png">
+
+	<script>
+	var CTATTarget="Authoring";
+	</script>
+
+	<link rel="stylesheet" type="text/css" href="css/windows7.css"/>	
+	<link rel="stylesheet" type="text/css" href="css/envwizard.css"/>	
+	<link rel="stylesheet" type="text/css" href="css/dashboard.css"/>	
+	<link rel="stylesheet" type="text/css" href="css/icon.css"/>	
+	<link rel="stylesheet" type="text/css" href="css/jstree/style.min.css" />
+	<link rel="stylesheet" type="text/css" href="css/silex/admin.css">		
+	<link rel="stylesheet" type="text/css" href="css/themes-easyui/ctat/easyui.css" />
+	
+	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="https://apis.google.com/js/client.js"></script>	
+
+	<script type="text/javascript" src="js/jstree.min.js"></script>	
+	<script type="text/javascript" src="js/jquery.easyui.min.js"></script>	
+	
+	<script>
+	//$.noConflict();
+	</script>
+		
+	<script type="text/javascript" src="js/ctat.min.js"></script>		
+	<script type="text/javascript" src="js/tutordesk.min.js"></script> 
+		
+	<style>
+	
+	body
+	{
+		overflow: hidden;
+		
+		background: url('css/images/background.jpg') no-repeat center top;
+		background-size: 100% 100%;
+		text-align: center;
+		
+		margin: 0;
+		padding: 0;		
+	
+		-webkit-box-shadow: inset 0px 0px 25px 9px rgba(0,0,0,0.16);
+		-moz-box-shadow: inset 0px 0px 25px 9px rgba(0,0,0,0.16);
+		box-shadow: inset 0px 0px 25px 9px rgba(0,0,0,0.16);	
+	}
+
+	#left_shelf 
+	{ 
+		background: url('css/images/left_shelf.png') no-repeat bottom; 
+	}
+	
+	#right_shelf 
+	{ 
+		background: url('css/images/right_shelf.png') no-repeat bottom; 
+	}
+	
+	#shelf
+	{
+		background: url('css/images/shelf.png') repeat-x bottom;
+	}
+
+	li.separator 
+	{ 
+		background: url('css/images/separator.png') no-repeat bottom;
+	}
+
+	/* Div table formatting */
+	
+	.boxer 
+	{
+		display: table;
+		width: 100%;
+		height: 100%;
+		border-collapse: collapse;
+	}
+	 
+	.boxer .box-row 
+	{
+		display: table-row;
+		/*border: 1px solid red;*/
+	}	
+	
+	.boxer .box 
+	{
+		display: table-cell;
+		text-align: left;
+		vertical-align: top;
+		/*border: 1px solid black;*/
+	}	
+	
+	/* Desktop element formatting */
+	
+	.desktop_icon
+	{
+		display: table;		
+		border-collapse: collapse;
+	}
+	 
+	.desktop_icon .desktop_icon_row 
+	{
+		display: table-row;
+		/*border: 1px solid red;*/
+	}	
+	
+	.desktop_icon .icon
+	{
+		display: table-cell;
+		text-align: center;
+		vertical-align: middle;
+		padding: 4px;
+		/*border: 1px solid black;*/
+	}	
+	
+	.desktop_label
+	{
+		text-shadow:1px 1px 1px rgba(143,143,143,1);
+		font-weight:normal;
+		color:#000000;
+		letter-spacing:0pt;
+		word-spacing:2pt;
+		font-size:12px;
+		text-align:center;
+		font-family:arial, helvetica, sans-serif;
+		line-height:1;
+		padding: 4px;
+	}
+	
+	.desktop_icon_highlighted
+	{
+		border: 1px solid #dddddd;
+		background: rgba(63, 191, 191, 0.1);
+	}
+	
+	.dialogwindow
+	{
+		-moz-border-radius:1px;
+		-webkit-border-radius:1px;
+		border-radius:1px;
+		-moz-box-shadow:0 0 0 1px rgba(255,255,255,0.65);
+		-webkit-box-shadow:0 0 0 1px rgba(255,255,255,0.65);
+		box-shadow:0 0 0px 1px rgba(255,255,255,0.65);
+		background-color:#fff;
+		height:100%;
+		padding:0px;	
+		margin:0 6px;
+		overflow:none;
+		position:relative;	
+		font-weight:normal;
+		color:#000000;
+		letter-spacing:1pt;
+		word-spacing:2pt;
+		font-size:10px;
+		text-align:left;
+		font-family:verdana, 
+		sans-serif;line-height:1;	
+	}
+	
+	.divTable
+	{
+		display: table;
+		width: 100%;
+	}
+	.divTableRow 
+	{
+		display: table-row;
+		margin-top: 5px;
+	}
+	.divTableHeading 
+	{
+		background-color: #EEE;
+		display: table-header-group;
+	}
+	.divTableCell, .divTableHead 
+	{
+		border: 0px solid #999999;
+		display: table-cell;
+		padding: 1px 1px;
+	}
+	.divTableHeading 
+	{
+		background-color: #EEE;
+		display: table-header-group;
+		font-weight: bold;
+	}
+	.divTableFoot 
+	{
+		background-color: #EEE;
+		display: table-footer-group;
+		font-weight: bold;
+	}
+	.divTableBody 
+	{
+		display: table-row-group;
+	}
+	
+/*
+ * Splitter container. Set this to the desired width and height
+ * of the combined left and right panes. In this example, the
+ * height is fixed and the width is the full width of the body,
+ * less the margin on the splitter itself.
+ */
+#MySplitter {
+	height: 400px;
+	margin: 1em 3em;
+	border: 4px solid #bdb;
+	/* No padding allowed */
+}
+/*
+ * Left-side element of the splitter. Use pixel units for the
+ * min-width and max-width; the splitter plugin parses them to
+ * determine the splitter movement limits. Set the width to
+ * the desired initial width of the element; the plugin changes
+ * the width of this element dynamically.
+ */
+#LeftPane {
+	background: #efe;
+	overflow: auto;
+	/* No margin or border allowed */
+}
+/*
+ * Right-side element of the splitter.
+ */
+#RightPane {
+	background: #f8fff8;
+	overflow: auto;
+	/* No margin or border allowed */
+}
+/* 
+ * Splitter bar style; the .active class is added when the
+ * mouse is over the splitter or the splitter is focused
+ * via the keyboard taborder or an accessKey. 
+ */
+#MySplitter .vsplitbar {
+	width: 6px;
+	background: #aca url(img/vgrabber.gif) no-repeat center;
+}
+#MySplitter .vsplitbar.active {
+	background: #da8 url(img/vgrabber.gif) no-repeat center;
+	opacity: 0.7;
+}	
+		
+
+	.cell			{ margin: 2px; border: 1px solid black; }
+	div.columns		{ padding: 0px; margin: 0px; width: 300px; position: absolute; top: 50px; left: 50px; }
+	div.left		{ padding: 0px; margin: 0px; background-color: #eeeeee; border-right: 1px solid black; }
+	div.center		{ padding: 0px; margin: 0px; background-color: #efefef; }
+	div.clear		{ clear: both; }	
+	</style>	
+	<script>
+	/**
+	*
+	*/
+	function initTests ()
+	{
+		console.log ("initTests ()");
+		
+		$('#dg').datagrid(
+		{
+			data: 
+			[
+				{name:'value11', date:'value12',size:"1k"},
+				{name:'value21', date:'value22',size:"1k"},
+			]
+		});		
+	}
+	</script>
+</head>
+<body onload="initTests ()">
+
+<div class="columns">
+    <div class="left" style="width: 49%; height: 100px; float: left;">
+		<div class="cell">
+			<table id="dg" class="easyui-datagrid">
+				<thead>
+					<tr>
+						<th data-options="field:'name'">Name</th>
+						<th data-options="field:'date'">Date</th>
+						<th data-options="field:'size'">Size</th>						
+					</tr>
+				</thead>
+				<tbody>
+
+				</tbody>
+			</table>
+		</div>
+	</div>
+    <div class="center" style="width: 49%; height: 100px; float: left;">
+		<div class="cell">
+		Column 2
+		</div>
+	</div>
+</div>
+<div class="clear"></div>
+
+<div class="easyui-layout" style="position: absolute; left: 10px; top: 200px; width:700px;height:350px;">
+	<div data-options="region:'east',split:true" title="East" style="width:100px;"></div>
+	<div data-options="region:'west',split:true" title="West" style="width:100px;"></div>
+	<div data-options="region:'center',title:'Main Title',iconCls:'icon-ok'">
+		<table class="easyui-datagrid" data-options="url:'datagrid_data1.json',method:'get',border:false,singleSelect:true,fit:true,fitColumns:true">
+			<thead>
+				<tr>
+					<th data-options="field:'itemid'" width="80">Item ID</th>
+					<th data-options="field:'productid'" width="100">Product ID</th>
+					<th data-options="field:'listprice',align:'right'" width="80">List Price</th>
+					<th data-options="field:'unitcost',align:'right'" width="80">Unit Cost</th>
+					<th data-options="field:'attr1'" width="150">Attribute</th>
+					<th data-options="field:'status',align:'center'" width="60">Status</th>
+				</tr>
+			</thead>
+		</table>
+	</div>
+</div>
+
+<style>
+.flex-box 
+{  
+	display: flex;
+	margin: 0;  
+}
+
+.flex-box .col
+{
+	border: 1px solid green;
+	flex:0.33;
+	padding: 12px;
+	overflow-y: auto;
+	overflow-x: hide;
+}
+
+.handle 
+{
+	width: 5px;
+	text-align: center;
+	color: white;  
+	transition: all ease-in 0.1s;
+}
+
+.draggable { background: pink; }
+
+</style>
+
+<div class="flex-box" style="position: absolute; left: 10px; top: 400px; width: 500px; height: 200px;">
+  <div class="col">
+    <h1>Drag The splitters</h1>
+    <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus</p>
+  </div>
+  <div class="handle"></div>		
+  <div class="col">
+    <h1>Magic</h1>
+    <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus</p>
+  </div>
+  <div class="handle"></div>		
+  <div class="col">
+    <h1>Magic 2</h1>
+    <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus</p>
+  </div>
+</div>
+
+<script>
+    (function ($) 
+	{
+		console.log ("Initializing gripper ...");
+		
+		$.fn.drags = function (opt) 
+		{
+			console.log ("Assigning draggable functionality to gripper ...");
+			
+			opt = $.extend(
+			{
+				handle: '',
+				cursor: 'ew-resize',
+				min: 10
+			},opt);
+			
+			if (opt.handle === '') 
+			{
+				var $el = this;
+			}
+			else 
+			{
+				var $el = this.find(opt.handle);
+			}
+			
+			var priorCursor = $('body').css('cursor');
+		
+			return $el.css('cursor', opt.cursor).on('mousedown', function (e) 
+			{
+				console.log ("mousedown ()");
+			
+				priorCursor = $('body').css('cursor');
+			
+				$('body').css('cursor', opt.cursor);
+			
+				if (opt.handle === '') 
+				{
+					var $drag = $(this).addClass('draggable');
+				} 
+				else 
+				{
+					var $drag = $(this).addClass('active-handle').parent().addClass('draggable');
+				}
+			
+				var z_idx = $drag.css('z-index'), drg_h = $drag.outerHeight(), drg_w = $drag.outerWidth(), pos_y = $drag.offset().top + drg_h - e.pageY, pos_x = $drag.offset().left + drg_w - e.pageX;
+				$drag.css('z-index', 1000).parents().on('mousemove', function (e) 
+				{
+					console.log ("mousemove ()");
+				
+					var prev = $('.draggable').prev();
+					var next = $('.draggable').next();
+					var total = prev.outerWidth() + next.outerWidth();
+					
+					console.log('l: ' + prev.outerWidth() + ', r:' + next.outerWidth());
+					
+					var leftPercentage = (e.pageX - prev.offset().left + (pos_x - drg_w / 2)) / total;
+					var rightPercentage = 1 - leftPercentage;
+
+					if (leftPercentage * 100 < opt.min || rightPercentage * 100 < opt.min) 
+					{
+						return;
+					}
+					
+					console.log('l: ' + leftPercentage + ', r:' + rightPercentage);
+				
+					prev.css('flex', leftPercentage.toString());
+					next.css('flex', rightPercentage.toString());
+					
+					$(document).on('mouseup', function () 
+					{
+						$('body').css('cursor', priorCursor);
+						$('.draggable').removeClass('draggable').css('z-index', z_idx);
+					});
+				});
+				
+				e.preventDefault();
+			});
+		};
+	}(jQuery));
+	
+	$('.handle').drags();
+</script>
+
+</body>
+</html>

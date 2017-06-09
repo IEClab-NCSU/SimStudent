@@ -1,0 +1,92 @@
+/**-----------------------------------------------------------------------------
+ $Author: mringenb $
+ $Date: 2016-06-28 15:07:11 -0500 (週二, 28 六月 2016) $
+ $HeadURL: svn://pact-cvs.pact.cs.cmu.edu/usr5/local/svnroot/AuthoringTools/branches/CTAT_4_2_Release/HTML5/src/CTATSerialization/CTATComponentDescription.js $
+ $Revision: 23782 $
+
+ -
+ License:
+ -
+ ChangeLog:
+ -
+ Notes:
+
+ */
+goog.provide('CTATComponentDescription');
+
+goog.require('CTATBase');
+//goog.require('CTATParameter');
+//goog.require('CTATStyle');
+/**
+ *
+ */
+CTATComponentDescription = function()
+{
+	CTATBase.call(this, "CTATComponentDescription", "");
+
+	this.type="Unknown";
+	this.name="Unknown";
+	this.groupName="Unknown"; //For things like radio buttons
+	this.x=0;
+	this.y=0;
+	this.width=0;
+	this.height=0;
+	this.zIndex=-1;
+	this.tabIndex=-1;
+	this.styles={};
+	this.params={};
+
+	var pointer=this;
+
+	this.componentPointer=null;
+
+	/**
+	 *
+	 */
+	/*this.addStyle=function addStyle (aStyle)
+	{
+		pointer.ctatdebug ("addStyle ()");
+
+		this.styles.push(aStyle.trim());
+	};*/ //unused
+
+	/**
+	 *
+	 */
+	this.setComponentPointer=function setComponentPointer (aPointer)
+	{
+		this.componentPointer=aPointer;
+	};
+
+	/**
+	 *
+	 */
+	this.getComponentPointer=function getComponentPointer ()
+	{
+		return (this.componentPointer);
+	};
+
+	this.setGenericDefaults = function() {
+		this.name="Generic name";
+		this.styles = {
+				"BackgroundColor": null,
+				"BorderColor": null,
+				"FontName": null,
+				"FontSize": null,
+				"FontColor": null,
+				"FontBold": null,
+				"FontItalic": false,
+				"FontUnderlined": false,
+				"TextAlign": null,
+				"ShowHintHighlight": false,
+				"blockOnCorrect": false,
+				"disabledBackgroundColor": "#999999",
+				"disabledTextColor": "#999999",
+				"tutorComponent": null  // should be a param
+		};
+		return this;
+	};
+};
+
+CTATComponentDescription.prototype = Object.create(CTATBase.prototype);
+CTATComponentDescription.prototype.constructor = CTATComponentDescription;

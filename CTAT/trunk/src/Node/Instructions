@@ -1,0 +1,27 @@
+---Node.js Installation and Server Start Instructions---
+
+Windows:
+Download the MSI installer from the Nodejs site http://nodejs.org/download/
+To check if node installed correctly, try running the commands nodejs and npm from the command prompt
+
+Ubuntu:
+13.10+ run:
+ sudo apt-get install nodejs
+ sudo apt-get install npm
+Older versions, run:
+	sudo apt-get install python-software-properties
+	sudo add-apt-repository ppa:chris-lea/node.js
+	sudo apt-get update
+	sudo apt-get install nodejs npm
+
+
+--Setup instructions -- 
+
+Install the modules http, url and xmldom by running
+npm install <package name>
+(Some packages might already be installed on certain platforms.)
+
+Start the server by running: nodejs server.js
+
+
+

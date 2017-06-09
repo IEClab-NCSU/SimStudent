@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="generator" content="CoffeeCup HTML Editor (www.coffeecup.com)">
+    <meta name="dcterms.created" content="Tue, 01 Sep 2015 15:55:08 GMT">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <title>Fraction Addition</title>
+	
+	<!--
+    <link rel="stylesheet" href="../JavaScript/css/CTAT.css"/>
+	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<script src="../JavaScript/ctatjslib/ctat-tracer.min.js"></script>
+	<script type="text/javascript" src="../JavaScript/ctatjslib/goog_stub.js"></script>
+	<script src="../JavaScript/ctatjslib/CTATForBrowsers.js"></script>
+	-->
+	
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
+	<link rel="stylesheet" type="text/css" href="css/CTAT.css"/>
+
+	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+	<script src="http://code.jquery.com/ui/1.11.2/jquery-ui.min.js"></script>
+		
+	<script src="ctatjslib/ctat-tracer.min.js"></script>	
+	<script src="src/CTATExampleTracer/CTATForBrowsers.js"></script>
+	
+	<script>
+    var FlashVars =
+    {
+        admit_code: "QA",
+        //authenticity_token: "none",
+        //auth_token: "none",
+        BehaviorRecorderMode: "AuthorTimeTutoring",
+        class_name: "Default Class",
+        //curriculum_service_url: "none",
+        dataset_level_name1: 'Unit1',
+        dataset_level_type1: 'unit',
+        dataset_level_name2: 'Unit2',
+        dataset_level_type2: 'unit',		
+        dataset_name: "HTML5LoggingTest_xxx",
+        //expire_logout_url: "none",
+        //info: "",
+        //instructor_name: "none",
+        //instrumentation_log: "off",
+        //lcId: "none",
+        Logging: "ClientToLogServer", // 'ClientToService' or 'ClientToLogServer'
+        log_service_url: "http://phoenix.pslc.cs.cmu.edu/cgi-bin/ctatlog.sh",
+        log_to_disk_directory: '.',
+        keyboard: 'disabled',
+        problem_name: "1313",
+        //problem_position: "none",
+        //problem_started_url: "none",
+        problem_state_status: "empty", //  'empty', 'complete', or 'incomplete'
+        question_file: "http://augustus.pslc.cs.cmu.edu/html5/HTML5TestFiles/1313.brd",
+        //refresh_session_url: "none",
+        remoteSocketPort: "80",
+        remoteSocketURL: "http://localhost",
+        //restore_problem_url: "none",
+        //reuse_swf: "false",
+        //run_problem_url: "none",
+        //school_name: "none",
+        SessionLog: "true",
+        session_id: "none",
+        //session_timeout: "none",
+        //skills: "",
+        source_id: "PACT_CTAT_HTML5", // 'FLASH_PSEUDO_TUTOR' or 'CTAT_JAVA_TUTOR'
+        //student_interface: "none",
+        //student_problem_id: "none",
+        //study_condition_name: "none",
+        //study_condition_type: "none",
+        //study_conditon_description: "none",
+        study_name: "Study1",
+        //target_frame: "none",
+        //TutorShopDeliveryMethod: "sendandload",
+        tutoring_service_communication: 'javascript',
+        user_guid: "qa-test",
+    	//var1: 'xxx_xxx',
+    	//val1: 'xxx',
+    	//var2: 'xxx_xxx',
+    	//val2: 'xxx',
+    	//var3: 'xxx_xxx',
+    	//val3: 'xxx',
+    	//var4: 'xxx_xxx',
+    	//val4: 'xxx',
+        wmode: "opaque",
+        //log_to_disk_directory: "none",
+        DeliverUsingOLI: "true",
+        //ssl: "off",
+        //sui: ""
+    };
+
+    $(function() {
+        initTutor();
+    });
+</script>
+  </head>
+  <body>
+  <div id="container" style="visibility: hiddedn; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 400;">
+  	   <canvas id="main-canvas" width="800" height="500">Your browser does not support CTAT. Please update or use another browser.</canvas>
+	   <div id="givenFractions">
+	   <div id="firstNumGiven" class="CTATTextArea" style="position: absolute; left: 40px; top: 10px; z-index: 18; width: 30px; height: 30px;"></div>
+	   <div id="firstDenGiven" class="CTATTextArea" style="position: absolute; left: 40px; top: 50px; z-index: 18; width: 30px; height: 30px;"></div>
+	   <div id="secNumGiven" class="CTATTextArea" style="position: absolute; left: 40px; top: 110px; z-index: 18; width: 30px; height: 30px;"></div>
+	   <div id="secDenGiven" class="CTATTextArea" style="position: absolute; left: 40px; top: 150px; z-index: 18; width: 30px; height: 30px;"></div>
+	   </div>
+	   
+	   <div id="convertedFractions">
+	   <div id="firstNumConv" class="CTATTextArea" style="position: absolute; left: 140px; top: 10px; z-index: 18; width: 30px; height: 30px;"></div>
+	   <div id="firstDenConv" class="CTATTextArea" style="position: absolute; left: 140px; top: 50px; z-index: 18; width: 30px; height: 30px;"></div>
+	   <div id="secNumConv" class="CTATTextArea" style="position: absolute; left: 140px; top: 110px; z-index: 18; width: 30px; height: 30px;"></div>
+	   <div id="secDenConv" class="CTATTextArea" style="position: absolute; left: 140px; top: 150px; z-index: 18; width: 30px; height: 30px;"></div>
+	   </div>
+	   
+	   <div id="answerConv">
+	   <div id="ansNum1" class="CTATTextArea" style="position: absolute; left: 140px; top: 210px; z-index: 18; width: 30px; height: 30px;"></div>
+	   <div id="ansDen1" class="CTATTextArea" style="position: absolute; left: 140px; top: 250px; z-index: 18; width: 30px; height: 30px;"></div>
+	   </div>   
+	   
+	   <div id="answerFinal">
+	   <div id="ansNumFinal" class="CTATTextArea" style="position: absolute; left: 240px; top: 210px; z-index: 18; width: 30px; height: 30px;"></div>	
+	   <div id="ansDenFinal" class="CTATTextArea" style="position: absolute; left: 240px; top: 250px; z-index: 18; width: 30px; height: 30px;"></div>	   
+	   </div>
+	   
+	   <div id="common">
+	   <div id="done" class="CTATDoneButton" 
+					  style="position: absolute; left: 40px; top: 370px; z-index: 18;"></div>
+	   <div id="hint-box" style="height: 157px; padding: 5px; position: absolute; left: 140px; top: 310px;">
+  	   		<div id="hint-button" class="CTATHintButton" style="margin: 0 5px 5px 5px; display: inline-block"></div>
+  			<div id="HintWindow" class="CTATHintWindow" style="display: inline-block; width: 400px;"></div>
+		</div>
+	   </div>
+  </div>
+  </body>
+</html>

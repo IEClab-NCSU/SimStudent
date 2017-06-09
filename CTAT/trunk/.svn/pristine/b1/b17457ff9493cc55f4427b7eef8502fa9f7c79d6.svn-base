@@ -1,0 +1,35 @@
+/* This source file creates the CTATHintPolicyEnum used by the Javascript Tracer. */
+
+goog.provide('CTATHintPolicyEnum');
+
+/* LastModified: sewall 2014/10/31 */
+CTATHintPolicyEnum = function() {
+};
+Object.defineProperty(CTATHintPolicyEnum, "HINTS_UNBIASED", {enumerable: true, configurable: false, writable: false, value: "Always Follow Best Path"});
+Object.defineProperty(CTATHintPolicyEnum, "HINTS_BIASED_BY_CURRENT_SELECTION_ONLY", {enumerable: true, configurable: false, writable: false, value: "Bias Hints by Current Selection Only"});
+Object.defineProperty(CTATHintPolicyEnum, "HINTS_BIASED_BY_PRIOR_ERROR_ONLY", {enumerable: true, configurable: false, writable: false, value: "Bias Hints by Prior Error Only"});
+Object.defineProperty(CTATHintPolicyEnum, "HINTS_BIASED_BY_ALL", {enumerable: true, configurable: false, writable: false, value: "Use Both Kinds of Bias"});
+Object.defineProperty(CTATHintPolicyEnum, "DEFAULT", {enumerable: true, configurable: false, writable: false, value: CTATHintPolicyEnum.HINTS_BIASED_BY_ALL});
+
+CTATHintPolicyEnum.prototype = Object.create(Object.prototype);
+CTATHintPolicyEnum.prototype.constructor = CTATHintPolicyEnum;
+
+/**
+ * Validate a hint policy setting. Returns CTATHintPolicyEnum.DEFAULT if no match.
+ * @param {string} brdAttr attribute from behavior graph
+ * @return {string} one of the defined constants HINTS_UNBIASED, etc., above
+ */
+CTATHintPolicyEnum.lookup = function(brdAttr)
+{
+	for(policy in CTATHintPolicyEnum)
+	{
+		if(CTATHintPolicyEnum[policy] == brdAttr)
+			return CTATHintPolicyEnum[policy];
+	}
+	return CTATHintPolicyEnum.DEFAULT;
+};
+
+if(typeof module !== 'undefined')
+{
+	module.exports = CTATHintPolicyEnum;
+}

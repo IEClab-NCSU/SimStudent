@@ -1,0 +1,1065 @@
+/**-----------------------------------------------------------------------------
+ $Author$
+ $Date$
+ $HeadURL$
+ $Revision$
+
+ -
+ License:
+ -
+ ChangeLog:
+ -
+ Notes:
+
+ */
+goog.provide('CTATConfiguration');
+//gog.module('CTATConfiguration');
+//gog.module.declareLegacyNamespace();
+
+//var CTATBase =
+goog.require('CTATBase');
+goog.require('CTATGuid');
+//import {jstz} from '../../node_modules/jstz/';
+//import jstz from './node_modules/jstz/dist/jstz';
+//var jstz = require('jstz');
+//goog.require('$module$jstz');
+//goog.require('/node_modules/jstz/dist/jstz.min.js');
+/**
+ * export
+ */
+//var
+CTATConfiguration = function()
+{
+	CTATBase.call (this, "CTATConfiguration", "config");
+
+	var pointer=this;
+	var custom_fields=[];
+
+	var tNames=null;
+	var tTypes=null;
+
+	var tDescNames=null;
+	var tDescTypes=null;
+	var tDesc=null;
+
+	//var generator=new CTATGuid ();
+
+	// Make sure we have some defaults. This really should be the only place where we have a hardcoded list!
+	this.raw =
+	{
+		'admit_code': "ies",
+		'authenticity_token': "",
+		'auth_token': "none",
+		'BehaviorRecorderMode': "AuthorTimeTutoring",
+		'class_name': "DefaultClass",
+		'curriculum_service_url': "", // One of: 'OLI', 'SCORM', TutorShop url
+		'connection': 'javascript', // One of: socket, javascript, http, https, applet, websocket
+		'dataset_level_name': "none",
+		'dataset_level_type': "ProblemSet",
+		'dataset_name': "none",
+		'expire_logout_url': "none",
+		'info': "",
+		'instructor_name': "none",
+		'instrumentation_log': "off",
+		'lcId': "none",
+		'Logging': "None", // 'ClientToService' or 'ClientToLogServer', 'OLI'
+		'log_service_url': "http://pslc-qa.andrew.cmu.edu/log/server",
+		'log_to_disk_directory': ".",
+		'problem_name': "none",
+		'problem_position': "none",
+		'problem_started_url': "none",
+		'problem_state_status': "empty", //  'empty', 'complete', or 'incomplete'
+		'question_file': "none",
+		'refresh_session_url': "none",
+		'remoteSocketPort': "20080",
+		'remoteSocketSecurePort': '20443',
+		'remoteSocketURL': "127.0.0.1",
+		'restore_problem_url': "", // One of: 'OLI', 'SCORM', TutorShop url
+		'reuse_swf': "false",
+		'run_problem_url': "none",
+		'school_name': "none",
+		'SessionLog': "true",
+		'session_id': CTATGuid.guid(),
+		'session_timeout': "none",
+		'show_debug_traces': "false",
+		'skills': "",
+		'source_id': "PACT_CTAT_HTML5", // 'FLASH_PSEUDO_TUTOR' or 'CTAT_JAVA_TUTOR'
+		'student_interface': "none",
+		'student_problem_id': "none",
+		'study_condition_name': "none",
+		'study_condition_type': "none",
+		'study_condition_description': "none",
+		'study_name': "Study1",
+		'target_frame': "_parent",
+		'TutorShopDeliveryMethod': "sendandload",
+		'tutoring_service_communication': 'javascript',
+		'user_guid': "none",
+		'wmode': "opaque",
+		//DeliverUsingOLI: false,
+		'ssl': "off",
+		'sui': "",
+		'centerTutor': false,
+		'previewMode': false,
+		'width': 550,
+		'height': 450
+	};
+
+	/**
+	 * Convert the query string segment (all after the ? following the path) from this page's URL
+	 * into an object whose property names and values are the variables assigned in the string.
+	 * @return {object} object described above
+	 */
+	function parseQueryString ()
+	{
+		ctatdebug ("parseQueryString ()");
+
+		var str = location.search;
+
+		ctatdebug ("Query String: " + str);
+
+		var query = str.charAt(0) == '?' ? str.substring(1) : str;
+		var args = {};
+
+		if (query)
+		{
+			var fields = query.split('&');
+
+			for (var f = 0; f < fields.length; f++)
+			{
+				var field = fields[f].split('=');
+
+				ctatdebug ("Setting flashvar " + field[0] + ", to: " + decodeURIComponent(field[1].replace(/\+/g, ' ')));
+				args[decodeURIComponent(field[0])] = "";
+				for (var i = 1; i < field.length; i++) {
+					args[decodeURIComponent(field[0])] += ((i > 1 ? '=' : '') + decodeURIComponent(field[i].replace(/\+/g, ' ')));
+				}
+				ctatdebug("Decoded args: "+args[decodeURIComponent(field[0])]);
+			}
+		}
+
+		return args;
+	}
+
+	/**
+	 * Revise the given flashvars object with special values from the query string.
+	 * @param {object} aVars object to revise
+	 */
+	function tutorPrep (aVars)
+	{
+		ctatdebug ("tutorPrep ("+aVars+")");
+
+		var args = {};
+
+		if (aVars===null || aVars===undefined)
+		{
+			ctatdebug ("tutorPrep(): Internal error: null argument passed");
+			return args;
+		}
+
+		//if (typeof(CTATTarget) != "undefined" && CTATTarget != "XBlock" && CTATTarget != "OLI")
+		//{
+			var tArgs=parseQueryString ();
+			if (tArgs!==null)
+			{
+				ctatdebug ("tutorPrep(): Assigning parsed arguments ...");
+				args=tArgs;
+			}
+		//}
+
+		var generated=false;
+
+		for (var arg in args)
+		{
+			if (args.hasOwnProperty (arg))
+			{
+				ctatdebug ("Processing external FlashVar " + arg + "("+args[arg]+")");
+
+				switch(arg)
+				{
+					case "GENERATED":
+										if (args [arg]=="on")
+										{
+											aVars ['session_id']=CTATGuid.guid();
+											generated=true;
+										}
+										break;
+					case "BRD":
+										aVars ['question_file']=args[arg];
+										break;
+					case "BRMODE":
+										aVars ['BehaviorRecorderMode']=args[arg];
+										break;
+					case "PROBLEM":
+										aVars ['problem_name']=args[arg];
+										break;
+					case "DATASET":
+										aVars ['dataset_name']=args[arg];
+										break;
+					case "LEVEL1":
+										aVars ['dataset_level_name1']=args[arg];
+										break;
+					case "TYPE1":
+										aVars ['dataset_level_type1']=args[arg];
+										break;
+					case "LEVEL2":
+										aVars ['dataset_level_name2']=args[arg];
+										break;
+					case "TYPE2":
+										aVars ['dataset_level_type2']=args[arg];
+										break;
+					case "LEVEL3":
+										aVars ['dataset_level_name3']=args[arg];
+										break;
+					case "TYPE3":
+										aVars ['dataset_level_type3']=args[arg];
+										break;
+					case "LEVEL4":
+										aVars ['dataset_level_name4']=args[arg];
+										break;
+					case "TYPE4":
+										aVars ['dataset_level_type4']=args[arg];
+										break;
+					case "USER":
+										aVars ['user_guid']=args[arg];
+										break;
+					case "SESSION":
+										if (generated===false)
+										{
+											aVars ['session_id']=args[arg];
+										}
+										break;
+					case "SOURCE":
+										aVars ['source_id']=args[arg];
+										break;
+					case "LOGTYPE":
+										aVars ['Logging']=args[arg];
+										break;
+					case "PORT":
+										aVars ['remoteSocketPort']=args[arg];
+										break;
+					case "REMOTEURL":
+										aVars ['remoteSocketURL']=args[arg];
+										break;
+					case "DISKDIR":
+										aVars ['log_to_disk_directory']=args[arg];
+										break;
+					//case "USEOLI":
+					//					aVars ['DeliverUsingOLI']=args[arg];
+					//					break;
+					case "log_service_url":
+										aVars ['log_service_url']=args[arg];
+										break;
+					case "URL":
+										aVars ['log_service_url']=args[arg];
+										break;
+					case "LOGURL":
+										aVars ['log_service_url']=args[arg];
+										break;
+					case "CONNECTION":
+										aVars ['tutoring_service_communication']=args[arg];
+										break;
+					case "SUI":
+										aVars ['sui']=args[arg];
+										break;
+					case "VAR1":
+										aVars ['var1']=args[arg];
+										break;
+					case "VAL1":
+										aVars ['val1']=args[arg];
+										break;
+					case "VAR2":
+										aVars ['var2']=args[arg];
+										break;
+					case "VAL2":
+										aVars ['val2']=args[arg];
+										break;
+					case "VAR3":
+										aVars ['var3']=args[arg];
+										break;
+					case "VAL3":
+										aVars ['val3']=args[arg];
+										break;
+					case "VAR4":
+										aVars ['var4']=args[arg];
+										break;
+					case "VAL4":
+										aVars ['val4']=args[arg];
+										break;
+
+					case "SLOG":
+					case "SessionLog":
+										aVars ['SessionLog']=args[arg];
+										break;
+
+					case "KEYBOARDGROUP":
+										if (args[arg]=='Disabled')
+										{
+											aVars ['keyboard']='disabled';
+										}
+
+										if (args[arg]=='Auto')
+										{
+											aVars ['keyboard']='auto';
+										}
+
+										if (args[arg]=='On')
+										{
+											aVars ['keyboard']='on';
+										}
+
+										break;
+					default:
+										aVars [arg]=args[arg];
+										break;
+
+					/*
+					case "CSS":
+										if (args[arg]!="")
+										{
+											// For some reason this doesn't work
+
+											//loadjscssfile(args[arg], "css") // dynamically load and add this .css file
+										}
+										break;
+					 */
+				}
+			}
+		}
+		return (aVars);
+	}
+
+	/**
+	 *
+	 * @param aData
+	 */
+	this.assignRawFlashVars=function assignRawFlashVars (aData)
+	{
+		pointer.ctatdebug("assignRawFlashVars() raw['session_id'] "+pointer.raw['session_id']+", aData['session_id'] "+aData['session_id']);
+		pointer.raw=aData;
+
+		pointer.preParse ();
+	};
+
+	/**
+	 *
+	 */
+	this.getRawFlashVars=function getRawFlashVars ()
+	{
+		return (pointer.raw);
+	};
+
+	/**
+	 * Check a list of parameter names for a configuration value. Skips any
+	 * values set to "none".
+	 * @param {Array<string>} paramNames parameter names to search
+	 * @return {Array<string>} of values found; empty array if no nonempty values found
+	 */
+	this.getSingleParameterValues = function(paramNames)
+	{
+		var result = [];
+		if(!paramNames)
+		{
+			return result;
+		}
+		var nameList = pointer.getRawFlashVars();
+		for(var i in paramNames) {
+			var n = paramNames[i];
+			if(nameList[n] && nameList[n] != "none")
+			{
+				result.push(nameList[n]);
+			}
+		}
+		return result;
+	};
+
+	/**
+	 * Check a list of user interface parameter names for any ending in ".swf".
+	 * So far, the list of parameter names includes 'student_interface' and 'swf_name'.
+	 * @return {boolean} true if any of the parameter values ends in .swf, case-insensitive
+	 */
+	this.usingFlash = function()
+	{
+		var paramNames = ['student_interface', 'swf_name'];  // add more UI variable names here
+		return this.getSingleParameterValues(paramNames).some(function(val) {return val.search(/[.]swf$/i) >= 0;});
+	};
+
+	/**
+	 * Convert the data-params attribute in our iframe element into an object whose properties
+	 * are our runtime parameters, a.k.a. FlashVars, including the .brd file, etc.
+	 * Expects that properties named in CTATGlobals.EncodedParams are escaped by TutorShop.
+	 * @param  {object} defaults return these values for any parameters not found
+	 * @return {object} FlashVars-compatible object
+	 */
+	this.generateDefaultConfiguration = function(defaults)
+	{
+		var result = {};
+		var nDefaults = 0;
+		if(defaults)
+		{
+			for(var v in defaults)
+			{
+				result[v] = defaults[v];
+				nDefaults++;
+			}
+		}
+		pointer.ctatdebug("generateDefaultConfiguration() nDefaults "+nDefaults+", result['session_id'] "+result['session_id']);
+
+		var dataParams = null, dataParamsAttr = null;
+
+		// if in an iframe having an attr "data-params"
+		if (window && window.frameElement && (dataParamsAttr = window.frameElement.getAttribute('data-params')))
+		{
+			dataParams = jQuery.parseJSON (dataParamsAttr);
+			console.log('setting data params from iframe attr');
+			for(var dp in dataParams)
+			{
+				result[dp]=(CTATGlobals.EncodedParams[dp] ? decodeURIComponent(dataParams[dp].replace(/\+/g, '%20')) : dataParams[dp]);
+				console.log('set '+dp+' to '+result[dp]);
+			}
+		}
+		if(dataParams === null)  // if no iframe attribute, look for a FlashVar <param>
+		{
+			// list DOM <object> elements with a <param> child having a "name" attr with value "flashvars"
+			var objs = $('object param[name="flashvars"]');
+			pointer.ctatdebug("generateDefaultConfiguration() objs "+objs);
+			for(var i=0; i<objs.length; ++i)
+			{
+				var fVarsAsString = $(objs[i]).attr('value');
+				pointer.ctatdebug("generateDefaultConfiguration() fVarsAsString "+fVarsAsString);
+				if(fVarsAsString)
+				{
+					var fVars = parseQueryStringArgs(fVarsAsString);
+					if(fVars && fVars['question_file'])  // if there is a question_file var
+					{
+						for (var fv in fVars)
+						{
+							result[fv] = fVars[fv];
+						}
+					}
+				}
+			}
+		}
+
+		tutorPrep(result);  // get overrides from URL
+
+		return result;
+	};
+
+	/**
+	 *
+	 */
+	this.getCustomFields=function getCustomFields()
+	{
+		return (custom_fields);
+	};
+
+	/**
+	 * <b>[Required]</b> The local time zone name.
+	 * <p>Datashop prefers the use of tz database time zones, such as one from the "TZ" column in this <a href="http://en.wikipedia.org/wiki/List_of_zoneinfo_time_zones">List of zoneinfo time zones</a>.
+	 * Three-letter time zone abbreviations such as "EST" and "PST" are still valid, but are deprecated. If the field is not assigned
+	 * the default value of "America/New_York" will be used.</p>
+	 */
+	this.setTimeZone=function setTimeZone (zone)
+	{
+		pointer.ctatdebug ("setTimeZone ("+zone+")");
+
+		var timeZone="";
+
+		if ((zone==null) || (zone=="") || (zone==undefined))
+		{
+		    var tz = jstz.determine(); // Determines the time zone of the browser client
+
+		    pointer.ctatdebug ("Assigning detected timezone: " + tz.name ());
+
+			timeZone = tz.name(); // Returns the name of the time zone eg "Europe/Berlin"
+		}
+		else
+		{
+			if (zone.length > 50)
+				zone = zone.substr(0, 50);
+
+			if (zone.length == 3 || zone.length == 4)
+			{
+				pointer.ctatdebug("3 and 4 letter time zone abbreviations are deprecated. See list of tz database zone names for better options");
+			}
+
+			timeZone = zone;
+		}
+
+		if (pointer.raw!=null)
+		{
+			pointer.raw ['timezone']=timeZone;
+		}
+	};
+
+	/**
+	 *
+	 * @returns
+	 */
+	this.getTimeZone=function getTimeZone()
+	{
+		if (pointer.raw!=null)
+		{
+			if (pointer.raw ['timezone'])
+			{
+				return (pointer.raw ['timezone']);
+			}
+		}
+
+		return "UTC";
+	};
+
+	/**
+	 * Format the settings as needed for an attribute in the &lt;embed&gt; or &lt;object&gt; tag,
+	 * with ampersands ('&') between properties and equals signs between name and value.
+	 * @return {string} ampersand-delimited string
+	 */
+	this.listWithAmpersands = function()
+	{
+		var result = "";
+		for(var propertyName in pointer.raw)
+		{
+			var newProp = propertyName + '=' + encodeURIComponent(pointer.raw[propertyName]);
+			if(result != "")
+			{
+				result = result + '&' + newProp;
+			}
+			else
+			{
+				result = newProp;
+			}
+		}
+		pointer.ctatdebug("CTATConfiguration.listWithAmpersands() result " + result.substring(0,25) + "...");
+		return result;
+	};
+
+	/**
+	*
+	*/
+	this.listFlashVars=function listFlashVars ()
+	{
+		ctatdebug ("listFlashVars ()");
+
+		for(var propertyName in pointer.raw)
+		{
+			ctatdebug ("["+propertyName+"]: " + pointer.raw[propertyName]);
+		}
+	};
+
+	/**
+	*
+	*/
+	this.preParse=function preParse ()
+	{
+		//useDebugging=true;
+
+		ctatdebug ("preParse ()");
+
+		// Find missing variables that should be in any default flashvar set
+
+		if ((pointer.raw ['dataset_name']==undefined) || (pointer.raw ['dataset_name']==undefined))
+		{
+			pointer.raw ['dataset_name']='DefaultDataset';
+		}
+
+		/*
+		if ((pointer.raw ['problem_tutorflag']==undefined) || (pointer.raw ['problem_tutorflag']==undefined))
+		{
+			pointer.raw ['problem_tutorflag']='tutor';
+		}
+		*/
+
+		// Construct custom field sets for logging from flashvars
+		var nRaw = 0;
+		for (var propertyName in pointer.raw)
+		{
+			if ((propertyName=="VAR") || (propertyName=="var"))
+			{
+				custom_fields [propertyName]=pointer.raw[propertyName];
+			}
+			nRaw++;
+		}
+		pointer.ctatdebug("preParse() nRaw "+nRaw);
+
+		var index=0;
+		var valid=true;
+
+		while (valid==true)
+		{
+			valid=false;
+
+			var aName=('custom_field_name'+(index+1));
+			var aValue=('custom_field_value'+(index+1));
+
+			pointer.ctatdebug ("Trying : " + pointer.raw [aName] + "," + pointer.raw [aValue]);
+
+			if (pointer.raw [aName]!=null)
+			{
+				pointer.ctatdebug ("Adding: " + aName + "," + pointer.raw [aValue]);
+
+				custom_fields [pointer.raw [aName]]=pointer.raw [aValue];
+				valid=true;
+				index++;
+			}
+		}
+
+		//useDebugging=false;
+	};
+
+	/**
+	*
+	*/
+	this.getDatasetNames=function getDatasetNames ()
+	{
+		pointer.ctatdebug ("getDatasetNames ()");
+
+		// No need to do this again
+		if (tNames!=null)
+		{
+			return (tNames);
+		}
+
+		tNames=new Object ();
+		tNames=[];
+
+		var index=0;
+		var valid=true;
+
+		while (valid==true)
+		{
+			valid=false;
+
+			var aName=('dataset_level_name'+(index+1));
+
+			if (pointer.raw [aName]!=null)
+			{
+				pointer.ctatdebug ("Adding: " + aName + "," + pointer.raw [aName] );
+
+				tNames[index]=pointer.raw [aName];
+				valid=true;
+				index++;
+			}
+		}
+
+		return (tNames);
+	};
+
+	/**
+	*
+	*/
+	this.getDatasetTypes=function getDatasetTypes()
+	{
+		pointer.ctatdebug ("getDatasetTypes ()");
+
+		// No need to do this again
+		if (tTypes!=null)
+		{
+			return (tTypes);
+		}
+
+		tTypes=[];
+
+		var index=0;
+		var valid=true;
+
+		while (valid==true)
+		{
+			valid=false;
+
+			var aType=('dataset_level_type'+(index+1));
+
+			if (pointer.raw [aType]!=null)
+			{
+				pointer.ctatdebug ("Adding: " + aType + "," + pointer.raw [aType]);
+
+				tTypes [index]=pointer.raw [aType];
+				valid=true;
+				index++;
+			}
+		}
+
+		return (tTypes);
+	};
+
+	/**
+	*
+	*/
+	this.getConditionNames=function getConditionNames ()
+	{
+		var tDescNames=[];
+		var totalIndex=0;
+
+		if (pointer.raw ['study_condition_name']!=undefined)
+		{
+			if (pointer.raw ['study_condition_name']!="")
+			{
+				tDescNames.push (pointer.raw ['study_condition_name']);
+				totalIndex++;
+			}
+		}
+
+		var index=0;
+		var valid=true;
+
+		while (valid==true)
+		{
+			valid=false;
+
+			var aName=('study_condition_name'+(index+1));
+
+			if (pointer.raw [aName]!=null)
+			{
+				pointer.ctatdebug ("Adding: " + aName + "," + pointer.raw [aName] );
+
+				tDescNames[index+totalIndex]=pointer.raw [aName];
+				valid=true;
+				index++;
+			}
+		}
+
+		return (tDescNames);
+	};
+
+	/**
+	*
+	*/
+	this.getConditionTypes=function getConditionTypes()
+	{
+		tDescTypes=[];
+		var totalIndex=0;
+
+		if (pointer.raw ['study_condition_type']!=undefined)
+		{
+			if (pointer.raw ['study_condition_type']!="")
+			{
+				tDescTypes.push (pointer.raw ['study_condition_type']);
+				totalIndex++;
+			}
+		}
+
+		var index=0;
+		var valid=true;
+
+		while (valid==true)
+		{
+			valid=false;
+
+			var aName=('study_condition_type'+(index+1));
+
+			if (pointer.raw [aName]!=null)
+			{
+				pointer.ctatdebug ("Adding: " + aName + "," + pointer.raw [aName] );
+
+				tDescTypes[index+totalIndex]=pointer.raw [aName];
+				valid=true;
+				index++;
+			}
+		}
+
+		return (tDescTypes);
+	};
+
+	/**
+	*
+	*/
+	this.getConditionDescriptions=function getConditionDescriptions()
+	{
+		//useDebugging=true;
+
+		pointer.ctatdebug ("getConditionDescriptions ()");
+
+		tDesc=[];
+		var totalIndex=0;
+
+		if (pointer.raw ['study_condition_description'])
+		{
+			if (pointer.raw ['study_condition_description']!=="")
+			{
+				pointer.ctatdebug ("Adding study_condition_description: " + pointer.raw ['study_condition_description']);
+
+				tDesc.push (pointer.raw ['study_condition_description']);
+
+				totalIndex++;
+			}
+		}
+
+		var index=0;
+		var valid=true;
+
+		while (valid===true)
+		{
+			valid=false;
+
+			var aName=('study_condition_description'+(index+1));
+
+			if (pointer.raw [aName]!=null)
+			{
+				pointer.ctatdebug ("Adding: " + aName + "," + pointer.raw [aName] );
+
+				tDesc[index+totalIndex]=pointer.raw [aName];
+				valid=true;
+				index++;
+			}
+		}
+
+		//useDebugging=false;
+
+		return (tDesc);
+	};
+
+	//-------------------------------------------------------------------------------------
+	// Access methods
+	//-------------------------------------------------------------------------------------
+
+	/**
+	 * General getter.
+	 * @param {string} name parameter name
+	 * @returns value for name
+	 */
+	this.get = function(name)
+	{
+		return pointer.raw[name];
+	};
+
+	/**
+	 * General setter.
+	 * @param {string} name parameter name
+	 * @param {object} value for name
+	 */
+	this.set = function(name, value)
+	{
+		if(name)
+		{
+			pointer.raw[name] = value;
+		}
+	};
+
+	/**
+	 * Gang setter.
+	 * @param {object} newParams revise raw properties named properties' values
+	 */
+	this.setParams = function(newParams)
+	{
+		if(newParams)
+		{
+			for(var name in newParams)
+			{
+				pointer.set(name, newParams[name]);
+			}
+		}
+	};
+
+	/**
+	* Tell whether we're delivering this tutor to an instructor (to review a student's work, e.g.)
+	* or to a student (the default). This implementation follows OLI use.
+	* @return {boolean} true if delivering to an instructor
+	*/
+	this.isInstructorMode = function isInstructorMode()
+	{
+		var vars = this.getRawFlashVars ();
+		if (vars && vars ['deliverymode'])
+		{
+			return (vars ['deliverymode']=='delivery' ? false : true);
+		}
+		else
+		{
+			return false;
+		}
+	};
+
+	/**
+	*
+	*/
+	this.getLoggingLibrary = function getLoggingLibrary()
+	{
+		if (commLoggingLibrary===null)
+		{
+			commLoggingLibrary=new CTATLoggingLibrary (true);
+		}
+
+		return (commLoggingLibrary);
+	};
+
+	/**
+	*
+	*/
+	this.setPreviewMode = function setPreviewMode(aConfigurationObject,aValue)
+	{
+		pointer.raw ['previewMode'] = aValue;
+	};
+
+	/**
+	*
+	*/
+	this.setCenterTutor = function setCenterTutor(aConfigurationObject,aValue)
+	{
+		pointer.raw ['centerTutor'] = aValue;
+	};
+
+	/**
+	*
+	*/
+	this.setTutorWidth = function setTutorWidth(aConfigurationObject,w)
+	{
+		pointer.raw ['width'] = w;
+	};
+
+	/**
+	*
+	*/
+	this.setTutorHeight = function setTutorHeight(aConfigurationObject,h)
+	{
+		pointer.raw ['height'] = h;
+	};
+
+	/**
+	*
+	*/
+	this.setTutorDimensions = function setTutorDimensions(aConfigurationObject,w,h)
+	{
+		pointer.raw ['width'] = w;
+		pointer.raw ['height'] = h;
+	};
+
+	/**
+	*
+	*/
+	this.setTutorValue = function setTutorValue(aConfigurationObject,aKey,aValue)
+	{
+		pointer.raw [aKey] = aValue;
+	};
+
+	/**
+	* Valid arguments to this function are:
+	*	socket
+	*	javascript
+	*	http
+	*	https
+	*	applet
+	*	websocket
+	*/
+	this.setCommunicationMode = function setCommunicationMode(aConfigurationObject,aMode)
+	{
+		pointer.raw ['tutoring_service_communication'] = aMode;
+	};
+
+	/**
+	* Default: http://localhost
+	*/
+	this.setRemoteSocketURL = function setRemoteSocketURL(aConfigurationObject,aURL)
+	{
+		pointer.raw ['remoteSocketURL'] = aURL;
+	};
+
+	/**
+	* Default: "80"
+	*/
+	this.setRemoteSocketPort = function setRemoteSocketPort(aConfigurationObject,aPort)
+	{
+		pointer.raw ['remoteSocketPort'] = aPort;
+	};
+};
+
+CTATConfiguration.prototype = Object.create(CTATBase.prototype);
+CTATConfiguration.prototype.constructor = CTATConfiguration;
+
+/**
+ * The singleton configuration object, an instance of CTATConfiguration.
+ */
+CTATConfiguration.theConfObject = null;
+
+/** FIXME remove this global when code has been revised. */
+flashVars = null;
+
+/**
+ * Generate or provide an object that represents a single configuration instance for
+ * a tutor. This object can be created by ctatloader to represent the LMS (environment)
+ * or can be created manually on an html page directly by a user.
+ * @returns {object} theConfObject
+ */
+CTATConfiguration.generateDefaultConfigurationObject = function()
+{
+	if (!CTATConfiguration.theConfObject){
+		this.theConfObject = new CTATConfiguration ();
+
+		var rawList=this.theConfObject.generateDefaultConfiguration(this.theConfObject.raw);
+
+		this.theConfObject.assignRawFlashVars (rawList);
+
+		if(this.theConfObject.get("session_id")=="none")   // FIXME ensure we have a session_id
+		{
+			this.theConfObject.set("session_id", CTATGuid.guid());
+		}
+		flashVars = this.theConfObject;    // FIXME remove when we can stop saying flashVars
+
+		console.log("CTATConfiguration.generateDefaultConfigurationObject() flashVars.getRawFlashVars()['session_id'] "+flashVars.getRawFlashVars()['session_id']);
+		console.log('flashVars.getRawFlashVars()[\'remoteSocketPort\'] '+flashVars.getRawFlashVars()['remoteSocketPort']);
+	}
+
+	return (this.theConfObject);
+};
+
+/**
+ * Static access to getRawFlashVars().
+ */
+CTATConfiguration.getRawFlashVars = function()
+{
+	CTATConfiguration.generateDefaultConfigurationObject();
+	return CTATConfiguration.theConfObject.getRawFlashVars();
+};
+
+/**
+ * Static access to get().
+ * @param {string} name parameter name
+ */
+CTATConfiguration.get = function(name)
+{
+	CTATConfiguration.generateDefaultConfigurationObject();
+	return CTATConfiguration.theConfObject.get(name);
+};
+
+/**
+ * Static access to set().
+ * @param {string} name parameter name
+ * @param {object} value new parameter value
+ */
+CTATConfiguration.set = function(name, value)
+{
+	CTATConfiguration.generateDefaultConfigurationObject();
+	CTATConfiguration.theConfObject.set(name, value);
+};
+
+/**
+ * Static access to setParams().
+ * @param {object} newParams properties are new parameter name-value pairs
+ */
+CTATConfiguration.setParams = function(newParams)
+{
+	CTATConfiguration.generateDefaultConfigurationObject();
+	CTATConfiguration.theConfObject.setParams(newParams);
+};
+
+/**
+ * Static access to getSingleParameterValues().
+ * @param {Array<string>} paramNames parameter names to search
+ * @return {Array<string>} of values found; empty array if no nonempty values found
+ */
+CTATConfiguration.getSingleParameterValues = function(paramNames)
+{
+	CTATConfiguration.generateDefaultConfigurationObject();
+	return CTATConfiguration.theConfObject.getSingleParameterValues(paramNames);
+};
+
+/**
+ * Static access to usingFlash().
+ */
+CTATConfiguration.usingFlash = function()
+{
+	CTATConfiguration.generateDefaultConfigurationObject();
+	return CTATConfiguration.theConfObject.usingFlash();
+};
+
+CTATConfiguration.prototype['set'] = CTATConfiguration.prototype.set;
+CTATConfiguration.prototype['get'] = CTATConfiguration.prototype.get;
+
+//exports = CTATConfiguration;

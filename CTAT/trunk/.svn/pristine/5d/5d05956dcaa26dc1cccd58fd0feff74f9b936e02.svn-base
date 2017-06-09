@@ -1,0 +1,373 @@
+/**-----------------------------------------------------------------------------
+ $Author$
+ $Date$
+ $HeadURL$
+ $Revision$
+
+ -
+ License:
+ -
+ ChangeLog:
+ -
+ Notes:
+
+ */
+goog.provide('CTATTutorMessageBuilder');
+
+goog.require('CTATBase');
+/**
+ *
+ */
+CTATTutorMessageBuilder = function()
+{
+	CTATBase.call(this, "CTATTutorMessageBuilder", "__undefined__");
+};
+/****************************** STATIC METHODS ****************************************************/
+
+/**
+ * Tell whether an indicator value is a hint result.
+ * @param {object} indicatorObj
+ * @return {boolean} - true if indicatorObj.startsWith HINT ignoring case
+ */
+CTATTutorMessageBuilder.isHint = function(indicatorObj)
+{
+	if(indicatorObj === null || typeof(indicatorObj) === 'undefined')
+	{
+		return false;
+	}
+
+	var indicator = indicatorObj.toString().toLowerCase();
+
+	return (indicator.indexOf(CTATTutorMessageBuilder.HINT.toLowerCase()) === 0);
+};
+
+/**
+ * Tell whether an indicator value is a correct result.
+ * @param {Object} indicatorObj
+ * @return {boolean} - true if indicatorObj.startsWith({@value #CORRECT}) ignoring case
+ */
+CTATTutorMessageBuilder.isCorrect = function(indicatorObj)
+{
+	if(indicatorObj === null || typeof(indicatorObj) === 'undefined')
+	{
+		return false;
+	}
+
+	var indicator = indicatorObj.toString().toLowerCase();
+
+	if(indicator.indexOf(CTATTutorMessageBuilder.CORRECT.toLowerCase()) === 0)
+	{
+		return true;
+	}
+
+	return (indicator.indexOf(CTATExampleTracerLink.SUCCESS.toLowerCase()) === 0);
+};
+
+//this assignment must precede any addition of functions to the .prototype object
+CTATTutorMessageBuilder.prototype = Object.create(CTATBase.prototype);
+
+CTATTutorMessageBuilder.prototype.createInCorrectActionMessage = function(transactionID, sai)
+{
+	this.ctatdebug("createInCorrectActionMessage ()");
+
+	var message = "<message><verb>SendNoteProperty</verb><properties><MessageType>InCorrectAction</MessageType>";
+
+	message += "<transaction_id>" + transactionID + "</transaction_id>";
+	this.ctatdebug ("In CTATTutorMessageBuilder " + sai);
+	message += sai.toXMLString(false);
+	message += "</properties></message>";
+
+	return (message);
+};
+
+/**
+ *
+ */
+CTATTutorMessageBuilder.prototype.createCorrectActionMessage = function(transactionID, sai)
+{
+	this.ctatdebug("createCorrectActionMessage ()");
+
+	var message = "<message><verb>SendNoteProperty</verb><properties><MessageType>CorrectAction</MessageType>";
+	message += "<transaction_id>" + transactionID + "</transaction_id>";
+	message += sai.toXMLString(false);
+	message += "</properties></message>";
+
+	return (message);
+};
+
+/**
+ *
+ */
+CTATTutorMessageBuilder.prototype.createAssociatedRulesMessageForHint = function(hints, sai, actor, skillBarVector, stepID, transactionID, nTotalHints, currentHint)
+{
+	nTotalHints = (nTotalHints == undefined ? hints.length : nTotalHints);
+	currentHint = (currentHint == undefined ? 1 : currentHint);
+	var message = "<message><verb>SendNoteProperty</verb><properties><MessageType>AssociatedRules</MessageType>";
+	message += "<Indicator>Hint</Indicator>";
+	message += sai.toXMLString();
+	message += "<TutorAdvice>";
+	for (var index = 0; index < hints.length; index++)
+	{
+		message += "<value><![CDATA[" + hints[index] + "]]></value>";
+	}
+	message += "</TutorAdvice><TotalHintsAvailable>" + nTotalHints + "</TotalHintsAvailable>" + "<CurrentHintNumber>" + currentHint + "</CurrentHintNumber>";
+	message += "<Actor>" + actor + "</Actor>";
+	message += this.fmtSkillBarVector(skillBarVector);
+	message += "<skillBarDelimiter><![CDATA[`]]></skillBarDelimiter>";
+	if(stepID || stepID === 0)
+	{
+		message += "<StepID>" + stepID + "</StepID>";
+	}
+	message += "<transaction_id>" + transactionID + "</transaction_id>";
+	message += "<LogAsResult>true</LogAsResult>";
+	message += "</properties></message>";
+	return (message);
+};
+
+/**
+ *
+ */
+CTATTutorMessageBuilder.prototype.createAssociatedRulesMessageForAction = function(indicator, sai, actor, studentSAI, skillBarVector, stepID, transactionID, tutorAdvice)
+{
+	var message = "<message><verb>SendNoteProperty</verb><properties><MessageType>AssociatedRules</MessageType>";
+	message += "<Indicator>" + (CTATTutorMessageBuilder.isCorrect(indicator) ? "Correct" : "InCorrect")  + "</Indicator>";
+	message += sai.toXMLString();
+	var temp = studentSAI.toXMLString().replace("<Selection>", "<StudentSelection>").replace("<Action>", "<StudentAction>").replace("<Input>", "<StudentInput>");
+	temp = temp.replace("</Selection>", "</StudentSelection>").replace("</Action>", "</StudentAction>").replace("</Input>", "</StudentInput>");
+	message += temp;
+	message += "<Actor>" + actor + "</Actor>";
+	message += this.fmtSkillBarVector(skillBarVector);
+	message += "<skillBarDelimiter><![CDATA[`]]></skillBarDelimiter>";
+	message += "<StepID>" + stepID + "</StepID>";
+	message += "<transaction_id>" + transactionID + "</transaction_id>";
+	if (tutorAdvice)
+	{
+		message += "<TutorAdvice><![CDATA[" + tutorAdvice + "]]></TutorAdvice>";
+	}
+	message += "<LogAsResult>true</LogAsResult>";
+	message += "<end_of_transaction>" + (tutorAdvice ? false : true) + "</end_of_transaction>";
+	message += "</properties></message>";
+	return (message);
+};
+
+/**
+ * Tell whether this AssociatedRules message reports a Done step. Also sets a
+ * "correct?" boolean according to isCorrect(indicatorObj).
+ * @param assocRulesResp checks indicator and selection properties
+ * @param correct single-element array to receive an indicator as to whether
+ *        this Done step was correct (true) or incorrect (false)
+ * @return true if selection property matches "Done"
+ */
+CTATTutorMessageBuilder.prototype.isDoneStep = function(assocRulesResp, correct)
+{
+	correct[0] = false;
+	var indicatorObj = assocRulesResp.getIndicator();
+	if(!indicatorObj)
+	{
+		return false;
+	}
+	var selectionObj = assocRulesResp.getStudentSelection();
+	if(!selectionObj)
+	{
+		selectionObj = assocRulesResp.getProperty("tool_selection");
+	}
+	correct[0] = CTATTutorMessageBuilder.isCorrect(indicator);
+	var result = ("done" == selectionObj);
+	this.ctatdebug("isDoneStep() indicatorObj "+indicatorObj+", selectionObj "+selectionObj+", correct[0] "+correct[0]+", result "+result);
+	return result;
+};
+
+/**
+ *
+ */
+CTATTutorMessageBuilder.prototype.createHintMessage = function(hints, sai, stepID, transactionID)
+{
+	var message = "<message><verb>SendNoteProperty</verb><properties><MessageType>ShowHintsMessage</MessageType>";
+	message += "<HintsMessage>";
+	for (var index = 0; index < hints.length; index++)
+	{
+		message += "<value><![CDATA[" + hints[index] + "]]></value>";
+	}
+	message += "</HintsMessage>";
+	message += sai.toXMLString();
+	message += "<transaction_id>" + transactionID + "</transaction_id>";
+	message += "</properties></message>";
+	return (message);
+};
+
+/**
+ * Generate a TutoringServiceError message
+ * @param errorType value for <ErrorType> element
+ * @param details value for <Details> element
+ * @return XML message as string
+ */
+CTATTutorMessageBuilder.prototype.createErrorMessage = function(errorType, details)
+{
+	var message = "<message><verb>SendNoteProperty</verb><properties><MessageType>TutoringServiceError</MessageType><ErrorType>";
+	//message += (errorType ? errorType : "Unknown Error");
+	message += errorType;
+	message += "</ErrorType><Details>";
+	message += (details ? details : "");
+	message += "</Details></properties></message>";
+	return (message);
+};
+
+/**
+ * Generate a Tutoring Service Success message
+ * @param txnID value for <transaction_id> element
+ * @param successMsg value for <SuccessMsg> element
+ * @return XML message as string
+ */
+CTATTutorMessageBuilder.prototype.createSuccessMessage = function(txnID, successMsg)
+{
+	var message = "<message><verb>SendNoteProperty</verb><properties><MessageType>SuccessMessage</MessageType>";
+	message += "<SuccessMsg><![CDATA[" + successMsg +"]]></SuccessMsg>";
+	message += "<transaction_id>" + txnID + "</transaction_id>";
+	message += "<end_of_transaction>true</end_of_transaction>";
+	message += "</properties></message>";
+	return (message);
+};
+
+/**
+ * Generate a Tutoring Service Buggy message
+ * @param txnID value for <transaction_id> element
+ * @param buggyMsg value for <BuggyMsg> element
+ * @return XML message as string
+ */
+CTATTutorMessageBuilder.prototype.createBuggyMessage = function(txnID, buggyMsg)
+{
+	var message = "<message><verb>SendNoteProperty</verb><properties><MessageType>BuggyMessage</MessageType>";
+	message += "<BuggyMsg><![CDATA[" + buggyMsg +"]]></BuggyMsg>";
+	message += "<transaction_id>" + txnID + "</transaction_id>";
+	message += "<end_of_transaction>true</end_of_transaction>";
+	message += "</properties></message>";
+	return (message);
+};
+
+/**
+ * Create a SendWidgetLock message.
+ * @param lockWidget boolean value for WidgetLockFlag property
+ * @return message as XML string
+ */
+CTATTutorMessageBuilder.prototype.createLockWidgetMsg = function(lockWidget)
+{
+	var message = "<message><verb>SendNoteProperty</verb><properties><MessageType>SendWidgetLock</MessageType>";
+	message += "<WidgetLockFlag>" + lockWidget + "</WidgetLockFlag>";
+	message += "</properties></message>";
+	return (message);
+};
+
+/**
+ * Create a message with a given message type and list of properties
+ * @param messageType
+ * @param props will add property for each property in this object
+ * @return message as XML string
+ */
+CTATTutorMessageBuilder.prototype.createMessage = function(messageType, props)
+{
+	var message = "<message><verb>SendNoteProperty</verb><properties><MessageType>"+messageType+"</MessageType>";
+	if(props)
+	{
+		for(var prop in props)
+        {
+			message += "<"+prop+">" + props[prop] + "</"+prop+">";
+		}
+	}
+	message += "</properties></message>";
+	this.ctatdebug("CTATTutorMessageBuilder.createMessage("+messageType+", "+props+") returns "+message);
+	return (message);
+};
+
+/**
+ *
+ */
+CTATTutorMessageBuilder.prototype.createStateGraphMessage = function(caseInsensitive,isUnordered,lockWidget,suppressStudentFeedback,highlightRightSelection,tracerConfirmDone,skillBars)
+{
+	var message = "<message><verb>SendNoteProperty</verb><properties><MessageType>StateGraph</MessageType>";
+	message += "<caseInsensitive>" + caseInsensitive +"</caseInsensitive>";
+	message += "<unordered>" + isUnordered + "</unordered>";
+	message += "<lockWidget>" + lockWidget + "</lockWidget>";
+	message += "<suppressStudentFeedback>" + suppressStudentFeedback + "</suppressStudentFeedback>";
+	message += "<highlightRightSelection>" + highlightRightSelection + "</highlightRightSelection>";
+	message += "<confirmDone>" + tracerConfirmDone + "</confirmDone>";
+	message += "<skillBarDelimiter><![CDATA[`]]></skillBarDelimiter>";
+	message += this.fmtSkillBarVector(skillBars);
+	message += "</properties></message>";
+	return (message);
+};
+
+/**
+ * Format skill bars for transmission to the UI. Used in AssociatedRules and StateGraph messages.
+ * @param {Array<string>} skillBars
+ * @return {string} Skills element for messages
+ */
+CTATTutorMessageBuilder.prototype.fmtSkillBarVector = function(skillBars)
+{
+	var result = "";
+	if (skillBars !== undefined && skillBars !== null && skillBars.length > 0)
+	{
+		result += "<Skills>";
+		for(var i = 0 ;i<skillBars.length;i++)
+		{
+			result +="<value><![CDATA[" + skillBars[i] + "]]></value>";
+		}
+		result += "</Skills>";
+	}
+	return result;
+};
+
+/**
+ *
+ */
+CTATTutorMessageBuilder.prototype.createHighlightWidgetMessage = function(selection, action, highlightMsgText, txnID)
+{
+	var message = "<message><verb>SendNoteProperty</verb><properties><MessageType>HighlightMsg</MessageType>";
+	message += "<HighlightMsgText>" + highlightMsgText +"</HighlightMsgText>";
+	message += "<Selection><value>" + selection + "</value></Selection>";
+	message += "<Action><value>" + action + "</value></Action>";
+	message += "<transaction_id>" + txnID + "</transaction_id>";
+	message += "<end_of_transaction>true</end_of_transaction>";
+	message += "</properties></message>";
+	return (message);
+};
+
+/****************************** CONSTANTS ****************************************************/
+
+
+/** Property name for trigger parameter of SemanticEventElement
+ * type String
+ */
+Object.defineProperty(CTATTutorMessageBuilder, "TRIGGER", {enumerable: false, configurable: false, writable: false, value: "trigger"});
+
+/** Property name for subtype parameter of SemanticEventElement
+ * type String
+ */
+Object.defineProperty(CTATTutorMessageBuilder, "SUBTYPE", {enumerable: false, configurable: false, writable: false, value: "subtype"});
+
+/** Value for SemanticEventElement subtype indicating tutor performed step for student.
+ * type String
+ */
+Object.defineProperty(CTATTutorMessageBuilder, "TUTOR_PERFORMED", {enumerable: false, configurable: false, writable: false, value: "tutor-performed"});
+
+/**
+ * Indicator value in buildAssociatedRules(..)
+ * for hint responses.
+ * type String
+ */
+Object.defineProperty(CTATTutorMessageBuilder, "HINT", {enumerable: false, configurable: false, writable: false, value: "Hint"});
+
+/**
+ * Indicator value in buildAssociatedRules(..)
+ * type String
+ * for correct evaluations.
+ */
+Object.defineProperty(CTATTutorMessageBuilder, "CORRECT", {enumerable: false, configurable: false, writable: false, value: "Correct"});
+
+
+CTATTutorMessageBuilder.prototype.constructor = CTATTutorMessageBuilder;
+
+
+if(typeof module !== 'undefined')
+{
+	module.exports = CTATTutorMessageBuilder;
+}

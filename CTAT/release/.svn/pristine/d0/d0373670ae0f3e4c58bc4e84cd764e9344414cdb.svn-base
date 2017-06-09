@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ProblemSet initial_sequence="0" selection_algorithm="sequential" description="Student will interpret information displayed on a box and whisker graph." max_count="1000" label="8.26 Interpreting Box-and-Whisker Graphs" max_repeat="1" name="8.26">
+  <Problems>
+    <Problem selection_features="" description="8.26.2" problem_file="8.26.2.brd" name="Problem2" student_interface="boxPlot_interp2.swf" tutor_flag="tutor">
+      <Skills>
+        <Skill category="Box_and_Whisker_Plots" occurrences="1" name="Identify_value_given_quartile"/>
+        <Skill category="Box_and_Whisker_Plots" occurrences="1" name="Identify_value_for_max_or_min"/>
+        <Skill category="Box_and_Whisker_Plots" occurrences="1" name="Identify_value_given_quartile"/>
+        <Skill category="Box_and_Whisker_Plots" occurrences="1" name="Identify_value_for_max_or_min"/>
+        <Skill category="Box_and_Whisker_Plots" occurrences="1" name="Identify_value_given_quartile"/>
+      </Skills>
+    </Problem>
+    <Problem selection_features="" description="8.26.3" problem_file="8.26.3.brd" name="Problem3" student_interface="boxPlot_interp2.swf" tutor_flag="tutor">
+      <Skills>
+        <Skill category="Box_and_Whisker_Plots" occurrences="1" name="Identify_value_given_quartile"/>
+        <Skill category="Box_and_Whisker_Plots" occurrences="1" name="Identify_value_given_quartile"/>
+        <Skill category="Box_and_Whisker_Plots" occurrences="1" name="Identify_value_for_max_or_min"/>
+        <Skill category="Box_and_Whisker_Plots" occurrences="1" name="Identify_value_for_max_or_min"/>
+        <Skill category="Box_and_Whisker_Plots" occurrences="1" name="Identify_value_given_quartile"/>
+      </Skills>
+    </Problem>
+    <Problem selection_features="" description="8.26.4" problem_file="8.26.4.brd" name="Problem4" student_interface="boxPlot_interp2.swf" tutor_flag="tutor">
+      <Skills>
+        <Skill category="Box_and_Whisker_Plots" occurrences="1" name="Identify_value_given_quartile"/>
+        <Skill category="Box_and_Whisker_Plots" occurrences="1" name="Identify_value_given_quartile"/>
+        <Skill category="Box_and_Whisker_Plots" occurrences="1" name="Identify_value_for_max_or_min"/>
+        <Skill category="Box_and_Whisker_Plots" occurrences="1" name="Identify_value_given_quartile"/>
+        <Skill category="Box_and_Whisker_Plots" occurrences="1" name="Identify_value_given_quartile"/>
+      </Skills>
+    </Problem>
+    <Problem selection_features="" description="8.26.5" problem_file="8.26.5.brd" name="Problem5" student_interface="boxPlot_interp2.swf" tutor_flag="tutor">
+      <Skills>
+        <Skill category="Box_and_Whisker_Plots" occurrences="1" name="Identify_value_given_quartile"/>
+        <Skill category="Box_and_Whisker_Plots" occurrences="1" name="Identify_value_given_quartile"/>
+        <Skill category="Box_and_Whisker_Plots" occurrences="1" name="Identify_value_for_max_or_min"/>
+        <Skill category="Box_and_Whisker_Plots" occurrences="1" name="Identify_value_given_quartile"/>
+        <Skill category="Box_and_Whisker_Plots" occurrences="1" name="Identify_value_for_max_or_min"/>
+      </Skills>
+    </Problem>
+    <Problem selection_features="" description="8.26.6" problem_file="8.26.6.brd" name="Problem6" student_interface="boxPlot_interp2.swf" tutor_flag="tutor">
+      <Skills>
+        <Skill category="Box_and_Whisker_Plots" occurrences="1" name="Identify_value_given_end_of_range"/>
+        <Skill category="Box_and_Whisker_Plots" occurrences="1" name="Identify_value_given_quartile"/>
+        <Skill category="Box_and_Whisker_Plots" occurrences="1" name="Identify_value_for_max_or_min"/>
+        <Skill category="Box_and_Whisker_Plots" occurrences="1" name="Identify_value_for_max_or_min"/>
+        <Skill category="Box_and_Whisker_Plots" occurrences="1" name="Identify_value_given_quartile"/>
+      </Skills>
+    </Problem>
+    <Problem selection_features="" description="8.26.7" problem_file="8.26.7.brd" name="Problem7" student_interface="boxPlot_interp2.swf" tutor_flag="tutor">
+      <Skills>
+        <Skill category="Box_and_Whisker_Plots" occurrences="1" name="Identify_value_given_quartile"/>
+        <Skill category="Box_and_Whisker_Plots" occurrences="1" name="Identify_value_for_max_or_min"/>
+        <Skill category="Box_and_Whisker_Plots" occurrences="1" name="Identify_value_given_end_of_range"/>
+        <Skill category="Box_and_Whisker_Plots" occurrences="1" name="Identify_value_given_quartile"/>
+        <Skill category="Box_and_Whisker_Plots" occurrences="1" name="Identify_value_given_quartile"/>
+      </Skills>
+    </Problem>
+    <Problem selection_features="" description="8.26.8" problem_file="8.26.8.brd" name="Problem8" student_interface="boxPlot_interp2.swf" tutor_flag="tutor">
+      <Skills>
+        <Skill category="Box_and_Whisker_Plots" occurrences="1" name="Identify_value_given_end_of_range"/>
+        <Skill category="Box_and_Whisker_Plots" occurrences="1" name="Identify_value_for_max_or_min"/>
+        <Skill category="Box_and_Whisker_Plots" occurrences="1" name="Identify_value_given_quartile"/>
+        <Skill category="Box_and_Whisker_Plots" occurrences="1" name="Identify_value_given_quartile"/>
+        <Skill category="Box_and_Whisker_Plots" occurrences="1" name="Identify_value_for_max_or_min"/>
+      </Skills>
+    </Problem>
+  </Problems>
+  <Categories>
+    <Collection name="general"/>
+    <Standard category="standard" name="PA"/>
+    <Standard category="standard" name="NCTM"/>
+    <Standard category="standard" name="CommonCore"/>
+    <Standard category="standard" name="Student"/>
+    <Grade name="8"/>
+    <Standard category="reporting_category" name="PA.E"/>
+    <Standard category="assessment_anchor" name="PA.E.1"/>
+    <Standard category="strand" name="NCTM.E"/>
+    <Standard category="grade_level" name="CommonCore.8"/>
+    <Standard category="strand" name="CommonCore.8.SP"/>
+    <Standard category="strand" name="Student.BWP"/>
+    <Collection name="individual"/>
+    <Collection name="random_hints"/>
+  </Categories>
+  <Skills>
+    <Skill pLearn="0.2" category="Box_and_Whisker_Plots" pGuess="0.2" pSlip="0.1" description="Identify value for maximum or minimum" label="Identify value for maximum or minimum" name="Identify_value_for_max_or_min" pKnown="0.25"/>
+    <Skill pLearn="0.2" category="Box_and_Whisker_Plots" pGuess="0.2" pSlip="0.1" description="Identify value given a quartile" label="Identify value given a quartile" name="Identify_value_given_quartile" pKnown="0.25"/>
+    <Skill pLearn="0.2" category="Box_and_Whisker_Plots" pGuess="0.2" pSlip="0.1" description="Identify value given an end of a range" label="Identify value given an end of a range" name="Identify_value_given_end_of_range" pKnown="0.25"/>
+  </Skills>
+  <Assets>
+  </Assets>
+</ProblemSet>

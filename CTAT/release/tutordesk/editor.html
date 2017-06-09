@@ -1,0 +1,439 @@
+<html>
+	<head>
+	<title>CTAT HTML Editor</title>
+	
+	<!-- Favicon -->
+		<link rel="icon" href="favicon.ico" />
+	
+	<!-- CSS -->
+		<link rel="stylesheet" type="text/css" href="css/jstree/style.min.css" />
+		<link rel="stylesheet" type="text/css" href="css/silex/admin.css">	
+		<link rel="stylesheet" type="text/css" href="css/themes-easyui/ctat/easyui.css" />
+		<link rel="stylesheet" type="text/css" href="css/jqwidgets/jqx.base.css" />	
+		<link rel="stylesheet" type="text/css" href="css/windows7.css"/>
+		<link rel="stylesheet" type="text/css" href="css/jqxwidgets.css"/>
+		<link rel="stylesheet" type="text/css" href="css/jqwidgets/fontselector.css"/>
+		<link rel="stylesheet" type="text/css" href="css/ctat/blocker.css"/>
+		<link rel="stylesheet" type="text/css" href="css/shelf.css"/>	
+		<link rel="stylesheet" type="text/css" href="css/flexlayout.css"/>
+		<link rel="stylesheet" type="text/css" href="css/divTable.css"/>
+		<link rel="stylesheet" type="text/css" href="css/rightclick.css"/>
+		
+	<!-- JS -->
+		<script type="text/javascript" src="js/jquery-3.1.0.min.js"></script>	
+		<script type="text/javascript" src="https://apis.google.com/js/client.js"></script>
+		<script type="text/javascript" src="js/dropbox-sdk/dropbox.js"></script>
+		<script type="text/javascript" src="js/ctat/ctat_editor.min.js"></script>
+		<script type="text/javascript" src="js/jstree.min.js"></script>		
+		<script type="text/javascript" src="js/tutordesk.js"></script>
+		<script type="text/javascript" src="js/jquery-ui/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="js/jqwidgets/jquery.fontselector.js"></script>
+		<script type="text/javascript" src="node_modules/jszip/dist/jszip.js"></script>
+		<script type="text/javascript" src="js/download.js"></script>
+
+	<!--Silex Resources-->
+		<script type="text/javascript" src="ace/src/ace.js" charset="utf-8"></script>	
+		<script type="text/javascript" src="js/silex/ace/ext-language_tools.js"></script>
+		<script type="text/javascript" src="js/silex/cloud-explorer.js"></script>    
+		<script type="text/javascript" src="js/silex/beautify-html.js"></script>
+		<script type="text/javascript" src="js/silex/admin.js"></script>
+		<script type="text/javascript" src="js/silex/closure-patches.js"></script>
+	
+		<!-- JQWidgets -->
+		<script type="text/javascript" src="js/jqwidgets/jqxcore.js"></script>
+		<script type="text/javascript" src="js/jqwidgets/jqxdata.js"></script> 
+		<script type="text/javascript" src="js/jqwidgets/jqxbuttons.js"></script>
+		<script type="text/javascript" src="js/jqwidgets/jqxscrollbar.js"></script>
+		<script type="text/javascript" src="js/jqwidgets/jqxmenu.js"></script>
+		<script type="text/javascript" src="js/jqwidgets/jqxgrid.js"></script>
+		<script type="text/javascript" src="js/jqwidgets/jqxgrid.selection.js"></script> 
+		<script type="text/javascript" src="js/jqwidgets/jqxgrid.columnsresize.js"></script> 
+		<script type="text/javascript" src="js/jqwidgets/jqxgrid.sort.js"></script>	
+		<script type="text/javascript" src="js/jqwidgets/jqxgrid.edit.js"></script>	
+
+	</head>
+	<body style="overflow: hidden;">
+		<!-- File Chooser Dialog -->	
+		<div id="editor_filepicker2" class="ctatdialog" style="position: absolute; visibility: hidden; left: 10px; top: 10px; width: 500px; height: 335px;">
+			<img id="closeicon" class="ctatwindowclose" src="css/images/icon_close.png" style="margin: 0px; padding: 3px; width: 20px; height: 20px; float: right;">
+			<h4 id="editor_filepicker2-title" class="ctattitle">Google Drive</h4>
+			<div id="editor_filepicker_content" class="dialogwindow" style="overflow: hidden; background: #d4d0c8;">
+				<div id="editor_filepicker_toolbar" style="padding: 0px; padding-top: 2px; margin: 0px; width: 100%; height: 22px;">
+					<button id="fdialogreload" class="toolButton" title="Refresh the file listing"></button>
+					<button id="fdialognewfolder" class="toolButton" title="Create a new folder"></button>
+					<button id="fdialogdelete" class="toolButton" title="Delete selected file or folder"></button>
+				</div>
+				<div id="editor_filepicker_layout" style="padding: 2px; border: 0px rgb(140, 137, 137) inset; height: 100%">
+					<div class="flexbox-container flex-box" style="margin: 2px; height: calc(100% - 116px); background: #ffffff">
+						<div id="gdrive" class="columnwest col" style="margin: 0px; padding: 0px; overflow: scroll;border: 1px rgb(89,89,89) inset;">				
+							<div style="position: relative; margin: auto; margin-top: 90px; border: 0px solid black; width: 130px; height: 30px;">
+							Loading ...
+							<br>
+							<img src="css/images/loading31.gif" style="margin-top: 2px;">
+							</div>
+						</div>
+						<div id="choosergripper" class="handle">
+						</div>
+						<div id="gdrivecontainer" class="columneast col" style="margin: 0px; padding: 0px; overflow: hidden; border: 1px rgb(89,89,89) inset;">
+							<div id="gdrivedetailstt" style="width: 100%; height: 100%">
+								<div style="position: relative; margin: auto; margin-top: 90px; border: 0px solid black; width: 130px; height: 30px;">
+								Loading ...
+								<br>
+								<img src="css/images/loading31.gif" style="margin-top: 2px;">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="divTable">
+						<div class="divTableBody">
+							<div class="divTableRow">
+								<div class="divTableCell" style="width: 80px;">File Name:</div>
+								<div class="divTableCell"><input id="fname_input" size="65" type="text" style="width: 100%; height: 25px;"></div>
+							</div>					
+							<div class="divTableRow">
+								<div class="divTableCell" style="width: 80px;">File Type:</div>
+								<div class="divTableCell">						
+									<select id="fdialogfiletype" style="width: 75px; height: 25px;">
+										<option value="all">all types</option>
+										<option value="html">html</option>
+										<option value="css">css</option>
+										<option value="image">images</option>
+										<option value="js">javascript</option>
+									</select>
+								</div>
+							</div>				
+							<div class="divTableRow">
+								<div class="divTableCell" style="width: 80px;">&nbsp;</div>
+								<div class="divTableCell" style="float: right;" align="right">
+									<button id="fdialogconfirm" style="width: 75px; height: 25px; padding: 3px;">OK</button>
+									<button id="fdialogcancel" style="width: 75px;  height: 25px; padding: 3px;">Cancel</button>
+								</div>
+							</div>				
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<!--Save to Package Dialog-->
+		<div id="create-package-dialog" class="ctatdialog" style="width: 420px; height: 148px;">
+			<div id="loading-scrn">Retrieving packages...</div>
+			<img class="windowclose" src="css/images/icon_close.png" style="margin: 0px; padding: 3px; width: 20px; height: 20px; float: right;">
+			<h4 class="title" style="margin: 5px;">Save to Package</h4>
+			<div class="content">
+				Select an existing package or click "Create New" to create a new package for your interface.
+				<br>
+				<br>
+				Package Name: <select id="create-package-pkgname">
+								<option id="create-package-nopkg" value="-">-------</option>
+							  </select>
+				<button id="create-package-refresh" class="toolButton" title="Refresh the package list"></button>				
+				<button id="create-package-newpkg">Create New</button>
+				<br>
+				Interface Name: <input type="text" id="create-package-interfacename" name="create-package-interfacename">.ed.html
+				<br>
+			</div>
+			<button id='create-package-cancel'>Cancel</button>
+			<button id='create-package-confirm'>OK</button>
+		</div>
+		
+		<!--New Folder Dialog-->
+		
+		<div id="newfolderdialog" class="ctatdialog" style="position: absolute; left: 0px; top: 0px; visibility: hidden; width: 430px; height:165px;">
+			<img id="newfolderdialog-close" class="ctatwindowclose" src="css/images/icon_close.png" style="margin: 0px; padding: 3px; width: 20px; height: 20px; float: right;">
+			<h4 id="newfolderdialog-title" class="ctattitle">Create new folder</h4>	
+			<div class="ctatcontent">
+				<p>
+					<span id='newfolderdialog-txtfield'></span>
+					<br>
+					<br>
+					<span>Avoid special characters such as:</span>
+					<br>
+					<b><text><pre># % & { } \ < > * ? / $ ! ' " : @ + ` | = </pre></text></b>
+				</p>
+				<span id="newfolderdialog-inputlabel"></span>
+				<input id="ctatfoldername" value="I am an input"/>
+				<br>
+				<div style="position:absolute; bottom: 0; width: 98%; padding: 2px;">
+					<button id="newfolderdialog-cancel">Cancel</button>		
+					<button id="newfolderdialog-confirm">OK</button>
+				</div>
+			</div>
+		</div>
+		
+		<!--Cloud Service Chooser Dialog-->
+		<div id="accountwindow" class="ctatdialog" style="position: absolute; left: 0px; top: 0px; visibility: hidden; width: 500px; height:250px;">
+			<!--
+			<img class="ctatwindowclose" src="css/images/icon_close.png" style="margin: 0px; padding: 3px; width: 20px; height: 20px; float: right;">
+			-->
+			<h4 id="accountwindow-title" class="ctattitle">Account</h4>	
+			<div class="ctatcontent" style="clear: right">
+			
+				<br>
+				<div id='dropbox-msg-container' style="padding-left: 7px; padding-right: 7px"></div>
+				<br>
+				<table style="margin: auto;">
+					<tr>
+						<td align="center">
+							<img src="css/images/google-drive-logo.png" width="128">
+						</td>
+						<td align="center">
+							<img src="css/images/dropbox-logo.png" width="128">
+						</td>			
+					</tr>
+					<tr>
+						<td align="center">
+							<input type="radio" class="accountprovider" name="accountprovider" value="googledrive" checked>
+						</td>
+						<td align="center">
+							<input type="radio" class="accountprovider" name="accountprovider" value="dropbox">
+						</td>									
+					</tr>		
+					<tr>
+						<td colspan="3" align="center">
+							<br>
+							<button id="accountselect" style="width: 100px; height: 30px; padding: 3px;">Log In</button>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		
+		<!-- Demonstrate Tutor Window -->
+		
+		<div id="tutorplayer" class="ctatdialog" style="position: absolute; left: 0px; top: 0px; visibility: hidden; width: 600px; height:500px;">
+			<img class="ctatwindowclose" src="css/images/icon_close.png" style="margin: 0px; padding: 3px; width: 20px; height: 20px; float: right;">
+			<h4 id="tutorplayer-title" class="ctattitle">Student Interface</h4>	
+			<div class="ctatcontent">
+	
+			</div>
+		</div>
+		
+		<!-- Modal Dialog Blocker -->
+		<div id="blocker" class="blocker">
+		</div>
+		
+		<!-- Editor Group Dialog -->
+		<div id="ctat-group-dialog" class="ctatdialog" style="position: absolute; left: 0px; top: 0px; visibility: hidden; width: 450px; height: 200px;">
+			<img class="windowclose" src="css/images/icon_close.png" style="margin: 0px; padding: 3px; width: 20px; height: 20px; float: right;">
+			<h4 class="title" id="group-dialog-title">Create Group</h4>	
+			<div class='ctatcontent'  style='clear: right; background-color: #D0D0D0; font-size: 16px;'>
+				<input id='group-dialog-name' type='text' placeholder="Group ID">
+				<div id='group-dialog-member-container'>
+					<ul id='group-dialog-member-list'>
+						
+					</ul>
+				</div>
+				<span>
+					<input id='group-dialog-id-field' placeholder='Component ID' type='text'>
+					<button id='group-dialog-add-member'>+</button>
+				</span>
+			</div>
+			<div class="divTable">
+				<div class="divTableBody">				
+					<div class="divTableRow">
+						<div class="divTableCell" style="width: 80px;">&nbsp;</div>
+						<div class="divTableCell" style="margin-top: 3px; margin-right: 5px; float: right;" align="right">
+							<button id="group-dialog-delete">Delete Group</button>
+							<button id="group-dialog-confirm">Save Group</button>
+							<button id="group-dialog-cancel">Cancel</button>
+						</div>
+					</div>				
+				</div>
+			</div>
+		</div>
+		
+		<!-- Image or Audio File Chooser Dialog -->
+		<div id="img-source-dialog" class="ctatdialog" style="position: absolute; left: 0px; top: 0px; visibility: hidden; width: 550px; height: 120px;">
+			<img class="windowclose" src="css/images/icon_close.png" style="margin: 0px; padding: 3px; width: 20px; height: 20px; float: right;">
+			<h4 class="title" style="margin: 5px;">Add Image</h4>	
+			<div class="content">
+				<span id='img-prompt-text'></span>
+				<div style="height: 20px"></div>
+				<input id="img-src-url" type="text" name="img-src">
+			</div>
+			<div class="divTable">
+				<div class="divTableBody">				
+					<div class="divTableRow">
+						<div class="divTableCell" style="float: right; margin-right: 6px; margin-bottom: 4px;">
+							<button id="img-src-confirm" style="width: 75px; height: 25px; padding: 3px;">OK</button>
+							<button id="img-src-cancel" style="width: 75px;  height: 25px; padding: 3px;">Cancel</button>
+						</div>
+					</div>				
+				</div>
+			</div>
+		</div>
+		
+		<!-- Multiple Choice Generator Dialog -->
+		<div id="mult-choice-dialog" class="ctatdialog" style="position: absolute; left: 0px; top: 0px; visibility: hidden; width: 300px; height: 420px;">
+			<img class="windowclose" src="css/images/icon_close.png" style="margin: 0px; padding: 3px; width: 20px; height: 20px; float: right;">
+			<h4 class="title" id="mult-choice-title">New Question</h4>	
+			<div class='ctatcontent'  style='clear: right; background-color: #D0D0D0; font-size: 16px;'>
+				<textarea id='mult-choice-name' type='text' placeholder="Question ID" rows="1"></textarea> 
+				<textarea id='mult-choice-question' placeholder = 'enter question here...' style="width: 100%; height: 30%"></textarea>
+				<b style='font-size: 13px;'>Number of Options:</b><input id='mult-choice-num-options' maxlength = '2'> 
+				</br>
+				<label for='mult-choice-mult-selection'><b style='font-size: 13px;'>Allow Multiple Selections:</b></label>
+				<input id = 'mult-choice-mult-selection' type="checkbox">
+				</br>
+				<label for='mult-choice-grade-immediate'><b style='font-size: 13px;'>Grade Immediately on Selection:</b></label>
+				<input id = 'mult-choice-grade-immediate' type="checkbox">
+				</br>
+				<label for='mult-choice-include-submit'><b style='font-size: 13px;'>Include Submit Button: </b></label>
+				<input id='mult-choice-include-submit' type='checkbox'>
+				<ul id='mult-choice-answer-list'>
+					<li><textarea class = 'mult-choice-answer' type="text" placeholder="option 1" rows="1"></textarea></li>
+					<li><textarea class = 'mult-choice-answer' type="text" placeholder="option 2" rows="1"></textarea></li>
+					<li><textarea class = 'mult-choice-answer' type="text" placeholder="option 3" rows="1"></textarea></li>
+					<li><textarea class = 'mult-choice-answer' type="text" placeholder="option 4" rows="1"></textarea></li>
+				</ul>
+				<div id="mult-choice-font-box">
+					<h4 style="text-align: center;">Font</h4>
+					<div class='inner-content'>
+						<div id="mult-choice-fontselect" class="fontSelect">
+							<div class="arrow-down"></div>
+						</div>
+						<span style='margin-left: 6px'>
+							<b style='font-size: 13px;'>Question Size:</b><input id = 'mult-choice-q-font-size' type="text" placeholder="16">px
+						</span>
+						</br>
+						<span style='margin-left: 6px'>
+							<b style='font-size: 13px;'>Answer Size:</b><input id = 'mult-choice-a-font-size' type="text" placeholder="16">px
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="divTable">
+				<div class="divTableBody">				
+					<div class="divTableRow">
+						<div class="divTableCell" style="width: 80px;">&nbsp;</div>
+						<div class="divTableCell" style="margin-top: 5px; margin-right: 10px; float: right;" align="right">
+							<button id="mult-choice-confirm" style="width: 75px; height: 25px; padding: 3px;">OK</button>
+							<button id="mult-choice-cancel" style="width: 75px;  height: 25px; padding: 3px;">Cancel</button>
+						</div>
+					</div>				
+				</div>
+			</div>
+		</div>
+		
+		<!-- Text Block Editor Dialog -->
+		<div id="text-editor" class="ctatdialog" style="position: absolute; left: 0px; top: 0px; visibility: hidden; width: 550px; height: 200px;">
+			<img class="windowclose" src="css/images/icon_close.png" style="margin: 0px; padding: 3px; width: 20px; height: 20px; float: right;">
+			<h4 class="title" style="margin: 5px;">Edit Text</h4>	
+			<div class="content" style="clear: right; height: 90%; width: 97%;">
+				<textarea id='text-editor-input' style="width: 100%; height: 100%"></textarea>
+			</div>
+			<div class="divTable">
+				<div class="divTableBody">				
+					<div class="divTableRow">
+						<div class="divTableCell">
+						<!--
+							<div id="text-edit-fontselect" class="fontSelect" style = 'padding-right: 0px'>
+								<div class="arrow-down"></div>
+							</div>
+							<div id="text-edit-font-size-cont">
+								<span>
+									Font Size:<input type="text" id="text-editor-font-size" style="height: 25px; width: 35px; padding: 3px;">px
+								</span>
+								<span>
+									<button id="text-editor-bold"><b>B</b></button>
+									<button id="text-editor-italic"><i>I</i></button>
+								</span>
+							</div>
+						-->
+							<button id="text-editor-cancel" >Cancel</button>
+							<button id="text-editor-confirm" >OK</button>
+						</div>
+					</div>				
+				</div>
+			</div>
+		</div>
+		
+		<!-- CSS Editor Dialog -->
+		<div id="css-editor" class="ctatdialog" style="position: absolute; left: 0px; top: 0px; visibility: hidden; width: 550px; height: 200px;">
+			<img class="windowclose" src="css/images/icon_close.png" style="margin: 0px; padding: 3px; width: 20px; height: 20px; float: right;">
+			<h4 class="title" style="margin: 5px;">Edit CSS Rules</h4>	
+			<div class="content">
+				<textarea spellcheck="false" id='css-editor-input'></textarea>
+			</div>
+			<div class="divTable">
+				<div class="divTableBody">				
+					<div class="divTableRow">
+						<div class="divTableCell">
+							<button id="css-editor-cancel" >Cancel</button>
+							<button id="css-editor-confirm" >OK</button>
+						</div>
+					</div>				
+				</div>
+			</div>
+		</div>
+		
+		<!-- Actual Editor Container -->
+<!--	<div style = "width: 100%; height: 100%;"> -->
+			<div id = "ctateditor" style = "width: 100%; height: 100%;">
+				
+				<!--BEGIN EDITOR CODE-->
+
+
+
+				
+<style>.silex-body {
+	background-color: #0B2138;
+}
+</style><div class="advanced-mode-off silex-body"><div class="silex-workspace"><!--logo--><div id="ctat-logo"></div><!-- menu--><div class="silex-menu"></div><div class="silex-context-menu"><div id="context-menu-save" title="Save" class="button save off"></div><div id="context-menu-undo" title="Undo" class="button undo off"></div><div id="context-menu-redo" title="Redo" class="button redo off"></div><div class="button sep"></div><div id="context-menu-delete" title="Delete" class="button delete off"></div><div id="context-menu-copy" title="Copy" class="button copy off"></div><div id="context-menu-paste" title="Paste" class="button paste off"></div><div class="button sep"></div><div id="context-menu-top" title="Bring to front" class="button top off"></div><div id="context-menu-up" title="Bring forward" class="button up off"></div><div id="context-menu-down" title="Send backward" class="button down off"></div><div id="context-menu-bottom" title="Send to back" class="button bottom off"></div><div class="button sep"></div><div id="context-menu-js-file" title="Import JS file" class="button js off"></div><div id="context-menu-css-file" title="Import CSS file" class="button css off"></div><div class="button sep"></div><div id="context-menu-grid" title="Disable Snap-to-Grid" class="button grid"></div><div id="context-menu-lasso" title="Lasso tool" class="button lasso off"></div><span class="context-menu-float"><div id="context-menu-demonstrate" title="Launch Interface" class="button demonstrate"></div><a id="context-menu-help" href="https://github.com/CMUCTAT/CTAT/wiki" title="get help here!" target="_blank" class="button help"></a></span></div><!-- stage--><div class="silex-stage"><!-- notranslate is to prevent chrome automatic translation--><iframe id="silex-stage-iframe" class="silex-stage-iframe notranslate"></iframe></div><div class="ctatstatusbar"><span id="silex-statusbar-status-field"></span><span id="silex-statusbar-filename-field"></span><span id="silex-statusbar-type-field"></span><span id="silex-statusbar-cursor-field"> X: <span id="editor-xpos"></span> Y: <span id="editor-ypos"></span></span></div><!-- properties tool--><div class="property-tool-container"><div class="silex-property-tool notranslate"><h1 class="title1">Properties</h1><div class="big-separator"></div><div class="element-type-field"></div><div class="main-container"><span class="attr-container"><span class="tab-page"><div class="attr-editor"><fieldset class="small-font"><legend>Attributes</legend><button id="collapse-attributes" title="collapse attributes pane" class="prop-container-collapse">-</button><div id="attr-list" class="input-container pane-container"></div></fieldset></div></span></span><span class="style-container"><span class="tab-page"><div class="background-editor"><fieldset class="small-font background-property"><legend>Colors / Background</legend><button id="collapse-color-bg" title="collapse color/bg pane" class="prop-container-collapse">-</button><div id="color-bg-container" class="pane-container"><h4>Foreground</h4><div><span id="color-fg-button" class="color-fg-button color-button"></span></div><span id="color-fg-palette" class="color-fg-palette"></span><h4>Background</h4><div><span id="color-bg-button" class="color-bg-button color-button"></span><span id="enable-color-bg-button" class="enable-color-bg-button goog-checkbox-unchecked"></span>Transparent</div><span id="color-bg-palette" class="color-bg-palette"></span><div id="bg-image-container"><button id="bg-image-btn" class="property-tool-btn">Background Image</button><div class="bg-image-style-container"> <div class="border-type-label">BG Img Size</div><div id="bg-image-size" class="bg-image-size combobox goog-select"><ul class="goog-menu"> <li id="auto" class="goog-menuitem">auto</li><li id="contain" class="goog-menuitem">contain</li><li id="cover" class="goog-menuitem">cover</li></ul></div></div><div class="bg-image-style-container"> <div class="border-type-label">BG Img Repeat</div><div id="bg-image-repeat" class="bg-image-repeat combobox goog-select"><ul class="goog-menu"><li id="repeat" class="goog-menuitem">repeat</li><li id="repeat-x" class="goog-menuitem">repeat-x</li><li id="repeat-y" class="goog-menuitem">repeat-y</li><li id="space" class="goog-menuitem">space</li><li id="round" class="goog-menuitem">round</li><li id="no-repeat" class="goog-menuitem">no repeat</li></ul></div></div><div class="bg-image-style-container"> <div class="border-type-label">BG Img Position</div><div id="bg-image-position" class="bg-image-position combobox goog-select"><ul class="goog-menu"><li id="left-top" class="goog-menuitem">left top</li><li id="left-center" class="goog-menuitem">left ctr</li><li id="left-bottom" class="goog-menuitem">left btm</li><li id="right-top" class="goog-menuitem">right top</li><li id="right-center" class="goog-menuitem">right ctr</li><li id="right-bottom" class="goog-menuitem">right btm</li><li id="center-top" class="goog-menuitem">ctr top</li><li id="center-center" class="goog-menuitem">ctr</li><li id="center-bottom" class="goog-menuitem">ctr btm</li></ul></div></div></div></div></fieldset></div><div class="border-editor"><fieldset class="small-font border-property"><legend>Border</legend><button id="collapse-border" title="collapse border pane" class="prop-container-collapse">-</button><div id="border-container" class="pane-container"><div class="border-width-container"><label class="border-width-label">Width</label><input id="border-width-input" placeholder="-" type="number" min="0" class="border-width-input"/></div><div class="border-color-container"> <label class="border-color-label">Color</label><span id="border-color-button" class="border-color-button color-button"></span></div><span id="border-color-palette" class="border-color-palette"></span><div class="border-type-conainer"><div class="border-type-label">Style</div><div id="border-type-combo-box" class="border-type-combo-box combobox goog-select"><ul class="goog-menu"><li id="solid" class="goog-menuitem">solid</li><li id="dotted" class="goog-menuitem">dotted</li><li id="dashed" class="goog-menuitem">dashed</li><li id="double" class="goog-menuitem">double</li><li id="groove" class="goog-menuitem">groove</li><li id="ridge" class="goog-menuitem">ridge</li><li id="inset" class="goog-menuitem">inset</li><li id="outset" class="goog-menuitem">outset</li></ul></div></div><div class="border-placement-container"><div class="half-col"><span id="border-placement-top-check" class="border-placement-check goog-checkbox"></span><label class="border-placement-label">Top</label></div><div class="half-col"><span id="border-placement-right-check" class="border-placement-check goog-checkbox"></span><label class="border-placement-label">Right</label></div><div class="half-col"><span id="border-placement-btm-check" class="border-placement-check goog-checkbox"></span><label class="border-placement-label">Btm</label></div><div class="half-col"><span id="border-placement-left-check" class="border-placement-check goog-checkbox"></span><label class="border-placement-label">Left</label></div></div><div class="little-separator"></div><div class="border-radius-container"><div class="border-radius-width-container"><label class="border-radius-label">Radius</label><input id="corner-radius-input" placeholder="-" type="number" min="0" class="corner-radius-input"/></div></div></div></fieldset></div><div class="font-editor"><fieldset class="small-font font-property"><legend>Font</legend><button id="collapse-font" title="collapse font pane" class="prop-container-collapse">-</button><div id="font-container" class="pane-container"><div id="font-size-container" class="input-container">Size<input id="font-size-input" class="input-numeric"/></div><div id="font-style-container"><div class="half-col"><span id="font-style-italic-check" class="font-style-check goog-checkbox"></span><label class="font-style-label">Italic</label></div><div class="half-col"><span id="font-style-bold-check" class="font-style-check goog-checkbox"></span><label class="font-style-label">Bold</label></div></div><div id="font-align-container">Alignment<select id="font-align-select"><option value="left">left</option><option value="center">center</option><option value="right">right</option></select></div><div id="font-family-container"><div id="property-tool-font-select" class="fontSelect"><div class="arrow-down"></div></div></div></div></fieldset></div><div class="margin-editor"><fieldset class="small-font margin-property"><legend>Margin / Padding</legend><button id="collapse-margin-padding" title="collapse margin pane" class="prop-container-collapse">-</button><div id="margin-container" class="pane-container"><div id="margin-padding-select"><input id="margin-radio-btn" type="radio" name="margin-padding-btn" value="margin" class="margin-padding-radio"/><label for="margin-radio-btn" style="margin-right: 15px">margin</label><input id="padding-radio-btn" type="radio" name="margin-padding-btn" value="padding" class="margin-padding-radio"/><label for="padding-radio-btn">padding</label></div><div class="margin-placement-container"><div class="half-col"><label id="margin-top-label" class="margin-placement-label">Top</label><input id="margin-top-val"/></div><div class="half-col"><label id="margin-right-label" class="margin-placement-label">Right</label><input id="margin-right-val"/></div><div class="half-col"><label id="margin-btm-label" class="margin-placement-label">Btm</label><input id="margin-bottom-val"/></div><div class="half-col"><label id="margin-left-label" class="margin-placement-label">Left</label><input id="margin-left-val"/></div></div></div></fieldset></div></span></span><span class="attr-container"><span class="tab-page"><div class="position-editor"><fieldset class="small-font position-property"><legend>Position / Size</legend><button id="collapse-pos-size" title="collapse pos/size pane" class="prop-container-collapse">-</button><div id="pos-size-container" class="pane-container"><div id="pos-container" class="input-container"><div>Distance from left<input id="pos-x-input" class="input-numeric"/></div><div>Distance from top<input id="pos-y-input" class="input-numeric"/></div></div><div class="little-separator"> </div><div id="size-container" class="input-container"><div>Width<input id="width-input" class="input-numeric"/></div><div>Height<input id="height-input" class="input-numeric"/></div></div></div></fieldset></div></span></span></div><datalist id="property-tool-classlist"></datalist></div></div><!-- component palette--><div id="palette-head"><button id="palette-minimize">-</button><h1 class="title1">Components</h1></div><div id="silex-component-palette-container" class="component-palette-container"><div class="main-container"><div id="silex-component-palette-list-html" class="component-list"><h4>HTML</h4></div><div id="silex-component-palette-list-ctat-std" class="component-list"><h4>CTAT Standard</h4></div><div id="silex-component-palette-list-ctat-comp" class="component-list"><h4>CTAT Composite</h4></div></div></div><!-- dialogs background--><div class="dialogs-background"></div><!-- settings--><div class="silex-settings-dialog hidden-dialog"><div class="dialog"><div class="header"><h1 class="title">Website settings<button type="button" class="close-btn"></button></h1></div><div class="body"><div class="left-pane"><ul class="tree"><li class="general-pane">General</li><li class="social-pane">Social Networks</li><li class="publish-pane">Publish settings</li></ul></div><div class="right-pane"><div class="pane general-pane"><ul><li><fieldset><legend><h3 class="title">Website Title</h3></legend><p>Title of the browser window, and title in the search engines results.
+It is used by search engines to find out what your site is talking about.
+The title should be a maximum of 70 characters long, including spaces.</p><input type="text" value="" placeholder="Untitled website" class="input-text input-title"/></fieldset></li><li><fieldset><legend><h3 class="title">Website Description</h3></legend><p>Description displayed by the search engines in search results.
+It is used by search engines to find out what your site is talking about.
+It is best to keep meta descriptions between 150 and 160 characters.</p><input type="text" value="" placeholder="Description" class="input-text input-description"/></fieldset></li><li><fieldset><legend><h3 class="title">Favicon</h3></legend><p>Small image displayed in the browser's address bar and in tabs.
+The recommended size is 16×16 or 32×32 pixels.</p><input type="text" value="" class="input-url input-favicon-path"/><button type="button" class="browse-favicon-path">Browse</button></fieldset></li></ul></div><div class="pane social-pane"><p>Meta tags for search engines, Facebook, Google+, Twitter, Linkedin, ... The following settings enable Open Graph and Twitter Cards.</p><ul><li><fieldset><legend><h3 class="title">Title</h3></legend><p>The title of your website displayed when a user shares your website on a social network.
+Do not include any branding in this title, just eye-catching phrase, e.g. "Learn everything about fishing".
+Title should be between 60 and 90 characters long.</p><input type="text" value="" placeholder="Title" class="input-text input-title"/></fieldset></li><li><fieldset><legend><h3 class="title">Description</h3></legend><p>Description displayed when a user shares your website on a social network.
+Make it catchy, and invite readers to visit your website too, e.g. "Sam's website about fishing, check it out!"
+Title should be between 60 and 90 characters long.</p><input type="text" value="" placeholder="Description" class="input-text input-description"/></fieldset></li><li><fieldset><legend><h3 class="title">Image</h3></legend><p>Thumbnail image which is displayed when your website is shared on a social network.
+The optimal size is 1200×627 pixels. At this size, your thumbnail will be big and stand out from the crowd.
+But do not exceed the 5MB size limit.
+If you use an image that is smaller than 400 pixels x 209 pixels, it will render as a much smaller thumbnail.</p><p>Please enter the full URL here, e.g. "http://mysite.com/path/to/image.jpg"</p><input type="text" value="" placeholder="Image URL" class="input-text input-image-path"/></fieldset></li><li><fieldset><legend><h3 class="title">Twitter account</h3></legend><p>Indicates your Twitter account.</p><input type="text" value="" placeholder="@twitteraccount" pattern="^@*" title="Twitter account name" class="input-text input-twitter"/></fieldset></li></ul></div><div class="pane publish-pane"><ul><li><fieldset><legend><h3 class="title">Publication Path</h3><a href="https://github.com/silexlabs/Silex/issues/238" title="about Silex and CSS" target="blank" class="help-icon">Help</a></legend><p>Path to the folder in wich I will publish the website. This folder content will be deleted.</p><input type="text" value="" class="input-url input-publication-path"/><button type="button" class="browse-publication-path">Browse</button></fieldset></li></ul></div></div></div></div></div></div></div>
+
+
+
+<!--END EDITOR CODE-->
+			</div>
+			
+		<!-- Context Menus -->
+		
+		<div id = 'file-rightclick-context-menu' class = 'rightclick-context-menu'>
+			<ul class = "rightclick-context-menu-list">
+				<li data-option-value="cut" class="file-rightclick-context-menu-item">
+					Cut
+				</li>
+				<li data-option-value="copy" class="file-rightclick-context-menu-item">
+					Copy
+				</li>
+				<li data-option-value="delete" class="file-rightclick-context-menu-item">
+					Delete
+				</li>
+				<li data-option-value="rename" class="file-rightclick-context-menu-item">
+					Rename
+				</li>
+				<li data-option-value="paste" class="file-rightclick-context-menu-item">
+					Paste
+				</li>
+			</ul>
+		</div>
+		
+		<div id = 'silex-rightclick-context-menu' class = 'rightclick-context-menu'>
+			<ul class = "rightclick-context-menu-list">
+				<li data-option-value="copy" class="silex-rightclick-context-menu-item">
+					Copy
+				</li>
+				<li data-option-value="paste" class="silex-rightclick-context-menu-item">
+					Paste
+				</li>
+				<li data-option-value="delete" class="silex-rightclick-context-menu-item">
+					Delete
+				</li>
+			</ul>
+		</div>
+		
+	</body>
+</html>

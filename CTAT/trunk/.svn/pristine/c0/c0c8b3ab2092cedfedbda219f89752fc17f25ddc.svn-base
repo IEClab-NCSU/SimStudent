@@ -1,0 +1,580 @@
+/* This object represents an CTATMatcher */
+
+goog.provide('CTATMatcher');
+goog.require('CTATBase');
+goog.require('CTATMsgType');
+goog.require('CTATSAI');
+
+/* LastModify: FranceskaXhakaj 07/14*/
+
+/**
+ * @param {boolean} givenSingle
+ * @param {integer} givenVector
+ * @param {boolean} givenCaseInsensitive
+ */
+CTATMatcher = function(givenSingle, givenVector, givenCaseInsensitive)
+{
+
+/**************************** INHERITED CONSTRUCTOR ******************************************************/
+
+	CTATBase.call(this, "CTATMatcher","");
+
+/**************************** PUBLIC INSTACE VARIABLES ******************************************************/
+
+   /**
+    *
+    * @type {Object}
+    */
+	this.lastResult = null; //of type Object
+
+/**************************** PRIVATE INSTACE VARIABLES ******************************************************/
+
+	/**
+	 * @type {CTATSAI} Default values for selection, action, input: for hints and evaluation without student input.
+	 */
+	var defaultSAI = new CTATSAI("", "", "");
+
+   /**
+    * True for the newer matching methods.
+    * @type {boolean}
+    */
+	var single = givenSingle;
+
+   /**
+    *
+    * @type {integer}
+    */
+	var vector = (givenVector === null || typeof(givenVector) === 'undefined' ? CTATMatcher.NON_SINGLE : givenVector);
+
+	/**
+    *
+    * @type {boolean}
+    */
+	var caseInsensitive = givenCaseInsensitive;
+
+	//WE DECIDED THAT THIS VARIABLE IS NOT NEEDED
+	//final variable, it cannot be changed after declaring it here. To access use CTATMatcher.concat
+	//true if we are using concatenation matching (doesn't make sense if we're not using single matching)
+	//Object.defineProperty(CTATMatcher, "concat", {enumerable: false, configurable: false, writable: false, value: (givenConcat === null || typeof(givenConcat) === 'undefined' ? false : givenConcat)});
+
+	/**
+    *
+    * @type {string}
+    */
+	var actor = CTATMsgType.DEFAULT_ACTOR; //of type string
+
+   /**
+    *
+    * @type {string}
+    */
+	var singleValue = null; //of type string
+
+    //see isLinkTriggered()
+    var linkTriggered = false;
+
+	var that = this; // used to make the object available to the private methods
+
+/***************************** PRIVATE METHODS *****************************************************/
+
+/***************************** PRIVILEDGED METHODS *****************************************************/
+
+	/**
+	 * This method will be empty.
+	 * Reset this matcher to its initial state. This is a no-op for matchers that
+	 * have no internal state. But see, e.g., CTATSolverMatcher#reset().
+	 */
+	this.resetMatcher = function ()
+	{
+		//ctatdebug("CTATMatcher --> in resetMatcher");
+
+		//EMPTY -- implemented in child classes
+	};
+
+	/**
+     * Get the Selection parameter as a scalar String. Subclasses may want
+     * to override this implementation.
+     * @return {string} result of getDefaultSelection()
+     */
+	this.getSelection = function()
+	{
+		//ctatdebug("CTATMatcher --> in getSelection");
+		return that.getDefaultSelection();
+	};
+
+    /**
+     * Get the Action parameter as a scalar String. Subclasses may want
+     * to override this implementation.
+     * @return {string} result of getDefaultAction()
+     */
+	this.getAction = function()
+	{
+		//ctatdebug("CTATMatcher --> in getAction");
+		return that.getDefaultAction();
+	};
+
+    /**
+     * @return {string} returns the defaulInput.
+     */
+	this.getInput = function()
+	{
+		//ctatdebug("CTATMatcher --> in getDefaultInput");
+		return that.getDefaultInput();
+	};
+
+	/**
+	 * @return {string} actor
+	 */
+	this.getActor = function()
+	{
+		return actor;
+	};
+
+	/**
+	 * @param {givenCaseInsensitive} of type boolean
+	 * @return {undefined}
+	 */
+	this.setCaseInsensitive = function(givenCaseInsensitive)
+	{
+		//ctatdebug("CTATMatcher --> in setCaseInsensitive");
+		caseInsensitive = givenCaseInsensitive;
+	};
+
+	/**
+	 * Get the value of a formula calculation specified for the input element.
+	 * Override this implementation in ExpressionMatcher to return the
+	 * result of the formula.
+	 * @param {CTATSAI} givenSAI sai for evaluation
+	 * @param {CTATVariableTable} vt for evaluation
+	 * @return result of  getInput()
+	 */
+	this.getEvaluatedInput = function (givenSAI, vt)
+	{
+		//ctatdebug("CTATMatcher --> in getEvaluatedInput");
+		return that.getInput();
+	};
+
+	/**
+	 * Tell how many traversals a visit to this link represents. For some
+	 * matchers, such as CTATSolverMatcher, a visit may not be the same as a traversal.
+	 * @return {integer} constant 1 for this default implementation
+	 */
+	this.getTraversalIncrement = function ()
+	{
+		//ctatdebug("CTATMatcher --> in getTraversalIncrement");
+		return 1;
+};
+
+	/**
+	 * Return an SAI appropriate for a tutor_message response.
+	 * @param {CTATSAI} studentSAI
+	 * @param {CTATVariableTable} vt
+	 * @param {string} grade one of CTATExampleTracerLink.CORRECT_ACTION, .BUGGY_ACTION, .FIREABLE_BUGGY_ACTION
+	 * @return {CTATSAI} SAI matching some or all of studentSAI
+	 */
+	this.getTutorSAI = function(studentSAI, vt, grade)
+	{
+		var sai = ((String(grade)).toLowerCase() == CTATExampleTracerLink.CORRECT_ACTION.toLowerCase() ? studentSAI : that.getDefaultSAI());
+		console.log("CTATMatcher.getTutorSAI() superclass method called, should be subclass;\n  returning: "+sai);
+		return sai;
+	};
+
+	/**
+	 * @return {string} defaultSAI.getSelection()
+	 */
+	this.getDefaultSelection = function()
+	{
+		//ctatdebug("CTATMatcher --> in getDefaultSelection");
+		return that.getDefaultSAI().getSelection();
+	};
+
+	/**
+	 * @return {string} defaultSAI.getAction
+	 */
+	this.getDefaultAction = function()
+	{
+		//ctatdebug("CTATMatcher --> in getDefaultAction");
+		return that.getDefaultSAI().getAction();
+	};
+
+	/**
+	 * @return {string} defaultSAI.getInput()
+	 */
+	this.getDefaultInput = function()
+	{
+		//ctatdebug("CTATMatcher --> in getDefaultInput");
+		return that.getDefaultSAI().getInput();
+	};
+
+	/**
+	 * @return {CTATSAI} defaultSAI
+	 */
+	this.getDefaultSAI = function()
+	{
+		return defaultSAI;
+	};
+
+	/**
+	 * @param {CTATSAI} newDefaultSAI
+	 */
+	this.setDefaultSAI = function(newDefaultSAI)
+	{
+		defaultSAI = newDefaultSAI;
+	};
+
+	/**
+	 * @return {string} calculated from getActor()
+	 */
+	this.getDefaultActor = function()
+	{
+		var myActor = (String(getActor())).toLowerCase();
+		switch(myActor)
+		{
+			case CTATMsgType.DEFAULT_STUDENT_ACTOR.toLowerCase():
+				return CTATMsgType.DEFAULT_STUDENT_ACTOR;
+			case CTATMsgType.DEFAULT_TOOL_ACTOR.toLowerCase():
+				return CTATMsgType.DEFAULT_TOOL_ACTOR;
+			case CTATMsgType.UNGRADED_TOOL_ACTOR.toLowerCase():
+				return CTATMsgType.DEFAULT_TOOL_ACTOR;
+			case CTATMsgType.ANY_ACTOR.toLowerCase():
+				return CTATMsgType.DEFAULT_TOOL_ACTOR;
+			default:
+				console.log("CTATMatcher.getDefaultActor() unexpected value for actor: "+actor+"; returning "+CTATMsgType.DEFAULT_ACTOR);
+				return CTATMsgType.DEFAULT_ACTOR;
+		}
+	};
+
+    /**
+     * Get the Input parameter as a scalar String. Subclasses may want
+     * to override this implementation.
+     * @return result of getDefaultInput()
+     */
+	this.getInput = function()
+	{
+		//ctatdebug("CTATMatcher --> in getInput");
+		return that.getDefaultInput();
+	};
+
+	/**
+	 * @return {boolean}
+	 */
+	this.getCaseInsensitive = function()
+	{
+		//ctatdebug("CTATMatcher --> in getCaseInsensitive");
+		return caseInsensitive;
+	};
+
+/***************************** PRIVILEDGED METHODS *****************************************************/
+
+	 /**
+	  * Performs a match on each of selection, action, and input
+	  * by calling the private _match() method.
+	  * @param selection of type array
+	  * @param action of type array
+	  * @param input of type array
+	  * @param actor of type string
+	  * @param vt of type CTATVariableTable
+	  * @return boolean: this superclass method always returns false
+	  */
+	this.match = function(selection, action, input, actor, vt)
+	{
+		console.log("CTATMatcher superclass method called: match("+selection+", "+action+", "+input+", "+actor+")");
+		return false;
+	};
+
+	/**
+	 * Method used to match hints in an example tracer tutor
+	 * @param selection of type array
+	 * @param action of type array
+	 * @param actor of type string
+	 * @param vt of type CTATVariableTable
+	 * @return boolean: this superclass method always returns false
+	 */
+	this.matchForHint = function(selection, action, actor, vt)
+	{
+		console.log("CTATMatcher superclass method called: matchForHint("+selection+", "+action+", "+actor+", vt)");
+		return false;
+	};
+
+    /**
+     * Test whether the given actor matches our getActor() element.
+     * This default implementation mimics the test of the ExactMatcher
+     * @param {string} actor
+     * @return {boolean} true if match ok
+     */
+	this.matchActor = function(actor)
+	{
+		actor = String(actor).toUpperCase();
+		var myActor = String(that.getActor()).toUpperCase();
+		ctatdebug("CTATMatcher.matchActor("+actor+") myActor is "+myActor);
+
+		if(CTATMsgType.ANY_ACTOR.toString().toUpperCase() == myActor)
+		{
+			return true;
+		}
+		if(CTATMsgType.UNGRADED_TOOL_ACTOR.toString().toUpperCase() == myActor && CTATMsgType.DEFAULT_TOOL_ACTOR.toString().toUpperCase() == actor)
+		{
+			return true;
+		}
+		if(CTATMsgType.UNGRADED_TOOL_ACTOR.toString().toUpperCase() == actor && CTATMsgType.DEFAULT_TOOL_ACTOR.toString().toUpperCase() == myActor)
+		{
+			return true;
+		}
+		//ctatdebug("CTATMatcher --> out of matchActor");
+		return (myActor == actor);
+	};
+
+	/**
+	 * @return {array}
+	 */
+	this.getDefaultSelectionArray = function()
+	{
+		return that.getDefaultSAI().getSelectionArray();
+	};
+
+	/**
+	 * @return {array}
+	 */
+	this.getDefaultActionArray = function()
+	{
+		return that.getDefaultSAI().getActionArray();
+	};
+
+	/**
+	 * @return {array}
+	 */
+	this.getDefaultInputArray = function()
+	{
+		return that.getDefaultSAI().getInputArray();
+	};
+
+	/**
+	 * @return {string} lastResult; empty string if property is null
+	 */
+	this.getLastResult = function()
+	{
+		//ctatdebug("CTATMatcher --> in getLastResult");
+		//Note: the toString() here should do the same thing as in Java
+		return (that.lastResult === null || typeof(that.lastResult) === 'undefined' ? "" : that.lastResult.toString());
+	};
+
+	/**
+	 * @param {string} givenActor
+	 * @return {undefined}
+	 */
+	this.setActor = function(givenActor)
+	{
+		ctatdebug("CTATMatcher --> in setActor("+givenActor+")");
+
+		if(givenActor === null || typeof(givenActor) === 'undefined')
+		{
+			givenActor = CTATMsgType.DEFAULT_ACTOR;
+		}
+
+		var ga = (String(givenActor)).toLowerCase().trim();
+		if(ga == "tool")
+		{
+			actor = CTATMsgType.DEFAULT_TOOL_ACTOR;
+		}
+		else if(ga == CTATMsgType.DEFAULT_STUDENT_ACTOR.toLowerCase())
+		{
+			actor = CTATMsgType.DEFAULT_STUDENT_ACTOR;
+		}
+		else if(ga == CTATMsgType.DEFAULT_TOOL_ACTOR.toLowerCase())
+		{
+			actor = CTATMsgType.DEFAULT_TOOL_ACTOR;
+		}
+		else if(ga == CTATMsgType.UNGRADED_TOOL_ACTOR.toLowerCase())
+		{
+			actor = CTATMsgType.UNGRADED_TOOL_ACTOR;
+		}
+		else if(ga == CTATMsgType.ANY_ACTOR.toLowerCase())
+		{
+			actor = CTATMsgType.ANY_ACTOR;
+		}
+		else
+		{
+			actor = CTATMsgType.DEFAULT_ACTOR;
+		}
+		//ctatdebug("CTATMatcher --> out of setActor");
+	};
+
+    /**
+     * The concatenated string we use for exact, regex, and wildcard matchers
+     * Also used to display the sai vectors in EditStudentInputDialog
+     * @param {array} v
+     * @return {string} - element each on their own line
+     */
+
+	this.array2ConcatString = function(v)
+	{
+		//ctatdebug("CTATMatcher --> in array2ConcatString");
+		var concat = "";
+		if(v == null)
+		{
+			return concat;
+		}
+		if(!Array.isArray(v))
+		{
+			return v.toString();
+		}
+		v.forEach(function(o)
+		{
+			if(o != null)
+			{
+				concat += o.toString() + "\n";
+			}
+		});
+
+		return concat.substring(0, (concat.length > 0 ? concat.length - 1 : 0)); //don't need the last \n
+	};
+
+    /**
+     * Imitates the exact match for the entirety of a single vector
+     * Overridden by Expression and Range matchers for which it only makes sense
+     * to take in a single element of a vector
+     * @param {array of strings} v
+     * @return {boolean}
+     */
+	this.matchConcatenation = function(v)
+	{
+        //ctatdebug("CTATMatcher --> in matchConcatenation: v = " + v);
+
+		return that.matchSingle(that.array2ConcatString(v));
+	};
+
+    /**
+     * If this step could be performed automatically by the tutor, tell whether it should
+     * be link-triggered (when its source state is the destination state of a link just
+     * traversed) or state-triggered (when its source state becomes the current state).
+     * @return {boolean} true if link-triggered, false if state-triggered
+     */
+	this.isLinkTriggered = function()
+	{
+		return linkTriggered;
+	};
+
+	/**
+	 * @param {boolean} givenLinkTriggered new value for linkTriggered
+	 */
+	this.setLinkTriggered = function(givenLinkTriggered)
+	{
+		linkTriggered = givenLinkTriggered;
+	};
+
+	/**
+	 *
+	 * @param {CTATSAI} sai
+	 * @param {CTATVariableTable} vt
+	 * @param {CTATExampleTracerTracer} tracer
+	 * @return {string} "" in this superclass
+	 */
+	this.evaluateReplacement = function(sai, vt, tracer)
+	{
+		return "";
+	};
+
+	/**
+	 * Whether to replace the student input with a formula result.
+	 * @return {boolean} getReplacementFormula()
+	 */
+	this.replaceInput = function()
+	{
+		//ctatdebug("CTATMatcher --> in replaceInput");
+		return Boolean(that.getReplacementFormula());
+	};
+
+	/**
+	 * @return {string} returns "" in this superclass
+	 */
+	this.getReplacementFormula = function()
+	{
+		//ctatdebug("CTATMatcher --> in getReplacementFormula");
+		return "";
+	};
+
+};
+
+/**
+ * Returns a meaningless string. Subclasses should overwrite.
+ * @return {string}
+ */
+CTATMatcher.prototype.toString = function()
+{
+	console.log("Error: CTATMatcher.toString() called; should be overridden in subclass");
+	return "This is CTATMatcher.";
+};
+
+/**
+ * No-op in this superclass.
+ * @param {string} paramName parameter name
+ * @param {Element} paramElement matcherParameter element from .brd
+ * @param {object} parser XML parser for extracting paramElement data
+ */
+CTATMatcher.prototype.setParameter = function(paramName, paramElement, parser)
+{
+	// no-op in this superclass
+};
+
+/****************************** STATIC METHODS ****************************************************/
+
+/**
+ * Tell whether the tutor is the actor.
+ * @param {string} actor
+ * @param {boolean} acceptAny if true, also return true for ANY_ACTOR
+ * @return {boolean} true if actor matches DEFAULT_TOOL_ACTOR or UNGRADED_TOOL_ACTOR
+ */
+CTATMatcher.isTutorActor = function(actor, acceptAny)
+{
+	if(CTATMsgType.DEFAULT_TOOL_ACTOR.toUpperCase() === actor.toUpperCase())
+	{
+		return true;
+	}
+
+	if(CTATMsgType.UNGRADED_TOOL_ACTOR.toUpperCase() === actor.toUpperCase())
+	{
+		return true;
+	}
+
+	if(acceptAny && CTATMsgType.ANY_ACTOR.toUpperCase() === actor.toUpperCase())
+	{
+		return true;
+	}
+
+	return false;
+};
+
+/****************************** PUBLIC METHODS ****************************************************/
+
+
+/****************************** CONSTRUCTOR CALLS ****************************************************/
+
+
+/**************************** CONSTANTS ******************************************************/
+
+/**
+ * For single matchers, defines what vector type it is associated with,
+ * will be -1 for non-singles, and VECTOR for VectorMatchers
+ * Note that we use the SAI constants for traversing well constructed arrays
+ * Don't use the other two for it ...
+ */
+Object.defineProperty(CTATMatcher, "NON_SINGLE", {enumerable: false, configurable: false, writable: false, value: -1});
+Object.defineProperty(CTATMatcher, "SELECTION", {enumerable: false, configurable: false, writable: false, value: 0});
+Object.defineProperty(CTATMatcher, "ACTION", {enumerable: false, configurable: false, writable: false, value: 1});
+Object.defineProperty(CTATMatcher, "INPUT", {enumerable: false, configurable: false, writable: false, value: 2});
+Object.defineProperty(CTATMatcher, "VECTOR", {enumerable: false, configurable: false, writable: false, value: 3});
+
+/**
+ * Actor property in matchers element.
+ * @param {String}
+ */
+Object.defineProperty(CTATMatcher, "ACTOR", {enumerable: false, configurable: false, writable: false, value: "Actor"});
+
+/**************************** SETTING UP INHERITANCE ******************************************************/
+
+CTATMatcher.prototype = Object.create(CTATBase.prototype);
+CTATMatcher.prototype.constructor = CTATMatcher;
+
+if(typeof module !== 'undefined')
+{
+	module.exports = CTATMatcher;
+}

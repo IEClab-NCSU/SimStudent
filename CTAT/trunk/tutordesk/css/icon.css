@@ -1,0 +1,9 @@
+.icon-disconnected
+{
+	background:url('images/interface_disconnected.png') no-repeat center center;
+}
+
+.icon-connected
+{
+	background:url('images/interface_connected.png') no-repeat center center;
+}

@@ -1,0 +1,1461 @@
+/**-----------------------------------------------------------------------------
+ $Author$
+ $Date$
+ $HeadURL$
+ $Revision$
+
+ -
+ License:
+ -
+ ChangeLog:
+ -
+ Notes:
+
+ http://stackoverflow.com/questions/6486307/default-argument-values-in-javascript-functions
+
+ */
+goog.provide('CTATSAI');
+
+goog.require('CTATArgument');
+goog.require('CTATBase');
+goog.require('CTATHTMLManager');
+goog.require('CTATStringUtil');
+goog.require('CTATXML');
+/**
+ *    This is a relatively new class for CTAT and only exists in AS3 and HTML5. It's meant to
+ *    become the base unit of transaction for methods related to SAI's, instead of passing
+ *    around 3 Strings to methods you can pass a single SAI object and extract relevant data
+ *    from it. Also, every component will have an instance of SAI that can be used as a way of
+ *    recording state as well as sending new actions.
+ *
+ *    There is currently no support in the hierarchy for individual elements of the SAI to have
+ *    the type and id values used in the dataShop specs for the selection, action, and input
+ *    fields of evet_descriptors.
+ *
+ *    see: http://pslcdatashop.web.cmu.edu/dtd/guide/tool_message.html#element.event_descriptor
+ */
+CTATSAI = function(aSelection,anAction,anInput,aPrompt)
+{
+    CTATBase.call(this, "CTATSAI","sai");
+
+    // we use the instance name as the selection
+
+	var tools=new CTATStringUtil ();
+
+    var prompt="undefined";
+	var selectionArray = [];
+	var actionArray = [];
+	var inputArray = [];
+    var inputFlattened="";
+	var tempArray=[];
+
+    var messageParser=null;
+
+	/** Saved reference to the original object. */
+	var pointer = this;
+
+	if (CTATConfig.parserType=="xml")
+	{
+		messageParser=new CTATXML ();
+	}
+	else
+	{
+		messageParser=new CTATJSON ();
+	}
+
+    /**
+     *
+     */
+    this.getArguments=function getArguments ()
+    {
+        return (inputArray);
+    };
+    /**
+     *
+     */
+    this.getArgument=function getArgument (anIndex)
+    {
+		if (inputArray.length==0)
+		{
+			var newArgument=new CTATArgument ();
+			inputArray.push (newArgument);
+		}
+
+        return (inputArray [anIndex]);
+    };
+    /**
+     * Processes the sai_arguments so that an array of the sai_arguments cast into
+     * the appropriate type is returned.
+     * @return an array of the sai_arguments cast into their appropriate type.
+     *
+     */
+    this.getArgumentsTyped=function getArgumentsTyped()
+    {
+		pointer.ctatdebug ("getArgumentsTyped");
+
+        var i=0;
+        var sai_arguments = [];
+
+        for (i=0;i<inputArray.length;i++)
+        {
+                var arg=inputArray [i];
+
+                if (arg.getType()==="Boolean")
+                {
+                    pointer.ctatdebug ("Adding Boolean argument ("+arg.getValue()+") ...");
+
+                    sai_arguments.push(tools.String2Boolean(arg.getValue()));
+                }
+                else if (arg.getType() === "Number")
+                {
+                    pointer.ctatdebug ("Adding Number argument ("+arg.getValue()+") ...");
+                    sai_arguments.push(Number(arg.getValue()));
+                }
+                else if (arg.getType() === "String")
+                {
+                    if (arg.getValue()==="No_Value")
+                    {
+                        pointer.ctatdebug ("Detected default argument ("+arg.getValue()+"), setting contents to null instead");
+
+                        sai_arguments.push(null);
+                    }
+                    else
+                    {
+                        sai_arguments.push(String(arg.getValue()));
+                    }
+                }
+                else
+                {
+                    pointer.ctatdebug ("Unrecognized argument type: "+arg.getType()+" in "+pointer.toSerializedString()+" IGNORING IT!!!");
+                }
+        }
+
+		pointer.ctatdebug ("Resulting arguments: " + sai_arguments);
+
+        return sai_arguments;
+    };
+    /**
+     * Append a selection to addedSelections[].
+     * @param s new selection to add
+     */
+    this.addSelection = function addSelection (aSelection,aType)
+    {
+		var newSelection=new CTATArgument ();
+		newSelection.setValue (aSelection);
+		if ((aType!=undefined) && (aType!=null))
+		{
+			newSelection.setType (aType);
+		}
+
+		selectionArray.push (newSelection);
+
+        // selectionArray.push(s);
+    };
+    /**
+     * Append an action to actionArray[].
+     * @param a new action to add
+     */
+    this.addAction = function addAction (a)
+    {
+        //addedActions.push(a);
+
+		actionArray.push (a);
+    };
+    /**
+     *
+     */
+    this.checkDefaultArgument=function checkDefaultArgument ()
+    {
+        pointer.ctatdebug ("checkDefaultArgument ()");
+
+        if (inputArray.length===0)
+        {
+            pointer.ctatdebug ("Adding default argument ...");
+
+            var defaultArgument=new CTATArgument ();
+            inputArray.push (defaultArgument);
+        }
+    };
+    /**
+     *
+     */
+    this.setArgument=function setArgument (anIndex,aValue)
+    {
+        pointer.checkDefaultArgument ();
+
+		for(var i = inputArray.length; i <= anIndex; ++i)
+		{
+            inputArray.push(new CTATArgument());
+		}
+
+        var tempArgument=inputArray [anIndex];
+
+        tempArgument.setValue (aValue);
+
+        return (tempArgument);
+    };
+    /**
+     *
+     */
+    this.addArgument=function addArgument (aValue,aType,aFormat)
+    {
+        this.ctatdebug ("addArgument ("+aValue+","+aType+","+aFormat+")");
+
+        var tempArgument=new CTATArgument ();
+        tempArgument.setValue (aValue);
+        tempArgument.setType (aType);
+        tempArgument.setFormat (aFormat);
+
+        inputArray.push(tempArgument);
+
+        return (tempArgument);
+    };
+    /**
+     *
+     */
+    this.addExistingArgument=function addExistingArgument (anArgument)
+    {
+        //this.ctatdebug ("addExistingArgument ()");
+
+        inputArray.push(anArgument);
+
+        return (anArgument);
+    };
+    /**
+    *    Changes the current selection, action, and input values
+    */
+    this.setSAI=function setSAI (newSelection,
+                                 newAction,
+                                 newInput,
+                                 aType,
+                                 aPrompt)
+    {
+        pointer.setSelection(Array.isArray(newSelection) ? (newSelection.length > 0 ? newSelection[0] : "") : newSelection);
+        pointer.setAction(Array.isArray(newAction) ? (newAction.length > 0 ? newAction[0] : "") : newAction);
+        pointer.setInput(Array.isArray(newInput) ? (newInput.length > 0 ? newInput[0] : "") : newInput);
+        pointer.setType(aType);
+        prompt=aPrompt;
+    };
+    /**
+    *    Changes the current input value
+    */
+    this.setInput=function setInput(newInput)
+    {
+        pointer.ctatdebug("setInput("+newInput+")");
+
+        pointer.checkDefaultArgument ();
+
+        var arg=pointer.getArgument (0);
+        arg.setValue(newInput); // This should be legal because of the checkDefaultArgument call
+
+		//pointer.setInputArray(newInput);
+    };
+    /**
+    *    Returns the primary selection value
+    */
+    this.getInputObject=function getInputObject()
+    {
+        if (inputArray.length===0)
+		{
+            return (null);
+		}
+
+        return inputArray [0];
+    };
+    /**
+    *    Returns the primary selection value
+    */
+    this.getInput=function getInput()
+    {
+        if (inputArray.length===0)
+		{
+            return ("");
+		}
+
+        var arg=pointer.getArgument (0);
+
+        return arg.getValue();
+    };
+    /**
+    *
+    */
+    this.setType=function setType(aType)
+    {
+        //this.ctatdebug("setType()");
+
+        pointer.checkDefaultArgument ();
+
+        var arg=pointer.getArgument (0);
+        arg.type=aType;
+    };
+    /**
+     *    Returns the primary selection value
+     */
+    this.getType=function getType()
+    {
+        //pointer.ctatdebug("getType()");
+
+        if (inputArray.length===0)
+		{
+            return ("");
+		}
+
+        var arg=pointer.getArgument (0);
+        return arg.type;
+    };
+    /**
+     *
+     */
+    this.setFormat=function setFormat(aFormat)
+    {
+        //pointer.ctatdebug("setFormat()");
+
+        pointer.checkDefaultArgument ();
+
+        var arg=pointer.getArgument (0);
+        arg.setFormat (aFormat);
+    };
+    /**
+     *    Returns the primary selection value
+     */
+    this.getFormat=function getFormat()
+    {
+        //pointer.ctatdebug("getFormat()");
+
+        if (inputArray.length===0)
+		{
+            return ("");
+		}
+
+        var arg=pointer.getArgument (0);
+
+        return arg.getFormat ();
+    };
+	/**
+	 * @return {string} for debugging
+	 */
+	this.toString = function()
+	{
+		return "["+String(pointer.getSelection())+","+String(pointer.getAction())+","+String(pointer.getInput())+"]";
+	};
+    /**
+    *    Changes the current input value
+    */
+    this.setSelection=function setSelection(newSelection,aType)
+    {
+		/*
+		if (selectionArray.length>0)
+		{
+			selectionArray [0]=newInput;
+		}
+		else
+		{
+			selectionArray.push (newInput);
+		}
+		*/
+
+		var tempSelection=pointer.getSelectionObject();
+
+		if (tempSelection==null)
+		{
+			tempSelection=new CTATArgument ();
+			tempSelection.setValue (newSelection);
+			if ((aType!=undefined) && (aType!=null))
+			{
+				tempSelection.setType (aType);
+			}
+			selectionArray.push (tempSelection);
+		}
+		else
+		{
+			tempSelection.setValue (newSelection);
+		}
+    };
+    /**
+    *    Returns the primary selection value
+    */
+    this.getSelectionObject=function getSelectionObject()
+    {
+		if (selectionArray.length==0)
+		{
+			return (null);
+		}
+
+		return (selectionArray [0]);
+    };
+    /**
+    *    Returns the primary selection value
+    */
+    this.getSelection=function getSelection()
+    {
+		if (selectionArray.length==0)
+		{
+			return (null);
+		}
+
+		var tempSelection=selectionArray [0];
+
+		if (typeof tempSelection === "object")
+		{
+			return (tempSelection.getValue ());
+		}
+
+		return (tempSelection);
+    };
+    /**
+    *
+    */
+    this.setAction=function setAction(newInput)
+    {
+		if (actionArray.length>0)
+		{
+			actionArray [0]=newInput;
+		}
+		else
+		{
+			actionArray.push (newInput);
+		}
+    };
+    /**
+    *    Returns the primary action value
+    */
+    this.getAction=function getAction()
+    {
+		if (actionArray.length==0)
+		{
+			return (null);
+		}
+
+		return (actionArray [0]);
+    };
+    /**
+    * @param {string} newVal new element for selectionArray
+    */
+    this.appendToSelectionArray=function appendToSelectionArray(newVal,aType)
+    {
+		var tempSelection=new CTATArgument ();
+		tempSelection.setValue (String(newVal));
+
+		if ((aType!=undefined) && (aType!=null))
+		{
+			tempSelection.setType (aType);
+		}
+
+		selectionArray.push (tempSelection);
+
+		/*
+		if(newVal == null)
+			selectionArray.push("");
+		else
+			selectionArray.push(String(newVal));
+		*/
+    };
+    /**
+    * @param {Array<string>} newArr new value for selectionArray
+    */
+    this.setSelectionArray=function setSelectionArray(newArr)
+    {
+		selectionArray = [];
+
+		for (var i=0;i<newArr.length;i++)
+		{
+			var newSelection=newArr [i];
+
+			pointer.appendToSelectionArray (newSelection,"String");
+		}
+
+		/*
+		if(newArr == null)
+		{
+			selectionArray = [];
+		}
+		else if(Array.isArray(newArr))
+			selectionArray = newArr.slice();
+		else
+			selectionArray = [String(newArr)];
+		*/
+    };
+    /**
+    * @return {Array<string>} the entire selection array
+    */
+    this.getSelectionArray=function getSelectionArray()
+    {
+		var tempArray=[];
+
+		for (var i=0;i<selectionArray.length;i++)
+		{
+			var tempSelection=selectionArray [i];
+
+			if (typeof tempSelection === "object")
+			{
+				tempArray.push (selectionArray [i].getValue ());
+			}
+			else
+			{
+				tempArray.push (tempSelection);
+			}
+		}
+
+		return (tempArray);
+
+        //return selectionArray;
+    };
+    /**
+    * @param {string} newVal new element for actionArray
+    */
+    this.appendToActionArray=function appendToActionArray(newVal)
+    {
+		if(newVal == null)
+			actionArray.push("");
+		else
+			actionArray.push(String(newVal));
+    };
+    /**
+    * @param {Array<String>} newArr new value for actionArray
+    */
+    this.setActionArray=function setActionArray(newArr)
+    {
+		if(newArr == null)
+			actionArray = [];
+		else if(Array.isArray(newArr))
+			actionArray = newArr.slice();
+		else
+			actionArray = [String(newArr)];
+    };
+    /**
+    * @return {Array<string>} the entire action array
+    */
+    this.getActionArray=function getActionArray()
+    {
+        return actionArray;
+    };
+    /**
+    * @param {string} newVal new element for inputArray
+    */
+	/*
+    this.appendToInputArray=function appendToInputArray(newVal)
+    {
+		if(newVal == null)
+			inputArray.push("");
+		else
+			inputArray.push(String(newVal));
+    };
+	*/
+
+	/**
+	*
+	*/
+    this.appendToInputArray=function appendToInputArray(newVal)
+    {
+		pointer.ctatdebug ("appendToInputArray ("+newVal+")");
+
+		if (newVal==null)
+		{
+			pointer.addArgument ("","String","text");
+		}
+		else
+		{
+			pointer.addArgument (newVal,"String","text");
+		}
+
+		/*
+		if(newVal == null)
+			inputArray.push("");
+		else
+			inputArray.push(String(newVal));
+		*/
+    };
+
+    /**
+    * @param {Array<String>} newArr new value for inputArray
+    */
+    this.setInputArray=function setInputArray(newArr)
+    {
+		inputArray = [];
+
+		if (newArr==null)
+		{
+			return;
+		}
+
+		for (var i=0;i<newArr.length;i++)
+		{
+			pointer.appendToInputArray	(newArr [i]);
+		}
+
+		/*
+		if(newArr == null)
+		{
+			inputArray = [];
+		}
+		else if(Array.isArray(newArr))
+			inputArray = newArr.slice();
+		else
+			inputArray = [String(newArr)];
+		*/
+    };
+    /**
+    * @return {Array<string>} the entire input array
+    */
+    this.getInputArray=function getInputArray()
+    {
+		pointer.ctatdebug ("getInputArray ("+inputArray.length+")");
+
+		tempArray=[];
+
+        for (var i=0;i<inputArray.length;i++)
+        {
+			var arg=inputArray [i];
+
+			if (typeof arg === 'object')
+			{
+				pointer.ctatdebug ("Adding object value ("+arg.getValue ()+") to temp input array");
+
+				tempArray.push (arg.getValue ());
+			}
+			else
+			{
+				pointer.ctatdebug ("Adding string value ("+arg+") to temp input array");
+
+				tempArray.push (arg);
+			}
+		}
+
+        return tempArray;
+    };
+    /**
+    *
+    */
+    this.setPrompt=function setPrompt(newInput)
+    {
+        //this.ctatdebug("setPrompt("+newInput+")");
+
+        prompt = newInput;
+    };
+    /**
+    *    Returns the primary action value
+    */
+    this.getPrompt=function getPrompt()
+    {
+        //this.ctatdebug("getPrompt()");
+
+        return prompt;
+    };
+    /**
+     *
+     */
+    this.propagate=function propagate (source)
+    {
+        pointer.ctatdebug ("propagate ()");
+
+        var sourceArguments=source.getArguments ();
+
+        for (var i=0;i<sourceArguments.length;i++)
+        {
+            var fromArg=sourceArguments [i];
+            var toArg=inputArray [i];
+
+            if ((fromArg===null) || (toArg===null))
+            {
+                pointer.ctatdebug ("Internal error: argument lists do not align between received SAI and source SAI");
+                return;
+            }
+
+            toArg.setValue(fromArg.getValue ());
+        }
+    };
+    /**
+    *
+    */
+    this.fromString=function fromString (aStream)
+    {
+		var messageRoot=messageParser.parse (aStream);
+
+		pointer.fromXML (messageRoot);
+    };
+    /**
+    * Provided to the parse method is a single node, which can have any node name.
+    * The code below will then search in that node for the selection, action, input
+    * fields, etc.
+    */
+    this.fromXML=function fromXML (aNode)
+    {
+        pointer.ctatdebug ("fromXML ()");
+
+        inputArray=[];
+
+        // var entries=aNode.childNodes;
+		var entries=messageParser.getElementChildren (aNode);
+
+        inputFlattened="";
+
+		var textValue = null;
+        for (var t=0;t<entries.length;t++)
+        {
+            var entry=entries [t];
+
+            //>-----------------------------------------------------------------------------
+
+            //if ((entry.nodeName==="selection") || (entry.nodeName==="Selection"))
+			if ((messageParser.getElementName (entry)=="selection") || (messageParser.getElementName (entry)=="Selection"))
+            {
+                //this.ctatdebug ("Parsing selection");
+
+                //var vals=entry.childNodes;
+				var vals=messageParser.getElementChildren (entry);
+
+                var nameMatched=false;
+
+                for (var i=0;i<vals.length;i++)
+                {
+                    var val=vals [i];
+
+                    //if (val.nodeName==="value")
+					if (messageParser.getElementName (val)=="value")
+                    {
+                        //this.ctatdebug ("Parsing value: " + messageParser.getNodeTextValue (val));
+
+						textValue = messageParser.getNodeTextValue (val);
+						if(i < 1)                                           // first time: replace
+						{
+							pointer.setSelectionArray (textValue);
+						}
+						else                                                // afterwards: append
+						{
+							pointer.appendToSelectionArray (textValue);
+						}
+
+                        nameMatched=true;
+
+                        pointer.setSelection (textValue);
+                    }
+                }
+
+                if (nameMatched===false)
+                {
+                    //this.ctatdebug ("Parsing value: " + messageParser.getNodeTextValue (entry));
+
+					textValue = messageParser.getNodeTextValue (entry);
+					pointer.setSelectionArray (textValue);
+                    pointer.setSelection (textValue);
+                }
+            }
+
+            //>-----------------------------------------------------------------------------
+
+            //if ((entry.nodeName==="action") || (entry.nodeName==="Action"))
+			if ((messageParser.getElementName (entry)=="action") || (messageParser.getElementName (entry)=="Action"))
+            {
+                //var acts=entry.childNodes;
+				var acts=messageParser.getElementChildren (entry);
+
+                var actionMatched=false;
+
+                for (var j=0;j<acts.length;j++)
+                {
+                    var act=acts [j];
+
+                    //if (act.nodeName==="value")
+					if (messageParser.getElementName (act)=="value")
+                    {
+						textValue = messageParser.getNodeTextValue (act);
+						if(j < 1)                                             // first time: replace
+							pointer.setActionArray (textValue);
+						else                                                  // afterwards: append
+							pointer.appendToActionArray (textValue);
+                        actionMatched=true;
+                        pointer.setAction (textValue);
+                    }
+                }
+
+                if (actionMatched===false)
+				{
+					textValue = messageParser.getNodeTextValue (entry);
+                    pointer.setActionArray (textValue);
+                    pointer.setAction (textValue);
+				}
+            }
+
+            //>-----------------------------------------------------------------------------
+
+            //if ((entry.nodeName==="inputArray") || (entry.nodeName==="value") || (entry.nodeName==="Input"))
+			if ((messageParser.getElementName (entry)=="inputArray") || (messageParser.getElementName (entry)=="value") || (messageParser.getElementName (entry)=="Input"))
+            {
+                //var args=entry.childNodes;
+				var args=messageParser.getElementChildren (entry);
+                var newValue=null;
+
+                inputArray=[];
+
+                var formatter=new CTATHTMLManager ();
+                var newArgument=new CTATArgument ();
+                var ind=0;
+
+                inputArray.push (newArgument);
+
+                for (var k=0;k<args.length;k++)
+                {
+                    var argument=args [k];
+
+                    //if (argument.nodeName==="value")
+					if (messageParser.getElementName (argument)=="value")
+                    {
+						var argNodes=messageParser.getElementChildren (argument);
+
+                        if (argNodes !== null)
+                        {
+                            pointer.ctatdebug ("Parsing SAI input ...");
+
+                            pointer.ctatdebug ("Childnodes: " + argNodes.length);
+
+                            if (argNodes.length===1)
+                            {
+                                newValue=formatter.htmlDecode (messageParser.getNodeTextValue(argument));
+
+                                pointer.ctatdebug ("Setting new value to: " + newValue);
+
+                                newArgument.setValue (newValue);
+                            }
+                            else
+                            {
+                                if (ind>0)
+								{
+                                    inputFlattened+=",";
+								}
+
+                                newValue=formatter.htmlDecode (messageParser.getNodeTextValue(argument));
+
+                                pointer.ctatdebug ("Setting new value to: " + newValue);
+
+                                newArgument.setValue (newValue);
+
+                                // If available ...
+
+                                newArgument.setName (argument.attributes.getNamedItem("name").value);
+                                newArgument.setType (argument.attributes.getNamedItem("type").value);
+                                newArgument.setFormat (argument.attributes.getNamedItem("format").value);
+
+                                inputFlattened+=newValue;
+
+                                ind++;
+                            }
+							if(k < 1)                                             // first time: replace
+								pointer.setInputArray (newValue);
+							else                                                  // afterwards: append
+								pointer.appendToInputArray (newValue);
+                        }
+                        else
+                        {
+                            var newVal=formatter.htmlDecode (messageParser.getNodeTextValue(argument));
+
+                            pointer.ctatdebug ("Setting new value to: " + newVal);
+
+                            newArgument.setValue (newVal);
+							if(k < 1)                                             // first time: replace
+								pointer.setInputArray (newVal);
+							else                                                  // afterwards: append
+								pointer.appendToInputArray (newVal);
+                        }
+                    }
+                }
+            }
+
+            //>-----------------------------------------------------------------------------
+
+            //if ((entry.nodeName==="prompt") || (entry.nodeName==="Prompt"))
+			if ((messageParser.getElementName (entry)=="prompt") || (messageParser.getElementName (entry)=="Prompt"))
+            {
+                pointer.ctatdebug ("Parsing prompt ...");
+
+                pointer.setPrompt (messageParser.getNodeTextValue (entry));
+            }
+
+            //>-----------------------------------------------------------------------------
+        }
+
+        pointer.checkDefaultArgument ();
+    };
+
+	/**
+	 * Append a single element's text content to a selection, action or input array, or
+	 * append all child elements' text recursively.
+	 * @param {string} expectedName "selection", "action" or "input"
+	 * @param {Element} elt source element
+	 * @param {array<string>} arrayToAppend selectionArray, actionArray or inputArray
+	 * @param {number} index child position
+	 */
+	this.appendFromElement = function appendFromElement(expectedName, elt, arrayToAppend, index, isInput)
+	{
+		pointer.ctatdebug ("appendFromElement ()");
+
+		var name = String(messageParser.getElementName(elt)).toLowerCase();
+		if(name != expectedName && name != "value")
+		{
+			//console.log("CTATSAI.appendFromElement() at ["+index+"]: unexpected element name \""+name+"\"");
+			return;
+		}
+
+		var chElts = messageParser.getElementChildren (elt);
+
+		if(!Array.isArray(chElts) || chElts.length < 1)
+		{
+			if (isInput==false)
+			{
+				arrayToAppend.push(messageParser.getNodeTextValue (elt));
+			}
+			else
+			{
+				pointer.appendToInputArray (messageParser.getNodeTextValue (elt));
+			}
+
+			return;
+		}
+
+		for(var i = 0; i < chElts.length; ++i)
+		{
+			appendFromElement(expectedName, chElts[i], arrayToAppend, i, isInput);
+		}
+	}
+
+	/**
+	* Set the array form of selection, action or input from a array of XML elements.
+	* @param {Array<Element>} elts array of only selection, action or input elements (not mixed as in some action, some input)
+	*/
+	this.setArrayFromElements = function(elts)
+	{
+		pointer.ctatdebug ("setArrayFromElements ()");
+
+		if(!elts || !Array.isArray(elts) || elts.length < 1)
+		{
+			pointer.ctatdebug ("can't get name: don't know whether selection, action or input");
+			return;
+		}
+
+		var i=0;
+		var eltName = String(messageParser.getElementName(elts[0])).toLowerCase();
+
+		switch(eltName)
+		{
+			case "selection":
+								pointer.ctatdebug ("Processing selection field ...");
+
+								selectionArray = [];
+
+								for(i=0; i<elts.length; ++i)
+								{
+									pointer.appendFromElement(eltName, elts[i], selectionArray, i, false);
+								}
+								break;
+			case "action":
+								pointer.ctatdebug ("Processing action field ...");
+
+								actionArray = [];
+
+								for(i=0; i<elts.length; ++i)
+								{
+									pointer.appendFromElement(eltName, elts[i], actionArray, i, false);
+								}
+								break;
+
+			case "input":
+								pointer.ctatdebug ("Processing input field ...");
+
+								inputArray = [];
+
+								for(i=0; i<elts.length; ++i)
+								{
+									pointer.appendFromElement(eltName, elts[i], inputArray, i, true);
+								}
+								break;
+			default:
+								console.log("CTATSAI.setArrayFromElements(): unexpected element name \""+eltName+"\"");
+								return;
+		}
+
+		pointer.ctatdebug("CTATSAI.setArrayFromElements() eltName "+eltName+", length "+i+", selectionArray "+pointer.getSelectionArray()+", actionArray "+pointer.getActionArray()+", inputArray "+pointer.getInputArray());
+	};
+
+    /**
+    * Provided to the parse method is a single node, which can have any node name.
+    * The code below will then search in that node for the selection, action, input
+    * fields, etc.
+    */
+    this.fromXMLInternal=function fromXMLInternal (aNode)
+    {
+        pointer.ctatdebug ("fromXMLInternal ()");
+
+        var parser=new CTATXML ();
+
+        inputArray=[];
+
+        //var entries=aNode.childNodes;
+
+		var entries=messageParser.getElementChildren (aNode);
+
+        inputFlattened="";
+
+		var textValue = null;
+        for (var t=0;t<entries.length;t++)
+        {
+            var entry=entries [t];
+
+            //>-----------------------------------------------------------------------------
+
+            //if ((entry.nodeName==="selection") || (entry.nodeName==="Selection"))
+			if ((messageParser.getElementName (entry)=="selection") || (messageParser.getElementName (entry)=="Selection"))
+            {
+                //this.ctatdebug ("Parsing selection");
+
+                //var vals=entry.childNodes;
+				var vals=messageParser.getElementChildren (entry);
+
+                var nameMatched=false;
+
+                for (var i=0;i<vals.length;i++)
+                {
+                    var val=vals [i];
+
+                    //if (val.nodeName==="value")
+					if (messageParser.getElementName (val)=="value")
+                    {
+                        //this.ctatdebug ("Parsing value: " + messageParser.getNodeTextValue (val));
+
+						textValue = messageParser.getNodeTextValue (val);
+						if(i < 1)                                           // first time: replace
+							pointer.setSelectionArray (textValue);
+						else                                                // afterwards: append
+							pointer.appendToSelectionArray (textValue);
+                        nameMatched=true;
+                        pointer.setSelection (textValue);
+                    }
+                }
+
+                if (nameMatched===false)
+                {
+                    //this.ctatdebug ("Parsing value: " + messageParser.getNodeTextValue (entry));
+
+					textValue = messageParser.getNodeTextValue (entry);
+					pointer.setSelectionArray (textValue);
+                    pointer.setSelection (textValue);
+                }
+            }
+
+            //>-----------------------------------------------------------------------------
+
+            //if ((entry.nodeName==="action") || (entry.nodeName==="Action"))
+			if ((messageParser.getElementName (entry)=="action") || (messageParser.getElementName (entry)=="Action"))
+            {
+                var acts=entry.childNodes;
+
+                var actionMatched=false;
+
+                for (var j=0;j<acts.length;j++)
+                {
+                    var act=acts [j];
+
+                    //if (act.nodeName==="value")
+					if (messageParser.getElementName (act)=="value")
+                    {
+						textValue = messageParser.getNodeTextValue (act);
+						if(j < 1)                                             // first time: replace
+							pointer.setActionArray (textValue);
+						else                                                  // afterwards: append
+							pointer.appendToActionArray (textValue);
+                        actionMatched=true;
+                        pointer.setAction (textValue);
+                    }
+                }
+
+                if (actionMatched===false)
+				{
+					textValue = messageParser.getNodeTextValue (entry);
+                    pointer.setActionArray (textValue);
+                    pointer.setAction (textValue);
+				}
+            }
+
+            //>-----------------------------------------------------------------------------
+
+            //if ((entry.nodeName==="inputArray") || (entry.nodeName==="value") || (entry.nodeName==="Input"))
+			if ((messageParser.getElementName (entry)=="inputArray") || (messageParser.getElementName (entry)=="Input"))
+            {
+                var args=entry.childNodes;
+
+                inputArray=[];
+
+                var formatter=new CTATHTMLManager ();
+                var newArgument=new CTATArgument ();
+                var ind=0;
+				var newValue=null;
+
+                inputArray.push (newArgument);
+
+                for (var k=0;k<args.length;k++)
+                {
+                    var argument=args [k];
+
+                    //if (argument.nodeName==="value")
+					if (messageParser.getElementName (argument)=="value")
+                    {
+						var margs=messageParser.getElementChildren (argument);
+
+                        if (margs !== null)
+                        {
+                            pointer.ctatdebug ("Parsing SAI input ...");
+
+                            pointer.ctatdebug ("Childnodes: " + margs.length);
+
+                            if (margs.length===1)
+                            {
+                                newValue=formatter.htmlDecode (messageParser.getNodeTextValue(argument));
+
+                                pointer.ctatdebug ("Setting new value to: " + newValue);
+
+                                newArgument.setValue (newValue);
+                            }
+                            else
+                            {
+                                if (ind>0)
+								{
+                                    inputFlattened+=",";
+								}
+
+                                newValue=formatter.htmlDecode (messageParser.getNodeTextValue(argument));
+
+                                pointer.ctatdebug ("Setting new value to: " + newValue);
+
+                                newArgument.setValue (newValue);
+
+                                // If available ...
+
+								/*
+                                newArgument.setName (argument.attributes.getNamedItem("name").value);
+                                newArgument.setType (argument.attributes.getNamedItem("type").value);
+                                newArgument.setFormat (argument.attributes.getNamedItem("format").value);
+								*/
+
+                                newArgument.setName (messageParser.getElementAttr("name"));
+                                newArgument.setType (messageParser.getElementAttr("type"));
+                                newArgument.setFormat (messageParser.getElementAttr("format"));
+
+
+                                inputFlattened+=newValue;
+
+                                ind++;
+                            }
+							if(k < 1)                                             // first time: replace
+								pointer.setInputArray (newValue);
+							else                                                  // afterwards: append
+								pointer.appendToInputArray (newValue);
+                        }
+                        else
+                        {
+                            var newVal=formatter.htmlDecode (messageParser.getNodeTextValue(argument));
+
+                            pointer.ctatdebug ("Setting new value to: " + newVal);
+
+                            newArgument.setValue (newVal);
+							if(k < 1)                                             // first time: replace
+								pointer.setInputArray (newVal);
+							else                                                  // afterwards: append
+								pointer.appendToInputArray (newVal);
+                        }
+                    }
+                }
+            }
+
+            //>-----------------------------------------------------------------------------
+
+            //if ((entry.nodeName==="prompt") || (entry.nodeName==="Prompt"))
+			if ((messageParser.getElementName (entry)=="prompt") || (messageParser.getElementName (entry)=="Prompt"))
+            {
+                pointer.ctatdebug ("Parsing prompt ...");
+
+                pointer.setPrompt (messageParser.getNodeTextValue (entry));
+            }
+
+            //>-----------------------------------------------------------------------------
+        }
+
+        pointer.checkDefaultArgument ();
+    };
+    /**
+    *    Returns the primary SAI in the XML String format used by datashop specs.
+    *     NOTE: None of the fmt, name, or type fields should be here it will confuse datashop.
+    */
+    this.toXMLString=function toXMLString(logMessageFormat)
+    {
+		pointer.ctatdebug ("toXMLString ()");
+
+        if (logMessageFormat)
+		{
+            return pointer.toLSxmlString();
+		}
+        else
+		{
+            return pointer.toTSxmlString();
+		}
+    };
+    /**
+    *
+    */
+    this.toLSxmlString=function toLSxmlString()
+    {
+		pointer.ctatdebug ("toLSxmlString ()");
+
+        var formatter="";
+
+        for (var i=0;i<selectionArray.length;i++)
+        {
+			var tempSelection=selectionArray [i];
+
+			if (typeof tempSelection === "object")
+			{
+				if (tempSelection.getType ()!="String")
+				{
+					formatter+="<selection type=\""+tempSelection.getType ()+"\">";
+				}
+				else
+				{
+					formatter+="<selection>";
+				}
+
+				//formatter+="<![CDATA["+tempSelection.getValue ()+"]]></selection>";
+				formatter+=(tempSelection.getValue ()+"</selection>");
+			}
+			else
+			{
+				//formatter+=("<selection><![CDATA["+tempSelection+"]]></selection>");
+				formatter+=("<selection>"+tempSelection+"</selection>");
+			}
+        }
+
+        formatter+="<action>"+pointer.getAction();
+
+        for (var j=1;j<actionArray.length;j++)
+        {
+            formatter+="</action><action>"+actionArray[j];
+        }
+
+        formatter+="</action>";
+
+        for (var k=0;k<inputArray.length;k++)
+        {
+            var arg=inputArray [k];
+
+			if (typeof arg === 'object')
+			{
+				if (arg.getType ()!="String")
+				{
+					formatter+="<input type=\""+arg.getType ()+"\"><![CDATA["+arg.getValue()+"]]></input>";
+				}
+				else
+				{
+					formatter+="<input><![CDATA["+arg.getValue()+"]]></input>";
+				}
+			}
+			else
+			{
+				formatter+="<input><![CDATA["+arg+"]]></input>";
+			}
+        }
+
+        //formatter+="</input>";
+
+		//pointer.ctatdebug ("Resulting SAI: " + formatter);
+
+        return (formatter);
+    };
+    /**
+    *    Returns the primary SAI in XML string form, should be good for simple components
+    */
+    this.toTSxmlString=function toTSxmlString()
+    {
+		pointer.ctatdebug ("toTSxmlString ()");
+
+        var formatter="";
+
+		/*
+        formatter+="<Selection><value><![CDATA["+pointer.getSelection ();
+        for (var i=1;i<selectionArray.length;i++)
+        {
+			var tempSelection=selectionArray [i];
+
+			if (typeof tempSelection === "object")
+			{
+				formatter+="]]></value><value><![CDATA["+tempSelection.getValue ();
+			}
+			else
+			{
+				formatter+="]]></value><value><![CDATA["+tempSelection;
+			}
+        }
+
+        formatter+="]]></value></Selection><Action><value>"+pointer.getAction ();
+		*/
+
+        formatter+="<Selection><value>"+pointer.getSelection ();
+        for (var i=1;i<selectionArray.length;i++)
+        {
+			var tempSelection=selectionArray [i];
+
+			if (typeof tempSelection === "object")
+			{
+				formatter+="</value><value>"+tempSelection.getValue ();
+			}
+			else
+			{
+				formatter+="</value><value>"+tempSelection;
+			}
+        }
+
+        formatter+="</value></Selection><Action><value>"+pointer.getAction ();
+
+        for (var j=1;j<actionArray.length;j++)
+        {
+            formatter+="</value><value>"+actionArray[j];
+        }
+
+        formatter+="</value></Action><Input>";
+
+        if (inputArray.length>1)
+        {
+            for (var k=0;k<inputArray.length;k++)
+            {
+                var arg=inputArray [k];
+
+                formatter+="<value fmt=\"text\" name=\""+arg.getName ()+"\" type=\""+arg.getType ()+"\"><![CDATA["+arg.getValue()+"]]></value>";
+            }
+        }
+        else
+		{
+            formatter+="<value><![CDATA["+pointer.getInput()+"]]></value>";
+		}
+
+        formatter+="</Input>";
+
+        return (formatter);
+    };
+    /**
+    *    Returns the primary SAI in XML string form, should be good for simple components
+    */
+    this.toSerializedString=function toSerializedString()
+    {
+        var formatter="";
+
+		formatter+="<selection>"+pointer.getSelection ()+"</selection><action>"+pointer.getAction()+"</action><inputArray>";
+
+        for (var i=0;i<inputArray.length;i++)
+        {
+            var arg=inputArray [i];
+
+            formatter+="<value fmt=\"text\" name=\""+arg.getName ()+"\" type=\""+arg.getType ()+"\">"+arg.getValue()+"</value>";
+        }
+
+		formatter+="</inputArray>";
+
+        return (formatter);
+    };
+
+	/**
+	 * For clone().
+	 * @param {array<string>} newAddedSelections new value for addedSelections
+	 */
+	 /*
+	this.setAddedSelections=function(newAddedSelections)
+	{
+		addedSelections = newAddedSelections;
+	};
+	*/
+
+	/**
+	 * For clone().
+	 * @param {array<string>} newAddedActions new value for addedActions
+	 */
+	 /*
+	this.setAddedActions=function(newAddedActions)
+	{
+		addedActions = newAddedActions;
+	};
+	*/
+
+	/**
+	 * @return {CTATSAI} new object with same property values
+	 */
+	this.clone = function()
+	{
+		pointer.ctatdebug ("clone ()");
+
+		var result = new CTATSAI(pointer.getSelection(), pointer.getAction(), pointer.getInput(), pointer.getPrompt());
+		//result.setAddedSelections(addedSelections.slice(0));      // shallow copy
+		//result.setAddedActions(addedActions.slice(0));
+		for(var i = 0; i<pointer.getArguments().length; ++i)
+		{
+			result.setArgument(i, pointer.getArgument(i).clone());
+		}
+
+		result.setSelectionArray(pointer.getSelectionArray().slice());
+		result.setActionArray(pointer.getActionArray().slice());
+		result.setInputArray(pointer.getInputArray().slice());
+
+		pointer.ctatdebug("CTATSAI.clone() this "+pointer+", clone "+result+", clone inputArray "+result.getInputArray());
+		return result;
+	};
+
+	/**
+	 * @return true if the selection is "done" and the action is "ButtonPressed"
+	 */
+	this.isDone = function()
+	{
+        var s = pointer.getSelection();
+        var a = pointer.getAction();
+
+        if(s==null || a==null)
+        	return false;
+
+        return ("done" == s.toString().toLowerCase() &&
+        		"buttonpressed" == a.toString().toLowerCase());
+	};
+
+	/* Constructor execution begins here. */
+
+	var arraysInitialized = false;
+
+	if(Array.isArray(aSelection) && Array.isArray(anAction) && (Array.isArray(anInput) || anInput == null))  // input null for hint request
+	{
+		pointer.setSelectionArray(aSelection);
+		pointer.setActionArray(anAction);
+		pointer.setInputArray(anInput);
+		arraysInitialized = true;
+		if(aSelection.length>0 && anAction.length>0)
+		{
+			pointer.setSAI(aSelection[0], anAction[0], (anInput == null ? null : anInput[0]), "String", aPrompt);
+			return;
+		}
+	}
+
+    if ((aSelection!==null) && (aSelection!==""))
+	{
+        pointer.setSelection(aSelection);
+	}
+
+    if (aSelection!==null)
+    {
+        pointer.setSAI(aSelection,anAction,anInput,"String",aPrompt);
+		if(!arraysInitialized)
+		{
+			pointer.setSelectionArray(Array.isArray(aSelection) ? aSelection : [aSelection]);
+			pointer.setActionArray(Array.isArray(anAction) ? anAction : [anAction]);
+			pointer.setInputArray(Array.isArray(anInput) ? anInput : [anInput]);
+			arraysInitialized = true;
+		}
+	}
+};
+
+CTATSAI.prototype = Object.create(CTATBase.prototype);
+CTATSAI.prototype.constructor = CTATSAI;
+
+if(typeof module !== 'undefined')
+{
+    module.exports = CTATSAI;
+}

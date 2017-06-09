@@ -1,0 +1,423 @@
+/* less definitions */
+@dialog-margin: 10%;
+@docked-right-margin: 350px;
+
+.hidden-background {
+  display: none;
+}
+.visible-background {
+  display: initial;
+}
+
+/* */
+
+
+#silex-file-explorer{
+  z-index: 115;
+}
+
+/* generic styles  */
+.dialogs-background {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: white;
+  opacity: .5;
+  z-index: 110;
+  cursor: pointer;
+}
+.dock-editors .dialogs-background {
+  z-index: 109; /* behind the docked editors and splitter */
+}
+/*
+  hidden-dialog is used instead of display none,
+  so that dialogs load normally even when the dialog is hidden
+*/
+.hidden-dialog{
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+  bottom: initial;
+  right: initial;
+}
+.visible-dialog {
+  position: absolute;
+  top: @dialog-margin;
+  left: @dialog-margin;
+  bottom: @dialog-margin;
+  right: @dialog-margin;
+}
+/* but hide the background with display none */
+.dialogs-background, .settings-background {
+  .hidden-background;
+}
+
+/* dialogs viibility */
+.text-editor-opened {
+  .silex-text-editor{
+    .visible-dialog;
+  }
+  .dialogs-background {
+    .visible-background;
+  }
+}
+.js-editor-opened {
+  .silex-js-editor {
+    .visible-dialog;
+  }
+  .dialogs-background {
+    .visible-background;
+  }
+}
+.css-editor-opened {
+  .silex-css-editor {
+    .visible-dialog;
+  }
+  .dialogs-background {
+    .visible-background;
+  }
+}
+.html-editor-opened {
+  .silex-html-editor {
+    .visible-dialog;
+  }
+  .dialogs-background {
+    .visible-background;
+  }
+}
+.settings-editor-opened {
+  .silex-settings-dialog {
+    .visible-dialog;
+  }
+  .dialogs-background {
+    .visible-background;
+  }
+}
+/* dock css editor */
+.dock-editors.settings-editor-opened,
+.dock-editors.text-editor-opened{
+  .dialogs-background{
+    .visible-background;
+  }
+}
+.dock-editors {
+  .silex-text-editor {
+    right: @docked-right-margin;
+  }
+  .silex-css-editor .title-bar,
+  .silex-html-editor .title-bar,
+  .silex-js-editor .title-bar {
+    height: 41px;
+  }
+  .dialogs-background {
+    .hidden-background;
+  }
+}
+.dock-editors.css-editor-opened .silex-css-editor,
+.dock-editors.js-editor-opened .silex-js-editor,
+.dock-editors.html-editor-opened .silex-html-editor {
+  left: auto;
+  right: 0;
+  top: @menuHeight;
+  bottom: 0;
+  overflow: hidden;
+}
+
+#text-editor, #mult-choice-dialog {	
+	h4 {
+		margin: 5px;
+		text-align: center;
+	}
+}
+
+#text-editor {
+	padding-bottom: 50px;
+	padding-left: 7px;
+	padding-right: 7px;
+	
+	.content {
+		margin-bottom: 7px;
+	}
+	
+	#text-edit-fontselect {
+		float: left;
+		display: inline-block; 
+		margin-right: 7px;
+	}
+	
+	#text-edit-font-size-cont {
+		margin-left:15px;
+		display: inline-flex;
+		flex-direction: column;
+	}
+	
+	#text-editor-confirm, #text-editor-cancel {
+		width: 75px;
+		height: 25px;
+		padding: 3px;
+		margin: 2px;
+		float: right;
+	}
+	
+	#text-editor-bold, #text-editor-italic {
+		width: 20px;
+	}
+}
+
+#mult-choice-dialog {
+
+	padding-bottom: 66px;
+
+	textarea {
+		resize: none;
+	}	
+	
+	#mult-choice-name {
+		width: 100%;
+		margin-bottom: 5px;
+	}
+	
+	#mult-choice-answer-list, #mult-choice-font-box {
+		border: 2px solid #b6cef4;
+		border-radius: 7px;
+		background-color: #e6e6fa;
+	}
+	
+	#mult-choice-answer-list {
+		list-style-type: none;
+		list-style: none;
+		padding-left: 0;
+		margin-bottom: 5px;
+		height: 26%;
+		overflow-x: hidden;
+		overflow-y: scroll;
+		
+		li {
+			list-style-type: none;
+			list-style: none;
+			padding-left: 0;
+			margin-bottom: 5px;
+		}
+	}
+	
+	#mult-choice-font-box {
+		.inner-content[visibility='collapse'] {
+			height: 0px;
+		}
+	}
+	
+	#mult-choice-a-font-size, #mult-choice-q-font-size, #mult-choice-num-options {
+		width: 30px;
+		margin-bottom: 5px;
+	}
+	
+	#mult-choice-num-options {
+		margin-top: 5px;
+	}
+	
+	.mult-choice-answer {
+		width: 100%;
+	}
+	
+	.mult-choice-answer[error='true'] {
+		border-color: red;
+	}
+	
+	#mult-choice-name[error='true'] {
+		color: red;
+	}
+	
+	#mult-choice-question[error='true'] {
+		color: red;
+	}
+}
+
+#img-source-dialog {
+	
+	.content {
+		text-align: center;
+		width: 96%;
+		height: 70%;
+		margin: 5px;
+		padding: 5px;
+		background-color: #EBF1F3;
+		border-color: black;
+		border-width: 1px;
+		border-radius: 8px;
+	}
+	
+	.title {
+		text-align: center;
+	}
+	
+	#img-src-url {
+		width: 90%;
+	}
+	
+	#img-src-gdrive {
+		padding-left: 7px;
+		padding-right: 8px;
+	}
+}
+
+#create-package-dialog {
+	
+	.title {
+		text-align: center;
+	}
+	
+	input{		
+		margin-top: 5px;
+	}
+	
+	.content {
+		height: 67%;
+		width: 92.5%;
+		padding: 10px;
+		margin: 5px;
+		background-color: #f5f5f5;
+	}
+	
+	#loading-scrn {
+		position: absolute;
+		top: 0px;
+		left: 0px;
+		right: 0px;
+		bottom: 0px;
+		background: url(../images/loading31.gif);
+		background-repeat: no-repeat;
+		background-position: center;
+		background-color: rgba(255, 255, 255, .75);
+		text-align: center;
+		padding-top: 15%;
+	}
+	
+	#create-package-newpkg {
+		padding-left: 7px;
+		padding-right: 7px;
+		height: 23px;
+		font-size: 15px;
+	}
+	
+	#create-package-pkgname {
+		min-width: 120px;
+		max-width: 130px;
+		margin-right: 5px;
+		height: 24px;
+	}
+	
+	#create-package-interfacename {
+		width: 150px;
+	}
+	
+	#create-package-savetoexisting {
+		border-radius: 5px;
+		padding: 3px;
+	}
+	
+	#create-package-confirm, #create-package-cancel {
+		float: right;
+		margin-right: 5px;
+		padding: 3px;
+		width: 60px;
+	}
+	
+	.require-field {
+		border: 2px solid #ff3700;
+	}
+}
+
+#css-editor {
+	#css-editor-confirm, #css-editor-cancel {
+		float: right;
+		padding-left: 5px;
+		padding-right: 5px;
+		min-width: 55px;
+	}
+	
+	#css-editor-cancel {
+		margin-right: 1.5%;
+	}
+	
+	.title {
+		text-align: center;
+	}
+	
+	.content {
+		width: 97%;
+		height: 90%;
+		margin: auto;
+		margin-bottom: 2px;
+	
+		textarea {
+			width: 100%;
+			height: 100%;
+			font-family: monospace;
+		}
+	}
+}
+
+#ctat-group-dialog {
+	
+	.title {
+		padding-top: 5px;
+		text-align: center;
+	}
+	
+	.ctatcontent {
+		height: 90%;
+	}
+	
+	#group-dialog-name {
+		margin-left: 5px;
+		margin-top: 10px;
+	}
+	
+	#group-dialog-member-container {
+		height: 60%;
+		margin: 5px;
+		overflow-y: scroll;
+		background-color: white;
+				
+		#group-dialog-member-list {
+			width: 100%;
+			padding-top: 5px;
+			
+			li {
+				height: 25px;
+				padding-left: 20px;
+				padding-right: 60px;
+				
+				button {
+					float: right;
+				}
+			}
+		}
+	}
+	
+	
+	#group-dialog-id-field {
+		margin-left: 5px;
+	}
+	
+	#group-dialog-id-field[error='true'] {
+		color: red;
+	}
+	
+	#group-dialog-name[error='true'] {
+		color: red;
+	}
+	
+	button {
+		padding-left: 10px;
+		padding-right: 10px;
+	}
+}
+
+.fontSelect {
+	margin: 5px;
+	width: 160px;
+	height: 25px;
+}

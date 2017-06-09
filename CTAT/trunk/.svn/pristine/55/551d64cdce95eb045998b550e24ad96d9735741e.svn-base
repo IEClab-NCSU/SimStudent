@@ -1,0 +1,110 @@
+%{
+goog.provide('CTATAlgebraGrammar');
+goog.require('CTATTreeNode');
+goog.require('CTATRelationNode');
+goog.require('CTATAdditionNode');
+goog.require('CTATMultiplicationNode');
+goog.require('CTATIntDivisionNode');
+goog.require('CTATUnaryNode');
+goog.require('CTATPowerNode');
+goog.require('CTATVariableNode');
+goog.require('CTATConstantNode');
+%}
+/* description: Parses end executes algebraic expressions. */
+
+/* lexical grammar */
+
+%lex
+
+DIGIT [0-9]
+BINDIGIT [0-1]
+OCTDIGIT [0-7]
+HEXDIGIT [0-9A-Fa-f]
+ALPHA [A-Za-z]
+
+%%
+
+\s+ /* skip whitespace */
+"(" return 'LPAREN'
+")" return 'RPAREN'
+"**" return 'EXP'
+"^" return 'EXP'
+"|" return 'SQRT'
+"√" return 'SQRT'
+"*" return 'TIMES'
+"//" return 'IDIVIDE'
+"/" return 'DIVIDE'
+"%" return 'REM'
+"-" return 'MINUS'
+"+" return 'PLUS'
+"<=" return 'LESSEQUAL'
+">=" return 'GREATEREQUAL'
+"<" return 'LESS'
+">" return 'GREATER'
+"==" return 'EQUAL'
+"!=" return 'NOTEQUAL'
+({DIGIT}+"."?{DIGIT}*|"."{DIGIT}+)([Ee][+-]?{DIGIT}+)? return 'NUMBER'
+(0[Bb]{BINDIGIT}+|0[Oo]{OCTDIGIT}+|0[Xx]{HEXDIGIT}+) return 'NUMBER'
+{ALPHA} return 'VARIABLE'
+<<EOF>> return 'EOF'
+
+/lex
+
+/* operator associations and precedence */
+
+%nonassoc LESS GREATER LESSEQUAL GREATEREQUAL EQUAL NOTEQUAL
+%left PLUS MINUS
+%left ITIMES TIMES DIVIDE REM
+%right UMINUS UPLUS
+%right EXP
+
+%start expression
+
+%%
+
+/* language grammar */
+
+expression:
+  relational EOF {return $1} ;
+
+relational:
+  arithmetic LESS arithmetic {$$ = new yy.CTATRelationNode('LESS', $1, $3)} |
+  arithmetic GREATER arithmetic {$$ = new yy.CTATRelationNode('GREATER', $1, $3)} |
+  arithmetic LESSEQUAL arithmetic {$$ = new yy.CTATRelationNode('LESSEQUAL', $1, $3)} |
+  arithmetic GREATEREQUAL arithmetic {$$ = new yy.CTATRelationNode('GREATEREQUAL', $1, $3)} |
+  arithmetic EQUAL arithmetic {$$ = new yy.CTATRelationNode('EQUAL', $1, $3)} |
+  arithmetic NOTEQUAL arithmetic {$$ = new yy.CTATRelationNode('NOTEQUAL', $1, $3)} |
+  arithmetic {$$ = $1} ;
+
+arithmetic:
+  arithmetic PLUS term {$$ = new yy.CTATAdditionNode('PLUS', [$1, $3])} |
+  arithmetic MINUS term {$$ = new yy.CTATAdditionNode('MINUS', [$1, $3])} |
+  term {$$ = $1} ;
+
+term:
+  term TIMES signedfactor {$$ = new yy.CTATMultiplicationNode('TIMES', [$1, $3])} |
+  term DIVIDE signedfactor {$$ = new yy.CTATMultiplicationNode('DIVIDE', [$1, $3])} |
+  term factor {$$ = new yy.CTATMultiplicationNode('ITIMES', [$1, $2])} |
+  term IDIVIDE signedfactor {$$ = new yy.CTATIntDivisionNode('IDIVIDE', $1, $3)} |
+  term REM signedfactor {$$ = new yy.CTATIntDivisionNode('REM', $1, $3)} |
+  signedfactor {$$ = $1} ;
+
+signedfactor:
+  PLUS signedfactor {$$ = new yy.CTATUnaryNode('UPLUS', $2)} |
+  MINUS signedfactor {$$ = new yy.CTATUnaryNode('UMINUS', $2)} |
+  factor {$$ = $1} ;
+
+factor:
+  atom EXP signedfactor {$$ = new yy.CTATPowerNode('EXP', $1, $3)} |
+  SQRT signedfactor {$$ = new yy.CTATPowerNode('SQRT', $2, new yy.CTATConstantNode(0.5))} |
+  atom {$$ = $1} ;
+
+atom:
+  LPAREN arithmetic RPAREN {$$ = $2.addParens()} |
+  VARIABLE {$$ = new yy.CTATVariableNode(yy.variableTable, yytext)} |
+  NUMBER {$$ = new yy.CTATConstantNode(Number(yytext))} ;
+
+%%
+
+/* functions */
+

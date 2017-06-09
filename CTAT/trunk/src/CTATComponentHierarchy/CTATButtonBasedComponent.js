@@ -1,0 +1,242 @@
+/**-----------------------------------------------------------------------------
+ $Author: vvelsen $
+ $Date: 2016-08-10 13:19:43 -0500 (週三, 10 八月 2016) $
+ $HeadURL: svn://pact-cvs.pact.cs.cmu.edu/usr5/local/svnroot/AuthoringTools/trunk/HTML5/src/CTATComponentHierarchy/CTATButtonBasedComponent.js $
+ $Revision: 24076 $
+
+ -
+ License:
+ -
+ ChangeLog:
+ -
+ Notes:
+
+ */
+goog.provide('CTATButtonBasedComponent');
+
+goog.require('CTATGlobals');
+goog.require('CTAT.Component.Base.Clickable');
+/**
+ *
+ */
+CTATButtonBasedComponent = function(aClassName,
+		aName,
+		aDescription,
+		aX,
+		aY,
+		aWidth,
+		aHeight) {
+	CTAT.Component.Base.Clickable.call(this,
+			aClassName,
+			aName,
+			aDescription,
+			aX,
+			aY,
+			aWidth,
+			aHeight);
+
+	var pointer=this;
+	var buttonText="";
+	
+	var textColor = 'black';
+
+	var scaleComponentToImage=false;
+
+	this.setActionInput("ButtonPressed","-1");
+
+	/**
+	 *
+	 */
+	this.setImage=function setImage (anImage)
+	{
+		pointer.ctatdebug("assignImage ("+anImage+")");
+		pointer.getDivWrap().setAttribute('data-ctat-img', anImage)
+		if (anImage) 
+		{
+			anImage = "url('"+anImage+"')";
+		}
+		$(pointer.getComponent()).css('background-image', anImage);
+		$(pointer.getComponent()).css('background-size', 'cover');
+	};
+
+	/**
+	 *
+	 */
+	this.assignImage=function assignImage (anImage)
+	{
+		pointer.ctatdebug("assignImage ()");
+
+		pointer.assignImages (anImage,anImage,anImage,anImage);
+	};
+	
+	/**
+	 *
+	 */
+	this.assignImageURL=function assignImageURL (anImage)
+	{
+		pointer.ctatdebug("assignImageURL ()");
+
+		pointer.assignImages (anImage,anImage,anImage,anImage);
+	};	
+
+	/**
+	 *
+	 */
+	this.assignImages=function assignImages (aHover,aClicked,aDefault,aDisabled)
+	{
+		pointer.ctatdebug("assignImages ()");
+
+		pointer.getDivWrap().setAttribute("data-ctat-image-hover",aHover);
+		pointer.getDivWrap().setAttribute("data-ctat-image-clicked",aClicked);
+		pointer.getDivWrap().setAttribute("data-ctat-image-default",aDefault);
+		pointer.getDivWrap().setAttribute("data-ctat-image-disabled",aDisabled);
+
+		this.setImage (aDefault);
+	};
+
+	/**
+	 *
+	 */
+	this.processBaseMousedown=function processBaseMousedown ()
+	{
+		pointer.ctatdebug("processMousedown ()");
+
+		pointer.component.classList.add('CTAT-button--clicked');
+		var imageClicked = pointer.getDivWrap().getAttribute("data-ctat-image-clicked");
+		if (pointer.getEnabled() && imageClicked && (imageClicked!==undefined) && (imageClicked!=="") && imageClicked!==null)
+		{
+			pointer.getComponent().style.backgroundImage = "url('"+imageClicked+"')";
+		}
+	};
+
+	/**
+	 *
+	 */
+	this.processBaseMouseup=function processBaseMouseup ()
+	{
+		pointer.ctatdebug("processMouseup ()");
+
+		pointer.component.classList.remove('CTAT-button--clicked');
+		var imageDefault = pointer.getDivWrap().getAttribute("data-ctat-image-default");
+		if (pointer.getEnabled() && imageDefault && (imageDefault!==undefined) && (imageDefault!=="") && imageDefault!==null)
+		{
+			pointer.getComponent().style.backgroundImage = "url('"+imageDefault+"')";
+		}
+	};
+
+	/**
+	 *
+	 */
+	this.processBaseMouseover=function processBaseMouseover ()
+	{
+		pointer.ctatdebug("processBaseMouseover ()");
+
+		pointer.component.classList.add('CTAT-button--hover');
+		var imageHover = pointer.getDivWrap().getAttribute("data-ctat-image-hover");
+		if (pointer.getEnabled() && imageHover && (imageHover!==undefined) && (imageHover!==""))
+		{
+			pointer.getComponent().style.backgroundImage = "url('"+imageHover+"')";
+		}
+	};
+
+	/**
+	 *
+	 */
+	this.processBaseMouseout=function processBaseMouseout ()
+	{
+		pointer.ctatdebug("processBaseMouseout ()");
+
+		pointer.component.classList.remove('CTAT-button--hover');
+		pointer.component.classList.remove('CTAT-button--clicked');
+		var imageDefault = pointer.getDivWrap().getAttribute("data-ctat-image-default");
+		if (pointer.getEnabled() && imageDefault && (imageDefault!==undefined) && (imageDefault!==""))
+		{
+			pointer.getComponent().style.backgroundImage = "url('"+imageDefault+"')";
+		}
+	};
+
+	/**
+	 *
+	 * @param aText
+	 */
+	this.setText=function setText (aText)
+	{
+		pointer.ctatdebug("setText (" + aText + ")");
+
+		buttonText=aText;
+
+		if (pointer.getComponent()!==null)
+		{
+			pointer.getComponent().innerHTML=buttonText;
+		}
+	};
+	
+	this.setFontColor = function(aColor)
+	{
+		textColor = aColor;
+		$(pointer.getComponent()).css("color", aColor);
+	}
+	
+	this.getFontColor = function()
+	{
+		return textColor;
+	}
+
+	this.setStyleHandler('labelText',this.setText);
+
+	/**
+	 *
+	 */
+	this.getText=function getText ()
+	{
+		return (buttonText);
+	};
+
+	/**
+	 *
+	 * @param e
+	 */
+	this.processClick=function processClick (e)
+	{
+		//useDebugging=true;
+
+		pointer.ctatdebug ("processClick ("+e.currentTarget.getAttribute ("id")+" -> "+e.eventPhase+")");
+
+		if (pointer.getEnabled()===true)
+		{
+			if (CTATGlobals.Tab.Focus!==null)
+			{
+				if ((CTATGlobals.Tab.Focus.getClassName ()=="CTATTextArea") || (CTATGlobals.Tab.Focus.getClassName ()=="CTATTextInput") || (CTATGlobals.Tab.Focus.getClassName ()=="CTATTextField"))
+				{
+					//if (CTATGlobals.Tab.Focus.getName ()=="done")
+					//{
+					CTATGlobals.Tab.Focus.processAction();
+					//}
+				}
+				else
+				{
+					pointer.ctatdebug ("Info: CTATGlobals.Tab.Focus==null");
+				}
+			}
+			var value = $(pointer.getDivWrap()).attr('value');
+			pointer.setInput(value?value:'-1');
+			pointer.processAction();
+		}
+		else
+			pointer.ctatdebug ("Component is disabled, not grading");
+
+		//useDebugging=true;
+	};
+
+	/**
+	 * InterfaceAction for pressing a button.
+	 */
+	this.ButtonPressed = function () {
+		// make sure valid Action exists.
+		return;
+	};
+};
+
+CTATButtonBasedComponent.prototype = Object.create(CTAT.Component.Base.Clickable.prototype);
+CTATButtonBasedComponent.prototype.constructor = CTATButtonBasedComponent;
+

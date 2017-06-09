@@ -1,0 +1,24 @@
+/**-----------------------------------------------------------------------------
+ $Author$
+ $Date$
+ $HeadURL$
+ $Revision$
+
+ -
+ License:
+ -
+ ChangeLog:
+ -
+ Notes:
+
+ */
+goog.provide('CTATParameter');
+
+/**
+ *
+ */
+CTATParameter = function(name, value)
+{
+	this.paramName=name;
+	this.paramValue=value;
+};
