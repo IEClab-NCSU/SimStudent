@@ -1,0 +1,680 @@
+<html>
+<head>
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="Expires" content="0" />
+
+	<link rel="stylesheet" type="text/css" href="http://cdn.ctat.cs.cmu.edu/releases/latest/CTAT.min.css">
+	
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>	
+	<script type="text/javascript" src="http://augustus.andrew.cmu.edu/ctat.min.js"></script>
+
+    <style type="text/css">
+		
+	body 
+	{
+		margin: 0;
+		padding: 0;
+		text-align: center; /* !!! */
+		background-color:#cccccc;
+	}
+	
+	.console 
+	{ 		
+		background-color: #ffffff;
+		text-align: left;
+		overflow: auto;
+		font-family: courier; 
+		font-size: 11px;
+		border: 1px solid black;
+		padding: 2px;
+		margin: 0px;
+		
+		/*
+		filter: alpha(opacity=75);
+		-moz-opacity: 0.75;
+		-khtml-opacity: 0.75;
+		opacity: 0.75;
+		*/
+		visibility: hidden;
+		position: absolute;
+		left: 2px;
+		top: 40px;
+		width: 540px;
+		height: 345px;
+	}	
+
+	.mainborder
+	{
+		background-color: #dddddd;
+		
+		border-radius: 4px;
+	
+		border-style:solid;
+		border-left-width:3px;
+		border-top-width:22px;
+		border-right-width:3px;
+		border-bottom-width:3px;
+		
+		-webkit-box-shadow: 10px 10px 5px -4px rgba(0,0,0,0.75);
+		-moz-box-shadow: 10px 10px 5px -4px rgba(0,0,0,0.75);
+		box-shadow: 10px 10px 5px -4px rgba(0,0,0,0.75);		
+	}
+
+	tr
+	{
+		margin: 0px;
+		padding: 0px;	
+	}
+	
+	td
+	{
+		font-family: Verdana;
+		font-size: 10pt;
+		margin: 0px;
+		padding: 0px;
+	}
+			
+    </style>
+
+	<script>
+	
+		noScrim=true;
+		useDebugging=true;
+		var logConsole=null;
+	
+		/**
+		 *
+		 */ 
+		CTATMessageListener = function()
+		{
+			CTATBase.call(this, "CTATMessageListener","messageListener");
+			
+			var pointer=this;
+			
+			/**
+			*
+			*/
+			this.processOutgoing=function processOutgoing (aMessage)
+			{
+				pointer.ctatdebug ("processOutgoing ()");
+			
+				if (logConsole==null)
+				{
+					logConsole=document.getElementById("ctatconsole");
+				}
+			
+				if (logConsole!==null)
+				{
+					// appendChild( document.createTextNode(yourXmlString) );
+				
+					logConsole.innerHTML+=("<b>Outgoing</b>: <br>" + $('<div/>').text(aMessage).html() + "<hr>");
+
+					logConsole.scrollTop = logConsole.scrollHeight;
+				}			
+			};
+			
+			/**
+			*
+			*/
+			this.processIncoming=function processIncoming (aMessage)
+			{
+				pointer.ctatdebug ("processOutgoing ()");
+			
+				if (logConsole==null)
+				{
+					logConsole=document.getElementById("ctatconsole");
+				}
+			
+				if (logConsole!==null)
+				{
+					logConsole.innerHTML+=("<b>Incoming</b>: <br>" + $('<div/>').text(aMessage).html() + "<hr>");
+
+					logConsole.scrollTop = logConsole.scrollHeight;
+				}			
+			};			
+		};
+
+		CTATMessageListener.prototype = Object.create(CTATBase.prototype);
+		CTATMessageListener.prototype.constructor = CTATMessageListener;	
+
+		var transactionID="";
+		var loggingLibrary=new CTATLoggingLibrary (true);
+		var messageListener=new CTATMessageListener ();	
+		
+		/**
+		*
+		*/
+		function log (aMessage)
+		{
+			if (logConsole==null)
+			{
+				logConsole=document.getElementById("ctatconsole");
+			}
+		
+			if (logConsole!==null)
+			{
+				logConsole.innerHTML+=(aMessage);
+
+				logConsole.scrollTop = logConsole.scrollHeight;
+			}
+		}
+		
+		/**
+		*
+		*/
+		function testLogging ()
+		{
+			useDebugging=true;
+			
+			if (loggingLibrary==null)
+			{
+				log ("No loggingLibary available!");
+				return;
+			}			
+			
+			CTATConfiguration.set ("Logging","ClientToLogServer");
+			CTATLogMessageBuilder.commLogMessageBuilder=new CTATLogMessageBuilder ();
+			
+			loggingLibrary.setupExternalLibraryUsage ();
+
+			loggingLibrary.setLoggingURL (document.getElementById("logURL").value);
+			loggingLibrary.setLogClassName (document.getElementById("className").value);
+			loggingLibrary.setInstructor (document.getElementById("instructor").value);
+			loggingLibrary.setSchool (document.getElementById("school").value);
+			loggingLibrary.setPeriod (document.getElementById("period").value);
+			loggingLibrary.setDescription (document.getElementById("description").value);
+			loggingLibrary.setUserID (document.getElementById("userID").value);
+			loggingLibrary.setProblemName (document.getElementById("problemName").value);
+			loggingLibrary.setUseSessionLog (document.getElementById ("logSessionStart").checked);
+			loggingLibrary.setDatasetName (document.getElementById ("dataSet").value);
+			loggingLibrary.setDatasetLevelName (document.getElementById ("dataset_level_name1").value);
+			loggingLibrary.setDatasetLevelType (document.getElementById ("dataset_level_type1").value);
+									
+			loggingLibrary.getLoggingCommLibrary ().assignMessageListener (messageListener);
+			
+			loggingLibrary.start ();			
+			
+			document.getElementById("logSAI").style.visibility="visible";
+			
+			document.getElementById("start").disabled = true;
+			
+			document.getElementById("logURL").disabled = true;
+			document.getElementById("className").disabled = true;
+			document.getElementById("instructor").disabled = true;
+			document.getElementById("school").disabled = true;
+			document.getElementById("period").disabled = true;
+			document.getElementById("description").disabled = true;
+			document.getElementById("userID").disabled = true;
+			document.getElementById("problemName").disabled = true;			
+			document.getElementById ("logSessionStart").disabled = true;
+			document.getElementById ("dataSet").disabled = true;
+			document.getElementById ("dataset_level_name1").disabled = true;
+			document.getElementById ("dataset_level_type1").disabled = true;
+			
+			document.getElementById("logSAIButton").disabled = false;
+			document.getElementById("logResponseButton").disabled = false;
+		}
+		
+		/**
+		*
+		*/		
+		function testLogSAI ()
+		{
+			if (loggingLibrary==null)
+			{
+				log ("No loggingLibary available!");
+				return;
+			}
+		
+			transactionID=loggingLibrary.logInterfaceAttempt (document.getElementById("selection").value,
+															  document.getElementById("action").value,
+															  document.getElementById("input").value);
+											
+			document.getElementById("logResponse").style.visibility="visible";
+			document.getElementById("logSAI").disabled = true;
+			document.getElementById("logSAIButton").disabled = true;
+			
+			document.getElementById("transactionid").innerHTML=("Transaction ID: " + transactionID);
+		}
+
+		/**
+		*
+		*/
+		function testLogResponse ()
+		{
+			if (loggingLibrary==null)
+			{
+				log ("No loggingLibary available!");
+				return;
+			}
+			
+			document.getElementById("sessionControls").style.visibility="visible";
+			
+			document.getElementById("logResponseButton").disabled = true;
+			
+			loggingLibrary.logResponse (transactionID,
+										document.getElementById("responseSelection").value,
+										document.getElementById("responseAction").value,
+										document.getElementById("responseInput").value,
+										document.getElementById("evaluation").value,
+										"",
+										document.getElementById("feedback").value);
+		}
+		
+		/**
+		*
+		*/
+		function resetActions ()
+		{
+			document.getElementById("logResponse").style.visibility="hidden";
+			document.getElementById("sessionControls").style.visibility="hidden";	
+			
+			document.getElementById("logSAIButton").disabled = false;
+			document.getElementById("logResponseButton").disabled = false;
+
+			transactionID="";
+			document.getElementById("transactionid").innerHTML=("Transaction ID: " + transactionID);			
+		}
+		
+		/**
+		*
+		*/
+		function endSession ()
+		{
+			if (loggingLibrary==null)
+			{
+				log ("No loggingLibary available!");
+				return;
+			}
+			
+			loggingLibrary.endSession ();
+		
+			document.getElementById("ctatconsole").innerHTML="";
+		
+			document.getElementById("logSAI").style.visibility="hidden";
+			document.getElementById("logResponse").style.visibility="hidden";
+			document.getElementById("sessionControls").style.visibility="hidden";
+			
+			document.getElementById("start").disabled = false;
+			
+			document.getElementById("logURL").disabled = false;
+			document.getElementById("className").disabled = false;
+			document.getElementById("instructor").disabled = false;
+			document.getElementById("school").disabled = false;
+			document.getElementById("period").disabled = false;
+			document.getElementById("description").disabled = false;
+			document.getElementById("userID").disabled = false;
+			document.getElementById("problemName").disabled = false;
+			document.getElementById ("logSessionStart").disabled = false;
+			document.getElementById ("dataSet").disabled = false;
+			document.getElementById ("dataset_level_name1").disabled = false;
+			document.getElementById ("dataset_level_type1").disabled = false;			
+			
+			transactionID="";
+			document.getElementById("transactionid").innerHTML=("Transaction ID: " + transactionID);						
+		}
+		
+		var simCounter=0;
+		var simTimer=-1;
+		
+		/**
+		*
+		*/
+		function generateLogging ()
+		{
+			document.getElementById("start").disabled = true;
+		
+			simCounter=parseInt(document.getElementById("session_count").value);
+		
+			testLogging ();
+		
+			simTimer=setInterval(simStudentAction, 1000);			
+		}
+		
+		/**
+		*
+		*/
+		function simStudentAction ()
+		{	
+			testLogSAI ();
+			testLogResponse ();
+		
+			simCounter--;
+			
+			if (simCounter<0)
+			{
+				clearInterval (simTimer);
+				endSession ();
+				document.getElementById("start").disabled = false;
+			}
+		}
+		
+		var folded=true;
+		
+		/**
+		*
+		*/
+		function foldConsole ()
+		{
+			if (folded==false)
+			{			
+				$("#ctatconsole").css("visibility", "hidden");
+				$("#fold").html('<img src="arrow-down.png">');
+				folded=true;
+			}
+			else
+			{
+				$("#ctatconsole").css("visibility", "visible");			
+				$("#fold").html('<img src="arrow-up.png">');
+				folded=false;
+			}
+		}
+		
+	</script>
+
+<body>
+
+<table cellpadding="0" cellspacing="0" width="100%" height="100%" align="center" valign="middle">
+<tr>
+	<td align="center" valign="middle">  
+	
+	<div style="position: relative; width: 550px; border: 0px solid red;">
+	
+		<button id="fold" type="button" onClick="foldConsole ()" style="position:absolute; top:20; right:2; width: 18px; height: 18px; margin: 0px; padding: 0px;"><img src="arrow-down.png"></button>
+
+		<div id="ctatconsole" class="console">
+		</div>
+		
+		<div style="height: 18px;">&nbsp;</div>
+	
+		<table class="mainborder" style="width: 550px; height: 350px;" border="0" cellpadding="0" cellspacing="4">
+		
+			<tr>
+				<td valign="top" height="25">
+				Log URL
+				</td>
+				<td valign="top" height="25">
+					<input type="text" id="logURL" name="logURL" size="40" value="http://localhost:8080/olisandbox/log/server" title="Log URL">
+				</td>
+			</tr>			
+			<tr>			
+				<td valign="top" height="25">
+				Class Name
+				</td>
+				<td valign="top" height="25">
+					<input type="text" id="className" name="className" size="40" value="22-512" title="Class Name">
+				</td>
+			</tr>			
+			<tr>						
+				<td valign="top" height="25">
+				Instructor
+				</td>
+				<td valign="top" height="25">
+					<input type="text" id="instructor" name="instructor" size="40" value="Miss Wormwood" title="Instructor">
+				</td>	
+			</tr>			
+			<tr>						
+				<td valign="top" height="25">
+				School
+				</td>
+				<td valign="top" height="25">
+					<input type="text" id="school" name="school" size="40" value="CMU" title="School">
+				</td>	
+			</tr>			
+			<tr>						
+				<td valign="top" height="25">
+				Period or Section
+				</td>
+				<td valign="top" height="25">
+					<input type="text" id="period" name="period" size="40" value="1st" title="Period">
+				</td>				
+			</tr>
+			<tr>						
+				<td valign="top" height="25">
+				Description
+				</td>
+				<td valign="top" height="25">
+					<input type="text" id="description" name="description" size="40" value="CTAT Logging Test" title="Description">
+				</td>	
+			</tr>			
+			<tr>						
+				<td valign="top" height="25">
+				User ID
+				</td>
+				<td valign="top" height="25">
+					<input type="text" id="userID" name="userID" size="40" value="calvin" title="User ID">
+				</td>	
+			</tr>			
+			<tr>						
+				<td valign="top" height="25">
+				Problem Name
+				</td>
+				<td valign="top" height="25">
+					<input type="text" id="problemName" name="problemName" size="40" value="AHardFractionsProblem" title="Problem Name">
+				</td>				
+			</tr>		
+			<tr>						
+				<td valign="top" height="25">
+				Log Start Session Message
+				</td>
+				<td valign="top" height="25">
+					<input type="checkbox" id="logSessionStart" name="logSessionStart" checked>
+				</td>				
+			</tr>
+
+			<tr>						
+				<td valign="top" height="25">
+				DataSet
+				</td>
+				<td valign="top" height="25">
+					<input type="text" id="dataSet" name="dataSet" size="40" value="HTML5LoggingTest" title="DataSet">
+				</td>	
+			</tr>
+			<tr>						
+				<td valign="top" height="25">
+				dataset_level_name1
+				</td>
+				<td valign="top" height="25">
+					<input type="text" id="dataset_level_name1" name="dataset_level_name1" size="40" value="Unit1" title="dataset_level_name1">
+				</td>	
+			</tr>
+			<tr>						
+				<td valign="top" height="25">
+				dataset_level_type1
+				</td>
+				<td valign="top" height="25">
+					<input type="text" id="dataset_level_type1" name="dataset_level_type1" size="40" value="unit" title="dataset_level_type1">
+				</td>
+			</tr>		
+		
+			<tr>
+				<td valign="top" height="25">
+				Generate <input type="text" id="session_count" name="session_count" size="5" value="100" title="session count"> Sessions
+				</td>
+				<td valign="top" height="25">
+				<button id="start" type="button" onClick="generateLogging ()" style="width: 310px;">Generate Log Sessions ...</button> 
+				</td>
+			</tr>
+		
+			<tr>
+				<td valign="top" height="25">
+				&nbsp;
+				</td>
+				<td valign="top" height="25">
+				<button id="start" type="button" onClick="testLogging ()" style="width: 310px;">Generate Manual Session ...</button> 		
+				</td>
+			</tr>
+			
+			<tr>
+			<td valign="top" colspan="2">
+				<div id="logSAI" style="visibility: hidden;">
+					<table border="0" style="margin: 0px; padding: 0px;" cellpadding="0" cellspacing="0">
+					<tr>
+						<td>
+						<button id="logSAIButton" type="button" onClick="testLogSAI ()" style="width: 120px;">Log SAI</button>
+						</td>
+						<td>
+						&nbsp;
+						</td>
+						<td>
+						&nbsp;
+						</td>					
+					</tr>
+					<tr>
+						<td>
+						&nbsp;
+						</td>
+						<td width="125">
+						Selection:
+						</td>
+						<td>
+						<input type="text" id="selection" name="selection" value="xxx" size="35" title="selection">
+						</td>
+					</tr>
+					<tr>											
+						<td>
+						&nbsp;
+						</td>					
+						<td width="125">
+						Action: 
+						</td>
+						<td>
+						<input type="text" id="action" name="action" value="xxx" size="35" title="action">
+						</td>
+					</tr>
+					<tr>						
+						<td>
+						&nbsp;
+						</td>
+						<td width="125">
+						Input:
+						</td>
+						<td>
+						<input type="text" id="input" name="input" value="xxx" size="35" title="input">
+						</td>
+					</tr>
+					</table>
+				</div>			
+			</td>
+			</tr>		
+			
+			<tr>
+			<td valign="top" colspan="2">
+				<div id="logResponse" style="margin: 0px; padding: 0px; visibility: hidden;">
+					<table border="0" style="margin: 0px; padding: 0px;" cellpadding="0" cellspacing="0">
+					<tr>
+						<td>
+						<button id="logResponseButton" type="button" onClick="testLogResponse ()" style="width: 120px;">Log Tutor Response</button>
+						</td>
+						<td>
+						&nbsp;
+						</td>
+						<td>
+						&nbsp;
+						</td>					
+					</tr>
+					<tr>
+						<td>
+						&nbsp;
+						</td>
+						<td width="125">
+						Selection:
+						</td>
+						<td>
+						<input type="text" id="responseSelection" name="responseSelection" value="xxx" size="35" title="selection">
+						</td>
+					</tr>
+					<tr>											
+						<td>
+						&nbsp;
+						</td>					
+						<td width="125">
+						Action: 
+						</td>
+						<td>
+						<input type="text" id="responseAction" name="responseAction" value="xxx" size="35" title="action">
+						</td>
+					</tr>
+					<tr>						
+						<td>
+						&nbsp;
+						</td>
+						<td width="125">
+						Input:
+						</td>
+						<td>
+						<input type="text" id="responseInput" name="responseInput" value="xxx" size="35" title="input">
+						</td>
+					</tr>
+					<tr>						
+						<td>
+						&nbsp;
+						</td>
+						<td width="125">
+						Feedback/Advice:
+						</td>
+						<td>
+						<input type="text" id="feedback" name="feedback" value="Please work on the highlighted step" size="35" title="feedback">
+						</td>
+					</tr>
+
+					<tr>						
+						<td>
+						&nbsp;
+						</td>
+						<td>
+						Evaluation:
+						</td>
+						<td>
+							<select id="evaluation" name="evaluation">
+								<option value="CORRECT">CORRECT</option>
+								<option value="INCORRECT">INCORRECT</option>
+								<option value="INCORRECT">HINT</option>
+							</select>
+						</td>
+					</tr>
+								
+					</table>
+				</div>			
+			</td>
+			</tr>
+					
+			<tr>
+			<td valign="top" colspan="2">
+				<div id="sessionControls" style="margin: 0px; padding: 0px; visibility: hidden;">
+				
+					<br>
+				
+					<center>
+					<table border="0" style="margin: 0px; padding: 0px;" cellpadding="0" cellspacing="0">
+					<tr>
+						<td>
+						<button type="button" onClick="resetActions ()" style="width: 175px;">New Attempt/Response</button>
+						</td>
+						<td>
+						<button type="button" onClick="endSession ()" style="width: 175px;">End Session</button>
+						</td>					
+					</tr>
+					</table>				
+					</center>
+					
+				</div>
+			</td>
+			</tr>		
+			
+			<tr>
+			<td colspan="2" height="16">
+				<div id="transactionid" style="vertical-align: middle; line-height: 16px; font-family: Verdana; font-size: 12px; margin: 0px; padding: 2px; background: #ffffff; width: 99%; height: 16px; border: 1px solid black;"></div>
+			</td>
+			</tr>
+			
+		</table>
+	</div>
+		
+	</td>
+</tr>
+</table>
+	
+</body>
+</html>

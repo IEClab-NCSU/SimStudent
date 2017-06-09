@@ -1,0 +1,563 @@
+/**-----------------------------------------------------------------------------
+ $Author: vvelsen $
+ $Date: 2014-10-22 10:06:23 -0400 (Wed, 22 Oct 2014) $
+ $Header$
+ $Name$
+ $Locker$
+ $Log$
+
+ -
+ License:
+ -
+ ChangeLog:
+ -
+ Notes:
+
+ http://mottie.github.io/tablesorter/docs/example-widget-resizable.html
+
+ Quick edit to change the code so that SVN will pick up this revision
+*/
+goog.provide('CTATTutorGoogleSideBar');
+
+goog.require('CTATAudioButton');
+goog.require('CTATBinaryImages');
+goog.require('CTATButton');
+goog.require('CTATCheckBox');
+goog.require('CTATComboBox');
+goog.require('CTATCommLibrary');
+goog.require('CTATCommShell');
+goog.require('CTATConfig');
+goog.require('CTATFlashVars');
+goog.require('CTATGlobalFunctions');
+goog.require('CTATGlobals');
+goog.require('CTATGroupingComponent');
+goog.require('CTATHintWindow');
+goog.require('CTATHTMLManager');
+goog.require('CTATImageButton');
+goog.require('CTATJumble');
+goog.require('CTATMobileTutorHandler');
+goog.require('CTATMovieClip');
+goog.require('CTATPlayButton');
+goog.require('CTATRadioButton');
+goog.require('CTATSAI');
+goog.require('CTATSandboxDriver');
+goog.require('CTATScrim');
+goog.require('CTATScrollPaneComponent');
+goog.require('CTATSkillSet');
+goog.require('CTATSkillWindow');
+goog.require('CTATTable');
+goog.require('CTATHintButton');
+goog.require('CTATDoneButton');
+goog.require('CTATTextArea');
+goog.require('CTATTextField');
+goog.require('CTATTextInput');
+goog.require('CTATVideo');
+goog.require('CTATXML');
+goog.require('CTATGuid');
+goog.require('CTATNameTranslator');
+goog.require('CTATWorkedExamplePlayer');
+
+var done=null;
+var hint=null;
+var hintWindow=null;
+var hintWindowWidth=350;
+var hintWindowHeight=100;
+var component=null;
+var drawing=false;
+var onMobile=false;
+//var ctatscrim=new CTATScrim(); // moved to CTATScrim.scrim
+var parser=null;
+var table=null;
+var useWorkedExample=false;
+
+if (CTATConfig.parserType=="xml")
+{
+	parser=new CTATXML ();
+}
+else
+{
+	parser=new CTATJSON ();
+}
+
+/**
+*
+*/
+function assignNameTranslator (aTranslator)
+{
+	nameTranslator=aTranslator;
+}
+/**
+ *
+ */
+function drawTutor ()
+{
+	//ctatdebug ("drawTutor ()");
+
+	if (drawing==true)
+	{
+		return;
+	}
+
+	drawing=true;
+
+	for (var i=0;i<components.length;i++)
+	{
+		var aDesc=components [i];
+
+		//ctatdebug ("Drawing component: " + i);
+
+		var component=aDesc.getComponentPointer ();
+
+		if (component!=null)
+		{
+			//ctatdebug ("Drawing component: " + aDesc.name);
+
+			component.drawComponent ();
+		}
+	}
+
+	drawing=false;
+}
+/**
+ *
+ */
+function getComponentFromDescription (aDescription)
+{
+	var result=null;
+
+	return (result);
+}
+
+/**
+ *
+ */
+function getComponentDescriptionFromComponent (aComponent)
+{
+	var result=null;
+
+	return (result);
+}
+
+/**
+ *
+ */
+function addComponent (aComponent)
+{
+	ctatdebug ("addComponent ()");
+
+	// We should already have the component description in the list
+	// and a pointer to the component is already assigned to the
+	// description in the component's constructor
+
+	aComponent.init ();
+
+	aComponent.processSerialization ();
+
+	aComponent.render ();
+
+	aComponent.processTabOrder ();
+}
+
+/**
+*
+*/
+function createSidebarInterface (aCanvasWidth,aCanvasHeight)
+{
+	ctatdebug ("createSidebarInterface ("+aCanvasWidth+","+aCanvasHeight+")");
+
+	var tutorWidth=aCanvasWidth-4; // assume a 2 pixel margin
+	var tutorHeight=aCanvasHeight-4; // assume a 2 pixel margin
+
+	var dummyDescription=new CTATComponentDescription ();
+
+	//>------------------------------------------------------
+
+	//useDebugging=true;
+
+	if (useWorkedExample==true)
+	{
+		ctatdebug ("Creating (CTATWorkedExamplePlayer)...");
+
+		dummyDescription=new CTATComponentDescription ();
+
+		dummyDescription.name="workedexampleplayer";
+		dummyDescription.type="CTATWorkedExamplePlayer";
+		dummyDescription.x=5;
+		dummyDescription.y=5;
+		dummyDescription.width=tutorWidth-10;
+		dummyDescription.height=60;
+
+		var workedexampleplayer=new CTATWorkedExamplePlayer (dummyDescription,5,5,tutorWidth-10,60);
+		workedexampleplayer.setName ("workedexampleplayer");
+
+		addComponent (workedexampleplayer);
+
+		components.push (dummyDescription);
+
+		workedexampleplayer.construct ();
+
+		CTATCommShell.commShell.addStartStateHandler (workedexampleplayer);
+	}
+	else
+	{
+		dummyDescription=new CTATComponentDescription ();
+
+		dummyDescription.name="workedexampleplayer";
+		dummyDescription.type="CTATWorkedExamplePlayer";
+		dummyDescription.x=5;
+		dummyDescription.y=5;
+		dummyDescription.width=tutorWidth-10;
+		dummyDescription.height=60;
+
+		var logoButton=new CTATImageButton (dummyDescription,5,5,154,60);
+		logoButton.setName ("dummy");
+		logoButton.setClassName ("CTATDummy");
+		logoButton.assignImages (CTATBinaryImages.ctatLogoURL,
+								 CTATBinaryImages.ctatLogoURL,
+								 CTATBinaryImages.ctatLogoURL,
+								 CTATBinaryImages.ctatLogoURL);
+
+		addComponent (logoButton);
+
+		components.push (dummyDescription);
+	}
+
+	//useDebugging=false;
+
+	//>------------------------------------------------------
+
+	if (useWorkedExample==false)
+	{
+		ctatdebug ("Creating (CTATHintButton)...");
+
+		dummyDescription=new CTATComponentDescription ();
+
+		dummyDescription.name="hint";
+		dummyDescription.type="CTATHintButton";
+		dummyDescription.x=5;
+		dummyDescription.y=tutorHeight-61-10;
+		dummyDescription.width=61;
+		dummyDescription.height=61;
+
+		hint=new CTATImageButton (dummyDescription,5,tutorHeight-61,61,61);
+		hint.setName ("hint");
+		hint.setClassName ("CTATHintButton");
+		hint.assignImages (CTATBinaryImages.hintDefaultURL,
+						   CTATBinaryImages.hintHoverURL,
+						   CTATBinaryImages.hintClickURL,
+						   CTATBinaryImages.hintDisabledURL);
+
+		hint.processClick=function processClick ()
+		{
+			CTATCommShell.commShell.requestHint();
+		}
+
+		addComponent (hint);
+
+		components.push (dummyDescription);
+	}
+
+	//pointer.addSafeEventListener ('click',hint.processClick,hint);
+
+	//>------------------------------------------------------
+
+	if (useWorkedExample==false)
+	{
+		ctatdebug ("Creating (CTATDoneButton)...");
+
+		dummyDescription=new CTATComponentDescription ();
+
+		dummyDescription.name="done";
+		dummyDescription.type="CTATDoneButton";
+		dummyDescription.x=tutorWidth-61-5;
+		dummyDescription.y=tutorHeight-61-10;
+		dummyDescription.width=61;
+		dummyDescription.height=61;
+
+		done=new CTATImageButton (dummyDescription,tutorWidth-61,tutorHeight-61,61,61);
+		done.setName("done");
+		done.setClassName ("CTATDoneButton");
+		done.assignImages (CTATBinaryImages.doneDefaultURL,
+						   CTATBinaryImages.doneHoverURL,
+						   CTATBinaryImages.doneClickURL,
+						   CTATBinaryImages.doneDisabledURL);
+
+		done.processClick=function processClick ()
+		{
+			CTATCommShell.commShell.processDone();
+		}
+
+		addComponent (done);
+
+		components.push (dummyDescription);
+	}
+
+	//>------------------------------------------------------
+
+	ctatdebug ("Creating (CTATHintWindow)...");
+
+	dummyDescription=new CTATComponentDescription ();
+
+	dummyDescription.name="hintWindow";
+	dummyDescription.type="CTATHintWindow";
+	dummyDescription.x=5;
+	dummyDescription.y=115;
+	dummyDescription.width=tutorWidth-10;
+	dummyDescription.height=tutorHeight-61-25-100-20;
+
+	hintWindow=new CTATHintWindow (dummyDescription,5,115,tutorWidth-10,tutorHeight-61-25-100-20);
+	hintWindow.setName ("hintwindow");
+
+	addComponent (hintWindow);
+
+	components.push (dummyDescription);
+
+	//>------------------------------------------------------
+
+	ctatdebug ("Creating (CTATTableGoogle)");
+
+	dummyDescription=new CTATComponentDescription ();
+
+	dummyDescription.name="table";
+	dummyDescription.type="CTATTableGoogle";
+	dummyDescription.x=0;
+	dummyDescription.y=0;
+	dummyDescription.width=50;
+	dummyDescription.height=50;
+
+	table=new CTATTableGoogle (dummyDescription,
+							   dummyDescription.x,
+							   dummyDescription.y,
+							   dummyDescription.width,
+							   dummyDescription.height);
+
+	ctatdebug ("Google table proxy created");
+
+	dummyDescription.setComponentPointer (table);
+
+	table.setName (dummyDescription.name);
+
+	addComponent (table);
+
+	components.push (dummyDescription);
+
+	//>------------------------------------------------------
+
+	ctatdebug ("createSidebarInterface () Done");
+}
+
+/**
+*
+*/
+function initializeSidebar(ctatcanvas)
+{
+	ctatdebug ("initializeSidebar ()");
+
+	CTATCommShell.commShell=new CTATCommShell ();
+
+	var googleTrans=new CTATNameTranslator ();
+	googleTrans.setPassthrough (true);
+	assignNameTranslator (googleTrans);
+
+	if (CTATConfig.platform=="ctat")
+	{
+		// Create our own version of the sidebar
+
+		var canvasWidth=ctatcanvas.width;
+		var canvasHeight=ctatcanvas.height;
+
+		ctatdebug ("Canvas: " +canvasWidth + "," + canvasHeight);
+
+		createSidebarInterface (canvasWidth,canvasHeight);
+	}
+	else
+	{
+		// Create the Google sidebar
+	}
+
+	ctatdebug ("Starting CommShell ...");
+
+	CTATCommShell.commShell.processStartProblem ();
+	CTATCommShell.commShell.init (null);
+}
+/**
+ *
+ */
+function createInterface ()
+{
+	ctatdebug ("createInterface ("+components.length+")");
+
+/*
+	var decString="";
+	var x=0;
+	var y=0;
+	var width=50;
+	var height=50;
+	var instName="";
+
+	// Create all the CTAT components ...
+
+	for (var i=0;i<components.length;i++)
+	{
+		var aDesc=components [i];
+
+		//ctatdebug(aDesc);
+
+		if (aDesc==null)
+		{
+			alert ("Internal error parsing component at index " + i);
+			return;
+		}
+
+		if (aDesc.name==null)
+		{
+			alert ("Internal error parsing component at index " + i + " (no name attribute available)");
+			return;
+		}
+
+		if (aDesc.name.indexOf ("null.")==-1)
+		{
+			ctatdebug ("Component: " + aDesc.name + ", type: " + aDesc.type);
+		}
+	}
+
+	ctatdebug ("Drawing tutor ...");
+
+	drawTutor ();
+
+	ctatdebug ("createInterface () done");
+*/
+};
+
+/**
+ *
+ */
+function runTutorSidebar (aVars)
+{
+	ctatdebug ("runTutorSidebar ()");
+
+	if (CTATGlobals.tutorRunning==true)
+	{
+		ctatdebug ("The tutor is already running");
+		return;
+	}
+
+	CTATGlobals.tutorRunning=true;
+
+	if (CTATSkillSet.skills==null)
+	{
+		CTATSkillSet.skills=new CTATSkillSet ();
+	}
+
+	if (flashVars==null)
+	{
+		flashVars=new CTATFlashVars ();
+	}
+	flashVars.assignRawFlashVars(aVars);
+
+	if (CTATConfig.platform=="ctat")
+	{
+		window.onerror = function(errorMsg, url, lineNumber)
+		{
+			var formatter=new CTATHTMLManager ();
+
+			ctatdebug(formatter.htmlEncode (errorMsg) + " in " + url + ", line " + lineNumber);
+		};
+
+		var ctatcanvas = checkTutorCanvas ();
+
+		if (ctatcanvas==null)
+		{
+			alert ("Internal error: HTML5 canvas is null");
+			return;
+		}
+	}
+
+	initializeSidebar(ctatcanvas);
+
+	ctatdebug ("runTutorSidebar () ... all set");
+}
+
+/**
+*
+*/
+function initTutorSidebar (aVars)
+{
+	ctatdebug ("initTutorSidebar ()");
+
+	//var gen=new CTATGuid ();
+
+	// google.script.run.withFailureHandler(onFailure).setText("A1","Starting ...");
+
+	var debugtraces=getSafeElementById("debugtraces");
+
+	var sess = CTATConfiguration.get("session_id");
+	if(!sess || sess == "none")
+	{
+		CTATConfiguration.set("session_id", "qa-test_"+CTATGuid.guid());
+	}
+
+	runTutorSidebar (CTATConfiguration.getRawFlashVars());
+}
+
+/**
+*
+*/
+function checkTutorCanvas ()
+{
+	ctatdebug ("checkTutorCanvas ()");
+
+	var tutorContainer=getSafeElementById(ctatcontainer);
+	var testCanvas = getSafeElementById("main-canvas");
+	var raw=flashVars.getRawFlashVars ();
+
+    var actualWidth='550';
+	var actualHeight='450';
+
+	if (tutorContainer)
+	{
+		ctatdebug ("Recording the actual CSS width and height: " + tutorContainer.offsetWidth + " , " + tutorContainer.offsetHeight);
+
+		actualWidth=tutorContainer.offsetWidth;
+		actualHeight=tutorContainer.offsetHeight;
+	}
+
+	if (raw)
+	{
+		if (raw ['width'] && raw ['height'])
+		{
+			ctatdebug ("We have tutor size flashvars, using those instead: " + raw ['width'] + " , " + raw ['height']);
+
+			actualWidth=raw ['width'];
+			actualHeight=raw ['height'];
+		}
+	}
+
+	if (testCanvas===null)
+	{
+		ctatdebug ("No canvas available, creating ...");
+
+		testCanvas = document.createElement("canvas");
+		testCanvas.id = "main-canvas";
+		testCanvas.innerHTML="Your browser does not support CTAT. Please update or use another browser.";
+
+		ctatdebug ("Setting canvas to: 0,0," + actualWidth + " , " + actualHeight);
+
+		var mainContainer=getSafeElementById (ctatcontainer);
+		mainContainer.appendChild(testCanvas);
+
+		testCanvas.style.width=(actualWidth+'px');
+		testCanvas.style.height=(actualHeight+'px');
+	}
+	else
+	{
+		ctatdebug ("Setting canvas to: 0 , 0, " + actualWidth + " , " + actualHeight);
+
+		testCanvas.style.top='0';
+		testCanvas.style.left='0';
+		testCanvas.style.width=(actualWidth+'px');
+		testCanvas.style.height=(actualHeight+'px');
+	}
+
+	return (testCanvas);
+}

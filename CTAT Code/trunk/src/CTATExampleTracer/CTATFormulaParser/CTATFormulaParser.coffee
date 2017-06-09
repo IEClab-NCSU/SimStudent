@@ -1,0 +1,60 @@
+# Formula expression parser
+
+goog.provide('CTATFormulaParser')
+goog.require('CTATAlgebraParser')
+goog.require('CTATFormulaFunctions')
+goog.require('CTATVariableTable')
+
+window.global = window if window?
+
+class CTATFormulaParser
+  constructor: (@variableTable) ->
+    @algebraParser = new CTATAlgebraParser(@variableTable)
+    @jisonParser = JisonParser
+    @jisonParser.parser.yy = @
+    @functionTable = {}
+    (@functionTable[key] = Number[key]) for key in [
+      'EPSILON', 'MAX_VALUE', 'MIN_VALUE', 'POSITIVE_INFINITY', 'NEGATIVE_INFINITY',
+      'isFinite', 'isInteger', 'isNaN', 'parseFloat', 'parseInt']
+    (@functionTable[key] = ((fun) -> (number, args...) -> fun.apply number, args)\
+      (Number::[key])) for key in [
+        'toExponential', 'toFixed', 'toLocaleString', 'toPrecision', 'toString', 'valueOf']
+    (@functionTable[key] = Math[key]) for key in [
+      'E', 'LN10', 'LN2', 'LOG10E', 'LOG2E', 'PI', 'SQRT1_2', 'SQRT2',
+      'abs', 'acos', 'acosh', 'asin', 'asinh', 'atan', 'atanh', 'atan2', 'cbrt', 'ceil', 'clz32',
+      'cos', 'cosh', 'exp', 'expm1', 'floor', 'fround', 'hypot', 'imul', 'log', 'log10', 'log1p',
+      'log2', 'max', 'min', 'pow', 'random', 'round', 'sign', 'sin', 'sinh', 'sqrt', 'tan', 'tanh',
+      'trunc']
+    (@functionTable[key] = String[key]) for key in ['fromCharCode', 'fromCodePoint']
+    (@functionTable[key] = ((fun) -> (string, args...) -> fun.apply string, args)\
+      (String::[key])) for key in [
+        'charAt', 'charCodeAt', 'codePointAt', 'concat', 'contains', 'endsWith', 'indexOf',
+        'lastIndexOf', 'localeCompare', 'match', 'repeat', 'replace', 'search', 'slice', 'split',
+        'startsWith', 'substr', 'substring', 'toLocaleLowerCase', 'toLocaleUpperCase', 'toLowerCase',
+        'toUpperCase', 'trim', 'valueOf']
+    @functionTable['length'] = (string) -> string.length
+    (@functionTable[key] = ((fun, parser) -> (args...) -> fun.apply parser, args)\
+      (@algebraParser[key], @algebraParser)) for key in [
+        'algParse', 'algEvaluate', 'algPartialSimplify', 'algSimplify', 'algValid', 'algValued',
+        'algPartialSimplified', 'algSimplified', 'algIdentical', 'algEqual', 'algPartialEquivalent',
+        'algEquivalent', 'isAlgValid', 'algEval', 'algStrictEquivTermsSameOrder', 'algEquivTermsSameOrder',
+        'algStrictEquivTerms', 'algEquivTerms', 'algEquiv', 'isSimplified', 'calc', 'calca', 'simplify',
+        'algebraicEqual', 'patternMatches', 'polyTermsEqual', 'algebraicMatches', 'expressionMatches']
+    (@functionTable[key] = ((fun, klass) -> (args...) -> fun.apply klass, args)\
+      (CTATFormulaFunctions[key], CTATFormulaFunctions)) for key, value of CTATFormulaFunctions
+
+  evaluate: (expression, selection, action, input) ->
+    @sai = {selection: selection, action: action, input: input}
+    try
+      @jisonParser.parse(expression).evaluate()
+    catch error
+      console.log(error); null
+
+  interpolateSplitPattern: /<%=|%>/
+  interpolate: (message, selection, action, input) ->
+    ((if index % 2 then @evaluate(item, selection, action, input) else item) \
+      for item, index in message.split(@interpolateSplitPattern)).join('')
+  # interpolate: (message, selection, action, input) ->
+  #   message.split(@interpolateSplitPattern).map((item, index) => if index % 2 then @evaluate(item, selection, action, input) else item).join('')
+
+if module? then module.exports = CTATFormulaParser else @CTATFormulaParser = CTATFormulaParser

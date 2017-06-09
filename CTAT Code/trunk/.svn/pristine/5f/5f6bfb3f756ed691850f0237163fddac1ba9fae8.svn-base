@@ -1,0 +1,207 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1038\cocoasubrtf360
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 Consolas;\f2\fnil\fcharset0 Consolas-Bold;
+}
+{\colortbl;\red255\green255\blue255;\red237\green237\blue237;\red117\green0\blue0;\red0\green0\blue140;
+\red122\green122\blue122;\red46\green46\blue46;\red247\green248\blue247;\red210\green0\blue62;\red30\green127\blue179;
+}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{hyphen\}}{\leveltext\leveltemplateid1\'01\uc0\u8259 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}
+{\list\listtemplateid2\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{hyphen\}}{\leveltext\leveltemplateid101\'01\uc0\u8259 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid2}
+{\list\listtemplateid3\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{hyphen\}}{\leveltext\leveltemplateid201\'01\uc0\u8259 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid3}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}{\listoverride\listid2\listoverridecount0\ls2}{\listoverride\listid3\listoverridecount0\ls3}}
+\margl1440\margr1440\vieww15660\viewh13700\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\ql\qnatural\pardirnatural
+
+\f0\fs34 \cf0 Onscreen Software for CTAT Math Tutors Notes and API\
+
+\fs30 \
+Development/test platform details:\
+Virtual onscreen keyboard for Flash/HTML5 CTAT math tutor interfaces on Android devices\
+\
+:platform - Samsung Galaxy model GT-P7510\
+:OS - Android 4.0.4\
+:browser - Apple Safari 4.0 \
+:resolution 1280x800\
+:CSS/JavaScript/jQuery\
+\
+Files:\
+
+\i\b directory
+\i0  - html5/tablet_keyboard
+\b0 \
+totalCSSKeyboard.html\
+android_keyboard.css\
+HTML5_keyboard.html\
+flash_launch.html\
+CTATMobileTutorHandler.js\
+
+\i subdirectory - 
+\i0 html5/tablet_keyboard/CTATWebview\
+\
+--------------------------------------------------------------------\
+Descriptions:\
+ \
+
+\i\b totalCSSKeyboard.html
+\i0  - 
+\b0 \
+Basic HTML test page for the onscreen keyboard. Links to the CSS of the keyboard layout "android_keyboard.css". Keyboard is hidden by default as coded by the external CSS sheet. All keyboard HTML elements within div element #keyboardUI.\
+\
+
+\i\b android_keyboard.css 
+\i0 - 
+\b0 \
+Cascading Style Sheet of the keyboard user interface. Line 159 hides the keyboard graphical interface by default. \
+\
+
+\i\b HTML5_keyboard.html - 
+\b0 \
+
+\i0 HTML keyboard test environment used for usability research with participants. High-fidelity prototype of HTML keyboard. \
+
+\fs26 Method summary:\
+\pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\ql\qnatural\pardirnatural
+\ls1\ilvl0
+\fs30 \cf0 {\listtext	\uc0\u8259 	}
+\f1 void back() 
+\f0 : debug method\
+{\listtext	\uc0\u8259 	}
+\f1 void back()
+\f0  : backspace event\
+{\listtext	\uc0\u8259 	}
+\f1 void set(textelement) :
+\f0  takes an input element as argument; assigns global variable the object reference so that it may be focused in order to change its value\
+{\listtext	\uc0\u8259 	}
+\f1 void dothis() :
+\f0  debug method\
+{\listtext	\uc0\u8259 	}
+\f1 void pushChar(character)
+\f0  : takes a character as an argument; concatenates the character corresponding to the keyboard button whose onlick event was fired and changes the value of the global variable, which is the most recently selected input element\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\ql\qnatural\pardirnatural
+\cf0 \
+
+\i\b flash_launch.html -
+\b0 \
+
+\i0 The Flash tutor testing rig with the HTML keyboard components inserted. The keyboard's buttons' onclick attributes call the setText() method in the mobileAPI class that handles String manipulation in a Flash text field. \
+\
+
+\i\b Subdirectory - html5/tablet_keyboard/CTATWebview -\
+
+\i0\b0 Contains all source code files for the Android WebView application that displays a tutor test rig with a keyboard.\
+--------------------------------------------------------------------\
+\
+
+\b Notes on suppressing Android's built in software keyboard:\
+
+\i Option 1:
+\i0\b0 \
+\pard\pardeftab720\ql\qnatural
+
+\f1\fs28 \cf0 \cb2 $(\cf3 '#input'\cf0 ).focus(\cf4 function\cf0 () \{\
+  \cf4 this\cf0 .blur();\
+\});
+\f0\b\fs30 \cb1 \
+\pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\ql\qnatural\pardirnatural
+\ls2\ilvl0
+\b0 \cf0 {\listtext	\uc0\u8259 	}This option does not work. The idea is that it is supposed to use jQuery to immediately blur, and therefore suppress Android's keyboard, when a user focuses a text input element.\
+\pard\tx560\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\ql\qnatural\pardirnatural
+\cf0 \
+
+\i\b Option 2:
+\i0\b0 \
+\pard\pardeftab720\ql\qnatural
+
+\f1\fs28 \cf4 \cb2 var\cf0  field = document.createElement(\cf3 'input'\cf0 );\
+field.setAttribute(\cf3 'type'\cf0 , \cf3 'text'\cf0 );\
+document.body.appendChild(field);\
+\
+setTimeout(\cf4 function\cf0 () \{\
+    field.focus();\
+    setTimeout(\cf4 function\cf0 () \{\
+        field.setAttribute(\cf3 'style'\cf0 , \cf3 'display:none;'\cf0 );\
+    \}, \cf3 50\cf0 );\
+\}, \cf3 50\cf0 );\
+\pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\ql\qnatural\pardirnatural
+
+\f0\fs30 \cf0 \cb1 	\uc0\u8259 	This option does not work. The idea is to hide a created text input element on focus and therefore suppress the keyboard.\
+\
+\pard\tx560\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\ql\qnatural\pardirnatural
+
+\i\b \cf0 Option 3:\
+\pard\pardeftab720\ql\qnatural
+
+\f1\i0\b0\fs28 \cf4 \cb2 function\cf0  hideKeyboard(element) \{\
+    element.attr(\cf3 'readonly'\cf0 , \cf3 'readonly'\cf0 ); \cf5 \cb2 // Force keyboard to hide on input field.\cf0 \cb2 \
+    element.attr(\cf3 'disabled'\cf0 , \cf3 'true'\cf0 ); \cf5 \cb2 // Force keyboard to hide on textarea field.\cf0 \cb2 \
+    setTimeout(\cf4 function\cf0 () \{\
+        element.blur();  \cf5 \cb2 //actually close the keyboard\cf0 \cb2 \
+        \cf5 \cb2 // Remove readonly attribute after keyboard is hidden.\cf0 \cb2 \
+        element.removeAttr(\cf3 'readonly'\cf0 );\
+        element.removeAttr(\cf3 'disabled'\cf0 );\
+    \}, \cf3 100\cf0 );\
+\}\
+\pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\ql\qnatural\pardirnatural
+
+\f0\fs30 \cf0 \cb1 	\uc0\u8259 	This option did not work in preliminary testing but might possibly work if the hideKeyboard() function is called from a text element's onclick event. The idea is to set the text input element, which is the argument, to readonly, where it is non editable. \
+ \
+
+\i\b Option 4:\
+
+\itap1\trowd \taflags0 \trgaph108\trleft-108 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrt\brdrnil \trbrdrr\brdrnil 
+\clvertalt\clvertalbase \clshdrawnil \clwWidth13300\clftsWidth3 \clmart10 \clmarl10 \clmarb10 \clmarr10 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadl0 \clpadr0 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\ql\qnatural
+
+\f1\i0\b0\fs28 \cf0 \cb2 $(document.activeElement).filter(\cf3 ':input:focus'\cf0 ).blur();\cell \lastrow\row
+\pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\ql\qnatural\pardirnatural
+
+\f0\fs30 \cf0 \cb1 	\uc0\u8259 	This option did not work in preliminary testing but might possibly work with an HTML tutor.\
+\
+
+\i\b Option 5:\
+\pard\pardeftab720\ql\qnatural
+
+\f1\i0\b0\fs26 \cf6 \cb7 $(\cf8 '#keyboard'\cf6 ).on(\cf8 'focus click tap vclick'\cf6 , 
+\f2\b function
+\f1\b0  (event) \{\
+    event.stopImmediatePropagation();\
+    event.preventDefault();\
+\
+    \cf9 document\cf6 .getElementById(\cf8 "keyboard"\cf6 ).blur();\
+\});\
+\pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\ql\qnatural\pardirnatural
+
+\f0\fs30 \cf0 \cb1 	\uc0\u8259 	This is a possible option that may work.\
+\pard\pardeftab720\sa260\ql\qnatural
+\cf0 \
+
+\i\b Option 6: (for Android WebView)\
+\pard\pardeftab720\sa260\ql\qnatural
+
+\f1\i0\b0\fs28 \cf0 \cb2 getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+\f0\fs30 \cb1 \
+\pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\ql\qnatural\pardirnatural
+\cf0 	\uc0\u8259 	This option was not fully tested during preliminary testing. It may be viable.\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sa260\ql\qnatural
+\ls3\ilvl0\cf0 {\listtext	\uc0\u8259 	}It may be possible to create a View class for Android that extends 
+\f1\fs28 \cb2 android.inputmethodservice.KeyboardView
+\f0\fs30 \cb1  where the default method can be manipulated to either disable Android's keyboard or overwrite it. (See http://stackoverflow.com/questions/1896939/android-app-specific-soft-keyboard/1947370#1947370)\
+{\listtext	\uc0\u8259 	}The following option on this page may work if Flash inputs are handled in the same way as Android's native EditText inputs (See http://www.mysamplecode.com/2011/10/android-hide-show-soft-keyboard.html)\
+\pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\ql\qnatural\pardirnatural
+
+\i\b \cf0 Option 5: (for HTML tutors)
+\i0\b0 \
+ 
+\f1\fs28 \cb2 <input type="text" readonly>
+\f0\fs30 \cb1 \
+	\uc0\u8259 	This is option works fine. It is possible to then use the DOM to get the text input element in order to change its value so the math keyboard works with it. This is the option that was used for the high-fidelity prototype in user testing as is what is used in HTML5_keyboard.html. It works by making a text input element readonly or non editable so that the Android keyboard never appears. Even though it is readonly, the element can still get focus. \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\ql\qnatural\pardirnatural
+\cf0 --------------------------------------------------------------------\
+\pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\ql\qnatural\pardirnatural
+\cf0 \
+
+\b With regards to zooming:\
+
+\b0 When a webpage is zoomed by pinching on an Android tablet, the math keyboard interface contained in the page zooms as well because it composed of HTML components. One option to ensure that the math keyboard can stay the same size is to handle zoom or screen pinching events so that the math keyboard never changes its size relative to the rest of the page. The Hammer.js library might be a good way to handle pinch events. The implementation seems viable. (See http://eightmedia.github.io/hammer.js/).\
+\
+}

@@ -1,0 +1,35 @@
+.silex-stage-iframe {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 0;
+  border: none;
+}
+
+.silex-stage {
+  background-color: #9A9A9A;
+  position: absolute;
+  top: @menuHeight + @contextMenuHeight;
+  bottom: 22px;
+  left: 0px;
+  right: @propertiesToolWidth;
+}
+
+
+.silex-stage iframe{
+  transition: opacity 0.1s linear;
+}
+
+.silex-stage.loading-website iframe{
+  transition: none;
+  opacity: .001;
+}
+
+.silex-stage.loading-website {
+  background-image: url(../assets/image-loader.gif);
+  background-repeat: no-repeat;
+  background-position: 50%;
+}
+
+.silex-stage.loading-website-light iframe{
+}

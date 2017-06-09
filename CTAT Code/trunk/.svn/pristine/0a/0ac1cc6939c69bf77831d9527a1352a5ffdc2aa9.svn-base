@@ -1,0 +1,160 @@
+/**-----------------------------------------------------------------------------
+ $Author$
+ $Date$
+ $HeadURL$
+ $Revision$
+
+ -
+ License:
+ -
+ ChangeLog:
+ -
+ Notes:
+
+ http://stackoverflow.com/questions/6486307/default-argument-values-in-javascript-functions
+
+ */
+goog.provide('CTATComplexSAI');
+
+goog.require('CTATBase');
+goog.require('CTATSAI');
+
+/**
+*
+*/
+CTATComplexSAI = function(aSelection,anAction,anInput,aPrompt)
+{
+	CTATSAI.call(this, aSelection,anAction,anInput,aPrompt);
+
+	var pointer=this;
+
+	/**
+	*
+	*/
+	this.addSelectionActionInput=function addSelectionActionInput (aSelection,anAction,anInput)
+	{
+		pointer.ctatdebug ("addSelectionActionInput ("+aSelection+","+anAction+","+anInput+")");
+
+		pointer.addSelection (aSelection);
+		pointer.addAction (anAction);
+
+		if (anInput)
+		{
+			pointer.setInput(anInput);
+		}
+	};
+
+    /**
+    *    Returns the primary SAI in the XML String format used by datashop specs.
+    *     NOTE: None of the fmt, name, or type fields should be here it will confuse datashop.
+    */
+	/*
+    this.toXMLString=function toXMLString(logMessageFormat)
+    {
+        if (logMessageFormat)
+		{
+            return pointer.toLSxmlString();
+		}
+        else
+		{
+            return pointer.toTSxmlString();
+		}
+    };
+	*/
+    /**
+    *
+    */
+	/*
+    this.toLSxmlString=function toLSxmlString()
+    {
+        var formatter="";
+
+        formatter+="<selection>"+pointer.getName ();
+
+        // formatter+="<selection>"+this.getSelection();
+
+        for (var i=0;i<addedSelections.length;i++)
+        {
+            formatter+="</selection><selection>"+addedSelections[i];
+        }
+        formatter+="</selection><action>"+pointer.getAction();
+        for (var j=0;j<addedActions.length;j++)
+        {
+            formatter+="</action><action>"+addedActions[j];
+        }
+        formatter+="</action><input>";
+        for (var k=0;k<internalArguments.length;k++)
+        {
+            var arg=internalArguments [k];
+            formatter+="<![CDATA["+arg.getValue()+"]]>";
+        }
+
+        formatter+="</input>";
+
+        return (formatter);
+    };
+	*/
+    /**
+    *    Returns the primary SAI in XML string form, should be good for simple components
+    */
+	/*
+    this.toTSxmlString=function toTSxmlString()
+    {
+        var formatter="";
+
+        formatter+="<Selection><value>"+pointer.getName ();
+        for (var i=0;i<addedSelections.length;i++)
+        {
+            formatter+="</value><value>"+addedSelections[i];
+        }
+        formatter+="</value></Selection><Action><value>"+pointer.getAction ();
+        for (var j=0;j<addedActions.length;j++)
+        {
+            formatter+="</value><value>"+addedActions[j];
+        }
+        formatter+="</value></Action><Input>";
+
+        if (internalArguments.length>1)
+        {
+            for (var k=0;k<internalArguments.length;k++)
+            {
+                var arg=internalArguments [k];
+
+                formatter+="<value fmt=\"text\" name=\""+arg.getName ()+"\" type=\""+arg.getType ()+"\"><![CDATA["+arg.getValue()+"]]></value>";
+            }
+        }
+        else
+		{
+            formatter+="<value>"+pointer.getInput()+"</value>";
+		}
+
+        formatter+="</Input>";
+
+        return (formatter);
+    };
+	*/
+    /**
+    *    Returns the primary SAI in XML string form, should be good for simple components
+    */
+	/*
+    this.toSerializedString=function toSerializedString()
+    {
+        var formatter="";
+
+		formatter+="<selection>"+pointer.getSelection ()+"</selection><action>"+pointer.getAction()+"</action><internalArguments>";
+
+        for (var i=0;i<internalArguments.length;i++)
+        {
+            var arg=internalArguments [i];
+            formatter+="<value fmt=\"text\" name=\""+arg.getName ()+"\" type=\""+arg.getType ()+"\">"+arg.getValue()+"</value>";
+        }
+
+		formatter+="</internalArguments>";
+
+        return (formatter);
+    };
+	*/
+};
+
+CTATComplexSAI.prototype = Object.create(CTATSAI.prototype);
+CTATComplexSAI.prototype.constructor = CTATComplexSAI;

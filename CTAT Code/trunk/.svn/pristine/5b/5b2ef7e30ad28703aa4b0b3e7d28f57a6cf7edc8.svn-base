@@ -1,0 +1,49 @@
+<html>
+<head>
+
+<link rel="stylesheet" href="../css/CTAT.css"/>
+
+</head>
+<body>
+
+<div class="CTATTable">
+    <div class="CTATTableTitle">
+        <p>Title, class: CTATTableTitle</p>
+    </div>
+    <div class="CTATTableHeading">
+        <div class="CTATTableCell">
+            <p>Heading 1, class: CTATTableCell</p>
+        </div>
+        <div class="CTATTableCell">
+            <p>Heading 2, class: CTATTableCell</p>
+        </div>
+        <div class="CTATTableCell">
+            <p>Heading 3, class: CTATTableCell</p>
+        </div>
+    </div>
+    <div class="CTATTableRow">
+        <div class="CTATTableCell">
+            <p>Row 1 Column 1, class: CTATTableCell</p>
+        </div>
+        <div class="CTATTableCell">
+            <p>Row 1 Column 2, class: CTATTableCell</p>
+        </div>
+        <div class="CTATTableCell">
+            <p>Row 1 Column 3, class: CTATTableCell</p>
+        </div>
+    </div>
+    <div class="CTATTableRow">
+        <div class="CTATTableCell">
+            <p>Row 2 Column 1, class: CTATTableCell</p>
+        </div>
+        <div class="CTATTableCell">
+            <p>Row 2 Column 2, class: CTATTableCell</p>
+        </div>
+        <div class="CTATTableCell">
+            <p>Row 2 Column 3, class: CTATTableCell</p>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

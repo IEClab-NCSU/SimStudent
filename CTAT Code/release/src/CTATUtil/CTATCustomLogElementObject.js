@@ -1,0 +1,55 @@
+/**-----------------------------------------------------------------------------
+ $Author$
+ $Date$
+ $HeadURL$
+ $Revision$
+
+ -
+ License:
+ -
+ ChangeLog:
+ -
+ Notes:
+
+ */
+goog.provide('CTATCustomLogElementObject');
+
+/**
+ *
+ */
+CTATCustomLogElementObject = function()
+{
+	var customElementNames=[];
+	var customElementTypes=[];
+
+	/**
+	*
+	*/
+	this.reset=function reset ()
+	{
+		customElementNames=[];
+		customElementTypes=[];
+	};
+	/**
+	*
+	*/
+	this.addCustomLogElement=function addCustomLogElement (aKey,aValue)
+	{
+		customElementsNames.push (aKey);
+		customElementsTypes.push (aKey);
+	};
+	/**
+	*
+	*/
+	this.getCustomElementNames=function getCustomElementNames ()
+	{
+		return (customElementsNames);
+	};
+	/**
+	*
+	*/
+	this.getCustomElementTypes=function getCustomElementTypes ()
+	{
+		return (customElementsTypes);
+	};
+};

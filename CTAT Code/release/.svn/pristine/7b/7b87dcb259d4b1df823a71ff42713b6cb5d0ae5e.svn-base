@@ -1,0 +1,26 @@
+<html>
+	<head>
+		<script type="text/javascript" src="js/dropbox-sdk/dropbox.js"></script>
+		<script type="text/javascript">
+			window.onload = function()
+			{
+				var match = /__dbcsrf=([0-9]*)/.exec(document.cookie);
+				var csrf = match[1];
+				localStorage['__dbcsrf'] = csrf;
+			
+				//call db authenticate function again (stores retrieved token)
+				dropbox.authenticate({}, function()
+					{
+						console.log('auth cbk');
+						//let parent window know auth is complete
+						document.cookie="__dbauthcomplete=true";
+						document.cookie="__dbauthtoken="+localStorage['__dbat'];
+						//close window
+						window.close();
+					});
+			};
+		</script>
+	</head>
+	<body>
+	</body>
+</html>

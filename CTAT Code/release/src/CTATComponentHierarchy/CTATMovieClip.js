@@ -1,0 +1,100 @@
+/**-----------------------------------------------------------------------------
+ $Author: mringenb $
+ $Date: 2016-02-02 13:28:40 -0600 (週二, 02 二月 2016) $
+ $HeadURL: svn://pact-cvs.pact.cs.cmu.edu/usr5/local/svnroot/AuthoringTools/branches/CTAT_4_2_Release/HTML5/src/CTATComponentHierarchy/CTATMovieClip.js $
+ $Revision: 23157 $
+
+ -
+ License:
+ -
+ ChangeLog:
+ -
+ Notes:
+
+ */
+goog.provide('CTATMovieClip');
+
+goog.require('CTATBase');
+goog.require('CTATGlobals');
+goog.require('CTATGlobalFunctions');
+/**
+ *
+ */
+CTATMovieClip = function(anInstance,aX,aY,aWidth,aHeight)
+{
+	CTATBase.call(this, "CTATMovieClip", anInstance);
+
+	var x=aX;
+	var y=aY;
+	var width=aWidth;
+	var height=aHeight;
+
+	var topDivZIndex=CTATGlobalFunctions.gensym.z_index();
+	var topDivID=CTATGlobalFunctions.gensym.div_id();
+
+	var canvasZIndex=CTATGlobalFunctions.gensym.z_index();
+	var canvasID=CTATGlobalFunctions.gensym.div_id();
+
+	var componentList=[];
+
+	var pointer=this;
+
+	var divWrapper=null;
+
+	/**
+	 *
+	 */
+	this.wrapComponent=function wrapComponent(aParent)
+	{
+		divWrapper=document.createElement('div');
+		divWrapper.setAttribute('id', topDivID);
+		divWrapper.setAttribute('name', this.getName ());
+		divWrapper.setAttribute('style', "z-index: "+topDivZIndex);
+
+		divWrapper.setAttribute('width', width+"px");
+		divWrapper.setAttribute('height', height+"px");
+
+		divWrapper.setAttribute("style", "border: 0px; position: absolute; left:"+x+"px; top:"+y+"px; z-index:"+canvasZIndex+";");
+		//divWrapper.setAttribute("style", "border: 0px; position: relative; left:"+x+"px; top:"+y+"px; z-index: inherit;");
+
+		aParent.appendChild(divWrapper);
+
+		return (divWrapper);
+	};
+
+	/**
+	*
+	*/
+	this.getDivWrapper=function getDivWrapper ()
+	{
+		return (divWrapper);
+	};
+
+	/**
+	*
+	*/
+	this.addComponent=function addComponent (aComponentName)
+	{
+		pointer.ctatdebug ("addComponent ("+aComponentName+")");
+
+		componentList.push(aComponentName);
+	};
+	/**
+	*
+	*/
+	this.isRegistered=function isRegistered (aComponentName)
+	{
+		for (var i=0;i<componentList.length;i++)
+		{
+			if (componentList [i]==aComponentName)
+			{
+				return (true);
+			}
+		}
+
+		return (false);
+	};
+};
+
+CTATMovieClip.prototype = Object.create(CTATBase.prototype);
+CTATMovieClip.prototype.constructor = CTATMovieClip;

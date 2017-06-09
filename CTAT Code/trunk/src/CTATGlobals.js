@@ -1,0 +1,115 @@
+/**-----------------------------------------------------------------------------
+ $Author: mringenb $
+ $Date: 2016-10-26 12:00:52 -0500 (週三, 26 十月 2016) $
+ $HeadURL: svn://pact-cvs.pact.cs.cmu.edu/usr5/local/svnroot/AuthoringTools/trunk/HTML5/src/CTATGlobals.js $
+ $Revision: 24312 $
+
+ -
+ License:
+ -
+ ChangeLog:
+ -
+ Notes:
+
+ */
+goog.provide('CTATGlobals');
+
+CTATGlobals = {
+		tutorRunning: false,
+
+		Tab: {
+			Tracker: 1,
+			Focus: null,
+			previousFocus: null
+		},
+		/** External XML name space aliases. */
+		NameSpace: {
+			svg: 'http://www.w3.org/2000/svg',
+			xml: "http://www.w3.org/2000/xmlns/",
+			xlink: "http://www.w3.org/1999/xlink",
+		    ev: "http://www.w3.org/2001/xml-events",
+		    mathml: "http://www.w3.org/1998/Math/MathML",
+		},
+		/* FlashVars or data-param values that TutorShop escapes with Rails CGI::escape(). */
+		EncodedParams: {
+			authenticity_token: "authenticity_token",
+			info: "info",
+			question_file: "question_file",
+			skills: "skills",
+		},
+		CommDisabled: false,
+		orientation: "portrait",
+		ignoreInterfaceDescriptions: true,
+};
+
+var useDebugging;
+if(useDebugging === undefined)
+{                            // could be defined in other code loaded earlier: don't clobber that one
+	useDebugging = false;
+}
+var useDebuggingBasic;
+if(useDebuggingBasic === undefined)
+{
+	useDebuggingBasic=false;
+}
+
+//var customconsole=null; // Using CTATBase.customconsole instead.
+
+//var lastMessage=false; // no functional use
+
+/** @define {string} */
+var version="3.2.1";
+//var contextGUID=""; // now CTATLogMessageBuilder.contextGUID
+//var orientation="portrait";
+var ctatcontainer="container";
+//var ctatcanvas=null;
+//var lineCounter=0;
+//var windowPadding=4;
+//var currentComponentPointer=null;
+var movieclips=[];
+//var startStateHandlers=[]; // CTATMessageHandler.startStateHandlers
+//var inStartState=false; // CTATMessageHandler.inStartState
+//var inProcessStartStateActions=false; // CTATMessageHandler.inProcessStartStateActions
+//var globalDebugger=null; // unused
+//var ignoreInterfaceDescriptions=true; // CTATGlobals.ignoreInterfaceDescriptions
+
+// Global component settings ...
+
+var canvasCalibrate=5;
+
+// Support class instances and global data structures ...
+
+//var scriptElement="";
+var flashVars=null;
+//var commShell=null; // CTATCommShell.commShell
+var mobileAPI=null; // Pointer to a CTATMobileTutorHandler object, should be moved to CTATMobileTutorHandler
+//var skillSet=null; // CTATSkillSet.skills
+var aVars=null;
+CTATGlobals.interfaceElement=null; // Pointer to the DOM element holding the serialized low level interface
+CTATGlobals.selectedTextInput=null;
+
+//var commLibrary=null; // only used in CTATCommShell
+//var commLMSService=null;
+//var commMessageBuilder=null;
+var commMessageHandler=null;
+//var commLogMessageBuilder=null; // CTATLogMessageBuilder.commLogMessageBuilder
+var commLoggingLibrary=null;
+
+var logHintSAI=null;
+
+var nameTranslator=null;
+
+// Specific hint support
+
+var hints=[];
+var hintIndex=0;
+
+// StateGraph variables
+var caseInsensitive=true;
+var unordered=true;
+var lockWidget=true;
+var highlightRightSelection=true;
+CTATGlobals.suppressStudentFeedback=false;
+CTATGlobals.confirmDone=false;
+
+var incompatibleBrowserMessage="Your browser does not support CTAT. Please update or replace your browser.";

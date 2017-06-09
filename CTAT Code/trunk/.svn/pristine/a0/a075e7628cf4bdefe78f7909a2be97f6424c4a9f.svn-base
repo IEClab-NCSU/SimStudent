@@ -1,0 +1,1579 @@
+<?xml version="1.0" standalone="yes"?>
+
+<stateGraph firstCheckAllStates="true" caseInsensitive="true" unordered="true" lockWidget="true" hintPolicy="Use Both Kinds of Bias" version="2.1" suppressStudentFeedback="Show All Feedback" highlightRightSelection="true" startStateNodeName="%(startStateNodeName)%" tutorType="Example-tracing Tutor">
+    <startNodeMessages>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>StartProblem</MessageType>
+                <ProblemName>1416-new-interface-desc</ProblemName>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <transaction_id>E38F321E3910E7B1</transaction_id>
+                <Selection>
+                    <value>firstNumGiven</value>
+                </Selection>
+                <Action>
+                    <value>UpdateTextArea</value>
+                </Action>
+                <Input>
+                    <value>1</value>
+                </Input>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <transaction_id>A1D09E0799DEAE5A</transaction_id>
+                <Selection>
+                    <value>firstDenGiven</value>
+                </Selection>
+                <Action>
+                    <value>UpdateTextArea</value>
+                </Action>
+                <Input>
+                    <value>4</value>
+                </Input>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <transaction_id>99BE3A113B7E6C0C</transaction_id>
+                <Selection>
+                    <value>secNumGiven</value>
+                </Selection>
+                <Action>
+                    <value>UpdateTextArea</value>
+                </Action>
+                <Input>
+                    <value>1</value>
+                </Input>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <transaction_id>48A56C3CD06730D1</transaction_id>
+                <Selection>
+                    <value>secDenGiven</value>
+                </Selection>
+                <Action>
+                    <value>UpdateTextArea</value>
+                </Action>
+                <Input>
+                    <value>6</value>
+                </Input>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>StartStateEnd</MessageType>
+            </properties>
+        </message>
+    </startNodeMessages>
+    <node locked="false" doneState="false">
+        <text>1416</text>
+        <uniqueID>1</uniqueID>
+        <dimension>
+            <x>250</x>
+            <y>30</y>
+        </dimension>
+    </node>
+    <node locked="false" doneState="false">
+        <text>state8</text>
+        <uniqueID>9</uniqueID>
+        <dimension>
+            <x>246</x>
+            <y>140</y>
+        </dimension>
+    </node>
+    <node locked="false" doneState="false">
+        <text>state9</text>
+        <uniqueID>10</uniqueID>
+        <dimension>
+            <x>170</x>
+            <y>135</y>
+        </dimension>
+    </node>
+    <node locked="false" doneState="false">
+        <text>state10</text>
+        <uniqueID>11</uniqueID>
+        <dimension>
+            <x>318</x>
+            <y>135</y>
+        </dimension>
+    </node>
+    <node locked="false" doneState="false">
+        <text>state11</text>
+        <uniqueID>12</uniqueID>
+        <dimension>
+            <x>86</x>
+            <y>99</y>
+        </dimension>
+    </node>
+    <node locked="false" doneState="false">
+        <text>state12</text>
+        <uniqueID>13</uniqueID>
+        <dimension>
+            <x>365</x>
+            <y>70</y>
+        </dimension>
+    </node>
+    <node locked="false" doneState="false">
+        <text>state13</text>
+        <uniqueID>14</uniqueID>
+        <dimension>
+            <x>86</x>
+            <y>209</y>
+        </dimension>
+    </node>
+    <node locked="false" doneState="false">
+        <text>state14</text>
+        <uniqueID>15</uniqueID>
+        <dimension>
+            <x>86</x>
+            <y>319</y>
+        </dimension>
+    </node>
+    <node locked="false" doneState="false">
+        <text>state15</text>
+        <uniqueID>16</uniqueID>
+        <dimension>
+            <x>86</x>
+            <y>429</y>
+        </dimension>
+    </node>
+    <node locked="false" doneState="false">
+        <text>state16</text>
+        <uniqueID>17</uniqueID>
+        <dimension>
+            <x>86</x>
+            <y>539</y>
+        </dimension>
+    </node>
+    <node locked="false" doneState="false">
+        <text>state17</text>
+        <uniqueID>18</uniqueID>
+        <dimension>
+            <x>86</x>
+            <y>649</y>
+        </dimension>
+    </node>
+    <node locked="false" doneState="false">
+        <text>state18</text>
+        <uniqueID>19</uniqueID>
+        <dimension>
+            <x>86</x>
+            <y>759</y>
+        </dimension>
+    </node>
+    <node locked="false" doneState="false">
+        <text>state19</text>
+        <uniqueID>20</uniqueID>
+        <dimension>
+            <x>86</x>
+            <y>869</y>
+        </dimension>
+    </node>
+    <node locked="false" doneState="true">
+        <text>Done</text>
+        <uniqueID>21</uniqueID>
+        <dimension>
+            <x>93</x>
+            <y>979</y>
+        </dimension>
+    </node>
+    <node locked="false" doneState="false">
+        <text>state21</text>
+        <uniqueID>22</uniqueID>
+        <dimension>
+            <x>365</x>
+            <y>180</y>
+        </dimension>
+    </node>
+    <node locked="false" doneState="false">
+        <text>state22</text>
+        <uniqueID>23</uniqueID>
+        <dimension>
+            <x>365</x>
+            <y>290</y>
+        </dimension>
+    </node>
+    <node locked="false" doneState="false">
+        <text>state23</text>
+        <uniqueID>24</uniqueID>
+        <dimension>
+            <x>365</x>
+            <y>400</y>
+        </dimension>
+    </node>
+    <node locked="false" doneState="false">
+        <text>state24</text>
+        <uniqueID>25</uniqueID>
+        <dimension>
+            <x>365</x>
+            <y>510</y>
+        </dimension>
+    </node>
+    <node locked="false" doneState="false">
+        <text>state25</text>
+        <uniqueID>26</uniqueID>
+        <dimension>
+            <x>365</x>
+            <y>620</y>
+        </dimension>
+    </node>
+    <node locked="false" doneState="false">
+        <text>state26</text>
+        <uniqueID>27</uniqueID>
+        <dimension>
+            <x>365</x>
+            <y>730</y>
+        </dimension>
+    </node>
+    <node locked="false" doneState="false">
+        <text>state27</text>
+        <uniqueID>28</uniqueID>
+        <dimension>
+            <x>365</x>
+            <y>840</y>
+        </dimension>
+    </node>
+    <node locked="false" doneState="true">
+        <text>Done_2</text>
+        <uniqueID>29</uniqueID>
+        <dimension>
+            <x>364</x>
+            <y>950</y>
+        </dimension>
+    </node>
+    <edge>
+        <actionLabel preferPathMark="false" minTraversals="1" maxTraversals="1">
+            <studentHintRequest></studentHintRequest>
+            <stepSuccessfulCompletion></stepSuccessfulCompletion>
+            <stepStudentError></stepStudentError>
+            <uniqueID>14</uniqueID>
+            <message>
+                <verb>NotePropertySet</verb>
+                <properties>
+                    <MessageType>InterfaceAction</MessageType>
+                    <Selection>
+                        <value>ansNum1</value>
+                    </Selection>
+                    <Action>
+                        <value>UpdateTextArea</value>
+                    </Action>
+                    <Input>
+                        <value>2</value>
+                    </Input>
+                </properties>
+            </message>
+            <buggyMessage>You can't add the numerators until you've converted the fractions.</buggyMessage>
+            <successMessage></successMessage>
+            <hintMessage>Please enter '2' in the highlighted field.</hintMessage>
+            <callbackFn></callbackFn>
+            <actionType>Buggy Action</actionType>
+            <oldActionType>Correct Action</oldActionType>
+            <checkedStatus>Never Checked</checkedStatus>
+            <matchers Concatenation="true">
+                <Selection>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">ansNum1</matcherParameter>
+                    </matcher>
+                </Selection>
+                <Action>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">UpdateTextArea</matcherParameter>
+                    </matcher>
+                </Action>
+                <Input>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">2</matcherParameter>
+                    </matcher>
+                </Input>
+                <Actor linkTriggered="false">Student</Actor>
+            </matchers>
+        </actionLabel>
+        <preCheckedStatus>No-Applicable</preCheckedStatus>
+        <rule>
+            <text>unnamed</text>
+            <indicator>-1</indicator>
+        </rule>
+        <sourceID>1</sourceID>
+        <destID>9</destID>
+        <traversalCount>0</traversalCount>
+        <SimSt></SimSt>
+    </edge>
+    <edge>
+        <actionLabel preferPathMark="false" minTraversals="1" maxTraversals="1">
+            <studentHintRequest></studentHintRequest>
+            <stepSuccessfulCompletion></stepSuccessfulCompletion>
+            <stepStudentError></stepStudentError>
+            <uniqueID>15</uniqueID>
+            <message>
+                <verb>NotePropertySet</verb>
+                <properties>
+                    <MessageType>InterfaceAction</MessageType>
+                    <Selection>
+                        <value>secDenConv</value>
+                    </Selection>
+                    <Action>
+                        <value>UpdateTextArea</value>
+                    </Action>
+                    <Input>
+                        <value>10</value>
+                    </Input>
+                </properties>
+            </message>
+            <buggyMessage>Instead of trying to add the denominators, choose a denominator both denominators go into.</buggyMessage>
+            <successMessage></successMessage>
+            <hintMessage>Please enter '10' in the highlighted field.</hintMessage>
+            <callbackFn></callbackFn>
+            <actionType>Buggy Action</actionType>
+            <oldActionType>Correct Action</oldActionType>
+            <checkedStatus>Never Checked</checkedStatus>
+            <matchers Concatenation="true">
+                <Selection>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">secDenConv</matcherParameter>
+                    </matcher>
+                </Selection>
+                <Action>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">UpdateTextArea</matcherParameter>
+                    </matcher>
+                </Action>
+                <Input>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">10</matcherParameter>
+                    </matcher>
+                </Input>
+                <Actor linkTriggered="false">Student</Actor>
+            </matchers>
+        </actionLabel>
+        <preCheckedStatus>No-Applicable</preCheckedStatus>
+        <rule>
+            <text>unnamed</text>
+            <indicator>-1</indicator>
+        </rule>
+        <sourceID>1</sourceID>
+        <destID>10</destID>
+        <traversalCount>0</traversalCount>
+        <SimSt></SimSt>
+    </edge>
+    <edge>
+        <actionLabel preferPathMark="false" minTraversals="1" maxTraversals="1">
+            <studentHintRequest></studentHintRequest>
+            <stepSuccessfulCompletion></stepSuccessfulCompletion>
+            <stepStudentError></stepStudentError>
+            <uniqueID>16</uniqueID>
+            <message>
+                <verb>NotePropertySet</verb>
+                <properties>
+                    <MessageType>InterfaceAction</MessageType>
+                    <Selection>
+                        <value>firstDenConv</value>
+                    </Selection>
+                    <Action>
+                        <value>UpdateTextArea</value>
+                    </Action>
+                    <Input>
+                        <value>10</value>
+                    </Input>
+                </properties>
+            </message>
+            <buggyMessage>Instead of trying to add the denominators, choose a denominator both denominators go into.</buggyMessage>
+            <successMessage></successMessage>
+            <hintMessage>Please enter '10' in the highlighted field.</hintMessage>
+            <callbackFn></callbackFn>
+            <actionType>Buggy Action</actionType>
+            <oldActionType>Correct Action</oldActionType>
+            <checkedStatus>Never Checked</checkedStatus>
+            <matchers Concatenation="true">
+                <Selection>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">firstDenConv</matcherParameter>
+                    </matcher>
+                </Selection>
+                <Action>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">UpdateTextArea</matcherParameter>
+                    </matcher>
+                </Action>
+                <Input>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">10</matcherParameter>
+                    </matcher>
+                </Input>
+                <Actor linkTriggered="false">Student</Actor>
+            </matchers>
+        </actionLabel>
+        <preCheckedStatus>No-Applicable</preCheckedStatus>
+        <rule>
+            <text>unnamed</text>
+            <indicator>-1</indicator>
+        </rule>
+        <sourceID>1</sourceID>
+        <destID>11</destID>
+        <traversalCount>0</traversalCount>
+        <SimSt></SimSt>
+    </edge>
+    <edge>
+        <actionLabel preferPathMark="false" minTraversals="1" maxTraversals="1">
+            <studentHintRequest></studentHintRequest>
+            <stepSuccessfulCompletion></stepSuccessfulCompletion>
+            <stepStudentError></stepStudentError>
+            <uniqueID>17</uniqueID>
+            <message>
+                <verb>NotePropertySet</verb>
+                <properties>
+                    <MessageType>InterfaceAction</MessageType>
+                    <Selection>
+                        <value>firstDenConv</value>
+                    </Selection>
+                    <Action>
+                        <value>UpdateTextArea</value>
+                    </Action>
+                    <Input>
+                        <value>24</value>
+                    </Input>
+                </properties>
+            </message>
+            <buggyMessage>No, this is not correct.</buggyMessage>
+            <successMessage>Good job!</successMessage>
+            <hintMessage>What is the least common multiple of 4 and 6?</hintMessage>
+            <hintMessage>What is 4 x 6?</hintMessage>
+            <hintMessage>Please enter '24' in the highlighted field.</hintMessage>
+            <callbackFn></callbackFn>
+            <actionType>Correct Action</actionType>
+            <oldActionType>Correct Action</oldActionType>
+            <checkedStatus>Never Checked</checkedStatus>
+            <matchers Concatenation="true">
+                <Selection>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">firstDenConv</matcherParameter>
+                    </matcher>
+                </Selection>
+                <Action>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">UpdateTextArea</matcherParameter>
+                    </matcher>
+                </Action>
+                <Input>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">24</matcherParameter>
+                    </matcher>
+                </Input>
+                <Actor linkTriggered="false">Student</Actor>
+            </matchers>
+        </actionLabel>
+        <preCheckedStatus>No-Applicable</preCheckedStatus>
+        <rule>
+            <text>multiply-denominators fraction-addition</text>
+            <indicator>-1</indicator>
+        </rule>
+        <sourceID>1</sourceID>
+        <destID>12</destID>
+        <traversalCount>0</traversalCount>
+        <SimSt></SimSt>
+    </edge>
+    <edge>
+        <actionLabel preferPathMark="true" minTraversals="1" maxTraversals="1">
+            <studentHintRequest></studentHintRequest>
+            <stepSuccessfulCompletion></stepSuccessfulCompletion>
+            <stepStudentError></stepStudentError>
+            <uniqueID>18</uniqueID>
+            <message>
+                <verb>NotePropertySet</verb>
+                <properties>
+                    <MessageType>InterfaceAction</MessageType>
+                    <Selection>
+                        <value>firstDenConv</value>
+                    </Selection>
+                    <Action>
+                        <value>UpdateTextArea</value>
+                    </Action>
+                    <Input>
+                        <value>12</value>
+                    </Input>
+                </properties>
+            </message>
+            <buggyMessage>No, this is not correct.</buggyMessage>
+            <successMessage></successMessage>
+            <hintMessage>What could you do with the fractions so that they have the same denominator?</hintMessage>
+            <hintMessage>Choose a denominator both denominators go into.</hintMessage>
+            <hintMessage>Enter '12', the least common denominator between both fractions, in the highlighted field.</hintMessage>
+            <callbackFn></callbackFn>
+            <actionType>Correct Action</actionType>
+            <oldActionType>Correct Action</oldActionType>
+            <checkedStatus>Never Checked</checkedStatus>
+            <matchers Concatenation="true">
+                <Selection>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">firstDenConv</matcherParameter>
+                    </matcher>
+                </Selection>
+                <Action>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">UpdateTextArea</matcherParameter>
+                    </matcher>
+                </Action>
+                <Input>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">12</matcherParameter>
+                    </matcher>
+                </Input>
+                <Actor linkTriggered="false">Student</Actor>
+            </matchers>
+        </actionLabel>
+        <preCheckedStatus>No-Applicable</preCheckedStatus>
+        <rule>
+            <text>determine-lcd fraction-addition</text>
+            <indicator>-1</indicator>
+        </rule>
+        <sourceID>1</sourceID>
+        <destID>13</destID>
+        <traversalCount>0</traversalCount>
+        <SimSt></SimSt>
+    </edge>
+    <edge>
+        <actionLabel preferPathMark="true" minTraversals="1" maxTraversals="1">
+            <studentHintRequest></studentHintRequest>
+            <stepSuccessfulCompletion></stepSuccessfulCompletion>
+            <stepStudentError></stepStudentError>
+            <uniqueID>19</uniqueID>
+            <message>
+                <verb>NotePropertySet</verb>
+                <properties>
+                    <MessageType>InterfaceAction</MessageType>
+                    <Selection>
+                        <value>secDenConv</value>
+                    </Selection>
+                    <Action>
+                        <value>UpdateTextArea</value>
+                    </Action>
+                    <Input>
+                        <value>24</value>
+                    </Input>
+                </properties>
+            </message>
+            <buggyMessage>No, this is not correct.</buggyMessage>
+            <successMessage></successMessage>
+            <hintMessage>What is the a common multiple of 4 and 6?</hintMessage>
+            <hintMessage>What is 4 x 6?</hintMessage>
+            <hintMessage>Please enter '24' in the highlighted field.</hintMessage>
+            <callbackFn></callbackFn>
+            <actionType>Correct Action</actionType>
+            <oldActionType>Correct Action</oldActionType>
+            <checkedStatus>Never Checked</checkedStatus>
+            <matchers Concatenation="true">
+                <Selection>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">secDenConv</matcherParameter>
+                    </matcher>
+                </Selection>
+                <Action>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">UpdateTextArea</matcherParameter>
+                    </matcher>
+                </Action>
+                <Input>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">24</matcherParameter>
+                    </matcher>
+                </Input>
+                <Actor linkTriggered="false">Student</Actor>
+            </matchers>
+        </actionLabel>
+        <preCheckedStatus>No-Applicable</preCheckedStatus>
+        <rule>
+            <text>multiply-denominators fraction-addition</text>
+            <indicator>-1</indicator>
+        </rule>
+        <sourceID>12</sourceID>
+        <destID>14</destID>
+        <traversalCount>0</traversalCount>
+        <SimSt></SimSt>
+    </edge>
+    <edge>
+        <actionLabel preferPathMark="true" minTraversals="1" maxTraversals="1">
+            <studentHintRequest></studentHintRequest>
+            <stepSuccessfulCompletion></stepSuccessfulCompletion>
+            <stepStudentError></stepStudentError>
+            <uniqueID>20</uniqueID>
+            <message>
+                <verb>NotePropertySet</verb>
+                <properties>
+                    <MessageType>InterfaceAction</MessageType>
+                    <Selection>
+                        <value>secNumConv</value>
+                    </Selection>
+                    <Action>
+                        <value>UpdateTextArea</value>
+                    </Action>
+                    <Input>
+                        <value>4</value>
+                    </Input>
+                </properties>
+            </message>
+            <buggyMessage>No, this is not correct.</buggyMessage>
+            <successMessage></successMessage>
+            <hintMessage>Divide each denominator into the common denominator. Then multiply the number you got with the numerator.</hintMessage>
+            <hintMessage>6 goes in to 24 4 times; so multiply 1 and 4.</hintMessage>
+            <hintMessage>Enter '4', the converted numerator, in the highlighted field.</hintMessage>
+            <callbackFn></callbackFn>
+            <actionType>Correct Action</actionType>
+            <oldActionType>Correct Action</oldActionType>
+            <checkedStatus>Never Checked</checkedStatus>
+            <matchers Concatenation="true">
+                <Selection>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">secNumConv</matcherParameter>
+                    </matcher>
+                </Selection>
+                <Action>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">UpdateTextArea</matcherParameter>
+                    </matcher>
+                </Action>
+                <Input>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">4</matcherParameter>
+                    </matcher>
+                </Input>
+                <Actor linkTriggered="false">Student</Actor>
+            </matchers>
+        </actionLabel>
+        <preCheckedStatus>No-Applicable</preCheckedStatus>
+        <rule>
+            <text>convert-numerator fraction-addition</text>
+            <indicator>-1</indicator>
+        </rule>
+        <sourceID>14</sourceID>
+        <destID>15</destID>
+        <traversalCount>0</traversalCount>
+        <SimSt></SimSt>
+    </edge>
+    <edge>
+        <actionLabel preferPathMark="true" minTraversals="1" maxTraversals="1">
+            <studentHintRequest></studentHintRequest>
+            <stepSuccessfulCompletion></stepSuccessfulCompletion>
+            <stepStudentError></stepStudentError>
+            <uniqueID>21</uniqueID>
+            <message>
+                <verb>NotePropertySet</verb>
+                <properties>
+                    <MessageType>InterfaceAction</MessageType>
+                    <Selection>
+                        <value>firstNumConv</value>
+                    </Selection>
+                    <Action>
+                        <value>UpdateTextArea</value>
+                    </Action>
+                    <Input>
+                        <value>6</value>
+                    </Input>
+                </properties>
+            </message>
+            <buggyMessage>No, this is not correct.</buggyMessage>
+            <successMessage></successMessage>
+            <hintMessage>Divide the denominator into the common denominator. Then multiply the number you got with the numerator.</hintMessage>
+            <hintMessage>4 goes in to 24 6 times; so multiply 1 and 6.</hintMessage>
+            <hintMessage>Enter '6', the converted numerator, in the highlighted field.</hintMessage>
+            <callbackFn></callbackFn>
+            <actionType>Correct Action</actionType>
+            <oldActionType>Correct Action</oldActionType>
+            <checkedStatus>Never Checked</checkedStatus>
+            <matchers Concatenation="true">
+                <Selection>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">firstNumConv</matcherParameter>
+                    </matcher>
+                </Selection>
+                <Action>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">UpdateTextArea</matcherParameter>
+                    </matcher>
+                </Action>
+                <Input>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">6</matcherParameter>
+                    </matcher>
+                </Input>
+                <Actor linkTriggered="false">Student</Actor>
+            </matchers>
+        </actionLabel>
+        <preCheckedStatus>No-Applicable</preCheckedStatus>
+        <rule>
+            <text>convert-numerator fraction-addition</text>
+            <indicator>-1</indicator>
+        </rule>
+        <sourceID>15</sourceID>
+        <destID>16</destID>
+        <traversalCount>0</traversalCount>
+        <SimSt></SimSt>
+    </edge>
+    <edge>
+        <actionLabel preferPathMark="true" minTraversals="1" maxTraversals="1">
+            <studentHintRequest></studentHintRequest>
+            <stepSuccessfulCompletion></stepSuccessfulCompletion>
+            <stepStudentError></stepStudentError>
+            <uniqueID>22</uniqueID>
+            <message>
+                <verb>NotePropertySet</verb>
+                <properties>
+                    <MessageType>InterfaceAction</MessageType>
+                    <Selection>
+                        <value>ansNum1</value>
+                    </Selection>
+                    <Action>
+                        <value>UpdateTextArea</value>
+                    </Action>
+                    <Input>
+                        <value>10</value>
+                    </Input>
+                </properties>
+            </message>
+            <buggyMessage>No, this is not correct.</buggyMessage>
+            <successMessage></successMessage>
+            <hintMessage>If you've already converted the fractions, you can add the converted numerators and put the sum over the common denominator.</hintMessage>
+            <hintMessage>The converted numerators are 6 and 4. What is 6 + 4?</hintMessage>
+            <hintMessage>Enter '10' in the highlighted field.</hintMessage>
+            <callbackFn></callbackFn>
+            <actionType>Correct Action</actionType>
+            <oldActionType>Correct Action</oldActionType>
+            <checkedStatus>Never Checked</checkedStatus>
+            <matchers Concatenation="true">
+                <Selection>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">ansNum1</matcherParameter>
+                    </matcher>
+                </Selection>
+                <Action>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">UpdateTextArea</matcherParameter>
+                    </matcher>
+                </Action>
+                <Input>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">10</matcherParameter>
+                    </matcher>
+                </Input>
+                <Actor linkTriggered="false">Student</Actor>
+            </matchers>
+        </actionLabel>
+        <preCheckedStatus>No-Applicable</preCheckedStatus>
+        <rule>
+            <text>add-numerators fraction-addition</text>
+            <indicator>-1</indicator>
+        </rule>
+        <sourceID>16</sourceID>
+        <destID>17</destID>
+        <traversalCount>0</traversalCount>
+        <SimSt></SimSt>
+    </edge>
+    <edge>
+        <actionLabel preferPathMark="true" minTraversals="1" maxTraversals="1">
+            <studentHintRequest></studentHintRequest>
+            <stepSuccessfulCompletion></stepSuccessfulCompletion>
+            <stepStudentError></stepStudentError>
+            <uniqueID>23</uniqueID>
+            <message>
+                <verb>NotePropertySet</verb>
+                <properties>
+                    <MessageType>InterfaceAction</MessageType>
+                    <Selection>
+                        <value>ansDen1</value>
+                    </Selection>
+                    <Action>
+                        <value>UpdateTextArea</value>
+                    </Action>
+                    <Input>
+                        <value>24</value>
+                    </Input>
+                </properties>
+            </message>
+            <buggyMessage>No, this is not correct.</buggyMessage>
+            <successMessage></successMessage>
+            <hintMessage>When you've converted fractions to have an identical denominator, you use that same denominator in the answer.</hintMessage>
+            <hintMessage>Just carry the denominator, 24, down to the highlighted field.</hintMessage>
+            <hintMessage>Please enter '24' in the highlighted field.</hintMessage>
+            <callbackFn></callbackFn>
+            <actionType>Correct Action</actionType>
+            <oldActionType>Correct Action</oldActionType>
+            <checkedStatus>Never Checked</checkedStatus>
+            <matchers Concatenation="true">
+                <Selection>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">ansDen1</matcherParameter>
+                    </matcher>
+                </Selection>
+                <Action>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">UpdateTextArea</matcherParameter>
+                    </matcher>
+                </Action>
+                <Input>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">24</matcherParameter>
+                    </matcher>
+                </Input>
+                <Actor linkTriggered="false">Student</Actor>
+            </matchers>
+        </actionLabel>
+        <preCheckedStatus>No-Applicable</preCheckedStatus>
+        <rule>
+            <text>copy-answer-denominator fraction-addition</text>
+            <indicator>-1</indicator>
+        </rule>
+        <sourceID>17</sourceID>
+        <destID>18</destID>
+        <traversalCount>0</traversalCount>
+        <SimSt></SimSt>
+    </edge>
+    <edge>
+        <actionLabel preferPathMark="true" minTraversals="1" maxTraversals="1">
+            <studentHintRequest></studentHintRequest>
+            <stepSuccessfulCompletion></stepSuccessfulCompletion>
+            <stepStudentError></stepStudentError>
+            <uniqueID>24</uniqueID>
+            <message>
+                <verb>NotePropertySet</verb>
+                <properties>
+                    <MessageType>InterfaceAction</MessageType>
+                    <Selection>
+                        <value>ansDenFinal1</value>
+                    </Selection>
+                    <Action>
+                        <value>UpdateTextArea</value>
+                    </Action>
+                    <Input>
+                        <value>12</value>
+                    </Input>
+                </properties>
+            </message>
+            <buggyMessage>No, this is not correct.</buggyMessage>
+            <successMessage></successMessage>
+            <hintMessage>You need to simplify your fraction.</hintMessage>
+            <hintMessage>2 goes into both the numerator and denominator. How many times can 2 go into 24?</hintMessage>
+            <hintMessage>Please enter '12' in the highlighted field.</hintMessage>
+            <callbackFn></callbackFn>
+            <actionType>Correct Action</actionType>
+            <oldActionType>Correct Action</oldActionType>
+            <checkedStatus>Never Checked</checkedStatus>
+            <matchers Concatenation="true">
+                <Selection>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">ansDenFinal1</matcherParameter>
+                    </matcher>
+                </Selection>
+                <Action>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">UpdateTextArea</matcherParameter>
+                    </matcher>
+                </Action>
+                <Input>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">12</matcherParameter>
+                    </matcher>
+                </Input>
+                <Actor linkTriggered="false">Student</Actor>
+            </matchers>
+        </actionLabel>
+        <preCheckedStatus>No-Applicable</preCheckedStatus>
+        <rule>
+            <text>reduce-denominator fraction-addition</text>
+            <indicator>-1</indicator>
+        </rule>
+        <sourceID>18</sourceID>
+        <destID>19</destID>
+        <traversalCount>0</traversalCount>
+        <SimSt></SimSt>
+    </edge>
+    <edge>
+        <actionLabel preferPathMark="true" minTraversals="1" maxTraversals="1">
+            <studentHintRequest></studentHintRequest>
+            <stepSuccessfulCompletion></stepSuccessfulCompletion>
+            <stepStudentError></stepStudentError>
+            <uniqueID>25</uniqueID>
+            <message>
+                <verb>NotePropertySet</verb>
+                <properties>
+                    <MessageType>InterfaceAction</MessageType>
+                    <Selection>
+                        <value>ansNumFinal1</value>
+                    </Selection>
+                    <Action>
+                        <value>UpdateTextArea</value>
+                    </Action>
+                    <Input>
+                        <value>5</value>
+                    </Input>
+                </properties>
+            </message>
+            <buggyMessage>No, this is not correct.</buggyMessage>
+            <successMessage></successMessage>
+            <hintMessage>You need to simplify your fraction.</hintMessage>
+            <hintMessage>2 goes into both the numerator and denominator. How many times can 2 go into 10?</hintMessage>
+            <hintMessage>Please enter '5' in the highlighted field.</hintMessage>
+            <callbackFn></callbackFn>
+            <actionType>Correct Action</actionType>
+            <oldActionType>Correct Action</oldActionType>
+            <checkedStatus>Never Checked</checkedStatus>
+            <matchers Concatenation="true">
+                <Selection>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">ansNumFinal1</matcherParameter>
+                    </matcher>
+                </Selection>
+                <Action>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">UpdateTextArea</matcherParameter>
+                    </matcher>
+                </Action>
+                <Input>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">5</matcherParameter>
+                    </matcher>
+                </Input>
+                <Actor linkTriggered="false">Student</Actor>
+            </matchers>
+        </actionLabel>
+        <preCheckedStatus>No-Applicable</preCheckedStatus>
+        <rule>
+            <text>reduce-numerator fraction-addition</text>
+            <indicator>-1</indicator>
+        </rule>
+        <sourceID>19</sourceID>
+        <destID>20</destID>
+        <traversalCount>0</traversalCount>
+        <SimSt></SimSt>
+    </edge>
+    <edge>
+        <actionLabel preferPathMark="true" minTraversals="1" maxTraversals="1">
+            <studentHintRequest></studentHintRequest>
+            <stepSuccessfulCompletion></stepSuccessfulCompletion>
+            <stepStudentError></stepStudentError>
+            <uniqueID>26</uniqueID>
+            <message>
+                <verb>NotePropertySet</verb>
+                <properties>
+                    <MessageType>InterfaceAction</MessageType>
+                    <Selection>
+                        <value>done</value>
+                    </Selection>
+                    <Action>
+                        <value>ButtonPressed</value>
+                    </Action>
+                    <Input>
+                        <value>-1</value>
+                    </Input>
+                </properties>
+            </message>
+            <buggyMessage>No, this is not correct.</buggyMessage>
+            <successMessage></successMessage>
+            <hintMessage>You're all done with the problem!</hintMessage>
+            <hintMessage>Click the Done button.</hintMessage>
+            <callbackFn></callbackFn>
+            <actionType>Correct Action</actionType>
+            <oldActionType>Correct Action</oldActionType>
+            <checkedStatus>Never Checked</checkedStatus>
+            <matchers Concatenation="true">
+                <Selection>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">done</matcherParameter>
+                    </matcher>
+                </Selection>
+                <Action>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">ButtonPressed</matcherParameter>
+                    </matcher>
+                </Action>
+                <Input>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">-1</matcherParameter>
+                    </matcher>
+                </Input>
+                <Actor linkTriggered="false">Student</Actor>
+            </matchers>
+        </actionLabel>
+        <preCheckedStatus>No-Applicable</preCheckedStatus>
+        <rule>
+            <text>unnamed</text>
+            <indicator>-1</indicator>
+        </rule>
+        <sourceID>20</sourceID>
+        <destID>21</destID>
+        <traversalCount>0</traversalCount>
+        <SimSt></SimSt>
+    </edge>
+    <edge>
+        <actionLabel preferPathMark="true" minTraversals="1" maxTraversals="1">
+            <studentHintRequest></studentHintRequest>
+            <stepSuccessfulCompletion></stepSuccessfulCompletion>
+            <stepStudentError></stepStudentError>
+            <uniqueID>27</uniqueID>
+            <message>
+                <verb>NotePropertySet</verb>
+                <properties>
+                    <MessageType>InterfaceAction</MessageType>
+                    <Selection>
+                        <value>secDenConv</value>
+                    </Selection>
+                    <Action>
+                        <value>UpdateTextArea</value>
+                    </Action>
+                    <Input>
+                        <value>12</value>
+                    </Input>
+                </properties>
+            </message>
+            <buggyMessage>No, this is not correct.</buggyMessage>
+            <successMessage></successMessage>
+            <hintMessage>What could you do with the fractions so that they have the same denominator?</hintMessage>
+            <hintMessage>Choose a denominator both denominators go into.</hintMessage>
+            <hintMessage>Enter '12', the least common denominator between both fractions, in the highlighted field.</hintMessage>
+            <callbackFn></callbackFn>
+            <actionType>Correct Action</actionType>
+            <oldActionType>Correct Action</oldActionType>
+            <checkedStatus>Never Checked</checkedStatus>
+            <matchers Concatenation="true">
+                <Selection>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">secDenConv</matcherParameter>
+                    </matcher>
+                </Selection>
+                <Action>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">UpdateTextArea</matcherParameter>
+                    </matcher>
+                </Action>
+                <Input>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">12</matcherParameter>
+                    </matcher>
+                </Input>
+                <Actor linkTriggered="false">Student</Actor>
+            </matchers>
+        </actionLabel>
+        <preCheckedStatus>No-Applicable</preCheckedStatus>
+        <rule>
+            <text>determine-lcd fraction-addition</text>
+            <indicator>-1</indicator>
+        </rule>
+        <sourceID>13</sourceID>
+        <destID>22</destID>
+        <traversalCount>0</traversalCount>
+        <SimSt></SimSt>
+    </edge>
+    <edge>
+        <actionLabel preferPathMark="true" minTraversals="1" maxTraversals="1">
+            <studentHintRequest></studentHintRequest>
+            <stepSuccessfulCompletion></stepSuccessfulCompletion>
+            <stepStudentError></stepStudentError>
+            <uniqueID>28</uniqueID>
+            <message>
+                <verb>NotePropertySet</verb>
+                <properties>
+                    <MessageType>InterfaceAction</MessageType>
+                    <Selection>
+                        <value>ansDen1</value>
+                    </Selection>
+                    <Action>
+                        <value>UpdateTextArea</value>
+                    </Action>
+                    <Input>
+                        <value>12</value>
+                    </Input>
+                </properties>
+            </message>
+            <buggyMessage>No, this is not correct.</buggyMessage>
+            <successMessage></successMessage>
+            <hintMessage>Once you've found the least common denominator, you can put in the highlighted field.</hintMessage>
+            <hintMessage>Find a common denominator for both fractions. Choose a denominator both denominators go into.</hintMessage>
+            <hintMessage>Please enter the least common denominator, '12', in the highlighted field.</hintMessage>
+            <callbackFn></callbackFn>
+            <actionType>Correct Action</actionType>
+            <oldActionType>Correct Action</oldActionType>
+            <checkedStatus>Never Checked</checkedStatus>
+            <matchers Concatenation="true">
+                <Selection>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">ansDen1</matcherParameter>
+                    </matcher>
+                </Selection>
+                <Action>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">UpdateTextArea</matcherParameter>
+                    </matcher>
+                </Action>
+                <Input>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">12</matcherParameter>
+                    </matcher>
+                </Input>
+                <Actor linkTriggered="false">Student</Actor>
+            </matchers>
+        </actionLabel>
+        <preCheckedStatus>No-Applicable</preCheckedStatus>
+        <rule>
+            <text>copy-answer-denominator fraction-addition</text>
+            <indicator>-1</indicator>
+        </rule>
+        <sourceID>22</sourceID>
+        <destID>23</destID>
+        <traversalCount>0</traversalCount>
+        <SimSt></SimSt>
+    </edge>
+    <edge>
+        <actionLabel preferPathMark="true" minTraversals="1" maxTraversals="1">
+            <studentHintRequest></studentHintRequest>
+            <stepSuccessfulCompletion></stepSuccessfulCompletion>
+            <stepStudentError></stepStudentError>
+            <uniqueID>29</uniqueID>
+            <message>
+                <verb>NotePropertySet</verb>
+                <properties>
+                    <MessageType>InterfaceAction</MessageType>
+                    <Selection>
+                        <value>firstNumConv</value>
+                    </Selection>
+                    <Action>
+                        <value>UpdateTextArea</value>
+                    </Action>
+                    <Input>
+                        <value>3</value>
+                    </Input>
+                </properties>
+            </message>
+            <buggyMessage>No, this is not correct.</buggyMessage>
+            <successMessage></successMessage>
+            <hintMessage>Divide the fraction's denominator into the common denominator.</hintMessage>
+            <hintMessage>Multiply the numerator with the number you got.</hintMessage>
+            <hintMessage>Multiply 1 and 3. Put this numerator, 3, in the highlighted cell.</hintMessage>
+            <callbackFn></callbackFn>
+            <actionType>Correct Action</actionType>
+            <oldActionType>Correct Action</oldActionType>
+            <checkedStatus>Never Checked</checkedStatus>
+            <matchers Concatenation="true">
+                <Selection>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">firstNumConv</matcherParameter>
+                    </matcher>
+                </Selection>
+                <Action>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">UpdateTextArea</matcherParameter>
+                    </matcher>
+                </Action>
+                <Input>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">3</matcherParameter>
+                    </matcher>
+                </Input>
+                <Actor linkTriggered="false">Student</Actor>
+            </matchers>
+        </actionLabel>
+        <preCheckedStatus>No-Applicable</preCheckedStatus>
+        <rule>
+            <text>convert-numerator fraction-addition</text>
+            <indicator>-1</indicator>
+        </rule>
+        <sourceID>23</sourceID>
+        <destID>24</destID>
+        <traversalCount>0</traversalCount>
+        <SimSt></SimSt>
+    </edge>
+    <edge>
+        <actionLabel preferPathMark="true" minTraversals="1" maxTraversals="1">
+            <studentHintRequest></studentHintRequest>
+            <stepSuccessfulCompletion></stepSuccessfulCompletion>
+            <stepStudentError></stepStudentError>
+            <uniqueID>30</uniqueID>
+            <message>
+                <verb>NotePropertySet</verb>
+                <properties>
+                    <MessageType>InterfaceAction</MessageType>
+                    <Selection>
+                        <value>secNumConv</value>
+                    </Selection>
+                    <Action>
+                        <value>UpdateTextArea</value>
+                    </Action>
+                    <Input>
+                        <value>2</value>
+                    </Input>
+                </properties>
+            </message>
+            <buggyMessage>No, this is not correct.</buggyMessage>
+            <successMessage></successMessage>
+            <hintMessage>Divide the fraction's denominator into the common denominator.</hintMessage>
+            <hintMessage>Multiply the numerator with the number you got.</hintMessage>
+            <hintMessage>Multiply 1 and 2. Put this numerator, 2, in the highlighted cell.</hintMessage>
+            <callbackFn></callbackFn>
+            <actionType>Correct Action</actionType>
+            <oldActionType>Correct Action</oldActionType>
+            <checkedStatus>Never Checked</checkedStatus>
+            <matchers Concatenation="true">
+                <Selection>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">secNumConv</matcherParameter>
+                    </matcher>
+                </Selection>
+                <Action>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">UpdateTextArea</matcherParameter>
+                    </matcher>
+                </Action>
+                <Input>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">2</matcherParameter>
+                    </matcher>
+                </Input>
+                <Actor linkTriggered="false">Student</Actor>
+            </matchers>
+        </actionLabel>
+        <preCheckedStatus>No-Applicable</preCheckedStatus>
+        <rule>
+            <text>convert-numerator fraction-addition</text>
+            <indicator>-1</indicator>
+        </rule>
+        <sourceID>24</sourceID>
+        <destID>25</destID>
+        <traversalCount>0</traversalCount>
+        <SimSt></SimSt>
+    </edge>
+    <edge>
+        <actionLabel preferPathMark="true" minTraversals="1" maxTraversals="1">
+            <studentHintRequest></studentHintRequest>
+            <stepSuccessfulCompletion></stepSuccessfulCompletion>
+            <stepStudentError></stepStudentError>
+            <uniqueID>31</uniqueID>
+            <message>
+                <verb>NotePropertySet</verb>
+                <properties>
+                    <MessageType>InterfaceAction</MessageType>
+                    <Selection>
+                        <value>ansNum1</value>
+                    </Selection>
+                    <Action>
+                        <value>UpdateTextArea</value>
+                    </Action>
+                    <Input>
+                        <value>5</value>
+                    </Input>
+                </properties>
+            </message>
+            <buggyMessage>No, this is not correct.</buggyMessage>
+            <successMessage></successMessage>
+            <hintMessage>When fractions have the same denominator they can be added.</hintMessage>
+            <hintMessage>Go ahead and add the numerator; the denominator stays the same.</hintMessage>
+            <hintMessage>Please enter '5' in the highlighted field.</hintMessage>
+            <callbackFn></callbackFn>
+            <actionType>Correct Action</actionType>
+            <oldActionType>Correct Action</oldActionType>
+            <checkedStatus>Never Checked</checkedStatus>
+            <matchers Concatenation="true">
+                <Selection>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">ansNum1</matcherParameter>
+                    </matcher>
+                </Selection>
+                <Action>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">UpdateTextArea</matcherParameter>
+                    </matcher>
+                </Action>
+                <Input>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">5</matcherParameter>
+                    </matcher>
+                </Input>
+                <Actor linkTriggered="false">Student</Actor>
+            </matchers>
+        </actionLabel>
+        <preCheckedStatus>No-Applicable</preCheckedStatus>
+        <rule>
+            <text>add-numerators fraction-addition</text>
+            <indicator>-1</indicator>
+        </rule>
+        <sourceID>25</sourceID>
+        <destID>26</destID>
+        <traversalCount>0</traversalCount>
+        <SimSt></SimSt>
+    </edge>
+    <edge>
+        <actionLabel preferPathMark="true" minTraversals="1" maxTraversals="1">
+            <studentHintRequest></studentHintRequest>
+            <stepSuccessfulCompletion></stepSuccessfulCompletion>
+            <stepStudentError></stepStudentError>
+            <uniqueID>32</uniqueID>
+            <message>
+                <verb>NotePropertySet</verb>
+                <properties>
+                    <MessageType>InterfaceAction</MessageType>
+                    <Selection>
+                        <value>ansNumFinal1</value>
+                    </Selection>
+                    <Action>
+                        <value>UpdateTextArea</value>
+                    </Action>
+                    <Input>
+                        <value>5</value>
+                    </Input>
+                </properties>
+            </message>
+            <buggyMessage>No, this is not correct.</buggyMessage>
+            <successMessage></successMessage>
+            <hintMessage>Please enter '5' in the highlighted field.</hintMessage>
+            <callbackFn></callbackFn>
+            <actionType>Correct Action</actionType>
+            <oldActionType>Correct Action</oldActionType>
+            <checkedStatus>Never Checked</checkedStatus>
+            <matchers Concatenation="true">
+                <Selection>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">ansNumFinal1</matcherParameter>
+                    </matcher>
+                </Selection>
+                <Action>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">UpdateTextArea</matcherParameter>
+                    </matcher>
+                </Action>
+                <Input>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">5</matcherParameter>
+                    </matcher>
+                </Input>
+                <Actor linkTriggered="false">Student</Actor>
+            </matchers>
+        </actionLabel>
+        <preCheckedStatus>No-Applicable</preCheckedStatus>
+        <rule>
+            <text>reduce-numerator fraction-addition</text>
+            <indicator>-1</indicator>
+        </rule>
+        <sourceID>26</sourceID>
+        <destID>27</destID>
+        <traversalCount>0</traversalCount>
+        <SimSt></SimSt>
+    </edge>
+    <edge>
+        <actionLabel preferPathMark="true" minTraversals="1" maxTraversals="1">
+            <studentHintRequest></studentHintRequest>
+            <stepSuccessfulCompletion></stepSuccessfulCompletion>
+            <stepStudentError></stepStudentError>
+            <uniqueID>33</uniqueID>
+            <message>
+                <verb>NotePropertySet</verb>
+                <properties>
+                    <MessageType>InterfaceAction</MessageType>
+                    <Selection>
+                        <value>ansDenFinal1</value>
+                    </Selection>
+                    <Action>
+                        <value>UpdateTextArea</value>
+                    </Action>
+                    <Input>
+                        <value>12</value>
+                    </Input>
+                </properties>
+            </message>
+            <buggyMessage>No, this is not correct.</buggyMessage>
+            <successMessage></successMessage>
+            <hintMessage>Please enter '12' in the highlighted field.</hintMessage>
+            <callbackFn></callbackFn>
+            <actionType>Correct Action</actionType>
+            <oldActionType>Correct Action</oldActionType>
+            <checkedStatus>Never Checked</checkedStatus>
+            <matchers Concatenation="true">
+                <Selection>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">ansDenFinal1</matcherParameter>
+                    </matcher>
+                </Selection>
+                <Action>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">UpdateTextArea</matcherParameter>
+                    </matcher>
+                </Action>
+                <Input>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">12</matcherParameter>
+                    </matcher>
+                </Input>
+                <Actor linkTriggered="false">Student</Actor>
+            </matchers>
+        </actionLabel>
+        <preCheckedStatus>No-Applicable</preCheckedStatus>
+        <rule>
+            <text>reduce-denominator fraction-addition</text>
+            <indicator>-1</indicator>
+        </rule>
+        <sourceID>27</sourceID>
+        <destID>28</destID>
+        <traversalCount>0</traversalCount>
+        <SimSt></SimSt>
+    </edge>
+    <edge>
+        <actionLabel preferPathMark="true" minTraversals="1" maxTraversals="1">
+            <studentHintRequest></studentHintRequest>
+            <stepSuccessfulCompletion></stepSuccessfulCompletion>
+            <stepStudentError></stepStudentError>
+            <uniqueID>34</uniqueID>
+            <message>
+                <verb>NotePropertySet</verb>
+                <properties>
+                    <MessageType>InterfaceAction</MessageType>
+                    <Selection>
+                        <value>done</value>
+                    </Selection>
+                    <Action>
+                        <value>ButtonPressed</value>
+                    </Action>
+                    <Input>
+                        <value>-1</value>
+                    </Input>
+                </properties>
+            </message>
+            <buggyMessage>No, this is not correct.</buggyMessage>
+            <successMessage></successMessage>
+            <hintMessage>You're done with the problem; your answer is in its simplest form.</hintMessage>
+            <hintMessage>Click the highlighted 'Done' button to finish.</hintMessage>
+            <callbackFn></callbackFn>
+            <actionType>Correct Action</actionType>
+            <oldActionType>Correct Action</oldActionType>
+            <checkedStatus>Never Checked</checkedStatus>
+            <matchers Concatenation="true">
+                <Selection>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">done</matcherParameter>
+                    </matcher>
+                </Selection>
+                <Action>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">ButtonPressed</matcherParameter>
+                    </matcher>
+                </Action>
+                <Input>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">-1</matcherParameter>
+                    </matcher>
+                </Input>
+                <Actor linkTriggered="false">Student</Actor>
+            </matchers>
+        </actionLabel>
+        <preCheckedStatus>No-Applicable</preCheckedStatus>
+        <rule>
+            <text>unnamed</text>
+            <indicator>-1</indicator>
+        </rule>
+        <sourceID>28</sourceID>
+        <destID>29</destID>
+        <traversalCount>0</traversalCount>
+        <SimSt></SimSt>
+    </edge>
+    <productionRule opportunities="1">
+        <ruleName>copy-answer-denominator</ruleName>
+        <productionSet>fraction-addition</productionSet>
+    </productionRule>
+    <productionRule opportunities="1">
+        <ruleName>reduce-denominator</ruleName>
+        <productionSet>fraction-addition</productionSet>
+    </productionRule>
+    <productionRule opportunities="2">
+        <ruleName>determine-lcd</ruleName>
+        <productionSet>fraction-addition</productionSet>
+    </productionRule>
+    <productionRule opportunities="2">
+        <ruleName>convert-numerator</ruleName>
+        <productionSet>fraction-addition</productionSet>
+    </productionRule>
+    <productionRule opportunities="1">
+        <ruleName>reduce-numerator</ruleName>
+        <productionSet>fraction-addition</productionSet>
+    </productionRule>
+    <productionRule opportunities="1">
+        <ruleName>add-numerators</ruleName>
+        <productionSet>fraction-addition</productionSet>
+    </productionRule>
+    <productionRule>
+        <ruleName>multiply-denominators</ruleName>
+        <productionSet>fraction-addition</productionSet>
+    </productionRule>
+    <EdgesGroups ordered="false"></EdgesGroups>
+</stateGraph>
+

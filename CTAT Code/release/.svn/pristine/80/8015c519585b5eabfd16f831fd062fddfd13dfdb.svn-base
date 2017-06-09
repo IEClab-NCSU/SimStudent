@@ -1,0 +1,64 @@
+<html>
+<head>
+
+<link rel="stylesheet" type="text/css" href="http://ctat.pact.cs.cmu.edu/html5releases/latest/CTAT.css">
+
+<style>
+html,body { width: 100%; height: 100%; margin: 0px; padding: 0px; }
+</style>
+
+<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="http://ctat.pact.cs.cmu.edu/html5releases/latest/ctat.min.js"></script>
+<script src="http://ctat.pact.cs.cmu.edu/html5releases/latest/ctatloader.js"></script>
+
+<script>
+
+	var myVars = 
+	{
+		question_file: "ctat-manual-tutor-creation-example-01.brd",
+		tutoring_service_communication: "javascript"
+	};	
+
+	function ctatOnload ()
+	{
+		var loggingLibrary=CTATGlobalFunctions.getLoggingLibrary ();
+		loggingLibrary.setLoggingURL ("https://pslc-qa.andrew.cmu.edu/log/server");
+		loggingLibrary.setLogClassName ("22-512");
+		loggingLibrary.setInstructor ("Miss Wormwood");
+		loggingLibrary.setSchool ("CMU");
+		loggingLibrary.setPeriod ("1st");
+		loggingLibrary.setDescription ("CTAT Logging Test");
+		loggingLibrary.setUserID ("calvin");
+		loggingLibrary.setProblemName ("AHardFractionsProblem");
+		loggingLibrary.setUseSessionLog (true);
+		loggingLibrary.setDatasetName ("HTML5LoggingTest");
+		loggingLibrary.setDatasetLevelName ("Unit1");
+		loggingLibrary.setDatasetLevelType ("unit");
+			
+		initTutor(myVars);    
+	}	
+</script>
+</head>
+<body>
+
+<div id="container" style="display: table; width:550; height:450px; border: 1px solid black; border-spacing: 2px;">
+<div style="display: table-row; height:100%;">
+Main Component Area
+</div>
+<div style="display: table-row; height: 125px;">
+  <div style="display: table-cell; border: 0px solid black; vertical-align: middle;">
+	<div id="HintWindow" class="CTATHintWindow" style="width: 100%; height: 100%"></div>	
+  </div>
+  <div style="display: table-cell; width: 60px;">
+    <div style="border: 0px solid black; margin-bottom: 2px;">
+		<div id="hint-button" class="CTATHintButton"></div>
+    </div>
+    <div style="border: 0px solid black;">
+		<div id="done-button" class="CTATDoneButton"></div>	
+    </div>
+  </div>
+</div> 
+</div>
+
+</body>
+</html>

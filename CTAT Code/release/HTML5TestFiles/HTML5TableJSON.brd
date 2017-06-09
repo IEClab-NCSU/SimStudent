@@ -1,0 +1,591 @@
+<?xml version="1.0" standalone="yes"?>
+
+<stateGraph firstCheckAllStates="true" caseInsensitive="true" unordered="false" lockWidget="true" hintPolicy="Use Both Kinds of Bias" version="4.0" suppressStudentFeedback="Show All Feedback" highlightRightSelection="true" startStateNodeName="%(startStateNodeName)%" tutorType="Example-tracing Tutor">
+    <startNodeMessages>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>StartProblem</MessageType>
+                <ProblemName>Start</ProblemName>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>CTATCommShell</WidgetType>
+                <CommName>theShell</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+                <serialized>
+                    <CTATCommShell name="theShell" x="0" y="0" width="550" height="400"></CTATCommShell>
+                </serialized>
+                <interface>
+                    <timeline x="0" y="0" width="550" height="400">
+                        <ctatcomponent x="-156" y="0" width="148" height="78" instance="__id0_"></ctatcomponent>
+                        <ctatcomponent x="20" y="17" width="460" height="351" instance="table"></ctatcomponent>
+                        <ctatcomponent x="472" y="321" width="66" height="66" instance="instance12"></ctatcomponent>
+                    </timeline>
+                </interface>
+                <script> </script>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>CTATTableGoogle</WidgetType>
+                <CommName>table</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+                <Rows>6</Rows>
+                <Columns>6</Columns>
+                <jessDeftemplates>
+                    <value>(deftemplate table (slot name) (multislot columns))</value>
+                    <value>(deftemplate column (slot name) (multislot cells) (slot position) (slot description))</value>
+                    <value>(deftemplate cell (slot name) (slot value) (slot description) (slot row-number) (slot column-number))</value>
+                </jessDeftemplates>
+                <jessInstances>
+                    <value>(bind ?table_C1R1 (assert (cell (name table_C1R1) (row-number 1) (column-number 1))))</value>
+                    <value>(bind ?table_C1R2 (assert (cell (name table_C1R2) (row-number 2) (column-number 1))))</value>
+                    <value>(bind ?table_C1R3 (assert (cell (name table_C1R3) (row-number 3) (column-number 1))))</value>
+                    <value>(bind ?table_C1R4 (assert (cell (name table_C1R4) (row-number 4) (column-number 1))))</value>
+                    <value>(bind ?table_C1R5 (assert (cell (name table_C1R5) (row-number 5) (column-number 1))))</value>
+                    <value>(bind ?table_C1R6 (assert (cell (name table_C1R6) (row-number 6) (column-number 1))))</value>
+                    <value>(bind ?table_Column1(assert (column (name table_Column1) (cells ?table_C1R1 ?table_C1R2 ?table_C1R3 ?table_C1R4 ?table_C1R5 ?table_C1R6  ) (position 1))))</value>
+                    <value>(bind ?table_C2R1 (assert (cell (name table_C2R1) (row-number 1) (column-number 2))))</value>
+                    <value>(bind ?table_C2R2 (assert (cell (name table_C2R2) (row-number 2) (column-number 2))))</value>
+                    <value>(bind ?table_C2R3 (assert (cell (name table_C2R3) (row-number 3) (column-number 2))))</value>
+                    <value>(bind ?table_C2R4 (assert (cell (name table_C2R4) (row-number 4) (column-number 2))))</value>
+                    <value>(bind ?table_C2R5 (assert (cell (name table_C2R5) (row-number 5) (column-number 2))))</value>
+                    <value>(bind ?table_C2R6 (assert (cell (name table_C2R6) (row-number 6) (column-number 2))))</value>
+                    <value>(bind ?table_Column2(assert (column (name table_Column2) (cells ?table_C2R1 ?table_C2R2 ?table_C2R3 ?table_C2R4 ?table_C2R5 ?table_C2R6  ) (position 2))))</value>
+                    <value>(bind ?table_C3R1 (assert (cell (name table_C3R1) (row-number 1) (column-number 3))))</value>
+                    <value>(bind ?table_C3R2 (assert (cell (name table_C3R2) (row-number 2) (column-number 3))))</value>
+                    <value>(bind ?table_C3R3 (assert (cell (name table_C3R3) (row-number 3) (column-number 3))))</value>
+                    <value>(bind ?table_C3R4 (assert (cell (name table_C3R4) (row-number 4) (column-number 3))))</value>
+                    <value>(bind ?table_C3R5 (assert (cell (name table_C3R5) (row-number 5) (column-number 3))))</value>
+                    <value>(bind ?table_C3R6 (assert (cell (name table_C3R6) (row-number 6) (column-number 3))))</value>
+                    <value>(bind ?table_Column3(assert (column (name table_Column3) (cells ?table_C3R1 ?table_C3R2 ?table_C3R3 ?table_C3R4 ?table_C3R5 ?table_C3R6  ) (position 3))))</value>
+                    <value>(bind ?table_C4R1 (assert (cell (name table_C4R1) (row-number 1) (column-number 4))))</value>
+                    <value>(bind ?table_C4R2 (assert (cell (name table_C4R2) (row-number 2) (column-number 4))))</value>
+                    <value>(bind ?table_C4R3 (assert (cell (name table_C4R3) (row-number 3) (column-number 4))))</value>
+                    <value>(bind ?table_C4R4 (assert (cell (name table_C4R4) (row-number 4) (column-number 4))))</value>
+                    <value>(bind ?table_C4R5 (assert (cell (name table_C4R5) (row-number 5) (column-number 4))))</value>
+                    <value>(bind ?table_C4R6 (assert (cell (name table_C4R6) (row-number 6) (column-number 4))))</value>
+                    <value>(bind ?table_Column4(assert (column (name table_Column4) (cells ?table_C4R1 ?table_C4R2 ?table_C4R3 ?table_C4R4 ?table_C4R5 ?table_C4R6  ) (position 4))))</value>
+                    <value>(bind ?table_C5R1 (assert (cell (name table_C5R1) (row-number 1) (column-number 5))))</value>
+                    <value>(bind ?table_C5R2 (assert (cell (name table_C5R2) (row-number 2) (column-number 5))))</value>
+                    <value>(bind ?table_C5R3 (assert (cell (name table_C5R3) (row-number 3) (column-number 5))))</value>
+                    <value>(bind ?table_C5R4 (assert (cell (name table_C5R4) (row-number 4) (column-number 5))))</value>
+                    <value>(bind ?table_C5R5 (assert (cell (name table_C5R5) (row-number 5) (column-number 5))))</value>
+                    <value>(bind ?table_C5R6 (assert (cell (name table_C5R6) (row-number 6) (column-number 5))))</value>
+                    <value>(bind ?table_Column5(assert (column (name table_Column5) (cells ?table_C5R1 ?table_C5R2 ?table_C5R3 ?table_C5R4 ?table_C5R5 ?table_C5R6  ) (position 5))))</value>
+                    <value>(bind ?table_C6R1 (assert (cell (name table_C6R1) (row-number 1) (column-number 6))))</value>
+                    <value>(bind ?table_C6R2 (assert (cell (name table_C6R2) (row-number 2) (column-number 6))))</value>
+                    <value>(bind ?table_C6R3 (assert (cell (name table_C6R3) (row-number 3) (column-number 6))))</value>
+                    <value>(bind ?table_C6R4 (assert (cell (name table_C6R4) (row-number 4) (column-number 6))))</value>
+                    <value>(bind ?table_C6R5 (assert (cell (name table_C6R5) (row-number 5) (column-number 6))))</value>
+                    <value>(bind ?table_C6R6 (assert (cell (name table_C6R6) (row-number 6) (column-number 6))))</value>
+                    <value>(bind ?table_Column6(assert (column (name table_Column6) (cells ?table_C6R1 ?table_C6R2 ?table_C6R3 ?table_C6R4 ?table_C6R5 ?table_C6R6  ) (position 6))))</value>
+                    <value>(assert (table (name table) (columns ?table_Column1 ?table_Column2 ?table_Column3 ?table_Column4 ?table_Column5 ?table_Column6  )))</value>
+                </jessInstances>
+                <serialized>
+                    <CTATTableGoogle name="table" x="20" y="17.5" width="445.9986877441406" height="297.95068359375" scaleX="1" scaleY="1" originalWidth="460.15" originalHeight="350.75" zIndex="0" tabIndex="-1">
+                        <SAIs>
+                            <selection>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>SetVisible</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="visible" type="Boolean">true</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>setVisible</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="visible" type="Boolean">true</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>lock</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="locked" type="Boolean">false</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>unlock</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="locked" type="Boolean">false</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>highlight</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="highlight" type="String">-1</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>unhighlight</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="unhighlight" type="String">-1</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>move</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="x" type="Number">0</value>
+                                        <value fmt="text" name="y" type="Number">0</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>size</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="x" type="Number">0</value>
+                                        <value fmt="text" name="y" type="Number">0</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>reset</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="reset" type="Boolean">true</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>FadeIn</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="alpha" type="Number">0</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>FadeOut</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="alpha" type="Number">0</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>unlock</action>
+                                    <internalArguments></internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>lock</action>
+                                    <internalArguments></internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>setClickable</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="clickable" type="Boolean">true</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                            </selection>
+                        </SAIs>
+                        <Parameters>
+                            <selection>
+                                <CTATComponentParameter>
+                                    <name>ShowHintHighlight</name>
+                                    <value fmt="text" name="Show Hint Highlight" type="Boolean" includein="full">true</value>
+                                </CTATComponentParameter>
+                                <CTATComponentParameter>
+                                    <name>DisableOnCorrect</name>
+                                    <value fmt="text" name="Disable On Correct" type="Boolean" includein="full">true</value>
+                                </CTATComponentParameter>
+                                <CTATComponentParameter>
+                                    <name>tutorComponent</name>
+                                    <value fmt="text" name="Tutor Component" type="String" includein="full">Tutor</value>
+                                </CTATComponentParameter>
+                                <CTATComponentParameter>
+                                    <name>FirstRowIsHeader</name>
+                                    <value fmt="text" name="First Row is Header" type="Boolean" includein="full">false</value>
+                                </CTATComponentParameter>
+                                <CTATComponentParameter>
+                                    <name>PasteSingleSAI</name>
+                                    <value fmt="text" name="PasteSingleSAI" type="Boolean" includein="full">false</value>
+                                </CTATComponentParameter>
+                                <CTATComponentParameter>
+                                    <name>SpreadSheetMode</name>
+                                    <value fmt="text" name="Spreadsheet Mode" type="Boolean" includein="full">false</value>
+                                </CTATComponentParameter>
+                            </selection>
+                        </Parameters>
+                        <Styles>
+                            <selection>
+                                <CTATStyleProperty>
+                                    <name>DrawBorder</name>
+                                    <value fmt="text" name="Draw Border" type="Boolean" includein="full">true</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>borderRoundness</name>
+                                    <value fmt="text" name="Border Roundness" type="Number" includein="full">0</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>BorderColor</name>
+                                    <value fmt="text" name="Border Color" type="Color" includein="full">999999</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontFace</name>
+                                    <value fmt="text" name="Font" type="String" includein="full">Arial</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontSize</name>
+                                    <value fmt="text" name="Font Size" type="Number" includein="full">12</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>TextColor</name>
+                                    <value fmt="text" name="Font Color" type="Color" includein="full">0</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontBold</name>
+                                    <value fmt="text" name="Font Bold" type="Boolean" includein="full">false</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontItalic</name>
+                                    <value fmt="text" name="Font Italic" type="Boolean" includein="full">false</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontUnderlined</name>
+                                    <value fmt="text" name="Font Underline" type="Boolean" includein="full">false</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>TextAlign</name>
+                                    <value fmt="text" name="Text Align" type="String" includein="full">left</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>transparencyValue</name>
+                                    <value fmt="text" name="Background Transparency" type="Number" includein="full">1</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>BackgroundColor</name>
+                                    <value fmt="text" name="Background Color" type="Color" includein="full">f8f8f8</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>disabledBackgroundColor</name>
+                                    <value fmt="text" name="Disabled Background Color" type="Color" includein="full">666666</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>inspBackgroundColor</name>
+                                    <value fmt="text" name="Background Color" type="Color" includein="full">f8f8f8</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>HeaderBackground</name>
+                                    <value fmt="text" name="Header Background Color" type="Color" includein="full">ffffff</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>disabledTextColor</name>
+                                    <value fmt="text" name="Disabled Text Color" type="Color" includein="full">0</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>num_cols</name>
+                                    <value fmt="text" name="Number of Columns" type="Number" includein="full">6</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>num_rows</name>
+                                    <value fmt="text" name="Number of Rows" type="Number" includein="full">6</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>HeaderHeight</name>
+                                    <value fmt="text" name="Header Height" type="Number" includein="full">25</value>
+                                </CTATStyleProperty>
+                            </selection>
+                        </Styles>
+                    </CTATTableGoogle>
+                </serialized>
+            </properties>
+        </message>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>StartStateEnd</MessageType>
+            </properties>
+        </message>
+    </startNodeMessages>
+    <node locked="false" doneState="false">
+        <text>Start</text>
+        <uniqueID>1</uniqueID>
+        <dimension>
+            <x>463</x>
+            <y>30</y>
+        </dimension>
+    </node>
+    <node locked="false" doneState="false">
+        <text>state1</text>
+        <uniqueID>2</uniqueID>
+        <dimension>
+            <x>383</x>
+            <y>445</y>
+        </dimension>
+    </node>
+    <node locked="false" doneState="true">
+        <text>Done</text>
+        <uniqueID>7</uniqueID>
+        <dimension>
+            <x>478</x>
+            <y>572</y>
+        </dimension>
+    </node>
+    <node locked="false" doneState="false">
+        <text>state7</text>
+        <uniqueID>8</uniqueID>
+        <dimension>
+            <x>383</x>
+            <y>187</y>
+        </dimension>
+    </node>
+    <node locked="false" doneState="false">
+        <text>state8</text>
+        <uniqueID>9</uniqueID>
+        <dimension>
+            <x>469</x>
+            <y>308</y>
+        </dimension>
+    </node>
+    <edge>
+        <actionLabel preferPathMark="true" minTraversals="1" maxTraversals="999">
+            <studentHintRequest></studentHintRequest>
+            <stepSuccessfulCompletion></stepSuccessfulCompletion>
+            <stepStudentError></stepStudentError>
+            <uniqueID>1</uniqueID>
+            <message>
+                <verb>NotePropertySet</verb>
+                <properties>
+                    <MessageType>InterfaceAction</MessageType>
+                    <transaction_id>6862FD18DFAC552E</transaction_id>
+                    <Selection>
+                        <value>table.A1</value>
+                    </Selection>
+                    <Action>
+                        <value>UpdateTextArea</value>
+                    </Action>
+                    <Input>
+                        <value>A</value>
+                    </Input>
+                </properties>
+            </message>
+            <buggyMessage>No, this is not correct.</buggyMessage>
+            <successMessage></successMessage>
+            <hintMessage>Third hint</hintMessage>
+            <hintMessage>Second hint</hintMessage>
+            <hintMessage>First hint</hintMessage>
+            <callbackFn></callbackFn>
+            <actionType>Correct Action</actionType>
+            <oldActionType>Correct Action</oldActionType>
+            <checkedStatus>Never Checked</checkedStatus>
+            <matchers Concatenation="true">
+                <Selection>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">table.A1</matcherParameter>
+                    </matcher>
+                </Selection>
+                <Action>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">UpdateTextArea</matcherParameter>
+                    </matcher>
+                </Action>
+                <Input>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">A</matcherParameter>
+                    </matcher>
+                </Input>
+                <Actor linkTriggered="false">Student</Actor>
+            </matchers>
+        </actionLabel>
+        <preCheckedStatus>No-Applicable</preCheckedStatus>
+        <rule>
+            <text>unnamed</text>
+            <indicator>-1</indicator>
+        </rule>
+        <sourceID>1</sourceID>
+        <destID>8</destID>
+        <traversalCount>0</traversalCount>
+    </edge>
+    <edge>
+        <actionLabel preferPathMark="true" minTraversals="1" maxTraversals="999">
+            <studentHintRequest></studentHintRequest>
+            <stepSuccessfulCompletion></stepSuccessfulCompletion>
+            <stepStudentError></stepStudentError>
+            <uniqueID>15</uniqueID>
+            <message>
+                <verb>NotePropertySet</verb>
+                <properties>
+                    <MessageType>InterfaceAction</MessageType>
+                    <transaction_id>6862FD18DFAC552E</transaction_id>
+                    <Selection>
+                        <value>table.B2</value>
+                    </Selection>
+                    <Action>
+                        <value>UpdateTextArea</value>
+                    </Action>
+                    <Input>
+                        <value>C</value>
+                    </Input>
+                </properties>
+            </message>
+            <buggyMessage>No, this is not correct.</buggyMessage>
+            <successMessage></successMessage>
+            <hintMessage>CCCCC</hintMessage>
+            <hintMessage>BBBBB</hintMessage>
+            <hintMessage>AAAAA</hintMessage>
+            <callbackFn></callbackFn>
+            <actionType>Correct Action</actionType>
+            <oldActionType>Correct Action</oldActionType>
+            <checkedStatus>Never Checked</checkedStatus>
+            <matchers Concatenation="true">
+                <Selection>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">table.B2</matcherParameter>
+                    </matcher>
+                </Selection>
+                <Action>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">UpdateTextArea</matcherParameter>
+                    </matcher>
+                </Action>
+                <Input>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">C</matcherParameter>
+                    </matcher>
+                </Input>
+                <Actor linkTriggered="false">Student</Actor>
+            </matchers>
+        </actionLabel>
+        <preCheckedStatus>No-Applicable</preCheckedStatus>
+        <rule>
+            <text>unnamed</text>
+            <indicator>-1</indicator>
+        </rule>
+        <sourceID>9</sourceID>
+        <destID>2</destID>
+        <traversalCount>0</traversalCount>
+    </edge>
+    <edge>
+        <actionLabel preferPathMark="true" minTraversals="1" maxTraversals="999">
+            <studentHintRequest></studentHintRequest>
+            <stepSuccessfulCompletion></stepSuccessfulCompletion>
+            <stepStudentError></stepStudentError>
+            <uniqueID>13</uniqueID>
+            <message>
+                <verb>NotePropertySet</verb>
+                <properties>
+                    <MessageType>InterfaceAction</MessageType>
+                    <transaction_id>6862FD18DFAC552E</transaction_id>
+                    <Selection>
+                        <value>table.B1</value>
+                    </Selection>
+                    <Action>
+                        <value>UpdateTextArea</value>
+                    </Action>
+                    <Input>
+                        <value>B</value>
+                    </Input>
+                </properties>
+            </message>
+            <buggyMessage>No, this is not correct.</buggyMessage>
+            <successMessage></successMessage>
+            <hintMessage>Third hint</hintMessage>
+            <hintMessage>Second hint</hintMessage>
+            <hintMessage>First hint</hintMessage>
+            <callbackFn></callbackFn>
+            <actionType>Correct Action</actionType>
+            <oldActionType>Correct Action</oldActionType>
+            <checkedStatus>Never Checked</checkedStatus>
+            <matchers Concatenation="true">
+                <Selection>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">table.B1</matcherParameter>
+                    </matcher>
+                </Selection>
+                <Action>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">UpdateTextArea</matcherParameter>
+                    </matcher>
+                </Action>
+                <Input>
+                    <matcher>
+                        <matcherType>ExactMatcher</matcherType>
+                        <matcherParameter name="single">B</matcherParameter>
+                    </matcher>
+                </Input>
+                <Actor linkTriggered="false">Student</Actor>
+            </matchers>
+        </actionLabel>
+        <preCheckedStatus>No-Applicable</preCheckedStatus>
+        <rule>
+            <text>unnamed</text>
+            <indicator>-1</indicator>
+        </rule>
+        <sourceID>8</sourceID>
+        <destID>9</destID>
+        <traversalCount>0</traversalCount>
+    </edge>
+    <edge>
+        <actionLabel preferPathMark="true" minTraversals="1" maxTraversals="1">
+            <studentHintRequest></studentHintRequest>
+            <stepSuccessfulCompletion></stepSuccessfulCompletion>
+            <stepStudentError></stepStudentError>
+            <uniqueID>11</uniqueID>
+            <message>
+                <verb>NotePropertySet</verb>
+                <properties>
+                    <MessageType>InterfaceAction</MessageType>
+                    <transaction_id>B963441A52629A10</transaction_id>
+                    <Selection>
+                        <value>done</value>
+                    </Selection>
+                    <Action>
+                        <value>ButtonPressed</value>
+                    </Action>
+                    <Input>
+                        <value>-1</value>
+                    </Input>
+                </properties>
+            </message>
+            <buggyMessage>No, this is not correct.</buggyMessage>
+            <successMessage></successMessage>
+            <hintMessage>Please click on the highlighted button.</hintMessage>
+            <callbackFn></callbackFn>
+            <actionType>Correct Action</actionType>
+            <oldActionType>Correct Action</oldActionType>
+            <checkedStatus>Never Checked</checkedStatus>
+            <matcher>
+                <matcherType>ExactMatcher</matcherType>
+                <matcherParameter name="selection">done</matcherParameter>
+                <matcherParameter name="action">ButtonPressed</matcherParameter>
+                <matcherParameter name="input">-1</matcherParameter>
+                <matcherParameter name="actor">Student</matcherParameter>
+            </matcher>
+        </actionLabel>
+        <preCheckedStatus>No-Applicable</preCheckedStatus>
+        <rule>
+            <text>unnamed</text>
+            <indicator>-1</indicator>
+        </rule>
+        <sourceID>2</sourceID>
+        <destID>7</destID>
+        <traversalCount>0</traversalCount>
+    </edge>
+    <EdgesGroups ordered="true">
+        <group name="Main" ordered="false" reenterable="true">
+            <link id="1"/>
+            <link id="15"/>
+            <link id="13"/></group>
+    </EdgesGroups>
+</stateGraph>
+

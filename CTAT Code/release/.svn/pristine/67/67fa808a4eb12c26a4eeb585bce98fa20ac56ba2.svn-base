@@ -1,0 +1,762 @@
+<html>
+<head>
+	<title>CTAT Desktop</title>
+
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta property="og:title" content="Share your tutors on the web!">
+	<meta property="og:site_name" content="CTAT">
+	<meta property="og:description" content="Share tutors with fellow students or build your own.">
+	<meta property="og:type" content="Website">	
+	<meta property="og:image" content="logo.png">
+	
+	<script>
+	var CTATTarget="Authoring";
+	</script>
+
+	<!--
+	<link type="text/css" rel="stylesheet" href="css/theme-jqueryui/jquery-ui.css">
+	-->
+	<link rel="stylesheet" type="text/css" href="css/windows7.css"/>	
+	<link rel="stylesheet" type="text/css" href="css/envwizard.css"/>	
+	<link rel="stylesheet" type="text/css" href="css/dashboard.css"/>	
+	<link rel="stylesheet" type="text/css" href="css/icon.css"/>	
+	<link rel="stylesheet" type="text/css" href="css/jstree/style.min.css" />
+	<link rel="stylesheet" type="text/css" href="css/themes-easyui/ctat/easyui.css" />
+
+	<!--
+	<link rel="stylesheet" type="text/css" href="css/right-click.css" />
+	-->
+	
+		
+	<script type="text/javascript">
+	mxBasePath = 'js/mxgraph/';
+	</script>	
+	<script type="text/javascript" src="js/mxgraph/mxClient.js"></script>	
+				
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/ui/1.11.2/jquery-ui.min.js"></script>	
+	<script type="text/javascript" src="https://apis.google.com/js/client.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-touch.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-animate.js"></script>
+    <script src="http://ui-grid.info/docs/grunt-scripts/csv.js"></script>
+    <script src="http://ui-grid.info/docs/grunt-scripts/pdfmake.js"></script>
+    <script src="http://ui-grid.info/docs/grunt-scripts/vfs_fonts.js"></script>	
+	<script type="text/javascript" src="js/colResizable-1.5.min.js"></script>
+	<script type="text/javascript" src="js/ctat.min.js"></script>
+	<script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="js/jstree.min.js"></script>	
+	<script type="text/javascript" src="js/system.js"></script>
+	<script type="text/javascript" src="js/drive.js"></script>	
+	<script type="text/javascript" src="js/driveui.js"></script>	
+	<script type="text/javascript" src="js/jquery.filedrop.js"></script>
+	<script type="text/javascript" src="js/script.js"></script>
+	<script type="text/javascript" src="js/system.js"></script>
+	<script type="text/javascript" src="js/window.js"></script>
+	<script type="text/javascript" src="js/windows7.js"></script>
+	<script type="text/javascript" src="js/desktop.js"></script>	
+	<script type="text/javascript" src="js/envwizard.js"></script>
+	<script type="text/javascript" src="js/graph.js"></script>
+	<script type="text/javascript" src="js/right-click.js"></script>
+	<script type="text/javascript" src="js/Google/DriveUI.js"></script>
+	<script type="text/javascript" src="js/fsystem.js"></script>
+
+	<script type="text/javascript" src="js/main.js"></script>
+	
+	<!-- Silex resources -->
+
+	<script type="text/javascript" src="js/silex/alertify.min.js"></script>
+	<script type="text/javascript" src="js/silex/ace/ace.js"></script>
+	<script type="text/javascript" src="js/silex/ace/ext-language_tools.js"></script>
+	<script type="text/javascript" src="js/silex/cloud-explorer.js"></script>
+    <script type="text/javascript" src="js/silex/pixlr.js"></script>
+	<script type="text/javascript" src="js/silex/beautify-html.js"></script>
+	<script type="text/javascript" src="js/silex/admin.js"></script>
+	<script type="text/javascript" src="js/silex/closure-patches.js"></script>
+	
+	<link rel="stylesheet" type="text/css" href="css/silex/admin.css">
+	<link rel="shortcut icon" href="assets/favicon.png">
+	<!-- ----- -->
+	
+	<style>
+	body
+	{
+		overflow: hidden;
+		
+		background: url('css/images/background.jpg') no-repeat center top;
+		background-size: 100% 100%;
+		text-align: center;
+		
+		margin: 0;
+		padding: 0;		
+	
+		-webkit-box-shadow: inset 0px 0px 25px 9px rgba(0,0,0,0.16);
+		-moz-box-shadow: inset 0px 0px 25px 9px rgba(0,0,0,0.16);
+		box-shadow: inset 0px 0px 25px 9px rgba(0,0,0,0.16);	
+	}
+
+	#left_shelf 
+	{ 
+		background: url('css/images/left_shelf.png') no-repeat bottom; 
+	}
+	
+	#right_shelf 
+	{ 
+		background: url('css/images/right_shelf.png') no-repeat bottom; 
+	}
+	
+	#shelf
+	{
+		background: url('css/images/shelf.png') repeat-x bottom;
+	}
+
+	li.separator 
+	{ 
+		background: url('css/images/separator.png') no-repeat bottom;
+	}
+	
+	/* Div table formatting */
+	
+	.boxer 
+	{
+		display: table;
+		width: 100%;
+		height: 100%;
+		border-collapse: collapse;
+	}
+	 
+	.boxer .box-row 
+	{
+		display: table-row;
+		/*border: 1px solid red;*/
+	}	
+	
+	.boxer .box 
+	{
+		display: table-cell;
+		text-align: left;
+		vertical-align: top;
+		/*border: 1px solid black;*/
+	}	
+	
+	/* Desktop element formatting */
+	
+	.desktop_icon
+	{
+		display: table;		
+		border-collapse: collapse;
+	}
+	 
+	.desktop_icon .desktop_icon_row 
+	{
+		display: table-row;
+		/*border: 1px solid red;*/
+	}	
+	
+	.desktop_icon .icon
+	{
+		display: table-cell;
+		text-align: center;
+		vertical-align: middle;
+		padding: 4px;
+		/*border: 1px solid black;*/
+	}	
+	
+	.desktop_label
+	{
+		text-shadow:1px 1px 1px rgba(143,143,143,1);
+		font-weight:normal;
+		color:#000000;
+		letter-spacing:0pt;
+		word-spacing:2pt;
+		font-size:12px;
+		text-align:center;
+		font-family:arial, helvetica, sans-serif;
+		line-height:1;
+		padding: 4px;
+	}
+	
+	.desktop_icon_highlighted
+	{
+		border: 1px solid #dddddd;
+		background: rgba(63, 191, 191, 0.1);
+	}
+	
+	.dialogwindow
+	{
+		-moz-border-radius:1px;
+		-webkit-border-radius:1px;
+		border-radius:1px;
+		-moz-box-shadow:0 0 0 1px rgba(255,255,255,0.65);
+		-webkit-box-shadow:0 0 0 1px rgba(255,255,255,0.65);
+		box-shadow:0 0 0px 1px rgba(255,255,255,0.65);
+		background-color:#fff;
+		height:100%;
+		padding:0px;	
+		margin:0 6px;
+		overflow:none;
+		position:relative;	
+		font-weight:normal;
+		color:#000000;
+		letter-spacing:1pt;
+		word-spacing:2pt;
+		font-size:10px;
+		text-align:left;
+		font-family:verdana, 
+		sans-serif;line-height:1;	
+	}
+	
+	.divTable
+	{
+		display: table;
+		width: 100%;
+	}
+	.divTableRow 
+	{
+		display: table-row;
+		margin-top: 5px;
+	}
+	.divTableHeading 
+	{
+		background-color: #EEE;
+		display: table-header-group;
+	}
+	.divTableCell, .divTableHead 
+	{
+		border: 0px solid #999999;
+		display: table-cell;
+		padding: 1px 1px;
+	}
+	.divTableHeading 
+	{
+		background-color: #EEE;
+		display: table-header-group;
+		font-weight: bold;
+	}
+	.divTableFoot 
+	{
+		background-color: #EEE;
+		display: table-footer-group;
+		font-weight: bold;
+	}
+	.divTableBody 
+	{
+		display: table-row-group;
+	}	
+	
+	.toolButton
+	{	 
+		background-color: transparent;
+		background-repeat: no-repeat;
+		background-position: 0px 0px;
+		cursor: pointer;
+		width: 20px;
+		height: 20px;
+		vertical-align: middle;
+		margin: 1px;
+		padding: 2px;
+	}
+	
+	</style>	
+</head>
+<body id="sizeReference" onLoad="init ()">
+
+<table cellpadding="0" cellspacing="0" width="100%" height="100%" border="0" style="vertical-align: middle;">
+	<tr>
+		<td id="table element" valign="middle" align="center">  
+		
+			<div id="wizard" class="ctatwindow" style="width: 500px; height: 500px; display: none;">
+				<h4 id="wizardtitle" class="title">Configuration Wizard</h4>
+				<div id="wizardcontent" class="content">
+				
+				<iframe id="wizardcontents" src="" frameborder="0" width="486" height="500" style="margin: auto; padding: 0px; border 0px;"></iframe>
+				
+				</div>
+			</div>
+		
+		</td>
+	</tr>
+</table>
+
+<!--
+<a href="#">
+	<img src="css/images/power.png" style="position:absolute; top:10; right:10; width: 32px; height: 32px;" onClick="logOff ()"/>
+</a>
+-->	
+
+<div id="drivewindow" class="ctatdialog" style="display: none; left: 10px; top: 10px; width: 400px; height: 500px;">
+	<img class="windowclose" src="css/images/icon_close.png" style="margin: 0px; padding: 3px; width: 20px; height: 20px; float: right;">
+	<h4 class="title">Google Drive</h4>
+	<div id="drivecontent" class="content" style="overflow: hidden;">
+		<div id="drivebar" style="padding: 0px; margin: 0px; margin-bottom: 2px; width: 100%; height: 20px; border: 1px 1px rgb(140, 137, 137) inset; background: #F2EBE4;">
+			<img src="css/images/icons/gtk-refresh.png" onclick="showFiles ();" style="float: left; width: 16px; height: 16px; padding: 1px; margin: 0px;" />
+			<img src="css/images/icons/gtk-new.png" onclick="driveNew ();" style="float: left; width: 16px; height: 16px; padding: 1px; margin: 0px;" />
+			<img src="css/images/icons/delete.png" onclick="trashSelected('googledrive')" style="float: left; width: 16px; height: 16px; padding: 1px; margin: 0px;" />
+		</div>				
+		<div id="drivelayout" class="easyui-layout" style="border: 1px rgb(140, 137, 137) inset; background: #d4d0c8; width: 100%; height: 100%">
+			<div data-options="region:'west',split:true">
+				<div id="googledrive">
+				</div>
+			</div>	
+			<div data-options="region:'east',split:true">
+			
+			</div>			
+		</div>
+	</div>
+</div>
+
+<!-- Dedicated file picker window for html editor -->
+<div id="editor_filepicker" class="ctatdialog" style="display: none; left: 10px; top: 10px; width: 500px; height: 300px;">
+	<img class="windowclose" src="css/images/icon_close.png" style="margin: 0px; padding: 3px; width: 20px; height: 20px; float: right;">
+	<h4 id="fopen" class="title">Google Drive</h4>
+	<div id="editor_filepicker_content" class="content">
+		<div id="editor_filepicker_toolbar" style="padding: 0px; margin: 0px; margin-bottom: 2px; width: 100%; height: 20px; 
+				border: 1px 1px rgb(140, 137, 137) inset; background: #F2EBE4;">
+			<img src="css/images/icons/folder-new.png" onclick="newFolder()" style="float: left; width: 16px; height: 16px; padding: 1px; margin: 0px;" />
+		</div>
+		<div id="editor_filepicker_layout" style="border: 1px rgb(140, 137, 137) inset; width: 100%; height: 100%">
+			<div id="editor_filepicker_filetree" style="background: #d4d0c8; height: 100%; overflow: scroll; margin-bottom: 10px;">
+			<!-- js tree will fill this in -->
+			</div>
+			<input id="filename_input" type="text" placeholder="enter a name for your file..." style="margin-left: 30px; height: 30px;"><span>.html</span>
+			<button onclick = "confirm()" style="height: 30px; padding: 3px;">OK</button>
+			<button onclick = "closeWindow('#editor_filepicker')" style="height: 30px; padding: 3px;">Cancel</button>
+		</div>
+	</div>
+</div>
+
+<!-- Dedicated file picker window for html editor -->
+<div id="editor_filepicker2" class="ctatdialog" style="display: none; left: 10px; top: 10px; width: 500px; height: 335px;">
+	<img class="windowclose" onclick = "closeFileDialog ()" src="css/images/icon_close.png" style="margin: 0px; padding: 3px; width: 20px; height: 20px; float: right;">
+	<h4 id="fopen" class="title">Google Drive</h4>
+	<div id="editor_filepicker_content" class="dialogwindow" style="overflow: hidden; background: #d4d0c8;">
+		<div id="editor_filepicker_toolbar" style="padding: 0px; padding-top: 2px; margin: 0px; width: 100%; height: 22px;">
+			<button onClick="fileDialogHome();" class="toolButton" style="width: 22; height: 22; float: right; margin: 0px; padding: 2px; margin-right: 2px; background-image: url(css/images/icons/gtk-home.png);"></button>
+			<button onClick="fileDialogNewFolder();" class="toolButton" style="width: 22; height: 22; float: right; margin: 0px; padding: 2px; margin-right: 2px; background-image: url(css/images/icons/gtk-new.png);"></button>
+			<button onClick="fileDialogShowGrid();" class="toolButton" style="width: 22; height: 22; float: right; margin: 0px; padding: 2px; margin-right: 2px; background-image: url(css/images/icons/filegrid.png);"></button>			
+			<button onClick="fileDialogShowList();" class="toolButton" style="width: 22; height: 22; float: right; margin: 0px; padding: 2px; margin-right: 2px; background-image: url(css/images/icons/filelist.png);"></button>
+		</div>
+		<div id="editor_filepicker_layout" style="padding: 2px; border: 0px rgb(140, 137, 137) inset; height: 100%">
+		
+			<div id="filepicker_filetree" style="position: relative; background: #ffffff; border: 2px rgb(220, 216, 216) inset; height: 220px; overflow: auto;">
+				<!-- js tree will fill this in -->
+				<div style="position: relative; margin: auto; margin-top: 90px; border: 0px solid black; width: 130px; height: 30px;">
+				Loading ...
+				<br>
+				<img src="css/images/loading31.gif" style="margin-top: 2px;">
+				</div>
+			</div>
+						
+			<div class="divTable">
+				<div class="divTableBody">
+					<div class="divTableRow">
+						<div class="divTableCell" style="width: 80px;">File Name:</div>
+						<div class="divTableCell"><input id="filename_input" size="65" type="text" style="height: 25px;"></div>
+					</div>					
+					<div class="divTableRow">
+						<div class="divTableCell" style="width: 80px;">File Type:</div>
+						<div class="divTableCell">						
+							<select style="width: 408px; height: 25px;">
+								<option value="volvo">html</option>
+							</select>
+						</div>
+					</div>				
+					<div class="divTableRow">
+						<div class="divTableCell" style="width: 80px;">&nbsp;</div>
+						<div class="divTableCell" style="float: right;" align="right">
+							<button onclick = "confirmFileDialog ()" style="width: 75px; height: 25px; padding: 3px;">OK</button>
+							<button onclick = "closeFileDialog ()" style="width: 75px;  height: 25px; padding: 3px;">Cancel</button>
+						</div>
+					</div>				
+				</div>
+			</div>			
+	
+		</div>
+	</div>
+</div>
+
+<div id="dashboard">
+	<div id="left_shelf"></div>
+	<div id="shelf">
+		<ul id="menu_dashboard">
+			<li><a href="#"><img id="iconMoodle" src="css/images/moodle.png" alt="Moodle" /></a></li>
+			<li><a href="#"><img id="iconSCORM" src="css/images/scorm.png" alt="SCORM" /></a></li>
+			<li><a href="#"><img id="iconEdX" src="css/images/edx.png" alt="EdX" /></a></li>
+			<li><a href="#"><img id="iconOLI" src="css/images/oli.png" alt="OLI" /></a></li>
+			<li><a href="#"><img id="iconTutorShop" src="css/images/tutorshop.png" alt="TutorShop" /></a></li>
+			<li><a href="#"><img id="iconXAPI" src="css/images/x-api.png" alt="Experience API" /></a></li>
+			<li class="separator">&nbsp;</li>
+			<li><a href="#"><img src="css/images/settings.png" alt="Settings" onClick="showSettings ()"/></a></li>
+			<li><a href="#"><img src="css/images/files.png" alt="Files" onClick="showFiles ()"/></a></li>
+			<li><a href="#"><img id="iconCTAT" src="css/images/ctat.png" alt="CTAT" onClick="showCTAT ()"/></a></li>
+			<li><a href="#"><img id="iconCTATAuthoring" src="css/images/ctat-authoring.png" alt="CTAT" onClick="showCTATAuthoring ()"/></a></li>
+		</ul>
+	</div>
+	<div id="right_shelf"></div>
+</div>
+
+<iframe id="filehider" name="filehider" border="1" width="100" height="100" style="display: none;"></iframe>		
+
+<form id="fileuploader" name="fileuploader" method ="post" action="/ctatenvironment/upload.php" target="filehider" style="display: none;">
+	<input type="hidden" id="filename" name="filename"> 
+	<input type="hidden" id="data" name="data">
+</form>
+
+<!--
+<a href="http://ctat.pact.cs.cmu.edu" target="_blank">
+	<img class="logo" src="css/images/ctat_icon_48x48.png">
+</a>
+-->
+
+<div id="status" class="status">Not logged in</div>
+
+<!-- Dialog boxes and dynamic elements -->
+
+<div id="settingswindow" class="ctatdialog" style="display: none; width: 320px; height:200px;">
+	<img class="windowclose" src="css/images/icon_close.png" style="margin: 0px; padding: 3px; width: 20px; height: 20px; float: right;">
+	<h4 class="title">Mozilla Firefox</h4>	
+	<div class="content" style="clear: right">
+
+	</div>
+</div>
+
+<div id="datashop" class="ctatdialog" style="width: 800px; height: 600px; z-index: 1001; display: none;">
+	<img class="windowclose" src="css/images/icon_close.png" style="margin: 0px; padding: 3px; width: 20px; height: 20px; float: right;">
+	<img class="windowmaximize" src="css/images/icons/icon_maximize.gif" style="margin: 0px; margin-top: 2px; padding: 3px; width: 16px; height: 16px; float: right;">		
+	<h4 class="title">CTAT Interface Editor</h4>
+	<div id="ctatcontent" class="content">
+		<iframe id="datashopcontainer" border="0" width="99%" height="99%" scrolling="no" src="https://pslcdatashop.web.cmu.edu/" style="padding: 0px; margin: 0px; overflow: hidden;" ></iframe>
+	</div>
+</div>
+
+<div id="dialog-confirm" class="ctatdialog" style="display: none;">
+	<h4 class="title">Google Authorization</h4>
+	<div class="content">
+	  <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
+	  In order to run the tutors we need to access your Google account.
+	  <hr>
+	  <div align="left">
+	  You might see a warning in your browser like this:
+	  <br><br>
+	  <img src="popupblocked.png">
+	  <br><br>
+	  If you see this warning once you click Login, then please make sure you allow 
+	  popups on this page. Then reload the page to login.
+	  </div>
+	  </p>
+	</div>
+</div>
+
+<!--
+<div id="blocker" class="blocker">
+</div>
+-->
+
+<div id="loading" class="ctatdialog" style="z-index: 1001; display: none;">
+	<h4 class="title">Standby</h4>
+	<div id="infocontent" class="content">
+		<p>Please wait, authenticating with your Google account.</p>
+	</div>
+</div>
+
+<div id="ctatwindow" class="ctatdialog" style="width: 800px; height: 600px; z-index: 1001; display: none;">
+	<img class="windowclose" src="css/images/icon_close.png" style="margin: 0px; padding: 3px; width: 20px; height: 20px; float: right;">
+	<img class="windowmaximize" src="css/images/icons/icon_maximize.gif" style="margin: 0px; margin-top: 2px; padding: 3px; width: 16px; height: 16px; float: right;">		
+	<h4 class="title">CTAT Interface Editor</h4>
+
+<div id="ctatcontent" class="content">
+
+<style>.loading-pending {
+opacity: 0;
+}
+.silex-body {
+	background-color: #464646;
+}
+</style><div class="advanced-mode-off silex-body"><div class="silex-workspace"><!-- file explorer--><!--iframe#silex-file-explorer.notranslate(frameborder='no',
+scrolling='no',
+allowfullscreen='yes',
+data-ce-unifile-url='api/1.0/',
+data-ce-path='/libs/cloud-explorer/')
+--><!-- menu--><div class="silex-menu"><!--.crowdfundgin-button.menubar.goog-menubar.goog-menubar-horizontal//.goog-inline-block.goog-menu-button-outer-box
+    a.goog-menu-button.ulule-home(target="_blank", href="https://www.ulule.com/silex-websitebuilder/") Crowd Fund me!
+    a.goog-menu-button.ulule-paiement(target="_blank", href="https://www.ulule.com/projects/37961/checkout/") $10.00
+--></div><div class="silex-context-menu"><div title="Save" class="button save off"></div><div title="Undo" class="button undo off"></div><div title="Redo" class="button redo off"></div><div class="button sep"></div><div title="Text" class="button text"></div><div title="Image" class="button image"></div><div title="Container" class="button container"></div><div title="Html" class="button html"></div><div class="button sep"></div><div title="Delete" class="button delete off"></div><div title="Copy" class="button copy off"></div><div title="Paste" class="button paste off"></div><div class="button sep"></div><div title="To top" class="button top off"></div><div title="Up" class="button up off"></div><div title="Down" class="button down off"></div><div title="To bottom" class="button bottom off"></div><div class="button sep"></div><div title="Preview" class="button preview off"></div><div title="Preview in Responsize" class="button previewResponsize off"></div><div class="button sep"></div><a href="https://github.com/silexlabs/Silex/labels/doc" title="get help here!" target="_blank" class="button help"></a></div><!--.tip-of-the-dayimg(src='css/assets/tooltip-callout.gif')
+--><!-- vertical splitter--><!--.vertical-splitter.knob
+--><!-- properties tool--><!--.silex-property-tool.notranslateinclude ./property-tool.jade
+--><!-- stage--><div class="silex-stage"><!-- notranslate is to prevent chrome automatic translation--><iframe id="silex-stage-iframe" class="silex-stage-iframe notranslate"></iframe></div><!-- dialogs background--><div class="dialogs-background"></div><!-- settings--><div class="silex-settings-dialog hidden-dialog"><div class="dialog"><div class="header"><h1 class="title">Website settings<button type="button" class="close-btn"></button></h1></div><div class="body"><div class="left-pane"><ul class="tree"><li class="general-pane">General</li><li class="social-pane">Social Networks</li><li class="publish-pane">Publish settings</li></ul></div><div class="right-pane"><div class="pane general-pane"><ul><li><fieldset><legend><h3 class="title">Website Title</h3></legend><p>Title of the browser window, and title in the search engines results.
+It is used by search engines to find out what your site is talking about.
+The title should be a maximum of 70 characters long, including spaces.</p><input type="text" value="" placeholder="Untitled website" class="input-text input-title"/></fieldset></li><li><fieldset><legend><h3 class="title">Website Description</h3></legend><p>Description displayed by the search engines in search results.
+It is used by search engines to find out what your site is talking about.
+It is best to keep meta descriptions between 150 and 160 characters.</p><input type="text" value="" placeholder="Description" class="input-text input-description"/></fieldset></li><li><fieldset><legend><h3 class="title">Favicon</h3></legend><p>Small image displayed in the browser's address bar and in tabs.
+The recommended size is 16×16 or 32×32 pixels.</p><input type="text" value="" class="input-url input-favicon-path"/><button type="button" class="browse-favicon-path">Browse</button></fieldset></li></ul></div><div class="pane social-pane"><p>Meta tags for search engines, Facebook, Google+, Twitter, Linkedin, ... The following settings enable Open Graph and Twitter Cards.</p><ul><li><fieldset><legend><h3 class="title">Title</h3></legend><p>The title of your website displayed when a user shares your website on a social network.
+Do not include any branding in this title, just eye-catching phrase, e.g. "Learn everything about fishing".
+Title should be between 60 and 90 characters long.</p><input type="text" value="" placeholder="Title" class="input-text input-title"/></fieldset></li><li><fieldset><legend><h3 class="title">Description</h3></legend><p>Description displayed when a user shares your website on a social network.
+Make it catchy, and invite readers to visit your website too, e.g. "Sam's website about fishing, check it out!"
+Title should be between 60 and 90 characters long.</p><input type="text" value="" placeholder="Description" class="input-text input-description"/></fieldset></li><li><fieldset><legend><h3 class="title">Image</h3></legend><p>Thumbnail image which is displayed when your website is shared on a social network.
+The optimal size is 1200×627 pixels. At this size, your thumbnail will be big and stand out from the crowd.
+But do not exceed the 5MB size limit.
+If you use an image that is smaller than 400 pixels x 209 pixels, it will render as a much smaller thumbnail.</p><p>Please enter the full URL here, e.g. "http://mysite.com/path/to/image.jpg"</p><input type="text" value="" placeholder="Image URL" class="input-text input-image-path"/></fieldset></li><li><fieldset><legend><h3 class="title">Twitter account</h3></legend><p>Indicates your Twitter account.</p><input type="text" value="" placeholder="@twitteraccount" pattern="^@*" title="Twitter account name" class="input-text input-twitter"/></fieldset></li></ul></div><div class="pane publish-pane"><ul><li><fieldset><legend><h3 class="title">Publication Path</h3><a href="https://github.com/silexlabs/Silex/issues/238" title="about Silex and CSS" target="blank" class="help-icon">Help</a></legend><p>Path to the folder in wich I will publish the website. This folder content will be deleted.</p><input type="text" value="" class="input-url input-publication-path"/><button type="button" class="browse-publication-path">Browse</button></fieldset></li></ul></div></div></div></div></div><!-- html editor--><!--.silex-html-editor.ace-editor-container.notranslate.hidden-dialog.title-bar HTML editor
+  a.help-icon(href='https://github.com/silexlabs/Silex/issues/199', title='about Silex and HTML', target='_blank') Help
+.ace-editor
+.dock-btn.buttons
+.close-btn.html-editor-close-btn.buttons
+--><!-- css editor--><!--.silex-css-editor.ace-editor-container.notranslate.hidden-dialog.title-bar CSS editor
+  a.help-icon(href='https://github.com/silexlabs/Silex/issues/184', title='about Silex and CSS', target='_blank') Help
+.ace-editor
+.dock-btn.buttons
+.close-btn.css-editor-close-btn.buttons
+--><!-- js editor--><!--.silex-js-editor.ace-editor-container.notranslate.hidden-dialog.title-bar JS editor
+  a.help-icon(href='https://github.com/silexlabs/Silex/issues/200', title='about Silex and Javascript', target='_blank') Help
+.ace-editor
+.dock-btn.buttons
+.close-btn.js-editor-close-btn.buttons
+--><!-- text editor--><!--.silex-text-editor.notranslate.hidden-dialog.toolbar
+#text-editor.text-field
+.close-btn.text-editor-close-btn.buttons--></div></div>
+
+</div> 
+
+</div>
+
+<div id="ctateditor" class="ctatdialog" style="width: 800px; height: 600px; z-index: 1001; display: none;">
+	<img class="windowclose" src="css/images/icon_close.png" style="margin: 0px; padding: 3px; width: 20px; height: 20px; float: right;">
+	<img class="windowmaximize" src="css/images/icons/icon_maximize.gif" style="margin: 0px; margin-top: 2px; padding: 3px; width: 16px; height: 16px; float: right;">	
+	<h4 class="title">Cognitive Tutor Authoring Tools</h4>
+	
+	<div id="ctateditorcontent" class="content" style="overflow: hidden; background: #cccccc;">
+				
+		<div class="boxer">
+			<div class="box-row" style="height: 25px;">
+				<div class="box">
+				
+					<!--- Menu bar -->
+							
+					<div id="ctatauthoringmenu" class="easyui-panel" style="overflow: hidden; float: left; width: 640px; height: 25px; border: 0px solid black; padding: 0px; margin: 0px; background: #d4d0c8; ">
+						<a href="#" class="easyui-menubutton" data-options="menu:'#mm1'" id="file_menu">File</a>
+						<a href="#" class="easyui-menubutton" data-options="menu:'#mm2'" id="edit_menu">Edit</a>
+						<a href="#" class="easyui-menubutton" data-options="menu:'#mm3'" id="view_menu">View</a>			
+						<a href="#" class="easyui-menubutton" data-options="menu:'#mm4'" id="graph_menu">Graph</a>
+						<a href="#" class="easyui-menubutton" data-options="menu:'#mm5'" id="ct_menu">Cognitive Model</a>
+						<a href="#" class="easyui-menubutton" data-options="menu:'#mm6'" id="tools_menu">Tools</a>			
+						<a href="#" class="easyui-menubutton" data-options="menu:'#mm7'" id="window_menu">Window</a>			
+						<a href="#" class="easyui-menubutton" data-options="menu:'#mm8'" id="help_menu">Help</a>			
+					</div>
+							
+					<div id="mm1" style="width:175px; background: #F2EBE4;">
+						<div iconCls="icon-settings" onClick="">Open Student Interface</div>	
+						<div class="menu-sep"></div>
+						<div iconCls="icon-import" onClick="">New Graph</div>
+						<div iconCls="icon-import" onClick="">Open Graph...</div>
+						<div iconCls="icon-import" onClick="">Open Recent</div>
+						<div class="menu-sep"></div>
+						<div iconCls="icon-import" onClick="">Close Graph</div>
+						<div class="menu-sep"></div>			
+						<div iconCls="icon-import" onClick="">Save Graph</div>
+						<div iconCls="icon-import" onClick="">Save Graph As...</div>			
+						<div class="menu-sep"></div>			
+						<div iconCls="icon-import" onClick="">Save Student Interface</div>		
+						<div class="menu-sep"></div>			
+						<div iconCls="icon-import" onClick="">Save Jess Facts</div>
+						<div iconCls="icon-import" onClick="">Save Jess Templates</div>		
+						<div class="menu-sep"></div>			
+						<div iconCls="icon-import" onClick="">Load Skill Names/Hints ...</div>
+						<div iconCls="icon-import" onClick="">Print Graph...</div>
+						<div class="menu-sep"></div>			
+						<div iconCls="icon-import" onClick="closeWindow ();">Quit</div>			
+					</div>		
+
+					<div id="mm2" style="width:150px; background: #F2EBE4;">
+						<div iconCls="icon-save">Undo</div>
+						<div iconCls="icon-open">Redo</div>
+						<div iconCls="icon-save">Copy Links</div>
+						<div iconCls="icon-open">Paset Links</div>			
+					</div>
+
+					<div id="mm3" style="width:150px; background: #F2EBE4;">
+						<div iconCls="icon-save">Show Action Labels</div>
+						<div iconCls="icon-open">Show Skill Labels</div>
+						<div iconCls="icon-save">Show Lsat Cog. Model Check Labels</div>			
+					</div>
+
+					<div id="mm4" style="width:180px; background: #F2EBE4;">
+						<div iconCls="icon-save">Create Start State</div>
+						<div iconCls="icon-open">Jump to Start State</div>
+						<div iconCls="icon-save">Retract Last Step</div>
+						<div iconCls="icon-open">Next Preferred Step</div>
+						<div class="menu-sep"></div>
+						<div iconCls="icon-save">Case Sensitive Exact Matching</div>
+						<div iconCls="icon-open">Lock Widgets on Correct Action</div>
+						<div iconCls="icon-save">Feedback Policy</div>
+						<div iconCls="icon-open">Hint Policy</div>
+						<div iconCls="icon-save">Confirm Done</div>
+						<div iconCls="icon-open">Highlight Right Selection</div>
+						<div iconCls="icon-save">Edit Out of Order Message ...</div>
+						<div class="menu-sep"></div>
+						<div iconCls="icon-save">Clean Up Graph ...</div>
+						<div iconCls="icon-open">Show Unmatched Component References ...</div>
+					</div>		
+
+					<div id="mm5" style="width:180px; background: #F2EBE4;">
+						<div iconCls="icon-save">Test Cognitive Model on All Steps</div>
+						<div iconCls="icon-open">Reset Link Colors</div>
+						<div iconCls="icon-save">Load Production Rules</div>
+						<div class="menu-sep"></div>						
+						<div iconCls="icon-save">Set Breakpoints ...</div>
+						<div iconCls="icon-open">Clear Breakpoints</div>
+						<div iconCls="icon-save">Resume</div>											
+					</div>
+
+					<div id="mm6" style="width:150px; background: #F2EBE4;">			
+						<div iconCls="icon-save">Preferences</div>
+						<div iconCls="icon-open">Mass Production ...</div>
+						<div iconCls="icon-save">Advanced</div>					
+					</div>
+					
+					<div id="mm7" style="width:150px; background: #F2EBE4;">			
+						<div iconCls="icon-save">Skill Matrix</div>
+						<div iconCls="icon-open">Skill Names</div>
+						<div class="menu-sep"></div>						
+						<div iconCls="icon-save">Restore Default View</div>
+						<div iconCls="icon-open">Show Window</div>					
+					</div>
+
+					<div id="mm8" style="width:150px; background: #F2EBE4;">
+						<div iconCls="icon-save">Authoring Tools Help</div>
+						<div iconCls="icon-open">CTAT Home Page</div>
+						<div iconCls="icon-save">CTAT Lincense</div>
+						<div iconCls="icon-open">About ...</div>						
+					</div>		
+										
+					<hr width="100%" style="margin-bottom: 2px;"/>				
+				
+				</div>
+			</div>
+			<div class="box-row" style="height: 20px;">
+				<div class="box">
+				
+					<!--- Tool bar menu -->
+							
+					<div style="float: left; width:calc(100%); height: 20px; border: 0px solid black; padding: 2px; margin: 0px; background: #d4d0c8;">
+						<p style="float: left; margin-left: 10px; margin-right: 10px;">Tutor Type: </p>
+						 <select id="tutortype" style="z-index: 0; float: left;">
+							<option value="tracer">Example-tracing Tutor</option>
+							<option value="jess">Cognitive Tutor (Jess)</option>
+							<option value="tdk">Cognitive Tutor (TDK)</option>
+						</select> 
+						<p style="float: left; margin-left: 50px; margin-right: 10px;">Author Mode: </p>
+						<select id="authormode" style="z-index: 0; float: left;">
+							<option value="startstate">Set Start State</option>
+							<option value="demonstrate">Demonstrate</option>
+							<option value="testtutor">Test Tutor</option>
+						</select> 			
+					</div>				
+				
+				</div>
+			</div>
+			<div class="box-row" style="height: 100%">
+				<div class="box" style="border: 1px rgb(140, 137, 137) inset;">
+				
+					<!--- Content area, tabs and splitters -->
+										
+					<table id="authoringsplitter" width="100%" height="100%">
+						<tr>
+							<td width="25%">
+								<div id="cc" class="easyui-tabs">
+									<div title="Group Editor" data-options="closable:true" style="border: 1px rgb(140, 137, 137) inset; background: #ffffff; padding:2px;  width: 100%; height: 100%; ">
+									<p>Group Editor</p>
+									</div>
+								</div>							
+							</td>
+							<td height="50%">
+								<div id="tt" class="easyui-tabs">
+									<div title="1416.brd" data-options="iconCls:'icon-disconnected',closable:true" style="border: 1px rgb(140, 137, 137) inset; background: #ffffff; padding:2px;  width: 100%; height: 100%; ">
+										<div id="graphContainer" style="border: 1px rgb(140, 137, 137) inset; background: #ffffff; position:relative; overflow:hidden; cursor:default; width: 100%; height: 100%; ">
+										</div>	
+									</div>
+								</div>							
+							</td>
+							<td width="25%">
+								<div id="xx" class="easyui-tabs">
+									<div title="Variable Viewer" data-options="closable:true" style="border: 1px rgb(140, 137, 137) inset; background: #ffffff; padding:2px;  width: 100%; height: 100%; ">
+									<p>Variable Viewer</p>
+									</div>
+								</div>														
+							</td>
+						</tr>
+					</table>
+					
+					<!--- Content area, tabs and splitters -->					
+				
+				</div>
+			</div>
+			
+			<!--
+			<div class="box-row" style="height: 20px;">
+				<div class="box" style="background: #d4d0c8;">
+											
+					<div class="statusbar" style="background: #d4d0c8;">
+						<div id="ordering" style="overflow: hidden; border: 1px rgb(140, 137, 137) inset; float: left; width: 100px; height: 14px; padding: 2px; margin: 0px; margin-right: 2px;">
+						Unordered
+						</div>
+						<div id="currentstate" style="overflow: hidden; border: 1px rgb(140, 137, 137) inset;; float: left; width: 100px; height: 14px; padding: 2px; margin: 0px; margin-right: 2px;">
+						state10
+						</div>			
+						<div id="currentbrd" style="overflow: hidden; border: 1px rgb(140, 137, 137) inset; float: left; width: 100px; height: 14px; padding: 2px; margin: 0px; margin-right: 2px;">
+						1416.brd
+						</div>
+						<div id="currentmode" style="overflow: hidden; border: 1px rgb(140, 137, 137) inset; float: left; width: 100px; height: 14px; padding: 2px; margin: 0px; margin-right: 2px;">
+						Example Tracing Tutor
+						</div>
+						<div id="currentinterp" style="overflow: hidden; border: 1px rgb(140, 137, 137) inset; float: left; width: 100px; height: 14px; padding: 2px; margin: 0px; margin-right: 2px;">
+						1 Interpretation
+						</div>				
+					<div>				
+								
+				</div>
+			</div>			
+			-->
+			
+		</div>
+						
+	</div>
+</div>
+
+<div id="context_menu" class="easyui-menu" style="position: absolute; width:120px;">
+	<div>New</div>
+	<div>
+		<span>Open</span>
+		<div style="width:150px;">
+			<div><b>Word</b></div>
+			<div>Excel</div>
+			<div>PowerPoint</div>
+		</div>
+	</div>
+	<div data-options="iconCls:'icon-save'">Save</div>
+	<div class="menu-sep"></div>
+	<div>Exit</div>
+</div>
+
+<!-- Template desktop icons for testing purposes -->
+<!--
+<div id="desktop_icon" class="desktop_icon" style="position: absolute; top: 10px; left: 10px;">
+	<div class="desktop_icon_row">
+		<div class="icon">
+			<img src="css/images/power.png" border="0" style="margin: 0px; padding: 2px; width: 32px; height: 32px;"/>
+		</div>
+	</div>
+	<div class="desktop_icon_row">
+		<div class="icon desktop_label">
+		Log Off
+		</div>
+	</div>
+</div>
+-->
+
+<!-- ################################ Keep the following div always as the last element ################################ -->
+
+<div id="blocker" class="blocker">
+</div>
+
+</body>
+</html>

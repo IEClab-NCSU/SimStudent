@@ -1,0 +1,5 @@
+# Set this if you want to copy files to your local web server.
+
+webserver.dir=c:/Apache2.2/htdocs/HTML5_Test
+webserver.dev.dir=d:/Apps/Apache2.2/htdocs/HTML5
+node.exe.dir=c:/cygwin/nodejs

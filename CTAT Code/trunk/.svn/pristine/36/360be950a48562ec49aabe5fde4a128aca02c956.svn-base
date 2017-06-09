@@ -1,0 +1,2666 @@
+<?xml version="1.0" standalone="yes"?>
+
+<stateGraph firstCheckAllStates="true" caseInsensitive="true" unordered="false" lockWidget="true" hintPolicy="Use Both Kinds of Bias" version="2.1" suppressStudentFeedback="Show All Feedback" highlightRightSelection="true" startStateNodeName="%(startStateNodeName)%" tutorType="Example-tracing Tutor">
+    <startNodeMessages>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>StartProblem</MessageType>
+                <ProblemName>commButton</ProblemName>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>CTATCommShell</WidgetType>
+                <CommName>theShell</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+                <serialized>
+                    <CTATCommShell name="theShell" x="0" y="0" width="550" height="400"></CTATCommShell>
+                </serialized>
+                <interface>
+                    <timeline x="0" y="0" width="550" height="400">
+                        <ctatcomponent x="56" y="77" width="61" height="31" instance="boldBtn"></ctatcomponent>
+                        <ctatcomponent x="402" y="12" width="148" height="78" instance="__id0_"></ctatcomponent>
+                        <ctatcomponent x="56" y="134" width="61" height="31" instance="underlineBtn"></ctatcomponent>
+                        <ctatcomponent x="56" y="191" width="61" height="31" instance="leftBtn"></ctatcomponent>
+                        <ctatcomponent x="163" y="77" width="61" height="31" instance="courierTenBtn"></ctatcomponent>
+                        <ctatcomponent x="163" y="134" width="61" height="31" instance="blueBtn"></ctatcomponent>
+                        <ctatcomponent x="163" y="191" width="61" height="31" instance="rightSquareBtn"></ctatcomponent>
+                        <ctatcomponent x="11" y="253" width="375" height="111" instance="hintWindow"></ctatcomponent>
+                        <ctatcomponent x="396" y="298" width="65" height="66" instance="hint"></ctatcomponent>
+                        <ctatcomponent x="473" y="298" width="66" height="66" instance="done"></ctatcomponent>
+                    </timeline>
+                </interface>
+                <script> </script>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>CTATButton</WidgetType>
+                <CommName>underlineBtn</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+                <jessDeftemplates>
+                    <value>
+              
+               (deftemplate button (slot name) (slot value)) 
+              
+            </value>
+                </jessDeftemplates>
+                <jessInstances>
+                    <value>
+              
+               (assert (button (name underlineBtn))) 
+              
+            </value>
+                </jessInstances>
+                <serialized>
+                    <CTATButton name="underlineBtn" x="56.45" y="134.5" width="60" height="30" scaleX="1" scaleY="1" originalWidth="61" originalHeight="31" zIndex="0" tabIndex="-1">
+                        <SAIs>
+                            <selection>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>SetVisible</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="visible" type="Boolean">true</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>setVisible</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="visible" type="Boolean">true</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>lock</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="locked" type="Boolean">false</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>unlock</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="locked" type="Boolean">false</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>highlight</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="highlight" type="String">-1</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>unhighlight</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="unhighlight" type="String">-1</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>move</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="x" type="Number">0</value>
+                                        <value fmt="text" name="y" type="Number">0</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>size</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="x" type="Number">0</value>
+                                        <value fmt="text" name="y" type="Number">0</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>reset</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="reset" type="Boolean">true</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>FadeIn</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="alpha" type="Number">0</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>FadeOut</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="alpha" type="Number">0</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>unlock</action>
+                                    <internalArguments></internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>lock</action>
+                                    <internalArguments></internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>ButtonPressed</action>
+                                    <internalArguments></internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>setClickable</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="clickable" type="Boolean">true</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                            </selection>
+                        </SAIs>
+                        <Parameters>
+                            <selection>
+                                <CTATComponentParameter>
+                                    <name>ShowHintHighlight</name>
+                                    <value fmt="text" name="Show Hint Highlight" type="Boolean" includein="full">true</value>
+                                </CTATComponentParameter>
+                                <CTATComponentParameter>
+                                    <name>DisableOnCorrect</name>
+                                    <value fmt="text" name="Disable On Correct" type="Boolean" includein="full">true</value>
+                                </CTATComponentParameter>
+                                <CTATComponentParameter>
+                                    <name>tutorComponent</name>
+                                    <value fmt="text" name="Tutor Component" type="String" includein="full">Tutor</value>
+                                </CTATComponentParameter>
+                            </selection>
+                        </Parameters>
+                        <Styles>
+                            <selection>
+                                <CTATStyleProperty>
+                                    <name>DrawBorder</name>
+                                    <value fmt="text" name="Draw Border" type="Boolean" includein="full">true</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>borderRoundness</name>
+                                    <value fmt="text" name="Border Roundness" type="Number" includein="full">5</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>BorderColor</name>
+                                    <value fmt="text" name="Border Color" type="Color" includein="full">999999</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontFace</name>
+                                    <value fmt="text" name="Font" type="String" includein="full">Arial</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontSize</name>
+                                    <value fmt="text" name="Font Size" type="Number" includein="full">12</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>TextColor</name>
+                                    <value fmt="text" name="Font Color" type="Color" includein="full">0</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontBold</name>
+                                    <value fmt="text" name="Font Bold" type="Boolean" includein="full">false</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontItalic</name>
+                                    <value fmt="text" name="Font Italic" type="Boolean" includein="full">false</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontUnderlined</name>
+                                    <value fmt="text" name="Font Underline" type="Boolean" includein="full">true</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>TextAlign</name>
+                                    <value fmt="text" name="Text Align" type="String" includein="full">center</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>inspBackgroundColor</name>
+                                    <value fmt="text" name="Background Color" type="Color" includein="full">f8f8f8</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>labelText</name>
+                                    <value fmt="text" name="Label Text" type="String" includein="sparse">Under</value>
+                                </CTATStyleProperty>
+                            </selection>
+                        </Styles>
+                    </CTATButton>
+                </serialized>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>CTATButton</WidgetType>
+                <CommName>courierTenBtn</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+                <jessDeftemplates>
+                    <value>
+              
+               (deftemplate button (slot name) (slot value)) 
+              
+            </value>
+                </jessDeftemplates>
+                <jessInstances>
+                    <value>
+              
+               (assert (button (name courierTenBtn))) 
+              
+            </value>
+                </jessInstances>
+                <serialized>
+                    <CTATButton name="courierTenBtn" x="163.45" y="77.5" width="60" height="30" scaleX="1" scaleY="1" originalWidth="61" originalHeight="31" zIndex="0" tabIndex="-1">
+                        <SAIs>
+                            <selection>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>SetVisible</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="visible" type="Boolean">true</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>setVisible</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="visible" type="Boolean">true</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>lock</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="locked" type="Boolean">false</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>unlock</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="locked" type="Boolean">false</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>highlight</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="highlight" type="String">-1</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>unhighlight</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="unhighlight" type="String">-1</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>move</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="x" type="Number">0</value>
+                                        <value fmt="text" name="y" type="Number">0</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>size</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="x" type="Number">0</value>
+                                        <value fmt="text" name="y" type="Number">0</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>reset</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="reset" type="Boolean">true</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>FadeIn</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="alpha" type="Number">0</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>FadeOut</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="alpha" type="Number">0</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>unlock</action>
+                                    <internalArguments></internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>lock</action>
+                                    <internalArguments></internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>ButtonPressed</action>
+                                    <internalArguments></internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>setClickable</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="clickable" type="Boolean">true</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                            </selection>
+                        </SAIs>
+                        <Parameters>
+                            <selection>
+                                <CTATComponentParameter>
+                                    <name>ShowHintHighlight</name>
+                                    <value fmt="text" name="Show Hint Highlight" type="Boolean" includein="full">true</value>
+                                </CTATComponentParameter>
+                                <CTATComponentParameter>
+                                    <name>DisableOnCorrect</name>
+                                    <value fmt="text" name="Disable On Correct" type="Boolean" includein="full">true</value>
+                                </CTATComponentParameter>
+                                <CTATComponentParameter>
+                                    <name>tutorComponent</name>
+                                    <value fmt="text" name="Tutor Component" type="String" includein="full">Tutor</value>
+                                </CTATComponentParameter>
+                            </selection>
+                        </Parameters>
+                        <Styles>
+                            <selection>
+                                <CTATStyleProperty>
+                                    <name>DrawBorder</name>
+                                    <value fmt="text" name="Draw Border" type="Boolean" includein="full">true</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>borderRoundness</name>
+                                    <value fmt="text" name="Border Roundness" type="Number" includein="full">5</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>BorderColor</name>
+                                    <value fmt="text" name="Border Color" type="Color" includein="full">999999</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontFace</name>
+                                    <value fmt="text" name="Font" type="String" includein="full">Courier New</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontSize</name>
+                                    <value fmt="text" name="Font Size" type="Number" includein="full">10</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>TextColor</name>
+                                    <value fmt="text" name="Font Color" type="Color" includein="full">0</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontBold</name>
+                                    <value fmt="text" name="Font Bold" type="Boolean" includein="full">false</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontItalic</name>
+                                    <value fmt="text" name="Font Italic" type="Boolean" includein="full">false</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontUnderlined</name>
+                                    <value fmt="text" name="Font Underline" type="Boolean" includein="full">false</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>TextAlign</name>
+                                    <value fmt="text" name="Text Align" type="String" includein="full">center</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>inspBackgroundColor</name>
+                                    <value fmt="text" name="Background Color" type="Color" includein="full">f8f8f8</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>labelText</name>
+                                    <value fmt="text" name="Label Text" type="String" includein="sparse">Courier</value>
+                                </CTATStyleProperty>
+                            </selection>
+                        </Styles>
+                    </CTATButton>
+                </serialized>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>CTATButton</WidgetType>
+                <CommName>blueBtn</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+                <jessDeftemplates>
+                    <value>
+              
+               (deftemplate button (slot name) (slot value)) 
+              
+            </value>
+                </jessDeftemplates>
+                <jessInstances>
+                    <value>
+              
+               (assert (button (name blueBtn))) 
+              
+            </value>
+                </jessInstances>
+                <serialized>
+                    <CTATButton name="blueBtn" x="163.45" y="134.5" width="60" height="30" scaleX="1" scaleY="1" originalWidth="61" originalHeight="31" zIndex="0" tabIndex="-1">
+                        <SAIs>
+                            <selection>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>SetVisible</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="visible" type="Boolean">true</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>setVisible</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="visible" type="Boolean">true</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>lock</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="locked" type="Boolean">false</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>unlock</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="locked" type="Boolean">false</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>highlight</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="highlight" type="String">-1</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>unhighlight</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="unhighlight" type="String">-1</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>move</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="x" type="Number">0</value>
+                                        <value fmt="text" name="y" type="Number">0</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>size</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="x" type="Number">0</value>
+                                        <value fmt="text" name="y" type="Number">0</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>reset</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="reset" type="Boolean">true</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>FadeIn</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="alpha" type="Number">0</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>FadeOut</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="alpha" type="Number">0</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>unlock</action>
+                                    <internalArguments></internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>lock</action>
+                                    <internalArguments></internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>ButtonPressed</action>
+                                    <internalArguments></internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>setClickable</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="clickable" type="Boolean">true</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                            </selection>
+                        </SAIs>
+                        <Parameters>
+                            <selection>
+                                <CTATComponentParameter>
+                                    <name>ShowHintHighlight</name>
+                                    <value fmt="text" name="Show Hint Highlight" type="Boolean" includein="full">true</value>
+                                </CTATComponentParameter>
+                                <CTATComponentParameter>
+                                    <name>DisableOnCorrect</name>
+                                    <value fmt="text" name="Disable On Correct" type="Boolean" includein="full">true</value>
+                                </CTATComponentParameter>
+                                <CTATComponentParameter>
+                                    <name>tutorComponent</name>
+                                    <value fmt="text" name="Tutor Component" type="String" includein="full">Tutor</value>
+                                </CTATComponentParameter>
+                            </selection>
+                        </Parameters>
+                        <Styles>
+                            <selection>
+                                <CTATStyleProperty>
+                                    <name>DrawBorder</name>
+                                    <value fmt="text" name="Draw Border" type="Boolean" includein="full">true</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>borderRoundness</name>
+                                    <value fmt="text" name="Border Roundness" type="Number" includein="full">5</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>BorderColor</name>
+                                    <value fmt="text" name="Border Color" type="Color" includein="full">999999</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontFace</name>
+                                    <value fmt="text" name="Font" type="String" includein="full">Arial</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontSize</name>
+                                    <value fmt="text" name="Font Size" type="Number" includein="full">12</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>TextColor</name>
+                                    <value fmt="text" name="Font Color" type="Color" includein="full">33ff</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontBold</name>
+                                    <value fmt="text" name="Font Bold" type="Boolean" includein="full">false</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontItalic</name>
+                                    <value fmt="text" name="Font Italic" type="Boolean" includein="full">false</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontUnderlined</name>
+                                    <value fmt="text" name="Font Underline" type="Boolean" includein="full">false</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>TextAlign</name>
+                                    <value fmt="text" name="Text Align" type="String" includein="full">center</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>inspBackgroundColor</name>
+                                    <value fmt="text" name="Background Color" type="Color" includein="full">f8f8f8</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>labelText</name>
+                                    <value fmt="text" name="Label Text" type="String" includein="sparse">Blue</value>
+                                </CTATStyleProperty>
+                            </selection>
+                        </Styles>
+                    </CTATButton>
+                </serialized>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>CTATButton</WidgetType>
+                <CommName>leftBtn</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+                <jessDeftemplates>
+                    <value>
+              
+               (deftemplate button (slot name) (slot value)) 
+              
+            </value>
+                </jessDeftemplates>
+                <jessInstances>
+                    <value>
+              
+               (assert (button (name leftBtn))) 
+              
+            </value>
+                </jessInstances>
+                <serialized>
+                    <CTATButton name="leftBtn" x="56.45" y="191.5" width="60" height="30" scaleX="1" scaleY="1" originalWidth="61" originalHeight="31" zIndex="0" tabIndex="-1">
+                        <SAIs>
+                            <selection>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>SetVisible</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="visible" type="Boolean">true</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>setVisible</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="visible" type="Boolean">true</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>lock</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="locked" type="Boolean">false</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>unlock</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="locked" type="Boolean">false</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>highlight</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="highlight" type="String">-1</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>unhighlight</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="unhighlight" type="String">-1</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>move</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="x" type="Number">0</value>
+                                        <value fmt="text" name="y" type="Number">0</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>size</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="x" type="Number">0</value>
+                                        <value fmt="text" name="y" type="Number">0</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>reset</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="reset" type="Boolean">true</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>FadeIn</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="alpha" type="Number">0</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>FadeOut</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="alpha" type="Number">0</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>unlock</action>
+                                    <internalArguments></internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>lock</action>
+                                    <internalArguments></internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>ButtonPressed</action>
+                                    <internalArguments></internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>setClickable</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="clickable" type="Boolean">true</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                            </selection>
+                        </SAIs>
+                        <Parameters>
+                            <selection>
+                                <CTATComponentParameter>
+                                    <name>ShowHintHighlight</name>
+                                    <value fmt="text" name="Show Hint Highlight" type="Boolean" includein="full">true</value>
+                                </CTATComponentParameter>
+                                <CTATComponentParameter>
+                                    <name>DisableOnCorrect</name>
+                                    <value fmt="text" name="Disable On Correct" type="Boolean" includein="full">true</value>
+                                </CTATComponentParameter>
+                                <CTATComponentParameter>
+                                    <name>tutorComponent</name>
+                                    <value fmt="text" name="Tutor Component" type="String" includein="full">Tutor</value>
+                                </CTATComponentParameter>
+                            </selection>
+                        </Parameters>
+                        <Styles>
+                            <selection>
+                                <CTATStyleProperty>
+                                    <name>DrawBorder</name>
+                                    <value fmt="text" name="Draw Border" type="Boolean" includein="full">true</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>borderRoundness</name>
+                                    <value fmt="text" name="Border Roundness" type="Number" includein="full">5</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>BorderColor</name>
+                                    <value fmt="text" name="Border Color" type="Color" includein="full">999999</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontFace</name>
+                                    <value fmt="text" name="Font" type="String" includein="full">Arial</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontSize</name>
+                                    <value fmt="text" name="Font Size" type="Number" includein="full">12</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>TextColor</name>
+                                    <value fmt="text" name="Font Color" type="Color" includein="full">0</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontBold</name>
+                                    <value fmt="text" name="Font Bold" type="Boolean" includein="full">false</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontItalic</name>
+                                    <value fmt="text" name="Font Italic" type="Boolean" includein="full">false</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontUnderlined</name>
+                                    <value fmt="text" name="Font Underline" type="Boolean" includein="full">false</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>TextAlign</name>
+                                    <value fmt="text" name="Text Align" type="String" includein="full">left</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>inspBackgroundColor</name>
+                                    <value fmt="text" name="Background Color" type="Color" includein="full">f8f8f8</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>labelText</name>
+                                    <value fmt="text" name="Label Text" type="String" includein="sparse">Left</value>
+                                </CTATStyleProperty>
+                            </selection>
+                        </Styles>
+                    </CTATButton>
+                </serialized>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>CTATButton</WidgetType>
+                <CommName>rightSquareBtn</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+                <jessDeftemplates>
+                    <value>
+              
+               (deftemplate button (slot name) (slot value)) 
+              
+            </value>
+                </jessDeftemplates>
+                <jessInstances>
+                    <value>
+              
+               (assert (button (name rightSquareBtn))) 
+              
+            </value>
+                </jessInstances>
+                <serialized>
+                    <CTATButton name="rightSquareBtn" x="163.45" y="191.5" width="60" height="30" scaleX="1" scaleY="1" originalWidth="61" originalHeight="31" zIndex="0" tabIndex="-1">
+                        <SAIs>
+                            <selection>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>SetVisible</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="visible" type="Boolean">true</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>setVisible</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="visible" type="Boolean">true</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>lock</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="locked" type="Boolean">false</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>unlock</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="locked" type="Boolean">false</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>highlight</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="highlight" type="String">-1</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>unhighlight</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="unhighlight" type="String">-1</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>move</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="x" type="Number">0</value>
+                                        <value fmt="text" name="y" type="Number">0</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>size</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="x" type="Number">0</value>
+                                        <value fmt="text" name="y" type="Number">0</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>reset</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="reset" type="Boolean">true</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>FadeIn</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="alpha" type="Number">0</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>FadeOut</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="alpha" type="Number">0</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>unlock</action>
+                                    <internalArguments></internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>lock</action>
+                                    <internalArguments></internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>ButtonPressed</action>
+                                    <internalArguments></internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>setClickable</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="clickable" type="Boolean">true</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                            </selection>
+                        </SAIs>
+                        <Parameters>
+                            <selection>
+                                <CTATComponentParameter>
+                                    <name>ShowHintHighlight</name>
+                                    <value fmt="text" name="Show Hint Highlight" type="Boolean" includein="full">true</value>
+                                </CTATComponentParameter>
+                                <CTATComponentParameter>
+                                    <name>DisableOnCorrect</name>
+                                    <value fmt="text" name="Disable On Correct" type="Boolean" includein="full">true</value>
+                                </CTATComponentParameter>
+                                <CTATComponentParameter>
+                                    <name>tutorComponent</name>
+                                    <value fmt="text" name="Tutor Component" type="String" includein="full">Tutor</value>
+                                </CTATComponentParameter>
+                            </selection>
+                        </Parameters>
+                        <Styles>
+                            <selection>
+                                <CTATStyleProperty>
+                                    <name>DrawBorder</name>
+                                    <value fmt="text" name="Draw Border" type="Boolean" includein="full">true</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>borderRoundness</name>
+                                    <value fmt="text" name="Border Roundness" type="Number" includein="full">0</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>BorderColor</name>
+                                    <value fmt="text" name="Border Color" type="Color" includein="full">999999</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontFace</name>
+                                    <value fmt="text" name="Font" type="String" includein="full">Arial</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontSize</name>
+                                    <value fmt="text" name="Font Size" type="Number" includein="full">12</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>TextColor</name>
+                                    <value fmt="text" name="Font Color" type="Color" includein="full">0</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontBold</name>
+                                    <value fmt="text" name="Font Bold" type="Boolean" includein="full">false</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontItalic</name>
+                                    <value fmt="text" name="Font Italic" type="Boolean" includein="full">false</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontUnderlined</name>
+                                    <value fmt="text" name="Font Underline" type="Boolean" includein="full">false</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>TextAlign</name>
+                                    <value fmt="text" name="Text Align" type="String" includein="full">right</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>inspBackgroundColor</name>
+                                    <value fmt="text" name="Background Color" type="Color" includein="full">f8f8f8</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>labelText</name>
+                                    <value fmt="text" name="Label Text" type="String" includein="sparse">Right</value>
+                                </CTATStyleProperty>
+                            </selection>
+                        </Styles>
+                    </CTATButton>
+                </serialized>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>CTATButton</WidgetType>
+                <CommName>boldBtn</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+                <jessDeftemplates>
+                    <value>
+              
+               (deftemplate button (slot name) (slot value)) 
+              
+            </value>
+                </jessDeftemplates>
+                <jessInstances>
+                    <value>
+              
+               (assert (button (name boldBtn))) 
+              
+            </value>
+                </jessInstances>
+                <serialized>
+                    <CTATButton name="boldBtn" x="56.45" y="77.5" width="60" height="30" scaleX="1" scaleY="1" originalWidth="61" originalHeight="31" zIndex="0" tabIndex="-1">
+                        <SAIs>
+                            <selection>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>SetVisible</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="visible" type="Boolean">true</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>setVisible</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="visible" type="Boolean">true</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>lock</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="locked" type="Boolean">false</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>unlock</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="locked" type="Boolean">false</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>highlight</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="highlight" type="String">-1</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>unhighlight</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="unhighlight" type="String">-1</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>move</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="x" type="Number">0</value>
+                                        <value fmt="text" name="y" type="Number">0</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>size</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="x" type="Number">0</value>
+                                        <value fmt="text" name="y" type="Number">0</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>reset</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="reset" type="Boolean">true</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>FadeIn</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="alpha" type="Number">0</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>FadeOut</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="alpha" type="Number">0</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>unlock</action>
+                                    <internalArguments></internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>lock</action>
+                                    <internalArguments></internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>ButtonPressed</action>
+                                    <internalArguments></internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>setClickable</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="clickable" type="Boolean">true</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                            </selection>
+                        </SAIs>
+                        <Parameters>
+                            <selection>
+                                <CTATComponentParameter>
+                                    <name>ShowHintHighlight</name>
+                                    <value fmt="text" name="Show Hint Highlight" type="Boolean" includein="full">true</value>
+                                </CTATComponentParameter>
+                                <CTATComponentParameter>
+                                    <name>DisableOnCorrect</name>
+                                    <value fmt="text" name="Disable On Correct" type="Boolean" includein="full">true</value>
+                                </CTATComponentParameter>
+                                <CTATComponentParameter>
+                                    <name>tutorComponent</name>
+                                    <value fmt="text" name="Tutor Component" type="String" includein="full">Tutor</value>
+                                </CTATComponentParameter>
+                            </selection>
+                        </Parameters>
+                        <Styles>
+                            <selection>
+                                <CTATStyleProperty>
+                                    <name>DrawBorder</name>
+                                    <value fmt="text" name="Draw Border" type="Boolean" includein="full">true</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>borderRoundness</name>
+                                    <value fmt="text" name="Border Roundness" type="Number" includein="full">5</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>BorderColor</name>
+                                    <value fmt="text" name="Border Color" type="Color" includein="full">999999</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontFace</name>
+                                    <value fmt="text" name="Font" type="String" includein="full">Arial</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontSize</name>
+                                    <value fmt="text" name="Font Size" type="Number" includein="full">12</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>TextColor</name>
+                                    <value fmt="text" name="Font Color" type="Color" includein="full">0</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontBold</name>
+                                    <value fmt="text" name="Font Bold" type="Boolean" includein="full">true</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontItalic</name>
+                                    <value fmt="text" name="Font Italic" type="Boolean" includein="full">false</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontUnderlined</name>
+                                    <value fmt="text" name="Font Underline" type="Boolean" includein="full">false</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>TextAlign</name>
+                                    <value fmt="text" name="Text Align" type="String" includein="full">center</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>inspBackgroundColor</name>
+                                    <value fmt="text" name="Background Color" type="Color" includein="full">f8f8f8</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>labelText</name>
+                                    <value fmt="text" name="Label Text" type="String" includein="sparse">Bold</value>
+                                </CTATStyleProperty>
+                            </selection>
+                        </Styles>
+                    </CTATButton>
+                </serialized>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>CTATImageButton</WidgetType>
+                <CommName>null.previousButton</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+                <serialized>
+                    <CTATImageButton name="null.previousButton" x="2" y="87" width="82" height="21" scaleX="1" scaleY="1" originalWidth="82" originalHeight="21" zIndex="0" tabIndex="-1">
+                        <SAIs>
+                            <selection>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>SetVisible</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="visible" type="Boolean">true</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>setVisible</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="visible" type="Boolean">true</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>lock</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="locked" type="Boolean">false</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>unlock</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="locked" type="Boolean">false</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>highlight</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="highlight" type="String">-1</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>unhighlight</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="unhighlight" type="String">-1</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>move</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="x" type="Number">0</value>
+                                        <value fmt="text" name="y" type="Number">0</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>size</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="x" type="Number">0</value>
+                                        <value fmt="text" name="y" type="Number">0</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>reset</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="reset" type="Boolean">true</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>FadeIn</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="alpha" type="Number">0</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>FadeOut</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="alpha" type="Number">0</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>unlock</action>
+                                    <internalArguments></internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>lock</action>
+                                    <internalArguments></internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>ButtonPressed</action>
+                                    <internalArguments></internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>setClickable</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="clickable" type="Boolean">true</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>assignImageURL</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="assignImageURL" type="String">images/default.png</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                            </selection>
+                        </SAIs>
+                        <Parameters>
+                            <selection>
+                                <CTATComponentParameter>
+                                    <name>ShowHintHighlight</name>
+                                    <value fmt="text" name="Show Hint Highlight" type="Boolean" includein="full">true</value>
+                                </CTATComponentParameter>
+                                <CTATComponentParameter>
+                                    <name>DisableOnCorrect</name>
+                                    <value fmt="text" name="Disable On Correct" type="Boolean" includein="full">true</value>
+                                </CTATComponentParameter>
+                                <CTATComponentParameter>
+                                    <name>tutorComponent</name>
+                                    <value fmt="text" name="Tutor Component" type="String" includein="full">Tutor</value>
+                                </CTATComponentParameter>
+                            </selection>
+                        </Parameters>
+                        <Styles>
+                            <selection>
+                                <CTATStyleProperty>
+                                    <name>DrawBorder</name>
+                                    <value fmt="text" name="Draw Border" type="Boolean" includein="full">true</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>borderRoundness</name>
+                                    <value fmt="text" name="Border Roundness" type="Number" includein="full">5</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>BorderColor</name>
+                                    <value fmt="text" name="Border Color" type="Color" includein="full">999999</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontFace</name>
+                                    <value fmt="text" name="Font" type="String" includein="full">Arial</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontSize</name>
+                                    <value fmt="text" name="Font Size" type="Number" includein="full">12</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>TextColor</name>
+                                    <value fmt="text" name="Font Color" type="Color" includein="full">0</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontBold</name>
+                                    <value fmt="text" name="Font Bold" type="Boolean" includein="full">false</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontItalic</name>
+                                    <value fmt="text" name="Font Italic" type="Boolean" includein="full">false</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontUnderlined</name>
+                                    <value fmt="text" name="Font Underline" type="Boolean" includein="full">false</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>TextAlign</name>
+                                    <value fmt="text" name="Text Align" type="String" includein="full">left</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>inspBackgroundColor</name>
+                                    <value fmt="text" name="Background Color" type="Color" includein="full">f8f8f8</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>normalName</name>
+                                    <value fmt="text" name="Normal Image Name" type="String" includein="sparse"></value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>hoverName</name>
+                                    <value fmt="text" name="Hover Image Name" type="String" includein="sparse"></value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>clickName</name>
+                                    <value fmt="text" name="Clicked Image Name" type="String" includein="sparse"></value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>disabledName</name>
+                                    <value fmt="text" name="Disabled Image Name" type="String" includein="sparse"></value>
+                                </CTATStyleProperty>
+                            </selection>
+                        </Styles>
+                    </CTATImageButton>
+                </serialized>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>CTATDoneButton</WidgetType>
+                <CommName>done</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+                <jessDeftemplates>
+                    <value>
+              
+               (deftemplate button (slot name) (slot value)) 
+              
+            </value>
+                </jessDeftemplates>
+                <jessInstances>
+                    <value>
+              
+               (assert (button (name done))) 
+              
+            </value>
+                </jessInstances>
+                <serialized>
+                    <CTATDoneButton name="done" x="473.2" y="297.5" width="66" height="65" scaleX="1" scaleY="1" originalWidth="66" originalHeight="66" zIndex="0" tabIndex="1">
+                        <SAIs>
+                            <selection>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>SetVisible</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="visible" type="Boolean">true</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>setVisible</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="visible" type="Boolean">true</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>lock</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="locked" type="Boolean">false</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>unlock</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="locked" type="Boolean">false</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>highlight</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="highlight" type="String">-1</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>unhighlight</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="unhighlight" type="String">-1</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>move</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="x" type="Number">0</value>
+                                        <value fmt="text" name="y" type="Number">0</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>size</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="x" type="Number">0</value>
+                                        <value fmt="text" name="y" type="Number">0</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>reset</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="reset" type="Boolean">true</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>FadeIn</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="alpha" type="Number">0</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>FadeOut</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="alpha" type="Number">0</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>unlock</action>
+                                    <internalArguments></internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>lock</action>
+                                    <internalArguments></internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>ButtonPressed</action>
+                                    <internalArguments></internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>setClickable</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="clickable" type="Boolean">true</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>assignImageURL</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="assignImageURL" type="String">images/default.png</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                            </selection>
+                        </SAIs>
+                        <Parameters>
+                            <selection>
+                                <CTATComponentParameter>
+                                    <name>ShowHintHighlight</name>
+                                    <value fmt="text" name="Show Hint Highlight" type="Boolean" includein="full">true</value>
+                                </CTATComponentParameter>
+                                <CTATComponentParameter>
+                                    <name>DisableOnCorrect</name>
+                                    <value fmt="text" name="Disable On Correct" type="Boolean" includein="full">true</value>
+                                </CTATComponentParameter>
+                                <CTATComponentParameter>
+                                    <name>tutorComponent</name>
+                                    <value fmt="text" name="Tutor Component" type="String" includein="full">Tutor</value>
+                                </CTATComponentParameter>
+                            </selection>
+                        </Parameters>
+                        <Styles>
+                            <selection>
+                                <CTATStyleProperty>
+                                    <name>DrawBorder</name>
+                                    <value fmt="text" name="Draw Border" type="Boolean" includein="full">true</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>borderRoundness</name>
+                                    <value fmt="text" name="Border Roundness" type="Number" includein="full">5</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>BorderColor</name>
+                                    <value fmt="text" name="Border Color" type="Color" includein="full">999999</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontFace</name>
+                                    <value fmt="text" name="Font" type="String" includein="full">Arial</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontSize</name>
+                                    <value fmt="text" name="Font Size" type="Number" includein="full">12</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>TextColor</name>
+                                    <value fmt="text" name="Font Color" type="Color" includein="full">0</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontBold</name>
+                                    <value fmt="text" name="Font Bold" type="Boolean" includein="full">false</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontItalic</name>
+                                    <value fmt="text" name="Font Italic" type="Boolean" includein="full">false</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontUnderlined</name>
+                                    <value fmt="text" name="Font Underline" type="Boolean" includein="full">false</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>TextAlign</name>
+                                    <value fmt="text" name="Text Align" type="String" includein="full">left</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>inspBackgroundColor</name>
+                                    <value fmt="text" name="Background Color" type="Color" includein="full">f8f8f8</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>normalName</name>
+                                    <value fmt="text" name="Normal Image Name" type="String" includein="sparse"></value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>hoverName</name>
+                                    <value fmt="text" name="Hover Image Name" type="String" includein="sparse"></value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>clickName</name>
+                                    <value fmt="text" name="Clicked Image Name" type="String" includein="sparse"></value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>disabledName</name>
+                                    <value fmt="text" name="Disabled Image Name" type="String" includein="sparse"></value>
+                                </CTATStyleProperty>
+                            </selection>
+                        </Styles>
+                    </CTATDoneButton>
+                </serialized>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>CTATHintWindow</WidgetType>
+                <CommName>hintWindow</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+                <serialized>
+                    <CTATHintWindow name="hintWindow" x="11.75" y="253.5" width="374.000244140625" height="110.00091552734375" scaleX="1" scaleY="1" originalWidth="375" originalHeight="111" zIndex="0" tabIndex="-1">
+                        <SAIs>
+                            <selection>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>SetVisible</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="visible" type="Boolean">true</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>setVisible</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="visible" type="Boolean">true</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>lock</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="locked" type="Boolean">false</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>unlock</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="locked" type="Boolean">false</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>highlight</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="highlight" type="String">-1</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>unhighlight</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="unhighlight" type="String">-1</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>move</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="x" type="Number">0</value>
+                                        <value fmt="text" name="y" type="Number">0</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>size</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="x" type="Number">0</value>
+                                        <value fmt="text" name="y" type="Number">0</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>reset</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="reset" type="Boolean">true</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>FadeIn</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="alpha" type="Number">0</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>FadeOut</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="alpha" type="Number">0</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>unlock</action>
+                                    <internalArguments></internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>lock</action>
+                                    <internalArguments></internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>SetText</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="text" type="String">text</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                            </selection>
+                        </SAIs>
+                        <Parameters>
+                            <selection>
+                                <CTATComponentParameter>
+                                    <name>ShowHintHighlight</name>
+                                    <value fmt="text" name="Show Hint Highlight" type="Boolean" includein="full">true</value>
+                                </CTATComponentParameter>
+                                <CTATComponentParameter>
+                                    <name>DisableOnCorrect</name>
+                                    <value fmt="text" name="Disable On Correct" type="Boolean" includein="full">true</value>
+                                </CTATComponentParameter>
+                            </selection>
+                        </Parameters>
+                        <Styles>
+                            <selection>
+                                <CTATStyleProperty>
+                                    <name>DrawBorder</name>
+                                    <value fmt="text" name="Draw Border" type="Boolean" includein="full">true</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>borderRoundness</name>
+                                    <value fmt="text" name="Border Roundness" type="Number" includein="full">5</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>BorderColor</name>
+                                    <value fmt="text" name="Border Color" type="Color" includein="full">999999</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontFace</name>
+                                    <value fmt="text" name="Font" type="String" includein="full">Arial</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontSize</name>
+                                    <value fmt="text" name="Font Size" type="Number" includein="full">12</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>TextColor</name>
+                                    <value fmt="text" name="Font Color" type="Color" includein="full">0</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontBold</name>
+                                    <value fmt="text" name="Font Bold" type="Boolean" includein="full">false</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontItalic</name>
+                                    <value fmt="text" name="Font Italic" type="Boolean" includein="full">false</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontUnderlined</name>
+                                    <value fmt="text" name="Font Underline" type="Boolean" includein="full">false</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>TextAlign</name>
+                                    <value fmt="text" name="Text Align" type="String" includein="full">left</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>inspBackgroundColor</name>
+                                    <value fmt="text" name="Background Color" type="Color" includein="full">f8f8f8</value>
+                                </CTATStyleProperty>
+                            </selection>
+                        </Styles>
+                    </CTATHintWindow>
+                </serialized>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>CTATImageButton</WidgetType>
+                <CommName>null.nextButton</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+                <serialized>
+                    <CTATImageButton name="null.nextButton" x="290" y="87" width="82" height="21" scaleX="1" scaleY="1" originalWidth="82" originalHeight="21" zIndex="0" tabIndex="-1">
+                        <SAIs>
+                            <selection>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>SetVisible</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="visible" type="Boolean">true</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>setVisible</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="visible" type="Boolean">true</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>lock</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="locked" type="Boolean">false</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>unlock</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="locked" type="Boolean">false</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>highlight</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="highlight" type="String">-1</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>unhighlight</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="unhighlight" type="String">-1</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>move</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="x" type="Number">0</value>
+                                        <value fmt="text" name="y" type="Number">0</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>size</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="x" type="Number">0</value>
+                                        <value fmt="text" name="y" type="Number">0</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>reset</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="reset" type="Boolean">true</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>FadeIn</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="alpha" type="Number">0</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>FadeOut</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="alpha" type="Number">0</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>unlock</action>
+                                    <internalArguments></internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>lock</action>
+                                    <internalArguments></internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>ButtonPressed</action>
+                                    <internalArguments></internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>setClickable</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="clickable" type="Boolean">true</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>assignImageURL</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="assignImageURL" type="String">images/default.png</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                            </selection>
+                        </SAIs>
+                        <Parameters>
+                            <selection>
+                                <CTATComponentParameter>
+                                    <name>ShowHintHighlight</name>
+                                    <value fmt="text" name="Show Hint Highlight" type="Boolean" includein="full">true</value>
+                                </CTATComponentParameter>
+                                <CTATComponentParameter>
+                                    <name>DisableOnCorrect</name>
+                                    <value fmt="text" name="Disable On Correct" type="Boolean" includein="full">true</value>
+                                </CTATComponentParameter>
+                                <CTATComponentParameter>
+                                    <name>tutorComponent</name>
+                                    <value fmt="text" name="Tutor Component" type="String" includein="full">Tutor</value>
+                                </CTATComponentParameter>
+                            </selection>
+                        </Parameters>
+                        <Styles>
+                            <selection>
+                                <CTATStyleProperty>
+                                    <name>DrawBorder</name>
+                                    <value fmt="text" name="Draw Border" type="Boolean" includein="full">true</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>borderRoundness</name>
+                                    <value fmt="text" name="Border Roundness" type="Number" includein="full">5</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>BorderColor</name>
+                                    <value fmt="text" name="Border Color" type="Color" includein="full">999999</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontFace</name>
+                                    <value fmt="text" name="Font" type="String" includein="full">Arial</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontSize</name>
+                                    <value fmt="text" name="Font Size" type="Number" includein="full">12</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>TextColor</name>
+                                    <value fmt="text" name="Font Color" type="Color" includein="full">0</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontBold</name>
+                                    <value fmt="text" name="Font Bold" type="Boolean" includein="full">false</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontItalic</name>
+                                    <value fmt="text" name="Font Italic" type="Boolean" includein="full">false</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontUnderlined</name>
+                                    <value fmt="text" name="Font Underline" type="Boolean" includein="full">false</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>TextAlign</name>
+                                    <value fmt="text" name="Text Align" type="String" includein="full">left</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>inspBackgroundColor</name>
+                                    <value fmt="text" name="Background Color" type="Color" includein="full">f8f8f8</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>normalName</name>
+                                    <value fmt="text" name="Normal Image Name" type="String" includein="sparse"></value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>hoverName</name>
+                                    <value fmt="text" name="Hover Image Name" type="String" includein="sparse"></value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>clickName</name>
+                                    <value fmt="text" name="Clicked Image Name" type="String" includein="sparse"></value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>disabledName</name>
+                                    <value fmt="text" name="Disabled Image Name" type="String" includein="sparse"></value>
+                                </CTATStyleProperty>
+                            </selection>
+                        </Styles>
+                    </CTATImageButton>
+                </serialized>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceDescription</MessageType>
+                <WidgetType>CTATHintButton</WidgetType>
+                <CommName>hint</CommName>
+                <UpdateEachCycle>false</UpdateEachCycle>
+                <jessDeftemplates>
+                    <value>
+              
+               (deftemplate CTATHintButton (slot name) (slot value)) 
+              
+            </value>
+                </jessDeftemplates>
+                <jessInstances>
+                    <value>
+              
+               (assert (CTATHintButton (name hint))) 
+              
+            </value>
+                </jessInstances>
+                <serialized>
+                    <CTATHintButton name="hint" x="395.9" y="297.5" width="65" height="66" scaleX="1" scaleY="1" originalWidth="65" originalHeight="66" zIndex="0" tabIndex="-1">
+                        <SAIs>
+                            <selection>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>SetVisible</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="visible" type="Boolean">true</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>setVisible</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="visible" type="Boolean">true</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>lock</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="locked" type="Boolean">false</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>unlock</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="locked" type="Boolean">false</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>highlight</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="highlight" type="String">-1</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>unhighlight</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="unhighlight" type="String">-1</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>move</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="x" type="Number">0</value>
+                                        <value fmt="text" name="y" type="Number">0</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>size</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="x" type="Number">0</value>
+                                        <value fmt="text" name="y" type="Number">0</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>reset</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="reset" type="Boolean">true</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>FadeIn</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="alpha" type="Number">0</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>FadeOut</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="alpha" type="Number">0</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>unlock</action>
+                                    <internalArguments></internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>lock</action>
+                                    <internalArguments></internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>ButtonPressed</action>
+                                    <internalArguments></internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>HintButtonPressed</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="hint request" type="String">hint request</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>setClickable</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="clickable" type="Boolean">true</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                                <CTATInterfaceAction>
+                                    <selection>this</selection>
+                                    <action>assignImageURL</action>
+                                    <internalArguments>
+                                        <value fmt="text" name="assignImageURL" type="String">images/default.png</value>
+                                    </internalArguments>
+                                </CTATInterfaceAction>
+                            </selection>
+                        </SAIs>
+                        <Parameters>
+                            <selection>
+                                <CTATComponentParameter>
+                                    <name>ShowHintHighlight</name>
+                                    <value fmt="text" name="Show Hint Highlight" type="Boolean" includein="full">true</value>
+                                </CTATComponentParameter>
+                                <CTATComponentParameter>
+                                    <name>DisableOnCorrect</name>
+                                    <value fmt="text" name="Disable On Correct" type="Boolean" includein="full">true</value>
+                                </CTATComponentParameter>
+                                <CTATComponentParameter>
+                                    <name>tutorComponent</name>
+                                    <value fmt="text" name="Tutor Component" type="String" includein="full">Tutor</value>
+                                </CTATComponentParameter>
+                            </selection>
+                        </Parameters>
+                        <Styles>
+                            <selection>
+                                <CTATStyleProperty>
+                                    <name>DrawBorder</name>
+                                    <value fmt="text" name="Draw Border" type="Boolean" includein="full">true</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>borderRoundness</name>
+                                    <value fmt="text" name="Border Roundness" type="Number" includein="full">5</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>BorderColor</name>
+                                    <value fmt="text" name="Border Color" type="Color" includein="full">999999</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontFace</name>
+                                    <value fmt="text" name="Font" type="String" includein="full">Arial</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontSize</name>
+                                    <value fmt="text" name="Font Size" type="Number" includein="full">12</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>TextColor</name>
+                                    <value fmt="text" name="Font Color" type="Color" includein="full">0</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontBold</name>
+                                    <value fmt="text" name="Font Bold" type="Boolean" includein="full">false</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontItalic</name>
+                                    <value fmt="text" name="Font Italic" type="Boolean" includein="full">false</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>FontUnderlined</name>
+                                    <value fmt="text" name="Font Underline" type="Boolean" includein="full">false</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>TextAlign</name>
+                                    <value fmt="text" name="Text Align" type="String" includein="full">left</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>inspBackgroundColor</name>
+                                    <value fmt="text" name="Background Color" type="Color" includein="full">f8f8f8</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>labelText</name>
+                                    <value fmt="text" name="Label Text" type="String" includein="sparse">Help</value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>normalName</name>
+                                    <value fmt="text" name="Normal Image Name" type="String" includein="sparse"></value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>hoverName</name>
+                                    <value fmt="text" name="Hover Image Name" type="String" includein="sparse"></value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>clickName</name>
+                                    <value fmt="text" name="Clicked Image Name" type="String" includein="sparse"></value>
+                                </CTATStyleProperty>
+                                <CTATStyleProperty>
+                                    <name>disabledName</name>
+                                    <value fmt="text" name="Disabled Image Name" type="String" includein="sparse"></value>
+                                </CTATStyleProperty>
+                            </selection>
+                        </Styles>
+                    </CTATHintButton>
+                </serialized>
+            </properties>
+        </message>
+        <message>
+            <verb>SendNoteProperty</verb>
+            <properties>
+                <MessageType>StartStateEnd</MessageType>
+            </properties>
+        </message>
+    </startNodeMessages>
+    <node locked="false" doneState="false">
+        <text>commButton</text>
+        <uniqueID>1</uniqueID>
+        <dimension>
+            <x>222</x>
+            <y>30</y>
+        </dimension>
+    </node>
+    <node locked="false" doneState="false">
+        <text>state1</text>
+        <uniqueID>2</uniqueID>
+        <dimension>
+            <x>365</x>
+            <y>171</y>
+        </dimension>
+    </node>
+    <node locked="false" doneState="false">
+        <text>state2</text>
+        <uniqueID>3</uniqueID>
+        <dimension>
+            <x>225</x>
+            <y>296</y>
+        </dimension>
+    </node>
+    <node locked="false" doneState="false">
+        <text>state3</text>
+        <uniqueID>4</uniqueID>
+        <dimension>
+            <x>388</x>
+            <y>461</y>
+        </dimension>
+    </node>
+    <node locked="false" doneState="false">
+        <text>state4</text>
+        <uniqueID>5</uniqueID>
+        <dimension>
+            <x>236</x>
+            <y>640</y>
+        </dimension>
+    </node>
+    <node locked="false" doneState="false">
+        <text>state6</text>
+        <uniqueID>7</uniqueID>
+        <dimension>
+            <x>391</x>
+            <y>807</y>
+        </dimension>
+    </node>
+    <node locked="false" doneState="false">
+        <text>state7</text>
+        <uniqueID>8</uniqueID>
+        <dimension>
+            <x>237</x>
+            <y>985</y>
+        </dimension>
+    </node>
+    <node locked="false" doneState="true">
+        <text>Done</text>
+        <uniqueID>9</uniqueID>
+        <dimension>
+            <x>374</x>
+            <y>1175</y>
+        </dimension>
+    </node>
+    <edge>
+        <actionLabel preferPathMark="true" minTraversals="1" maxTraversals="1">
+            <studentHintRequest></studentHintRequest>
+            <stepSuccessfulCompletion></stepSuccessfulCompletion>
+            <stepStudentError></stepStudentError>
+            <uniqueID>1</uniqueID>
+            <message>
+                <verb>NotePropertySet</verb>
+                <properties>
+                    <MessageType>InterfaceAction</MessageType>
+                    <transaction_id>D98F42FA38131E92</transaction_id>
+                    <Selection>
+                        <value>courierTenBtn</value>
+                    </Selection>
+                    <Action>
+                        <value>ButtonPressed</value>
+                    </Action>
+                    <Input>
+                        <value>-1</value>
+                    </Input>
+                </properties>
+            </message>
+            <buggyMessage>No, this is not correct.</buggyMessage>
+            <successMessage></successMessage>
+            <hintMessage>Please click on the highlighted button.</hintMessage>
+            <callbackFn></callbackFn>
+            <actionType>Correct Action</actionType>
+            <oldActionType>Correct Action</oldActionType>
+            <checkedStatus>Never Checked</checkedStatus>
+            <matcher>
+                <matcherType>ExactMatcher</matcherType>
+                <matcherParameter name="selection">courierTenBtn</matcherParameter>
+                <matcherParameter name="action">ButtonPressed</matcherParameter>
+                <matcherParameter name="input">-1</matcherParameter>
+                <matcherParameter name="actor">Student</matcherParameter>
+            </matcher>
+        </actionLabel>
+        <preCheckedStatus>No-Applicable</preCheckedStatus>
+        <rule>
+            <text>unnamed</text>
+            <indicator>-1</indicator>
+        </rule>
+        <sourceID>2</sourceID>
+        <destID>3</destID>
+        <traversalCount>0</traversalCount>
+    </edge>
+    <edge>
+        <actionLabel preferPathMark="true" minTraversals="1" maxTraversals="1">
+            <studentHintRequest></studentHintRequest>
+            <stepSuccessfulCompletion></stepSuccessfulCompletion>
+            <stepStudentError></stepStudentError>
+            <uniqueID>2</uniqueID>
+            <message>
+                <verb>NotePropertySet</verb>
+                <properties>
+                    <MessageType>InterfaceAction</MessageType>
+                    <transaction_id>0363ADCBCB98D3D8</transaction_id>
+                    <Selection>
+                        <value>blueBtn</value>
+                    </Selection>
+                    <Action>
+                        <value>ButtonPressed</value>
+                    </Action>
+                    <Input>
+                        <value>-1</value>
+                    </Input>
+                </properties>
+            </message>
+            <buggyMessage>No, this is not correct.</buggyMessage>
+            <successMessage></successMessage>
+            <hintMessage>Please click on the highlighted button.</hintMessage>
+            <callbackFn></callbackFn>
+            <actionType>Correct Action</actionType>
+            <oldActionType>Correct Action</oldActionType>
+            <checkedStatus>Never Checked</checkedStatus>
+            <matcher>
+                <matcherType>ExactMatcher</matcherType>
+                <matcherParameter name="selection">blueBtn</matcherParameter>
+                <matcherParameter name="action">ButtonPressed</matcherParameter>
+                <matcherParameter name="input">-1</matcherParameter>
+                <matcherParameter name="actor">Student</matcherParameter>
+            </matcher>
+        </actionLabel>
+        <preCheckedStatus>No-Applicable</preCheckedStatus>
+        <rule>
+            <text>unnamed</text>
+            <indicator>-1</indicator>
+        </rule>
+        <sourceID>4</sourceID>
+        <destID>5</destID>
+        <traversalCount>0</traversalCount>
+    </edge>
+    <edge>
+        <actionLabel preferPathMark="true" minTraversals="1" maxTraversals="1">
+            <studentHintRequest></studentHintRequest>
+            <stepSuccessfulCompletion></stepSuccessfulCompletion>
+            <stepStudentError></stepStudentError>
+            <uniqueID>4</uniqueID>
+            <message>
+                <verb>NotePropertySet</verb>
+                <properties>
+                    <MessageType>InterfaceAction</MessageType>
+                    <transaction_id>E99727AA50B4B1A4</transaction_id>
+                    <Selection>
+                        <value>underlineBtn</value>
+                    </Selection>
+                    <Action>
+                        <value>ButtonPressed</value>
+                    </Action>
+                    <Input>
+                        <value>-1</value>
+                    </Input>
+                </properties>
+            </message>
+            <buggyMessage>No, this is not correct.</buggyMessage>
+            <successMessage></successMessage>
+            <hintMessage>Please click on the highlighted button.</hintMessage>
+            <callbackFn></callbackFn>
+            <actionType>Correct Action</actionType>
+            <oldActionType>Correct Action</oldActionType>
+            <checkedStatus>Never Checked</checkedStatus>
+            <matcher>
+                <matcherType>ExactMatcher</matcherType>
+                <matcherParameter name="selection">underlineBtn</matcherParameter>
+                <matcherParameter name="action">ButtonPressed</matcherParameter>
+                <matcherParameter name="input">-1</matcherParameter>
+                <matcherParameter name="actor">Student</matcherParameter>
+            </matcher>
+        </actionLabel>
+        <preCheckedStatus>No-Applicable</preCheckedStatus>
+        <rule>
+            <text>unnamed</text>
+            <indicator>-1</indicator>
+        </rule>
+        <sourceID>3</sourceID>
+        <destID>4</destID>
+        <traversalCount>0</traversalCount>
+    </edge>
+    <edge>
+        <actionLabel preferPathMark="true" minTraversals="1" maxTraversals="1">
+            <studentHintRequest></studentHintRequest>
+            <stepSuccessfulCompletion></stepSuccessfulCompletion>
+            <stepStudentError></stepStudentError>
+            <uniqueID>5</uniqueID>
+            <message>
+                <verb>NotePropertySet</verb>
+                <properties>
+                    <MessageType>InterfaceAction</MessageType>
+                    <transaction_id>34A371AEF7637F98</transaction_id>
+                    <Selection>
+                        <value>rightSquareBtn</value>
+                    </Selection>
+                    <Action>
+                        <value>ButtonPressed</value>
+                    </Action>
+                    <Input>
+                        <value>-1</value>
+                    </Input>
+                </properties>
+            </message>
+            <buggyMessage>No, this is not correct.</buggyMessage>
+            <successMessage></successMessage>
+            <hintMessage>Please click on the highlighted button.</hintMessage>
+            <callbackFn></callbackFn>
+            <actionType>Correct Action</actionType>
+            <oldActionType>Correct Action</oldActionType>
+            <checkedStatus>Never Checked</checkedStatus>
+            <matcher>
+                <matcherType>ExactMatcher</matcherType>
+                <matcherParameter name="selection">rightSquareBtn</matcherParameter>
+                <matcherParameter name="action">ButtonPressed</matcherParameter>
+                <matcherParameter name="input">-1</matcherParameter>
+                <matcherParameter name="actor">Student</matcherParameter>
+            </matcher>
+        </actionLabel>
+        <preCheckedStatus>No-Applicable</preCheckedStatus>
+        <rule>
+            <text>unnamed</text>
+            <indicator>-1</indicator>
+        </rule>
+        <sourceID>7</sourceID>
+        <destID>8</destID>
+        <traversalCount>0</traversalCount>
+    </edge>
+    <edge>
+        <actionLabel preferPathMark="true" minTraversals="1" maxTraversals="1">
+            <studentHintRequest></studentHintRequest>
+            <stepSuccessfulCompletion></stepSuccessfulCompletion>
+            <stepStudentError></stepStudentError>
+            <uniqueID>6</uniqueID>
+            <message>
+                <verb>NotePropertySet</verb>
+                <properties>
+                    <MessageType>InterfaceAction</MessageType>
+                    <transaction_id>6E9D306B9B8D0AAC</transaction_id>
+                    <Selection>
+                        <value>leftBtn</value>
+                    </Selection>
+                    <Action>
+                        <value>ButtonPressed</value>
+                    </Action>
+                    <Input>
+                        <value>-1</value>
+                    </Input>
+                </properties>
+            </message>
+            <buggyMessage>No, this is not correct.</buggyMessage>
+            <successMessage></successMessage>
+            <hintMessage>Please click on the highlighted button.</hintMessage>
+            <callbackFn></callbackFn>
+            <actionType>Correct Action</actionType>
+            <oldActionType>Correct Action</oldActionType>
+            <checkedStatus>Never Checked</checkedStatus>
+            <matcher>
+                <matcherType>ExactMatcher</matcherType>
+                <matcherParameter name="selection">leftBtn</matcherParameter>
+                <matcherParameter name="action">ButtonPressed</matcherParameter>
+                <matcherParameter name="input">-1</matcherParameter>
+                <matcherParameter name="actor">Student</matcherParameter>
+            </matcher>
+        </actionLabel>
+        <preCheckedStatus>No-Applicable</preCheckedStatus>
+        <rule>
+            <text>unnamed</text>
+            <indicator>-1</indicator>
+        </rule>
+        <sourceID>5</sourceID>
+        <destID>7</destID>
+        <traversalCount>0</traversalCount>
+    </edge>
+    <edge>
+        <actionLabel preferPathMark="true" minTraversals="1" maxTraversals="1">
+            <studentHintRequest></studentHintRequest>
+            <stepSuccessfulCompletion></stepSuccessfulCompletion>
+            <stepStudentError></stepStudentError>
+            <uniqueID>3</uniqueID>
+            <message>
+                <verb>NotePropertySet</verb>
+                <properties>
+                    <MessageType>InterfaceAction</MessageType>
+                    <transaction_id>E25ECB059E37FA1D</transaction_id>
+                    <Selection>
+                        <value>boldBtn</value>
+                    </Selection>
+                    <Action>
+                        <value>ButtonPressed</value>
+                    </Action>
+                    <Input>
+                        <value>-1</value>
+                    </Input>
+                </properties>
+            </message>
+            <buggyMessage>No, this is not correct.</buggyMessage>
+            <successMessage></successMessage>
+            <hintMessage>Please click on the highlighted button.</hintMessage>
+            <callbackFn></callbackFn>
+            <actionType>Correct Action</actionType>
+            <oldActionType>Correct Action</oldActionType>
+            <checkedStatus>Never Checked</checkedStatus>
+            <matcher>
+                <matcherType>ExactMatcher</matcherType>
+                <matcherParameter name="selection">boldBtn</matcherParameter>
+                <matcherParameter name="action">ButtonPressed</matcherParameter>
+                <matcherParameter name="input">-1</matcherParameter>
+                <matcherParameter name="actor">Student</matcherParameter>
+            </matcher>
+        </actionLabel>
+        <preCheckedStatus>No-Applicable</preCheckedStatus>
+        <rule>
+            <text>unnamed</text>
+            <indicator>-1</indicator>
+        </rule>
+        <sourceID>1</sourceID>
+        <destID>2</destID>
+        <traversalCount>0</traversalCount>
+    </edge>
+    <edge>
+        <actionLabel preferPathMark="true" minTraversals="1" maxTraversals="1">
+            <studentHintRequest></studentHintRequest>
+            <stepSuccessfulCompletion></stepSuccessfulCompletion>
+            <stepStudentError></stepStudentError>
+            <uniqueID>9</uniqueID>
+            <message>
+                <verb>NotePropertySet</verb>
+                <properties>
+                    <MessageType>InterfaceAction</MessageType>
+                    <transaction_id>32AB28F18B3E9708</transaction_id>
+                    <Selection>
+                        <value>done</value>
+                    </Selection>
+                    <Action>
+                        <value>ButtonPressed</value>
+                    </Action>
+                    <Input>
+                        <value>-1</value>
+                    </Input>
+                </properties>
+            </message>
+            <buggyMessage>No, this is not correct.</buggyMessage>
+            <successMessage></successMessage>
+            <hintMessage>Please click on the highlighted button.</hintMessage>
+            <callbackFn></callbackFn>
+            <actionType>Correct Action</actionType>
+            <oldActionType>Correct Action</oldActionType>
+            <checkedStatus>Never Checked</checkedStatus>
+            <matcher>
+                <matcherType>ExactMatcher</matcherType>
+                <matcherParameter name="selection">done</matcherParameter>
+                <matcherParameter name="action">ButtonPressed</matcherParameter>
+                <matcherParameter name="input">-1</matcherParameter>
+                <matcherParameter name="actor">Student</matcherParameter>
+            </matcher>
+        </actionLabel>
+        <preCheckedStatus>No-Applicable</preCheckedStatus>
+        <rule>
+            <text>unnamed</text>
+            <indicator>-1</indicator>
+        </rule>
+        <sourceID>8</sourceID>
+        <destID>9</destID>
+        <traversalCount>0</traversalCount>
+    </edge>
+    <EdgesGroups ordered="true"></EdgesGroups>
+</stateGraph>
+

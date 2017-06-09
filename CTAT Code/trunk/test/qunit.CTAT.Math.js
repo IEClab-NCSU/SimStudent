@@ -1,0 +1,139 @@
+/**
+ * @fileoverview Unit tests for CTAT.Math functions using qUnit.
+ * @requires unit_test_util.js
+ * @requires //code.jquery.com/qunit/qunit-1.17.1.js
+ * @requires third-party/google/closure-library/closure/goog/base.js
+ *
+ * @author $Author: mringenb $
+ * @version $Revision: 21882 $
+ */
+goog.require('CTAT.Math');
+
+QUnit.module("CTAT.Math");
+QUnit.test("CTAT.Math.GreatestCommonDivisor", function(assert) {
+	var gcd = CTAT.Math.GreatestCommonDivisor;
+	for (var i=1; i<=100; i++) {
+		assert.deepEqual(gcd(1,unit_test_util.gen100()), 1,
+				"Testing base case a==1 ("+i+")");
+		assert.deepEqual(gcd(unit_test_util.gen100(),1), 1,
+				"Testing base case b==1 ("+i+")");
+	}
+	var aNum;
+	for (i=1; i<=100; i++) {
+		aNum = unit_test_util.gen100();
+		assert.deepEqual(gcd(0,aNum), aNum,
+				"Testing base case a==0, b=="+aNum+" ("+i+")");
+		assert.deepEqual(gcd(aNum,0), aNum,
+				"Testing base case b==0, a=="+aNum+" ("+i+")");
+	}
+	for (i=1; i<=100; i++) {
+		aNum = unit_test_util.gen100();
+		assert.deepEqual(gcd(aNum,aNum), aNum,
+				"Testing identity case a=b="+aNum+" ("+i+")");
+	}
+	var bNum;
+	var cNum;
+	var j=0;
+	for (i=1; i<=1000; i++) {
+		j=0;
+		aNum = unit_test_util.gen100();
+		bNum = unit_test_util.gen100();
+		cNum = gcd(aNum,bNum);
+		assert.ok(cNum>0, "Test non-negative "+cNum+" ("+i+"."+(++j)+")");
+		assert.deepEqual(parseInt(cNum,10), cNum, "Test if integer "+cNum+" ("+i+"."+(++j)+")");
+	}
+	for (i=1; i<=100; i++) {
+		j=0;
+		aNum = unit_test_util.gen100();
+		bNum = unit_test_util.gen100();
+		cNum = gcd(aNum,bNum);
+		assert.deepEqual(gcd(-aNum,bNum), cNum,
+				"Testing negative number handling with a=-"+aNum+" b="+bNum+" ("+i+"."+(++j)+")");
+		assert.deepEqual(gcd(aNum,-bNum), cNum,
+				"Testing negative number handling with a="+aNum+" b=-"+bNum+" ("+i+"."+(++j)+")");
+		assert.deepEqual(gcd(-aNum,-bNum), cNum,
+				"Testing negative number handling with a=-"+aNum+" b=-"+bNum+" ("+i+"."+(++j)+")");
+		assert.deepEqual(gcd(bNum,aNum), cNum,
+				"Testing commutative with a="+aNum+" b="+bNum+" ("+i+"."+(++j)+")");
+	}
+	for (i=1; i<=100; i++) { // test with prime numbers
+		j=0;
+		aNum = unit_test_util.gen_prime();
+		bNum = unit_test_util.gen_prime();
+		cNum = aNum*bNum;
+		assert.deepEqual(gcd(aNum,bNum), aNum===bNum?aNum:1,
+				"Testing case primes "+aNum+","+bNum+"->1 ("+i+"."+(++j)+")");
+		assert.deepEqual(gcd(aNum,cNum), aNum,
+				"Testing case primes "+aNum+","+aNum+"*"+bNum+"->"+aNum+" ("+i+"."+(++j)+")");
+		assert.deepEqual(gcd(bNum,cNum), bNum,
+				"Testing case primes "+bNum+","+aNum+"*"+bNum+"->"+bNum+" ("+i+"."+(++j)+")");
+	}
+	var a,b,c;
+	a = 12; b= 16; c=4;
+	assert.deepEqual(gcd(a,b), c, "Testing case "+a+","+b+"->"+c);
+	a = 9; b= 12; c=3;
+	assert.deepEqual(gcd(a,b), c, "Testing case "+a+","+b+"->"+c);
+	a = 6; b= 18; c=6;
+	assert.deepEqual(gcd(a,b), c, "Testing case "+a+","+b+"->"+c);
+	a = 24; b= 108; c=12;
+	assert.deepEqual(gcd(a,b), c, "Testing case "+a+","+b+"->"+c);
+	a = 14; b= 49; c=7;
+	assert.deepEqual(gcd(a,b), c, "Testing case "+a+","+b+"->"+c);
+	a = 15; b= 75; c=15;
+	assert.deepEqual(gcd(a,b), c, "Testing case "+a+","+b+"->"+c);
+	a = 36; b= 54; c=18;
+	assert.deepEqual(gcd(a,b), c, "Testing case "+a+","+b+"->"+c);
+	a = 20; b= 25; c=5;
+	assert.deepEqual(gcd(a,b), c, "Testing case "+a+","+b+"->"+c);
+	a = 15; b= 30; c=15;
+	assert.deepEqual(gcd(a,b), c, "Testing case "+a+","+b+"->"+c);
+	a = 9; b= 20; c=1;
+	assert.deepEqual(gcd(a,b), c, "Testing case "+a+","+b+"->"+c);
+});
+
+QUnit.test("CTAT.Math.LeastCommonMultiple", function(assert) {
+	var i;
+	var a,b,c;
+	for (i=1; i<=100; i++) {
+		a = unit_test_util.gen_prime();
+		assert.deepEqual(CTAT.Math.LeastCommonMultiple(a,1), a);
+		assert.deepEqual(CTAT.Math.LeastCommonMultiple(1,a), a);
+		assert.deepEqual(CTAT.Math.LeastCommonMultiple(a,a), a);
+	}
+	for (i=1; i<=100; i++) {
+		a = unit_test_util.gen_prime();
+		b = unit_test_util.gen_prime();
+		c = (a===b)?a:(a*b);
+		assert.deepEqual(CTAT.Math.LeastCommonMultiple(a,b), c,
+				"Testing prime case "+a+","+b+"->"+c);
+	}
+	var x;
+	for (i=1; i<=100; i++) {
+		a = unit_test_util.gen_prime();
+		b = unit_test_util.gen_prime();
+		do {
+			x = unit_test_util.gen_prime();
+		} while (x===a || x===b);
+		c = (a===b)?a*x:a*b*x;
+		assert.deepEqual(CTAT.Math.LeastCommonMultiple(a*x,b), c,
+				"Testing prime case "+a*x+","+b+"->"+c);
+		assert.deepEqual(CTAT.Math.LeastCommonMultiple(a,b*x), c,
+				"Testing prime case "+a+","+b*x+"->"+c);
+		assert.deepEqual(CTAT.Math.LeastCommonMultiple(a*x,b*x), c,
+				"Testing prime case "+a*x+","+b*x+"->"+c);
+	}
+	assert.deepEqual(32077739, CTAT.Math.LeastCommonMultiple(32077739, 6599));
+});
+QUnit.test("CTAT.Math.round10", function(assert) {
+	assert.equal(CTAT.Math.round10(55.55,-1),55.6);
+	assert.equal(CTAT.Math.round10(55.549,-1),55.5);
+	assert.equal(CTAT.Math.round10(55,1),60);
+	assert.equal(CTAT.Math.round10(54.9,1),50);
+	assert.equal(CTAT.Math.round10(-55.55,-1),-55.5);
+	assert.equal(CTAT.Math.round10(-55.551,-1),-55.6);
+	assert.equal(CTAT.Math.round10(-55,1),-50);
+	assert.equal(CTAT.Math.round10(-55.1,1),-60);
+	assert.equal(CTAT.Math.round10(1.005,-2),1.01);
+	assert.equal(CTAT.Math.round(1.23456),1.2346);
+});
+

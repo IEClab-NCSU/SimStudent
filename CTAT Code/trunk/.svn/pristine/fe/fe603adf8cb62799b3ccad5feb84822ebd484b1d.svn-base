@@ -1,0 +1,158 @@
+/* imports custom fonts */
+@import url(//fonts.googleapis.com/css?family=Open+Sans:400,700);
+@import url(font-awesome.min.css);
+
+::selection {
+  background: @silexmediumgrey;
+  color: #FFF;
+}
+::-moz-selection {
+  background: @silexmediumgrey;
+  color: #FFF;
+}
+
+#ctat-logo {
+	position: absolute;
+	top: 11px;
+	right: 9px;
+	width:227px;
+	height:41px;
+	background-image: url('images/CTAT_Logo.png');
+	background-color: #192f48;
+	background-size:contain;
+	background-position:center;
+	background-repeat:no-repeat;
+	border-style:outset;
+	border-color:#0b2138;
+	border-width:2px;
+	}
+
+.silex-body {
+  font-family: 'Open Sans', sans-serif;
+  overflow: hidden;
+  height: 100%; /* without this, there is a white space bellow the dialogs background */
+  background-color: @silexmediumgrey;
+
+  .loader {
+    display: none;
+  }
+
+  input {
+    border: 1px solid @silexmediumgrey;
+    color: white;
+    background-color: @silexdarkgrey;
+    box-shadow: inset 1px 1px 5px rgba(0, 0, 0, .3);
+    box-sizing: border-box;
+    border-radius: 5px;
+    padding-left: 10px;
+    padding-top: 2px;
+  }
+}
+
+.small-font {
+  font-size: 12px;
+}
+
+.modal-dialog {
+  z-index: 120;
+}
+
+.silex-body.loading-pending {
+  height: 100%; /* without this, the body is short in height and the loading anim is aligned on top */
+
+  .loader {
+    display: inherit;
+    visibility: inherit;
+    width: 100%;
+    height: 100%;
+  }
+
+  & > div {
+    visibility: hidden;
+  }
+
+}
+
+.advanced-mode-off {
+
+  .advanced-only {
+    display: none;
+  }
+
+}
+
+.goog-toolbar-menu-button-dropdown, .tr-icon {
+  background-image: url(../assets/goog-ui/editortoolbar.png);
+}
+
+.xsmall-font {
+  font-size: 13px;
+  font-weight: lighter;
+  color: #555555;
+}
+
+#silex-file-explorer{
+  z-index: 115;
+}
+
+.ctatstatusbar {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 82%;
+	height: 20px;
+	border: 1px solid grey;
+	background-color: white;
+    font-family: sans-serif;
+	font-size: 13px;
+	line-height: 23px;
+	display: flex;
+	flex-direction: row;
+	
+	.statusbar-field {
+		height: 115%;
+		border-width: 1px;
+		border-color: #a8a8a8;
+		border-style: inset;
+		background-color: #eaeaea;
+		overflow: hidden;
+		padding-left: 5px;
+	}
+	
+	#silex-statusbar-status-field {
+		flex: 3.5;
+	}
+	
+	#silex-statusbar-filename-field {
+		flex: 2;
+	}
+    
+	#silex-statusbar-type-field {
+		flex: 1;
+	}
+    
+	#silex-statusbar-cursor-field {
+		flex: 1;
+	}
+}
+
+.silex-popup-msg {
+	position: absolute;
+	left: 66%;
+	width: 150px;
+	height: 33px;
+	padding-top: 14px;
+	text-align: center;
+	z-index: 99999;
+	background-color: rgba(144, 238, 144, 0.55);
+	font-family: sans-serif;
+	font-size: 14px;
+}
+
+.silex-popup-msg.hidden {
+	display: none;
+}
+
+.silex-popup-msg.bad {
+	background-color: rgba(205, 75, 71, 0.82);
+}

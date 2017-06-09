@@ -1,0 +1,97 @@
+#palette-head {
+	position: absolute;
+	left: 0px;
+	top: 66px;
+	width: 168px;
+	
+	.title1 {
+		color: #FFFFFF;
+		margin: 0;
+		font-weight: bold;
+		padding: 10px 0 10px 19px;
+		height: 15px;
+		font-size: 15px;
+		text-transform: uppercase; 
+		background: @silexlightgrey;
+		border-bottom: 1px solid #0b2138;
+    }
+
+	#palette-minimize {
+		float: right;
+		height: 15px;
+		width: 15px;
+		background-color: #0b2138;
+		color: #aaa;
+		text-align: center;
+		line-height: 11px;
+		font-size: 25px;
+		border-width: 0px;
+	}
+	
+	#palette-minimize:focus {
+		outline-style: none;
+	}
+}
+
+.component-palette-container {
+	position: absolute;
+	left: 0px;
+	top: 102px;
+	bottom: 21px;
+	width: 168px;
+	background-color: @silexlightgrey;
+	overflow-y: auto;
+	
+	.main-container {
+		width: 100%;
+		height: 100%;
+		
+		.component-list {
+			width: 100%;
+			overflow-y: auto;
+			overflow-x: hidden;
+			
+			h4 {
+				font-size: 15px;
+				color: #d3d3d3;
+				border-bottom: 1px solid white;
+			}
+			
+			.component-container {
+				color: white;
+				width: 90%;
+				padding-left: 15px;
+				padding-top: 3px;
+				border-width: 0px 0px 1px 0px;
+				border-color: #aaa;
+				border-style: solid;
+				font-size: 13px;
+				cursor: pointer;
+			}
+			
+			.component-container[data-silex-palette-selected="true"] {
+				color: rgba(0, 255, 243, .60);
+				font-weight: bold;
+			}
+			
+			.component-container:hover {
+				color: rgba(0, 255, 243, .60);
+			}
+			
+			.little-separator {
+				margin-top: 15px;
+				margin-bottom: 7px;
+			}
+		}
+		
+		#silex-component-palette-list-interactive {
+			position: absolute;
+			padding-top: 10px;
+		}
+	}
+	
+}
+
+.component-palette-container.hidden {
+	display: none;
+}

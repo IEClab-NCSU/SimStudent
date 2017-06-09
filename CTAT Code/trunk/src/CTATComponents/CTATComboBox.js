@@ -1,0 +1,260 @@
+/**-----------------------------------------------------------------------------
+ $Author: mdb91 $
+ $Date: 2016-11-28 17:24:35 -0600 (週一, 28 十一月 2016) $
+ $HeadURL: svn://pact-cvs.pact.cs.cmu.edu/usr5/local/svnroot/AuthoringTools/trunk/HTML5/src/CTATComponents/CTATComboBox.js $
+ $Revision: 24393 $
+
+ -
+ License:
+ -
+ ChangeLog:
+ -
+ Notes:
+
+  Events: click, mousemove, mouseover, mouseout, keyup, keydown,
+  		  focus, blur, select, load
+
+  CSS: http://tutobx.com/post/24806696944/raised-and-pressed-div-using-css
+       http://stackoverflow.com/questions/5662178/opacity-of-divs-background-without-affecting-contained-element-in-ie-8
+
+  Js:  http://www.quirksmode.org/js/this.html
+       http://unschooled.org/2012/03/understanding-javascript-this/
+ */
+goog.provide('CTATComboBox');
+
+goog.require('CTATGlobalFunctions');
+//goog.require('CTATGlobals');
+goog.require('CTATSAI');
+goog.require('CTAT.Component.Base.Clickable');
+goog.require('CTAT.ComponentRegistry');
+/**
+ * Currently the styles DropDownsize and DropDownWidth are not supported
+ * DropDownSize can't be implemented in HTML
+ * DropDownWidth can be done using CSS style sheets but setting it from
+ * js seems to not work
+ */
+CTATComboBox = function(aDescription,aX,aY,aWidth,aHeight)
+{
+	CTAT.Component.Base.Clickable.call(this,
+					  			"CTATComboBox",
+					  			"__undefined__",
+					  			aDescription,
+					  			aX,
+					  			aY,
+					  			aWidth,
+					  			aHeight);
+	var pointer=this;
+	var combobox=null;
+	this.component = null;
+	var previewMode = CTATConfiguration.get('previewMode');
+	this.setAction('UpdateComboBox');
+
+	var split_character = ',';
+	var splitter = function(char){
+		split_character=char;
+		if (combobox) {
+			combobox.innerHTML = '';
+			this.addLabels(list_entries,split_character);
+		}
+	}.bind(this);
+	this.setStyleHandler('SplitCharacter', splitter);
+	this.data_ctat_handlers['split-on'] = splitter;
+
+	var list_entries = null;
+	this.setLabels = function(labels) {
+		//console.log('CTATComboBox.setLabels('+labels+')');
+		list_entries=labels;
+		if (combobox) {
+			combobox.innerHTML = '';
+			this.addLabels(list_entries,split_character);
+		}
+	}.bind(this);
+	this.setStyleHandler('Labels', this.setLabels);
+	this.data_ctat_handlers['labels'] = this.setLabels;
+
+	var numVisibleOptions = null; // AS3 default: 7
+	var setNumOptions = function (numLines) {
+		var size = parseInt(numLines);
+		if (isNaN(size)) {
+			numVisibleOptions = null;
+		} else {
+			numVisibleOptions = size;
+		}
+		if (combobox) {
+			combobox.setAttribute('size',numVisibleOptions);
+		}
+	};
+	this.setStyleHandler('DropDownSize', setNumOptions);
+	this.data_ctat_handlers['size'] = setNumOptions;
+	this.setStyleHandler('DropDownWidth',null); // Note: this is not valid in
+	// HTML5 as there are no options to modify this behavior.  It is "by design"
+	// that the size of the drop down is controlled by the system/browser.
+
+	this.setNumOptions = setNumOptions; //patch b/c setSize is overridden
+	
+	
+	
+	/**
+	 *
+	 */
+	this.init=function init()
+	{
+	    pointer.setInitialized(true);
+
+	    combobox=document.createElement("select");
+	    combobox.name=pointer.getName(); // might be wrong
+	    combobox.setAttribute('id', CTATGlobalFunctions.gensym.div_id());
+	    combobox.setAttribute('onkeypress', 'return noenter(event)');
+	    //combobox.setAttribute('onchange','processComboSelection();');
+	    combobox.onchange=this.processComboSelection;
+	    combobox.classList.add('CTAT-combobox');
+		if (numVisibleOptions && !previewMode) { combobox.setAttribute('size',numVisibleOptions); }
+		if (!previewMode)
+		{
+			var content = this.getDivWrap().innerHTML;
+			this.getDivWrap().innerHTML = '';
+			if (content.trim()) {
+				combobox.innerHTML = content;
+			}
+		}
+		
+		if (list_entries) {
+	    	this.addLabels(list_entries,split_character);
+	    }
+
+	    if (pointer.getEnabled()===true)
+	        combobox.disabled=false;
+	    else
+	        combobox.disabled=true;
+
+	    pointer.addComponentReference(pointer, combobox);
+
+	    pointer.setComponent(combobox);
+
+	    pointer.getDivWrap().appendChild(combobox);
+		
+		this.component = combobox;
+
+		//pointer.render();
+
+	    combobox.addEventListener('focus', pointer.processFocus);
+	};
+	/**
+	 * This is run during the generation of InterfaceDescription messages and
+	 * it generates interface actions for options set by the author in the
+	 * html code.
+	 * @returns {Array<CTATSAI>} of SAIs.
+	 */
+	this.getConfigurationActions = function () {
+		var actions = [];
+		if (list_entries) {
+			var sai = new CTATSAI();
+			sai.setSelection(this.getName());
+			sai.setInput(list_entries);
+			sai.setAction('setLabels');
+			actions.push(sai);
+		}
+		// TODO: add <option> entries?
+	    return actions;
+	};
+
+	/**
+	 *
+	 */
+	this.getHTMLComponent=function getHTMLComponent ()
+	{
+		return (combobox);
+	};
+
+	this.addLabels = function(labels,sep) {
+		var splitter = sep?sep:split_character;
+		var items = labels.split(splitter);
+		for (var i=0; i<items.length; i++) {
+			this.addItem(items[i]);
+		}
+	};
+	
+	/**
+	 * Add a given number of blank options
+	 * @param numLabels the number of options to add
+	 */
+	this.addBlank = function(numLabels) {
+		for (let i = 0; i < numLabels; i++)
+		{
+			this.addItem('');
+		}
+	};
+	/**
+	 *
+	 * @param aValue
+	 */
+	this.addItem=function addItem(aValue)
+	{
+	    pointer.ctatdebug("addItem (" + aValue + ")");
+
+	    var option=document.createElement("option");
+	    option.setAttribute("value", aValue);
+	    option.textContent=aValue;
+	    //option.classList.add('CTAT-combobox--option'); // styling options does not work.
+
+	    combobox.appendChild(option);
+	};
+	
+	this.setFontSize = function( aSizeStr )
+	{
+		if (!isNaN(aSizeStr))
+		{
+			$(this.getComponent()).css('font-size', aSizeStr+'px');
+			this.getDivWrap().setAttribute('data-ctat-font-size', aSizeStr);
+		}
+	}
+
+
+	//doesn't work
+	/*this.setDropDownWidth=function(itemWidth)
+	{
+		for(var i = 0; i < combobox.options.length; i++)
+		{
+			if(itemWidth != -1)
+			{
+				combobox.options[i].setAttribute('style','width: '+itemWidth+'px;');
+			}
+			else
+			{
+				combobox.options[i].setAttribute('width',null);
+			}
+		}
+	};*/
+	this.valid_selection = function () {
+		return combobox.selectedIndex>=0 && !CTATGlobalFunctions.isBlank(combobox.value);
+	};
+	/**
+	 *
+	 */
+	this.processComboSelection=function processComboSelection ()
+	{
+		pointer.ctatdebug ("processComboSelection ()");
+
+		var selected = combobox.options[combobox.selectedIndex].value;
+		pointer.setInput(selected);
+		if (!pointer.valid_selection()) {
+			this.ctatdebug ("Empty component, nothing to grade");
+		} else {
+			pointer.processAction();
+		}
+	};
+
+	this.UpdateComboBox = function (item) {
+		// Need method for valid Action
+		// TODO: check if this works.
+		combobox.value = item;
+	};
+
+	this.updateSAI = function () {
+		pointer.setInput(combobox.value);
+	};
+};
+CTATComboBox.prototype = Object.create(CTAT.Component.Base.Clickable.prototype);
+CTATComboBox.prototype.constructor = CTATComboBox;
+
+CTAT.ComponentRegistry.addComponentType('CTATComboBox',CTATComboBox);

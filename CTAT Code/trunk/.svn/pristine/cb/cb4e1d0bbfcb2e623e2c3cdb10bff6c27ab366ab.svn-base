@@ -1,0 +1,34 @@
+<html>
+<head>
+
+<link rel="stylesheet" type="text/css" href="http://ctat.pact.cs.cmu.edu/html5releases/latest/CTAT.css">
+
+<style>
+html,body { width: 100%; height: 100%; margin: 0px; padding: 0px; }
+</style>
+
+<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="http://ctat.pact.cs.cmu.edu/html5releases/latest/ctat.min.js"></script>
+<script src="http://ctat.pact.cs.cmu.edu/html5releases/latest/ctatloader.js"></script>
+
+<script>
+	var myVars = 
+	{
+		question_file: "ctat-manual-tutor-creation-example-01.brd",
+		tutoring_service_communication: "javascript"
+	};	
+
+	function ctatOnload ()
+	{		
+		initTutor(myVars);
+	}	
+</script>
+</head>
+<body>
+
+<div id="container" style="margin: 0px; padding: 0px; text-align:center; border: 1px solid black;">
+	<div id="done-button" class="CTATDoneButton" style="position: absolute; top:0; left: 0; right: 0; bottom: 0; margin: auto;"></div>
+</div>
+
+</body>
+</html>

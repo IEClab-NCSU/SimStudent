@@ -1,0 +1,19 @@
+/**-----------------------------------------------------------------------------
+ $Author$
+ $Date$
+ $HeadURL$
+ $Revision$
+
+ -
+ License:
+ -
+ ChangeLog:
+ -
+ Notes:
+
+ */
+goog.provide('CTATLinkData');
+
+goog.require('CTATGlobals');
+// In JavaScript we don't use the LinkData mechanism. Instead you will find the
+// same information in CTATGlobals as globally available data.

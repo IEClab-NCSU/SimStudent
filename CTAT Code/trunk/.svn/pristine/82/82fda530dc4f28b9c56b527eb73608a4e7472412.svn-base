@@ -1,0 +1,133 @@
+<html>
+<head>
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>CTAT HTML Authoring Test</title>
+<link rel="stylesheet" href="../css/CTAT.css" />
+
+<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="http://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+
+<script src="../ctatjslib/ctat.min.js"></script>
+<script>
+	var tutorConfiguration = CTATGlobalFunctions.generateDefaultConfiguration();
+	CTATGlobalFunctions.setTutorValue(tutorConfiguration, 'question_file',
+			'html_interface_test.brd');
+	useDebugging = false; //true;
+	$(function() {
+		//registerTutor(new CTATExampleTracer());
+		initTutor(tutorConfiguration);
+	});
+</script>
+<style type="text/css">
+body {
+	background-color: lightgrey;
+}
+
+div.tutor_window {
+	position: relative;
+	background-color: white;
+	border: 1px solid black;
+	width: 80%;
+	margin: 0 auto;
+	box-shadow: 10px 10px 5px grey;
+}
+</style>
+</head>
+<body>
+	<div class="tutor_window">
+		<div>
+			Button:
+			<div id="button" class="CTATButton"
+				style="margin: 5px; display: inline-block;" data-ctat-tutor="true"
+				data-ctat-show-feedback="true" data-ctat-disable-on-correct="true"
+				data-ctat-show-hint-highlight="true">Press Me</div>
+		</div>
+		<div>
+			(Image) Button:
+			<div id="ibutton" class="CTATButton"
+				style="margin: 5px; display: inline-block;" data-ctat-tutor="false">
+				<img src="../skindata/CTAT-icon.svg" />
+			</div>
+		</div>
+		<div>
+			CheckBoxes:
+			<div id="cb1" class="CTATCheckBox"
+				style="margin: 5px; display: inline-block;">Check Me</div>
+			<div id="cb2" class="CTATCheckBox"
+				style="margin: 5px; display: inline-block; width: 200px;">Do
+				Not Check Me</div>
+		</div>
+		<div>
+			Combo:
+			<div id="combo" class="CTATComboBox"
+				style="margin: 5px; display: inline-block;">
+				<option>----</option>
+				<option>select</option>
+				<option>do not select</option>
+			</div>
+		</div>
+		<div>
+			FractionBar:
+			<div id="fb" class="CTATFractionBar"
+				data-ctat-value="1/3+1/3+(0*1/3)"
+				style="margin: 5px; display: inline-block;"></div>
+			<div id="fbsubmit" class="CTATSubmitButton" data-ctat-target="fb"
+				style="display: inline-block;">Submit Fraction Bar</div>
+		</div>
+		<div>
+			Jumble:
+			<div id="jumble" class="CTATJumble"
+				style="margin: 5px; display: inline-block;">
+				<div>a</div>
+				<div>brown</div>
+				<div>quick</div>
+				<div>fox</div>
+			</div>
+		</div>
+		<div>
+			NumberLine:
+			<div id="nl" class="CTATNumberLine"
+				style="margin: 5px; display: inline-block;"></div>
+		</div>
+		<div>
+			PieChart:
+			<div id="pie" class="CTATPieChart"
+				style="margin: 5px; display: inline-block;"></div>
+		</div>
+		<div>
+			RadioButtons:
+			<div id="rb1" class="CTATRadioButton"
+				style="margin: 5px; display: inline-block;">Nope</div>
+			<div id="rb2" class="CTATRadioButton"
+				style="margin: 5px; display: inline-block;">Yes</div>
+			<div id="rb3" class="CTATRadioButton"
+				style="margin: 5px; display: inline-block;">Never</div>
+		</div>
+		<div>
+			TextArea:
+			<div id="ta" class="CTATTextArea"
+				style="margin: 5px; display: inline-block;"></div>
+		</div>
+		<div>
+			TextInput:
+			<div id="ti" class="CTATTextInput"
+				style="margin: 5px; display: inline-block;"></div>
+		</div>
+
+		<div id="hint-box"
+			style="float: right; position: absolute; bottom: 0; right: 0; margin: 3px;">
+			<div id="SkillWindow" class="CTATSkillWindow"
+				style="float: left; display: inline-block; margin-right: 5px;"></div>
+			<div id="HintWindow" class="CTATHintWindow"
+				style="display: inline-block;"></div>
+			<div style="float: right;">
+				<div id="hint-button" class="CTATHintButton"
+					style="margin: 0 5px 5px 5px"></div>
+				<div id="done-button" class="CTATDoneButton"
+					style="margin: 0 5px 0px 5px"></div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

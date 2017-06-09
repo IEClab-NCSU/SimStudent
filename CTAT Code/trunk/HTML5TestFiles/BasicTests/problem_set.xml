@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ProblemSet initial_sequence="0" selection_algorithm="sequential" description="HTML5 Specific Test Problem Set." max_count="1000" label="HTML5 Specific Test Problem Set." max_repeat="1" name="HTML5">
+  <Problems>
+    <Problem selection_features="" description="HTML5 Problem 1" problem_file="AS3HTML5-Test1.brd" name="Problem1" student_interface="NotATutor.swf" tutor_flag="tutor">
+    </Problem>
+	<Problem selection_features="" description="HTML5 Problem 2" problem_file="AS3HTML5-Test2.brd" name="Problem2" student_interface="NotATutor.swf" tutor_flag="tutor">
+    </Problem>
+    <Problem selection_features="" description="HTML5 Problem 3" problem_file="AS3HTML5-Test3.brd" name="Problem3" student_interface="NotATutor.swf" tutor_flag="tutor">
+    </Problem>
+    <Problem selection_features="" description="HTML5 Problem 4" problem_file="AS3HTML5-Test4.brd" name="Problem4" student_interface="NotATutor.swf" tutor_flag="tutor">
+    </Problem>	
+    <Problem selection_features="" description="HTML5 Problem 5" problem_file="AS3HTML5-Test5.brd" name="Problem5" student_interface="NotATutor.swf" tutor_flag="tutor">
+    </Problem>
+    <Problem selection_features="" description="HTML5 Problem 6" problem_file="AS3HTML5-Test6.brd" name="Problem6" student_interface="NotATutor.swf" tutor_flag="tutor">
+    </Problem>
+    <Problem selection_features="" description="HTML5 Problem 7" problem_file="AS3HTML5-Test7.brd" name="Problem7" student_interface="NotATutor.swf" tutor_flag="tutor">
+    </Problem>
+	<Problem selection_features="" description="HTML5 Problem 8" problem_file="AS3HTML5-Test8.brd" name="Problem8" student_interface="NotATutor.swf" tutor_flag="tutor">
+    </Problem>
+    <Problem selection_features="" description="HTML5 Problem 9" problem_file="AS3HTML5-Test9.brd" name="Problem9" student_interface="NotATutor.swf" tutor_flag="tutor">
+    </Problem>	
+  </Problems>
+  <Assets>
+  </Assets>
+</ProblemSet>

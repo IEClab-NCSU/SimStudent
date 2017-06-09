@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ProblemSet initial_sequence="0" selection_algorithm="sequential" description="Provides varying numbers of different categories of objects and asks student to compute the number of possible combinations." max_count="1000" label="8.17 Combinations" max_repeat="1" name="8.17">
+  <Problems>
+    <Problem selection_features="" description="The Apex company makes one automobile, the Borealis." problem_file="01Automobile.brd" name="Automobile" student_interface="8-17flash.swf" tutor_flag="tutor">
+      <Skills>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="solve-component"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="changed-given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="3" name="find-outcome"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="5" name="given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="done"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="3" name="find-outcome-expression"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="changed-given-entered"/>
+      </Skills>
+    </Problem>
+    <Problem selection_features="" description="Your class banquet is being held at fancy restaurant." problem_file="02Banquet.brd" name="Banquet" student_interface="8-17flash.swf" tutor_flag="tutor">
+      <Skills>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="3" name="find-outcome"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="5" name="given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="done"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="changed-given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="3" name="find-outcome-expression"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="given-entered"/>
+      </Skills>
+    </Problem>
+    <Problem selection_features="" description="Martha is making goodie bags for trick-or-treaters in her neighborhood this Halloween." problem_file="03Goodies.brd" name="Goodies" student_interface="8-17flash.swf" tutor_flag="tutor">
+      <Skills>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="changed-given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="changed-given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="3" name="find-outcome"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="changed-given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="5" name="given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="changed-given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="changed-given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="done"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="3" name="find-outcome-expression"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="changed-given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="given-entered"/>
+      </Skills>
+    </Problem>
+    <Problem selection_features="" description="Same the private detective is famous for his disguises." problem_file="04Disguises.brd" name="Disguises" student_interface="8-17flash.swf" tutor_flag="tutor">
+      <Skills>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="changed-given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="3" name="find-outcome"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="5" name="given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="solve-component"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="done"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="3" name="find-outcome-expression"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="given-entered"/>
+      </Skills>
+    </Problem>
+    <Problem selection_features="" description="At the Newfield College summer camp, each day is divded into a program." problem_file="05College.brd" name="College" student_interface="8-17flash.swf" tutor_flag="tutor">
+      <Skills>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="changed-given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="3" name="find-outcome"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="changed-given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="5" name="given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="done"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="3" name="find-outcome-expression"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="given-entered"/>
+      </Skills>
+    </Problem>
+    <Problem selection_features="" description="Fred is packing some t-shirts, shorts and baseball caps for a two week vacation." problem_file="06Clothes.brd" name="Clothes" student_interface="8-17flash.swf" tutor_flag="tutor">
+      <Skills>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="3" name="find-outcome"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="changed-given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="5" name="given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="solve-component"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="changed-given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="done"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="3" name="find-outcome-expression"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="changed-given-entered"/>
+        <Skill category="8-17-permutations-and-combinations1" occurrences="1" name="changed-given-entered"/>
+      </Skills>
+    </Problem>
+  </Problems>
+  <Categories>
+    <Collection name="general"/>
+    <Standard category="standard" name="PA"/>
+    <Standard category="standard" name="NCTM"/>
+    <Standard category="standard" name="CommonCore"/>
+    <Standard category="standard" name="Student"/>
+    <Grade name="6"/>
+    <Grade name="7"/>
+    <Grade name="8"/>
+    <Standard category="reporting_category" name="PA.E"/>
+    <Standard category="assessment_anchor" name="PA.E.3"/>
+    <Standard category="strand" name="NCTM.A"/>
+    <Standard category="grade_level" name="CommonCore.7"/>
+    <Standard category="strand" name="CommonCore.7.SP"/>
+    <Standard category="strand" name="Student.PC"/>
+    <Collection name="individual"/>
+    <Collection name="random_hints"/>
+  </Categories>
+  <Skills>
+    <Skill pLearn="0.2" category="8-17-permutations-and-combinations1" pGuess="0.2" pSlip="0.1" description="Done" label="Done" name="done" pKnown="0.25"/>
+    <Skill pLearn="0.2" category="8-17-permutations-and-combinations1" pGuess="0.2" pSlip="0.1" description="Enter changed given" label="Enter changed given" name="changed-given-entered" pKnown="0.25"/>
+    <Skill pLearn="0.2" category="8-17-permutations-and-combinations1" pGuess="0.2" pSlip="0.1" description="Enter given" label="Enter given" name="given-entered" pKnown="0.25"/>
+    <Skill pLearn="0.2" category="8-17-permutations-and-combinations1" pGuess="0.2" pSlip="0.1" description="Find outcome" label="Find outcome" name="find-outcome" pKnown="0.25"/>
+    <Skill pLearn="0.2" category="8-17-permutations-and-combinations1" pGuess="0.2" pSlip="0.1" description="Find outcome expression" label="Find outcome expression" name="find-outcome-expression" pKnown="0.25"/>
+    <Skill pLearn="0.2" category="8-17-permutations-and-combinations1" pGuess="0.2" pSlip="0.1" description="Solve component" label="Solve component" name="solve-component" pKnown="0.25"/>
+  </Skills>
+  <Assets>
+  </Assets>
+</ProblemSet>

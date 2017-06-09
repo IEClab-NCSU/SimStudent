@@ -1,0 +1,21 @@
+.jqx-grid-cell
+{
+	border: none;
+	font-size: 10px;		
+}
+
+.jqx-widget
+{
+	font-size: 10px;
+}
+
+.jqx-grid-header
+{
+	height: 25px !important;
+}
+
+.jqx-scrollbar,
+.jqx-grid-bottomright 
+{
+  visibility: inherit !important;
+}
