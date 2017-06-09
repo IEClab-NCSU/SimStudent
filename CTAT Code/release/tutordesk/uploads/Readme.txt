@@ -1,1 +1,0 @@
-Do not delete. We need this directory to exist on any server the uploader is deployed.

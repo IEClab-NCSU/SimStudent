@@ -1,1 +1,0 @@
-java -jar jsdoc-toolkit\jsrun.jar jsdoc-toolkit\app\run.js -r -c=./conf.json
