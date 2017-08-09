@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Exporter for OpenEdx</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="/static/css/stylish-portfolio.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="/static/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <a id="menu-toggle" href="#" class="btn btn-dark btn-lg toggle"><i class="fa fa-bars"></i></a>
+    <nav id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+            <a id="menu-close" href="#" class="btn btn-light btn-lg pull-right toggle"><i class="fa fa-times"></i></a>
+            <li class="sidebar-brand">
+                <a href="#top" onclick=$("#menu-close").click();>Our Services</a>
+            </li>
+            <li>
+                <a href="#top" onclick=$("#menu-close").click();>Exporter</a>
+            </li>
+            <li>
+                <a href="#about" onclick=$("#menu-close").click();>Smart</a>
+            </li>
+            <li>
+                <a href="#services" onclick=$("#menu-close").click();>More about us</a>
+            </li>
+
+        </ul>
+    </nav>
+
+
+    <header id="top" class="header">
+        <div class="text-vertical-center">
+            <h1>Exporter</h1>
+            <h3>A service for OpenEdx course</h3>
+            <br>
+            <div class="col-lg-6 col-lg-offset-3">
+                <!--<div class="input-group input-group-lg">
+                    <input type="text" name="course_id" class="form-control" id="mce-EMAIL" placeholder="Search your course id here..." >
+                    <span class="input-group-btn">
+                        <button type="submit" name="subscribe" id="mc-embedded-subscribe" class="btn btn-secondary">Search!</button>
+                    </span>
+                </div> -->
+
+                    <div class="input-group">
+                        <input id="user_input" type="text" class="form-control" aria-label="...">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Course <span class="caret"></span></button>
+                            <ul id="course_menu" class="dropdown-menu dropdown-menu">
+
+
+
+                            </ul>
+                            <button name="selectBtn" id="selectBtn" class="btn btn-success">Select</button>
+                        </div><!-- /btn-group -->
+                    </div><!-- /input-group -->
+
+
+            </div>
+        </div>
+    </header>
+
+
+    <!-- jQuery -->
+    <script src="/static/js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/static/js/bootstrap.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script>
+    // Closes the sidebar menu
+    $("#menu-close").click(function(e) {
+        e.preventDefault();
+        $("#sidebar-wrapper").toggleClass("active");
+    });
+    // Opens the sidebar menu
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#sidebar-wrapper").toggleClass("active");
+    });
+    // Scrolls to the selected menu item on the page
+    $(function() {
+        $('a[href*=#]:not([href=#],[data-toggle],[data-target],[data-slide])').click(function() {
+            if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') || location.hostname == this.hostname) {
+                var target = $(this.hash);
+                target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+                if (target.length) {
+                    $('html,body').animate({
+                        scrollTop: target.offset().top
+                    }, 1000);
+                    return false;
+                }
+            }
+        });
+
+        $.ajax({
+            url: "/getCourseId",
+            method: "GET",
+            dataType: "json",
+            success: function(data) {
+                for(var i = 0; i < data.length; i++) {
+                    var courseId = data[i].course_id;
+                    $("#course_menu").append('<li><a onclick="getValue(this.innerHTML)">' + courseId + '</a></li>');
+                }
+            }
+
+        });
+        var flag = true;
+        var course_id = "";
+        $('#selectBtn').on('click', function() {
+            if(flag) {
+                if($("#user_input").val() != "") {
+                    $("#selectBtn").prop('disabled', true);
+                }
+                course_id = $("#user_input").val().split(":")[1];
+                alert(course_id);
+                $.ajax({
+                    url: "/searchByCourseId?course_id=" + course_id,
+                    method: "POST",
+                    data: JSON.stringify({"course_id": course_id}),
+                    dataType: "json",
+                    success: function(data) {
+
+                        var location = window.location.href + "download?filename=" + course_id + ".csv";
+                        $("#selectBtn").html("<a href='" + location + "'>Download</a>");
+                        flag = false;
+                        setTimeout(function() {
+                            $("#selectBtn").prop('disabled', false);
+                        }, 1500);
+                    }
+                });
+           } else {
+                // if flag is false, which means this is the 'download' button
+
+           }
+
+        });
+
+
+
+
+
+    });
+
+    function getValue(str) {
+        $("#user_input").val(str);
+    }
+
+
+    </script>
+
+</body>
+
+</html>

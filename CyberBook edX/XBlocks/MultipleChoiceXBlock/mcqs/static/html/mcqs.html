@@ -1,0 +1,47 @@
+     <!-- question-block class: {% if self.user_choice %}class="attempted {%if self.correct %}correct{% else %}incorrect{% endif %}"{% endif %} -->
+    <br/>
+    <h3 class="hd hd2 problem-header">{{self.display_name}}</h3>
+    <br/>
+    <form id="question-block">
+    <p>{{ self.question }}</p>
+    <div id="choices">
+      {% if self.image_url != '' %}
+        <img src="{{self.image_url}}" style="width: 50%" />
+      {% endif %}
+       <fieldset role="radiogroup" aira-label>
+        {% for choice in self.choices %}
+        <div>
+           <!-- label class:{% if forloop.counter == self.user_choice %}user-choice{% endif %}
+           {% if self.user_choice and forloop.counter == self.correct_choice %} correct-choice{% endif %} -->
+            
+                <label class="">
+                   <input type="radio" name="choice" value="{{ forloop.counter }}"
+                    {% if self.user_choice = forloop.counter %}checked="checked"{% endif %} />
+                   {{ choice }}
+                    <!-- <i class="tick">&nbsp;&nbsp;&nbsp;  &#x2713;</i>
+                    <i class="ballot">&nbsp;&nbsp;&nbsp; &#10006;</i> -->
+                </label>
+        </div>
+        {% endfor %}
+        </fieldset>
+    </div>
+    <br/>
+    {% if self.hint != '' %}
+    <div class="hint-block">
+        <span id='hintImg' title="Get Hint"></span>
+        <span id='hint'></span>
+    </div>
+    {% endif %}
+    <br/>
+    <input type="button" id="submit" value="Check"  /> 
+    &nbsp; &nbsp; 
+    {% if self.hint != '' %}
+    <input type="button" id="getHint" value="Hint" />
+    {% endif %}
+ </form>
+<!--
+<a href="#popupVideo" data-rel="popup" data-position-to="window" class="ui-btn ui-corner-all ui-shadow ui-btn-inline">Launch video player</a>
+<div data-role="popup" id="popupVideo" data-overlay-theme="b" data-theme="a" data-tolerance="15,15" class="ui-content">
+    <iframe src="http://0.0.0.0:8000/courses/course-v1:UniversityX+CS101+2015_T1/jump_to_id/21f62d5133db42e9b0605f466d2b3800#718971fd6f624c8aab8b60d70601e450" width="497" height="298" seamless=""></iframe>
+</div>
+-->
