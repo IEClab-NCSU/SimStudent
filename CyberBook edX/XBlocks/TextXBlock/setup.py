@@ -21,11 +21,11 @@ def package_data(pkg, roots):
 
 
 setup(
-    name='textbox-xblock',
+    name='text-xblock',
     version='0.1',
-    description='An XBlock for Text Box Questions',
+    description='An XBlock for Multiple Choice Questions',
     packages=[
-        'textbox',
+        'text',
     ],
     install_requires=[
         'XBlock',
@@ -33,8 +33,8 @@ setup(
     ],
     entry_points={
         'xblock.v1': [
-            'textbox = textbox:TextboxXBlock',
+            'text = text:TextXBlock',
         ]
     },
-    package_data=package_data("textbox", ["static", "public"]),
+    package_data=package_data("text", ["static", "public"]),
 )
