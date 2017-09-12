@@ -10,6 +10,10 @@ function McqsXBlockInitView(runtime, element) {
     var correctOrNot = false;
     var userChoice = 0;
     var location_id = "";
+    var student_id = "";
+    var skillname = "";
+    var hasBeenSent = false;
+    
     $(function ($) {
         var xblockIdUrl = runtime.handlerUrl(element, 'get_xblock_id');
         $.ajax({
@@ -119,15 +123,124 @@ $( document ).on( "pagecreate", function() {
 */
         
         
-        // Export the course content to database: table export_course_content. Fucking stupid idea
+        
+        /* after we saved all the probability to database, this method is going to trigger the read probability function
         $.ajax({
-            url: runtime.handlerUrl(element, 'export_course_content'),
+            url: runtime.handlerUrl(element, 'get_temporary_probability_method'),
             type: "POST",
-            data: JSON.stringify({"export_data": true})
+            data: JSON.stringify({"get_data": true})
+        });
+        */
+        
+        
+        // This method trigger the get_border_color, if there is no any other XBlock(e.g. Text paragraph XBlock) matches the skill name.
+        $.ajax({
+            url: runtime.handlerUrl(element, "get_border_color"),
+            type: "POST",
+            data: JSON.stringify({"getBorderColor": true}),
+            success: function(data) {
+                console.log("multiple choice color:", data);
+                if(data.setBorderColor == 0) {
+                    // studio and lms: the structure of the html are not the same, data-usage-id is for studio use only.
+                    $("div[data-usage-id='" + xblock_id + "'] div[id='border']").css("border", "2px solid red");
+                    
+                } else {
+                    $("div[data-usage-id='" + xblock_id + "'] div[id='border']").removeAttr("style");
+                }
+            }
+        });
+        
+        //testing, for deletion function:
+        var deleteButtonGroup = document.getElementsByClassName("delete-button");
+        var xblockGroup = document.getElementsByClassName("xblock-student_view");
+        
+        var getXBlockIdFromBroswer=function(arg){  
+            return function(){  
+                
+                console.log("Now I have: " + document.getElementsByClassName("xblock-student_view").length + " xblock on the page.");
+                console.log("Now I have: " + document.getElementsByClassName("delete-button").length + " delete button on the page.");
+                console.log(arg);
+                console.log($("#deleteButton_" + arg).closest("section").children("article").children("div").attr("data-usage-id"));
+                var selectedXBlockId = $("#deleteButton_" + arg).closest("section").children("article").children("div").attr("data-usage-id");
+                
+//                $("div").one("click", ".action-secondary", function(event) {
+//	                //alert("Now the 'Cancle' button trigger: " + event.target.className + "#" + event.target.id);	
+//                });
+                $("div").one("click", ".action-primary", function(event) {
+	                //alert("Now the 'Yes' button trigger: " + event.target.className + "#" + event.target.id);
+                    $.ajax({
+                        url: runtime.handlerUrl(element, "delete_xbock"),
+                        type: "POST",
+                        data: JSON.stringify({"xblock_id": selectedXBlockId}),
+                        anysc: false,
+                        success: function(data) {
+                            console.log("Deleted sucessfully!");
+                        }
+                    });
+                    for(var i = 0; i < deleteButtonGroup.length; i++) {
+                        deleteButtonGroup[i].id = "deleteButton_" + (i);
+                        deleteButtonGroup[i].onclick = getXBlockIdFromBroswer(i);
+                    }
+                });
+                
+            }  
+        };
+        for(var i = 0; i < deleteButtonGroup.length; i++) {
+            deleteButtonGroup[i].id = "deleteButton_" + (i);
+            deleteButtonGroup[i].onclick = getXBlockIdFromBroswer(i);
+            
+        }
+        
+        
+        // for testing propose only, get student_pastel_id from DB.
+        $.ajax({
+            url: runtime.handlerUrl(element, 'get_pastel_student_id'),
+            type: "POST",
+            data: JSON.stringify({"get_pastel_student_id": true}),
+            success: function(data){
+                //alert(data['hasBeenSent']);
+                if(data['hasBeenSent'] == 'false') {
+                    $.ajax({
+                        url: runtime.handlerUrl(element, "get_studentId_and_skillname"),
+                        type: "POST",
+                        data: JSON.stringify({"getStudent_id": true}),
+                        success: function(data) {
+
+                            var student_id = data['student_id'];
+                            var skillname = data['skillname'];
+
+                            $.ajax({
+                                url: runtime.handlerUrl(element, 'get_probability'),
+                                type: "POST",
+                                data: JSON.stringify({"skillname": skillname, "student_id": student_id}),
+                                success: function(data) {
+                                    if(data != null) {
+                                           var probability = data['probability'];
+
+                                           if(parseFloat(probability) > 0.95) {
+                                                 $("div[data-id='" + xblock_id + "']").remove();
+                                           }
+                                    }
+
+                                }
+                            });
+
+
+                        }
+                    });
+                }
+                    
+                
+            }
         });
         
         
+        
     });
+    
+    
+    
+    
     
     function addBorderColor() {
         $("label").not($("label input[name='choice']:checked").parent()).hover(function() {
@@ -167,6 +280,7 @@ $( document ).on( "pagecreate", function() {
     
     
     
+        
     // when submit button has been clicked
     $('#submit', element).on('click', function(e){
         
@@ -179,11 +293,28 @@ $( document ).on( "pagecreate", function() {
         audio.play();
         */
         //before that, check if the user select a choice or not
-        
         checkAnswer();
         removeBorderColor();
         addBorderColor();
+        
+        
+        /* temporary table: temporary_probability (now we don't need it anymore)
+        $.ajax({
+            url: runtime.handlerUrl(element, 'save_temporary_probability_method'),
+            type: "POST",
+            data: JSON.stringify({"save_data": true}),
+            success: function(data) {
+                console.log("probability has been saved!");
+            }
+        });
+        */
+        
+        
     });
+    
+    
+    
+    
     
     // when getHint button has been clicked
     $("#getHint", element).on('click', function(e){
@@ -197,6 +328,7 @@ $( document ).on( "pagecreate", function() {
             if(count > hint_array.length - 1) {
                 count = 0;
             }
+            getHint2();
             saveHint();
             //alert(question);
             //$("#" + question + "hint").text(hint_array[count]);
@@ -211,6 +343,36 @@ $( document ).on( "pagecreate", function() {
         
     });
     
+    function saveStudentDataForProbability(correctness) {
+        // send this ajax request to my spring boot backend.
+        
+        $.ajax({
+            url: runtime.handlerUrl(element, "get_studentId_and_skillname"),
+            type: "POST",
+            data: JSON.stringify({"getStudent_id": true}),
+            success: function(data) {
+                var student_id = data['student_id'];
+                var skillname = data['skillname'];
+                var question_id = data['question_id'];
+                
+                $.ajax({
+                    url: "http://127.0.0.1:8080/callandsaveBKT",
+                    type: "GET",
+                    data: "student_id=" + student_id + "&skillname=" + skillname.split(' ').join('_') + "&correctness=" + correctness + "&question_id=" + question_id,
+                    dataType: 'jsonp',
+                    jsonp: 'callback',
+                    //jsonpCallback: "callback",
+                    anysc: false,
+                    success: function(data) {
+                        
+                    }
+                });
+            }
+        });
+    }
+    
+    
+    
     // check answer button
     function checkAnswer() {
         var selectedCheck = $("div[data-id='" + xblock_id + "'] input[name='choice']:checked");
@@ -219,7 +381,7 @@ $( document ).on( "pagecreate", function() {
         var setStatusWhenRefresh = runtime.handlerUrl(element, 'set_status_when_refresh');
         $.ajax({
             type: "POST",
-            data: JSON.stringify({'setStatus': true, 'userChoice': selectedCheck.val()}),
+            data: JSON.stringify({'setStatus': true, 'userChoice': selectedCheck.val(), 'hasBeenSent': 'true'}),
             url: setStatusWhenRefresh,
             async: false
         });
@@ -246,6 +408,7 @@ $( document ).on( "pagecreate", function() {
             type: "POST",
             data: JSON.stringify({'ans': userSelected}),
             url: checkUrl,
+            anysc: false,
             success: function(data){
                 // mark question as attempted
                 //$("#question-block").attr("id", xblock_id + "question-block");
@@ -255,12 +418,25 @@ $( document ).on( "pagecreate", function() {
                 if(data.correct == true){
                     selectedCheck.parent().addClass('correct');
                     selectedCheck.parent().append("<i class='tick'>&nbsp;&nbsp;&nbsp;  &#x2713;</i>");
+                    // save student data for probability  !hasBeenSent
+                    if(!hasBeenSent) {
+                        saveStudentDataForProbability(1);
+                        hasBeenSent = true;
+                    }
+                    
+                    
                 }else{
                     // indicate correct and incorrect
                     selectedCheck.parent().addClass('incorrect');
                     selectedCheck.parent().append("<i class='ballot'>&nbsp;&nbsp;&nbsp; &#10006;</i>");
+                    // save student data for probability
+                    if(!hasBeenSent) {
+                        saveStudentDataForProbability(0);
+                        hasBeenSent = true;
+                    }
+                    
                     var hostname = $(location).attr('host') + "/courses/";
-                    var count = 0;
+                    
                     $.ajax({
                         url: runtime.handlerUrl(element, "get_skill_mapping"),
                         type: "POST",
@@ -272,7 +448,11 @@ $( document ).on( "pagecreate", function() {
                             var paragraph_id = data['paragraph_id'];
                             var location_id = data['location_id'];
                             
-                            $("div[data-id='" + xblock_id + "'] div[class='hint-block']").append("<div>Please click the <a href='http://" + hostname + course_id + "/jump_to_id/" + location_id + "#" + paragraph_id + "'>link</a> here to review the course content again.");
+                            if($("div[data-id='" + xblock_id + "'] div[id='navigate_id']").length > 0 || $("div[data-id='" + xblock_id + "'] div[id='navigate_id']").html() != "") {
+                                $("div[data-id='" + xblock_id + "'] div[id='navigate_id']").remove();
+                            }
+                            
+                            $("div[data-id='" + xblock_id + "'] div[class='hint-block']").append("<div id='navigate_id'>Please click the <a href='http://" + hostname + course_id + "/jump_to_id/" + location_id + "#" + paragraph_id + "'>link</a> here to review the course content again.");
                             
                         }
                     });
@@ -281,6 +461,7 @@ $( document ).on( "pagecreate", function() {
                 }
                 
                 var userUrl = runtime.handlerUrl(element, 'get_student_id');
+                
                 $.ajax({
                     type: "POST",
                     data: JSON.stringify({'hintCount': count, 'type': 'checkbutton'}),
@@ -325,15 +506,19 @@ $( document ).on( "pagecreate", function() {
         });
     }
     
-    function saveHint() {
+    function getHint2() {
         var hintUrl = runtime.handlerUrl(element, 'get_hint');
-
         $.ajax({
             type: "POST",
             data: JSON.stringify({'getHint': true}),
             url: hintUrl,
             async: false
         });
+        
+    }
+    
+    
+    function saveHint() {
         //$("#hint").text(hint_array[count]);
         // start to send ajax request and store the user activities:
         var userUrl = runtime.handlerUrl(element, 'get_student_id');
@@ -347,6 +532,7 @@ $( document ).on( "pagecreate", function() {
             }
         });
     }
+    
     
     
 }

@@ -13,6 +13,7 @@ function McqsXBlockInitStudio(runtime, element) {
                 $('#problemIdForEdit').val(data.problemId);
                 $('#kcForEdit').val(data.kc);
                 $('#questionForEdit').val(data.question);
+                
                 var choices = "";
                 for(var i = 0; i < data.choices.length; i++) {
                     if(i == data.choices.length - 1) {
@@ -25,6 +26,8 @@ function McqsXBlockInitStudio(runtime, element) {
                 $('#hintForEdit').val(data.hint);
                 $('#correctForEdit').val(data.correct_choice);
                 $('#imageUrlForEdit').val(data.image_url);
+                $('#imageSizeForEdit').val(data.image_size);
+                
             }
         });
         
@@ -72,7 +75,7 @@ function McqsXBlockInitStudio(runtime, element) {
         var correct = $("#correctForEdit").val();
         var kc = $("#kcForEdit").val();
         var imageUrl = $("#imageUrlForEdit").val();
-        
+        var imageSize = $("#imageSizeForEdit").val();
         
         var updateUrl = runtime.handlerUrl(element, 'update_question');
         var obj = {
@@ -83,9 +86,11 @@ function McqsXBlockInitStudio(runtime, element) {
             'hint': hint,
             'correct': correct,
             'kc': kc,
-            'imageUrl': imageUrl
+            'imageUrl': imageUrl,
+            'imageSize': imageSize
         }
        
+        
         
         $.ajax({
             type: "POST",
@@ -95,6 +100,7 @@ function McqsXBlockInitStudio(runtime, element) {
                 runtime.notify('save', {state: 'end'});
             }
         });
+        
         
         
     });

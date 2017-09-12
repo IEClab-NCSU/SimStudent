@@ -1,12 +1,16 @@
      <!-- question-block class: {% if self.user_choice %}class="attempted {%if self.correct %}correct{% else %}incorrect{% endif %}"{% endif %} -->
+    
+
+<div id="border" {% if self.setBorderColor == 1 %} style="border: 2px solid red" {% endif %}>
+    <span class="skillname" hidden>{{ self.kc }}</span>
     <br/>
     <h3 class="hd hd2 problem-header">{{self.display_name}}</h3>
     <br/>
     <form id="question-block">
-    <p>{{ self.question }}</p>
+    <p>{{ self.question | safe}}</p>
     <div id="choices">
       {% if self.image_url != '' %}
-        <img src="{{self.image_url}}" style="width: 50%" />
+        <img src="{{self.image_url}}" style="width: {{self.image_size}}" />
       {% endif %}
        <fieldset role="radiogroup" aira-label>
         {% for choice in self.choices %}
@@ -17,7 +21,7 @@
                 <label class="">
                    <input type="radio" name="choice" value="{{ forloop.counter }}"
                     {% if self.user_choice = forloop.counter %}checked="checked"{% endif %} />
-                   {{ choice }}
+                   {{ choice | safe}}
                     <!-- <i class="tick">&nbsp;&nbsp;&nbsp;  &#x2713;</i>
                     <i class="ballot">&nbsp;&nbsp;&nbsp; &#10006;</i> -->
                 </label>
@@ -39,6 +43,10 @@
     <input type="button" id="getHint" value="Hint" />
     {% endif %}
  </form>
+ 
+
+</div>
+
 <!--
 <a href="#popupVideo" data-rel="popup" data-position-to="window" class="ui-btn ui-corner-all ui-shadow ui-btn-inline">Launch video player</a>
 <div data-role="popup" id="popupVideo" data-overlay-theme="b" data-theme="a" data-tolerance="15,15" class="ui-content">

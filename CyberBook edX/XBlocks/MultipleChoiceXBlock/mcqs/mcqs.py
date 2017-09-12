@@ -14,6 +14,7 @@ from xblockutils.studio_editable import StudioEditableXBlockMixin
 import MySQLdb
 import datetime
 import time
+from random import randint
 
 
 class McqsXBlock(XBlock, StudioEditableXBlockMixin):
@@ -66,6 +67,7 @@ class McqsXBlock(XBlock, StudioEditableXBlockMixin):
         default="image_url",
         scope=Scope.content
     )
+    image_size = String(default="50%", scope=Scope.content)
     user_choice = Integer(scope=Scope.user_state, help='Index of choice selected by User')
     correct = Boolean(default=False, scope=Scope.user_state, help='User selection is correct or not')
     row1 = String(scope=Scope.user_state)
@@ -77,7 +79,11 @@ class McqsXBlock(XBlock, StudioEditableXBlockMixin):
     module_id = Integer(default=0, scope=Scope.user_state)
     xblock_id = String(default="", scope=Scope.user_state)
     student_id = Integer(default=0, scope=Scope.user_state)
-    
+    probability = Integer(default=0, scope=Scope.user_state)
+    show_onandoff = Boolean(default=True, scope=Scope.user_state)
+    pastel_student_id = String(scope=Scope.user_state)
+    hasBeenSent = String(default = "false", scope = Scope.user_state)
+    setBorderColor = Integer(default=0, scope=Scope.content, help='Help studio view to see if there is any skillname missing')
     
     def resource_string(self, path):
         """
@@ -159,6 +165,8 @@ class McqsXBlock(XBlock, StudioEditableXBlockMixin):
     def set_status_when_refresh(self, data, suffix=''):
         self.count_times += 1
         self.user_choice = int(data.get('userChoice', 0))
+        self.hasBeenSent = str(data.get('hasBeenSent'))
+        
     
     
     #Get anonymous student id
@@ -311,12 +319,12 @@ class McqsXBlock(XBlock, StudioEditableXBlockMixin):
             return
         if clicktype == 'checkbutton':
 
-            question_related ='"question_details":{"display_name":"' + displayName + '", "problem name":"' + title + '", "problemId": "' + problemId + '", "question": "' + question + '", "choices": "' + choices + '", "user_choice":"' + userChoice + '", "skillname":"' + skillName + '", "kc": "' + skillName + '", "time zone": "US/Central", "student response type": "ATTEMPT", "student response subtype": "N/A", "tutor response type": "RESULT","tutor response subtype": "N/A", "level": "N/A", "problem view": "1", "step name": "N/A", "attemp at step": "' + str(
+            question_related ='"question_details":{"display_name":"' + displayName + '", "student_pastel_id":"' + str(self.pastel_student_id) + '", "problem name":"' + title + '", "problemId": "' + problemId + '", "question": "' + question + '", "choices": "' + choices + '", "user_choice":"' + userChoice + '", "skillname":"' + skillName + '", "kc": "' + skillName + '", "time zone": "US/Central", "student response type": "ATTEMPT", "student response subtype": "N/A", "tutor response type": "RESULT","tutor response subtype": "N/A", "level": "N/A", "problem view": "1", "step name": "N/A", "attemp at step": "' + str(
                     self.attempts) + '", "selection": "' + userChoice + '", "Action": "Multiple Choice", "input": "' + input + '", "feedback text": "' + feedback + '", "feedback classification": "N/A", "help level": "' + str(
                     self.hint_numbers) + '", "total number hints": "' + str(len(self.hint.split(
                     '|'))) + '", "condition name": "N/A", "condition type": "N/A", "kc category": "N/A", "school": "' + school + '", "class": "' + classname + '", "cf": "N/A"}'
         else:
-            question_related = '"question_details":{"display_name":"' + displayName + '", "problem name":"' + title + '", "problemId": "' + problemId + '", "question": "' + question + '", "choices": "' + choices + '", "user_choice":"' + userChoice + '","skillname":"' + skillName + '", "kc": "' + skillName + '", "time zone": "US/Central", "student response type": "HINT_REQUEST", "student response subtype": "N/A", "tutor response type": "HINT_MSG","tutor response subtype": "N/A", "level": "N/A", "problem view": "1", "step name": "N/A", "attemp at step": "' + str(
+            question_related = '"question_details":{"display_name":"' + displayName + '", "student_pastel_id":"' + str(self.pastel_student_id) + '", "problem name":"' + title + '", "problemId": "' + problemId + '", "question": "' + question + '", "choices": "' + choices + '", "user_choice":"' + userChoice + '","skillname":"' + skillName + '", "kc": "' + skillName + '", "time zone": "US/Central", "student response type": "HINT_REQUEST", "student response subtype": "N/A", "tutor response type": "HINT_MSG","tutor response subtype": "N/A", "level": "N/A", "problem view": "1", "step name": "N/A", "attemp at step": "' + str(
                     self.attempts) + '", "selection": "", "Action": "Multiple Choice get hint", "input": "", "feedback text": "' + feedback + '", "feedback classification": "N/A", "help level": "' + str(
                     self.hint_numbers) + '", "total number hints": "' + str(len(self.hint.split(
                     '|'))) + '", "condition name": "N/A", "condition type": "N/A", "kc category": "N/A", "school": "' + school + '", "class": "' + classname + '", "cf": "N/A"}'
@@ -439,32 +447,7 @@ class McqsXBlock(XBlock, StudioEditableXBlockMixin):
         
         return {'course_id': course_id, "location_id": location_id, "paragraph_id": paragraph_id}
     
-    # Mr.Dig shit ask me to do so. I can do nothing about it.
-    @XBlock.json_handler
-    def export_course_content(self, data, suffix=''):
-        xblock_id = str(unicode(self.scope_ids.usage_id))
-        type_of_xblock = "Multiple Choice Question"
-        title = self.display_name
-        question = self.question
-        choices = '| '.join(self.choices)
-        image_url = self.image_url
-        correct_answer = self.correct_choice
-        hint = self.hint
-        problem_name = self.problemId
-        skill_name = self.kc
-        
-        db = MySQLdb.connect("127.0.0.1", "root", "", "edxapp_csmh", charset='utf8');
-        cursor = db.cursor();
-        sql = """INSERT INTO edxapp_csmh.export_course_content(xblock_id, type_of_xblock, title, question, choices, image_url, correct_answer, hint, problem_name, skillname) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
-        
-        try:
-            cursor.execute(sql, (xblock_id, type_of_xblock, title, question, choices, image_url, correct_answer, hint, problem_name, skill_name))
-            db.commit()
-        except Exception as e:
-            print e
-            db.rollback()
-        finally:
-            db.close()
+    
     
     
     @XBlock.json_handler
@@ -497,6 +480,34 @@ class McqsXBlock(XBlock, StudioEditableXBlockMixin):
         """
         return {'response': self.question}
     
+    
+    @XBlock.json_handler
+    def get_border_color(self, data, suffix=''):
+        # start to save the XBlock related information in the database:
+        db = MySQLdb.connect("127.0.0.1", "root", "", "edxapp_csmh", charset='utf8');
+        cursor = db.cursor();
+        
+        course_id = str(self.scope_ids.usage_id.course_key)
+        skillname = self.kc
+        #for select the same course to see if there is any other xblock type have the same id
+        sql2 = """SELECT * FROM edxapp_csmh.export_course_content_and_skill_validation WHERE type_of_xblock = "TextParagraph" AND course_id = %s AND skillname = %s"""
+        try:
+            cursor.execute(sql2, (course_id, skillname))
+            result1 = cursor.fetchone()
+            if not cursor.rowcount:
+                print "No any other xblocks have the same skillname"
+                HtmlSetBorderColor = 0
+            else:
+                print "Found xblock with the same skillname."
+                HtmlSetBorderColor = 1
+        except Exception as e:
+            print "I am getting error when inserting - assessment."
+            print e
+            db.rollback()
+        finally:
+            db.close()
+        return {"setBorderColor": HtmlSetBorderColor}
+    
     @XBlock.json_handler
     def update_question(self, data, suffix=''):
         """
@@ -510,6 +521,74 @@ class McqsXBlock(XBlock, StudioEditableXBlockMixin):
         self.hint=data['hint']
         self.kc=data['kc']
         self.image_url=data['imageUrl']
+        self.image_size=data['imageSize']
+        
+        course_id = str(self.scope_ids.usage_id.course_key)
+        xblock_id = str(unicode(self.scope_ids.usage_id))
+        type_of_xblock = "MultipleChoiceQuestion"
+        title = self.display_name
+        question = self.question
+        choices = '| '.join(self.choices)
+        image_url = self.image_url
+        correct_answer = self.correct_choice
+        hint = self.hint
+        problem_name = self.problemId
+        skillname = self.kc
+        # start to save the XBlock related information in the database:
+        db = MySQLdb.connect("127.0.0.1", "root", "", "edxapp_csmh", charset='utf8');
+        cursor = db.cursor();
+        #for select the unique xblock_id
+        sql0 = """SELECT * FROM edxapp_csmh.export_course_content_and_skill_validation WHERE xblock_id = '%s'"""
+        #for insert the xblock information
+        sql = """INSERT INTO edxapp_csmh.export_course_content_and_skill_validation(course_id, xblock_id, type_of_xblock, title, question, choices, image_url, correct_answer, hint, problem_name, skillname) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+        #for update the xblock information
+        sql1 = """UPDATE edxapp_csmh.export_course_content_and_skill_validation SET course_id = %s, type_of_xblock = %s, title = %s, question = %s, choices = %s, image_url = %s, correct_answer = %s, hint = %s, problem_name = %s, skillname = %s where xblock_id = %s"""
+        #for select the same course to see if there is any other xblock type have the same id
+        sql2 = """SELECT * FROM edxapp_csmh.export_course_content_and_skill_validation WHERE type_of_xblock = "TextParagraph" AND course_id = %s AND skillname = %s"""
+        try:
+            cursor.execute(sql0 % str(unicode(self.scope_ids.usage_id)))
+            result = cursor.fetchone()
+            if not cursor.rowcount:
+                print "No any results(assessment) found, insert a new entry to assessment for this xblock:"
+                try:
+                    cursor.execute(sql, (course_id, xblock_id, type_of_xblock, title, question, choices, image_url, correct_answer, hint, problem_name, skillname))
+                    db.commit()
+                    cursor.execute(sql2, (course_id, skillname))
+                    result1 = cursor.fetchone()
+                    if not cursor.rowcount:
+                        print "No any other xblocks have the same skillname"
+                        self.setBorderColor = 1
+                    else:
+                        print "Found xblock with the same skillname."
+                        self.setBorderColor = 0
+                except Exception as e:
+                    print "I am getting error when inserting - assessment."
+                    print e
+                    db.rollback()
+            else:
+                print "Found the related entry in database, update the entry in assessment for this xblock."
+                try:
+                    cursor.execute(sql1, (course_id, type_of_xblock, title, question, choices, image_url, correct_answer, hint, problem_name, skillname, xblock_id))
+                    db.commit()
+                    cursor.execute(sql2, (course_id, skillname))
+                    result1 = cursor.fetchone()
+                    if not cursor.rowcount:
+                        print "No any other xblocks have the same skillname"
+                        self.setBorderColor = 1
+                    else:
+                        print "Found xblock with the same skillname."
+                        self.setBorderColor = 0
+                except Exception as e:
+                    print "I am getting error when updating - assessment."
+                    print e
+                    db.rollback()
+        except Exception as e:
+            print "I am getting error when selecting - assessment."
+            print e
+            db.rollback()
+        finally:
+            db.close()
+        
         
         return {'result': 'success'}
 
@@ -538,7 +617,7 @@ class McqsXBlock(XBlock, StudioEditableXBlockMixin):
         when mcqs_edit page is on load, get all the default data from here
         """
         
-        return {'display_name': self.display_name, 'title': self.title, 'problemId': self.problemId, 'kc': self.kc, 'question': self.question, 'choices': self.choices, 'correct_choice': self.correct_choice, 'hint': self.hint, 'image_url': self.image_url}
+        return {'display_name': self.display_name, 'title': self.title, 'problemId': self.problemId, 'kc': self.kc, 'question': self.question, 'choices': self.choices, 'correct_choice': self.correct_choice, 'hint': self.hint, 'image_url': self.image_url, 'image_size': self.image_size}
         
     @XBlock.json_handler
     def get_xblock_id(self, data, suffix=''):
@@ -550,6 +629,160 @@ class McqsXBlock(XBlock, StudioEditableXBlockMixin):
     def update_display_name(self, data, suffix=''):
         self.display_name=str(data['result'])
         return {'display_name': self.display_name}
+    
+    #temporary probability method for table: edxapp_csmh.temporary_probability
+    @XBlock.json_handler
+    def save_temporary_probability_method(self, data, suffix=''):
+        """
+            start look for the database: edxapp_csmh.temporary_probability
+        """
+
+        db = MySQLdb.connect("127.0.0.1", "root", "", "edxapp_csmh", charset='utf8');
+        cursor = db.cursor();
+        sql = """INSERT INTO edxapp_csmh.temporary_probability(student_id, question_id, skillname) VALUES (%s, %s, %s)"""
+        
+        try:
+            cursor.execute(sql, (self.pastel_student_id, self.problemId, self.kc))
+            db.commit()
+        except Exception as e:
+            print "Error happened when we tried to save probability to database."
+            print e
+            db.rollback()
+        finally:
+            db.close()
+    
+    #temporary probability method for reading probability from table: edxapp_csmh.temporary_probability
+    @XBlock.json_handler
+    def get_temporary_probability_method(self, data, suffix=''):
+        db = MySQLdb.connect("127.0.0.1", "root", "", "edxapp_csmh", charset='utf8');
+        cursor = db.cursor();
+        sql = """select * from edxapp_csmh.temporary_probability where question_id = %s and student_id= %s;"""
+        
+        try:
+            cursor.execute(sql ,(self.problemId, str(self.runtime.user_id)))
+            result = cursor.fetchone()
+            if not cursor.rowcount:
+                print "No any results(probability) found."
+                return
+            self.probability = result[3]
+            print "Get probability from DB: ", str(result[3])
+            db.commit()
+        except Exception as e:
+            print e
+            db.rollback()
+        finally:
+            db.close()
+    
+    
+    #for testing only: please delete it!
+    @XBlock.json_handler
+    def show_on_off_method(self, data, suffix=''):
+        return {"skillname": self.kc}
+    
+    @XBlock.json_handler
+    def change_on_off_method(self, data, suffix=''):
+        self.show_onandoff = False
+    
+    @XBlock.json_handler
+    def get_studentId_and_skillname(self, data, suffix=''):
+        return {"student_id": str(self.pastel_student_id), "skillname": self.kc, "question_id": self.problemId, "correctness": self.correct}
+    
+    @XBlock.json_handler
+    def delete_xbock(self, data, suffix=''):
+        xblock_id = str(data.get("xblock_id"))
+        print "Start to delete xblock_id"
+        db = MySQLdb.connect("127.0.0.1", "root", "", "edxapp_csmh", charset='utf8');
+        cursor = db.cursor();
+        sql = """SELECT * FROM edxapp_csmh.export_course_content_and_skill_validation WHERE xblock_id = '%s' """
+        sql1 = """DELETE FROM edxapp_csmh.export_course_content_and_skill_validation WHERE id = '%s' """
+        try:
+            cursor.execute(sql % (xblock_id))
+            result = cursor.fetchone()
+            if not cursor.rowcount:
+                print "No any result(xblock_id) found."
+            else:
+                xblock_table_id = str(result[0])
+                cursor.execute(sql1 % (xblock_table_id))
+            db.commit()
+        except Exception as e:
+            print "Error happened when we tried to delete xblock in database."
+            print e
+            db.rollback()
+        finally:
+            db.close()
+        print "End with deletion"
+    
+    
+    @XBlock.json_handler
+    def get_probability(self, data, suffix=''):
+        db = MySQLdb.connect("127.0.0.1", "root", "", "edxapp", charset='utf8');
+        cursor = db.cursor();
+        sql = """SELECT * FROM edxapp_csmh.temporary_probability where skillname = %s and student_id = %s order by id DESC limit 1;"""
+
+        try:
+            cursor.execute(sql ,(str(data.get('skillname')), str(data.get('student_id'))))
+            result = cursor.fetchone()
+            if not cursor.rowcount:
+                print "No any results(get_probability) found."
+                return
+            
+            return {'probability': str(result[5])}
+
+            db.commit()
+        except Exception as e:
+            print e
+            db.rollback()
+        finally:
+            db.close()
+    
+    @XBlock.json_handler
+    def get_pastel_student_id(self, data, suffix=''):
+        if self.pastel_student_id == '' or self.pastel_student_id is None:
+            db = MySQLdb.connect("127.0.0.1", "root", "", "edxapp", charset='utf8');
+            cursor = db.cursor();
+            username = ""
+            email = ""
+
+            sql = """SELECT * FROM edxapp.auth_user where id = %s"""
+
+            try:
+                cursor.execute(sql ,(str(self.runtime.user_id)))
+                result = cursor.fetchone()
+                if not cursor.rowcount:
+                    print "No any results(auth_student) found."
+                    return
+                username = str(result[4])
+                email = str(result[7])
+                print "Get username and email from DB: ", str(result[4]) + ", " + str(result[7])
+
+                db.commit()
+            except Exception as e:
+                print e
+                db.rollback()
+            finally:
+                db.close()
+
+            db1 = MySQLdb.connect("127.0.0.1", "root", "", "edxapp_csmh", charset='utf8');
+            cursor1 = db1.cursor();
+            
+            sql1 = """SELECT * FROM edxapp_csmh.pastel where name = %s and email = %s"""
+            try:
+                if email != "":
+                    cursor1.execute(sql1, (str(username), str(email)))
+                    result1 = cursor1.fetchone()
+                    if not cursor1.rowcount:
+                        print "No any results(pastel_student_id) found."
+                        return
+                    print "Get pastel_student_id from DB: ", str(result1[3])
+                    self.pastel_student_id = str(result1[3])
+                    db1.commit()
+            except Exception as e:
+                print e
+                db1.rollback()
+            finally:
+                db1.close()
+            
+        return {'pastel_student_id': self.pastel_student_id, 'hasBeenSent': self.hasBeenSent}
     
     @staticmethod
     def workbench_scenarios():
