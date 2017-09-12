@@ -64,7 +64,7 @@ class TextboxXBlock(XBlock, StudioEditableXBlockMixin):
         default='Image URL',
         scope=Scope.content
     )
-    
+    image_size = String(default="50%", scope=Scope.content)
     user_answer = String(scope=Scope.user_state, default="", help='Index of choice selected by User')
     correct = Boolean(default=False, scope=Scope.user_state, help='User selection is correct or not')
     row1 = String(scope=Scope.user_state)
@@ -363,6 +363,7 @@ class TextboxXBlock(XBlock, StudioEditableXBlockMixin):
         self.hint=data['hint']
         self.kc=data['kc']
         self.image_url=data['image_url']
+        self.image_size=data['imageSize']
         
         course_id = str(self.scope_ids.usage_id.course_key)
         xblock_id = str(unicode(self.scope_ids.usage_id))
@@ -459,7 +460,7 @@ class TextboxXBlock(XBlock, StudioEditableXBlockMixin):
         when mcqs_edit page is on load, get all the default data from here
         """
         
-        return {'display_name': self.display_name, 'title': self.title, 'problemId': self.problemId, 'kc': self.kc, 'question': self.question, 'correct_answer': self.correct_answer, 'hint': self.hint, 'image_url': self.image_url}
+        return {'display_name': self.display_name, 'title': self.title, 'problemId': self.problemId, 'kc': self.kc, 'question': self.question, 'correct_answer': self.correct_answer, 'hint': self.hint, 'image_url': self.image_url, 'image_size': self.image_size}
         
     @XBlock.json_handler
     def get_xblock_id(self, data, suffix=''):

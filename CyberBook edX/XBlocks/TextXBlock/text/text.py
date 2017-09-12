@@ -82,7 +82,7 @@ class TextXBlock(XBlock, StudioEditableXBlockMixin):
     )
     user_choice = Integer(scope=Scope.user_state, help='Index of choice selected by User')
     correct = Boolean(default=False, scope=Scope.user_state, help='User selection is correct or not')
-    
+    image_size = String(default="50%", scope=Scope.content)
     row1 = String(scope=Scope.user_state)
     #This 'attempt' attribute is for 'attempts' column
     attempts = Integer(default=0, scope=Scope.user_state)
@@ -389,6 +389,7 @@ class TextXBlock(XBlock, StudioEditableXBlockMixin):
         self.text_title=data['textTitle']
         self.text_sub_title=data['textSubTitle']
         self.image_url = data['image_url']
+        self.image_size=data['imageSize']
         
         course_id = str(self.scope_ids.usage_id.course_key)
         xblock_id = str(unicode(self.scope_ids.usage_id))
@@ -480,7 +481,7 @@ class TextXBlock(XBlock, StudioEditableXBlockMixin):
         when mcqs_edit page is on load, get all the default data from here
         """
         
-        return {'display_name': self.display_name, 'title': self.title,  'kc': self.kc, 'text_title': self.text_title, 'text_content': self.text_content, 'text_sub_title': self.text_sub_title, 'image_url': self.image_url}
+        return {'display_name': self.display_name, 'title': self.title,  'kc': self.kc, 'text_title': self.text_title, 'text_content': self.text_content, 'text_sub_title': self.text_sub_title, 'image_url': self.image_url, 'image_size': self.image_size}
     
     
     @XBlock.json_handler

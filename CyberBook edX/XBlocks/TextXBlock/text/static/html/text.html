@@ -14,7 +14,7 @@
 
     <br/>
     {% if self.image_url != '' %}
-        <img src="{{self.image_url}}" style="width: 80%" /><br/>
+        <img src="{{self.image_url}}" style="width: {{self.image_size}}" /><br/>
     {% endif %}
     
     <p style="font-family: Times; font-size: 25px; line-height: 130%">{{ self.text_content|safe }}</p>

@@ -19,6 +19,7 @@ function TextboxXBlockInitStudio(runtime, element) {
                 hintMessage = data.hint;
                 $('#correctForEdit').val(data.correct_choice);
                 $('#imageUrlForEdit').val(data.image_url);
+                $('#imageSizeForEdit').val(data.image_size);
             }
         });
         
@@ -66,6 +67,7 @@ function TextboxXBlockInitStudio(runtime, element) {
         var hint = $("#hintForEdit").val();
         var kc = $("#kcForEdit").val();
         var imageUrl = $('#imageUrlForEdit').val();
+        var imageSize = $("#imageSizeForEdit").val();
         
         var updateUrl = runtime.handlerUrl(element, 'update_question');
         var obj = {
@@ -75,7 +77,8 @@ function TextboxXBlockInitStudio(runtime, element) {
             'correct_answer': correct_answer,
             'hint': hint,
             'kc': kc,
-            'image_url': imageUrl
+            'image_url': imageUrl,
+            'imageSize': imageSize
         }
        
         

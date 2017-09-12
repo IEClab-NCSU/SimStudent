@@ -17,6 +17,7 @@ function TextXBlockInitStudio(runtime, element) {
                 $('#textContentForEdit').val(data.text_content);
                 $('#textSubTitleForEdit').val(data.text_sub_title);
                 $('#imageForEdit').val(data.image_url);
+                $('#imageSizeForEdit').val(data.image_size);
             }
         });
         
@@ -37,13 +38,14 @@ function TextXBlockInitStudio(runtime, element) {
         var textTitle = $("#textTitleForEdit").val();
         var textSubTitle = $("#textSubTitleForEdit").val();
         var image_url = $("#imageForEdit").val();
-        
+         var imageSize = $("#imageSizeForEdit").val();
         var obj = {
             'kc': kc,
             'textTitle': textTitle,
             'textContent' : textContent,
             'textSubTitle' : textSubTitle,
-            'image_url': image_url
+            'image_url': image_url,
+            'imageSize': imageSize
         }
        
         var updateUrl = runtime.handlerUrl(element, 'update_question');

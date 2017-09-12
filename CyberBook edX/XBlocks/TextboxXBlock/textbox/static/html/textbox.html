@@ -12,7 +12,7 @@
     <h4>{{ self.question }}</h4>
     <br/>
     {% if self.image_url != '' %}
-        <img src="{{self.image_url}}" style="width: 80%" />
+        <img src="{{self.image_url}}" style="width: {{self.image_size}}" />
     {% endif %}
     <div id="answers">
        <span class='textanswer'>Answer:</span> &nbsp;<input id='userAnswer' type='text' size='25'/>
