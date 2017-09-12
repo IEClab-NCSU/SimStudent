@@ -1,8 +1,12 @@
      <!-- question-block class: {% if self.user_choice %}
      class="attempted {%if self.correct %}correct{% else %}incorrect{% endif %}"{% endif %} -->
+<div id="border" {% if self.setBorderColor == 1 %} style="border: 2px solid red" {% endif %}>    
+   <span class="skillname" hidden>{{ self.kc }}</span>
+    {% if self.display_name != '' %}
     <br/>
     <h3 class="hd hd2 problem-header"> {{self.display_name}} </h3>
     <br/>
+    {% endif %}
     
     <form id="question-block">
     <h4>{{ self.question }}</h4>
@@ -27,3 +31,4 @@
     <input type="button" id="getHint" value="Hint" />
     {% endif %}
  </form>
+</div>

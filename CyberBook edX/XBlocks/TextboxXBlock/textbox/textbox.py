@@ -314,38 +314,41 @@ class TextboxXBlock(XBlock, StudioEditableXBlockMixin):
         
         return response
     
-    # Mr.dig shit asked me to do so. I can do nothing about it.
-    @XBlock.json_handler
-    def export_course_content(self, data, suffix=''):
-        xblock_id = str(unicode(self.scope_ids.usage_id))
-        type_of_xblock = "Text Box Question"
-        title = self.display_name
-        question = self.question
-        image_url = self.image_url
-        correct_answer = self.correct_answer
-        hint = self.hint
-        problem_name = self.problemId
-        skill_name = self.kc
-        
-        db = MySQLdb.connect("127.0.0.1", "root", "", "edxapp_csmh");
-        cursor = db.cursor();
-        sql = """INSERT INTO edxapp_csmh.export_course_content(xblock_id, type_of_xblock, title, question, image_url, correct_answer, hint, problem_name, skillname) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"""
-        
-        try:
-            cursor.execute(sql, (xblock_id, type_of_xblock, title, question, image_url, correct_answer, hint, problem_name, skill_name))
-            db.commit()
-        except Exception as e:
-            print e
-            db.rollback()
-        finally:
-            db.close()
-    
     @XBlock.json_handler
     def get_question_name(self, data, suffix=''):
         """
         get question name as a hint id 
         """
         return {'response': self.question}
+    
+    
+    @XBlock.json_handler
+    def get_border_color(self, data, suffix=''):
+        # start to save the XBlock related information in the database:
+        db = MySQLdb.connect("127.0.0.1", "root", "", "edxapp_csmh", charset='utf8');
+        cursor = db.cursor();
+        
+        course_id = str(self.scope_ids.usage_id.course_key)
+        skillname = self.kc
+        #for select the same course to see if there is any other xblock type have the same id
+        sql2 = """SELECT * FROM edxapp_csmh.export_course_content_and_skill_validation WHERE type_of_xblock = "TextParagraph" AND course_id = %s AND skillname = %s"""
+        try:
+            cursor.execute(sql2, (course_id, skillname))
+            result1 = cursor.fetchone()
+            if not cursor.rowcount:
+                print "No any other xblocks have the same skillname"
+                HtmlSetBorderColor = 0
+            else:
+                print "Found xblock with the same skillname."
+                HtmlSetBorderColor = 1
+        except Exception as e:
+            print "I am getting error when inserting - assessment."
+            print e
+            db.rollback()
+        finally:
+            db.close()
+        return {"setBorderColor": HtmlSetBorderColor}
+    
     
     @XBlock.json_handler
     def update_question(self, data, suffix=''):
@@ -360,6 +363,74 @@ class TextboxXBlock(XBlock, StudioEditableXBlockMixin):
         self.hint=data['hint']
         self.kc=data['kc']
         self.image_url=data['image_url']
+        
+        course_id = str(self.scope_ids.usage_id.course_key)
+        xblock_id = str(unicode(self.scope_ids.usage_id))
+        type_of_xblock = "TextBoxQuestion"
+        title = self.display_name
+        question = self.question
+        image_url = self.image_url
+        correct_answer = self.correct_answer
+        hint = self.hint
+        problem_name = self.problemId
+        skillname = self.kc
+        
+        ## start from here:
+        # start to save the XBlock related information in the database:
+        db = MySQLdb.connect("127.0.0.1", "root", "", "edxapp_csmh", charset='utf8');
+        cursor = db.cursor();
+        #for select the unique xblock_id
+        sql0 = """SELECT * FROM edxapp_csmh.export_course_content_and_skill_validation WHERE xblock_id = '%s'"""
+        #for insert the xblock information
+        sql = """INSERT INTO edxapp_csmh.export_course_content_and_skill_validation(course_id, xblock_id, type_of_xblock, title, question, image_url, correct_answer, hint, problem_name, skillname) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+        #for update the xblock information
+        sql1 = """UPDATE edxapp_csmh.export_course_content_and_skill_validation SET course_id = %s, title = %s, question = %s, image_url = %s, correct_answer = %s, hint = %s, problem_name = %s, skillname = %s where xblock_id = %s"""
+        #for select the same course to see if there is any other xblock type have the same id
+        sql2 = """SELECT * FROM edxapp_csmh.export_course_content_and_skill_validation WHERE type_of_xblock = "TextParagraph" AND course_id = %s AND skillname = %s"""
+        try:
+            cursor.execute(sql0 % str(unicode(self.scope_ids.usage_id)))
+            result = cursor.fetchone()
+            if not cursor.rowcount:
+                print "No any results(assessment) found, insert a new entry to assessment for this xblock:"
+                try:
+                    cursor.execute(sql, (course_id, xblock_id, type_of_xblock, title, question, image_url, correct_answer, hint, problem_name, skillname))
+                    db.commit()
+                    cursor.execute(sql2, (course_id, skillname))
+                    result1 = cursor.fetchone()
+                    if not cursor.rowcount:
+                        print "No any other xblocks have the same skillname"
+                        self.setBorderColor = 1
+                    else:
+                        print "Found xblock with the same skillname."
+                        self.setBorderColor = 0
+                except Exception as e:
+                    print "I am getting error when inserting - assessment."
+                    print e
+                    db.rollback()
+            else:
+                print "Found the related entry in database, update the entry in assessment for this xblock."
+                try:
+                    cursor.execute(sql1, (course_id, title, question, image_url, correct_answer, hint, problem_name, skillname, xblock_id))
+                    db.commit()
+                    cursor.execute(sql2, (course_id, skillname))
+                    result1 = cursor.fetchone()
+                    if not cursor.rowcount:
+                        print "No any other xblocks have the same skillname"
+                        self.setBorderColor = 1
+                    else:
+                        print "Found xblock with the same skillname."
+                        self.setBorderColor = 0
+                except Exception as e:
+                    print "I am getting error when updating - assessment."
+                    print e
+                    db.rollback()
+        except Exception as e:
+            print "I am getting error when selecting - assessment."
+            print e
+            db.rollback()
+        finally:
+            db.close()
+        
         
         return {'result': 'success'}
 
@@ -400,7 +471,33 @@ class TextboxXBlock(XBlock, StudioEditableXBlockMixin):
     def update_display_name(self, data, suffix=''):
         self.display_name=data['result']
         return {'display_name': self.display_name}
-    
+  
+
+    @XBlock.json_handler
+    def delete_xbock(self, data, suffix=''):
+        xblock_id = str(data.get("xblock_id"))
+        print "Start to delete xblock_id"
+        db = MySQLdb.connect("127.0.0.1", "root", "", "edxapp_csmh", charset='utf8');
+        cursor = db.cursor();
+        sql = """SELECT * FROM edxapp_csmh.export_course_content_and_skill_validation WHERE xblock_id = '%s' """
+        sql1 = """DELETE FROM edxapp_csmh.export_course_content_and_skill_validation WHERE id = '%s' """
+        try:
+            cursor.execute(sql % (xblock_id))
+            result = cursor.fetchone()
+            if not cursor.rowcount:
+                print "No any result(xblock_id) found."
+            else:
+                xblock_table_id = str(result[0])
+                cursor.execute(sql1 % (xblock_table_id))
+            db.commit()
+        except Exception as e:
+            print "Error happened when we tried to delete xblock in database."
+            print e
+            db.rollback()
+        finally:
+            db.close()
+        print "End with deletion"
+
     @staticmethod
     def workbench_scenarios():
         """

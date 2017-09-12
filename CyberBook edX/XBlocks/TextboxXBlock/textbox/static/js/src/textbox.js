@@ -70,12 +70,60 @@ function TextboxXBlockInitView(runtime, element) {
             }    
         });
         
-        // Export the course content to database: table export_course_content. Fucking stupid idea
+        // This method trigger the get_border_color, if there is no any other XBlock(e.g. Text paragraph XBlock) matches the skill name.
         $.ajax({
-            url: runtime.handlerUrl(element, 'export_course_content'),
+            url: runtime.handlerUrl(element, "get_border_color"),
             type: "POST",
-            data: JSON.stringify({"export_data": true})
+            data: JSON.stringify({"getBorderColor": true}),
+            success: function(data) {
+                if(data.setBorderColor == 0) {
+                    // studio and lms: the structure of the html are not the same, data-usage-id is for studio use only.
+                    $("div[data-usage-id='" + xblock_id + "'] div[id='border']").css("border", "2px solid red");
+                    
+                } 
+            }
         });
+        
+        // testing, for deletion function:
+        var deleteButtonGroup = document.getElementsByClassName("delete-button");
+        var xblockGroup = document.getElementsByClassName("xblock-student_view");
+        
+        var getXBlockIdFromBroswer=function(arg){  
+            return function(){  
+                
+                console.log("Now I have: " + document.getElementsByClassName("xblock-student_view").length + " xblock on the page.");
+                console.log("Now I have: " + document.getElementsByClassName("delete-button").length + " delete button on the page.");
+                console.log(arg);
+                console.log($("#deleteButton_" + arg).closest("section").children("article").children("div").attr("data-usage-id"));
+                var selectedXBlockId = $("#deleteButton_" + arg).closest("section").children("article").children("div").attr("data-usage-id");
+                
+//                $("div").one("click", ".action-secondary", function(event) {
+//	                //alert("Now the 'Cancle' button trigger: " + event.target.className + "#" + event.target.id);	
+//                });
+                $("div").one("click", ".action-primary", function(event) {
+	                //alert("Now the 'Yes' button trigger: " + event.target.className + "#" + event.target.id);
+                    $.ajax({
+                        url: runtime.handlerUrl(element, "delete_xbock"),
+                        type: "POST",
+                        data: JSON.stringify({"xblock_id": selectedXBlockId}),
+                        anysc: false,
+                        success: function(data) {
+                            console.log("Deleted sucessfully!");
+                        }
+                    });
+                    for(var i = 0; i < deleteButtonGroup.length; i++) {
+                        deleteButtonGroup[i].id = "deleteButton_" + (i);
+                        deleteButtonGroup[i].onclick = getXBlockIdFromBroswer(i);
+                    }
+                });
+                
+            }  
+        };
+        for(var i = 0; i < deleteButtonGroup.length; i++) {
+            deleteButtonGroup[i].id = "deleteButton_" + (i);
+            deleteButtonGroup[i].onclick = getXBlockIdFromBroswer(i);
+            
+        }
         
         
     });
