@@ -26,7 +26,7 @@ public class MysqlSSHConnector {
             //String strSshHost = "127.0.0.1";
             //int nSshPort = 2222;                                    // remote SSH host port number
             String strRemoteHost = "127.0.0.1";  // hostname or ip of your database server
-            int nLocalPort = 3306;                                // local port number use to bind SSH tunnel
+            int nLocalPort = 3307;                                // local port number use to bind SSH tunnel
             int nRemotePort = 3306;                               // remote port number of your database
             String strDbUser = "root";                    // database loging username
             String strDbPassword = "";                    // database login password

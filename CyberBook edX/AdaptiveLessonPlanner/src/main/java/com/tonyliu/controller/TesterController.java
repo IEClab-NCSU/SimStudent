@@ -154,8 +154,8 @@ public class TesterController {
 
 
     @RequestMapping(value = "/callandsaveBKT", produces = MediaType.APPLICATION_JSON_VALUE)
-    public StudentProbability callandsaveBKT(@RequestParam(value="student_id") String studentId, @RequestParam(value = "skillname") String skillname, @RequestParam(value = "correctness") String correctness, @RequestParam(value = "question_id") String questionId) {
-        Double currentL = xblockService.saveStudentProbability(studentId, skillname, correctness, questionId);
+    public StudentProbability callandsaveBKT(@RequestParam(value="student_id") String studentId, @RequestParam(value = "skillname") String skillname, @RequestParam(value = "correctness") String correctness, @RequestParam(value = "question_id") String questionId, @RequestParam(value = "course") String course) {
+        Double currentL = xblockService.saveStudentProbability(studentId, skillname, correctness, questionId, course);
         StudentProbability sp = new StudentProbability();
         sp.setStudentId(studentId);
         sp.setSkillname(skillname);

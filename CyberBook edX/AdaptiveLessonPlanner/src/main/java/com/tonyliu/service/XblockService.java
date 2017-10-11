@@ -43,7 +43,7 @@ public class XblockService {
             conn = cs.getConn();
             session = cs.getSession();
 
-            String sql = "Insert into edxapp_csmh.temporary_probability(student_id, skillname, correctness, timestamp) values(?,?,?,?)";
+            String sql = "Insert into edxapp_csmh.temporary_probability(student_pastel_id, skillname, correctness, timestamp) values(?,?,?,?)";
             ps = conn.prepareStatement(sql);
             ps.setString(1, studentId);
             ps.setString(2, skillname);
@@ -79,7 +79,7 @@ public class XblockService {
 
 
     // This method help us to save student data from the table: edxapp_csmh.temporary_probability
-    public Double saveStudentProbability(String studentId, String skillname, String correctness, String questionId) {
+    public Double saveStudentProbability(String studentId, String skillname, String correctness, String questionId, String course) {
         String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 
         // get opportunity_counts from DB then add 1 to it:
@@ -89,7 +89,7 @@ public class XblockService {
             session = cs.getSession();
 
             // how to make sure that ALP only accept the first attempt
-            String sql0 = "select count(*) from edxapp_csmh.temporary_probability where problem_name = ? and student_id = ?";
+            String sql0 = "select count(*) from edxapp_csmh.temporary_probability where problem_name = ? and student_pastel_id = ?";
             ps = conn.prepareStatement(sql0);
             ps.setString(1, questionId);
             ps.setString(2, studentId);
@@ -102,7 +102,7 @@ public class XblockService {
                 }
             }
 
-            String sql = "select * from edxapp_csmh.temporary_probability where student_id = ? and skillname = ?";
+            String sql = "select * from edxapp_csmh.temporary_probability where student_pastel_id = ? and skillname = ?";
             ps = conn.prepareStatement(sql);
             ps.setString(1, studentId);
             ps.setString(2, skillname);
@@ -121,9 +121,10 @@ public class XblockService {
             double G = 0;
             // which means this is the first time that the student answer the question
             if(count == 0) {
-                String bkt_sql = "select * from edxapp_csmh.init_parameters_bkt where skillname = ?";
+                String bkt_sql = "select * from edxapp_csmh.init_parameters_bkt where skillname = ? and course_name = ?";
                 ps = conn.prepareStatement(bkt_sql);
                 ps.setString(1, skillname);
+                ps.setString(2, course);
                 rs = ps.executeQuery();
 
                 while(rs.next()) {
@@ -138,7 +139,7 @@ public class XblockService {
                 double firstL = bkt.computeL();
                 // then we assume Lzero: 0.001, G: 0.111, S:0.001, T:0.409 -> got these assumed initial data from Neal's test.py file
                 count ++;
-                String sql1 = "insert into edxapp_csmh.temporary_probability(student_id, skillname, correctness, timestamp, probability, opportunity_counts, problem_name) values(?,?,?,?,?,?,?) ";
+                String sql1 = "insert into edxapp_csmh.temporary_probability(student_pastel_id, skillname, correctness, timestamp, probability, opportunity_counts, problem_name) values(?,?,?,?,?,?,?) ";
                 ps = conn.prepareStatement(sql1);
                 ps.setString(1, studentId);
                 ps.setString(2, skillname);
@@ -156,7 +157,7 @@ public class XblockService {
                 double currentL = bkt.computeL();
 
                 count++;
-                String sql1 = "insert into edxapp_csmh.temporary_probability(student_id, skillname, correctness, timestamp, probability, opportunity_counts, problem_name) values(?,?,?,?,?,?,?) ";
+                String sql1 = "insert into edxapp_csmh.temporary_probability(student_pastel_id, skillname, correctness, timestamp, probability, opportunity_counts, problem_name) values(?,?,?,?,?,?,?) ";
                 ps = conn.prepareStatement(sql1);
                 ps.setString(1, studentId);
                 ps.setString(2, skillname);
