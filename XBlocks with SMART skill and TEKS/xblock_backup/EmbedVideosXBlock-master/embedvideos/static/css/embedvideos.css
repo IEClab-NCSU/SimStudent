@@ -1,0 +1,10 @@
+/* CSS for EmbedVideosXBlock */
+
+
+.embedvideos_block .count {
+    font-weight: bold;
+}
+
+.embedvideos_block p {
+    cursor: pointer;
+}

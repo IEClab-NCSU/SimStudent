@@ -1,0 +1,17 @@
+     <!-- question-block class: {% if self.user_choice %}class="attempted {%if self.correct %}correct{% else %}incorrect{% endif %}"{% endif %} -->
+  
+    <!-- <h3 class="hd hd2 problem-header">Multiple Choice</h3> -->
+    {% if self.text_title != '' %}
+        <p style="font-family: Times; font-size: 45px; line-height: 120%; color: #D72942; margin-bottom: 0px">{{self.text_title}}</p>
+    {% endif %}
+    {% if self.text_sub_title != '' %}
+        <p style="font-family: Times; font-size: 32px;  color: #76CAE6; margin-bottom: 0px">{{ self.text_sub_title }}</p>
+    {% endif %}
+
+    <br/>
+    {% if self.image_url != '' %}
+        <img src="{{self.image_url}}" style="width: 80%" /><br/>
+    {% endif %}
+    
+    <p style="font-family: Times; font-size: 25px; line-height: 130%">{{ self.text_content|safe }}</p>
+ 

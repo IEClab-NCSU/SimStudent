@@ -1,0 +1,7 @@
+*.egg-info/
+node_modules/
+*.pyc
+*.sw[op]
+.coverage
+coverage.xml
+.tox/

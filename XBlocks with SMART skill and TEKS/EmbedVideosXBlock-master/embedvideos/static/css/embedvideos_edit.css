@@ -1,0 +1,46 @@
+/* changed from overflow-y:auto; because of the extra white
+   space that appears at the end of the modal window
+*/
+
+[class*="view-"] .modal-lg.modal-editor .modal-content {
+    overflow-y: hidden;
+}
+
+.ui-tabs .ui-tabs-nav {
+    border-bottom: 5px solid #e5e5e5;
+}
+
+.tab-header {
+    margin-bottom: 0;
+    padding-left: 15px;
+}
+
+[class*="view-"] .modal-window .editor-with-buttons {
+    margin-bottom: 0;
+}
+
+.ui-tabs .ui-tabs-nav li a {
+    padding: 5px 0 5px 15px;
+    outline: 0;
+}
+
+.ui-tabs .ui-tabs-nav li img {
+    display: block;
+    opacity: 0.4;
+}
+
+.selected {
+    opacity: 1 !important;
+}
+
+.xblock-actions {
+    background-color: #e5e5e5;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    padding: 5px 0 0 5px !important;
+}
+
+#tabs ul li:last-child {
+    margin-bottom: 70px;
+}
