@@ -1,25 +1,48 @@
 """
-Preprocess the text to replace new line, tab character and empty characters
-
+Preprocessing of the text (questions and paragraphs)
 """
 
 import re
-from nltk import sent_tokenize
 
 
-def preprocess(content, use_sentence):
-    content = content.decode('utf-8')
-    #print content
-    #print use_sentence
+def removeIfStartsWithNumber(textunit):
 
-    if use_sentence:
-        list = sent_tokenize(content)
-    else:
-        list = content.split("\n\n")
+    if len(textunit) >= 3 and \
+            textunit[0].isdigit() \
+            and textunit[1] == '.':
+        textunit = textunit[3:]
 
-    list = [re.sub(r'\n', ' ', l) for l in list]
-    list = [re.sub(r'\t', ' ', l) for l in list]
-    list = [re.sub(r' +', ' ', l) for l in list]
-    list = filter(None, list)
-    #list = [l.decode('utf-8') for l in list]
-    return list
+    return textunit
+
+
+def cleanText(text):
+
+    newcontent = []
+
+    for textunit in text:
+
+        if textunit[1] \
+                and not (textunit[1].startswith("Answer"))\
+                and textunit[1] != "":
+            newtext = removeIfStartsWithNumber(textunit[1])
+            newtext = newtext.replace("_", "")
+            newcontent.append((textunit[0], newtext))
+
+    return newcontent
+
+
+def removeTags(text):
+
+    newcontent = []
+    for textunit in text:
+        newtext = re.sub(r'\<[^>]*\>', '', textunit[1])
+        newtext = unicode(newtext, errors='replace')
+        newcontent.append((textunit[0], newtext))
+    return newcontent
+
+
+def preprocess(text):
+
+    text = cleanText(text)
+    text = removeTags(text)
+    return text
