@@ -1,3 +1,0 @@
-"""
-Acceptance test for VideoXBlock.
-"""

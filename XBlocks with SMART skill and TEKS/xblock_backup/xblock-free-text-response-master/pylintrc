@@ -1,8 +1,0 @@
-[VARIABLES]
-dummy-variables-rgx=_|dummy
-
-[REPORTS]
-reports=no
-
-[MESSAGES CONTROL]
-disable=locally-disabled
