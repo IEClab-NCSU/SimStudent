@@ -1,0 +1,72 @@
+Tutorin Phase,Question Type,Questions
+Pre,Problem identification / problem representational questions (new problem type),"; Can you explain what this equation says?
+;	Can you explain what’s happening in this equation?
+;	This is new to me. What do I need to know about this equation before I start solving this?
+;	I have never solved this type of equation before. Can you explain more on this equation?
+;	I have never seen this type of equation before. Can you explain the basic characteristics of these types of equation?
+;	This equation does not look exactly like any of the equations we already know how to solve. Can you elaborate more on this equation?
+;	I have never seen this type of equation before. Can you explain the basic differences of this type of equation with the ones that we have solved before?
+;	Can you point out the differences of this equation with the ones that we have solved so far?
+;	Would you help me visualize what this equation is saying?
+;	I have seen equations that has variable term on one side and constants on the other. We just performed one action to solve that equation. Can you explain the difference between those equations and the current one?"
+Pre,Problem identification / problem representational questions (old problem type),";	I feel like we have solved similar equations like this one. Do we follow any different approach to solve this equation or we stick to our earlier plan?
+;	It seems like I have solved such equations before. For example: <example equation>. Is there any exception in this equation that might affect the way I am planning to solve it?
+;	I have seen this type of equations earlier where the equation had <equation feature>. We performed two actions in order to solve such problems. Do we do the same here or any different approach to solve this equation? 
+// I have seen this type of equations earlier where we have variable and a constant on one side and another constant on the other. We performed two actions in order to solve such problems. Do we do the same here or any different approach to solve this equation?"
+Pre,Goal clarification,"; How do I know if the equation is solved?
+; What does solving this equation mean?"
+During,Plan retrieval,";	What will be your strategy to solve this equation?
+;	How long do I need to manipulate this equation to reach to its solution?
+;	What do I have to do to the things in the LHS to just have an <<variable term>> in <<the side the equation has variable term>>?
+;	What do we need to do if we want LHS simplified to just <<variable term>>?
+;	How can we end up with just the <<variable term>> in the << the side the equation has variable term>>?
+;	How can we ensure that the equation is still balanced even after the transformations?
+;	How would I know that my equation is still correct after performing the transformation action?
+;	What is the key to solve this type of equation?
+;	We haven’t tackled any linear equations in which variable appears on the both sides but we know how to handle linear equation if the variable only appears on one side. So, can we do something to eliminate variable from one side?
+;	I can solve equations like 4x – 2 = 6 or -2 = 6-4x. Do we have any way to turn this equation into the familiar ones that we can solve?;	How do you know that we will get the value of x by just performing one transformation that is “divide 3”?"
+During,Plan Clarification,"; Can you elaborate more on those equation types for which we can say that performing just one step will lead us towards the goal?
+; Can you tell me a short note on these two scenarios (x-3 = 4) and (3x + 4 = 5) so that I know when we need one action and when we need two?"
+During,Summarization/Verification of plan,";	I got it. We are working on a simple equation and by simple we mean, equations that has variable term on one side and constants on the other. We only need to perform one action in order to solve that equation. Did I get that right?
+;	We are working on equations that has variable term and some number that is added/subtracted from it on one side and constants on the other. We will need to perform two actions in order to solve that equation. Did I get that right?
+;	For equations with variables on both sides, we need to get rid of variable from one side and then we can solve it like the earlier ones. Did I get that right?"
+During,Query on what to do next,";What to do next?
+;What are we going to do first?
+;What should I write in the LHS/RHS?
+;Can you show me how to write <<transformation>> in LHS/RHS correctly?"
+During,Subgoal retrieval,";	What is your motivation behind doing that?
+;	Can you explain what goal will we achieve by “add 9 <<transformation>>” in this equation?
+;	Do we always add to eliminate something?
+;	How “<<transformation>>” will help us solve the equation?
+;	How getting rid of 4 from LHS help us solve this equation?
+;	How does this action make the equation easier?
+;	Which part of the equation made you know that “add 9” should be applied in this state? "
+During,Verification on being subgoal,
+During,generalize action,";	Do we always write <<transformation>> at the end of the both sides? 
+;	Does the order of where we write <<transformation>> matter?
+;	Can you summarize this action as a rule so that I can apply that rule for other similar equations at this state?
+;	I see. Can you explain how do we get <<outcome>> in the LHS after applying <<transformation>> on it?
+;	Can you explain how do we get <<outcome>>?"
+During,Summarization of action and subgoal,
+During,Justification of similarity or dissimilarity on contrasting case,";	Not performing trans on both sides 3x+4 = 15 & subtract 4: Something is wrong here. In the beginning when we had <<equation>>, we needed to add 4 to 3x which was equal to 15. Now after <<transformation subtract 4>>, we have <<new equation>>, where 3x equals to 15 means 3x itself is equal to 15. It does not make sense. Can you explain what’s wrong here? Or how can we make things right?
+;	Incorrect transformation entered by tutor (-10 +8 ): I think it should be “-2” because if we start at negative 10 in number line and move 8 bars to the positive directions of number line, it gives me a negative 2 which means -10+8 will give us -2.  
+;	When we solved 4x = 15, I did divide 4 since 4 is multiplied with x and divide 4 will cancel the multiplied 4 and isolate x on the LHS. Now, we have x/4 = 15. Why can’t I divide _ now?
+;	Earlier when we had 3x – 9 = 15, why did we divide 3 instead of add 9?
+;	– 12 = 2x – 15; : I am confused because I thought we should apply add 12 here since earlier when we had 3x – 12 = 3, I was taught to add 12 on both sides because LHS has -12. Can you explain why can’t we apply add 12 now?
+;	2x + 4 = 5 “subtract 5”. Earlier when we had 2x – 4 = 5, we did add 4 in order to eliminate 4 from LHS and it helped us to reach our goal. I was taught that if LHS has number along with variable term, we always get rid of that number. Can you explain why can’t we eliminate 4 from LHS similarly? 
+;	2x -9 = 3x + 8 add 9; Earlier in the quiz problem where I had 2x + 9 = 3x + 8 and I performed “add 9”. I got incorrect answer. I am taught that if LHS has a number with variable term, I should add that number. Then why was I wrong in the quiz? // KB and tutor stated action coincides but has defect in the production rule.
+	"
+During,Query prompt for better alternative goal/actions by focusing alternative parts of the problem,";	2x + 4 = 5 “divide 2”. I thought I should add 4 here because I was taught that if LHS has number along with variable term, we always get rid of that number. Why did you choose divide 2 instead of add 4?
+;	2x + 4 = 5 “subtract 5”; Why did you focus on 5 here? Why did not we try to eliminate 4 from LHS or 2 from LHS? How can you be certain that “subtract 5” will be the correct action to do here?"
+During,Merging similar production rules for. One scenario,";	2x +12 = 19. We can apply add -12; I am confused. I thought subtract 12 should be applied here. Why cant I apply subtract 12 here?"
+During,Update conditionals by adding exceptional cases,";2x – 12 = 16, I think divide 2 can also be applied here. Can you explain why do you prefer to apply add 12 for this case instead of divide 2?"
+During,Prompt to provide similar more examples and analysis of different parts of examples,";	Can you present some other examples for which add 12 can be applied?
+;	What are the similarities in all of these equations that hint me to apply add 12?
+;	Does -12 has to be on the right of variable term?"
+During,Query on different parts of the action,";	2x – 12 = 16; add 12 => I have always seen add comes with a positive number like add 12, add 13. Do we always need a positive number to use the add operation?"
+During,Simplification to known problem shape,";	7r – 8 = 55. This equation does not look like any of the equations we already know how to solve. But if we can isolate 7r on one side, then we will have we have an equation we know how to solve. Do you know how to isolate 7r from 8?
+;	Do you know which part of the equation we should be looking at in order to know our next action?
+;	X+7 = 0; I know that if there is an isolated variable term in the LHS, then we can say the equation is solved. How can we transform this equation to a form where x in isolated on the LHS?"
+During,validation on why Tutee KB agrees with tutor's action,";15 = 2x – 15; Earlier, when we had 2x – 15 = 9, I did add 15 because LHS has -15. We are applying add 15 because of the -15 in the LHS right? // Here although tutee’s KB coincides, it also asks for validation if it got this right logically or accidentally.
+"
+Post,Matching solution steps with prior plan,

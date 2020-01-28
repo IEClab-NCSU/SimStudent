@@ -1,0 +1,226 @@
+<!-- chat/templates/chat/index.html -->
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>SimStudent-V8.7 Equation Solving Session</title>
+    <style>
+
+    html, body, div{
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        max-height: 100%;
+        max-width: 100%;
+        background-color:#94B6D2;
+        display: flex;
+    }
+    img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+    button {
+        text-decoration: none;
+        display: inline-block;
+        padding: 8px 16px;
+        width: 30px;
+        height: 30px;
+    }
+
+    button:hover {
+      background-color: #ddd;
+      color: black;
+    }
+
+    .previous {
+      background-color: darkgray;
+      color: black;
+    }
+
+    .next {
+      background-color: darkgray;
+      color: white;
+    }
+    </style>
+</head>
+
+<body>
+<div style="flex:1;background-color: #94B6D2;flex-direction: column">
+    <div style="flex: 1;"></div>
+    <div style="flex: 6; flex-direction: row; background-color: #94B6D2;">
+            <div style="flex:1"></div>
+            <div style="flex :8; background-color: red;flex-direction: column">
+                <div style="flex: 10; background-color: white; flex-direction: row">
+                    <div style="flex:5; background-color: white;justify-content: center;align-items: center;">
+                         <img src={% static "img/WelcomePeerDesign.png" %}>
+                    </div>
+                    <div style="flex:7; flex-direction: column">
+                        <div style="flex:2; flex-direction: column; background-color: white;flex-direction: column; justify-content: center;align-items: center">
+                            <div style="flex:1; flex-direction: column; background-color: white;flex-direction: row; justify-content: center;align-items: center">
+                                <button id="skin_prev" type="button" class="previous">&#8249;</button>
+                                <p>Skin Color</p>
+                                <button id="skin_next" type="button" class="next">&#8250;</button>
+                            </div>
+                            <div style="flex:1; flex-direction: column; background-color: white;flex-direction: row; justify-content: center;align-items: center">
+                                <button id="hair_prev" type="button" class="previous">&#8249;</button>
+                                <p>Hair</p>
+                                <button id="hair_next" type="button" class="next">&#8250;</button>
+                            </div>
+                            <div style="flex:1; flex-direction: column; background-color: white;flex-direction: row; justify-content: center;align-items: center">
+                                <button id="shirt_prev" type="button" class="previous">&#8249;</button>
+                                <p>Shirt</p>
+                                <button id="shirt_next" type="button" class="next">&#8250;</button>
+                            </div>
+
+                        </div>
+                        <div style="flex:4; flex-direction: row">
+                            <div style="flex:5; background-color: white;justify-content: center;align-items: center;">
+                                <img style="max-width:50%" id="avatar_image" src="{% static "img/all_avatars/000.png" %}">
+                            </div>
+                            <div style="flex:2; flex-direction: row; background-color: white; justify-content: center;align-items: center">
+                                <input style="width: 100px;height: 30px;background-color: lightgrey;" id="roll-a-die" type="button" size="100" value="Roll a die"/>
+                            </div>
+                        </div>
+                        <div style="flex:1; flex-direction: row;background-color: white; align-items: center">
+                                <p style="font-weight:bold;margin-right: 5px">Student's Name</p>
+                                <input style="width: 200px;height: 20px; margin-right:10px; background-color: lightgrey;" id="tutee-name-input" type="text" size="100"/>
+                                <input style="width: 100px;height: 30px;background-color: lightgrey;" id="tutee-avatar-save" type="button" size="100" value="Save"/>
+                        </div>
+                    </div>
+                </div>
+                <div style="flex: 1; background-color: white; flex-direction: row">
+                    <div style="flex: 2;align-items: center; justify-content: center;background-color: white">
+                        <p style="font-weight:bold;">Enter your Name</p>
+                    </div>
+                     <input style="flex:7;margin-top: 5px;
+                                margin-bottom: 5px; margin-left: 10px;
+                                margin-right: 10px; background-color: lightgrey;" id="tutor-name-input" type="text" size="100"/>
+                </div>
+
+            </div>
+            <div style="flex:1"></div>
+    </div>
+
+    <div style="flex: 1;"></div>
+</div>
+
+</body>
+
+<script>
+        var skin_color = 0;
+        var hair = 0;
+        var shirt = 0;
+        var image_name = skin_color.toString()+hair.toString()+shirt.toString();
+        var src = "";
+        document.querySelector('#roll-a-die').onclick = function(e) {
+            skin_color = Math.floor((Math.random() * 4)); // 0 - 3
+            hair = Math.floor((Math.random() * 6)); // 0 - 5
+            shirt = Math.floor((Math.random() * 3)); // 0 - 2
+            image_name = skin_color.toString()+hair.toString()+shirt.toString();
+            src = "/static/img/all_avatars/" + image_name + ".png"
+            document.getElementById('avatar_image').src = src
+
+        };
+        document.getElementById('skin_prev').onclick = function(e) {
+           if(skin_color > 0){
+               skin_color = skin_color - 1;
+           }
+           else{
+               skin_color = 3;
+           }
+
+           image_name = skin_color.toString()+hair.toString()+shirt.toString();
+           src = "/static/img/all_avatars/" + image_name + ".png"
+           document.getElementById('avatar_image').src = src
+        };
+        document.getElementById('skin_next').onclick = function(e) {
+           if(skin_color < 3){
+               skin_color = skin_color + 1;
+           }
+           else{
+               skin_color = 0;
+           }
+           image_name = skin_color.toString()+hair.toString()+shirt.toString();
+           src = "/static/img/all_avatars/" + image_name + ".png"
+           document.getElementById('avatar_image').src = src
+        };
+        document.getElementById('hair_prev').onclick = function(e) {
+           if(hair > 0){
+               hair = hair - 1;
+           }
+           else{
+               hair = 5;
+           }
+
+           image_name = skin_color.toString()+hair.toString()+shirt.toString();
+           src = "/static/img/all_avatars/" + image_name + ".png"
+           document.getElementById('avatar_image').src = src
+        };
+        document.getElementById('hair_next').onclick = function(e) {
+           if(hair < 5){
+               hair = hair + 1;
+           }
+           else{
+               hair = 0;
+           }
+           image_name = skin_color.toString()+hair.toString()+shirt.toString();
+           src = "/static/img/all_avatars/" + image_name + ".png"
+           document.getElementById('avatar_image').src = src
+        };
+        document.getElementById('shirt_prev').onclick = function(e) {
+           if(shirt > 0){
+               shirt = shirt - 1;
+           }
+           else{
+               shirt = 2;
+           }
+           image_name = skin_color.toString()+hair.toString()+shirt.toString();
+           src = "/static/img/all_avatars/" + image_name + ".png"
+           document.getElementById('avatar_image').src = src
+        };
+        document.getElementById('shirt_next').onclick = function(e) {
+           if(shirt < 2){
+               shirt = shirt + 1;
+           }
+           else{
+               shirt = 0;
+           }
+           image_name = skin_color.toString()+hair.toString()+shirt.toString();
+           src = "/static/img/all_avatars/" + image_name + ".png"
+           document.getElementById('avatar_image').src = src
+        };
+        document.querySelector('#tutor-name-input').focus();
+        document.querySelector('#tutor-name-input').onkeyup = function(e) {
+            if (e.keyCode === 13) {  // enter, return
+                document.querySelector('#tutee-name-input').focus();
+            }
+        };
+        document.querySelector('#tutee-name-input').onkeyup = function(e) {
+            if (e.keyCode === 13) {  // enter, return
+                document.querySelector('#tutee-avatar-save').click();
+            }
+        };
+
+        document.querySelector('#tutee-avatar-save').onclick = function(e) {
+            var tutorName = document.querySelector('#tutor-name-input').value;
+            var tuteeName = document.querySelector('#tutee-name-input').value;
+            if(tuteeName.length <= 0 ){
+                document.querySelector('#tutee-name-input').focus();
+            }
+            else if(tutorName.length <= 0 ){
+                document.querySelector('#tutor-name-input').focus();
+            }
+            else {
+                console.log(image_name)
+                //int(image_name)
+                tutorName=tutorName.replace(/ /g,"_");
+                tuteeName=tuteeName.replace(/ /g,"_");
+                window.location.pathname = '/sim_session/' + tutorName + '/' + tuteeName + '/' + image_name + '/';
+            }
+        };
+</script>
+
+</html>

@@ -1,0 +1,99 @@
+<!-- chat/templates/chat/room.html -->
+{% extends 'chat/base.html' %}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+
+{% block content %}
+
+    <div style="background-color:#94B6D2;flex: 1;">
+        <div style="background-color:#94B6D2; flex:1; flex-direction: column">
+                <div style="background-color:#94B6D2; flex:1; flex-direction: column; margin: 20px;flex-direction: column; justify-content: center;align-items: center">
+                    <div style="background-color:#94B6D2; flex:6; margin-right: 80px">
+                        <textarea id="chat-log-SM" style="flex: 1;"></textarea>
+                    </div>
+                    <div style="background-color:#94B6D2; flex:2;justify-content: center;align-items: center;margin-right: 80px">
+                        <input style="flex:8;" id="chat-message-input-SM" type="text"/><br/>
+                        <input style="flex:1;" id="chat-message-submit-SM" type="button" value="Send"/>
+                    </div>
+                </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+<!--</div>
+</body>-->
+
+{% block scripts %}
+
+<!-- some default content here -->
+
+<script src="{% static 'reconnecting-websocket.js' %}"></script>
+<script>
+    var is_tutee = "{{ tutee }}";
+    var is_manager = "{{ manager }}";
+    var chatSocket_SM = new ReconnectingWebSocket(
+                'ws://' + window.location.host +
+                '/ws/chat/SM/')
+    //if((is_tutee == "yes" && is_manager == "no") || (is_tutee == "no" && is_manager == "yes"))
+    {
+            //print("hi");
+            /*var chatSocket_SM = new ReconnectingWebSocket(
+                'ws://' + window.location.host +
+                '/ws/chat/SM/');
+            //console.log("SM "+JSON.stringify(chatSocket_SM));
+            chatSocket_SM.onmessage = function (e) {
+                var data = JSON.parse(e.data);
+                var message = data['message'];
+                document.querySelector('#session-manager-instruction').value += message + '\n';
+            };
+            chatSocket_SM.onclose = function (e) {
+                console.log(JSON.stringify(e))
+                console.error('Chat socket closed unexpectedly ' +e);
+            };
+
+            document.querySelector('#NotifySM').onclick = function (e) {
+                console.log("here div clicked");
+                chatSocket_SM.send(JSON.stringify({
+                    'message': "You can face the laptop to the participant",
+                }));
+            };*/
+
+            ////
+
+            chatSocket_SM.onmessage = function(e) {
+                var data = JSON.parse(e.data);
+                var message = data['message'];
+            document.querySelector('#chat-log-SM').value += (message + '\n');
+        };
+
+
+        chatSocket_SM.onclose = function(e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        document.querySelector('#chat-message-input-SM').focus();
+        document.querySelector('#chat-message-input-SM').onkeyup = function(e) {
+            if (e.keyCode === 13) {  // enter, return
+                document.querySelector('#chat-message-submit-SM').click();
+            }
+        };
+
+        document.querySelector('#chat-message-submit-SM').onclick = function(e) {
+            var messageInputDom = document.querySelector('#chat-message-input-SM');
+            var message = messageInputDom.value;
+            chatSocket_SM.send(JSON.stringify({
+                'message': message,
+            }));
+
+            messageInputDom.value = '';
+        };
+
+
+
+        }
+
+</script>
+{% endblock %}
+</html>

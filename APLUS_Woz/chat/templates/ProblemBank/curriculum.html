@@ -1,0 +1,24 @@
+{% extends 'chat/base.html' %}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+
+
+{% block content %}
+<div style="background-color:#A5AC7F; flex:1; flex-direction: row;">
+    <!-- The meta image should be here -->
+    <div style="background-color:#A5AC7F; flex:2; flex-direction: column;">
+        <div style="flex:1;justify-content: center;align-items: center;background-color: #A5AC7F;">
+                <img src={% static "img/UnitOverviewMeta.png" %}>
+        </div>
+    </div>
+    <div style="background-color:#A5AC7F; flex:5; flex-direction: column; margin: 10px">
+        <div style="background-color:#A5AC7F; flex-direction: column; ">
+            {% include "ProblemBank/APLUS_curriculum.html" %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+</html>
+

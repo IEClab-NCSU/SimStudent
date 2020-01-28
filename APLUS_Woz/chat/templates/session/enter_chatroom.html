@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SimStudent Equation Solving Session</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+     <style>
+
+    html, body, div{
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        max-height: 100%;
+        max-width: 100%;
+        background-color:#94B6D2;
+        display: flex;
+        flex-direction: column;
+    }
+
+    </style>
+</head>
+
+<body>
+ <div style="flex: 2;align-items: center;">
+     <p style="font-weight:bold;">List of recent 10 most recent sessions</p>
+     <p style="font-weight:bold;">Select which chat room you would like to enter</p>
+ </div>
+<div style="flex: 10;">
+    <div class="w3-container">
+<table class="w3-table-all w3-hoverable">
+  <thead>
+    <tr class="w3-light-grey">
+      <th scope="col">Session id</th>
+      <th scope="col">Tutor's Name</th>
+      <th scope="col">Tutee's Name</th>
+        <th scope="col">Created at</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for each_model in sessions %}
+    <form action="" method="post">
+            {% csrf_token %}
+
+    <!--<tr onclick="window.location='/sim_session/'+{{ each_model.id }};">-->
+        <tr>
+      <th scope="row"><input type="submit" value="{{ each_model.id }}" name="session_id={{ each_model.id }}"></th>
+      <td><input type="submit" value="{{ each_model.tutor_name }}" name="session_id={{ each_model.id }}"></td>
+      <td><input type="submit" value="{{ each_model.tutee_name }}" name="session_id={{ each_model.id }}"></td>
+     <td><input type="submit" value="{{ each_model.created_at }}" name="session_id={{ each_model.id }}"></td>
+    </tr>
+        </form>
+    {% endfor %}
+
+  </tbody>
+</table>
+</div>
+</div>
+<div style="flex: 2;"></div>
+</body>
+</html>

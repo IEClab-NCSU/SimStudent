@@ -1,0 +1,835 @@
+<!-- chat/templates/chat/room.html -->
+{% extends 'chat/base.html' %}
+{% load staticfiles %}
+{% load custom_tags %}
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html"
+      xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html"
+      xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+
+{% block content %}
+<div style="background-color:#94B6D2; flex:1; flex-direction: row">
+    <!-- Div for the equation transformation and simSt and meta image -->
+    <div style="background-color:#94B6D2; flex:4; flex-direction: column">
+        <div style="background-color:#94B6D2; flex:4; flex-direction: column">
+                <div style="background-color:#94B6D2; flex:10; flex-direction: row;">
+                    <div style="background-color:#EBDDC3; flex:3; margin: 10px;">
+                        <div style="flex:1;flex-direction: column; background-color: red; margin: 10px">
+                            <div style="background-color:#EBDDC3; flex:1; align-items: center; justify-content: center;">
+                                <p style="font-weight:bold;">Equation</p>
+                            </div>
+                            <div style="background-color:#EBDDC3; flex:10; align-items: center; justify-content: center;flex-direction: column">
+                                <div style="flex: 1;background-color: #EBDDC3; flex-direction: row; ">
+                                    <input id="eq11" style="flex:3; background-color: white; border: 1px solid black;" type="text" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
+                                    <div style="flex:1; background-color: #EBDDC3; align-items: center; justify-content: center;">
+                                        <p style="font-weight:bold;">=</p>
+                                    </div>
+                                    <input id="eq12" style="flex:3; background-color: white; border: 1px solid black;" type="text" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
+                                </div>
+                                <div style="flex: 1;background-color: #EBDDC3; flex-direction: row">
+                                    <input id="eq21" style="flex:3; background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
+                                    <div style="flex:1; background-color: #EBDDC3; align-items: center; justify-content: center;">
+                                        <p style="font-weight:bold;">=</p>
+                                    </div>
+                                    <input id="eq22" style="flex:3; background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
+                                </div>
+                                <div style="flex: 1;background-color: #EBDDC3; flex-direction: row; ">
+                                    <input id="eq31" style="flex:3; background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
+                                    <div style="flex:1; background-color: #EBDDC3; align-items: center; justify-content: center;">
+                                        <p style="font-weight:bold;">=</p>
+                                    </div>
+                                    <input id="eq32" style="flex:3; background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
+                                </div>
+                                <div style="flex: 1;background-color: #EBDDC3; flex-direction: row">
+                                    <input id="eq41" style="flex:3; background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
+                                    <div style="flex:1; background-color: #EBDDC3; align-items: center; justify-content: center;">
+                                        <p style="font-weight:bold;">=</p>
+                                    </div>
+                                    <input id="eq42" style="flex:3; background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
+                                </div>
+                                <div style="flex: 1;background-color: #EBDDC3; flex-direction: row; ">
+                                    <input id="eq51" style="flex:3; background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
+                                    <div style="flex:1; background-color: #EBDDC3; align-items: center; justify-content: center;">
+                                        <p style="font-weight:bold;">=</p>
+                                    </div>
+                                    <input id="eq52" style="flex:3; background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
+                                </div>
+                                <div style="flex: 1;background-color: #EBDDC3; flex-direction: row; ">
+                                    <input id="eq61" style="flex:3; background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
+                                    <div style="flex:1; background-color: #EBDDC3; align-items: center; justify-content: center;">
+                                        <p style="font-weight:bold;">=</p>
+                                    </div>
+                                    <input id="eq62" style="flex:3; background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
+                                </div>
+                                <div style="flex: 1;background-color: #EBDDC3; flex-direction: row">
+                                    <input id="eq71" style="flex:3; background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
+                                    <div style="flex:1; background-color: #EBDDC3; align-items: center; justify-content: center;">
+                                        <p style="font-weight:bold;">=</p>
+                                    </div>
+                                    <input id="eq72" style="flex:3; background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
+                                </div>
+                                <div style="flex: 1;background-color: #EBDDC3; flex-direction: row; margin-bottom: 30px">
+                                    <input id="eq81" style="flex:3; background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
+                                    <div style="flex:1; background-color: #EBDDC3; align-items: center; justify-content: center;">
+                                        <p style="font-weight:bold;">=</p>
+                                    </div>
+                                    <input id="eq82" style="flex:3; background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div style="background-color:#C0BABA; flex:1; margin: 10px;">
+                        <div style="flex:1;flex-direction: column; background-color: red; margin: 10px">
+                            <div style="background-color:#C0BABA; flex:1; align-items: center; justify-content: center;">
+                                <p style="font-weight:bold;">Transformation</p>
+                            </div>
+                            <div style="background-color:#C0BABA; flex:10; align-items: center; justify-content: center;flex-direction: column">
+                                <input id="t1" style="flex: 1;background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)">
+                                </input>
+                                <input id="t2" style="flex: 1;background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)">
+                                </input>
+                                <input id="t3" style="flex: 1;background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)">
+                                </input>
+                                <input id="t4" style="flex: 1;background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)">
+                                </input>
+                                <input id="t5" style="flex: 1;background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)">
+                                </input>
+                                <input id="t6" style="flex: 1;background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)">
+                                </input>
+                                <input id="t7" style="flex: 1;background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)">
+                                </input>
+                                <input id="t8" style="flex: 1;background-color: white; border: 1px solid black; margin-bottom: 30px" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)">
+                                </input>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div style="background-color:#94B6D2; flex:1; flex-direction: row;">
+                    <input style="flex:1;margin-top: 5px;
+                        margin-bottom: 5px; margin-left: 10px;
+                        margin-right: 10px; background-color: lightgrey;" id="problem-solved" onclick="problemSolved()" type="button" value="Problem is Solved"/><br/>
+                </div>
+        </div>
+        <!-- The part below the equation transformation. I can utilize this part for question selection in tutee's console -->
+        <div style="background-color:#94B6D2; flex:3; flex-direction: column">
+                {% if tutee == "no" %}
+              <div style="background-color:#94B6D2; flex:3; flex-direction: row; margin: 10px">
+                    <div style="background-color:#94B6D2; flex:2; flex-direction: column">
+                        <div style="background-color:#94B6D2; flex:8; align-items: center; justify-content: center;flex-direction:column">
+                            <h1 class="ml11" style="display: none" id="thinking_animation">
+                              <span class="text-wrapper">
+                                <span class="line line1"></span>
+                                <span class="letters" style="font-size:17px">Please bear with me. I am thinking</span>
+                              </span>
+                            </h1>
+                            <img style="border-radius: 50%; width: 180px" src="{% static image_name %}">
+                        </div>
+                        <div style="background-color:#94B6D2; flex:2; align-items: center; justify-content: center;">
+                            <p style="font-weight:bold;">{{ tutee_name }}</p>
+                        </div>
+                    </div>
+                    <div style="background-color:#94B6D2; flex:3; align-items: center; border-style: double;border-color: #D2FFFF; flex-direction: column;">
+                        <p style="font-weight: bold">{{ tutee_name }}'s Quiz Progress</p>
+
+                        <p style="font-size: 12px">One Step Equations</p>
+                        <div class="quizProgress" style="height: 20px; border-style: solid; border-color: black; border-width: 1px; margin-right: 2px; margin-left: 2px">
+                          <div id="OneStepQuiz" class="quizBar" style="width: 0%;">0%</div>
+                        </div>
+                        <p style="font-size: 12px">Two Step Equations</p>
+                        <div class="quizProgress" style="height: 20px; border-style: solid; border-color: black; border-width: 1px; margin-right: 2px; margin-left: 2px">
+                          <div id="TwoStepQuiz" class="quizBar" style="width: 0%;">0%</div>
+                        </div>
+                        <p style="font-size: 12px">Equations with variables on both sides</p>
+                        <div class="quizProgress" style="height: 20px; border-style: solid; border-color: black; border-width: 1px; margin-right: 2px; margin-left: 2px">
+                          <div id="VarStepQuiz" class="quizBar" style="width: 0%;">0%</div>
+                        </div>
+                        <p style="font-size: 12px">Final Challenge</p>
+                        <div class="quizProgress" style="height: 20px; border-style: solid; border-color: black; border-width: 1px; margin-right: 2px; margin-left: 2px">
+                          <div id="OverallQuiz" class="quizBar" style="width: 0%;">0%</div>
+                        </div>
+                    </div>
+                    <div class = "brightness" style="background-color:#94B6D2; flex:2; align-items: center; justify-content: center; flex-direction: column">
+                         <div id="MetaHelp" style="flex: 1; align-items: flex-start; flex-direction: column; display: none">
+                             <ul class="flexbox brightness" >
+                              <li style="height: 15px; border-color: black; border-style: ridge;border-width: 1px; width: 200px; font-family: Monaco; font-weight: bold; font-size: 12px;background-color: #888888">Ask Mr Williams</li>
+                                 <li onclick="HintStuck(1)" style="height: 30px; border-color: black; border-style: ridge;border-width: 1px; width: 200px; font-family: Monaco; font-weight: bold; font-size: 12px;background-color: lightgray">I know the next step but I don't know how to show it.</li>
+                                <li onclick="HintStuck(2)" style="height: 25px; border-color: black; border-style: ridge;border-width: 1px; width: 200px; font-family: Monaco; font-size: 12px;background-color: lightgray">What should I do now?</li>
+                             </ul>
+                        </div>
+                        <img onclick="revealMetaHelp()" src={% static "img/meta.PNG" %}>
+
+                    </div>
+              </div>
+                {% else %}
+                    <div style="background-color:#94B6D2; flex:3; flex-direction: column; margin: 10px">
+                        <div style="background-color: #94B6D2; flex: 1; flex-direction: column;">
+                      <select id="question_types" name='selected_question_type' onchange="questionTypeSelected(this.value);" style="overflow-y: scroll;width: 700px;">
+                                {% if selected_type_id == -1 %}
+                                <option value="-1">Select question type</option>
+                                {% endif %}
+                                {% for types in question_types %}
+                                        {% if types.tutoring_phase == 1 %}
+                                            {% if selected_type_id != -1 and types.id|slugify in selected_type_id %}
+                                                <option value='{{types.id}}' selected="selected"> Pre Tutoring Phase: {{ types.question_type }}</option>
+                                                {% else %}
+                                                <option value='{{types.id}}'> Pre Tutoring Phase: {{ types.question_type }}</option>
+                                                {% endif %}
+                                        {% elif types.tutoring_phase == 2 %}
+                                             {% if selected_type_id != -1 and types.id|slugify in selected_type_id %}
+                                                <option value='{{types.id}}' selected="selected"> Tutoring Phase: {{ types.question_type }}</option>
+                                                {% else %}
+                                                <option value='{{types.id}}'> Tutoring Phase: {{ types.question_type }}</option>
+                                                {% endif %}
+                                        {% elif types.tutoring_phase == 3 %}
+                                             {% if selected_type_id != -1 and types.id|slugify in selected_type_id %}
+                                                <option value='{{types.id}}' selected="selected"> Post Tutoring Phase: {{ types.question_type }}</option>
+                                                {% else %}
+                                                <option value='{{types.id}}'> Post Tutoring Phase: {{ types.question_type }}</option>
+                                                {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                      </select>
+
+                  </div>
+                        <div style="background-color: #94B6D2; flex: 6; flex-direction: column;">
+                           <select id="questions_as_per_selected_types" style="flex: 1;overflow-y: scroll;width: 700px;" onchange="questionSelected(this.value);">
+                               <option value="-1">Select specific question</option>
+                               {% for ques in all_questions_under_type %}
+                                   <option value='{{ques.id}}$${{ ques.questions }}'> - {{ ques.questions }}</option>
+                               {% endfor %}
+                           </select>
+                        </div>
+                        <div style="background-color: #94B6D2; flex: 1; flex-direction: column;">
+                            Select the cells you want to highlight.
+                                    <div style="background-color: #94B6D2; flex: 1; flex-direction: row;">
+                                    <input style="width: 50px;height: 20px;background-color: lightgrey" id="highlight-cell-submit" type="button" value="Done"/>
+                                    <input style="width: 100px;height: 20px;background-color: lightgrey; margin-left:10px" id="freeze_window" type="button" value="freeze_window"/>
+                                    </div>
+                                    <div style="background-color: #94B6D2; flex: 1; flex-direction: row;">
+                                    <input id="op-eq11" onchange="HighlightCell(this.value)" type="checkbox" value="op-eq11">Eq11</input>
+                                    <input id="op-eq12" onchange="HighlightCell(this.value)" type="checkbox" value="op-eq12">Eq12</input>
+                                    <input id="op-eq21" onchange="HighlightCell(this.value)" type="checkbox" value="op-eq21">Eq21</input>
+                                    <input id="op-eq22" onchange="HighlightCell(this.value)" type="checkbox" value="op-eq22">Eq22</input>
+                                    <input id="op-eq31" onchange="HighlightCell(this.value)" type="checkbox" value="op-eq31">Eq31</input>
+                                    <input id="op-eq32" onchange="HighlightCell(this.value)" type="checkbox" value="op-eq32">Eq32</input>
+                                    <input id="op-eq41" onchange="HighlightCell(this.value)" type="checkbox" value="op-eq41">Eq41</input>
+                                    <input id="op-eq42" onchange="HighlightCell(this.value)" type="checkbox" value="op-eq42">Eq42</input>
+                                    <input id="op-eq51" onchange="HighlightCell(this.value)" type="checkbox" value="op-eq51">Eq51</input>
+                                    <input id="op-eq52" onchange="HighlightCell(this.value)" type="checkbox" value="op-eq52">Eq52</input>
+                                    <input id="op-eq61" onchange="HighlightCell(this.value)" type="checkbox" value="op-eq61">Eq61</input>
+                                    <input id="op-eq62" onchange="HighlightCell(this.value)" type="checkbox" value="op-eq62">Eq62</input>
+                                    <input id="op-eq71" onchange="HighlightCell(this.value)" type="checkbox" value="op-eq71">Eq71</input>
+                                    <input id="op-eq72" onchange="HighlightCell(this.value)" type="checkbox" value="op-eq72">Eq72</input>
+                                    <input id="op-eq81" onchange="HighlightCell(this.value)" type="checkbox" value="op-eq81">Eq81</input>
+                                    <input id="op-eq82" onchange="HighlightCell(this.value)" type="checkbox" value="op-eq82">Eq82</input>
+                                    </div>
+                                    <div style="background-color: #94B6D2; flex: 1; flex-direction: row;">
+                                        <input id="op-t1" onchange="HighlightCell(this.value)" type="checkbox" value="op-t1">t1</input>
+                                        <input id="op-t2" onchange="HighlightCell(this.value)" type="checkbox" value="op-t2">t2</input>
+                                        <input id="op-t3" onchange="HighlightCell(this.value)" type="checkbox" value="op-t3">t3</input>
+                                        <input id="op-t4" onchange="HighlightCell(this.value)" type="checkbox" value="op-t4">t4</input>
+                                        <input id="op-t5" onchange="HighlightCell(this.value)" type="checkbox" value="op-t5">t5</input>
+                                        <input id="op-t6" onchange="HighlightCell(this.value)" type="checkbox" value="op-t6">t6</input>
+                                        <input id="op-t7" onchange="HighlightCell(this.value)" type="checkbox" value="op-t7">t7</input>
+                                        <input id="op-t8" onchange="HighlightCell(this.value)" type="checkbox" value="op-t8">t8</input>
+                                    </div>
+                                    <div style="background-color: #94B6D2; flex: 1; flex-direction: row;">
+                                    </div>
+
+                        </div>
+                    </div>
+                {% endif %}
+        </div>
+    </div>
+    <!-- Div for the equation chat and new problem restart undo button -->
+    <div style="background-color:#94B6D2; flex:3;">
+        <div style="background-color:#94B6D2; flex:1; border: 1px solid black;">
+         <div style="background-color:#94B6D2; flex:1; flex-direction: column;  margin: 10px">
+             <div style="background-color:#94B6D2; flex:1; flex-direction: row; justify-content: center;align-items: center;margin-bottom: 5px">
+                <div id="NewProblem" onclick="newProblem()" style="flex:2; background-color: #D1D9E1; margin-right: 5px; flex-direction: row; justify-content: center;align-items: center;">
+                    <div style="flex:1;justify-content: center;align-items: center;background-color: #D1D9E1;">
+                         <img src={% static "img/newP.png" %}>
+                    </div>
+                    <div style="flex:4;background-color: #D1D9E1;justify-content: center;align-items: center;">
+                        <p style="font-weight:bold;">New Problem</p>
+                    </div>
+                </div>
+                 <div id="RestartProblem" onclick="restartProblem()" style="flex:2; background-color: #D1D9E1; margin-right: 5px; flex-direction: row; justify-content: center;align-items: center;">
+                    <div style="flex:1;justify-content: center;align-items: center;background-color: #D1D9E1;">
+                         <img src={% static "img/Restart.png" %}>
+                    </div>
+                    <div style="flex:4;background-color: #D1D9E1;justify-content: center;align-items: center;">
+                        <p style="font-weight:bold;">Restart</p>
+                    </div>
+                </div>
+                 <div id="UndoProblem" onclick="undoProblem()" style="flex:2; background-color: #D1D9E1; margin-right: 5px; flex-direction: row; justify-content: center;align-items: center;">
+                    <div style="flex:1;justify-content: center;align-items: center;background-color: #D1D9E1;">
+                         <img src={% static "img/Undo.png" %}>
+                    </div>
+                    <div style="flex:4;background-color: #D1D9E1;justify-content: center;align-items: center;">
+                        <p style="font-weight:bold;">Undo</p>
+                    </div>
+                </div>
+             </div>
+             <div style="background-color:#94B6D2; flex:8; flex-direction: column; justify-content: center;align-items: center;">
+                    <div id="chat-div" style="background-color:#94B6D2; flex:6; flex-direction: column"> <!-- Chat history showing part -->
+                        <textarea disabled="true" id="chat-log" style="flex: 15;"></textarea>
+                        <div style="flex: 1;flex-direction: row">
+                            <textarea disabled="true" style="background-color: #94B6D2; border: none" id="chat-typing" style="flex: 5;"></textarea>
+                            <div style="flex: 1; display: none" class="ticontainer" id="typing-animation">
+                                  <div class="tiblock">
+                                    <div class="tidot"></div>
+                                    <div class="tidot"></div>
+                                    <div class="tidot"></div>
+                                  </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="background-color:#94B6D2; flex:2;justify-content: center;align-items: center;">
+                        <input style="flex:8;" id="chat-message-input" type="text"/><br/>
+                        <input style="flex:1;" id="chat-message-submit" type="button" value="Send"/>
+                    </div>
+             </div>
+         </div>
+
+    </div>
+    </div>
+    {% if tutee == "yes" %}
+        <!-- Div to enter quiz updates to tutor -->
+        <div style="background-color:lightblue; flex:1; flex-direction: column;">
+            <div style="background-color:lightblue; flex:1; flex-direction: column; height: 100px">
+                <p>One step Quiz</p>
+                <input style="flex:1;" id="one-quiz-input" type="text" value="0"/><br/>
+                <p>Two step Quiz</p>
+                <input style="flex:1;" id="two-quiz-input" type="text" value="0"/><br/>
+                <p>Var Quiz</p>
+                <input style="flex:1;" id="var-quiz-input" type="text" value="0"/><br/>
+                <p>Overall</p>
+                <input style="flex:1;" id="overall-quiz-input" type="text" value="0"/><br/>
+                <button id="quiz-perf-submit" type="button" onclick="submitQuizPerformance()">Up Quiz</button>
+            </div>
+            <!-- Handles Meta Hints -->
+            <div style="flex:1; flex-direction: column; height: 100px; background-color: #A5AC7F">
+                <input style="height: 50px;" id="hint-text" type="text" value="Enter hint text"/><br/>
+                <input style="height: 20px;" id="search-hint-tag" type="text"/><br/>
+                <button id="hint-tag-submit" type="button" onclick="onHintTagInput('search-hint-tag')">Search Tag</button>
+                 <select id="hints_as_per_tag" style="flex: 1;overflow-y: scroll;width: 100px;" onchange="hintsSelected(this.value, 1);">
+                     <option value="-1">Select specific hint from below</option>
+                     {% for hints in all_hints %}
+                         <option value='{{hints.id}}$${{ hints.hints|remainder:";;" }}$${{ hints.hints }}'> {{ hints.hints|remainder:";;" }} </option>
+                     {% endfor %}
+                 </select>
+                 <select id="hints_as_per_levels" style="flex: 1;overflow-y: scroll;width: 100px;" onchange="hintsSelected(this.value, 2);">
+                     <option value="-1">Select hint-level from below</option>
+                 </select>
+
+                <button id="hint-submit" type="button" onClick="hintSubmit()">Hint Sub</button>
+            </div>
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+
+<!-- some default content here -->
+
+
+<script>
+    window.onload = function(){
+        console.log("Window.onload is called")
+        loadChatHistory();
+        loadEqTrCells();
+        loadQuizUpdate();
+    };
+    var current_selected_hint_id = -1;
+    var is_tutee = "{{ tutee }}";
+    var is_manager = "{{ manager }}";
+    if(is_tutee == "yes"){
+        var hint_tag = "{{ hint_tag }}"
+        document.getElementById('search-hint-tag').value = hint_tag;
+    }
+
+    //let filter = document.getElementById('eq11');
+    function keyDown(id) {
+        delay(function () {
+            console.log('this will hit, once user has not typed for 1 second');
+            log_eq_tr_cells(id)
+        }, 1000);
+    }
+
+    function hintSubmit() {
+
+        // The hint is submitted.
+        var hint_content = "Hint%%"+ document.getElementById('hint-text').value;
+        console.log("I am hint", hint_content)
+        initiateActionSend(hint_content, 0)
+        if(is_tutee=='yes' && current_selected_hint_id != -1){
+            console.log("crrent selected hint", current_selected_hint_id)
+            //var redirect_location = "?hint_selected="+current_selected_hint_id
+            //window.location = redirect_location
+        }
+    }
+    //if(is_manager == "no")
+    {
+        var roomName = {{ room_name_json }};
+        var isTutee = "{{ tutee }}";
+
+        var chatSocket = new ReconnectingWebSocket(
+            'ws://' + window.location.host +
+            '/ws/chat/' + roomName + '/');
+
+        var highlightSocket = new ReconnectingWebSocket(
+            'ws://' + window.location.host +
+            '/ws/lock_unlock/' + roomName + '/');
+
+        highlightSocket.onmessage = function(e) {
+            console.log("message", "message received by highlightSocket")
+            var data = JSON.parse(e.data);
+            //console.log("message is", data['message']['type'], ":", data['message']['message_content'])
+            //var type = data['message'].split('%')
+            var message = data['message']['message_content']
+            //console.log(message)
+            if(data['message']['type'] == "new_highlights") {
+                unHighlightAllEqTrCells(allBoxes)
+                unlockAllEqTrCells(message)
+            }
+            else if(data['message']['type'] == "new_quizContent"){
+                console.log("quiz update is found", message)
+                if(isTutee == "no"){
+                    updateQuizProgressBar(message)
+                }
+            }
+            else if(data['message']['type'] == "new_HintContent"){
+                console.log("got hint tag", message)
+                var redirect_location = "?hint_tag="+message
+                window.location = redirect_location
+            }
+            else if(data['message']['type'] == "new_freeze"){
+                var elem = document.getElementById("thinking_animation")
+                if(elem.style.display == "none") elem.style.display = "block"
+                else elem.style.display = "none"
+            }
+            else{
+                var eqtrInfo = message.split("*%*")
+                //console.log(eqtrInfo[1], " should go to cell ", eqtrInfo[0])
+                document.getElementById(eqtrInfo[0]).value = eqtrInfo[1]
+            }
+        }
+        highlightSocket.onclose = function(e) {
+            console.log("close", "highlightSocket closed")
+        }
+        highlightSocket.onopen = function(e) {
+            console.log("open", "highlightSocket open")
+        }
+        highlightSocket.onerror = function(e) {
+            console.log("error", "highlightSocket error occured")
+        }
+
+        chatSocket.onmessage = function(e) {
+            var data = JSON.parse(e.data);
+            //console.log("hihi", data['message'])
+            if (data['typing'].includes("yes")){
+                indicator = data['whose_typing'] + " is typing ... " + '\n'
+                if((is_tutee == "yes" && data['is_tutee_msg'] == "no") || (is_tutee == "no" && data['is_tutee_msg'] == "yes")) {
+                    document.querySelector('#chat-typing').value = indicator;
+                    document.getElementById('typing-animation').style.display = "block";
+                }
+            }
+            else {
+                document.querySelector('#chat-typing').value = "";
+                document.getElementById('typing-animation').style.display= "none";
+                var message = data['message'].comment_content;
+                var indicator;
+                if (data['session'].tutee_name == data['message'].comment_by) indicator = "(SimStudent)" + data['message'].comment_by + ":";
+                else indicator = "(Tutor)" + data['message'].comment_by + ":";
+                document.querySelector('#chat-log').value += (indicator + " " + message + '\n');
+                var elem = document.getElementById('chat-log');
+                elem.scrollTop = elem.scrollHeight;
+            }
+        };
+
+        chatSocket.onclose = function(e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        document.querySelector('#chat-message-input').focus();
+        document.querySelector('#chat-message-input').onkeyup = function(e) {
+            if (e.keyCode === 13) {  // enter, return
+                document.querySelector('#chat-typing').value = "";
+                document.getElementById('typing-animation').style.display= "none";
+                document.querySelector('#chat-message-submit').click();
+            }
+            else {
+                chatSocket.send(JSON.stringify({
+                    'message': "NB:TYPING",
+                    'session': {{ session_id }},
+                    'command': 'new_messages',
+                    'is_tutee': isTutee,
+                    'meta': "no"
+                }));
+            }
+        };
+
+        document.querySelector('#chat-message-submit').onclick = function(e) {
+            document.querySelector('#chat-typing').value = "";
+            document.getElementById('typing-animation').style.display= "none";
+            var messageInputDom = document.querySelector('#chat-message-input');
+            var message = messageInputDom.value;
+            chatSocket.send(JSON.stringify({
+                'message': message,
+                'session': {{ session_id }},
+                'command': 'new_messages',
+                'is_tutee': isTutee,
+                'meta': "no"
+            }));
+
+            messageInputDom.value = '';
+            var elem = document.getElementById('chat-log');
+            elem.scrollTop = elem.scrollHeight;
+        };
+        function questionTypeSelected(value)
+        {
+            //var tag = question_types.
+            allActionsSocket.send(JSON.stringify({
+                    'message': "NB:LOG_ONLY_QTYPE",
+                    'session': {{ session_info.id }},
+                    'command': 'all_actions',
+                    'is_tutee': is_tutee,
+                    'meta': "no",
+                    'qtype': value,
+                    'hint_request': "none"
+            }));
+            //initiateActionSend("Tutee has descided to ask the following question type", value)
+            var redirect_location = "?question_type="+value
+            window.location = redirect_location
+        }
+        function questionSelected(value) {
+            //alert(value)
+             allActionsSocket.send(JSON.stringify({
+                    'message': "NB:LOG_ONLY_QUES",
+                    'session': {{ session_info.id }},
+                    'command': 'all_actions',
+                    'is_tutee': is_tutee,
+                    'meta': "no",
+                    'ques': value,
+                    'hint_request': "none"
+            }));
+            var id = value.split("$$");
+            //document.getElementById(id).style.selected = "selected"
+            document.querySelector('#chat-message-input').value = id[1]
+        }
+        function hintsSelected(value, which_submit) {
+            if(which_submit == 1) {
+                var id = value.split("$$");
+                //current_selected_hint_id = id[0];
+                document.getElementById('hint-text').value = id[1]
+                console.log(id[0], id[2])
+                loadLeveledQuestions(id[0], id[2])
+            }
+            else{
+                console.log("second level",value)
+                var id = value.split("**");
+                //document.querySelector('#chat-message-input').value = ''
+                document.getElementById('hint-text').value = id[1]
+            }
+
+        }
+        function loadLeveledQuestions(hint_id, hint_text) {
+            console.log("hint text", hint_text)
+            var hints = hint_text.split(";;")
+            console.log(hints[0])
+            var select = document.getElementById('hints_as_per_levels')
+            select.options.length = 0;
+            var option = document.createElement('option')
+            option.value = "-1"
+            option.text =  "Select hint levels"
+            select.add( option );
+            for ( var i = 0; i < hints.length ; i ++ ) {
+                option = document.createElement( 'option' );
+                option.value = hint_id+"**"+hints[i];
+                option.text = hints[i] + " - Level "+i
+                select.add( option );
+            }
+        }
+        var allBoxes = ['eq11','eq12','t1','eq21','eq22','t2','eq31', 'eq32','t3','eq41','eq42','t4','eq51','eq52','t5',
+            'eq61', 'eq62','t6','eq71','eq72','t7','eq81','eq82','t8']
+
+        var current_text_containing_cells = [];
+        var checkedBoxes = [];
+        function  HighlightCell(value) {
+            if(document.getElementById(value).checked){
+                checkedBoxes.push(value)
+            }
+            else{
+                checkedBoxes = arrayRemove(checkedBoxes, value);
+            }
+
+        }
+        function arrayRemove(arr, value) {
+
+           return arr.filter(function(ele){
+               return ele != value;
+           });
+
+        }
+        if(is_tutee == "yes") {
+            document.querySelector('#highlight-cell-submit').onclick = function (e) {
+                unHighlightAllEqTrCells(allBoxes)
+                unlockAllEqTrCells(checkedBoxes)
+                highlightSocket.send(JSON.stringify({
+                    'message': checkedBoxes,
+                    'session': {{ session_id }},
+                    'command': 'new_highlights',
+                    'is_tutee': isTutee,
+                    'meta': "no"
+                }));
+            };
+            document.querySelector('#freeze_window').onclick = function (e) {
+                var elem = document.getElementById("freeze_window");
+                if (elem.value=="freeze_window") elem.value = "unfreeze_window";
+                else elem.value = "freeze_window";
+                highlightSocket.send(JSON.stringify({
+                    'message': "Freeze tutor's window",
+                    'session': {{ session_id }},
+                    'command': 'new_freeze',
+                    'is_tutee': isTutee,
+                    'meta': "no"
+                }));
+            };
+        }
+        function unHighlightAllEqTrCells(array) {
+            for(var i=0; i<array.length; i++){
+                //document.getElementById(array[i]).style.borderColor = "black"
+                //document.getElementById(array[i]).style.borderWidth = "1px"
+                document.getElementById(array[i]).disabled = true
+            }
+
+        }
+        function unlockAllEqTrCells(array) {
+            for(var i=0; i<array.length; i++){
+                var val = array[i].split("-")
+                if(is_tutee=="yes") {
+                    document.getElementById(val[1].trim()).style.borderColor = "#cc3300"
+                    document.getElementById(val[1].trim()).style.borderWidth = "3px"
+                }
+                document.getElementById(val[1].trim()).disabled = false
+            }
+        }
+        var chat_history = JSON.parse({{ chat_history }});
+        function loadChatHistory() {
+            //alert("n")
+            console.log(chat_history)
+            var tutee_name = "{{ session_info.tutee_name }}"
+            document.querySelector('#chat-log').value = "";
+            for(var i =0; i<chat_history.length; i++) {
+                indicator = ""
+                if (chat_history[i]['fields'].comment_by == tutee_name) indicator = "(SimStudent)" + chat_history[i]['fields'].comment_by + ":";
+                else indicator = "(Tutor)" + chat_history[i]['fields'].comment_by + ":";
+                document.querySelector('#chat-log').value += (indicator + " " + chat_history[i]['fields'].comment_content + '\n');
+            }
+        }
+
+        function loadQuizUpdate(){
+            var quiz_contents = "{{quiz_update.update_contents | safe }}";
+            quiz_contents = quiz_contents.replace(/'/g, '"');
+            console.log("gg",quiz_contents)
+            if (quiz_contents != "") {
+                var all_contents = JSON.parse(quiz_contents);
+                if(is_tutee == "yes") {
+                    document.getElementById('one-quiz-input').value = all_contents[0]
+                    document.getElementById('two-quiz-input').value = all_contents[1]
+                    document.getElementById('var-quiz-input').value = all_contents[2]
+                    document.getElementById('overall-quiz-input').value = all_contents[3]
+                }
+                else{
+                    updateQuizProgressBar(all_contents)
+                }
+            }
+        }
+        
+        function loadEqTrCells() {
+            //var eq_tr_contents = {{ latest_eq_tr_cell.dormin_contents }};
+            var eq_tr_contents = "{{latest_eq_tr_cell.dormin_contents | safe }}";
+            eq_tr_contents = eq_tr_contents.replace(/'/g, '"');
+            console.log("gg",eq_tr_contents)
+            if (eq_tr_contents != "") {
+                var all_contents = JSON.parse(eq_tr_contents);
+
+                //var all_contents = eq_tr_contents.split(',');
+
+                for (let i = 0; i < allBoxes.length; i++) {
+                    console.log(all_contents[i])
+                    document.getElementById(allBoxes[i]).value = all_contents[i]
+                }
+            }
+        }
+
+        function eqTrInput(id){
+            //console.log(id, "is getting input ")
+            //log_eq_tr_cells()
+            if(document.getElementById(id).value != "" && current_text_containing_cells.includes(id) == false){
+                // Pushing the cells that contains value so that we can undo in reverse order accordingly.
+                current_text_containing_cells.push(id)
+            }
+            var message = id+"*%*"+document.getElementById(id).value
+            highlightSocket.send(JSON.stringify({
+                    'message': message,
+                    'session': {{ session_id }},
+                    'command': 'new_eqTrContent',
+                    'is_tutee': isTutee,
+                    'meta': "no"
+                }))
+        }
+
+        function log_eq_tr_cells(id) {
+            var values = []
+            var pos = -1;
+            for(let i=0; i<allBoxes.length; i++){
+                if(allBoxes[i] == id){
+                    pos = i
+                }
+                values.push(document.getElementById(allBoxes[i]).value);
+            }
+            allActionsSocket.send(JSON.stringify({
+                    'message': "NB:LOG_ONLY_PROBLEMS",
+                    'session': {{ session_info.id }},
+                    'command': 'all_actions',
+                    'is_tutee': is_tutee,
+                    'meta': "no",
+                    'eq_tr_id': allBoxes,
+                    'content_eq_tr': values,
+                    'edited_eq_tr_id_pos': pos.toString(),
+                    'hint_request': "none"
+            }));
+        }
+
+        function onHintTagInput(id) {
+            var hint_tag = document.getElementById(id).value
+            highlightSocket.send(JSON.stringify({
+                    'message': hint_tag,
+                    'session': {{ session_id }},
+                    'command': 'new_HintContent',
+                    'is_tutee': isTutee,
+                    'meta': "no"
+                }))
+        }
+        function clearAllEqTrCells(array, start) {
+            if(start == 2){
+                document.getElementById("eq11").disabled = false
+                document.getElementById("eq12").disabled = false
+            }
+            for(var i=start; i<array.length; i++){
+                document.getElementById(array[i]).value = ""
+                eqTrInput(array[i])
+                if(array[i] == "eq11" || array[i] == "eq12"){
+                    document.getElementById(array[i]).disabled = false
+                }
+                else{
+                    document.getElementById(array[i]).disabled = true
+                }
+            }
+
+        }
+        function undoRecentEqTrCells() {
+            var recent_cell = current_text_containing_cells.pop()
+            document.getElementById(recent_cell).value = ""
+            eqTrInput(recent_cell)
+
+        }
+        function newProblem(){
+            initiateActionSend("Tutor has clicked NEW PROBLEM button", 0)
+            clearAllEqTrCells(allBoxes, 0)
+        }
+        function restartProblem(){
+            initiateActionSend("Tutor has clicked the RESTART button", 0)
+            clearAllEqTrCells(allBoxes, 2)
+        }
+        function undoProblem(){
+            initiateActionSend("Tutor has clicked the UNDO button", 0)
+            undoRecentEqTrCells()
+        }
+        function problemSolved(){
+            initiateActionSend("Tutor has clicked PROBLEM IS SOLVED button", 0)
+        }
+        function HintStuck(value){
+            //document.getElementById('gif').style.display="block"
+            console.log("Hint stuck ", value)
+            var src = "/static/img/loader.gif"
+            //var html = "<img src="+src+"/>"+"Please wait while meta tutor suggests you the appropriate hint"
+            var html = "<div class=\"imgHolder\"> <img src="+src+"/><span>Please wait while meta tutor suggests you the appropriate hint</span></div>"
+            meta_modal_text.innerHTML = html
+            meta_modal.style.display = "block"
+            if(value == 1) {
+                console.log("hei")
+                initiateActionSend("Tutor has clicked I don't know how to show it button", 1)
+            }
+            else {
+                initiateActionSend("Tutor has clicked what should I do now button", 1)
+            }
+            //clearAllEqTrCells(allBoxes, 0)
+        }
+        function submitQuizPerformance() {
+            var quiz_performance = []
+            quiz_performance.push(document.getElementById('one-quiz-input').value)
+            quiz_performance.push(document.getElementById('two-quiz-input').value)
+            quiz_performance.push(document.getElementById('var-quiz-input').value)
+            quiz_performance.push(document.getElementById('overall-quiz-input').value)
+            highlightSocket.send(JSON.stringify({
+                    'message': quiz_performance,
+                    'session': {{ session_id }},
+                    'command': 'new_quizContent',
+                    'is_tutee': isTutee,
+                    'meta': "no"
+            }));
+            //quiz_performance = []
+
+        }
+        function updateQuizProgressBar(array){
+            console.log("quiz update", array)
+            console.log(array[0], array[1], array[2],array[3])
+            //updateStyleQuizBar('a', 'val')
+            updateStyleQuizBar('OneStepQuiz', array[0].trim())
+            updateStyleQuizBar('TwoStepQuiz', array[1].trim())
+            updateStyleQuizBar('VarStepQuiz', array[2].trim())
+            updateStyleQuizBar('OverallQuiz', array[3].trim())
+        }
+        function updateStyleQuizBar(id, value){
+            //console.log(id, value)
+            var element = document.getElementById(id)
+            element.innerHTML = value+"%"
+            element.style.width = value+"%"
+            if(value != "0") {
+                element.style.color = "white"
+                element.style.alignItems = "center"
+                element.style.justifyContent = "center"
+            }
+            else{
+                element.style.color = "black"
+                element.style.alignItems = null
+                element.style.justifyContent = null
+            }
+        }
+        function revealMetaHelp() {
+            document.getElementById("MetaHelp").style.display = 'block'
+        }
+
+        var delay = (function () {
+            var timer = 0;
+            return function (callback, ms) {
+                clearTimeout(timer);
+                timer = setTimeout(callback, ms);
+            };
+        })()
+
+    }
+
+
+
+</script>
+{% endblock %}
+</html>

@@ -1,0 +1,49 @@
+<!-- This file is not used anywhere. I kept this file cause it contains how to use django_tables2 that makes the sort easier -->
+{% extends 'chat/base.html' %}
+{% load render_table from django_tables2 %}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+
+{% block content %}
+<div style="background-color:#5C9D74; flex:1; flex-direction: column;">
+    <div style="background-color:lightgrey; flex:1; flex-direction: row;">
+        <div style="background-color:lightgrey; flex:4; flex-direction: row;">
+            <div style="background-color:#94B6D2; flex:1;align-items: center; justify-content: center;"> <p style="font-weight:bold;">{{ tutee_name }}</p></div>
+            <div style="background-color:#5C9D74; flex:1;align-items: center; justify-content: center;"><p style="font-weight:bold;">Problem Bank</p></div>
+            <div style="background-color:#E4CCBC; flex:1;align-items: center; justify-content: center;"><p style="font-weight:bold;">Into Video</p></div>
+            <div style="background-color:#A5AC7F; flex:1;align-items: center; justify-content: center;"><p style="font-weight:bold;">Unit Overview</p></div>
+            <div style="background-color:#E2D8C1; flex:1;align-items: center; justify-content: center;"><p style="font-weight:bold;">Examples</p></div>
+            <div style="background-color:#CAD6D3; flex:1;align-items: center; justify-content: center;"><p style="font-weight:bold;">Quiz</p></div>
+            {% if tutee == "yes" %}
+                <div style="background-color:lightcoral; flex:1;align-items: center; justify-content: center;">
+                    <input style="flex:1;" id="NotifySM" type="button" value="NotifySM"/>
+                </div>
+            {% endif %}
+        </div>
+        <div style="background-color:white; flex:3; flex-direction: row;"></div>
+
+    </div>
+    <div style="background-color:#5C9D74; flex:18; flex-direction: row;">
+        <div style="background-color:#5C9D74; flex:5; flex-direction: row;">
+            <div style="flex:1;justify-content: center;align-items: center;background-color: #5C9D74;">
+                <img src={% static "img/MetaInPB.png" %}>
+            </div>
+        </div>
+        <div style="background-color:#5C9D74; flex:7; flex-direction: row; margin: 10px;">
+            <div style="height:100vh; overflow:auto; background-color:#5C9D74;">
+
+            {% render_table object_list %}
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+<!--</div>
+</body>-->
+
+{% block scripts %}
+
+{% endblock %}
+</html>

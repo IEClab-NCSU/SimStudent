@@ -1,0 +1,589 @@
+<!-- chat/templates/chat/index.html -->
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8"/>
+    <!-- Font Awesome Icon Library -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+    <link href="{% static "css/multiselect.css" %}" rel="stylesheet">
+    {% if tutee == "yes" %}
+    <title>SimStudent-V8.7 (Tutee console)</title>
+    {% else %}
+    <title>SimStudent-V8.7 (Tutor console)</title>
+    {% endif %}
+    <style>
+
+    html, body, div{
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        max-height: 100%;
+
+        max-width: 100%;
+
+        background-color:#94B6D2;
+        display: flex;
+        font-size: 15px;
+    }
+    img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+    .modal {
+      display: none; /* Hidden by default */
+      position: fixed; /* Stay in place */
+      z-index: 1; /* Sit on top */
+      padding-top: 100px; /* Location of the box */
+      left: 0;
+      top: 0;
+      width: 100%; /* Full width */
+      height: 100%; /* Full height */
+      overflow: auto; /* Enable scroll if needed */
+      background-color: rgb(0,0,0); /* Fallback color */
+      background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    /* Modal Content */
+    .modal-content {
+      background-color: #fefefe;
+      margin: auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+    }
+
+    /* The Close Button */
+    .close {
+      color: #aaaaaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: #000;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .loader {
+        display: none; /* Hidden by default */
+        border: 16px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 16px solid #3498db;
+        width: 120px;
+        height: 120px;
+        left: 50%;
+        top: 50%;
+        margin-left: -32px; /* -1 * image width / 2 */
+        margin-top: -32px; /* -1 * image height / 2 */
+        position: absolute;
+      -webkit-animation: spin 2s linear infinite; /* Safari */
+      animation: spin 2s linear infinite;
+    }
+    .brightness {
+        background-color: transparent;
+    }
+    .brightness img:hover {
+        opacity: .7;
+    }
+    .brightness li:hover {
+        opacity: .7;
+    }
+
+    /* Safari */
+    @-webkit-keyframes spin {
+      0% { -webkit-transform: rotate(0deg); }
+      100% { -webkit-transform: rotate(360deg); }
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .quizProgress {
+        width: 100%;
+        background-color: #F0F0F0;
+    }
+
+    .quizBar {
+      height: 30px;
+      background-color: #7AA79D;
+    }
+        ul {
+            list-style: none
+        }
+        li {
+          display: inline-block;
+          /* inline block hack for IE 6&7 */
+          zoom: 1;
+          *display: inline;
+          padding: 4px;
+          color: black;
+        }
+        ul.flexbox {
+              display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+              display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
+              display: -ms-flexbox;      /* TWEENER - IE 10 */
+              display: -webkit-flex;     /* NEW - Chrome */
+              display: flex;             /* NEW, Spec - Opera 12.1, Firefox 20+ */
+              flex-direction: column;
+        }
+        .container {
+            position: relative;
+            text-align: center;
+            color: white;
+            display: inline-block;
+            height: 100%;
+        }
+        .centered {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate( -50%, -80% );
+            text-align: center;
+            color: black;
+            font-weight: bold;
+        }
+         .button {
+          background-color: #D1D9E1;
+          border-color: #788A9A;
+          border-style: outset;
+            color: black;
+          padding: 8px 12px;
+          text-align: center;
+          text-decoration: none;
+          display: inline-block;
+          font-size: 16px;
+          margin: 4px 2px;
+          cursor: pointer;
+        }
+        .imgHolder {
+            position: relative;
+            background-color: white;
+        }
+        .imgHolder span {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            background-color: white;
+        }
+
+        .tiblock {
+            align-items: center;
+            display: flex;
+            height: 17px;
+        }
+
+        .ticontainer .tidot {
+            background-color: #90949c;
+        }
+
+        .tidot {
+            -webkit-animation: mercuryTypingAnimation 1.5s infinite ease-in-out;
+            border-radius: 2px;
+            display: inline-block;
+            height: 4px;
+            margin-right: 2px;
+            width: 4px;
+        }
+
+        @-webkit-keyframes mercuryTypingAnimation{
+        0%{
+          -webkit-transform:translateY(0px)
+        }
+        28%{
+          -webkit-transform:translateY(-5px)
+        }
+        44%{
+          -webkit-transform:translateY(0px)
+        }
+        }
+
+        .tidot:nth-child(1){
+        -webkit-animation-delay:200ms;
+        }
+        .tidot:nth-child(2){
+        -webkit-animation-delay:300ms;
+        }
+        .tidot:nth-child(3){
+        -webkit-animation-delay:400ms;
+        }
+        .ml11 {
+          font-weight: 700;
+          font-size: 1.1em;
+        }
+
+        .ml11 .text-wrapper {
+          position: relative;
+          display: inline-block;
+          padding-top: 0.1em;
+          padding-right: 0.05em;
+          padding-bottom: 0.15em;
+        }
+
+        .ml11 .line {
+          opacity: 0;
+          position: absolute;
+          left: 0;
+          height: 100%;
+          width: 3px;
+          background-color: #fff;
+          transform-origin: 0 50%;
+        }
+
+        .ml11 .line1 {
+          top: 0;
+          left: 0;
+        }
+
+        .ml11 .letter {
+          display: inline-block;
+          line-height: 1em;
+        }
+
+    </style>
+
+{% block style %}
+{% endblock %}
+</head>
+<body>
+<div style="background-color:#94B6D2;flex: 1;flex-direction: column;">
+    <div style="background-color:lightgrey; flex:1; flex-direction: row;"><!-- The top row that contains all the buttons -->
+        <div style="background-color:lightgrey; flex:4; flex-direction: row;">
+        {% if  tutee == "yes" %}
+            <div id="EQTR" style="background-color:#94B6D2; flex:1;align-items: center; justify-content: center;"> <p style="font-weight:bold;">{{ session_info.tutor_name }}</p></div>
+        {%  else %}
+            <div id="EQTR" style="background-color:#94B6D2; flex:1;align-items: center; justify-content: center;"> <p style="font-weight:bold;">{{ session_info.tutee_name }}</p></div>
+        {% endif %}
+            <div id="ProblemBank" style="background-color:#5C9D74; flex:1;align-items: center; justify-content: center;"><p style="font-weight:bold;">Problem Bank</p></div>
+            <div id="IntroVideo" style="background-color:#E4CCBC; flex:1;align-items: center; justify-content: center;"><p style="font-weight:bold;">Intro Video</p></div>
+            <div id="UnitOverview" style="background-color:#A5AC7F; flex:1;align-items: center; justify-content: center;"><p style="font-weight:bold;">Unit Overview</p></div>
+            <div id="Examples" style="background-color:#E2D8C1; flex:1;align-items: center; justify-content: center;"><p style="font-weight:bold;">Examples</p></div>
+            <div id="Quiz" style="background-color:#CAD6D3; flex:1;align-items: center; justify-content: center;"><p style="font-weight:bold;">Quiz</p></div>
+            {% if tutee == "yes" %}
+                <!--<div style="background-color:lightcoral; flex:1;align-items: center; justify-content: center;">
+                    <input style="flex:1;" id="NotifySM" type="button" value="NotifySM"/>
+                </div>-->
+            {% endif %}
+        </div>
+        <div style="background-color:white; flex:3; flex-direction: row;"></div>
+    </div>
+    <div style="flex:18;">
+        <div id="myModal" class="modal" style="flex: 1; justify-content: center; align-items: center">
+          <!-- Modal content -->
+          <div class="modal-content" style="width: 500px; height: 50px;">
+            <span id="modal-close"  class="close">&times;</span>
+            <p id="modal-text">Some text in the Modal..</p>
+          </div>
+
+        </div>
+        <!--<div id="metaModal" class="modal" style="flex: 1; justify-content: center; align-items: center; padding-left: 10px">
+
+          <div class="meta-modal-content" style="width: 500px; height: 50px;">
+            <span id="meta-modal-close"  class="close">&times;</span>
+            <p id="meta-modal-text">Some text in the Modal..</p>
+          </div>
+
+        </div>-->
+        <div id="metaModal" class="modal" style="width: 400px; height: 400px; justify-content: center; padding-left: 180px;padding-bottom: 30px; background-color: transparent">
+           <!-- Meta Modal content -->
+          <div class="meta-modal-content" style="width: 400px; height: 300px;flex-direction: column; background-color: lightgrey;">
+            <span id="meta-modal-close" class="close">&times;</span>
+            <p style="width: 400px; height: 250px;border-color: #ababab; border-style: ridge; background-color: white"id="meta-modal-text">Some text in the Modal..</p>
+              <div style="background-color:lightgrey; width: 300px; height: 40px;; align-items:flex-end; justify-content: flex-end;flex-direction: row">
+                        <button class="button" onclick="MoreHint()">Tell Me More >> </button>
+                        <button class="button" onClick="OkHint()">Ok</button>
+              </div>
+          </div>
+
+        </div>
+        <div id="myLoaderDiv" style="display: none;position: relative;">
+            <div id="myLoader" class="loader"></div>
+            <p style="text-align:center; font-size:25px">Please wait while we load this section</p>
+        </div>
+        <div id="TutorInstruction" style="flex: 1; display: none; position: relative;">
+                <p id="InstructionContent" style="left: 30%;top: 50%;position: absolute; font-weight: bold; font-size: 20px"></p>
+        </div>
+         <div id="MainContent" style="flex:1;">
+        {% block content %}
+        {% endblock %}
+         </div>
+    </div>
+
+</div>
+
+
+
+</body>
+<script src="{% static 'reconnecting-websocket.js' %}"></script>
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"></script>-->
+<script src="{% static 'thinking_anime.js' %}"></script>
+<script>
+    var textWrapper = document.querySelector('.ml11 .letters');
+    textWrapper.innerHTML = textWrapper.textContent.replace(/([^\x00-\x80]|\w)/g, "<span class='letter'>$&</span>");
+
+    anime.timeline({loop: true})
+      .add({
+        targets: '.ml11 .line',
+        scaleY: [0,1],
+        opacity: [0.5,1],
+        easing: "easeOutExpo",
+        duration: 700
+      })
+  .add({
+    targets: '.ml11 .line',
+    translateX: [0, document.querySelector('.ml11 .letters').getBoundingClientRect().width + 10],
+    easing: "easeOutExpo",
+    duration: 700,
+    delay: 100
+  }).add({
+    targets: '.ml11 .letter',
+    opacity: [0,1],
+    easing: "easeOutExpo",
+    duration: 600,
+    offset: '-=775',
+    delay: (el, i) => 34 * (i+1)
+  }).add({
+    targets: '.ml11',
+    opacity: 0,
+    duration: 1000,
+    easing: "easeOutExpo",
+    delay: 1000
+  });
+</script>
+<script>
+    //if(is_tutee == "no")
+        var hint_level = 1;
+        var is_tutee = "{{ tutee }}";
+        var roomName = "{{ room_name }}";
+        var tutee_name_b = "{{ session_info.tutee_name }}";
+        var modal = document.getElementById("myModal");
+        var loader = document.getElementById("myLoader");
+        var modal_text = document.getElementById("modal-text");
+        var span = document.getElementsByClassName("close")[0];
+
+        var meta_modal = document.getElementById("metaModal");
+        var meta_span = document.getElementsByClassName("close")[1];
+        var meta_modal_text = document.getElementById("meta-modal-text");
+        meta_span.onclick = function(){
+            if(is_tutee == "no") {
+              initiateActionSend("Tutor has closed in the HINT Modal", 0)
+              meta_modal.style.display = "none"
+              hint_level = 1;
+            }
+        }
+        span.onclick = function() {
+            if(is_tutee == "yes"){
+                var loader_close_type = ""
+                if(modal_text.innerHTML.includes("EXAMPLE")){
+                    loader_close_type = "Loader_Close_Example"
+                }
+                else if(modal_text.innerHTML.includes("QUIZ")){
+                    loader_close_type = "Loader_Close_Quiz"
+                }
+                //console.log("close_type", loader_close_type)
+                if(loader_close_type != "") {
+                    allActionsSocket.send(JSON.stringify({
+                        'message': loader_close_type,
+                        'session': {{ session_info.id }},
+                        'command': 'all_actions',
+                        'is_tutee': is_tutee,
+                        'meta': "no",
+                        'hint_request': "none"
+                    }));
+                }
+            }
+            modal.style.display = "none";
+        }
+        window.onclick = function(event) {
+          if (event.target == modal) {
+            modal.style.display = "none";
+          }
+        }
+
+        var allActionsSocket = new ReconnectingWebSocket(
+            'ws://' + window.location.host +
+            '/ws/all_actions/' + roomName + '/');
+
+        function initiateActionSend(value, flag){
+            if(flag == 1){
+                hint_request = "yes"
+            }
+            else{
+                hint_request = "no"
+            }
+            console.log(hint_request)
+            allActionsSocket.send(JSON.stringify({
+                    'message': value,
+                    'session': {{ session_info.id }},
+                    'command': 'all_actions',
+                    'is_tutee': is_tutee,
+                    'meta': "no",
+                    'hint_request': hint_request,
+            }));
+        }
+
+
+        allActionsSocket.onmessage = function(e) {
+            console.log("message", "message received by allActionSocket")
+            var data = JSON.parse(e.data);
+            //console.log(data['message'])
+            if( is_tutee == "yes" && !data['message']['message_content'].includes("Loader")){
+                //console.log("in show")
+                modal.style.display = "block";
+                modal_text.innerHTML = data['message']['message_content']
+            }
+            else if(is_tutee == "yes" && data['message']['message_content'].includes("Loader")){
+                //console.log("in hide")
+                modal.style.display = "none";
+            }
+            else if(is_tutee == "no" && data['message']['message_content'].includes("Hint")){
+                var hint = data['message']['message_content'].split("%%")
+                meta_modal_text.innerHTML = hint[1]
+                meta_modal.style.display = "block"
+            }
+            else{
+                if( data['message']['message_content'] == "Loader_Close_Example"){
+                    loader.style.display = "none";
+                    document.getElementById("myLoaderDiv").style.display = "none";
+                    document.getElementById("TutorInstruction").style.display = "block";
+                    document.getElementById("InstructionContent").innerText = "You can now face the laptop beside you to your side and review the sections."
+                    document.getElementById("TutorInstruction").style.backgroundColor = "#E2D8C1";
+                }
+                else if( data['message']['message_content'] == "Loader_Close_Quiz" ){
+                    loader.style.display = "none";
+                    document.getElementById("myLoaderDiv").style.display = "none";
+                    document.getElementById("TutorInstruction").style.display = "block";
+                    document.getElementById("InstructionContent").innerText = "You can now face the laptop beside you to your side and click on the quiz button to start working on\n" + tutee_name_b+"'s Quiz section"
+                    document.getElementById("TutorInstruction").style.backgroundColor = "#CAD6D3";
+                }
+            }
+        }
+        allActionsSocket.onclose = function(e) {
+            console.log("close", "allActionsSocket closed")
+        }
+        allActionsSocket.onopen = function(e) {
+            console.log("open", "allActionsSocket open")
+        }
+        allActionsSocket.onerror = function(e) {
+            console.log("error", "allActionsSocket error occured")
+        }
+
+    {
+        document.querySelector('#ProblemBank').onclick = function (e) {
+            document.getElementById("TutorInstruction").style.display = "none";
+            document.getElementById("MainContent").style.display = "block";
+            if(is_tutee == "no") {
+                initiateActionSend("Tutor has clicked the PROBLEM BANK section", 0)
+                window.location.pathname = '/problem_bank/no/'
+            }
+            else{
+                window.location.pathname = '/problem_bank/yes/'
+            }
+        };
+        document.querySelector('#UnitOverview').onclick = function (e) {
+            document.getElementById("TutorInstruction").style.display = "none";
+            document.getElementById("MainContent").style.display = "block";
+            if(is_tutee == "no") {
+                initiateActionSend("Tutor has clicked the UNIT OVERVIEW section", 0)
+                window.location.pathname = '/unit_overview/no/'
+            }
+            else{
+                window.location.pathname = '/unit_overview/yes/'
+            }
+        };
+        document.querySelector('#IntroVideo').onclick = function (e) {
+            document.getElementById("TutorInstruction").style.display = "none";
+            document.getElementById("MainContent").style.display = "block";
+            if(is_tutee == "no") {
+                initiateActionSend("Tutor has clicked the INTRO VIDEO section", 0)
+                window.location.pathname = '/intro_video/no/'
+            }
+            else{
+                window.location.pathname = '/intro_video/yes/'
+            }
+        };
+        document.querySelector('#Examples').onclick = function (e) {
+            if(is_tutee == "no") {
+                initiateActionSend("Tutor has clicked the EXAMPLE section", 0)
+                document.getElementById("TutorInstruction").style.display = "none";
+                document.getElementById("MainContent").style.display = "none";
+                document.getElementById("myLoaderDiv").style.display = "block";
+                document.getElementById("myLoaderDiv").style.backgroundColor="#E2D8C1";
+                loader.style.display = "block";
+                loader.style.backgroundColor = "#E2D8C1";
+                //window.location.pathname = '/intro_video/no/'
+            }
+            else{
+                //window.location.pathname = '/intro_video/yes/'
+            }//*/
+        };
+        document.querySelector('#Quiz').onclick = function (e) {
+            if(is_tutee == "no") {
+                initiateActionSend("Tutor has clicked the QUIZ section", 0)
+                document.getElementById("TutorInstruction").style.display = "none";
+                document.getElementById("MainContent").style.display = "none";
+                document.getElementById("myLoaderDiv").style.display = "block";
+                document.getElementById("myLoaderDiv").style.backgroundColor="#CAD6D3";
+                loader.style.display = "block";
+                loader.style.backgroundColor = "#CAD6D3";
+                //window.location.pathname = '/intro_video/no/'
+            }
+            else{
+                //window.location.pathname = '/intro_video/yes/'
+            }//*/
+        };
+        document.querySelector('#EQTR').onclick = function (e) {
+            //console.log("here div clicked");
+            var tutor_name = "{{ session_info.tutor_name }}"
+            var tutee_name = "{{ session_info.tutee_name }}"
+            var image_name = "{{ session_info.image_name }}"
+            var session_id = "{{ session_info.id }}"
+            //console.log("pkk", tutor_name)
+            if(is_tutee == "no") {
+                initiateActionSend("Tutor has clicked the TUTORING section", 0)
+                window.location.pathname = '/sim_session/tutoring/' + tutor_name +'/' + tutee_name +'/' + image_name +'/'
+            }
+            else{
+                //console.log(is_tutee)
+                window.location.pathname = '/sim_session/' + session_id +'/'
+            }
+        };
+    }
+    function OkHint(){
+          if(is_tutee == "no") {
+              initiateActionSend("Tutor has clicked OK in the HINT Modal", 0)
+              meta_modal.style.display = "none"
+              hint_level = 1;
+              document.getElementById("MetaHelp").style.display = 'none'
+          }
+    }
+    function MoreHint(){
+          if(is_tutee == "no") {
+              hint_level = hint_level+1;
+              var msg = "Tutor is asking for more hint with level "+ hint_level;
+              initiateActionSend(msg, 1)
+              var src = "/static/img/loader.gif"
+              //var html = "<img src="+src+"/>"
+              var html = "<div class=\"imgHolder\"> <img src="+src+"/><span>Please wait while meta tutor suggests you the appropriate hint</span></div>"
+              meta_modal_text.innerHTML = html
+
+          }
+    }
+    //if(is_tutee == "yes")
+    /*{
+        document.querySelector('#NotifySM').onclick = function (e) {
+            //console.log("here div clicked");
+            window.location.pathname = '/sim_manager/'
+        };
+    }*/
+</script>
+{% block scripts %}
+{% endblock %}
+</html>

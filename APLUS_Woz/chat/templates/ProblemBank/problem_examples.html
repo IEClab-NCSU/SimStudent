@@ -1,0 +1,125 @@
+<!-- chat/templates/chat/room.html -->
+{% extends 'chat/base.html' %}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+{% block style %}
+<style>
+    .stars-outer{
+        position: relative;
+        display: inline-block;
+        background-color: white;
+        font-size: inherit;
+    }
+    .stars-inner{
+        position: absolute;
+        top: 0;
+        left: 0;
+        white-space: nowrap;
+        background-color: white;
+        overflow: hidden;
+        width: 0;
+        font-size: inherit;
+    }
+    .stars-outer::before{
+        content: "\f005 \f005 \f005 \f005 \f005";
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
+        color: #ccc;
+    }
+    .stars-inner::before{
+        content: "\f005 \f005 \f005 \f005 \f005";
+        background-color: white;
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
+        color: #f8ce0b;
+    }
+    .stars-inner-1{
+        width: 12px;
+    }
+    .stars-inner-2{
+        width: 25px;
+    }
+    .stars-inner-3{
+        width: 40px;
+    }
+    .stars-inner-4{
+        width: 55px;
+    }
+    .stars-inner-5{
+        width: 100px;
+    }
+    tr:hover {
+          background-color: #94B6D2;
+        }
+
+</style>
+{% endblock %}
+{% block content %}
+    <div style="background-color:#5C9D74; flex:1; flex-direction: row;">
+        <div style="background-color:#5C9D74; flex:5; flex-direction: row;">
+            <div style="flex:1;justify-content: center;align-items: center;background-color: #5C9D74;">
+                <img src={% static "img/MetaInPB.png" %}>
+            </div>
+        </div>
+        <div style="background-color:#5C9D74; flex:7; flex-direction: row; margin: 10px;">
+            <div style="height:100vh; overflow:auto; background-color:#5C9D74;">
+            <table style="background-color:white; flex:1;">
+                <tr style="background-color: lightgrey;">
+
+                    <th> Problem <a id="pup" href="?order_by=problem" > ▲ </a> <a id="pd" href="?order_by=-problem"> ▼ </a></th>
+                    <th>Type <a id="ptup" href="?order_by=problem_type"> ▲ </a> <a id="ptd" href="?order_by=-problem_type"> ▼ </a></th>
+                    <th>Rating <a id="prup" href="?order_by=problem_rating"> ▲ </a> <a id="prd" href="?order_by=-problem_rating"> ▼ </a></th>
+                </tr>
+                {% for item in examples %}
+                <tr style="height: 10px;">
+
+                    <td>{{ item.problem }}</td>
+                    {% if item.problem_type == 1 %}
+                    <td>OneStep</td>
+                    {% elif item.problem_type == 2 %}
+                    <td>TwoStep</td>
+                    {% else %}
+                    <td>BothSides</td>
+                    {% endif %}
+                    <td>
+                        <div class="stars-outer">
+                            <div class="stars-inner stars-inner-{{ item.problem_rating }}"></div>
+                        </div>
+                        <span class="number-rating"></span>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+    /*var pup = document.getElementById("pup")
+    var pd = document.getElementById("pd")
+    document.querySelector('#pup').onclick = function (e) {
+            if(pup.style.display == "block"){
+                pup.style.display = "none";
+            }
+            else{
+                pup.style.display = "block";
+            }
+            pd.style.display = "block";
+    };
+    document.querySelector('#pd').onclick = function (e) {
+            if(pd.style.display == "block"){
+                pd.style.display = "none";
+            }
+            else{
+                pd.style.display = "block";
+            }
+            pup.style.display = "block";
+    };*/
+
+</script>
+{% endblock %}
+</html>
