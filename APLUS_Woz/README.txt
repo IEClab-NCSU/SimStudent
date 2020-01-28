@@ -1,20 +1,6 @@
 ************************* Introduction to APLUS_Woz ************************************
 
-APLUS_Woz is a web based chat application where human tutors (middle grade students) can teach SimStudent how to solve algebraic equations by 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+APLUS_Woz is a web based chat application where human tutors (middle grade students) can teach SimStudent (You) how to solve algebraic equations. The main aim of building the application is to measure the quality of agent responses and if these responses affect tutor learning. In order to make this application work, you need to connect yourself as tutee in a recent chatroom through this web app. This app has all the tabs and functionalities just as same as the APLUS, but human tutor should use APLUS for the quiz and example tab. Therefore, you will have to set up APLUS in another PC that will be with the human tutor during the session and you will be connected with that PC via screen sharing. Once, human tutor clicks the example/quiz tab, there will be a loader in their window asking them to wait and a popup notifying you that human tutor wants to access the example/quiz tab. Then you need to set up the example/quiz tab in the APLUS from your screen shared session and close the popup window in our web app. Once you close the popup window, a message will appear in the human tutor side asking him to use the PC that have APLUS connection with example/quiz window opened. For the tutoring tab, you will be responsible for feeding all the steps taught by the tutor in the web app to the APLUS via your screen shared session. That's how APLUS will get updated with the steps and act accordingly in the quiz.
 
 
 **************************** Installation Guide for APLUS_Woz **************************
