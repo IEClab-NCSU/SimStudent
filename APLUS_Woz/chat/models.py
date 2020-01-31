@@ -85,6 +85,7 @@ class ActionLogs(models.Model):
     dialogue_from_tutor = models.TextField(default="")
     dialogue_from_tutee = models.TextField(default="")
     current_equation_state = models.TextField(default="")
+    is_correct_step = models.TextField(default="")
 
 
 

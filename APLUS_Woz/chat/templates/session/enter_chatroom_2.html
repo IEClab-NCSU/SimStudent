@@ -103,7 +103,7 @@
 </body>
 <script>
     function goToTutorPage() {
-        var path = '/sim_session/' + {{ session_id }} + '/';
+        var path = '/sim_session/' + {{ session_id }} + '/' + "{{ condition_name }}" +'/';
         console.log(path)
         window.location.pathname = path;
     }

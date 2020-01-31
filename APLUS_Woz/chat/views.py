@@ -71,8 +71,9 @@ def sim_session(request, tutor_name, tutee_name, image_name):
     })
 
 
-def tutee_sim_session(request, session_id):
-    #print("tutee_sim_session", session_id, request.session['session_id'])
+def tutee_sim_session(request, session_id, condition_name):
+
+    print("tutee_sim_session", condition_name)
     all_questions = {}
     selected_type_id = request.GET.get('question_type')
     hint_tag = request.GET.get('hint_tag')
@@ -102,6 +103,7 @@ def tutee_sim_session(request, session_id):
         'room_name_json': mark_safe(json.dumps(room_name)),
         'session_id': session.id,
         'tutee': "yes",
+        'condition_name': condition_name,
         'manager': "no",
         'tutee_name': mark_safe(json.dumps(session.tutee_name)),
         'tutor_name': mark_safe(json.dumps(session.tutor_name)),
@@ -119,9 +121,13 @@ def tutee_sim_session(request, session_id):
 def decide_chatroom(request):
     sessions = Session.objects.order_by('-pk').all()[:10]
     if request.method == 'POST':
-        print("ss")
-        for key in request.POST.keys():
-            print(key)
+        condition_name = ""
+        is_woz = request.POST.get('Woz', "false")
+        is_aplus = request.POST.get('Aplus', "false")
+        if "false" in is_woz:
+            condition_name = 'aplus'
+        elif "false" in is_aplus:
+            condition_name = 'woz'
         session_id = [key for key in request.POST.keys()][1].split("=")[1]
         session = Session.objects.get(pk=session_id)
         #return tutee_sim_session(request, session_id)
@@ -129,6 +135,7 @@ def decide_chatroom(request):
             'session_id': session_id,
             'tutee': "yes",
             'manager': "no",
+            'condition_name': condition_name,
             'tutee_name': mark_safe(json.dumps(session.tutee_name)),
             'tutor_name': mark_safe(json.dumps(session.tutor_name)),
         })
@@ -183,9 +190,9 @@ def export_all_action_log(request):
     response['Content-Disposition'] = 'attachement; filename="report_all_actions.csv"'
 
     writer = csv.writer(response)
-    writer.writerow(['ID', 'SESSION_ID','TUTOR_NAME','TUTEE_NAME', 'CF_ACTION', 'ACTION_TEXT', 'CREATED_AT', 'SELECTION_TUTOR', 'ACTION_TUTOR', 'INPUT_TUTOR', 'SELECTION_TUTEE', 'ACTION_TUTEE', 'INPUT_TUTEE', 'NEW_PROBLEM','SELECTION_META', 'ACTION_META', 'INPUT_META', 'HINT_REQUESTED', 'HINT_GIVEN', 'DIALOGUE_FROM_TUTEE', 'DIALOGUE_FROM_TUTOR', 'CURRENT_EQUATION_STATE'])
+    writer.writerow(['ID', 'SESSION_ID','TUTOR_NAME','TUTEE_NAME', 'CF_ACTION', 'ACTION_TEXT', 'CREATED_AT', 'SELECTION_TUTOR', 'ACTION_TUTOR', 'INPUT_TUTOR', 'SELECTION_TUTEE', 'ACTION_TUTEE', 'INPUT_TUTEE', 'NEW_PROBLEM','SELECTION_META', 'ACTION_META', 'INPUT_META', 'HINT_REQUESTED', 'HINT_GIVEN', 'DIALOGUE_FROM_TUTEE', 'DIALOGUE_FROM_TUTOR', 'CURRENT_EQUATION_STATE', 'IS_TUTOR_CORRECT'])
 
-    students = ActionLogs.objects.all().values_list('pk', 'session_id__pk','session_id__tutor_name', 'session_id__tutee_name', 'cf_action','actions_text', 'created_at', 'selection_tutor', 'action_tutor', 'input_tutor', 'selection_tutee', 'action_tutee', 'input_tutee', 'new_problem_entered', 'selection_meta', 'action_meta', 'input_meta', 'hint_requested', 'hint_given', 'dialogue_from_tutee', 'dialogue_from_tutor', 'current_equation_state' ).order_by('-pk')
+    students = ActionLogs.objects.all().values_list('pk', 'session_id__pk','session_id__tutor_name', 'session_id__tutee_name', 'cf_action','actions_text', 'created_at', 'selection_tutor', 'action_tutor', 'input_tutor', 'selection_tutee', 'action_tutee', 'input_tutee', 'new_problem_entered', 'selection_meta', 'action_meta', 'input_meta', 'hint_requested', 'hint_given', 'dialogue_from_tutee', 'dialogue_from_tutor', 'current_equation_state', 'is_correct_step' ).order_by('-pk')
 
     # Note: we convert the students query set to a values_list as the writerow expects a list/tuple
     #students = students.values_list()
@@ -268,13 +275,14 @@ def load_question_bank():
                     tutoring_phase = 2
                 elif "post" in row[0].lower():
                     tutoring_phase = 3
+                print("row APLUS", row[1])
                 one_type = QuestionBank(tutoring_phase=tutoring_phase, question_type=row[1])
                 one_type.save()
                 all_questions = (row[2]).split(";")
                 for q in all_questions:
                     q1 = q.strip()
                     if len(q1) != 0:
-                        print("after space shot ", q1)
+                        #print("after space shot ", q1)
                         question = QuestionsUnderTypes(questions=q1)
                         question.save()
                         one_type.all_questions.add(question)
@@ -301,8 +309,8 @@ def load_meta_hints():
 #load_meta_hints()
 
 def load_data(request):
-    load_problem_bank()
+    #load_problem_bank()
     load_question_bank()
-    load_meta_hints()
+    #load_meta_hints()
     return render(request, 'log/load_data.html', {})
 

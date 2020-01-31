@@ -35,6 +35,7 @@
       <th scope="col">Tutor's Name</th>
       <th scope="col">Tutee's Name</th>
         <th scope="col">Created at</th>
+        <th scope="col">Select conditions</th>
     </tr>
   </thead>
   <tbody>
@@ -48,6 +49,7 @@
       <td><input type="submit" value="{{ each_model.tutor_name }}" name="session_id={{ each_model.id }}"></td>
       <td><input type="submit" value="{{ each_model.tutee_name }}" name="session_id={{ each_model.id }}"></td>
      <td><input type="submit" value="{{ each_model.created_at }}" name="session_id={{ each_model.id }}"></td>
+            <td><div style="flex-direction:row;background-color:transparent"><input id="Woz" name="Woz" type="checkbox" value="Woz">Woz</input><input id="Aplus" name="Aplus" type="checkbox" value="Aplus">Aplus</input></div></td>
     </tr>
         </form>
     {% endfor %}

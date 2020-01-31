@@ -301,6 +301,23 @@ class AllActionsConsumer(WebsocketConsumer):
                 }
             }
             return self.send_all_actions_message(content)
+        if "yes" in data['correctness_update']:
+            grade_result = ""
+            if "0" in data['message']:
+                grade_result = "Tutor's step is Incorrect"
+            else:
+                grade_result = "Tutor's step is Correct"
+            log = ActionLogs(session_id_id=int(data['session']), actions_text=grade_result,
+                             cf_action="Step stated by tutor graded", current_equation_state=current_eq_state, is_correct_step=data['message'])
+            log.save()
+            content = {
+                'command': 'all_actions',
+                'message': {
+                    'type': 'all_actions',
+                    'message_content': data['message']
+                }
+            }
+            return self.send_all_actions_message(content)
         elif "Hint%%" in data['message']:
             log = ActionLogs(session_id_id=int(data['session']), actions_text=data['message'],
                              cf_action=data['message'], current_equation_state=current_eq_state,hint_given=data['message'])

@@ -287,6 +287,12 @@
                             </div>
                         </div>
                     </div>
+                    {% if tutee == "yes" %}
+                    <div style="background-color:#94B6D2; flex:1;justify-content: center;align-items: center;">
+                        <input style="flex:1;background-color:green" id="correct-step" type="button" value="Correct"  onclick="submitCorrectness(1)"/><br/>
+                        <input style="flex:1;background-color:red" id="incorrect-step" type="button" value="Incorrect" onclick="submitCorrectness(0)"/>
+                    </div>
+                    {% endif %}
                     <div style="background-color:#94B6D2; flex:2;justify-content: center;align-items: center;">
                         <input style="flex:8;" id="chat-message-input" type="text"/><br/>
                         <input style="flex:1;" id="chat-message-submit" type="button" value="Send"/>
@@ -502,7 +508,8 @@
                     'is_tutee': is_tutee,
                     'meta': "no",
                     'qtype': value,
-                    'hint_request': "none"
+                    'hint_request': "none",
+                    'correctness_update': "none"
             }));
             //initiateActionSend("Tutee has descided to ask the following question type", value)
             var redirect_location = "?question_type="+value
@@ -517,7 +524,8 @@
                     'is_tutee': is_tutee,
                     'meta': "no",
                     'ques': value,
-                    'hint_request': "none"
+                    'hint_request': "none",
+                    'correctness_update': "none"
             }));
             var id = value.split("$$");
             //document.getElementById(id).style.selected = "selected"
@@ -704,7 +712,8 @@
                     'eq_tr_id': allBoxes,
                     'content_eq_tr': values,
                     'edited_eq_tr_id_pos': pos.toString(),
-                    'hint_request': "none"
+                    'hint_request': "none",
+                    'correctness_update': "none"
             }));
         }
 
@@ -788,6 +797,15 @@
             }));
             //quiz_performance = []
 
+        }
+        function submitCorrectness(value){
+            if(value == 1) {
+                initiateActionSend("1", 2)
+            }
+            else {
+                initiateActionSend("0", 2)
+            }
+            //clearAllEqTrCells(allBoxes, 0)
         }
         function updateQuizProgressBar(array){
             console.log("quiz update", array)
