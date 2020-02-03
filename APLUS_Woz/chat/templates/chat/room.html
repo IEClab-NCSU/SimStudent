@@ -169,6 +169,9 @@
                                 {% if selected_type_id == -1 %}
                                 <option value="-1">Select question type</option>
                                 {% endif %}
+                                {% if condition_name == 'aplus' %}
+                                <option value='{{ selected_type_id }}' selected="selected"> Tutoring Phase: APLUS </option>
+                                {% else %}
                                 {% for types in question_types %}
                                         {% if types.tutoring_phase == 1 %}
                                             {% if selected_type_id != -1 and types.id|slugify in selected_type_id %}
@@ -190,6 +193,7 @@
                                                 {% endif %}
                                         {% endif %}
                                     {% endfor %}
+                                {% endif %}
                       </select>
 
                   </div>

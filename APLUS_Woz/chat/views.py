@@ -73,14 +73,18 @@ def sim_session(request, tutor_name, tutee_name, image_name):
 
 def tutee_sim_session(request, session_id, condition_name):
 
-    print("tutee_sim_session", condition_name)
     all_questions = {}
-    selected_type_id = request.GET.get('question_type')
-    hint_tag = request.GET.get('hint_tag')
+    if 'aplus' in condition_name:
+        aplus_id = QuestionBank.objects.get(question_type="APLUS");
+        selected_type_id = aplus_id.id
+    else:
+        selected_type_id = request.GET.get('question_type')
+
     if selected_type_id is not None:
         all_questions = QuestionBank.objects.get(pk=selected_type_id).all_questions.all();
     else:
         selected_type_id = -1
+    hint_tag = request.GET.get('hint_tag')
 
     if hint_tag is not None:
         filtered_hints = MetaHints.objects.filter(hints__icontains=hint_tag)
@@ -310,7 +314,7 @@ def load_meta_hints():
 
 def load_data(request):
     #load_problem_bank()
-    load_question_bank()
+    #load_question_bank()
     #load_meta_hints()
     return render(request, 'log/load_data.html', {})
 
