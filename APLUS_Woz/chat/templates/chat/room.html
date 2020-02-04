@@ -319,6 +319,7 @@
                 <p>Overall</p>
                 <input style="flex:1;" id="overall-quiz-input" type="text" value="0"/><br/>
                 <button id="quiz-perf-submit" type="button" onclick="submitQuizPerformance()">Up Quiz</button>
+                <div style="flex:1;background-color: transparent"></div>
             </div>
             <!-- Handles Meta Hints -->
             <div style="flex:1; flex-direction: column; height: 100px; background-color: #A5AC7F">
@@ -455,8 +456,14 @@
                 document.getElementById('typing-animation').style.display= "none";
                 var message = data['message'].comment_content;
                 var indicator;
-                if (data['session'].tutee_name == data['message'].comment_by) indicator = "(SimStudent)" + data['message'].comment_by + ":";
-                else indicator = "(Tutor)" + data['message'].comment_by + ":";
+                if (data['session'].tutee_name == data['message'].comment_by) {
+                    indicator = "(SimStudent)" + data['message'].comment_by + ":";
+
+                }
+                else {
+                    indicator = "(Tutor)" + data['message'].comment_by + ":";
+
+                }
                 document.querySelector('#chat-log').value += (indicator + " " + message + '\n');
                 var elem = document.getElementById('chat-log');
                 elem.scrollTop = elem.scrollHeight;
@@ -640,8 +647,12 @@
             document.querySelector('#chat-log').value = "";
             for(var i =0; i<chat_history.length; i++) {
                 indicator = ""
-                if (chat_history[i]['fields'].comment_by == tutee_name) indicator = "(SimStudent)" + chat_history[i]['fields'].comment_by + ":";
-                else indicator = "(Tutor)" + chat_history[i]['fields'].comment_by + ":";
+                if (chat_history[i]['fields'].comment_by == tutee_name) {
+                    indicator = "(SimStudent)" + chat_history[i]['fields'].comment_by + ":";
+                }
+                else {
+                    indicator = "(Tutor)" + chat_history[i]['fields'].comment_by + ":";
+                }
                 document.querySelector('#chat-log').value += (indicator + " " + chat_history[i]['fields'].comment_content + '\n');
             }
         }

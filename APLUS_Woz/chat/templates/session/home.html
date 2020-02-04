@@ -84,21 +84,21 @@
                                 <input style="width: 100px;height: 30px;background-color: lightgrey;" id="roll-a-die" type="button" size="100" value="Roll a die"/>
                             </div>
                         </div>
-                        <div style="flex:1; flex-direction: row;background-color: white; align-items: center">
-                                <p style="font-weight:bold;margin-right: 5px">Student's Name</p>
+                        <div style="flex:1; flex-direction: row;background-color: white; align-items: center; justify-content: center;">
+                                <p style="font-weight:bold;margin-right: 5px">Name your peer: </p>
                                 <input style="width: 200px;height: 20px; margin-right:10px; background-color: lightgrey;" id="tutee-name-input" type="text" size="100"/>
                                 <input style="width: 100px;height: 30px;background-color: lightgrey;" id="tutee-avatar-save" type="button" size="100" value="Save"/>
                         </div>
                     </div>
                 </div>
-                <div style="flex: 1; background-color: white; flex-direction: row">
+                <!--<div style="flex: 1; background-color: white; flex-direction: row">
                     <div style="flex: 2;align-items: center; justify-content: center;background-color: white">
                         <p style="font-weight:bold;">Enter your Name</p>
                     </div>
                      <input style="flex:7;margin-top: 5px;
                                 margin-bottom: 5px; margin-left: 10px;
                                 margin-right: 10px; background-color: lightgrey;" id="tutor-name-input" type="text" size="100"/>
-                </div>
+                </div>-->
 
             </div>
             <div style="flex:1"></div>
@@ -192,12 +192,12 @@
            src = "/static/img/all_avatars/" + image_name + ".png"
            document.getElementById('avatar_image').src = src
         };
-        document.querySelector('#tutor-name-input').focus();
+        /*document.querySelector('#tutor-name-input').focus();
         document.querySelector('#tutor-name-input').onkeyup = function(e) {
             if (e.keyCode === 13) {  // enter, return
                 document.querySelector('#tutee-name-input').focus();
             }
-        };
+        };*/
         document.querySelector('#tutee-name-input').onkeyup = function(e) {
             if (e.keyCode === 13) {  // enter, return
                 document.querySelector('#tutee-avatar-save').click();
@@ -205,14 +205,14 @@
         };
 
         document.querySelector('#tutee-avatar-save').onclick = function(e) {
-            var tutorName = document.querySelector('#tutor-name-input').value;
+            var tutorName = "Me";
             var tuteeName = document.querySelector('#tutee-name-input').value;
             if(tuteeName.length <= 0 ){
                 document.querySelector('#tutee-name-input').focus();
             }
-            else if(tutorName.length <= 0 ){
+            /*else if(tutorName.length <= 0 ){
                 document.querySelector('#tutor-name-input').focus();
-            }
+            }*/
             else {
                 console.log(image_name)
                 //int(image_name)
