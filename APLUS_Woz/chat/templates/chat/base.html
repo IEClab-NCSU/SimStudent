@@ -297,7 +297,7 @@
             <span id="meta-modal-close" class="close">&times;</span>
             <p style="width: 400px; height: 250px;border-color: #ababab; border-style: ridge; background-color: white"id="meta-modal-text">Some text in the Modal..</p>
               <div style="background-color:lightgrey; width: 300px; height: 40px;; align-items:flex-end; justify-content: flex-end;flex-direction: row">
-                        <button class="button" onclick="MoreHint()">Tell Me More >> </button>
+                        <button id="tell_me_more" class="button" onclick="MoreHint()">Tell Me More >> </button>
                         <button class="button" onClick="OkHint()">Ok</button>
               </div>
           </div>
@@ -358,6 +358,9 @@
   });
 </script>
 <script>
+    window.onbeforeunload = function() {
+        return "Are you sure?";
+    };
     //if(is_tutee == "no")
         var hint_level = 1;
         var is_tutee = "{{ tutee }}";
@@ -376,6 +379,7 @@
               initiateActionSend("Tutor has closed in the HINT Modal", 0)
               meta_modal.style.display = "none"
               hint_level = 1;
+              document.getElementById("MetaHelp").style.display = 'none'
             }
         }
         span.onclick = function() {

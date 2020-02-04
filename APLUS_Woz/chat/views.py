@@ -128,10 +128,12 @@ def decide_chatroom(request):
         condition_name = ""
         is_woz = request.POST.get('Woz', "false")
         is_aplus = request.POST.get('Aplus', "false")
-        if "false" in is_woz:
-            condition_name = 'aplus'
-        elif "false" in is_aplus:
+        if "false" in is_woz and "false" in is_aplus:
+            condition_name = 'woz' # default condition is woz if none is clicked.
+        elif "false" in is_aplus and "false" not in is_woz:
             condition_name = 'woz'
+        else:
+            condition_name = 'aplus'
         session_id = [key for key in request.POST.keys()][1].split("=")[1]
         session = Session.objects.get(pk=session_id)
         #return tutee_sim_session(request, session_id)

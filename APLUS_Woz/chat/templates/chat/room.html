@@ -830,6 +830,12 @@
             updateStyleQuizBar('TwoStepQuiz', array[1].trim())
             updateStyleQuizBar('VarStepQuiz', array[2].trim())
             updateStyleQuizBar('OverallQuiz', array[3].trim())
+            if(array[0].trim() == '100' && array[1].trim() == '100' && array[2].trim() == '100' && array[3].trim() == '100'){
+                var hint = "Your have successfully taught your peer how to solve algebraic equations. Thank you for participating in this study."
+                meta_modal_text.innerHTML = hint
+                meta_modal.style.display = "block"
+                document.getElementById("tell_me_more").style.display = "none"
+            }
         }
         function updateStyleQuizBar(id, value){
             //console.log(id, value)
