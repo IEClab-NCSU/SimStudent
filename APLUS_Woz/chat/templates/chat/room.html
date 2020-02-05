@@ -208,10 +208,10 @@
                         <div style="background-color: #94B6D2; flex: 1; flex-direction: column;">
                             Select the cells you want to highlight.
                                     <div style="background-color: #94B6D2; flex: 1; flex-direction: row;">
-                                    <input style="width: 50px;height: 20px;background-color: lightgrey" id="highlight-cell-submit" type="button" value="Done"/>
+                                    <input style="width: 50px;height: 20px;background-color: lightgrey" id="highlight-cell-submit" type="button" value="Unlock"/>
                                     <input style="width: 100px;height: 20px;background-color: lightgrey; margin-left:10px" id="freeze_window" type="button" value="freeze_window"/>
                                     </div>
-                                    <div style="background-color: #94B6D2; flex: 1; flex-direction: row;">
+                                    <!-- <div style="background-color: #94B6D2; flex: 1; flex-direction: row;">
                                     <input id="op-eq11" onchange="HighlightCell(this.value)" type="checkbox" value="op-eq11">Eq11</input>
                                     <input id="op-eq12" onchange="HighlightCell(this.value)" type="checkbox" value="op-eq12">Eq12</input>
                                     <input id="op-eq21" onchange="HighlightCell(this.value)" type="checkbox" value="op-eq21">Eq21</input>
@@ -238,7 +238,7 @@
                                         <input id="op-t6" onchange="HighlightCell(this.value)" type="checkbox" value="op-t6">t6</input>
                                         <input id="op-t7" onchange="HighlightCell(this.value)" type="checkbox" value="op-t7">t7</input>
                                         <input id="op-t8" onchange="HighlightCell(this.value)" type="checkbox" value="op-t8">t8</input>
-                                    </div>
+                                    </div> -->
                                     <div style="background-color: #94B6D2; flex: 1; flex-direction: row;">
                                     </div>
 
@@ -357,6 +357,7 @@
         loadEqTrCells();
         loadQuizUpdate();
     };
+    var globalIndex = 0;
     var current_selected_hint_id = -1;
     var is_tutee = "{{ tutee }}";
     var is_manager = "{{ manager }}";
@@ -408,6 +409,7 @@
             if(data['message']['type'] == "new_highlights") {
                 unHighlightAllEqTrCells(allBoxes)
                 unlockAllEqTrCells(message)
+                globalIndex = message
             }
             else if(data['message']['type'] == "new_quizContent"){
                 console.log("quiz update is found", message)
@@ -578,9 +580,9 @@
         var allBoxes = ['eq11','eq12','t1','eq21','eq22','t2','eq31', 'eq32','t3','eq41','eq42','t4','eq51','eq52','t5',
             'eq61', 'eq62','t6','eq71','eq72','t7','eq81','eq82','t8']
 
-        var current_text_containing_cells = [];
-        var checkedBoxes = [];
-        function  HighlightCell(value) {
+        var current_text_containing_cells = []
+        // var checkedBoxes = [];
+        /* function  HighlightCell(value) {
             if(document.getElementById(value).checked){
                 checkedBoxes.push(value)
             }
@@ -595,13 +597,14 @@
                return ele != value;
            });
 
-        }
+        } */
         if(is_tutee == "yes") {
             document.querySelector('#highlight-cell-submit').onclick = function (e) {
                 unHighlightAllEqTrCells(allBoxes)
-                unlockAllEqTrCells(checkedBoxes)
+                globalIndex = globalIndex + 1;
+                unlockAllEqTrCells(globalIndex)
                 highlightSocket.send(JSON.stringify({
-                    'message': checkedBoxes,
+                    'message': globalIndex,
                     'session': {{ session_id }},
                     'command': 'new_highlights',
                     'is_tutee': isTutee,
@@ -623,20 +626,20 @@
         }
         function unHighlightAllEqTrCells(array) {
             for(var i=0; i<array.length; i++){
-                //document.getElementById(array[i]).style.borderColor = "black"
-                //document.getElementById(array[i]).style.borderWidth = "1px"
+                document.getElementById(array[i]).style.borderColor = "black"
+                document.getElementById(array[i]).style.borderWidth = "1px"
                 document.getElementById(array[i]).disabled = true
             }
 
         }
-        function unlockAllEqTrCells(array) {
-            for(var i=0; i<array.length; i++){
-                var val = array[i].split("-")
+        function unlockAllEqTrCells(index) {
+            for(var i=0; i<=index; i++){
+                var val = allBoxes[i]
                 if(is_tutee=="yes") {
-                    document.getElementById(val[1].trim()).style.borderColor = "#cc3300"
-                    document.getElementById(val[1].trim()).style.borderWidth = "3px"
+                    document.getElementById(val.trim()).style.borderColor = "#cc3300"
+                    document.getElementById(val.trim()).style.borderWidth = "3px"
                 }
-                document.getElementById(val[1].trim()).disabled = false
+                document.getElementById(val.trim()).disabled = false
             }
         }
         var chat_history = JSON.parse({{ chat_history }});
@@ -757,7 +760,16 @@
                     document.getElementById(array[i]).disabled = true
                 }
             }
-
+            unHighlightAllEqTrCells(allBoxes)
+            globalIndex = globalIndex + 1;
+            unlockAllEqTrCells(globalIndex)
+            highlightSocket.send(JSON.stringify({
+                'message': globalIndex,
+                'session': {{ session_id }},
+                'command': 'new_highlights',
+                'is_tutee': isTutee,
+                'meta': "no"
+            }));
         }
         function undoRecentEqTrCells() {
             var recent_cell = current_text_containing_cells.pop()
@@ -767,10 +779,12 @@
         }
         function newProblem(){
             initiateActionSend("Tutor has clicked NEW PROBLEM button", 0)
+            globalIndex = 0;
             clearAllEqTrCells(allBoxes, 0)
         }
         function restartProblem(){
             initiateActionSend("Tutor has clicked the RESTART button", 0)
+            globalIndex = 0;
             clearAllEqTrCells(allBoxes, 2)
         }
         function undoProblem(){
