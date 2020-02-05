@@ -20,11 +20,35 @@
                             </div>
                             <div style="background-color:#EBDDC3; flex:10; align-items: center; justify-content: center;flex-direction: column">
                                 <div style="flex: 1;background-color: #EBDDC3; flex-direction: row; ">
+                                    <div style="flex: 1; flex-direction: row">
                                     <input id="eq11" style="flex:3; background-color: white; border: 1px solid black;" type="text" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
+                                        {% if tutee == "yes" %}
+                                            <div style="flex: 1; background-color: #EBDDC3;">
+                                                <input type="radio" name="eq11-correctness" value="C"> C
+                                                <input type="radio" name="eq11-correctness" value="I"> I
+                                                <!-- These inputs are just there to make the overall layout consistent.
+                                                I would be more than happy if we can remove it but still maintain the
+                                                layout consistency in both tutor and tutee front end.
+                                                -->
+                                            </div>
+                                        {% endif %}
+                                    </div>
                                     <div style="flex:1; background-color: #EBDDC3; align-items: center; justify-content: center;">
                                         <p style="font-weight:bold;">=</p>
                                     </div>
+                                    <div style="flex: 1; flex-direction: row">
                                     <input id="eq12" style="flex:3; background-color: white; border: 1px solid black;" type="text" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
+                                        {% if tutee == "yes" %}
+                                            <div style="flex: 1; background-color: #EBDDC3;">
+                                                <input type="radio" name="eq12-correctness" value="C"> C
+                                                <input type="radio" name="eq12-correctness" value="I"> I
+                                                 <!-- These inputs are just there to make the overall layout consistent.
+                                                I would be more than happy if we can remove it but still maintain the
+                                                layout consistency in both tutor and tutee front end.
+                                                -->
+                                            </div>
+                                        {% endif %}
+                                    </div>
                                 </div>
                                 <div style="flex: 1;background-color: #EBDDC3; flex-direction: row;">
                                     <div style="flex: 1; flex-direction: row">
