@@ -85,22 +85,86 @@
                                 <p style="font-weight:bold;">Transformation</p>
                             </div>
                             <div style="background-color:#C0BABA; flex:10; align-items: center; justify-content: center;flex-direction: column">
-                                <input id="t1" style="flex: 1;background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)">
-                                </input>
-                                <input id="t2" style="flex: 1;background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)">
-                                </input>
-                                <input id="t3" style="flex: 1;background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)">
-                                </input>
-                                <input id="t4" style="flex: 1;background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)">
-                                </input>
-                                <input id="t5" style="flex: 1;background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)">
-                                </input>
-                                <input id="t6" style="flex: 1;background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)">
-                                </input>
-                                <input id="t7" style="flex: 1;background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)">
-                                </input>
-                                <input id="t8" style="flex: 1;background-color: white; border: 1px solid black; margin-bottom: 30px" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)">
-                                </input>
+                                <div style="flex: 1; flex-direction: row">
+                                    <input id="t1" style="flex: 1;background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)">
+                                    </input>
+                                    {% if tutee == "yes" %}
+                                    <div id="t1-tag" style="flex: 1; background-color: transparent;">
+                                        <input type="radio" name="t1-correctness" value="C" onclick="handletag('t1-C');"> C
+                                        <input type="radio" name="t1-correctness" value="I" onclick="handletag('t1-I');"> I
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                <div style="flex: 1; flex-direction: row">
+                                    <input id="t2" style="flex: 1;background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)">
+                                    </input>
+                                    {% if tutee == "yes" %}
+                                    <div style="flex: 1; background-color: transparent">
+                                        <input type="radio" name="t2-correctness" value="C"> C
+                                        <input type="radio" name="t2-correctness" value="I"> I
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                <div style="flex: 1; flex-direction: row">
+                                    <input id="t3" style="flex: 1;background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)">
+                                    </input>
+                                    {% if tutee == "yes" %}
+                                    <div style="flex: 1; background-color: transparent">
+                                        <input type="radio" name="t3-correctness" value="C"> C
+                                        <input type="radio" name="t3-correctness" value="I"> I
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                <div style="flex: 1; flex-direction: row">
+                                    <input id="t4" style="flex: 1;background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)">
+                                    </input>
+                                    {% if tutee == "yes" %}
+                                    <div style="flex: 1; background-color: transparent">
+                                        <input type="radio" name="t4-correctness" value="C"> C
+                                        <input type="radio" name="t4-correctness" value="I"> I
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                 <div style="flex: 1; flex-direction: row">
+                                    <input id="t5" style="flex: 1;background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)">
+                                    </input>
+                                    {% if tutee == "yes" %}
+                                    <div style="flex: 1; background-color: transparent">
+                                        <input type="radio" name="t5-correctness" value="C"> C
+                                        <input type="radio" name="t5-correctness" value="I"> I
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                 <div style="flex: 1; flex-direction: row">
+                                    <input id="t6" style="flex: 1;background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)">
+                                    </input>
+                                    {% if tutee == "yes" %}
+                                    <div style="flex: 1; background-color: transparent">
+                                        <input type="radio" name="t6-correctness" value="C"> C
+                                        <input type="radio" name="t6-correctness" value="I"> I
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                 <div style="flex: 1; flex-direction: row">
+                                    <input id="t7" style="flex: 1;background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)">
+                                    </input>
+                                    {% if tutee == "yes" %}
+                                    <div style="flex: 1; background-color: transparent">
+                                        <input type="radio" name="t7-correctness" value="C"> C
+                                        <input type="radio" name="t7-correctness" value="I"> I
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                <div style="flex: 1; flex-direction: row">
+                                    <input id="t8" style="flex: 1;background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)">
+                                    </input>
+                                    {% if tutee == "yes" %}
+                                    <div style="flex: 1; background-color: transparent">
+                                        <input type="radio" name="t8-correctness" value="C"> C
+                                        <input type="radio" name="t8-correctness" value="I"> I
+                                    </div>
+                                    {% endif %}
+                                </div>
                             </div>
 
                         </div>
@@ -578,8 +642,39 @@
         var allBoxes = ['eq11','eq12','t1','eq21','eq22','t2','eq31', 'eq32','t3','eq41','eq42','t4','eq51','eq52','t5',
             'eq61', 'eq62','t6','eq71','eq72','t7','eq81','eq82','t8']
 
+        // 0 means not tagged as correct/incorrect step yet. 1 means has been tagged as either correct/incorrect
+        var is_tagged = ['1','1','0','0','0','0','0', '0','0','0','0','0','0','0','0',
+            '0', '0','0','0','0','0','0','0','0']
+
+        // 1 means correct step, 0 means incorrect step stated by tutor.
+        var tag_val = ['1','1','0','0','0','0','0', '0','0','0','0','0','0','0','0',
+            '0', '0','0','0','0','0','0','0','0']
+
         var current_text_containing_cells = [];
         var checkedBoxes = [];
+
+        function forceTag(value){
+             var cel_id = value+"-tag"
+             console.log(cel_id)
+             document.getElementById(cel_id).style.background = "#8080ff";
+        }
+
+        function handletag(value){
+            console.log("tagged val", value)
+            var cell = value.split("-")
+            if(cell[1].trim() == "C") {
+                document.getElementById(cell[0]).style.background = "#8cd9b3"
+                return 1
+            }
+            else if(cell[1].trim() == "I"){
+                document.getElementById(cell[0]).style.background = "#ff8c66"
+                return 1
+            }
+            else{
+                return 0
+            }
+        }
+
         function  HighlightCell(value) {
             if(document.getElementById(value).checked){
                 checkedBoxes.push(value)
@@ -607,6 +702,8 @@
                     'is_tutee': isTutee,
                     'meta': "no"
                 }));
+                forceTag("t1")
+
             };
             document.querySelector('#freeze_window').onclick = function (e) {
                 var elem = document.getElementById("freeze_window");
