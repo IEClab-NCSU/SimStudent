@@ -275,7 +275,7 @@
                                     <input style="width: 50px;height: 20px;background-color: lightgrey" id="highlight-cell-submit" type="button" value="Done"/>
                                     <input style="width: 100px;height: 20px;background-color: lightgrey; margin-left:10px" id="freeze_window" type="button" value="freeze_window"/>
                                     </div>
-                                    <div style="background-color: #94B6D2; flex: 1; flex-direction: row;">
+                                    <!-- <div style="background-color: #94B6D2; flex: 1; flex-direction: row;">
                                     <input id="op-eq11" onchange="HighlightCell(this.value)" type="checkbox" value="op-eq11">Eq11</input>
                                     <input id="op-eq12" onchange="HighlightCell(this.value)" type="checkbox" value="op-eq12">Eq12</input>
                                     <input id="op-eq21" onchange="HighlightCell(this.value)" type="checkbox" value="op-eq21">Eq21</input>
@@ -302,7 +302,7 @@
                                         <input id="op-t6" onchange="HighlightCell(this.value)" type="checkbox" value="op-t6">t6</input>
                                         <input id="op-t7" onchange="HighlightCell(this.value)" type="checkbox" value="op-t7">t7</input>
                                         <input id="op-t8" onchange="HighlightCell(this.value)" type="checkbox" value="op-t8">t8</input>
-                                    </div>
+                                    </div> -->
                                     <div style="background-color: #94B6D2; flex: 1; flex-direction: row;">
                                     </div>
 
@@ -421,6 +421,7 @@
         loadEqTrCells();
         loadQuizUpdate();
     };
+    var globalIndex = 0;
     var current_selected_hint_id = -1;
     var is_tutee = "{{ tutee }}";
     var is_manager = "{{ manager }}";
@@ -472,6 +473,7 @@
             if(data['message']['type'] == "new_highlights") {
                 unHighlightAllEqTrCells(allBoxes)
                 unlockAllEqTrCells(message)
+                globalIndex = message
             }
             else if(data['message']['type'] == "new_quizContent"){
                 console.log("quiz update is found", message)
@@ -485,9 +487,11 @@
                 window.location = redirect_location
             }
             else if(data['message']['type'] == "new_freeze"){
+              if(is_tutee == "no") {
                 var elem = document.getElementById("thinking_animation")
                 if(elem.style.display == "none") elem.style.display = "block"
                 else elem.style.display = "none"
+              }
             }
             else{
                 var eqtrInfo = message.split("*%*")
@@ -676,64 +680,74 @@
         }
 
         function  HighlightCell(value) {
-            if(document.getElementById(value).checked){
-                checkedBoxes.push(value)
-            }
-            else{
-                checkedBoxes = arrayRemove(checkedBoxes, value);
-            }
 
-        }
-        function arrayRemove(arr, value) {
+          var current_text_containing_cells = []
+          // var checkedBoxes = [];
+          /* function  HighlightCell(value) {
+  >>>>>>> 2b0157d4e9d6e845269c943fc15689a0793b7d34
+              if(document.getElementById(value).checked){
+                  checkedBoxes.push(value)
+              }
+              else{
+                  checkedBoxes = arrayRemove(checkedBoxes, value);
+              }
 
-           return arr.filter(function(ele){
-               return ele != value;
-           });
+          }
+          function arrayRemove(arr, value) {
 
-        }
-        if(is_tutee == "yes") {
-            document.querySelector('#highlight-cell-submit').onclick = function (e) {
-                unHighlightAllEqTrCells(allBoxes)
-                unlockAllEqTrCells(checkedBoxes)
-                highlightSocket.send(JSON.stringify({
-                    'message': checkedBoxes,
-                    'session': {{ session_id }},
-                    'command': 'new_highlights',
-                    'is_tutee': isTutee,
-                    'meta': "no"
-                }));
-                forceTag("t1")
+             return arr.filter(function(ele){
+                 return ele != value;
+             });
 
-            };
-            document.querySelector('#freeze_window').onclick = function (e) {
-                var elem = document.getElementById("freeze_window");
-                if (elem.value=="freeze_window") elem.value = "unfreeze_window";
-                else elem.value = "freeze_window";
-                highlightSocket.send(JSON.stringify({
-                    'message': "Freeze tutor's window",
-                    'session': {{ session_id }},
-                    'command': 'new_freeze',
-                    'is_tutee': isTutee,
-                    'meta': "no"
-                }));
-            };
+          } */
+
+      }
+
+      if(is_tutee == "yes") {
+          document.querySelector('#highlight-cell-submit').onclick = function (e) {
+              console.log("pppp")
+              unHighlightAllEqTrCells(allBoxes)
+              globalIndex = globalIndex + 1;
+              unlockAllEqTrCells(globalIndex)
+              highlightSocket.send(JSON.stringify({
+                  'message': globalIndex,
+                  'session': {{ session_id }},
+                  'command': 'new_highlights',
+                  'is_tutee': isTutee,
+                  'meta': "no"
+              }));
+              forceTag("t1")
+
+          };
+          document.querySelector('#freeze_window').onclick = function (e) {
+              var elem = document.getElementById("freeze_window");
+              if (elem.value=="freeze_window") elem.value = "unfreeze_window";
+              else elem.value = "freeze_window";
+              highlightSocket.send(JSON.stringify({
+                  'message': "Freeze tutor's window",
+                  'session': {{ session_id }},
+                  'command': 'new_freeze',
+                  'is_tutee': isTutee,
+                  'meta': "no"
+              }));
+          };
         }
         function unHighlightAllEqTrCells(array) {
             for(var i=0; i<array.length; i++){
-                //document.getElementById(array[i]).style.borderColor = "black"
-                //document.getElementById(array[i]).style.borderWidth = "1px"
+                document.getElementById(array[i]).style.borderColor = "black"
+                document.getElementById(array[i]).style.borderWidth = "1px"
                 document.getElementById(array[i]).disabled = true
             }
 
         }
-        function unlockAllEqTrCells(array) {
-            for(var i=0; i<array.length; i++){
-                var val = array[i].split("-")
+        function unlockAllEqTrCells(index) {
+            for(var i=0; i<=index; i++){
+                var val = allBoxes[i]
                 if(is_tutee=="yes") {
-                    document.getElementById(val[1].trim()).style.borderColor = "#cc3300"
-                    document.getElementById(val[1].trim()).style.borderWidth = "3px"
+                    document.getElementById(val.trim()).style.borderColor = "#cc3300"
+                    document.getElementById(val.trim()).style.borderWidth = "3px"
                 }
-                document.getElementById(val[1].trim()).disabled = false
+                document.getElementById(val.trim()).disabled = false
             }
         }
         var chat_history = JSON.parse({{ chat_history }});
@@ -771,7 +785,7 @@
                 }
             }
         }
-        
+
         function loadEqTrCells() {
             //var eq_tr_contents = {{ latest_eq_tr_cell.dormin_contents }};
             var eq_tr_contents = "{{latest_eq_tr_cell.dormin_contents | safe }}";
@@ -854,7 +868,16 @@
                     document.getElementById(array[i]).disabled = true
                 }
             }
-
+            unHighlightAllEqTrCells(allBoxes)
+            globalIndex = globalIndex + 1;
+            unlockAllEqTrCells(globalIndex)
+            highlightSocket.send(JSON.stringify({
+                'message': globalIndex,
+                'session': {{ session_id }},
+                'command': 'new_highlights',
+                'is_tutee': isTutee,
+                'meta': "no"
+            }));
         }
         function undoRecentEqTrCells() {
             var recent_cell = current_text_containing_cells.pop()
@@ -864,10 +887,12 @@
         }
         function newProblem(){
             initiateActionSend("Tutor has clicked NEW PROBLEM button", 0)
+            globalIndex = 0;
             clearAllEqTrCells(allBoxes, 0)
         }
         function restartProblem(){
             initiateActionSend("Tutor has clicked the RESTART button", 0)
+            globalIndex = 0;
             clearAllEqTrCells(allBoxes, 2)
         }
         function undoProblem(){
