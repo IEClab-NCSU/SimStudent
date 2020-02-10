@@ -1,6 +1,5 @@
 <!-- chat/templates/chat/index.html -->
 {% load staticfiles %}
-<!DOCTYPE html>
 <html>
 <head>
 
@@ -387,6 +386,9 @@
                 else if(modal_text.innerHTML.includes("QUIZ")){
                     loader_close_type = "Loader_Close_Quiz"
                 }
+                else if(modal_text.innerHTML.includes("NEW PROBLEM")){
+                    resetCorrectness()
+                }
                 //console.log("close_type", loader_close_type)
                 if(loader_close_type != "") {
                     allActionsSocket.send(JSON.stringify({
@@ -439,11 +441,12 @@
 
 
         allActionsSocket.onmessage = function(e) {
-            console.log("message", "message received by allActionSocket")
+
             var data = JSON.parse(e.data);
+            //console.log("message", data['message']['message_content'])
             //console.log(data['message'])
             if( is_tutee == "yes" && !data['message']['message_content'].includes("Loader")){
-                //console.log("in show")
+                //console.log("in show", data['message']['message_content'])
                 modal.style.display = "block";
                 modal_text.innerHTML = data['message']['message_content']
             }
@@ -584,13 +587,7 @@
 
           }
     }
-    //if(is_tutee == "yes")
-    /*{
-        document.querySelector('#NotifySM').onclick = function (e) {
-            //console.log("here div clicked");
-            window.location.pathname = '/sim_manager/'
-        };
-    }*/
+
 </script>
 {% block scripts %}
 {% endblock %}
