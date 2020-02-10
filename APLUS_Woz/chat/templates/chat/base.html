@@ -386,7 +386,8 @@
                 else if(modal_text.innerHTML.includes("QUIZ")){
                     loader_close_type = "Loader_Close_Quiz"
                 }
-                else if(modal_text.innerHTML.includes("NEW PROBLEM")){
+                else if(modal_text.innerHTML.includes("NEW PROBLEM") || modal_text.innerHTML.includes("RESTART")){
+                    log_eq_tr_cells("none")
                     resetCorrectness()
                 }
                 //console.log("close_type", loader_close_type)
