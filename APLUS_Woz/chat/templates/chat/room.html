@@ -55,7 +55,7 @@
                                     <input id="eq21" style="flex:3; background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
                                     {% if tutee == "yes" %}
                                     <div id="eq21-tag" style="flex: 1; background-color: transparent;">
-                                        <input type="radio" name="eq21-correctness" value="C"  onclick="handletag('eq21-C');"> C
+                                        <input type="radio" name="eq21-correctness" value="C" onclick="handletag('eq21-C');"> C
                                         <input type="radio" name="eq21-correctness" value="I" onclick="handletag('eq21-I');"> I
                                     </div>
                                     {% endif %}
@@ -67,7 +67,7 @@
                                     <input id="eq22" style="flex:3; background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
                                     {% if tutee == "yes" %}
                                     <div id="eq22-tag" style="flex: 1; background-color: transparent;">
-                                        <input type="radio" name="eq22-correctness" value="C"  onclick="handletag('eq22-C');"> C
+                                        <input type="radio" name="eq22-correctness" value="C" onclick="handletag('eq22-C');"> C
                                         <input type="radio" name="eq22-correctness" value="I" onclick="handletag('eq22-I');"> I
                                     </div>
                                     {% endif %}
@@ -78,7 +78,7 @@
                                     <input id="eq31" style="flex:3; background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
                                     {% if tutee == "yes" %}
                                     <div id="eq31-tag" style="flex: 1; background-color: transparent;">
-                                        <input type="radio" name="eq31-correctness" value="C"  onclick="handletag('eq31-C');"> C
+                                        <input type="radio" name="eq31-correctness" value="C" onclick="handletag('eq31-C');"> C
                                         <input type="radio" name="eq31-correctness" value="I" onclick="handletag('eq31-I');"> I
                                     </div>
                                     {% endif %}
@@ -90,7 +90,7 @@
                                     <input id="eq32" style="flex:3; background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
                                     {% if tutee == "yes" %}
                                     <div id="eq32-tag" style="flex: 1; background-color: transparent;">
-                                        <input type="radio" name="eq32-correctness" value="C"  onclick="handletag('eq32-C');"> C
+                                        <input type="radio" name="eq32-correctness" value="C" onclick="handletag('eq32-C');"> C
                                         <input type="radio" name="eq32-correctness" value="I" onclick="handletag('eq32-I');"> I
                                     </div>
                                     {% endif %}
@@ -101,7 +101,7 @@
                                     <input id="eq41" style="flex:3; background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
                                     {% if tutee == "yes" %}
                                     <div id="eq41-tag" style="flex: 1; background-color: transparent;">
-                                        <input type="radio" name="eq41-correctness" value="C"  onclick="handletag('eq41-C');"> C
+                                        <input type="radio" name="eq41-correctness" value="C" onclick="handletag('eq41-C');"> C
                                         <input type="radio" name="eq41-correctness" value="I" onclick="handletag('eq41-I');"> I
                                     </div>
                                     {% endif %}
@@ -113,7 +113,7 @@
                                     <input id="eq42" style="flex:3; background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
                                     {% if tutee == "yes" %}
                                     <div id="eq42-tag" style="flex: 1; background-color: transparent;">
-                                        <input type="radio" name="eq42-correctness" value="C"  onclick="handletag('eq42-C');"> C
+                                        <input type="radio" name="eq42-correctness" value="C" onclick="handletag('eq42-C');"> C
                                         <input type="radio" name="eq42-correctness" value="I" onclick="handletag('eq42-I');"> I
                                     </div>
                                     {% endif %}
@@ -124,7 +124,7 @@
                                     <input id="eq51" style="flex:3; background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
                                     {% if tutee == "yes" %}
                                     <div id="eq51-tag" style="flex: 1; background-color: transparent;">
-                                        <input type="radio" name="eq51-correctness" value="C"  onclick="handletag('eq51-C');"> C
+                                        <input type="radio" name="eq51-correctness" value="C" onclick="handletag('eq51-C');"> C
                                         <input type="radio" name="eq51-correctness" value="I" onclick="handletag('eq51-I');"> I
                                     </div>
                                     {% endif %}
@@ -136,7 +136,7 @@
                                     <input id="eq52" style="flex:3; background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
                                     {% if tutee == "yes" %}
                                     <div id="eq52-tag" style="flex: 1; background-color: transparent;">
-                                        <input type="radio" name="eq52-correctness" value="C"  onclick="handletag('eq52-C');"> C
+                                        <input type="radio" name="eq52-correctness" value="C" onclick="handletag('eq52-C');"> C
                                         <input type="radio" name="eq52-correctness" value="I" onclick="handletag('eq52-I');"> I
                                     </div>
                                     {% endif %}
@@ -555,13 +555,20 @@
 <script type="text/javascript" src="js/script.js"></script>
 
 <script>
+    var globalIndex = 0;
+    var allBoxes = ['eq11','eq12','t1','eq21','eq22','t2','eq31', 'eq32','t3','eq41','eq42','t4','eq51','eq52','t5',
+            'eq61', 'eq62','t6','eq71','eq72','t7','eq81','eq82','t8']
     window.onload = function(){
         console.log("Window.onload is called")
         loadChatHistory();
         loadEqTrCells();
         loadQuizUpdate();
+        // Initializing the boxes and buttons on page landing
+        globalIndex = 1;
+        unHighlightAllEqTrCells(allBoxes);
+        unlockAllEqTrCells(globalIndex);
+        checkToDisableUnlock(globalIndex);
     };
-    var globalIndex = 0;
     var current_selected_hint_id = -1;
     var is_tutee = "{{ tutee }}";
     var is_manager = "{{ manager }}";
@@ -609,6 +616,16 @@
                 unHighlightAllEqTrCells(allBoxes)
                 unlockAllEqTrCells(message)
                 globalIndex = message
+            }
+            else if(data['message']['type'] == "enable_unlock") {
+                if(is_tutee == "yes") {
+                    unHighlightAllEqTrCells(allBoxes)
+                    unlockAllEqTrCells(message)
+                    globalIndex = message
+                    // sessionStorage.setItem("globalIndex", globalIndex)
+                    console.log("Recevied inedex = " + globalIndex + " I'm a tutee: " + isTutee)
+                    checkToDisableUnlock(globalIndex)
+                }
             }
             else if(data['message']['type'] == "new_quizContent"){
                 console.log("quiz update is found", message)
@@ -770,15 +787,13 @@
                 select.add( option );
             }
         }
-        var allBoxes = ['eq11','eq12','t1','eq21','eq22','t2','eq31', 'eq32','t3','eq41','eq42','t4','eq51','eq52','t5',
-            'eq61', 'eq62','t6','eq71','eq72','t7','eq81','eq82','t8']
+
         // 0 means not tagged as correct/incorrect step yet. 1 means has been tagged as either correct/incorrect
         var is_tagged = ['1','1','0','0','0','0','0', '0','0','0','0','0','0','0','0',
             '0', '0','0','0','0','0','0','0','0']
         // 1 means correct step, 0 means incorrect step stated by tutor.
         var tag_val = ['1','1','0','0','0','0','0', '0','0','0','0','0','0','0','0',
             '0', '0','0','0','0','0','0','0','0']
-
         var current_correctness_id = ['1','1','0','0','0','0','0', '0','0','0','0','0','0','0','0',
             '0', '0','0','0','0','0','0','0','0']
         var current_text_containing_cells = [];
@@ -828,7 +843,12 @@
                 is_prev_cell_tagged = 0; //reset flag
                 unHighlightAllEqTrCells(allBoxes)
                 globalIndex = globalIndex + 1;
+                if(globalIndex % 3 != 2) {
+                    console.log("Unlocking LHS and RHS")
+                    globalIndex = globalIndex + 1;
+                }
                 unlockAllEqTrCells(globalIndex)
+                checkToDisableUnlock(globalIndex)
                 highlightSocket.send(JSON.stringify({
                     'message': globalIndex,
                     'session': {{ session_id }},
@@ -883,6 +903,15 @@
                     document.getElementById(val.trim()).style.borderWidth = "3px"
                 }
                 document.getElementById(val.trim()).disabled = false
+            }
+        }
+        function checkToDisableUnlock(index) {
+            if(is_tutee == "yes") {
+                if (index + 1 >= allBoxes.length) {
+                    document.getElementById('highlight-cell-submit').disabled = true
+                } else {
+                    document.getElementById('highlight-cell-submit').disabled = false
+                }
             }
         }
         var chat_history = JSON.parse({{ chat_history }});
@@ -1028,11 +1057,38 @@
             initiateActionSend("Tutor has clicked NEW PROBLEM button", 0)
             globalIndex = 0;
             clearAllEqTrCells(allBoxes, 0)
+            // To ensure that the disabled unlock button enables on "New Problem"
+            if(is_tutee == "no") {
+                console.log("Sending: " + globalIndex + " by tutee = " + is_tutee)
+                highlightSocket.send(JSON.stringify({
+                    'message': globalIndex,
+                    'session': {{ session_id }},
+                    'command': 'enable_unlock',
+                    'is_tutee': isTutee,
+                    'meta': "no"
+                }));
+            }
+            else {
+                checkToDisableUnlock(globalIndex)
+            }
         }
         function restartProblem(){
             initiateActionSend("Tutor has clicked the RESTART button", 0)
             globalIndex = 0;
             clearAllEqTrCells(allBoxes, 2)
+            // To ensure that the disabled unlock button enables on "Restart Problem"
+            if(is_tutee == "no") {
+                highlightSocket.send(JSON.stringify({
+                    'message': globalIndex,
+                    'session': {{ session_id }},
+                    'command': 'enable_unlock',
+                    'is_tutee': isTutee,
+                    'meta': "no"
+                }));
+            }
+            else {
+                checkToDisableUnlock(globalIndex)
+            }
         }
         function undoProblem(){
             initiateActionSend("Tutor has clicked the UNDO button", 0)
