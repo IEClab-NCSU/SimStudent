@@ -163,6 +163,30 @@ class HighlightConsumer(WebsocketConsumer):
         }
         return self.send_highlight_message(content)
 
+    def enable_unlock(self, data):
+        print('enable_unlock', data['is_tutee'], data['message'])
+        current_equation_state = WorkOutProblems.objects.filter(session_id_id=int(data['session'])).order_by(
+            '-pk').first()
+        if current_equation_state is not None:
+            current_eq_state = current_equation_state.dormin_contents
+        else:
+            current_eq_state = "[]"
+        # I am enabling cells is data['message']
+        cf_action = "Tutor enabled Unlock button for tutee"
+        log = ActionLogs(session_id_id=int(data['session']),
+                         actions_text=data['message'], cf_action=cf_action, selection_tutee=data['message'],
+                         action_tutee=cf_action, input_tutee="selected box checked",
+                         current_equation_state=current_eq_state)
+        log.save()
+        content = {
+            'command': 'enable_unlock',
+            'message': {
+                'type': 'enable_unlock',
+                'message_content': data['message']
+            }
+        }
+        return self.send_highlight_message(content)
+
     def new_eqTrContent(self, data):
         content = {
             'command': 'new_eqTrContent',
@@ -236,6 +260,7 @@ class HighlightConsumer(WebsocketConsumer):
 
     commands = {
         'new_highlights': new_highlights,
+        'enable_unlock': enable_unlock,
         'new_eqTrContent': new_eqTrContent,
         'new_quizContent': new_quizContent,
         'new_HintContent': new_HintContent,
