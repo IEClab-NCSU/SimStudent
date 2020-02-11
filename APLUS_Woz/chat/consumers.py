@@ -168,7 +168,8 @@ class HighlightConsumer(WebsocketConsumer):
             'command': 'new_eqTrContent',
             'message': {
                 'type': 'new_eqTrContent',
-                'message_content': data['message']
+                'message_content': data['message'],
+                'is_tutee': data['is_tutee']
             }
 
         }
@@ -281,7 +282,7 @@ class HighlightConsumer(WebsocketConsumer):
 class AllActionsConsumer(WebsocketConsumer):
 
     def all_actions(self, data):
-        print('all_actions', data['is_tutee'], data['message'])
+        print('all_actions', data['is_tutee'], data['message'], data['eq_tr_id_undo'])
         current_equation_state = WorkOutProblems.objects.filter(session_id_id=int(data['session'])).order_by('-pk').first()
         if current_equation_state is not None:
             current_eq_state = current_equation_state.dormin_contents
@@ -365,13 +366,15 @@ class AllActionsConsumer(WebsocketConsumer):
                              actions_text=ques, cf_action= "Tutee has decided to ask specific question from a selected type", selection_tutee="[specific question dropdown]", action_tutee="Tutee has decided to ask specific question from a selected type", input_tutee=ques, current_equation_state=current_eq_state)
             log.save()
         else:
+            print("UNDO comes here")
             log = ActionLogs(session_id_id=int(data['session']), actions_text=data['message'], cf_action=data['message'], current_equation_state=current_eq_state, action_tutor=data['message'], input_tutor=data['message'], selection_tutor=data['message'])
             log.save()
             content = {
                 'command': 'all_actions',
                 'message': {
                     'type': 'all_actions',
-                    'message_content': data['message']
+                    'message_content': data['message'],
+                    'cell_undone':  data['eq_tr_id_undo']
                 }
             }
             return self.send_all_actions_message(content)

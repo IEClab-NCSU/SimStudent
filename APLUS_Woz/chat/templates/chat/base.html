@@ -399,7 +399,8 @@
                         'is_tutee': is_tutee,
                         'meta': "no",
                         'hint_request': "none",
-                        'correctness_update': "none"
+                        'correctness_update': "none",
+                        'eq_tr_id_undo': "none"
                     }));
                 }
             }
@@ -415,7 +416,14 @@
             'ws://' + window.location.host +
             '/ws/all_actions/' + roomName + '/');
 
-        function initiateActionSend(value, flag){
+        function initiateActionSend(value, flag, cell_id){
+            if (cell_id == undefined) {
+                console.log("no cell id given")
+                eq_tr_id = "none"
+            }
+            else{
+                eq_tr_id = cell_id
+            }
             if(flag == 1){
                 hint_request = "yes"
                 correctness_update = "no"
@@ -436,7 +444,8 @@
                     'is_tutee': is_tutee,
                     'meta': "no",
                     'hint_request': hint_request,
-                    'correctness_update': correctness_update
+                    'correctness_update': correctness_update,
+                    'eq_tr_id_undo': eq_tr_id
             }));
         }
 
@@ -444,10 +453,14 @@
         allActionsSocket.onmessage = function(e) {
 
             var data = JSON.parse(e.data);
-            //console.log("message", data['message']['message_content'])
+            console.log("all action socket receiving", data['message']['message_content'])
             //console.log(data['message'])
             if( is_tutee == "yes" && !data['message']['message_content'].includes("Loader")){
                 //console.log("in show", data['message']['message_content'])
+                if(data['message']['message_content'].includes("UNDO")){
+                    console.log("print undone cell id", data['message']['cell_undone'])
+                    resetCorrectness(data['message']['cell_undone'])
+                }
                 modal.style.display = "block";
                 modal_text.innerHTML = data['message']['message_content']
             }
