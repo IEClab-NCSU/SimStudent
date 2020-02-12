@@ -659,8 +659,10 @@
                 var eqtrInfo = message.split("*%*")
                 console.log(eqtrInfo[1], " should go to cell ", eqtrInfo[0])
                 document.getElementById(eqtrInfo[0]).value = eqtrInfo[1]
-                if(is_tutee == "no" != data['message']['is_tutee'] && eqtrInfo[1]!= "" && current_text_containing_cells.includes(eqtrInfo[0]) == false)
-                current_text_containing_cells.push(eqtrInfo[0])
+                if(is_tutee == "no" != data['message']['is_tutee'] && eqtrInfo[1]!= "" && eqtrInfo[0] != "eq11" && eqtrInfo[0] != "eq12" && current_text_containing_cells.includes(eqtrInfo[0]) == false){
+                    console.log("I am pushed", eqtrInfo[0])
+                    current_text_containing_cells.push(eqtrInfo[0])
+                }
             }
         }
         highlightSocket.onclose = function(e) {
@@ -829,9 +831,6 @@
                     current_text_containing_cells.push(allBoxes[i])
                 }
              }
-             /*for (int i=0; i< current_text_containing_cells.length; i++){
-                console.log("cells in eq tr", current_text_containing_cells[i])
-            }*/
         }
         function handletag(value){
             console.log("tagged val", value)
@@ -856,6 +855,7 @@
       }
       if(is_tutee == "yes") {
           document.querySelector('#highlight-cell-submit').onclick = function (e) {
+              console.log("index val", globalIndex)
               if(globalIndex >= 2 && is_prev_cell_tagged == 1){
                 // previous cell is tagged as correct or incorrect. So it is safe to unlock the next cell
                 is_prev_cell_tagged = 0; //reset flag
@@ -982,7 +982,7 @@
         }
         function eqTrInput(id){
 
-            if(document.getElementById(id).value != "" && id != "eq11" && id!=eq12 && current_text_containing_cells.includes(id) == false){
+            if(document.getElementById(id).value != "" && id != "eq11" && id!= "eq12" && current_text_containing_cells.includes(id) == false){
                 // Pushing the cells that contains value so that we can undo in reverse order accordingly.
                 console.log("pushing the recent id that is getting input", id)
                 current_text_containing_cells.push(id)
@@ -995,9 +995,6 @@
                     'is_tutee': isTutee,
                     'meta': "no"
                 }))
-            /*for (int i=0 ; i<current_text_containing_cells.length; i++){
-                console.log("cells in eq tr", current_text_containing_cells[i])
-            }*/
         }
         function log_eq_tr_cells(id) {
             var values = []
@@ -1070,11 +1067,13 @@
                 }
             }
             else{
-                cel_id = id + "-tag"
-                correctness_id = id + "-correctness"
-                document.getElementById(cel_id).style.background = "#94B6D2"
-                document.getElementById(id).style.background = "white"
-                $("input[name="+correctness_id+"]").prop('checked', false);
+                if(id != "eq11" && id != "eq12"){
+                    cel_id = id + "-tag"
+                    correctness_id = id + "-correctness"
+                    document.getElementById(cel_id).style.background = "#94B6D2"
+                    document.getElementById(id).style.background = "white"
+                    $("input[name="+correctness_id+"]").prop('checked', false);
+                }
             }
 
         }

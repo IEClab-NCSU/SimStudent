@@ -494,36 +494,42 @@
 
     {
         document.querySelector('#ProblemBank').onclick = function (e) {
-            document.getElementById("TutorInstruction").style.display = "none";
-            document.getElementById("MainContent").style.display = "block";
             if(is_tutee == "no") {
-                initiateActionSend("Tutor has clicked the PROBLEM BANK section", 0)
-                window.location.pathname = '/problem_bank/no/'
-            }
-            else{
-                window.location.pathname = '/problem_bank/yes/'
+                document.getElementById("TutorInstruction").style.display = "none";
+                document.getElementById("MainContent").style.display = "block";
+                if(is_tutee == "no") {
+                    initiateActionSend("Tutor has clicked the PROBLEM BANK section", 0)
+                    window.location.pathname = '/problem_bank/no/'
+                }
+                else{
+                    window.location.pathname = '/problem_bank/yes/'
+                }
             }
         };
         document.querySelector('#UnitOverview').onclick = function (e) {
-            document.getElementById("TutorInstruction").style.display = "none";
-            document.getElementById("MainContent").style.display = "block";
             if(is_tutee == "no") {
-                initiateActionSend("Tutor has clicked the UNIT OVERVIEW section", 0)
-                window.location.pathname = '/unit_overview/no/'
-            }
-            else{
-                window.location.pathname = '/unit_overview/yes/'
+                document.getElementById("TutorInstruction").style.display = "none";
+                document.getElementById("MainContent").style.display = "block";
+                if(is_tutee == "no") {
+                    initiateActionSend("Tutor has clicked the UNIT OVERVIEW section", 0)
+                    window.location.pathname = '/unit_overview/no/'
+                }
+                else{
+                    window.location.pathname = '/unit_overview/yes/'
+                }
             }
         };
         document.querySelector('#IntroVideo').onclick = function (e) {
-            document.getElementById("TutorInstruction").style.display = "none";
-            document.getElementById("MainContent").style.display = "block";
             if(is_tutee == "no") {
-                initiateActionSend("Tutor has clicked the INTRO VIDEO section", 0)
-                window.location.pathname = '/intro_video/no/'
-            }
-            else{
-                window.location.pathname = '/intro_video/yes/'
+                document.getElementById("TutorInstruction").style.display = "none";
+                document.getElementById("MainContent").style.display = "block";
+                if(is_tutee == "no") {
+                    initiateActionSend("Tutor has clicked the INTRO VIDEO section", 0)
+                    window.location.pathname = '/intro_video/no/'
+                }
+                else{
+                    window.location.pathname = '/intro_video/yes/'
+                }
             }
         };
         document.querySelector('#Examples').onclick = function (e) {
@@ -535,11 +541,7 @@
                 document.getElementById("myLoaderDiv").style.backgroundColor="#E2D8C1";
                 loader.style.display = "block";
                 loader.style.backgroundColor = "#E2D8C1";
-                //window.location.pathname = '/intro_video/no/'
             }
-            else{
-                //window.location.pathname = '/intro_video/yes/'
-            }//*/
         };
         document.querySelector('#Quiz').onclick = function (e) {
             if(is_tutee == "no") {
@@ -550,11 +552,7 @@
                 document.getElementById("myLoaderDiv").style.backgroundColor="#CAD6D3";
                 loader.style.display = "block";
                 loader.style.backgroundColor = "#CAD6D3";
-                //window.location.pathname = '/intro_video/no/'
             }
-            else{
-                //window.location.pathname = '/intro_video/yes/'
-            }//*/
         };
         document.querySelector('#EQTR').onclick = function (e) {
             //console.log("here div clicked");
@@ -568,8 +566,9 @@
                 window.location.pathname = '/sim_session/tutoring/' + tutor_name +'/' + tutee_name +'/' + image_name +'/'
             }
             else{
-                //console.log(is_tutee)
-                window.location.pathname = '/sim_session/' + session_id +'/'
+                //window.location.pathname = '/sim_session/' + session_id +'/'
+                window.location.pathname = '/sim_session/' + {{ session_id }} + '/' + "{{ condition_name }}" +'/';
+                //var path = '/sim_session/' + {{ session_id }} + '/' + "{{ condition_name }}" +'/';
             }
         };
     }
