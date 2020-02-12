@@ -399,7 +399,6 @@
                         'is_tutee': is_tutee,
                         'meta': "no",
                         'hint_request': "none",
-                        'correctness_update': "none",
                         'eq_tr_id_undo': "none"
                     }));
                 }
@@ -426,15 +425,9 @@
             }
             if(flag == 1){
                 hint_request = "yes"
-                correctness_update = "no"
-            }
-            else if(flag == 2){
-                hint_request = "no"
-                correctness_update = "yes"
             }
             else{
                 hint_request = "no"
-                correctness_update = "no"
             }
             console.log(hint_request)
             allActionsSocket.send(JSON.stringify({
@@ -444,7 +437,6 @@
                     'is_tutee': is_tutee,
                     'meta': "no",
                     'hint_request': hint_request,
-                    'correctness_update': correctness_update,
                     'eq_tr_id_undo': eq_tr_id
             }));
         }

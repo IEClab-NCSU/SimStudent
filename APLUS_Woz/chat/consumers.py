@@ -7,15 +7,6 @@ from .models import Session, TutorMetaTutorConversation, TutorTuteeConversation,
 
 class ChatConsumer(WebsocketConsumer):
 
-    def fetch_messages(self, data):
-        #print('fetch', data['session'])
-        messages = TutorTuteeConversation.last_10_messages()
-        content = {
-            'messages': self.messages_to_json(messages)
-        }
-        self.send_message(content)
-        pass
-
     def new_messages(self, data):
         if "NB:TYPING" in data['message']:
             session = Session.objects.get(pk=int(data['session']))
@@ -78,7 +69,6 @@ class ChatConsumer(WebsocketConsumer):
             return self.send_chat_message(content)
 
     commands = {
-        'fetch_messages': fetch_messages,
         'new_messages': new_messages
     }
 
@@ -235,12 +225,23 @@ class HighlightConsumer(WebsocketConsumer):
         }
         return self.send_highlight_message(content)
 
+    def correctness_message(self, data):
+        print("correctness msg", data['message'], data['id_to_be_corrected'])
+        current_log_id = ActionLogs.objects.filter(session_id_id=int(data['session']), selection_tutor=data['id_to_be_corrected']).order_by(
+            '-pk').first()
+        if current_log_id is not None:
+            #current_eq_state = current_equation_state.dormin_contents
+            print("a", current_log_id.id)
+            current_log_id.is_correct_step = data['message']
+            current_log_id.save()
+
     commands = {
         'new_highlights': new_highlights,
         'new_eqTrContent': new_eqTrContent,
         'new_quizContent': new_quizContent,
         'new_HintContent': new_HintContent,
         'new_freeze': new_freeze,
+        'correctness_message': correctness_message
     }
 
     def connect(self):
@@ -293,23 +294,6 @@ class AllActionsConsumer(WebsocketConsumer):
             log = ActionLogs(session_id_id=int(data['session']), actions_text=data['message'],
                              cf_action=data['message'], current_equation_state=current_eq_state,
                              hint_requested=data['message'], selection_tutor=data['message'], action_tutor=data['message'], input_tutor=data['message'])
-            log.save()
-            content = {
-                'command': 'all_actions',
-                'message': {
-                    'type': 'all_actions',
-                    'message_content': data['message']
-                }
-            }
-            return self.send_all_actions_message(content)
-        if "yes" in data['correctness_update']:
-            grade_result = ""
-            if "0" in data['message']:
-                grade_result = "Tutor's step is Incorrect"
-            else:
-                grade_result = "Tutor's step is Correct"
-            log = ActionLogs(session_id_id=int(data['session']), actions_text=grade_result,
-                             cf_action="Step stated by tutor graded", current_equation_state=current_eq_state, is_correct_step=data['message'])
             log.save()
             content = {
                 'command': 'all_actions',
@@ -417,3 +401,4 @@ class AllActionsConsumer(WebsocketConsumer):
     def all_actions_message(self, event):
         message = event['message']
         self.send(text_data=json.dumps(message))
+

@@ -493,12 +493,6 @@
                             </div>
                         </div>
                     </div>
-                    {% if tutee == "yes" %}
-                    <div style="background-color:#94B6D2; flex:1;justify-content: center;align-items: center;">
-                        <input style="flex:1;background-color:green" id="correct-step" type="button" value="Correct"  onclick="submitCorrectness(1)"/><br/>
-                        <input style="flex:1;background-color:red" id="incorrect-step" type="button" value="Incorrect" onclick="submitCorrectness(0)"/>
-                    </div>
-                    {% endif %}
                     <div style="background-color:#94B6D2; flex:2;justify-content: center;align-items: center;">
                         <input style="flex:8;" id="chat-message-input" type="text"/><br/>
                         <input style="flex:1;" id="chat-message-submit" type="button" value="Send"/>
@@ -569,15 +563,6 @@
     var is_prev_cell_tagged = 0;
     var allBoxes = ['eq11','eq12','t1','eq21','eq22','t2','eq31', 'eq32','t3','eq41','eq42','t4','eq51','eq52','t5',
             'eq61', 'eq62','t6','eq71','eq72','t7','eq81','eq82','t8']
-    // 0 means not tagged as correct/incorrect step yet. 1 means has been tagged as either correct/incorrect
-    var is_tagged = ['1','1','0','0','0','0','0', '0','0','0','0','0','0','0','0',
-            '0', '0','0','0','0','0','0','0','0']
-    // 1 means correct step, 0 means incorrect step stated by tutor.
-    var tag_val = ['1','1','0','0','0','0','0', '0','0','0','0','0','0','0','0',
-            '0', '0','0','0','0','0','0','0','0']
-
-    var current_correctness_id = ['1','1','0','0','0','0','0', '0','0','0','0','0','0','0','0',
-            '0', '0','0','0','0','0','0','0','0']
     var current_text_containing_cells = [];
     var checkedBoxes = [];
     if(is_tutee == "yes"){
@@ -609,9 +594,15 @@
         var chatSocket = new ReconnectingWebSocket(
             'ws://' + window.location.host +
             '/ws/chat/' + roomName + '/');
+
         var highlightSocket = new ReconnectingWebSocket(
             'ws://' + window.location.host +
             '/ws/lock_unlock/' + roomName + '/');
+
+        /*var CorrectnessUpdateSocket = new ReconnectingWebSocket(
+            'ws://' + window.location.host +
+            '/ws/correctness_update/' + roomName + '/');*/
+
         highlightSocket.onmessage = function(e) {
             console.log("message", "message received by highlightSocket")
             var data = JSON.parse(e.data);
@@ -642,6 +633,10 @@
                 else elem.style.display = "none"
               }
             }
+            else if(data['message']['type'] == "correctness_message"){
+
+                console.log("bha")
+            }
             else{
                 var eqtrInfo = message.split("*%*")
                 console.log(eqtrInfo[1], " should go to cell ", eqtrInfo[0])
@@ -659,6 +654,21 @@
         highlightSocket.onerror = function(e) {
             console.log("error", "highlightSocket error occured")
         }
+
+        /*CorrectnessUpdateSocket.onmessage = function(e) {
+            console.log("message", "message received by CorrectnessUpdateSocket")
+            var data = JSON.parse(e.data);
+        }
+        CorrectnessUpdateSocket.onclose = function(e) {
+            console.log("close", "CorrectnessUpdateSocket closed")
+        }
+        CorrectnessUpdateSocket.onopen = function(e) {
+            console.log("open", "CorrectnessUpdateSocket open")
+        }
+        CorrectnessUpdateSocket.onerror = function(e) {
+            console.log("error", "CorrectnessUpdateSocket error occured")
+        }*/
+
         chatSocket.onmessage = function(e) {
             var data = JSON.parse(e.data);
             //console.log("hihi", data['message'])
@@ -732,7 +742,6 @@
                     'meta': "no",
                     'qtype': value,
                     'hint_request': "none",
-                    'correctness_update': "none",
                     'eq_tr_id_undo': "none"
             }));
             //initiateActionSend("Tutee has descided to ask the following question type", value)
@@ -749,7 +758,6 @@
                     'meta': "no",
                     'ques': value,
                     'hint_request': "none",
-                    'correctness_update': "none",
                     'eq_tr_id_undo': "none"
             }));
             var id = value.split("$$");
@@ -810,10 +818,12 @@
             if(cell[1].trim() == "C") {
                 document.getElementById(cell[0]).style.background = "#8cd9b3"
                 is_prev_cell_tagged = 1;
+                updateCorrectnessLabel(cell[0].trim(), 1)
             }
             else if(cell[1].trim() == "I"){
                 document.getElementById(cell[0]).style.background = "#ff8c66"
                 is_prev_cell_tagged = 1;
+                updateCorrectnessLabel(cell[0].trim(), 0)
             }
             else{
                 is_prev_cell_tagged = 0;
@@ -987,7 +997,6 @@
                     'content_eq_tr': values,
                     'edited_eq_tr_id_pos': pos.toString(),
                     'hint_request': "none",
-                    'correctness_update': "none",
                     'eq_tr_id_undo': "none"
             }));
         }
@@ -1048,6 +1057,26 @@
             }
 
         }
+
+        function updateCorrectnessLabel(id, content, situation){
+             if(situation == undefined){
+                 var pos = allBoxes.indexOf(id)
+                 if(pos >= 2){
+                    // Starting from label t1 - next
+                    highlightSocket.send(JSON.stringify({
+                        'message': content,
+                        'session': {{ session_id }},
+                        'command': 'correctness_message',
+                        'is_tutee': isTutee,
+                         'meta': "no",
+                         'id_to_be_corrected': id,
+                         'pos': pos,
+                    }));
+
+                 }
+             }
+        }
+
         function undoRecentEqTrCells() {
             console.log("here")
             if(current_text_containing_cells.length >= 1){
@@ -1115,15 +1144,6 @@
                     'meta': "no"
             }));
             //quiz_performance = []
-        }
-        function submitCorrectness(value){
-            if(value == 1) {
-                initiateActionSend("1", 2)
-            }
-            else {
-                initiateActionSend("0", 2)
-            }
-            //clearAllEqTrCells(allBoxes, 0)
         }
         function updateQuizProgressBar(array){
             console.log("quiz update", array)
