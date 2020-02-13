@@ -251,17 +251,21 @@
 
 {% block style %}
 {% endblock %}
+    
+{% block styleHover %}
+{% endblock %}
+    
 </head>
 <body>
 <div style="background-color:#94B6D2;flex: 1;flex-direction: column;">
     <div style="background-color:lightgrey; flex:1; flex-direction: row;"><!-- The top row that contains all the buttons -->
         <div style="background-color:lightgrey; flex:4; flex-direction: row;">
-            <div id="EQTR" style="background-color:#94B6D2; flex:1;align-items: center; justify-content: center;"> <p style="font-weight:bold;">{{ session_info.tutee_name }}</p></div>
-            <div id="ProblemBank" style="background-color:#5C9D74; flex:1;align-items: center; justify-content: center;"><p style="font-weight:bold;">Problem Bank</p></div>
-            <div id="IntroVideo" style="background-color:#E4CCBC; flex:1;align-items: center; justify-content: center;"><p style="font-weight:bold;">Intro Video</p></div>
-            <div id="UnitOverview" style="background-color:#A5AC7F; flex:1;align-items: center; justify-content: center;"><p style="font-weight:bold;">Unit Overview</p></div>
-            <div id="Examples" style="background-color:#E2D8C1; flex:1;align-items: center; justify-content: center;"><p style="font-weight:bold;">Examples</p></div>
-            <div id="Quiz" style="background-color:#CAD6D3; flex:1;align-items: center; justify-content: center;"><p style="font-weight:bold;">Quiz</p></div>
+            <div id="EQTR" class="hoverWrapper" style="background-color:#94B6D2; flex:1;align-items: center; justify-content: center;"> <p style="font-weight:bold;">{{ session_info.tutee_name }}</p></div>
+            <div id="ProblemBank" class="hoverWrapper" style="background-color:#5C9D74; flex:1;align-items: center; justify-content: center;"><p style="font-weight:bold;">Problem Bank</p></div>
+            <div id="IntroVideo" class="hoverWrapper" style="background-color:#E4CCBC; flex:1;align-items: center; justify-content: center;"><p style="font-weight:bold;">Intro Video</p></div>
+            <div id="UnitOverview" class="hoverWrapper" style="background-color:#A5AC7F; flex:1;align-items: center; justify-content: center;"><p style="font-weight:bold;">Unit Overview</p></div>
+            <div id="Examples" class="hoverWrapper" style="background-color:#E2D8C1; flex:1;align-items: center; justify-content: center;"><p style="font-weight:bold;">Examples</p></div>
+            <div id="Quiz" class="hoverWrapper" style="background-color:#CAD6D3; flex:1;align-items: center; justify-content: center;"><p style="font-weight:bold;">Quiz</p></div>
             {% if tutee == "yes" %}
                 <!--<div style="background-color:lightcoral; flex:1;align-items: center; justify-content: center;">
                     <input style="flex:1;" id="NotifySM" type="button" value="NotifySM"/>
