@@ -6,7 +6,16 @@
 <html xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html"
       xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html"
       xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
-
+      
+{% block styleHover %}
+    <style>
+        .hoverWrapper:hover{
+            color: #800000;
+            font-size: 20px;
+        }
+    </style>
+{% endblock %}
+      
 {% block content %}
 <div style="background-color:#94B6D2; flex:1; flex-direction: row">
     <!-- Div for the equation transformation and simSt and meta image -->
@@ -21,7 +30,7 @@
                             <div style="background-color:#EBDDC3; flex:10; align-items: center; justify-content: center;flex-direction: column">
                                 <div style="flex: 1;background-color: #EBDDC3; flex-direction: row; ">
                                     <div style="flex: 1; flex-direction: row">
-                                    <input id="eq11" style="flex:3; background-color: white; border: 1px solid black;" type="text" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
+                                    <input id="eq11" style="flex:3; background-color: white; border: 1px solid black; font-size: 18px;" type="text" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
                                         {% if tutee == "yes" %}
                                             <div style="flex: 1; background-color: #EBDDC3;">
                                                 <input type="radio" name="eq11-correctness" value="C"> C
@@ -37,7 +46,7 @@
                                         <p style="font-weight:bold;">=</p>
                                     </div>
                                     <div style="flex: 1; flex-direction: row">
-                                    <input id="eq12" style="flex:3; background-color: white; border: 1px solid black;" type="text" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
+                                    <input id="eq12" style="flex:3; background-color: white; border: 1px solid black; font-size: 18px;" type="text" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
                                         {% if tutee == "yes" %}
                                             <div style="flex: 1; background-color: #EBDDC3;">
                                                 <input type="radio" name="eq12-correctness" value="C"> C
@@ -52,7 +61,7 @@
                                 </div>
                                 <div style="flex: 1;background-color: #EBDDC3; flex-direction: row;">
                                     <div style="flex: 1; flex-direction: row">
-                                    <input id="eq21" style="flex:3; background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
+                                    <input id="eq21" style="flex:3; background-color: white; border: 1px solid black; font-size: 18px;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
                                     {% if tutee == "yes" %}
                                     <div id="eq21-tag" style="flex: 1; background-color: transparent;">
                                         <input type="radio" name="eq21-correctness" value="C" onclick="handletag('eq21-C');"> C
@@ -64,7 +73,7 @@
                                         <p style="font-weight:bold;">=</p>
                                     </div>
                                     <div style="flex: 1; flex-direction: row">
-                                    <input id="eq22" style="flex:3; background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
+                                    <input id="eq22" style="flex:3; background-color: white; border: 1px solid black; font-size: 18px;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
                                     {% if tutee == "yes" %}
                                     <div id="eq22-tag" style="flex: 1; background-color: transparent;">
                                         <input type="radio" name="eq22-correctness" value="C" onclick="handletag('eq22-C');"> C
@@ -75,7 +84,7 @@
                                 </div>
                                 <div style="flex: 1;background-color: #EBDDC3; flex-direction: row;">
                                     <div style="flex: 1; flex-direction: row">
-                                    <input id="eq31" style="flex:3; background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
+                                    <input id="eq31" style="flex:3; background-color: white; border: 1px solid black; font-size: 18px;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
                                     {% if tutee == "yes" %}
                                     <div id="eq31-tag" style="flex: 1; background-color: transparent;">
                                         <input type="radio" name="eq31-correctness" value="C" onclick="handletag('eq31-C');"> C
@@ -87,7 +96,7 @@
                                         <p style="font-weight:bold;">=</p>
                                     </div>
                                     <div style="flex: 1; flex-direction: row">
-                                    <input id="eq32" style="flex:3; background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
+                                    <input id="eq32" style="flex:3; background-color: white; border: 1px solid black; font-size: 18px;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
                                     {% if tutee == "yes" %}
                                     <div id="eq32-tag" style="flex: 1; background-color: transparent;">
                                         <input type="radio" name="eq32-correctness" value="C" onclick="handletag('eq32-C');"> C
@@ -98,7 +107,7 @@
                                 </div>
                                 <div style="flex: 1;background-color: #EBDDC3; flex-direction: row;">
                                     <div style="flex: 1; flex-direction: row">
-                                    <input id="eq41" style="flex:3; background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
+                                    <input id="eq41" style="flex:3; background-color: white; border: 1px solid black; font-size: 18px;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
                                     {% if tutee == "yes" %}
                                     <div id="eq41-tag" style="flex: 1; background-color: transparent;">
                                         <input type="radio" name="eq41-correctness" value="C" onclick="handletag('eq41-C');"> C
@@ -110,7 +119,7 @@
                                         <p style="font-weight:bold;">=</p>
                                     </div>
                                     <div style="flex: 1; flex-direction: row">
-                                    <input id="eq42" style="flex:3; background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
+                                    <input id="eq42" style="flex:3; background-color: white; border: 1px solid black; font-size: 18px;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
                                     {% if tutee == "yes" %}
                                     <div id="eq42-tag" style="flex: 1; background-color: transparent;">
                                         <input type="radio" name="eq42-correctness" value="C" onclick="handletag('eq42-C');"> C
@@ -121,7 +130,7 @@
                                 </div>
                                 <div style="flex: 1;background-color: #EBDDC3; flex-direction: row;">
                                     <div style="flex: 1; flex-direction: row">
-                                    <input id="eq51" style="flex:3; background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
+                                    <input id="eq51" style="flex:3; background-color: white; border: 1px solid black; font-size: 18px;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
                                     {% if tutee == "yes" %}
                                     <div id="eq51-tag" style="flex: 1; background-color: transparent;">
                                         <input type="radio" name="eq51-correctness" value="C" onclick="handletag('eq51-C');"> C
@@ -133,7 +142,7 @@
                                         <p style="font-weight:bold;">=</p>
                                     </div>
                                     <div style="flex: 1; flex-direction: row">
-                                    <input id="eq52" style="flex:3; background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
+                                    <input id="eq52" style="flex:3; background-color: white; border: 1px solid black; font-size: 18px;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
                                     {% if tutee == "yes" %}
                                     <div id="eq52-tag" style="flex: 1; background-color: transparent;">
                                         <input type="radio" name="eq52-correctness" value="C" onclick="handletag('eq52-C');"> C
@@ -144,7 +153,7 @@
                                 </div>
                                 <div style="flex: 1;background-color: #EBDDC3; flex-direction: row;">
                                     <div style="flex: 1; flex-direction: row">
-                                    <input id="eq61" style="flex:3; background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
+                                    <input id="eq61" style="flex:3; background-color: white; border: 1px solid black; font-size: 18px;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
                                     {% if tutee == "yes" %}
                                     <div id="eq61-tag" style="flex: 1; background-color: transparent;">
                                         <input type="radio" name="eq61-correctness" value="C" onclick="handletag('eq61-C');"> C
@@ -156,7 +165,7 @@
                                         <p style="font-weight:bold;">=</p>
                                     </div>
                                     <div style="flex: 1; flex-direction: row">
-                                    <input id="eq62" style="flex:3; background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
+                                    <input id="eq62" style="flex:3; background-color: white; border: 1px solid black; font-size: 18px;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
                                     {% if tutee == "yes" %}
                                     <div id="eq62-tag" style="flex: 1; background-color: transparent;">
                                         <input type="radio" name="eq62-correctness" value="C" onclick="handletag('eq62-C');"> C
@@ -167,7 +176,7 @@
                                 </div>
                                 <div style="flex: 1;background-color: #EBDDC3; flex-direction: row;">
                                     <div style="flex: 1; flex-direction: row">
-                                    <input id="eq71" style="flex:3; background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
+                                    <input id="eq71" style="flex:3; background-color: white; border: 1px solid black; font-size: 18px;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
                                     {% if tutee == "yes" %}
                                     <div id="eq71-tag" style="flex: 1; background-color: transparent;">
                                         <input type="radio" name="eq71-correctness" value="C" onclick="handletag('eq71-C');"> C
@@ -179,7 +188,7 @@
                                         <p style="font-weight:bold;">=</p>
                                     </div>
                                     <div style="flex: 1; flex-direction: row">
-                                    <input id="eq72" style="flex:3; background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
+                                    <input id="eq72" style="flex:3; background-color: white; border: 1px solid black; font-size: 18px;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
                                     {% if tutee == "yes" %}
                                     <div id="eq72-tag" style="flex: 1; background-color: transparent;">
                                         <input type="radio" name="eq72-correctness" value="C" onclick="handletag('eq72-C');"> C
@@ -190,7 +199,7 @@
                                 </div>
                                 <div style="flex: 1;background-color: #EBDDC3; flex-direction: row;">
                                     <div style="flex: 1; flex-direction: row">
-                                    <input id="eq81" style="flex:3; background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
+                                    <input id="eq81" style="flex:3; background-color: white; border: 1px solid black; font-size: 18px;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
                                     {% if tutee == "yes" %}
                                     <div id="eq81-tag" style="flex: 1; background-color: transparent;">
                                         <input type="radio" name="eq81-correctness" value="C" onclick="handletag('eq81-C');"> C
@@ -202,7 +211,7 @@
                                         <p style="font-weight:bold;">=</p>
                                     </div>
                                     <div style="flex: 1; flex-direction: row">
-                                    <input id="eq82" style="flex:3; background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
+                                    <input id="eq82" style="flex:3; background-color: white; border: 1px solid black; font-size: 18px;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
                                     {% if tutee == "yes" %}
                                     <div id="eq82-tag" style="flex: 1; background-color: transparent;">
                                         <input type="radio" name="eq82-correctness" value="C" onclick="handletag('eq82-C');"> C
@@ -223,7 +232,7 @@
                             </div>
                             <div style="background-color:#C0BABA; flex:10; align-items: center; justify-content: center;flex-direction: column">
                                 <div style="flex: 1; flex-direction: row">
-                                    <input id="t1" style="flex: 1;background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)">
+                                    <input id="t1" style="flex: 1;background-color: white; border: 1px solid black; font-size: 18px;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)">
                                     </input>
                                     {% if tutee == "yes" %}
                                     <div id="t1-tag" style="flex: 1; background-color: transparent;">
@@ -233,7 +242,7 @@
                                     {% endif %}
                                 </div>
                                 <div style="flex: 1; flex-direction: row">
-                                    <input id="t2" style="flex: 1;background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)">
+                                    <input id="t2" style="flex: 1;background-color: white; border: 1px solid black; font-size: 18px;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)">
                                     </input>
                                     {% if tutee == "yes" %}
                                     <div id="t2-tag" style="flex: 1; background-color: transparent">
@@ -243,7 +252,7 @@
                                     {% endif %}
                                 </div>
                                 <div style="flex: 1; flex-direction: row">
-                                    <input id="t3" style="flex: 1;background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)">
+                                    <input id="t3" style="flex: 1;background-color: white; border: 1px solid black; font-size: 18px;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)">
                                     </input>
                                     {% if tutee == "yes" %}
                                     <div id="t3-tag" style="flex: 1; background-color: transparent">
@@ -253,7 +262,7 @@
                                     {% endif %}
                                 </div>
                                 <div style="flex: 1; flex-direction: row">
-                                    <input id="t4" style="flex: 1;background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)">
+                                    <input id="t4" style="flex: 1;background-color: white; border: 1px solid black; font-size: 18px;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)">
                                     </input>
                                     {% if tutee == "yes" %}
                                     <div id="t4-tag" style="flex: 1; background-color: transparent">
@@ -263,7 +272,7 @@
                                     {% endif %}
                                 </div>
                                  <div style="flex: 1; flex-direction: row">
-                                    <input id="t5" style="flex: 1;background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)">
+                                    <input id="t5" style="flex: 1;background-color: white; border: 1px solid black; font-size: 18px;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)">
                                     </input>
                                     {% if tutee == "yes" %}
                                     <div id="t5-tag" style="flex: 1; background-color: transparent">
@@ -273,7 +282,7 @@
                                     {% endif %}
                                 </div>
                                  <div style="flex: 1; flex-direction: row">
-                                    <input id="t6" style="flex: 1;background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)">
+                                    <input id="t6" style="flex: 1;background-color: white; border: 1px solid black; font-size: 18px;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)">
                                     </input>
                                     {% if tutee == "yes" %}
                                     <div id="t6-tag" style="flex: 1; background-color: transparent">
@@ -283,7 +292,7 @@
                                     {% endif %}
                                 </div>
                                  <div style="flex: 1; flex-direction: row">
-                                    <input id="t7" style="flex: 1;background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)">
+                                    <input id="t7" style="flex: 1;background-color: white; border: 1px solid black; font-size: 18px;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)">
                                     </input>
                                     {% if tutee == "yes" %}
                                     <div id="t7-tag" style="flex: 1; background-color: transparent">
@@ -293,7 +302,7 @@
                                     {% endif %}
                                 </div>
                                 <div style="flex: 1; flex-direction: row">
-                                    <input id="t8" style="flex: 1;background-color: white; border: 1px solid black;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)">
+                                    <input id="t8" style="flex: 1;background-color: white; border: 1px solid black; font-size: 18px;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)">
                                     </input>
                                     {% if tutee == "yes" %}
                                     <div id="t8-tag" style="flex: 1; background-color: transparent">
@@ -311,7 +320,7 @@
                 <div style="background-color:#94B6D2; flex:1; flex-direction: row;">
                     <input style="flex:1;margin-top: 5px;
                         margin-bottom: 5px; margin-left: 10px;
-                        margin-right: 10px; background-color: lightgrey;" id="problem-solved" onclick="problemSolved()" type="button" value="Problem is Solved"/><br/>
+                        margin-right: 10px; background-color: lightgrey; font-size: 18px;" id="problem-solved" onclick="problemSolved()" type="button" value="Problem is Solved"/><br/>
                 </div>
         </div>
         <!-- The part below the equation transformation. I can utilize this part for question selection in tutee's console -->
@@ -333,21 +342,21 @@
                         </div>
                     </div>
                     <div style="background-color:#94B6D2; flex:3; align-items: center; border-style: double;border-color: #D2FFFF; flex-direction: column;">
-                        <p style="font-weight: bold">{{ tutee_name }}'s Quiz Progress</p>
+                        <p style="font-weight: bold; font-size: 14px;">{{ tutee_name }}'s Quiz Progress</p>
 
-                        <p style="font-size: 12px">One Step Equations</p>
+                        <p style="font-size: 14px">One Step Equations</p>
                         <div class="quizProgress" style="height: 20px; border-style: solid; border-color: black; border-width: 1px; margin-right: 2px; margin-left: 2px">
                           <div id="OneStepQuiz" class="quizBar" style="width: 0%;">0%</div>
                         </div>
-                        <p style="font-size: 12px">Two Step Equations</p>
+                        <p style="font-size: 14px">Two Step Equations</p>
                         <div class="quizProgress" style="height: 20px; border-style: solid; border-color: black; border-width: 1px; margin-right: 2px; margin-left: 2px">
                           <div id="TwoStepQuiz" class="quizBar" style="width: 0%;">0%</div>
                         </div>
-                        <p style="font-size: 12px">Equations with variables on both sides</p>
+                        <p style="font-size: 14px">Equations with variables on both sides</p>
                         <div class="quizProgress" style="height: 20px; border-style: solid; border-color: black; border-width: 1px; margin-right: 2px; margin-left: 2px">
                           <div id="VarStepQuiz" class="quizBar" style="width: 0%;">0%</div>
                         </div>
-                        <p style="font-size: 12px">Final Challenge</p>
+                        <p style="font-size: 14px">Final Challenge</p>
                         <div class="quizProgress" style="height: 20px; border-style: solid; border-color: black; border-width: 1px; margin-right: 2px; margin-left: 2px">
                           <div id="OverallQuiz" class="quizBar" style="width: 0%;">0%</div>
                         </div>
@@ -481,9 +490,9 @@
              </div>
              <div style="background-color:#94B6D2; flex:8; flex-direction: column; justify-content: center;align-items: center;">
                     <div id="chat-div" style="background-color:#94B6D2; flex:6; flex-direction: column"> <!-- Chat history showing part -->
-                        <textarea disabled="true" id="chat-log" style="flex: 15;"></textarea>
+                        <textarea disabled="true" id="chat-log" style="flex: 15; font-size: 20px"></textarea>
                         <div style="flex: 1;flex-direction: row">
-                            <textarea disabled="true" style="background-color: #94B6D2; border: none" id="chat-typing" style="flex: 5;"></textarea>
+                            <textarea disabled="true" style="background-color: #94B6D2; border: none" id="chat-typing" style="flex: 5; font-size: 20px"></textarea>
                             <div style="flex: 1; display: none" class="ticontainer" id="typing-animation">
                                   <div class="tiblock">
                                     <div class="tidot"></div>
@@ -494,8 +503,8 @@
                         </div>
                     </div>
                     <div style="background-color:#94B6D2; flex:2;justify-content: center;align-items: center;">
-                        <input style="flex:8;" id="chat-message-input" type="text"/><br/>
-                        <input style="flex:1;" id="chat-message-submit" type="button" value="Send"/>
+                        <input style="flex:8; font-size: 20px" id="chat-message-input" type="text"/><br/>
+                        <input style="flex:1; font-size: 20px" id="chat-message-submit" type="button" value="Send"/>
                     </div>
              </div>
          </div>
