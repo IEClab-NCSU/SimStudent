@@ -59,6 +59,7 @@ class WorkOutProblems(models.Model):
 
 
 class QuizUpdate(models.Model):
+
     update_contents = models.TextField()
     session_id = models.ForeignKey(Session, related_name='session_quiz', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now=True);
@@ -87,7 +88,12 @@ class ActionLogs(models.Model):
     current_equation_state = models.TextField(default="")
     is_correct_step = models.TextField(default="")
 
+class RetainSessionData(models.Model):
 
+    session_id = models.ForeignKey(Session, related_name='session_persist_data', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now=True);
+    global_index = models.TextField(default="")
+    correctness_tags = models.TextField(default="aaaaaaaaaaaaaaaaaaaaaa")
 
 class QuestionsUnderTypes(models.Model):
     questions = models.TextField();
@@ -114,5 +120,3 @@ class QuestionBank(models.Model):
 
     def __str__(self):
         return self.question_type
-
-

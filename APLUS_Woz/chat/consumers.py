@@ -2,7 +2,7 @@ from channels.generic.websocket import WebsocketConsumer
 import json
 import numpy as np
 from asgiref.sync import async_to_sync
-from .models import Session, TutorMetaTutorConversation, TutorTuteeConversation, WorkOutProblems, ActionLogs, QuestionBank, QuizUpdate
+from .models import Session, TutorMetaTutorConversation, TutorTuteeConversation, WorkOutProblems, ActionLogs, RetainSessionData, QuestionBank, QuizUpdate
 
 
 class ChatConsumer(WebsocketConsumer):
@@ -259,6 +259,52 @@ class HighlightConsumer(WebsocketConsumer):
             current_log_id.is_correct_step = data['message']
             current_log_id.save()
 
+    def new_global_index(self, data):
+        print("Global Index is: ", data['message'])
+        current_session_id = RetainSessionData.objects.filter(session_id_id=int(data['session'])).order_by(
+            '-pk').first()
+        if current_session_id is None:
+            current_session_id = RetainSessionData(session_id_id=int(data['session']))
+
+        print("Here! ", current_session_id.id, current_session_id.global_index)
+        current_session_id.global_index = data['message']
+        current_session_id.save()
+        content = {
+            'command': 'new_global_index',
+            'message': {
+                'type': 'new_global_index',
+                'message_content': data['message']
+            }
+
+        }
+        return self.send_highlight_message(content)
+
+    def notify_to_update_tags(self, data):
+        content = {
+            'command': 'update_tags',
+            'message': {
+                'type': 'update_tags',
+                'message_content': data['message']
+            }
+
+        }
+        return self.send_highlight_message(content)
+
+    def new_tag_update(self, data):
+        print("New tag is: ", data['message'])
+        current_session_id = RetainSessionData.objects.filter(session_id_id=int(data['session'])).order_by(
+            '-pk').first()
+        if current_session_id is None:
+            current_session_id = RetainSessionData(session_id_id=int(data['session']))
+
+        position = int(data['box_id'])
+        if(position < 30):
+            new_tag = current_session_id.correctness_tags[0:position] + data['message'] + current_session_id.correctness_tags[position + 1:]
+        else:
+            new_tag = "aaaaaaaaaaaaaaaaaaaaaa"
+        current_session_id.correctness_tags = new_tag
+        current_session_id.save()
+
     commands = {
         'new_highlights': new_highlights,
         'enable_unlock': enable_unlock,
@@ -266,7 +312,10 @@ class HighlightConsumer(WebsocketConsumer):
         'new_quizContent': new_quizContent,
         'new_HintContent': new_HintContent,
         'new_freeze': new_freeze,
-        'correctness_message': correctness_message
+        'correctness_message': correctness_message,
+        'new_global_index': new_global_index,
+        'new_tag_update': new_tag_update,
+        'notify_to_update_tags': notify_to_update_tags
     }
 
     def connect(self):
@@ -426,4 +475,3 @@ class AllActionsConsumer(WebsocketConsumer):
     def all_actions_message(self, event):
         message = event['message']
         self.send(text_data=json.dumps(message))
-
