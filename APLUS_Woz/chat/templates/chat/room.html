@@ -6,7 +6,7 @@
 <html xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html"
       xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html"
       xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
-      
+
 {% block styleHover %}
     <style>
         .hoverWrapper:hover{
@@ -15,7 +15,7 @@
         }
     </style>
 {% endblock %}
-      
+
 {% block content %}
 <div style="background-color:#94B6D2; flex:1; flex-direction: row">
     <!-- Div for the equation transformation and simSt and meta image -->
@@ -64,8 +64,8 @@
                                     <input id="eq21" style="flex:3; background-color: white; border: 1px solid black; font-size: 18px;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
                                     {% if tutee == "yes" %}
                                     <div id="eq21-tag" style="flex: 1; background-color: transparent;">
-                                        <input type="radio" name="eq21-correctness" value="C" onclick="handletag('eq21-C');"> C
-                                        <input type="radio" name="eq21-correctness" value="I" onclick="handletag('eq21-I');"> I
+                                        <input type="radio" id="eq21-C" name="eq21-correctness" value="C" onclick="handletag('eq21-C');"> C
+                                        <input type="radio" id="eq21-I" name="eq21-correctness" value="I" onclick="handletag('eq21-I');"> I
                                     </div>
                                     {% endif %}
                                     </div>
@@ -76,8 +76,8 @@
                                     <input id="eq22" style="flex:3; background-color: white; border: 1px solid black; font-size: 18px;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
                                     {% if tutee == "yes" %}
                                     <div id="eq22-tag" style="flex: 1; background-color: transparent;">
-                                        <input type="radio" name="eq22-correctness" value="C" onclick="handletag('eq22-C');"> C
-                                        <input type="radio" name="eq22-correctness" value="I" onclick="handletag('eq22-I');"> I
+                                        <input type="radio" id="eq22-C" name="eq22-correctness" value="C" onclick="handletag('eq22-C');"> C
+                                        <input type="radio" id="eq22-I" name="eq22-correctness" value="I" onclick="handletag('eq22-I');"> I
                                     </div>
                                     {% endif %}
                                     </div>
@@ -87,8 +87,8 @@
                                     <input id="eq31" style="flex:3; background-color: white; border: 1px solid black; font-size: 18px;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
                                     {% if tutee == "yes" %}
                                     <div id="eq31-tag" style="flex: 1; background-color: transparent;">
-                                        <input type="radio" name="eq31-correctness" value="C" onclick="handletag('eq31-C');"> C
-                                        <input type="radio" name="eq31-correctness" value="I" onclick="handletag('eq31-I');"> I
+                                        <input type="radio" id="eq31-C" name="eq31-correctness" value="C" onclick="handletag('eq31-C');"> C
+                                        <input type="radio" id="eq31-I" name="eq31-correctness" value="I" onclick="handletag('eq31-I');"> I
                                     </div>
                                     {% endif %}
                                     </div>
@@ -99,8 +99,8 @@
                                     <input id="eq32" style="flex:3; background-color: white; border: 1px solid black; font-size: 18px;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
                                     {% if tutee == "yes" %}
                                     <div id="eq32-tag" style="flex: 1; background-color: transparent;">
-                                        <input type="radio" name="eq32-correctness" value="C" onclick="handletag('eq32-C');"> C
-                                        <input type="radio" name="eq32-correctness" value="I" onclick="handletag('eq32-I');"> I
+                                        <input type="radio" id="eq32-C" name="eq32-correctness" value="C" onclick="handletag('eq32-C');"> C
+                                        <input type="radio" id="eq32-I" name="eq32-correctness" value="I" onclick="handletag('eq32-I');"> I
                                     </div>
                                     {% endif %}
                                     </div>
@@ -110,8 +110,8 @@
                                     <input id="eq41" style="flex:3; background-color: white; border: 1px solid black; font-size: 18px;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
                                     {% if tutee == "yes" %}
                                     <div id="eq41-tag" style="flex: 1; background-color: transparent;">
-                                        <input type="radio" name="eq41-correctness" value="C" onclick="handletag('eq41-C');"> C
-                                        <input type="radio" name="eq41-correctness" value="I" onclick="handletag('eq41-I');"> I
+                                        <input type="radio" id="eq41-C" name="eq41-correctness" value="C" onclick="handletag('eq41-C');"> C
+                                        <input type="radio" id="eq41-I" name="eq41-correctness" value="I" onclick="handletag('eq41-I');"> I
                                     </div>
                                     {% endif %}
                                     </div>
@@ -122,8 +122,8 @@
                                     <input id="eq42" style="flex:3; background-color: white; border: 1px solid black; font-size: 18px;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
                                     {% if tutee == "yes" %}
                                     <div id="eq42-tag" style="flex: 1; background-color: transparent;">
-                                        <input type="radio" name="eq42-correctness" value="C" onclick="handletag('eq42-C');"> C
-                                        <input type="radio" name="eq42-correctness" value="I" onclick="handletag('eq42-I');"> I
+                                        <input type="radio"  id="eq42-C" name="eq42-correctness" value="C" onclick="handletag('eq42-C');"> C
+                                        <input type="radio"  id="eq42-I" name="eq42-correctness" value="I" onclick="handletag('eq42-I');"> I
                                     </div>
                                     {% endif %}
                                     </div>
@@ -133,8 +133,8 @@
                                     <input id="eq51" style="flex:3; background-color: white; border: 1px solid black; font-size: 18px;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
                                     {% if tutee == "yes" %}
                                     <div id="eq51-tag" style="flex: 1; background-color: transparent;">
-                                        <input type="radio" name="eq51-correctness" value="C" onclick="handletag('eq51-C');"> C
-                                        <input type="radio" name="eq51-correctness" value="I" onclick="handletag('eq51-I');"> I
+                                        <input type="radio" id="eq51-C" name="eq51-correctness" value="C" onclick="handletag('eq51-C');"> C
+                                        <input type="radio" id="eq51-I" name="eq51-correctness" value="I" onclick="handletag('eq51-I');"> I
                                     </div>
                                     {% endif %}
                                     </div>
@@ -145,8 +145,8 @@
                                     <input id="eq52" style="flex:3; background-color: white; border: 1px solid black; font-size: 18px;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
                                     {% if tutee == "yes" %}
                                     <div id="eq52-tag" style="flex: 1; background-color: transparent;">
-                                        <input type="radio" name="eq52-correctness" value="C" onclick="handletag('eq52-C');"> C
-                                        <input type="radio" name="eq52-correctness" value="I" onclick="handletag('eq52-I');"> I
+                                        <input type="radio" id="eq52-C" name="eq52-correctness" value="C" onclick="handletag('eq52-C');"> C
+                                        <input type="radio" id="eq52-I" name="eq52-correctness" value="I" onclick="handletag('eq52-I');"> I
                                     </div>
                                     {% endif %}
                                     </div>
@@ -156,8 +156,8 @@
                                     <input id="eq61" style="flex:3; background-color: white; border: 1px solid black; font-size: 18px;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
                                     {% if tutee == "yes" %}
                                     <div id="eq61-tag" style="flex: 1; background-color: transparent;">
-                                        <input type="radio" name="eq61-correctness" value="C" onclick="handletag('eq61-C');"> C
-                                        <input type="radio" name="eq61-correctness" value="I" onclick="handletag('eq61-I');"> I
+                                        <input type="radio" id="eq61-C" name="eq61-correctness" value="C" onclick="handletag('eq61-C');"> C
+                                        <input type="radio" id="eq61-I" name="eq61-correctness" value="I" onclick="handletag('eq61-I');"> I
                                     </div>
                                     {% endif %}
                                     </div>
@@ -168,8 +168,8 @@
                                     <input id="eq62" style="flex:3; background-color: white; border: 1px solid black; font-size: 18px;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
                                     {% if tutee == "yes" %}
                                     <div id="eq62-tag" style="flex: 1; background-color: transparent;">
-                                        <input type="radio" name="eq62-correctness" value="C" onclick="handletag('eq62-C');"> C
-                                        <input type="radio" name="eq62-correctness" value="I" onclick="handletag('eq62-I');"> I
+                                        <input type="radio" id="eq62-C" name="eq62-correctness" value="C" onclick="handletag('eq62-C');"> C
+                                        <input type="radio" id="eq62-I" name="eq62-correctness" value="I" onclick="handletag('eq62-I');"> I
                                     </div>
                                     {% endif %}
                                     </div>
@@ -179,8 +179,8 @@
                                     <input id="eq71" style="flex:3; background-color: white; border: 1px solid black; font-size: 18px;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
                                     {% if tutee == "yes" %}
                                     <div id="eq71-tag" style="flex: 1; background-color: transparent;">
-                                        <input type="radio" name="eq71-correctness" value="C" onclick="handletag('eq71-C');"> C
-                                        <input type="radio" name="eq71-correctness" value="I" onclick="handletag('eq71-I');"> I
+                                        <input type="radio" id="eq71-C" name="eq71-correctness" value="C" onclick="handletag('eq71-C');"> C
+                                        <input type="radio" id="eq71-I" name="eq71-correctness" value="I" onclick="handletag('eq71-I');"> I
                                     </div>
                                     {% endif %}
                                     </div>
@@ -191,8 +191,8 @@
                                     <input id="eq72" style="flex:3; background-color: white; border: 1px solid black; font-size: 18px;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
                                     {% if tutee == "yes" %}
                                     <div id="eq72-tag" style="flex: 1; background-color: transparent;">
-                                        <input type="radio" name="eq72-correctness" value="C" onclick="handletag('eq72-C');"> C
-                                        <input type="radio" name="eq72-correctness" value="I" onclick="handletag('eq72-I');"> I
+                                        <input type="radio" id="eq72-C" name="eq72-correctness" value="C" onclick="handletag('eq72-C');"> C
+                                        <input type="radio" id="eq72-I" name="eq72-correctness" value="I" onclick="handletag('eq72-I');"> I
                                     </div>
                                     {% endif %}
                                     </div>
@@ -202,8 +202,8 @@
                                     <input id="eq81" style="flex:3; background-color: white; border: 1px solid black; font-size: 18px;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
                                     {% if tutee == "yes" %}
                                     <div id="eq81-tag" style="flex: 1; background-color: transparent;">
-                                        <input type="radio" name="eq81-correctness" value="C" onclick="handletag('eq81-C');"> C
-                                        <input type="radio" name="eq81-correctness" value="I" onclick="handletag('eq81-I');"> I
+                                        <input type="radio" id="eq81-C" name="eq81-correctness" value="C" onclick="handletag('eq81-C');"> C
+                                        <input type="radio" id="eq81-I" name="eq81-correctness" value="I" onclick="handletag('eq81-I');"> I
                                     </div>
                                     {% endif %}
                                     </div>
@@ -214,8 +214,8 @@
                                     <input id="eq82" style="flex:3; background-color: white; border: 1px solid black; font-size: 18px;" type="text" disabled="true" oninput="eqTrInput(this.id)" onkeydown="keyDown(this.id)"></input>
                                     {% if tutee == "yes" %}
                                     <div id="eq82-tag" style="flex: 1; background-color: transparent;">
-                                        <input type="radio" name="eq82-correctness" value="C" onclick="handletag('eq82-C');"> C
-                                        <input type="radio" name="eq82-correctness" value="I" onclick="handletag('eq82-I');"> I
+                                        <input type="radio" id="eq82-C" name="eq82-correctness" value="C" onclick="handletag('eq82-C');"> C
+                                        <input type="radio" id="eq82-I" name="eq82-correctness" value="I" onclick="handletag('eq82-I');"> I
                                     </div>
                                     {% endif %}
                                     </div>
@@ -236,8 +236,8 @@
                                     </input>
                                     {% if tutee == "yes" %}
                                     <div id="t1-tag" style="flex: 1; background-color: transparent;">
-                                        <input type="radio" name="t1-correctness" value="C" onclick="handletag('t1-C');" id="t1-C"> C
-                                        <input type="radio" name="t1-correctness" value="I" onclick="handletag('t1-I');" id="t1-I"> I
+                                        <input type="radio" id="t1-C" name="t1-correctness" value="C" onclick="handletag('t1-C');" id="t1-C"> C
+                                        <input type="radio" id="t1-I" name="t1-correctness" value="I" onclick="handletag('t1-I');" id="t1-I"> I
                                     </div>
                                     {% endif %}
                                 </div>
@@ -246,8 +246,8 @@
                                     </input>
                                     {% if tutee == "yes" %}
                                     <div id="t2-tag" style="flex: 1; background-color: transparent">
-                                        <input type="radio" name="t2-correctness" value="C" onclick="handletag('t2-C');"> C
-                                        <input type="radio" name="t2-correctness" value="I" onclick="handletag('t2-I');"> I
+                                        <input type="radio" id="t2-C" name="t2-correctness" value="C" onclick="handletag('t2-C');"> C
+                                        <input type="radio" id="t2-I" name="t2-correctness" value="I" onclick="handletag('t2-I');"> I
                                     </div>
                                     {% endif %}
                                 </div>
@@ -256,8 +256,8 @@
                                     </input>
                                     {% if tutee == "yes" %}
                                     <div id="t3-tag" style="flex: 1; background-color: transparent">
-                                        <input type="radio" name="t3-correctness" value="C" onclick="handletag('t3-C');"> C
-                                        <input type="radio" name="t3-correctness" value="I" onclick="handletag('t3-I');"> I
+                                        <input type="radio" id="t3-C" name="t3-correctness" value="C" onclick="handletag('t3-C');"> C
+                                        <input type="radio" id="t3-I" name="t3-correctness" value="I" onclick="handletag('t3-I');"> I
                                     </div>
                                     {% endif %}
                                 </div>
@@ -266,8 +266,8 @@
                                     </input>
                                     {% if tutee == "yes" %}
                                     <div id="t4-tag" style="flex: 1; background-color: transparent">
-                                        <input type="radio" name="t4-correctness" value="C" onclick="handletag('t4-C');"> C
-                                        <input type="radio" name="t4-correctness" value="I" onclick="handletag('t4-I');"> I
+                                        <input type="radio" id="t4-C" name="t4-correctness" value="C" onclick="handletag('t4-C');"> C
+                                        <input type="radio" id="t4-I" name="t4-correctness" value="I" onclick="handletag('t4-I');"> I
                                     </div>
                                     {% endif %}
                                 </div>
@@ -276,8 +276,8 @@
                                     </input>
                                     {% if tutee == "yes" %}
                                     <div id="t5-tag" style="flex: 1; background-color: transparent">
-                                        <input type="radio" name="t5-correctness" value="C" onclick="handletag('t5-C');"> C
-                                        <input type="radio" name="t5-correctness" value="I" onclick="handletag('t5-I');"> I
+                                        <input type="radio" id="t5-C" name="t5-correctness" value="C" onclick="handletag('t5-C');"> C
+                                        <input type="radio" id="t5-I" name="t5-correctness" value="I" onclick="handletag('t5-I');"> I
                                     </div>
                                     {% endif %}
                                 </div>
@@ -286,8 +286,8 @@
                                     </input>
                                     {% if tutee == "yes" %}
                                     <div id="t6-tag" style="flex: 1; background-color: transparent">
-                                        <input type="radio" name="t6-correctness" value="C" onclick="handletag('t6-C');"> C
-                                        <input type="radio" name="t6-correctness" value="I" onclick="handletag('t6-I');"> I
+                                        <input type="radio" id="t6-C" name="t6-correctness" value="C" onclick="handletag('t6-C');"> C
+                                        <input type="radio" id="t6-I" name="t6-correctness" value="I" onclick="handletag('t6-I');"> I
                                     </div>
                                     {% endif %}
                                 </div>
@@ -296,8 +296,8 @@
                                     </input>
                                     {% if tutee == "yes" %}
                                     <div id="t7-tag" style="flex: 1; background-color: transparent">
-                                        <input type="radio" name="t7-correctness" value="C" onclick="handletag('t7-C');"> C
-                                        <input type="radio" name="t7-correctness" value="I" onclick="handletag('t7-I');"> I
+                                        <input type="radio" id="t7-C" name="t7-correctness" value="C" onclick="handletag('t7-C');"> C
+                                        <input type="radio" id="t7-I" name="t7-correctness" value="I" onclick="handletag('t7-I');"> I
                                     </div>
                                     {% endif %}
                                 </div>
@@ -306,8 +306,8 @@
                                     </input>
                                     {% if tutee == "yes" %}
                                     <div id="t8-tag" style="flex: 1; background-color: transparent">
-                                        <input type="radio" name="t8-correctness" value="C" onclick="handletag('t8-C');"> C
-                                        <input type="radio" name="t8-correctness" value="I" onclick="handletag('t8-I');"> I
+                                        <input type="radio" id="t8-C" name="t8-correctness" value="C" onclick="handletag('t8-C');"> C
+                                        <input type="radio" id="t8-I" name="t8-correctness" value="I" onclick="handletag('t8-I');"> I
                                     </div>
                                     {% endif %}
                                 </div>
@@ -468,7 +468,7 @@
                     <div style="flex:1;justify-content: center;align-items: center;background-color: #D1D9E1;">
                          <img src={% static "img/newP.png" %}>
                     </div>
-                    <div style="flex:4;background-color: #D1D9E1;justify-content: center;align-items: center;">
+                    <div class = "hoverWrapper" style="flex:4;background-color: #D1D9E1;justify-content: center;align-items: center;">
                         <p style="font-weight:bold;">New Problem</p>
                     </div>
                 </div>
@@ -476,7 +476,7 @@
                     <div style="flex:1;justify-content: center;align-items: center;background-color: #D1D9E1;">
                          <img src={% static "img/Restart.png" %}>
                     </div>
-                    <div style="flex:4;background-color: #D1D9E1;justify-content: center;align-items: center;">
+                    <div class = "hoverWrapper" style="flex:4;background-color: #D1D9E1;justify-content: center;align-items: center;">
                         <p style="font-weight:bold;">Restart</p>
                     </div>
                 </div>
@@ -484,7 +484,7 @@
                     <div style="flex:1;justify-content: center;align-items: center;background-color: #D1D9E1;">
                          <img src={% static "img/Undo.png" %}>
                     </div>
-                    <div style="flex:4;background-color: #D1D9E1;justify-content: center;align-items: center;">
+                    <div class = "hoverWrapper" style="flex:4;background-color: #D1D9E1;justify-content: center;align-items: center;">
                         <p style="font-weight:bold;">Undo</p>
                     </div>
                 </div>
@@ -562,25 +562,23 @@
     var globalIndex = 0;
     var allBoxes = ['eq11','eq12','t1','eq21','eq22','t2','eq31', 'eq32','t3','eq41','eq42','t4','eq51','eq52','t5',
             'eq61', 'eq62','t6','eq71','eq72','t7','eq81','eq82','t8']
+    var is_tutee = "{{ tutee }}";
     window.onload = function(){
         console.log("Window.onload is called")
         loadChatHistory();
         loadEqTrCells();
         loadQuizUpdate();
-
         fillupCurrentCells();
-        // Initializing the boxes and buttons on page landing
-        globalIndex = 1;
+        loadUnlockedCells();
+        if(is_tutee == "yes")
+            loadCorrectnessTags();
         unHighlightAllEqTrCells(allBoxes);
         unlockAllEqTrCells(globalIndex);
         checkToDisableUnlock(globalIndex);
     };
     var current_selected_hint_id = -1;
-    var is_tutee = "{{ tutee }}";
     var is_manager = "{{ manager }}";
     var is_prev_cell_tagged = 0;
-    var allBoxes = ['eq11','eq12','t1','eq21','eq22','t2','eq31', 'eq32','t3','eq41','eq42','t4','eq51','eq52','t5',
-            'eq61', 'eq62','t6','eq71','eq72','t7','eq81','eq82','t8']
     var current_text_containing_cells = [];
     var checkedBoxes = [];
     if(is_tutee == "yes"){
@@ -629,6 +627,7 @@
             var message = data['message']['message_content']
             //console.log(message)
             if(data['message']['type'] == "new_highlights") {
+                console.log("Unlock for bothh! Index is: ", message)
                 unHighlightAllEqTrCells(allBoxes)
                 unlockAllEqTrCells(message)
                 globalIndex = message
@@ -638,7 +637,6 @@
                     unHighlightAllEqTrCells(allBoxes)
                     unlockAllEqTrCells(message)
                     globalIndex = message
-                    // sessionStorage.setItem("globalIndex", globalIndex)
                     console.log("Recevied inedex = " + globalIndex + " I'm a tutee: " + isTutee)
                     checkToDisableUnlock(globalIndex)
                 }
@@ -672,8 +670,16 @@
                 }
             }
             else if(data['message']['type'] == "correctness_message"){
-
                 console.log("bha")
+            }
+            else if(data['message']['type'] == "new_global_index"){
+                console.log("new index! ", data['message']['message_content'])
+            }
+            else if(data['message']['type'] == "update_tags"){
+                console.log("new tag! ", message)
+                if(is_tutee == "yes") {
+                    storeCorrectnessValue("apply_to_all", "a");
+                }
             }
             else{
                 var eqtrInfo = message.split("*%*")
@@ -859,11 +865,13 @@
                 document.getElementById(cell[0]).style.background = "#8cd9b3"
                 is_prev_cell_tagged = 1;
                 updateCorrectnessLabel(cell[0].trim(), 1)
+                storeCorrectnessValue(cell[0].trim(), "C")
             }
             else if(cell[1].trim() == "I"){
                 document.getElementById(cell[0]).style.background = "#ff8c66"
                 is_prev_cell_tagged = 1;
                 updateCorrectnessLabel(cell[0].trim(), 0)
+                storeCorrectnessValue(cell[0].trim(), "I")
             }
             else{
                 is_prev_cell_tagged = 0;
@@ -911,6 +919,8 @@
                         'meta': "no"
                     }));
               }
+              // To store this newly unlocked cell in the database
+              storeUnlockedBoxes(globalIndex);
           };
           document.querySelector('#freeze_window').onclick = function (e) {
               var elem = document.getElementById("freeze_window");
@@ -966,6 +976,44 @@
                 }
             }
         }
+        function storeUnlockedBoxes(index){
+            var message = index
+            console.log("Storing here!", message)
+            highlightSocket.send(JSON.stringify({
+                    'message': message,
+                    'session': {{ session_id }},
+                    'command': 'new_global_index',
+                    'is_tutee': isTutee,
+                    'meta': "no"
+            }))
+        }
+        function notify_to_update_tags() {
+            console.log("Notifying is tutee " , is_tutee, " ka opposite")
+            highlightSocket.send(JSON.stringify({
+                    'message': "notification",
+                    'session': {{ session_id }},
+                    'command': 'notify_to_update_tags',
+                    'is_tutee': isTutee,
+                    'meta': "no",
+            }))
+        }
+        function storeCorrectnessValue(box_name, tag) {
+            var position;
+            if(box_name == "apply_to_all")
+                position = 100
+            else
+                position = allBoxes.indexOf(box_name)
+            var message = tag
+            console.log("Storing here!", message, " of ", position)
+            highlightSocket.send(JSON.stringify({
+                    'message': message,
+                    'session': {{ session_id }},
+                    'command': 'new_tag_update',
+                    'is_tutee': isTutee,
+                    'meta': "no",
+                    'box_id': position
+            }))
+        }
         var chat_history = JSON.parse({{ chat_history }});
         function loadChatHistory() {
             //alert("n")
@@ -1001,7 +1049,6 @@
             }
         }
         function loadEqTrCells() {
-            //var eq_tr_contents = {{ latest_eq_tr_cell.dormin_contents }};
             var eq_tr_contents = "{{latest_eq_tr_cell.dormin_contents | safe }}";
             eq_tr_contents = eq_tr_contents.replace(/'/g, '"');
             console.log("gg",eq_tr_contents)
@@ -1011,6 +1058,52 @@
                 for (let i = 0; i < allBoxes.length; i++) {
                     console.log(all_contents[i])
                     document.getElementById(allBoxes[i]).value = all_contents[i]
+                }
+            }
+        }
+        function loadUnlockedCells() {
+            var unlocked_boxes = "{{ latest_global_index.global_index | safe }}";
+            if(unlocked_boxes.length == 0) {
+                console.log("Hey, this session is not created in the RetainedSessionDatabase!")
+                globalIndex = 1;
+                {#storeUnlockedBoxes(globalIndex);#}
+            }
+            else {
+                console.log("Retrieving here: ", unlocked_boxes);
+                temp_index = parseInt(unlocked_boxes.replace(/'/g, '"'), 10);
+                console.log("globalIndex: ", temp_index)
+                if (temp_index != null || temp_index != "" || temp_index != NaN) {
+                    globalIndex = temp_index;
+                    unlockAllEqTrCells(globalIndex);
+                    checkToDisableUnlock(globalIndex);
+                } else {
+                    globalIndex = 1;
+                }
+            }
+        }
+        function loadCorrectnessTags() {
+            var tag_values = "{{ latest_tag_values.correctness_tags | safe }}";
+            tag_values = tag_values.replace(/'/g, '"');
+            console.log("Tag values ISSSSSSS: ", tag_values)
+            if (tag_values != null) {
+                for (let i = 2; i < allBoxes.length; i++) {
+                    var box_id = allBoxes[i] + "-correctness"
+                    console.log("ISSS: ",box_id)
+                    if(tag_values.charAt(i) == 'C') {
+                        console.log("In CCC")
+                        document.getElementById(allBoxes[i]).style.background = "#8cd9b3"
+                        document.getElementById(allBoxes[i] + "-C").checked = true;
+                    }
+                    else if(tag_values.charAt(i) == 'I') {
+                        console.log("In III")
+                        document.getElementById(allBoxes[i]).style.background = "#ff8c66"
+                        document.getElementById(allBoxes[i] + "-I").checked = true;
+                    }
+                    else {
+                        document.getElementById(allBoxes[i]).style.background = "#ffffff"
+                        document.getElementById(allBoxes[i] + "-C").checked = false;
+                        document.getElementById(allBoxes[i] + "-I").checked = false;
+                    }
                 }
             }
         }
@@ -1088,7 +1181,6 @@
                 'meta': "no"
             }));
         }
-
         function resetCorrectness(id){
             if(id == undefined){
                 for(var i=2; i<allBoxes.length; i++){
@@ -1113,7 +1205,7 @@
         }
 
         function updateCorrectnessLabel(id, content, situation){
-             if(situation == undefined){
+            if(situation == undefined){
                  var pos = allBoxes.indexOf(id)
                  if(pos >= 2){
                     // Starting from label t1 - next
@@ -1128,7 +1220,7 @@
                     }));
 
                  }
-             }
+            }
         }
 
         function undoRecentEqTrCells() {
@@ -1143,13 +1235,12 @@
             }
         }
         function newProblem(){
+            globalIndex = 0;
+            clearAllEqTrCells(allBoxes, 0)
+            current_text_containing_cells = []
             // To ensure that the disabled unlock button enables on "New Problem"
             if(is_tutee == "no") {
                 initiateActionSend("Tutor has clicked NEW PROBLEM button", 0)
-                globalIndex = 0;
-                clearAllEqTrCells(allBoxes, 0)
-                current_text_containing_cells = []
-                console.log("Sending: " + globalIndex + " by tutee = " + is_tutee)
                 highlightSocket.send(JSON.stringify({
                     'message': globalIndex,
                     'session': {{ session_id }},
@@ -1161,17 +1252,20 @@
             else {
                 checkToDisableUnlock(globalIndex)
             }
+            // Storing the update globalIndex in the model
+            storeUnlockedBoxes(globalIndex);
+            if(is_tutee == "no")
+                notify_to_update_tags();
+            else
+                storeCorrectnessValue("apply_to_all", "a")
         }
         function restartProblem(){
-            initiateActionSend("Tutor has clicked the RESTART button", 0)
             globalIndex = 0;
             clearAllEqTrCells(allBoxes, 2)
+            current_text_containing_cells = []
             // To ensure that the disabled unlock button enables on "Restart Problem"
             if(is_tutee == "no") {
                 initiateActionSend("Tutor has clicked the RESTART button", 0)
-                globalIndex = 0;
-                clearAllEqTrCells(allBoxes, 2)
-                current_text_containing_cells = []
                 highlightSocket.send(JSON.stringify({
                     'message': globalIndex,
                     'session': {{ session_id }},
@@ -1183,6 +1277,12 @@
             else {
                 checkToDisableUnlock(globalIndex)
             }
+            // Storing the update globalIndex in the model
+            storeUnlockedBoxes(globalIndex);
+            if(is_tutee == "no")
+                notify_to_update_tags();
+            else
+                storeCorrectnessValue("apply_to_all", "a")
         }
         function undoProblem(){
             if(is_tutee == "no"){

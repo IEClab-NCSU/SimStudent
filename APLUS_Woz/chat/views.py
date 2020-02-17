@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.utils.safestring import mark_safe
 import json
-from .models import Session, ProblemBank, QuestionBank, WorkOutProblems, TutorTuteeConversation, MetaHints, ActionLogs, QuestionsUnderTypes, QuizUpdate
+from .models import Session, ProblemBank, QuestionBank, WorkOutProblems, TutorTuteeConversation, MetaHints, ActionLogs, RetainSessionData, QuestionsUnderTypes, QuizUpdate
 from django.core import serializers
 
 
@@ -56,6 +56,8 @@ def sim_session(request, tutor_name, tutee_name, image_name):
     request.session['room_name'] = room_name
     latest_eq_tr_cell = WorkOutProblems.objects.filter(session_id_id=session.id).order_by('-created_at').first()
     print("eq tr cell in views", latest_eq_tr_cell)
+    latest_global_index = RetainSessionData.objects.filter(session_id_id=session.id).order_by('-created_at').first()
+    latest_tag_values = RetainSessionData.objects.filter(session_id_id=session.id).order_by('-created_at').first()
     quiz_update = QuizUpdate.objects.filter(session_id_id=session.id).order_by('-created_at').first()
     return render(request, 'chat/room.html', {
         'room_name_json': mark_safe(json.dumps(room_name)),
@@ -66,6 +68,8 @@ def sim_session(request, tutor_name, tutee_name, image_name):
         'tutor_name': mark_safe(json.dumps(session.tutor_name)),
         'image_name': image_path,
         'latest_eq_tr_cell': latest_eq_tr_cell,
+        'latest_global_index': latest_global_index,
+        'latest_tag_values': latest_tag_values,
         'quiz_update': quiz_update
     })
 
@@ -101,6 +105,8 @@ def tutee_sim_session(request, session_id, condition_name):
     # info of the latest equation content
     latest_eq_tr_cell = WorkOutProblems.objects.filter(session_id_id=session_id).order_by('-created_at').first()
     print("eq tr cell in views", latest_eq_tr_cell)
+    latest_global_index = RetainSessionData.objects.filter(session_id_id=session.id).order_by('-created_at').first()
+    latest_tag_values = RetainSessionData.objects.filter(session_id_id=session.id).order_by('-created_at').first()
     quiz_update = QuizUpdate.objects.filter(session_id_id=session_id).order_by('-created_at').first()
     return render(request, 'chat/room.html', {
         'room_name_json': mark_safe(json.dumps(room_name)),
@@ -117,6 +123,8 @@ def tutee_sim_session(request, session_id, condition_name):
         'chat_history': mark_safe(json.dumps(dict_chat_history)),
         'hint_tag': hint_tag,
         'latest_eq_tr_cell': latest_eq_tr_cell,
+        'latest_global_index': latest_global_index,
+        'latest_tag_values': latest_tag_values,
         'quiz_update': quiz_update
     })
 
@@ -200,7 +208,7 @@ def export_all_action_log(request):
     students = ActionLogs.objects.all().values_list('pk', 'session_id__pk','session_id__tutor_name', 'session_id__tutee_name', 'cf_action','actions_text', 'created_at', 'selection_tutor', 'action_tutor', 'input_tutor', 'selection_tutee', 'action_tutee', 'input_tutee', 'new_problem_entered', 'selection_meta', 'action_meta', 'input_meta', 'hint_requested', 'hint_given', 'dialogue_from_tutee', 'dialogue_from_tutor', 'current_equation_state', 'is_correct_step' ).order_by('-pk')
 
     # Note: we convert the students query set to a values_list as the writerow expects a list/tuple
-    #students = students.values_list()
+    # students = students.values_list()
 
     for student in students:
         writer.writerow(student)
@@ -318,4 +326,3 @@ def load_data(request):
     #load_question_bank()
     #load_meta_hints()
     return render(request, 'log/load_data.html', {})
-
