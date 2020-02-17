@@ -249,6 +249,17 @@ class HighlightConsumer(WebsocketConsumer):
         }
         return self.send_highlight_message(content)
 
+    def new_block_chat(self, data):
+        content = {
+            'command': 'new_block_chat',
+            'message': {
+                'type': 'new_block_chat',
+                'message_content': data['message']
+            }
+
+        }
+        return self.send_highlight_message(content)
+
     def correctness_message(self, data):
         print("correctness msg", data['message'], data['id_to_be_corrected'])
         current_log_id = ActionLogs.objects.filter(session_id_id=int(data['session']), selection_tutor=data['id_to_be_corrected']).order_by(
@@ -266,7 +277,8 @@ class HighlightConsumer(WebsocketConsumer):
         'new_quizContent': new_quizContent,
         'new_HintContent': new_HintContent,
         'new_freeze': new_freeze,
-        'correctness_message': correctness_message
+        'correctness_message': correctness_message,
+        'new_block_chat': new_block_chat
     }
 
     def connect(self):

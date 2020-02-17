@@ -20,12 +20,11 @@ def room(request, room_name):
 def sim_session_intro(request, tutor_name, tutee_name, image_name):
     image_path = "/img/all_avatars/" + image_name + ".png"
     # Check if session exist
-    existing_sessions = Session.objects.filter(tutor_name=tutor_name, tutee_name=tutee_name,
-                                               image_name=image_name).order_by('-pk').first()
-    if existing_sessions:
-        session = existing_sessions
-    else:
-        session = Session.objects.create(tutor_name=tutor_name, tutee_name=tutee_name, image_name=image_name)
+    # existing_sessions = Session.objects.filter(tutor_name=tutor_name, tutee_name=tutee_name, image_name=image_name).order_by('-pk').first()
+    #if existing_sessions:
+    #    session = existing_sessions
+    #else:
+    session = Session.objects.create(tutor_name=tutor_name, tutee_name=tutee_name, image_name=image_name)
     request.session['session_id'] = session.id
     room_name = str(session.id) + "_" + tutor_name + "_" + tutee_name
     request.session['room_name'] = room_name

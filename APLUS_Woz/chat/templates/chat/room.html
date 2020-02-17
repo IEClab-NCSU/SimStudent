@@ -421,6 +421,7 @@
                                     <div style="background-color: #94B6D2; flex: 1; flex-direction: row;">
                                     <input style="width: 50px;height: 20px;background-color: lightgrey" id="highlight-cell-submit" type="button" value="Unlock"/>
                                     <input style="width: 100px;height: 20px;background-color: lightgrey; margin-left:10px" id="freeze_window" type="button" value="freeze_window"/>
+                                        <input style="width: 100px;height: 20px;background-color: lightgrey; margin-left:10px" id="block_input" type="button" value="block_input"/>
                                     </div>
                                     <!-- <div style="background-color: #94B6D2; flex: 1; flex-direction: row;">
                                     <input id="op-eq11" onchange="HighlightCell(this.value)" type="checkbox" value="op-eq11">Eq11</input>
@@ -659,6 +660,16 @@
                 if(elem.style.display == "none") elem.style.display = "block"
                 else elem.style.display = "none"
               }
+            }
+            else if(data['message']['type'] =='new_block_chat'){
+                if(is_tutee == "no") {
+                    var elem = document.getElementById("chat-message-input")
+                    var elem_1 = document.getElementById("chat-message-submit")
+                    if(elem.disabled == true) elem.disabled = false;
+                    else elem.disabled = true;
+                    if(elem_1.disabled == true) elem_1.disabled = false;
+                    else elem_1.disabled = true;
+                }
             }
             else if(data['message']['type'] == "correctness_message"){
 
@@ -913,7 +924,21 @@
                   'meta': "no"
               }));
           };
+          document.querySelector('#block_input').onclick = function (e) {
+              var elem = document.getElementById("block_input");
+              if (elem.value =="block_input") elem.value = "unblock_input";
+              else elem.value = "block_input";
+              highlightSocket.send(JSON.stringify({
+                  'message': "Block tutor's chat",
+                  'session': {{ session_id }},
+                  'command': 'new_block_chat',
+                  'is_tutee': isTutee,
+                  'meta': "no"
+              }));
+          };
         }
+
+
         function unHighlightAllEqTrCells(array) {
             for(var i=0; i<array.length; i++){
                 document.getElementById(array[i]).style.borderColor = "black"
