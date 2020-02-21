@@ -7,15 +7,6 @@
       xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html"
       xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
 
-{% block styleHover %}
-    <style>
-        .hoverWrapper:hover{
-            color: #800000;
-            font-size: 20px;
-        }
-    </style>
-{% endblock %}
-
 {% block content %}
 <div style="background-color:#94B6D2; flex:1; flex-direction: row">
     <!-- Div for the equation transformation and simSt and meta image -->
@@ -419,7 +410,6 @@
                         <div style="background-color: #94B6D2; flex: 1; flex-direction: column;">
                             Select the cells you want to highlight.
                                     <div style="background-color: #94B6D2; flex: 1; flex-direction: row;">
-                                    <input style="width: 50px;height: 20px;background-color: lightgrey" id="highlight-cell-submit" type="button" value="Unlock"/>
                                     <input style="width: 100px;height: 20px;background-color: lightgrey; margin-left:10px" id="freeze_window" type="button" value="freeze_window"/>
                                         <input style="width: 100px;height: 20px;background-color: lightgrey; margin-left:10px" id="block_input" type="button" value="block_input"/>
                                     </div>
@@ -563,6 +553,7 @@
     var allBoxes = ['eq11','eq12','t1','eq21','eq22','t2','eq31', 'eq32','t3','eq41','eq42','t4','eq51','eq52','t5',
             'eq61', 'eq62','t6','eq71','eq72','t7','eq81','eq82','t8']
     var is_tutee = "{{ tutee }}";
+    var current_text_containing_cells = [];
     window.onload = function(){
         console.log("Window.onload is called")
         loadChatHistory();
@@ -574,12 +565,11 @@
             loadCorrectnessTags();
         unHighlightAllEqTrCells(allBoxes);
         unlockAllEqTrCells(globalIndex);
-        checkToDisableUnlock(globalIndex);
     };
     var current_selected_hint_id = -1;
     var is_manager = "{{ manager }}";
     var is_prev_cell_tagged = 0;
-    var current_text_containing_cells = [];
+
     var checkedBoxes = [];
     if(is_tutee == "yes"){
         var hint_tag = "{{ hint_tag }}"
@@ -637,8 +627,9 @@
                     unHighlightAllEqTrCells(allBoxes)
                     unlockAllEqTrCells(message)
                     globalIndex = message
-                    console.log("Recevied inedex = " + globalIndex + " I'm a tutee: " + isTutee)
-                    checkToDisableUnlock(globalIndex)
+                    loadCorrectnessTags()
+                    {#console.log("Recevied inedex = " + globalIndex + " I'm a tutee: " + isTutee)#}
+                    {#checkToDisableUnlock(globalIndex)#}
                 }
             }
             else if(data['message']['type'] == "new_quizContent"){
@@ -682,6 +673,7 @@
                 }
             }
             else{
+                console.log("I am in highlights on eqTr")
                 var eqtrInfo = message.split("*%*")
                 console.log(eqtrInfo[1], " should go to cell ", eqtrInfo[0])
                 document.getElementById(eqtrInfo[0]).value = eqtrInfo[1]
@@ -777,6 +769,7 @@
             var elem = document.getElementById('chat-log');
             elem.scrollTop = elem.scrollHeight;
         };
+        var both_cell_tagged = 0;
         function questionTypeSelected(value)
         {
             //var tag = question_types.
@@ -861,66 +854,63 @@
         function handletag(value){
             console.log("tagged val", value)
             var cell = value.split("-")
+            console.log("In here with id:", cell[0].trim(), ":");
             if(cell[1].trim() == "C") {
                 document.getElementById(cell[0]).style.background = "#8cd9b3"
-                is_prev_cell_tagged = 1;
                 updateCorrectnessLabel(cell[0].trim(), 1)
                 storeCorrectnessValue(cell[0].trim(), "C")
             }
-            else if(cell[1].trim() == "I"){
+            else if(cell[1].trim() == "I") {
                 document.getElementById(cell[0]).style.background = "#ff8c66"
-                is_prev_cell_tagged = 1;
                 updateCorrectnessLabel(cell[0].trim(), 0)
                 storeCorrectnessValue(cell[0].trim(), "I")
             }
-            else{
-                is_prev_cell_tagged = 0;
-            }
+            unlockNextCell();
         }
         function  HighlightCell(value) {
           var current_text_containing_cells = []
-
-      }
+        }
       if(is_tutee == "yes") {
-          document.querySelector('#highlight-cell-submit').onclick = function (e) {
+          function unlockNextCell() {
               console.log("index val", globalIndex)
-              if(globalIndex >= 2 && is_prev_cell_tagged == 1){
-                // previous cell is tagged as correct or incorrect. So it is safe to unlock the next cell
-                is_prev_cell_tagged = 0; //reset flag
-                unHighlightAllEqTrCells(allBoxes)
-                globalIndex = globalIndex + 1;
-                if(globalIndex % 3 != 2) {
-                    console.log("Unlocking LHS and RHS")
-                    globalIndex = globalIndex + 1;
-                }
-                unlockAllEqTrCells(globalIndex)
-                checkToDisableUnlock(globalIndex)
-                highlightSocket.send(JSON.stringify({
-                    'message': globalIndex,
-                    'session': {{ session_id }},
-                    'command': 'new_highlights',
-                    'is_tutee': isTutee,
-                    'meta': "no"
-                }));
+              if(globalIndex >= 2) {
+                  if ((globalIndex % 3 == 2) || (globalIndex % 3 != 2 && both_cell_tagged == 1)) {
+                      // previous cell is tagged as correct or incorrect. So it is safe to unlock the next cell
+                      unHighlightAllEqTrCells(allBoxes)
+                      globalIndex = globalIndex + 1;
+                      if (globalIndex % 3 != 2) {
+                          // Unlocking LHS and RHS
+                          globalIndex = globalIndex + 1;
+                      }
+                      unlockAllEqTrCells(globalIndex)
+                      highlightSocket.send(JSON.stringify({
+                          'message': globalIndex,
+                          'session': {{ session_id }},
+                          'command': 'new_highlights',
+                          'is_tutee': isTutee,
+                          'meta': "no"
+                      }));
+                      both_cell_tagged = 0;
+                      // To store this newly unlocked cell in the database
+                      storeUnlockedBoxes(globalIndex);
+                  }
+                  else {
+                      both_cell_tagged = 1;
+                  }
               }
-              else if(globalIndex >= 2 && is_prev_cell_tagged == 0){
-                  // previous cell is not tagged as correct or incorrect. So force the user to tag it first.
-                  forceTag(globalIndex)
-              }
-              else{
-                    unHighlightAllEqTrCells(allBoxes)
-                    globalIndex = globalIndex + 1;
-                    unlockAllEqTrCells(globalIndex)
-                    highlightSocket.send(JSON.stringify({
-                        'message': globalIndex,
-                        'session': {{ session_id }},
-                        'command': 'new_highlights',
-                        'is_tutee': isTutee,
-                        'meta': "no"
-                    }));
-              }
-              // To store this newly unlocked cell in the database
-              storeUnlockedBoxes(globalIndex);
+              {#else{#}
+              {#      unHighlightAllEqTrCells(allBoxes)#}
+              {#      globalIndex = globalIndex + 1;#}
+              {#      unlockAllEqTrCells(globalIndex)#}
+              {#      highlightSocket.send(JSON.stringify({#}
+              {#          'message': globalIndex,#}
+              {#          'session': {{ session_id }},#}
+              {#          'command': 'new_highlights',#}
+              {#          'is_tutee': isTutee,#}
+              {#          'meta': "no"#}
+              {#      }));#}
+              {#      both_cell_tagged = 0;#}
+              {# } #}
           };
           document.querySelector('#freeze_window').onclick = function (e) {
               var elem = document.getElementById("freeze_window");
@@ -967,15 +957,15 @@
                 document.getElementById(val.trim()).disabled = false
             }
         }
-        function checkToDisableUnlock(index) {
-            if(is_tutee == "yes") {
-                if (index + 1 >= allBoxes.length) {
-                    document.getElementById('highlight-cell-submit').disabled = true
-                } else {
-                    document.getElementById('highlight-cell-submit').disabled = false
-                }
-            }
-        }
+        {#function checkToDisableUnlock(index) {#}
+        {#    if(is_tutee == "yes") {#}
+        {#        if (index + 1 >= allBoxes.length) {#}
+        {#            document.getElementById('highlight-cell-submit').disabled = true#}
+        {#        } else {#}
+        {#            document.getElementById('highlight-cell-submit').disabled = false#}
+        {#        }#}
+        {#    }#}
+        {# }#}
         function storeUnlockedBoxes(index){
             var message = index
             console.log("Storing here!", message)
@@ -1065,7 +1055,7 @@
             var unlocked_boxes = "{{ latest_global_index.global_index | safe }}";
             if(unlocked_boxes.length == 0) {
                 console.log("Hey, this session is not created in the RetainedSessionDatabase!")
-                globalIndex = 1;
+                globalIndex = 2;
                 {#storeUnlockedBoxes(globalIndex);#}
             }
             else {
@@ -1075,16 +1065,16 @@
                 if (temp_index != null || temp_index != "" || temp_index != NaN) {
                     globalIndex = temp_index;
                     unlockAllEqTrCells(globalIndex);
-                    checkToDisableUnlock(globalIndex);
+                    // checkToDisableUnlock(globalIndex);
                 } else {
-                    globalIndex = 1;
+                    globalIndex = 2;
                 }
             }
         }
         function loadCorrectnessTags() {
             var tag_values = "{{ latest_tag_values.correctness_tags | safe }}";
             tag_values = tag_values.replace(/'/g, '"');
-            console.log("Tag values ISSSSSSS: ", tag_values)
+            {#console.log("Tag values ISSSSSSS: ", tag_values)#}
             if (tag_values != null) {
                 for (let i = 2; i < allBoxes.length; i++) {
                     var box_id = allBoxes[i] + "-correctness"
@@ -1108,7 +1098,7 @@
             }
         }
         function eqTrInput(id){
-
+            console.log("I called eqTrInput()")
             if(document.getElementById(id).value != "" && id != "eq11" && id!= "eq12" && current_text_containing_cells.includes(id) == false){
                 // Pushing the cells that contains value so that we can undo in reverse order accordingly.
                 console.log("pushing the recent id that is getting input", id)
@@ -1156,14 +1146,17 @@
                 }))
         }
         function clearAllEqTrCells(array, start) {
+            console.log("I called clearAllEqTrCells")
             if(start == 2){
                 document.getElementById("eq11").disabled = false
                 document.getElementById("eq12").disabled = false
+                document.getElementById("t1").disabled = false
+                console.log("Here! t1 is enabled!")
             }
             for(var i=start; i<array.length; i++){
                 document.getElementById(array[i]).value = ""
                 eqTrInput(array[i])
-                if(array[i] == "eq11" || array[i] == "eq12"){
+                if(array[i] == "eq11" || array[i] == "eq12" || array[i] == "t1"){
                     document.getElementById(array[i]).disabled = false
                 }
                 else{
@@ -1235,54 +1228,60 @@
             }
         }
         function newProblem(){
-            globalIndex = 0;
+            globalIndex = 1;
             clearAllEqTrCells(allBoxes, 0)
             current_text_containing_cells = []
             // To ensure that the disabled unlock button enables on "New Problem"
-            if(is_tutee == "no") {
-                initiateActionSend("Tutor has clicked NEW PROBLEM button", 0)
-                highlightSocket.send(JSON.stringify({
+            {#if(is_tutee == "no") {#}
+            initiateActionSend("Tutor has clicked NEW PROBLEM button", 0)
+            {# }#}
+            {#else {#}
+            {#    checkToDisableUnlock(globalIndex)#}
+            {# }#}
+            highlightSocket.send(JSON.stringify({
                     'message': globalIndex,
                     'session': {{ session_id }},
                     'command': 'enable_unlock',
                     'is_tutee': isTutee,
                     'meta': "no"
-                }));
-            }
-            else {
-                checkToDisableUnlock(globalIndex)
-            }
+            }));
             // Storing the update globalIndex in the model
             storeUnlockedBoxes(globalIndex);
-            if(is_tutee == "no")
+            if(is_tutee == "no") {
                 notify_to_update_tags();
-            else
+            }
+            else {
                 storeCorrectnessValue("apply_to_all", "a")
+                loadCorrectnessTags()
+            }
         }
         function restartProblem(){
-            globalIndex = 0;
+            globalIndex = 1;
             clearAllEqTrCells(allBoxes, 2)
             current_text_containing_cells = []
             // To ensure that the disabled unlock button enables on "Restart Problem"
-            if(is_tutee == "no") {
-                initiateActionSend("Tutor has clicked the RESTART button", 0)
-                highlightSocket.send(JSON.stringify({
-                    'message': globalIndex,
-                    'session': {{ session_id }},
-                    'command': 'enable_unlock',
-                    'is_tutee': isTutee,
-                    'meta': "no"
-                }));
-            }
-            else {
-                checkToDisableUnlock(globalIndex)
-            }
+            {#if(is_tutee == "no") {#}
+            initiateActionSend("Tutor has clicked the RESTART button", 0)
+            highlightSocket.send(JSON.stringify({
+                'message': globalIndex,
+                'session': {{ session_id }},
+                'command': 'enable_unlock',
+                'is_tutee': isTutee,
+                'meta': "no"
+            }));
+            {# }#}
+            {#else {#}
+            {#    checkToDisableUnlock(globalIndex)#}
+            {# }#}
             // Storing the update globalIndex in the model
             storeUnlockedBoxes(globalIndex);
-            if(is_tutee == "no")
+            if(is_tutee == "no") {
                 notify_to_update_tags();
-            else
+            }
+            else {
                 storeCorrectnessValue("apply_to_all", "a")
+                loadCorrectnessTags()
+            }
         }
         function undoProblem(){
             if(is_tutee == "no"){
