@@ -108,6 +108,7 @@ def tutee_sim_session(request, session_id, condition_name):
     latest_global_index = RetainSessionData.objects.filter(session_id_id=session.id).order_by('-created_at').first()
     latest_tag_values = RetainSessionData.objects.filter(session_id_id=session.id).order_by('-created_at').first()
     quiz_update = QuizUpdate.objects.filter(session_id_id=session_id).order_by('-created_at').first()
+    image_path = "/img/all_avatars/"+session.image_name+".png"
     return render(request, 'chat/room.html', {
         'room_name_json': mark_safe(json.dumps(room_name)),
         'session_id': session.id,
@@ -125,7 +126,8 @@ def tutee_sim_session(request, session_id, condition_name):
         'latest_eq_tr_cell': latest_eq_tr_cell,
         'latest_global_index': latest_global_index,
         'latest_tag_values': latest_tag_values,
-        'quiz_update': quiz_update
+        'quiz_update': quiz_update,
+        'image_path': image_path
     })
 
 
