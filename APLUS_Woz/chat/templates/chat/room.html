@@ -308,10 +308,16 @@
                         </div>
                     </div>
                 </div>
-                <div style="background-color:#94B6D2; flex:1; flex-direction: row;">
-                    <input style="flex:1;margin-top: 5px;
+                <div style="background-color:#94B6D2; flex:10; flex-direction: row;">
+                    <input style="flex:9;margin-top: 5px;
                         margin-bottom: 5px; margin-left: 10px;
                         margin-right: 10px; background-color: lightgrey; font-size: 18px;" id="problem-solved" onclick="problemSolved()" type="button" value="Problem is Solved"/><br/>
+                    {% if tutee == "yes" %}
+                        <div id="p-tag" style="flex: 1; background-color: transparent">
+                            <input type="radio" id="problem-correct" name="problem-correctness" value="C" onclick="updateProblemSolved();"> C
+                            <input type="radio" id="problem-incorrect" name="problem-correctness" value="I" onclick="updateProblemSolved();"> I
+                        </div>
+                    {% endif %}
                 </div>
         </div>
         <!-- The part below the equation transformation. I can utilize this part for question selection in tutee's console -->
@@ -670,6 +676,8 @@
                 console.log("new tag! ", message)
                 if(is_tutee == "yes") {
                     storeCorrectnessValue("apply_to_all", "a");
+                    document.getElementById('problem-correct').checked = false
+                    document.getElementById('problem-incorrect').checked = false
                 }
             }
             else{
@@ -1253,6 +1261,8 @@
             else {
                 storeCorrectnessValue("apply_to_all", "a")
                 loadCorrectnessTags()
+                document.getElementById('problem-correct').checked = false
+                document.getElementById('problem-incorrect').checked = false
             }
         }
         function restartProblem(){
@@ -1281,6 +1291,8 @@
             else {
                 storeCorrectnessValue("apply_to_all", "a")
                 loadCorrectnessTags()
+                document.getElementById('problem-correct').checked = false
+                document.getElementById('problem-incorrect').checked = false
             }
         }
         function undoProblem(){
@@ -1290,7 +1302,17 @@
             }
         }
         function problemSolved(){
-            initiateActionSend("Tutor has clicked PROBLEM IS SOLVED button", 0)
+            initiateActionSend("Tutor has clicked PROBLEM IS SOLVED button", 0, -1)
+        }
+        function updateProblemSolved() {
+            var cell_id;
+            if(document.getElementById('problem-correct').checked) {
+              cell_id = 1;
+            }
+            else if(document.getElementById('problem-incorrect').checked) {
+              cell_id = 0;
+            }
+            initiateActionSend("Tutor has clicked PROBLEM IS SOLVED button", 0, cell_id)
         }
         function HintStuck(value){
             //document.getElementById('gif').style.display="block"
