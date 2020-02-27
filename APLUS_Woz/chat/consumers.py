@@ -436,6 +436,12 @@ class AllActionsConsumer(WebsocketConsumer):
             log = ActionLogs(session_id_id=int(data['session']),
                              actions_text=ques, cf_action= "Tutee has decided to ask specific question from a selected type", selection_tutee="[specific question dropdown]", action_tutee="Tutee has decided to ask specific question from a selected type", input_tutee=ques, current_equation_state=current_eq_state)
             log.save()
+        elif "PROBLEM IS SOLVED" in data['message'] and (data['eq_tr_id_undo']) != -1:
+            # CF_ACTION: "Tutor approved that the problem is solved"
+            print("Tutor approval/problem is solved comes here")
+            log = ActionLogs.objects.filter(session_id_id=int(data['session']), selection_tutor=data['message'], current_equation_state=current_eq_state).order_by('-pk').last()
+            log.is_correct_step = int(data['eq_tr_id_undo'])
+            log.save()
         else:
             print("UNDO comes here")
             log = ActionLogs(session_id_id=int(data['session']), actions_text=data['message'], cf_action=data['message'], current_equation_state=current_eq_state, action_tutor=data['message'], input_tutor=data['message'], selection_tutor=data['message'])
