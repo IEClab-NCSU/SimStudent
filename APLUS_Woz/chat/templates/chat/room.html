@@ -371,6 +371,7 @@
                     </div>
               </div>
                 {% else %}
+                    <div style="background-color:#94B6D2; flex:3; flex-direction: row; margin: 10px">
                     <div style="background-color:#94B6D2; flex:3; flex-direction: column; margin: 10px">
                         <div style="background-color: #94B6D2; flex: 1; flex-direction: column;">
                       <select id="question_types" name='selected_question_type' onchange="questionTypeSelected(this.value);" style="overflow-y: scroll;width: 700px;">
@@ -403,7 +404,6 @@
                                     {% endfor %}
                                 {% endif %}
                       </select>
-
                   </div>
                         <div style="background-color: #94B6D2; flex: 6; flex-direction: column;">
                            <select id="questions_as_per_selected_types" style="flex: 1;overflow-y: scroll;width: 700px;" onchange="questionSelected(this.value);">
@@ -413,43 +413,25 @@
                                {% endfor %}
                            </select>
                         </div>
-                        <div style="background-color: #94B6D2; flex: 1; flex-direction: column;">
+                    <div style="background-color:#94B6D2; flex:5; flex-direction: column; align-items: center; justify-content: center;">
+                            <h1 class="ml11" style="display: none" id="thinking_animation">
+                              <span class="text-wrapper">
+                                <span class="line line1"></span>
+                                <span class="letters" style="font-size:17px">Please bear with me. I am thinking</span>
+                              </span>
+                            </h1>
+                            <img style="border-radius: 50%; width: 150px" src="{% static image_path %}">
+                        </div>
+                    </div>
+                    </div>
+                        <div style="background-color: #94B6D2; flex: 1; flex-direction: column;align-items: center; justify-content: center;">
                             Select the cells you want to highlight.
-                                    <div style="background-color: #94B6D2; flex: 1; flex-direction: row;">
-                                    <input style="width: 100px;height: 20px;background-color: lightgrey; margin-left:10px" id="freeze_window" type="button" value="freeze_window"/>
-                                        <input style="width: 100px;height: 20px;background-color: lightgrey; margin-left:10px" id="block_input" type="button" value="block_input"/>
-                                    </div>
-                                    <!-- <div style="background-color: #94B6D2; flex: 1; flex-direction: row;">
-                                    <input id="op-eq11" onchange="HighlightCell(this.value)" type="checkbox" value="op-eq11">Eq11</input>
-                                    <input id="op-eq12" onchange="HighlightCell(this.value)" type="checkbox" value="op-eq12">Eq12</input>
-                                    <input id="op-eq21" onchange="HighlightCell(this.value)" type="checkbox" value="op-eq21">Eq21</input>
-                                    <input id="op-eq22" onchange="HighlightCell(this.value)" type="checkbox" value="op-eq22">Eq22</input>
-                                    <input id="op-eq31" onchange="HighlightCell(this.value)" type="checkbox" value="op-eq31">Eq31</input>
-                                    <input id="op-eq32" onchange="HighlightCell(this.value)" type="checkbox" value="op-eq32">Eq32</input>
-                                    <input id="op-eq41" onchange="HighlightCell(this.value)" type="checkbox" value="op-eq41">Eq41</input>
-                                    <input id="op-eq42" onchange="HighlightCell(this.value)" type="checkbox" value="op-eq42">Eq42</input>
-                                    <input id="op-eq51" onchange="HighlightCell(this.value)" type="checkbox" value="op-eq51">Eq51</input>
-                                    <input id="op-eq52" onchange="HighlightCell(this.value)" type="checkbox" value="op-eq52">Eq52</input>
-                                    <input id="op-eq61" onchange="HighlightCell(this.value)" type="checkbox" value="op-eq61">Eq61</input>
-                                    <input id="op-eq62" onchange="HighlightCell(this.value)" type="checkbox" value="op-eq62">Eq62</input>
-                                    <input id="op-eq71" onchange="HighlightCell(this.value)" type="checkbox" value="op-eq71">Eq71</input>
-                                    <input id="op-eq72" onchange="HighlightCell(this.value)" type="checkbox" value="op-eq72">Eq72</input>
-                                    <input id="op-eq81" onchange="HighlightCell(this.value)" type="checkbox" value="op-eq81">Eq81</input>
-                                    <input id="op-eq82" onchange="HighlightCell(this.value)" type="checkbox" value="op-eq82">Eq82</input>
-                                    </div>
-                                    <div style="background-color: #94B6D2; flex: 1; flex-direction: row;">
-                                        <input id="op-t1" onchange="HighlightCell(this.value)" type="checkbox" value="op-t1">t1</input>
-                                        <input id="op-t2" onchange="HighlightCell(this.value)" type="checkbox" value="op-t2">t2</input>
-                                        <input id="op-t3" onchange="HighlightCell(this.value)" type="checkbox" value="op-t3">t3</input>
-                                        <input id="op-t4" onchange="HighlightCell(this.value)" type="checkbox" value="op-t4">t4</input>
-                                        <input id="op-t5" onchange="HighlightCell(this.value)" type="checkbox" value="op-t5">t5</input>
-                                        <input id="op-t6" onchange="HighlightCell(this.value)" type="checkbox" value="op-t6">t6</input>
-                                        <input id="op-t7" onchange="HighlightCell(this.value)" type="checkbox" value="op-t7">t7</input>
-                                        <input id="op-t8" onchange="HighlightCell(this.value)" type="checkbox" value="op-t8">t8</input>
-                                    </div> -->
-                                    <div style="background-color: #94B6D2; flex: 1; flex-direction: row;">
-                                    </div>
-
+                                <div style="background-color: #94B6D2; flex: 1; flex-direction: row;align-items: center; justify-content: center;">
+                                <input style="width: 100px;height: 20px;background-color: lightgrey; margin-left:10px" id="freeze_window" type="button" value="freeze_window"/>
+                                <input style="width: 100px;height: 20px;background-color: lightgrey; margin-left:10px" id="block_input" type="button" value="block_input"/>
+                                </div>
+                                <div style="background-color: #94B6D2; flex: 1; flex-direction: row;">
+                                </div>
                         </div>
                     </div>
                 {% endif %}
@@ -575,7 +557,6 @@
     var current_selected_hint_id = -1;
     var is_manager = "{{ manager }}";
     var is_prev_cell_tagged = 0;
-
     var checkedBoxes = [];
     if(is_tutee == "yes"){
         var hint_tag = "{{ hint_tag }}"
@@ -606,15 +587,12 @@
         var chatSocket = new ReconnectingWebSocket(
             'ws://' + window.location.host +
             '/ws/chat/' + roomName + '/');
-
         var highlightSocket = new ReconnectingWebSocket(
             'ws://' + window.location.host +
             '/ws/lock_unlock/' + roomName + '/');
-
         /*var CorrectnessUpdateSocket = new ReconnectingWebSocket(
             'ws://' + window.location.host +
             '/ws/correctness_update/' + roomName + '/');*/
-
         highlightSocket.onmessage = function(e) {
             console.log("message", "message received by highlightSocket")
             var data = JSON.parse(e.data);
@@ -700,7 +678,6 @@
         highlightSocket.onerror = function(e) {
             console.log("error", "highlightSocket error occured")
         }
-
         /*CorrectnessUpdateSocket.onmessage = function(e) {
             console.log("message", "message received by CorrectnessUpdateSocket")
             var data = JSON.parse(e.data);
@@ -714,7 +691,6 @@
         CorrectnessUpdateSocket.onerror = function(e) {
             console.log("error", "CorrectnessUpdateSocket error occured")
         }*/
-
         chatSocket.onmessage = function(e) {
             var data = JSON.parse(e.data);
             //console.log("hihi", data['message'])
@@ -843,10 +819,8 @@
                 select.add( option );
             }
         }
-
         var current_text_containing_cells = [];
         var checkedBoxes = [];
-
         function forceTag(value){
              var cel_id = allBoxes[value]+"-tag"
              console.log(cel_id)
@@ -945,8 +919,6 @@
               }));
           };
         }
-
-
         function unHighlightAllEqTrCells(array) {
             for(var i=0; i<array.length; i++){
                 document.getElementById(array[i]).style.borderColor = "black"
@@ -1190,7 +1162,6 @@
                     document.getElementById(cel_id).style.background = "#94B6D2"
                     document.getElementById(allBoxes[i]).style.background = "white"
                     $("input[name="+correctness_id+"]").prop('checked', false);
-
                 }
             }
             else{
@@ -1202,9 +1173,7 @@
                     $("input[name="+correctness_id+"]").prop('checked', false);
                 }
             }
-
         }
-
         function updateCorrectnessLabel(id, content, situation){
             if(situation == undefined){
                  var pos = allBoxes.indexOf(id)
@@ -1219,11 +1188,9 @@
                          'id_to_be_corrected': id,
                          'pos': pos,
                     }));
-
                  }
             }
         }
-
         function undoRecentEqTrCells() {
             console.log("here")
             if(current_text_containing_cells.length >= 1){
