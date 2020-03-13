@@ -87,6 +87,8 @@ class ActionLogs(models.Model):
     dialogue_from_tutee = models.TextField(default="")
     current_equation_state = models.TextField(default="")
     is_correct_step = models.TextField(default="")
+    dialogue_generated_tag = models.TextField(default="")
+    question_id = models.TextField(default="")
 
 class RetainSessionData(models.Model):
 
