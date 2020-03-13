@@ -2,7 +2,7 @@ from channels.generic.websocket import WebsocketConsumer
 import json
 import numpy as np
 from asgiref.sync import async_to_sync
-from .models import Session, TutorMetaTutorConversation, TutorTuteeConversation, WorkOutProblems, ActionLogs, RetainSessionData, QuestionBank, QuizUpdate
+from .models import Session, TutorMetaTutorConversation, TutorTuteeConversation, WorkOutProblems, ActionLogs, RetainSessionData, QuestionBank, QuizUpdate, QuestionsUnderTypes
 
 
 class ChatConsumer(WebsocketConsumer):
@@ -38,8 +38,25 @@ class ChatConsumer(WebsocketConsumer):
                 message_from = "Tutee"
             cf_action = message_from + " has entered chat dialogue "
             if "Tutee" in message_from:
+                question_id = -1;
+                question = QuestionsUnderTypes.objects.filter(questions=data['message']).order_by('-pk').first()
+                print(data['question_value'])
+                if question is not None:
+                    tag = "A"
+                    question_id = question.id
+                    print("A")
+                elif data['question_value'] != "-1":
+                    tag = "B"
+                    question_id = data['question_value']
+                    print("B")
+                else:
+                    tag = "C"
+                    question_id = -1
+                    print("C")
+                if question_id is None:
+                    question_id = -1
                 log = ActionLogs(session_id_id=int(data['session']),
-                             actions_text= data['message'], cf_action=cf_action, selection_tutee="[chat dialogue]", dialogue_from_tutee=data['message'], current_equation_state=current_eq_state)
+                             actions_text= data['message'], cf_action=cf_action, selection_tutee="[chat dialogue]", dialogue_from_tutee=data['message'], current_equation_state=current_eq_state, dialogue_generated_tag=tag, question_id=question_id)
             else:
                 log = ActionLogs(session_id_id=int(data['session']),
                                  actions_text=data['message'], cf_action=cf_action, selection_tutor="[chat dialogue]", dialogue_from_tutor=data['message'], current_equation_state=current_eq_state)
@@ -439,7 +456,7 @@ class AllActionsConsumer(WebsocketConsumer):
         elif "PROBLEM IS SOLVED" in data['message'] and (data['eq_tr_id_undo']) != -1:
             # CF_ACTION: "Tutor approved that the problem is solved"
             print("Tutor approval/problem is solved comes here")
-            log = ActionLogs.objects.filter(session_id_id=int(data['session']), selection_tutor=data['message'], current_equation_state=current_eq_state).order_by('-pk').last()
+            log = ActionLogs.objects.filter(session_id_id=int(data['session']), selection_tutor=data['message'], current_equation_state=current_eq_state).order_by('-pk').first()
             log.is_correct_step = int(data['eq_tr_id_undo'])
             log.save()
         else:
