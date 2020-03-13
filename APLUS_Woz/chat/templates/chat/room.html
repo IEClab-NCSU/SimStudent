@@ -542,6 +542,7 @@
             'eq61', 'eq62','t6','eq71','eq72','t7','eq81','eq82','t8']
     var is_tutee = "{{ tutee }}";
     var current_text_containing_cells = [];
+    var question_value = "-1";
     window.onload = function(){
         console.log("Window.onload is called")
         loadChatHistory();
@@ -551,6 +552,11 @@
         loadUnlockedCells();
         if(is_tutee == "yes")
             loadCorrectnessTags();
+        if(sessionStorage.getItem("question_value") != null || sessionStorage.getItem("question_value") != "-1") {
+            question_value = sessionStorage.getItem("question_value");
+        } else {
+            sessionStorage.setItem("question_value", quesion_value);
+        }
         unHighlightAllEqTrCells(allBoxes);
         unlockAllEqTrCells(globalIndex);
     };
@@ -747,8 +753,11 @@
                 'session': {{ session_id }},
                 'command': 'new_messages',
                 'is_tutee': isTutee,
-                'meta': "no"
+                'meta': "no",
+                'question_value': sessionStorage.getItem("question_value")
             }));
+            question_value = "-1"
+            sessionStorage.setItem("question_value", question_value);
             messageInputDom.value = '';
             var elem = document.getElementById('chat-log');
             elem.scrollTop = elem.scrollHeight;
@@ -784,6 +793,8 @@
                     'eq_tr_id_undo': "none"
             }));
             var id = value.split("$$");
+            question_value = id[0]
+            sessionStorage.setItem("question_value", question_value);
             //document.getElementById(id).style.selected = "selected"
             document.querySelector('#chat-message-input').value = id[1]
         }
