@@ -374,7 +374,7 @@
                     <div style="background-color:#94B6D2; flex:3; flex-direction: row; margin: 10px">
                     <div style="background-color:#94B6D2; flex:3; flex-direction: column; margin: 10px">
                         <div style="background-color: #94B6D2; flex: 1; flex-direction: column;">
-                      <select id="question_types" name='selected_question_type' onchange="questionTypeSelected(this.value);" style="overflow-y: scroll;width: 700px;">
+                      <select class="chosen" id="question_types" name='selected_question_type' onchange="questionTypeSelected(this.value);" style="overflow-y: scroll;width: 700px;">
                                 {% if selected_type_id == -1 %}
                                 <option value="-1">Select question type</option>
                                 {% endif %}
@@ -406,11 +406,18 @@
                       </select>
                   </div>
                         <div style="background-color: #94B6D2; flex: 6; flex-direction: column;">
-                           <select id="questions_as_per_selected_types" style="flex: 1;overflow-y: scroll;width: 700px;" onchange="questionSelected(this.value);">
-                               <option value="-1">Select specific question</option>
-                               {% for ques in all_questions_under_type %}
-                                   <option value='{{ques.id}}$${{ ques.questions }}'> - {{ ques.questions }}</option>
-                               {% endfor %}
+                           <select class="chosen" id="questions_as_per_selected_types" style="flex: 1;overflow-y: scroll;width: 700px;" onchange="questionSelected(this.value);">
+                               {% if selected_type_id == -1 %}
+                                   <option value="-1">Select specific question</option>
+                                   {% for ques in default_questions %}
+                                       <option value='{{ques.id}}$${{ ques.questions }}'> - {{ ques.questions }}</option>
+                                   {% endfor %}
+                                {% else %}
+                                   <option value="-1">Select specific question</option>
+                                   {% for ques in all_questions_under_type %}
+                                       <option value='{{ques.id}}$${{ ques.questions }}'> - {{ ques.questions }}</option>
+                                   {% endfor %}
+                                {% endif %}
                            </select>
                         </div>
                     <div style="background-color:#94B6D2; flex:5; flex-direction: column; align-items: center; justify-content: center;">
@@ -482,7 +489,7 @@
                         </div>
                     </div>
                     <div style="background-color:#94B6D2; flex:2;justify-content: center;align-items: center;">
-                        <input style="flex:8; font-size: 20px" id="chat-message-input" type="text"/><br/>
+                        <textarea style="flex:8; font-size: 20px; resize: none;" id="chat-message-input" rows = "4" ></textarea><br/>
                         <input style="flex:1; font-size: 20px" id="chat-message-submit" type="button" value="Send"/>
                     </div>
              </div>
@@ -532,9 +539,13 @@
 {% block scripts %}
 
 <!-- some default content here -->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+{#<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>#}
 
 <script type="text/javascript" src="js/script.js"></script>
+
+<script type="text/javascript">
+    $(".chosen").select2();
+</script>
 
 <script>
     var globalIndex = 0;
@@ -560,6 +571,7 @@
         unHighlightAllEqTrCells(allBoxes);
         unlockAllEqTrCells(globalIndex);
     };
+
     var current_selected_hint_id = -1;
     var is_manager = "{{ manager }}";
     var is_prev_cell_tagged = 0;
@@ -1202,16 +1214,16 @@
                  }
             }
         }
-        function undoRecentEqTrCells() {
+        function undoRecentEqTrCells(recent_cell) {
             console.log("here")
-            if(current_text_containing_cells.length >= 1){
-                var recent_cell = current_text_containing_cells.pop()
+            {#if(current_text_containing_cells.length >= 1){#}
+            {#    var recent_cell = current_text_containing_cells.pop()#}
                 initiateActionSend("Tutor has clicked the UNDO button", 0, recent_cell)
                 console.log("poping recent cell", recent_cell)
                 document.getElementById(recent_cell).value = ""
                 eqTrInput(recent_cell)
                 log_eq_tr_cells(recent_cell)
-            }
+            {# }#}
         }
         function newProblem(){
             globalIndex = 1;
@@ -1276,7 +1288,18 @@
         function undoProblem(){
             if(is_tutee == "no"){
                 //initiateActionSend("Tutor has clicked the UNDO button", 0)
-                undoRecentEqTrCells()
+                if(current_text_containing_cells.length >= 1) {
+                    var recent_cell = current_text_containing_cells.pop();
+                    recent_value = document.getElementById(recent_cell).value;
+                    if(confirm('Do you really want to undo your last step: '+recent_value+'\nThis button will not undo your chat.')) {
+                        undoRecentEqTrCells(recent_cell);
+                    } else {
+                        current_text_containing_cells.push(recent_cell);
+                    }
+                }
+                else {
+                    alert("You have nothing to Undo. Chat cannot be undone.");
+                }
             }
         }
         function problemSolved(){

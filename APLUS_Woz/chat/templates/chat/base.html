@@ -8,6 +8,11 @@
     <!-- Font Awesome Icon Library -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
     <link href="{% static "css/multiselect.css" %}" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/css/select2.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/js/select2.min.js"></script>
+
     {% if tutee == "yes" %}
     <title>SimStudent-V8.7 (Tutee console)</title>
     {% else %}
@@ -33,6 +38,7 @@
         max-height: 100%;
         object-fit: contain;
     }
+
     .modal {
       display: none; /* Hidden by default */
       position: fixed; /* Stay in place */
@@ -240,7 +246,7 @@
 
 {% block style %}
 {% endblock %}
-    
+
 {% block styleHover %}
     <style>
         .hoverWrapper:hover{
@@ -249,7 +255,7 @@
         }
     </style>
 {% endblock %}
-    
+
 </head>
 <body>
 <div style="background-color:#94B6D2;flex: 1;flex-direction: column;">
