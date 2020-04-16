@@ -42,17 +42,14 @@ class ChatConsumer(WebsocketConsumer):
                 question = QuestionsUnderTypes.objects.filter(questions=data['message']).order_by('-pk').first()
                 print(data['question_value'])
                 if question is not None:
-                    tag = "A"
+                    tag = "QB"
                     question_id = question.id
-                    print("A")
                 elif data['question_value'] != "-1":
-                    tag = "B"
+                    tag = "QB modified"
                     question_id = data['question_value']
-                    print("B")
                 else:
-                    tag = "C"
+                    tag = "New question"
                     question_id = -1
-                    print("C")
                 if question_id is None:
                     question_id = -1
                 log = ActionLogs(session_id_id=int(data['session']),

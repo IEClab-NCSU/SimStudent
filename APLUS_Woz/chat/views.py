@@ -77,6 +77,7 @@ def sim_session(request, tutor_name, tutee_name, image_name):
 def tutee_sim_session(request, session_id, condition_name):
 
     all_questions = {}
+    default_questions = {}
     if 'aplus' in condition_name:
         aplus_id = QuestionBank.objects.get(question_type="APLUS");
         selected_type_id = aplus_id.id
@@ -93,6 +94,8 @@ def tutee_sim_session(request, session_id, condition_name):
         filtered_hints = MetaHints.objects.filter(hints__icontains=hint_tag)
     else:
         filtered_hints = MetaHints.objects.all()
+
+    default_questions = QuestionsUnderTypes.objects.all()
 
     session = Session.objects.get(pk=session_id)
     room_name = str(session.id)+"_"+session.tutor_name+"_"+session.tutee_name
@@ -119,6 +122,7 @@ def tutee_sim_session(request, session_id, condition_name):
         'tutor_name': mark_safe(json.dumps(session.tutor_name)),
         'question_types': all_question_types,
         'all_questions_under_type': all_questions,
+        'default_questions': default_questions,
         'all_hints': filtered_hints,
         'selected_type_id': selected_type_id,
         'chat_history': mark_safe(json.dumps(dict_chat_history)),
