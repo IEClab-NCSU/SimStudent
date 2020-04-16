@@ -40,6 +40,8 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
     'channels',
     'chat',
+    'dal',
+    'dal_select2',
     'django_tables2',
     'django.contrib.admin',
     'django.contrib.auth',
