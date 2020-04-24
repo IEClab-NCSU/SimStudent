@@ -375,9 +375,7 @@
                     <div style="background-color:#94B6D2; flex:3; flex-direction: column; margin: 10px">
                         <div style="background-color: #94B6D2; flex: 1; flex-direction: column;">
                       <select class="chosen" id="question_types" name='selected_question_type' onchange="questionTypeSelected(this.value);" style="overflow-y: scroll;width: 700px;">
-                                {% if selected_type_id == -1 %}
-                                <option value="-1">Select question type</option>
-                                {% endif %}
+                                <option value="-1">All questions</option>
                                 {% if condition_name == 'aplus' %}
                                 <option value='{{ selected_type_id }}' selected="selected"> Tutoring Phase: APLUS </option>
                                 {% else %}
@@ -570,7 +568,16 @@
         }
         unHighlightAllEqTrCells(allBoxes);
         unlockAllEqTrCells(globalIndex);
+        let textarea = document.getElementById('chat-log');
+        textarea.scrollTop = textarea.scrollHeight;
     };
+
+    {#$("#chat-message-input").keypress(function(event) {#}
+    {#    if (event.keyCode == 18 && event.keyCode == 13) {#}
+    {#         document.getElementById("chat-message-input").value = document.getElementById("chat-message-input").value + "\n";#}
+    {#         return false;#}
+    {#     }#}
+    {#});#}
 
     var current_selected_hint_id = -1;
     var is_manager = "{{ manager }}";
@@ -778,7 +785,8 @@
         function questionTypeSelected(value)
         {
             //var tag = question_types.
-            allActionsSocket.send(JSON.stringify({
+            if(value != -1) {
+                allActionsSocket.send(JSON.stringify({
                     'message': "NB:LOG_ONLY_QTYPE",
                     'session': {{ session_info.id }},
                     'command': 'all_actions',
@@ -787,10 +795,14 @@
                     'qtype': value,
                     'hint_request': "none",
                     'eq_tr_id_undo': "none"
-            }));
-            //initiateActionSend("Tutee has descided to ask the following question type", value)
-            var redirect_location = "?question_type="+value
-            window.location = redirect_location
+                }));
+                //initiateActionSend("Tutee has descided to ask the following question type", value)
+                var redirect_location = "?question_type=" + value
+                window.location = redirect_location
+            } else {
+                var redirect_location = window.location.toString().split("?");
+                window.location = redirect_location[0];
+            }
         }
         function questionSelected(value) {
             //alert(value)
@@ -807,8 +819,7 @@
             var id = value.split("$$");
             question_value = id[0]
             sessionStorage.setItem("question_value", question_value);
-            //document.getElementById(id).style.selected = "selected"
-            document.querySelector('#chat-message-input').value = id[1]
+            document.querySelector('#chat-message-input').value = id[1] + "\n";
         }
         function hintsSelected(value, which_submit) {
             if(which_submit == 1) {
