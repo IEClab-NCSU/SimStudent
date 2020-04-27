@@ -137,8 +137,8 @@ public class AplusController implements ModelTracingListener{
 	 * @param input
 	 */
 	public synchronized void handleInterfaceAction(String selection, String action, String input){	
-	
-		prodSysSAIHandlerQ.add(selection, action, input, aPlusModelTracing, controller);
+		
+			prodSysSAIHandlerQ.add(selection, action, input, aPlusModelTracing, controller);
 	}
 	
 	
@@ -166,15 +166,25 @@ public class AplusController implements ModelTracingListener{
 	 */
 	@Override
 	public void modelTracingController(ModelTracingEvent mtEvent) {
-
 		
+		
+		
+		
+		if(mtEvent.node == null)
+			  return;
+		
+	System.out.println(" model tracing result "+mtEvent.node.getName()+" Model tracing result : "+mtEvent.modelTracingResult+" Model Tracer NO Model "+ModelTracer.NOMODEL);
 		
 		if (mtEvent.modelTracingResult!=ModelTracer.NOMODEL /*&& !mtEvent.node.getName().contains("BUG")*/){
+			
+			
+			
 			
 			increaseFiringCount(mtEvent.node.getName());
 			//int typeOfHint=getProactiveHintGiven() ? FOLLOWUP_HINT_MESSAGE: NORMAL_HINT_MESSAGE;
 			int typeOfHint=NORMAL_HINT_MESSAGE;
 			if (mtEvent.action.equals("MetaTutorClicked")){
+				//System.out.println(" MetaTutor Clicked ");
 				displayMessage(mtEvent.selection,typeOfHint,mtEvent.message, mtEvent.node);
 				if (!mtEvent.selection.equals("activations")) setProactiveHintGiven(false);
 			}
@@ -201,6 +211,16 @@ public class AplusController implements ModelTracingListener{
 			if (controller.getMissController().getSimSt().isSsCogTutorMode() && !controller.getMissController().getSimSt().isSsAplusCtrlCogTutorMode())
 				return;
 					
+			/***
+			 * The model tracer tags the rules in ActivationList as ‘SAI matched’ or ‘SAI not matched’.After tagging, it tries to find a rule  from activationList with ‘SAI matched’.
+			 * If found, then it will create an object for this node and sends it to ModelTracingController. 
+			 * If not found then it tries to find a rule with ‘SAI not matched’ and if found, it creates an object and sends to ModelTracingController. 
+			 * The ModelTracingController, depending upon the kind of object received from the model tracer,decides the kind of message to be displayed.
+			 * In the current system, helper production rules skips the above procedure.
+			 * In some cases, the system fires only the help production rules. Thus the ModelTracingController doesn't receive any object from model tracer and thus an exception is thrown.
+			 * 
+			 * So if the mEvent.node is null then only helper production rule is fired.
+			 */
 			
 			
 			if (mtEvent.node.getName()!=null  && mtEvent.selection!=null && (mtEvent.selection.equals("dorminTable1_C1R1") || mtEvent.selection.equals("dorminTable2_C1R1") ) && (mtEvent.node.getName().contains("simst-quiz-fail-enter-lhs-failed-quiz-problem"))){				
@@ -221,10 +241,21 @@ public class AplusController implements ModelTracingListener{
 							inc=true;
 						}			
 			if (inc && showProactiveMessage(mtEvent.node.getName())){	
-					displayMessage(mtEvent.selection,PROACTIVE_HINT_MESSAGE, mtEvent.message, mtEvent.node);	
+				    
+					displayMessage(mtEvent.selection,PROACTIVE_HINT_MESSAGE, mtEvent.message, mtEvent.node);
+					String[] ruleName = mtEvent.node.getName().split("::");
+					if(mtEvent.node.getName().equalsIgnoreCase("MAIN::student-reviewed-resource-twice-teach-simst"))
+						controller.getMissController().getSimSt().getModelTraceWM().setConsecutiveResourceReview(0);
+					//int incorrectHits = (getFiredButNotMatchedCount().get(mtEvent.node.getName()));
+					getFiredButNotMatchedCount().remove(mtEvent.node.getName());
+					//getFiringCount().put(mtEvent.node.getName(),getFiringCount().get(mtEvent.node.getName())-incorrectHits);
+					
 					setProactiveHintGiven(true);
 			}
 		}
+		
+		//if(getFiredButNotMatchedCount().containsKey("MAIN::simst-launch-take-quiz"))
+			//System.out.println(" ***************** Count  for MAIN::simst-launch-take-quiz is " + getFiredButNotMatchedCount().get("MAIN::simst-launch-take-quiz") );
 
 	}
 	
@@ -235,7 +266,7 @@ public class AplusController implements ModelTracingListener{
 	 * Method to increase the number of times rule fired but SAI did not match. 
 	 * When selection is about start state elements, then this is marked as "pending"
 	 * and increases count when all start elements have been entered.  
-	 * @param selection
+	 * @param selectionvii
 	 * @param rulename
 	 */
 	private boolean increaseNotMatchedCountForRule(String selection, String rulename){
@@ -246,12 +277,14 @@ public class AplusController implements ModelTracingListener{
 			if (getPendingCount().get(rulename)==2*startStateElement.size()){
 				removePending(rulename);
 				//System.out.println("OK for " + rulename);
+				//System.out.println(" Incrementing the no SAI count for "+rulename);
 				increaseFiredButNotMatchedCount(rulename);
 				returnValue=true;
 			}
 				
 		}
 		else{	/*if its not about start state element, increase count*/
+			    //System.out.println(" Incrementing the no SAI count for "+rulename);
 				increaseFiredButNotMatchedCount(rulename);
 				returnValue=true;
 		}
@@ -307,18 +340,25 @@ public class AplusController implements ModelTracingListener{
 	
 		if (getFiredButNotMatchedCount().get(rulename)!=null){
 			timesOccuredSoFar=getFiredButNotMatchedCount().get(rulename);
-			//System.out.println("timesOccuredSoFar for " + rulename + " is " + timesOccuredSoFar);
-			if (timesOccuredSoFar<2)
+			 if (trace.getDebugCode("mt")) trace.out("mt", "Number of times the resource is reviewed : " + controller.getMissController().getSimSt().getModelTraceWM().getConsecutiveResourceReview()); 
+			 if (trace.getDebugCode("mt")) trace.out("mt", "timesOccuredSoFar for " + rulename + " is " + timesOccuredSoFar);
+			
+			if (timesOccuredSoFar<3)
 				returnValue=false;
-			else if (timesOccuredSoFar==2){
-				returnValue=true;
-			}
 			else{
-				if (Math.random() < predictRuleAccuracy(rulename))
-					returnValue = true;
+				double accuracy = -18 * ( predictRuleAccuracy(rulename) - 0.6);
+				accuracy = 1/(1+Math.exp(accuracy));
+				
+				double random = Math.random();
+				if (trace.getDebugCode("mt")) trace.out("mt", " Accuracy : "+accuracy+"  Random "+random);
+				/*if (Math.random() < predictRuleAccuracy(rulename))*/
+				 if(random > accuracy)
+					 returnValue = true;
+				//if(rulename.equalsIgnoreCase("MAIN::student-reviewed-resource-twice-teach-simst") && returnValue)
+					
 			}
 		}
-
+		 if (trace.getDebugCode("mt")) trace.out("mt", " Should the proactive message be shown ? "+returnValue);
 
 		return returnValue;
 	}
@@ -339,13 +379,22 @@ public class AplusController implements ModelTracingListener{
 		
 		float accuracy=(totalFirings - incorrectFirings)/totalFirings;
 		
-		if (accuracy >= 0.95)
+		//if(accuracy < 0.5)
+			// accuracy = accuracy + (float)Math.random();
+		
+		/*if (accuracy >= 0.95)
 			returnValue=0;	//i.e. do not show any proactive messages if accuracy above 95%
 		else if (accuracy > 0.8 )
+			 //returnValue = 0.5f;
 			returnValue=0.3f;
-		else returnValue=0.4f;
+		else 
+			//returnValue = 0.6f;
+			returnValue=0.4f;
 		
-		return returnValue;
+		System.out.println(" Predicted Rule Accuracy : "+returnValue);
+		return returnValue;*/
+		
+		return accuracy;
 	}
 
 
@@ -384,9 +433,16 @@ public class AplusController implements ModelTracingListener{
 		{
 			Sai sai = new Sai(node.getActualSelection(), node.getActualAction(), node.getActualInput());
 			String step = getController().getMissController().getSimSt().getProblemStepString();
-			getaPlusModelTracing().getLogger().simStLog(SimStLogger.SIM_STUDENT_METATUTOR, SimStLogger.METATUTOR_HINT_ACTION, step, node.getName(), "",	sai, 0, message);
-			
+			//getaPlusModelTracing().getLogger().simStLog(SimStLogger.SIM_STUDENT_METATUTOR, SimStLogger.METATUTOR_HINT_ACTION, step, node.getName(), "",	sai, 0, message);
+			//getaPlusModelTracing().getLogger().simStLog(SimStLogger.SIM_STUDENT_METATUTOR, SimStLogger.METATUTOR_HINT_ACTION, step,node.getName(), "", sai, node, "", "" ,"", "", duration, feedback, "", info,0,true,null,null,getCurrentTime());
+			if(type == PROACTIVE_HINT_MESSAGE)
+				getaPlusModelTracing().getLogger().simStLog(SimStLogger.SIM_STUDENT_METATUTOR, SimStLogger.METATUTOR_HINT_ACTION, step, node.getName(), "", sai, null, "","","","", 0, message,"","Proactive",0,true,null,null,getaPlusModelTracing().getLogger().getCurrentTime());
+			else
+				getaPlusModelTracing().getLogger().simStLog(SimStLogger.SIM_STUDENT_METATUTOR, SimStLogger.METATUTOR_HINT_ACTION, step, node.getName(), "", sai, null, "","","","", 0, message,"","Requested",0,true,null,null,getaPlusModelTracing().getLogger().getCurrentTime());
+	
+
 			boolean isCognitiveHint=node.getName().contains("demonstrate-step") ? true : false;
+			//System.out.println(" In the display length ");
 			sendResult(returnMessage,type,isCognitiveHint);
 		}
 		
@@ -419,10 +475,13 @@ public class AplusController implements ModelTracingListener{
 			String message = ctlr.getMissController().getAPlusHintMessagesManager().getFirstMessage();
 			if(ctlr.getMissController() != null && ctlr.getMissController().getSimStPLE() != null
 					&& ctlr.getMissController().getSimStPLE().getSimStPeerTutoringPlatform() != null) {		
-				
-				if (type==this.PROACTIVE_HINT_MESSAGE && message!=null){
+				//System.out.println(" Metatutor ? "+ctlr.getMissController().getSimSt().isSsMetaTutorMode());
+				if (type==PROACTIVE_HINT_MESSAGE && message!=null){
+					//System.out.println(" Gonna display proactive message thus disabling Model Tracer");
+					controller.getMissController().getSimStPLE().setModelTracer(false);
 					ctlr.getMissController().getSimStPLE().getSimStPeerTutoringPlatform().getAPlusHintDialogInterface().showThinkBubble();
 				}
+				//System.out.println(" In send Result ");
 				ctlr.getMissController().getSimStPLE().getSimStPeerTutoringPlatform().getAPlusHintDialogInterface().showMessage(message);
 			}
 		}

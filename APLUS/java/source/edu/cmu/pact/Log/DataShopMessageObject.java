@@ -254,7 +254,7 @@ public class DataShopMessageObject extends MessageObject {
 			setResponseType(actionEvaluation, msg);
 			logMsg = new TutorActionLogV4(msg);
 			if (trace.getDebugCode("mo")) trace.out("mo", "tutorMessage: new logMsg before adding more info "+logMsg.toString());
-			
+			System.out.println(" Setting the problem Name : "+logger.getProblemName());
 			logMsg.setProblemName(logger.getProblemName());
 			createEventDesc(logMsg);
 			

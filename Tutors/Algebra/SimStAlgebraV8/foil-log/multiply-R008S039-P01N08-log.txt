@@ -1,0 +1,58 @@
+FOIL 6.4   [January 1996]
+--------
+
+    Options:
+	minimum clause accuracy 1.4991e+09%
+
+Relation multiply
+
+Relation *HasVarTerm
+
+Relation *IsNumeratorOf
+
+Relation *IsFractionTerm
+
+Relation *IsAVarTerm
+
+Relation *IsSkillAdd
+
+Relation *IsLastConstTermNegative
+
+Relation *HasCoefficient
+
+Relation *IsConstant
+
+Relation *IsPolynomial
+
+Relation *IsDenominatorOf
+
+Relation *HasParentheses
+
+Relation *IsSkillSubtract
+
+Relation *IsSkillMultiply
+
+Relation *Homogeneous
+
+Relation *NotNull
+
+Relation *Monomial
+
+Relation *HasConstTerm
+
+Relation *IsSkillDivide
+
+----------
+multiply:
+
+State (1/9, 7.0 bits available)
+
+Best literal IsFractionTerm(B) (5.9 bits)
+
+Clause too inaccurate (1/1)
+
+***  Warning: the following definition
+***  does not cover 1 tuple in the relation
+
+
+Time 0.0 secs

@@ -47,6 +47,7 @@ import edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher;
 import edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Properties;
 import edu.cmu.pact.BehaviorRecorder.Controller.CtatModeListener;
 import edu.cmu.pact.BehaviorRecorder.ProblemModel.ProblemModel;
+import edu.cmu.pact.BehaviorRecorder.Tab.CTATTabManager;
 import edu.cmu.pact.BehaviorRecorder.View.BRPanel;
 import edu.cmu.pact.BehaviorRecorder.View.HintWindow.HintWindowInterface;
 import edu.cmu.pact.BehaviorRecorder.jgraphwindow.JGraphPanel;
@@ -903,10 +904,10 @@ public class TutorController extends CTATBase implements CTAT_Controller
             } else if (className.equalsIgnoreCase("pact.CommWidgets.JCommTable") || className.equalsIgnoreCase("pact.DorminWidgets.DorminTable")) {
                 int rows = ((JCommTable) widget).getRows();
                 int columns = ((JCommTable) widget).getColumns();
+
                 for (int r = 0; r < rows; r++) {
                     for (int c = 0; c < columns; c++) {
                         JCommTable.TableCell cell = ((JCommTable) widget).getCell(r, c);
-
                         if (cell.getCommName().equalsIgnoreCase(name)) {
                      
                         	if (trace.getDebugCode("boots20")) trace.out("boots20","lookupWidgetByName/cell: returning an object of type " + cell.getClass());
@@ -1072,6 +1073,8 @@ public class TutorController extends CTATBase implements CTAT_Controller
         if(trace.getDebugCode("startstate"))
         	trace.out("startstate", "closeStudentInterface() after dispose");
         studentInterface = null;
+        /*if(CTATTabManager.getNumTabs() > 0)
+     	   CTATTabManager.setNumTabs(CTATTabManager.getNumTabs()-1);*/
     }
 
     public void enqueueToolActionToStudent(Vector selection, Vector action,

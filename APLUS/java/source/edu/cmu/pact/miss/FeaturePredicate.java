@@ -109,7 +109,7 @@ public abstract class FeaturePredicate
     // 
     private HashMap applyCashe = new edu.cmu.pact.miss.HashMap();
     /**
-     * a vector of names for the argruments(optional, may not be set)
+     * a vector of names for the arguments(optional, may not be set)
      */
 	protected Vector argNames=null;
     public String getApplyCache( Vector /* String */ args ) {

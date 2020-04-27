@@ -25,5 +25,25 @@
     <class>java.lang.Boolean</class>
     <value>true</value>
   </preference>
+  <preference>
+    <name>Docked Window Location X</name>
+    <class>java.lang.Integer</class>
+    <value>125</value>
+  </preference>
+  <preference>
+    <name>Docked Window Location Y</name>
+    <class>java.lang.Integer</class>
+    <value>125</value>
+  </preference>
+  <preference>
+    <name>Docked Window Width</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
+  <preference>
+    <name>Docked Window Height</name>
+    <class>java.lang.Integer</class>
+    <value>800</value>
+  </preference>
 </preferences>
 

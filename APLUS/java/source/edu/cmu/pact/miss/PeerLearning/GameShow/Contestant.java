@@ -1162,7 +1162,7 @@ public class Contestant implements ActionListener, ListSelectionListener, Change
 				gameShowPlatform.setGameShowExpression(SimStPLE.NORMAL_EXPRESSION);
 				gameShowPlatform.setOppGameShowExpression(SimStPLE.NORMAL_EXPRESSION);
 
-				int duration = (int) (Calendar.getInstance().getTimeInMillis()-startMatchupTime);
+				int duration = (int) ((Calendar.getInstance().getTimeInMillis()-startMatchupTime)/1000);
 				logger.simStLog(SimStLogger.SSGAME_MATCHUP, SimStLogger.SUCCESSFUL_MATCHUP_ACTION, "", "",
 						"", duration, "", opponentID, rating);
 				logger.simStLog(SimStLogger.SSGAME_CONTEST, SimStLogger.CONTEST_START_ACTION, "", "",
@@ -1416,7 +1416,7 @@ public class Contestant implements ActionListener, ListSelectionListener, Change
 				//rejoin the game and view the matchup screen again
 				gameShowPlatform.viewMatchup();
 				
-				int duration = (int) (Calendar.getInstance().getTimeInMillis() - lastTabViewStart);
+				int duration = (int) ((Calendar.getInstance().getTimeInMillis() - lastTabViewStart)/1000);
 		        logger.simStLog(SimStLogger.SSGAME_REVIEW, SimStLogger.CONTINUE_BUTTON_ACTION, "", "", "", duration, rating);
 				
 				out.println(ContestServer.JOIN+","+nameImg+","+getSimSt().getUserID()+","+getBrController().getLogger().getClassName());
@@ -1545,7 +1545,7 @@ public class Contestant implements ActionListener, ListSelectionListener, Change
 		 */
 		public void leave()
 		{
-			int duration = (int) (Calendar.getInstance().getTimeInMillis() - gameShowStart);
+			int duration = (int) ((Calendar.getInstance().getTimeInMillis() - gameShowStart)/1000);
 			logger.simStLog(SimStLogger.SSGAME, SimStLogger.GAMESHOW_CLOSED_ACTION, "", "", "", duration, rating);
 			
 			//stop listening for more messages
@@ -1645,7 +1645,7 @@ public class Contestant implements ActionListener, ListSelectionListener, Change
 				{
 					lastTabViewed = tabPane.getTitleAt(0);
 				}
-				int duration = (int) (Calendar.getInstance().getTimeInMillis() - lastTabViewStart);
+				int duration = (int) ((Calendar.getInstance().getTimeInMillis() - lastTabViewStart)/1000);
 		        lastTabViewStart = Calendar.getInstance().getTimeInMillis(); 
 		        
 		        logger.simStLog(SimStLogger.SSGAME_REVIEW, SimStLogger.TAB_LEFT_ACTION, "",lastTabViewed,"",duration, rating);
@@ -1718,7 +1718,7 @@ public class Contestant implements ActionListener, ListSelectionListener, Change
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
 					
-					int duration = (int) (Calendar.getInstance().getTimeInMillis() - gameShowStart);
+					int duration = (int) ((Calendar.getInstance().getTimeInMillis() - gameShowStart)/1000);
 					
 					//stop listening for more messages
 					listener.activeListener = false;

@@ -157,6 +157,9 @@ public class SimStPeerTutoringPlatform extends JComponent {
 		this.tabPane = tabPane;
 	}
 
+    private String targetWindow = "";
+    private String previousWindow = "";
+    
 	// Size of the top-panel window
     Dimension platformSize = null;
     
@@ -1540,6 +1543,22 @@ public class SimStPeerTutoringPlatform extends JComponent {
     public static void main(String[] args) {
         // TODO Auto-generated method stub
     }
+
+	public String getTargetWindow() {
+		return targetWindow;
+	}
+
+	public void setTargetWindow(String targetWindow) {
+		this.targetWindow = targetWindow;
+	}
+
+	public String getPreviousWindow() {
+		return previousWindow;
+	}
+
+	public void setPreviousWindow(String previousWindow) {
+		this.previousWindow = previousWindow;
+	}
 
 
 }

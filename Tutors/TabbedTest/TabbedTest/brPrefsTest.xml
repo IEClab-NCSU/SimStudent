@@ -48,47 +48,52 @@
   <preference>
     <name>Docked Window Location X</name>
     <class>java.lang.Integer</class>
-    <value>259</value>
+    <value>125</value>
   </preference>
   <preference>
     <name>Docked Window Location Y</name>
     <class>java.lang.Integer</class>
-    <value>65</value>
+    <value>23</value>
   </preference>
   <preference>
     <name>Docked Window Width</name>
     <class>java.lang.Integer</class>
-    <value>1256</value>
+    <value>800</value>
   </preference>
   <preference>
     <name>Docked Window Height</name>
     <class>java.lang.Integer</class>
-    <value>827</value>
-  </preference>
-  <preference>
-    <name>Disk Logging Directory</name>
-    <class>java.lang.String</class>
-    <value>/Users/simstudent/Desktop/SimStudentGithub/SimStudent-master/Tutors/TabbedTest/TabbedTest/log</value>
+    <value>745</value>
   </preference>
   <preference>
     <name>Student Interface Location X</name>
     <class>java.lang.Integer</class>
-    <value>715</value>
+    <value>9</value>
   </preference>
   <preference>
     <name>Student Interface Location Y</name>
     <class>java.lang.Integer</class>
-    <value>315</value>
+    <value>23</value>
   </preference>
   <preference>
     <name>Student Interface Width</name>
     <class>java.lang.Integer</class>
-    <value>1159</value>
+    <value>979</value>
   </preference>
   <preference>
     <name>Student Interface Height</name>
     <class>java.lang.Integer</class>
-    <value>734</value>
+    <value>995</value>
+  </preference>
+  <preference>
+    <name>Tutor Wrapper Vertical Divider Location</name>
+    <class>java.lang.Integer</class>
+    <value>283</value>
+  </preference>
+  <preference>
+    <name>Tutor Wrapper Horizontal Divider Location</name>
+    <class>java.lang.Integer</class>
+    <value>808</value>
   </preference>
   <preference>
     <name>Problem Directory</name>
@@ -101,14 +106,9 @@
     <value>TabbedTest/</value>
   </preference>
   <preference>
-    <name>Tutor Wrapper Vertical Divider Location</name>
-    <class>java.lang.Integer</class>
-    <value>283</value>
-  </preference>
-  <preference>
-    <name>Tutor Wrapper Horizontal Divider Location</name>
-    <class>java.lang.Integer</class>
-    <value>941</value>
+    <name>Disk Logging Directory</name>
+    <class>java.lang.String</class>
+    <value>/Users/Shared/SimStAlgebraV9/log/test</value>
   </preference>
   <preference>
     <name>Use Disk Logging</name>

@@ -88,8 +88,8 @@ public class AlgebraV8InputChecker extends InputChecker {
 				if (transformation.getText().isEmpty()){
 					returnValue=false;
 					}
-				else
-					System.out.println("transformation is " + transformation.getText());
+				//else
+					//System.out.println("transformation is " + transformation.getText());
 					
 			}
 			

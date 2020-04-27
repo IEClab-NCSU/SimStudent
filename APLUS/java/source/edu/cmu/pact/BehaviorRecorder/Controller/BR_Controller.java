@@ -377,6 +377,7 @@ public class BR_Controller extends TutorController implements PropertyChangeList
         ProblemModel model = new ProblemModel(this);
         this.problemModelManager = new ProblemModelManager(model, this);
     	if (!Utils.isRuntime()) { // if not in tutoring service (author time)
+    		//System.out.println(" Tab Number for this mode :  "+tabNumber);
     		this.graphPanel = new JGraphPanel(getServer(), this, tabNumber);
 		}
     	
@@ -1446,6 +1447,7 @@ public class BR_Controller extends TutorController implements PropertyChangeList
             handleCreateStartStateMessage(o);
         } else if (messageType.equalsIgnoreCase("Quit")) {
             getLoggingSupport().oliLog(o, false); 
+            System.out.println(" It is called ");
             handleQuitMessage();
         } else if (messageType.equalsIgnoreCase("QuitWithoutSave")) {
             getLoggingSupport().oliLog(o, false); 

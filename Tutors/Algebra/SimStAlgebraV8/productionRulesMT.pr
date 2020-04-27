@@ -24,10 +24,26 @@
 ;; If [APlusLaunched == "true"]
 ;; Then
 ;; [Press Quiz Button]
+(defrule student-reviewed-resource-twice-teach-simst
+	"If student reviewed resource more than twice then teach:Practice"
+	(declare (salience 150))
+	;;(declare (salience 200))
+	?wm <- (ModelTraceWorkingMemory (consecutiveResourceReview ?count&:(> ?count 2))
+									(studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil)))
+	=>
+	(construct-tutor-hint-message
+	"[ You have reviewed resources more. So teach SimStName to solve equations]"
+	 "P[ You have reviewed resources more. So teach SimStName to solve equations]"))
+	
+;;
+;;
+;; The documentation string in each of the production rule contains ":" followed by the target tab name 
 (defrule simst-launch-take-quiz
-	"If APlusLaunched then take the quiz"
-	(declare (salience 150)) ;; salience determines the priority of the rules : higher the salience, higher the priority
+	"If APlusLaunched then take the quiz :Quiz"
+	(declare (salience 160)) ;; salience determines the priority of the rules : higher the salience, higher the priority
+	;;(declare (salience 210))
 	?wm <- (ModelTraceWorkingMemory (APlusLaunched "true") 
+									(quizLevelPassed ?level&:(< ?level 1))
 									(studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil)))
 	=>
 	(predicted-sai quiz ButtonPressed -1) ;; predicts-the-ruleSAI
@@ -41,6 +57,7 @@
 
 
 (defrule simst-fail-quizP-solved-take-quiz
+	"If SimSt practiced some problems then Quiz :Quiz"
 	(declare (salience 360))
 	?wm <- (or (ModelTraceWorkingMemory (problemType "failedQuizProblem")
 									(problemStatus "solved")
@@ -73,7 +90,7 @@
 		
 					
 (defrule student-view-resource-uoverview;;
-	"If Unit Overview not viewed then view them"
+	"If Unit Overview not viewed then view them :Unit overview"
 	(declare (salience 260)) ;; salience determines the priority of the rules : higher the salience, higher the priority
 	?wm <- (ModelTraceWorkingMemory (UOTabClicked "false")
 	    							(afterQuiz "true")
@@ -94,7 +111,7 @@
 			
 	
 (defrule student-view-resource-examples;;
-	"If Examples not viewed then view them"
+	"If Examples not viewed then view them :Examples"
 	(declare (salience 260)) ;; salience determines the priority of the rules : higher the salience, higher the priority
 	?wm <- (ModelTraceWorkingMemory (examplesTabClicked "false")
 	    							(afterQuiz "true")
@@ -117,7 +134,7 @@
 			
 ;;If problem is entered and SimStudent does not request anything (i.e. SimStudent is thinking), then wait unti SimStudent stops thinking.
 (defrule simst-thinking-informative;;
-	"If SimStudent is thinking then wait until thinking stops"
+	"If SimStudent is thinking then wait until thinking stops :Practice"
 	(declare (salience 400)) 
 	?wm <- (ModelTraceWorkingMemory (requestType ?req&:(eq ?req nil))								
 									(studentEnteredProblem ?enteredProblem&:(neq ?enteredProblem nil))
@@ -158,7 +175,7 @@
 		
 ;;If solution checking revealed an error then restart problem.										
 (defrule student-solution-error-informative;;
-	"If solution checking reveals an error then solve problem again"
+	"If solution checking reveals an error then solve problem again :Practice"
 	(declare (salience 260)) 
 	?wm <- (ModelTraceWorkingMemory (solutionCheckError "true")
 									(solutionGiven "true")
@@ -213,7 +230,7 @@
 
 ;; rule 7: if restarting problem more than 3 times then give new problem
 (defrule student-click-restart-repeatedly-informative;;
-	"If restart clicked repeatedly, click new problem"
+	"If restart clicked repeatedly, click new problem :Practice"
 	(declare (salience 250)) 
 	?wm <- (ModelTraceWorkingMemory (studentEnteredProblem ?enteredProblem&:(neq ?enteredProblem nil))
 									(restartCount ?restart&:(> ?restart 2)))
@@ -235,7 +252,7 @@
 				
 ;; rule 3: If SimStudent solved two problems in a row without hint requested, take quiz			
 (defrule student-teach-same-problem-no-quiz-take-quiz;;
-	"If restart clicked repeatedly, click new problem"
+	"If restart clicked repeatedly, click new problem :Quiz"
 	(declare (salience 400)) 
 	?wm <- (ModelTraceWorkingMemory (studentEnteredProblem ?enteredProblem&:(eq ?enteredProblem nil))	
 									(allTutoredProblemList ?problemList&:(neq ?problemList nil))
@@ -322,7 +339,7 @@
 		
 ;;rule 4: if quiz level failed 3 times then review resourses
 (defrule simstudent-quiz-failed-repeatedly-view-resource;;
-	"If quiz failed more than 3 times, then  review resources"
+	"If quiz failed more than 3 times, then  review resources :examples"
 	(declare (salience 220)) ;; salience determines the priority of the rules : higher the salience, higher the priority
 	?wm <- (ModelTraceWorkingMemory	(quizTaken "true") 
 									(quizOutcome "fail")
@@ -348,7 +365,9 @@
 
 ;; Rule 8.1. : if all quiz items failed, encourage student to give similar problem to 1st one 
 (defrule simst-all-quiz-failed-enter-lhs-similar-problem-type
+	"If SimSt failed then teach similar problem :Practice"
 	(declare (salience 200))
+;;	(declare (salience 145))
 	?wm <-  (ModelTraceWorkingMemory (quizTaken "true")
 									(quizOutcome "fail")
 									(quizProblemsFailedList ?suggestedProblems&:(neq ?suggestedProblems nil))
@@ -381,6 +400,7 @@
 
 (defrule simst-all-quiz-failed-enter-rhs-similar-problem-type
 	(declare (salience 175))
+;;	(declare (salience 140))
 	?wm <- (ModelTraceWorkingMemory  (quizTaken "true")
 									(quizOutcome "fail")
 									(quizProblemsFailedList ?suggestedProblems&:(neq ?suggestedProblems nil))
@@ -403,6 +423,7 @@
 
 ;; Rule 8.2. : if all quiz items failed, encourage student to give similar problem to 1st one 
 (defrule simst-all-quiz-failed-again-enter-lhs-similar-problem
+	"if all quiz items failed, encourage student to give similar problem to 1st one :Practice"
 	(declare (salience 200))
 	?wm <-  (ModelTraceWorkingMemory (quizTaken "true")
 									(quizOutcome "fail")
@@ -582,7 +603,7 @@
 ;; Then
 ;; [Press Quiz Button]
 (defrule simst-quiz-pass-take-quiz
-	"If student took the quiz and passed it then take the quiz again"
+	"If student took the quiz and passed it then take the quiz again :Quiz"
 	(declare (salience 150))
 	?wm <- (ModelTraceWorkingMemory (quizTaken "true") 
 	 							 (quizOutcome "pass")
@@ -615,6 +636,7 @@
 
 
 (defrule simst-quiz-fail-again-enter-lhs-first-failed-quiz-problem-type
+	"SimSt failed quiz so teach :Practice"
 	(declare (salience 200))
 	?wm <- (or (ModelTraceWorkingMemory (quizTaken "true")
 									(quizOutcome "fail")
@@ -745,7 +767,8 @@
 ;; [Enter left hand side of failed quiz problem type]
 ;;
 (defrule simst-quiz-fail-enter-lhs-failed-quiz-problem
-	(declare (salience 150))
+	" If simst failed quiz then enter lhs of the problem :Practice"
+	(declare (salience 130))
 	?wm <- (or (ModelTraceWorkingMemory (quizTaken "true") 
 									(quizOutcome "fail")
 									(quizProblemsFailedList ?suggestedProblems&:(neq ?suggestedProblems nil))
@@ -983,11 +1006,12 @@
 (defrule simst-tab-clicked
 	(declare (salience 50))
 	(studentValues (selection ?sel) (action "TabClicked") (input ?inp))
-	=>
+=>
 	(predicted-sai ?sel TabClicked ?inp))	
 
 
 (defrule simst-fail-quizP-solved-enter-lhs-solved-quizPType
+	"If simst failed quiz then practice on same type : Practice"
 	(declare (salience 125))
 	?wm <- (or (ModelTraceWorkingMemory (problemType "failedQuizProblem")
 									(problemStatus "solved")
@@ -1118,6 +1142,7 @@
 							
 							 
 (defrule simst-fail-quizP-solved-enter-lhs-different-failed-quizP
+	"If SimSt failed on quiz problem then teach :Practice"
 	(declare (salience 225))
 	?wm <- (or (ModelTraceWorkingMemory (problemType "failedQuizProblem")
 									(problemStatus "solved")
@@ -1667,7 +1692,7 @@
 
 ;; SIMST-LAUNCH-QUIZ
 ;;
-;; IF SimStudent is launched and Student tutor has not yet started teaching SimStudent
+;; IFï¿½SimStudent is launched and Student tutor has not yet started teaching SimStudent
 ;; Then
 ;; (Student tutor) should quiz SimStudent
 ;;(defrule simst-launch-quiz
@@ -1939,9 +1964,4 @@
 		"(lhsQProblem nil)" "(rhsProblem nil)" "(rhsQProblem nil)" "(problemStatus nil)" "(problemType nil)" "(quizProblemsPassed nil)"
 		"(quizProblemsFailedList nil)" "(quizOutcome nil)" "(quizProblemsTutoredList nil)" "(quizTaken true)" "(solutionCheckError false)" "(afterQuiz true)" "(resourceViewed false)"  "(requestType nil)" 
 		"(studentEnteredProblem nil)" "(UOTabReviewed nil)" "(afterQuiz true)" "(resourceViewed false)" ))
-	
-		
-
-		
-		
 	

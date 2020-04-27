@@ -1,0 +1,71 @@
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+	<xsl:output method="html" encoding="UTF-8" />
+<!-- this report template is similar to AssessmentReport template, except that it -->
+<!-- omits student, class, instructor data.  used to display summary report for an -->
+<!-- assessment unit to the student, within the tutor. -->
+	<xsl:template match="/Report">
+		<div style="font-weight: bold; font-size: medium; color: #5582d5">STUDENT SKILLS ASSESSMENT BY STRAND</div>
+		<xsl:element name="table" use-attribute-sets="unit-table">
+			<tr style="height: 10px;"><td colspan="3"><!-- blank line for spacing --></td></tr>
+			<!-- unit-table -->
+			<tr style="background: #5582d5; color: #ffffff;">
+				<th width="25%" align="left">STRAND</th>
+				<th width="57%" align="left">SUBTOPIC</th>
+				<!-- column for each test being reported -->
+                <xsl:for-each select="Student/Test">
+                    <th width="15%" align="center"><xsl:value-of select="@label" /> - <xsl:value-of select="@status" /></th>
+                </xsl:for-each>
+			</tr>
+			<xsl:for-each select="Student/Strand">
+				<xsl:variable name="bkgd">
+					<xsl:choose>
+						<xsl:when test="position() mod 2 = 1">#ffffff</xsl:when>
+						<xsl:otherwise>#e4eef7</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+				<tr style="background: {$bkgd};">
+                    <td colspan="2"><b><xsl:value-of select="@name" /></b></td>
+                    <xsl:for-each select="Test">
+                        <!-- add a color column -->
+                        <td align="center"><b><xsl:value-of select="@bucket" /></b></td>
+                    </xsl:for-each>
+                </tr>
+				<xsl:for-each select="Skill">
+					<tr style="background: {$bkgd};">
+						<td></td>  <!-- strand name -->
+                        <td><xsl:value-of select="@name" /></td>
+                        <xsl:for-each select="Test">
+                            <!-- add a color column -->
+                            <td align="center"><xsl:value-of select="@bucket" /></td>
+                        </xsl:for-each>
+					</tr>
+				</xsl:for-each>
+				<tr style="height: 10px;"><td colspan="4"><!-- blank line for spacing --></td></tr>
+			</xsl:for-each>
+			<tr style="height: 10px; background: #5582d5;">
+				<td colspan="4"><!-- bookend --></td>
+			</tr>
+			<!-- END unit-table -->
+		</xsl:element>
+	</xsl:template>
+
+	<xsl:attribute-set name="top-table">
+		<xsl:attribute name="border">0</xsl:attribute>
+		<xsl:attribute name="align">left</xsl:attribute>
+		<xsl:attribute name="cellpadding">0</xsl:attribute>
+		<xsl:attribute name="cellspacing">0</xsl:attribute>
+		<xsl:attribute name="clear">both</xsl:attribute>
+		<xsl:attribute name="style">clear: both; font-size: small;</xsl:attribute>
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="unit-table">
+		<xsl:attribute name="border">0</xsl:attribute>
+		<xsl:attribute name="align">left</xsl:attribute>
+		<xsl:attribute name="cellpadding">1</xsl:attribute>
+		<xsl:attribute name="cellspacing">0</xsl:attribute>
+		<xsl:attribute name="width">100%</xsl:attribute>
+		<xsl:attribute name="style">clear: both; font-size: small;</xsl:attribute>
+	</xsl:attribute-set>
+
+</xsl:stylesheet>
+

@@ -1,0 +1,1649 @@
+<project name="ctat" default="jar" basedir=".">
+
+	<description>
+		ctat v. 0.0001
+	</description>
+
+	<property file="build.properties" />
+	<property environment="env" />
+	<property name="examples" location="examples" />
+	<property name="examples_source" location="../Examples" />
+	<property name="source" location="source" />
+	<property name="source_appl" location="source_appl" />
+	<property name="flash_source" location="../FlashComponents" />
+	<property name="flash_source_as3" location="../FlashComponents3" />
+	<property name="TSLT" location="test/edu/cmu/pact/TutoringService" />
+
+	<property name="bin" location="bin" />
+	<property name="lib" location="lib" />
+	<property name="cl_lib" location="lib/cl" />
+	<property name="eclipselib" location="eclipsePlugins/lib/eclipse" />
+	<property name="eclipseForInstall" location="eclipsePlugins/forInstallation" />
+	<property name="eclipseOutput" location="eclipseOutput" />
+	<property name="classes" location="classes" />
+	<property name="functions_package" value="edu/cmu/pact/BehaviorRecorder/ProblemModel/Matcher/Functions" />
+	<property name="CommWidgets_package" value="pact/CommWidgets" />
+	<property name="optimize" value="on" />
+	<property name="debug" value="on" />
+	<property name="assistment-source" location="${source}/edu/wpi/trg/assistments" />
+	<property name="VersionInfo" value="edu/cmu/pact/Utilities/VersionInformation" />
+	<property name="VersionInfo.Number.Major" value="3" />
+	<property name="VersionInfo.Number.Minor" value="4" />
+	<property name="VersionInfo.Number.Revision" value="0" />  <!-- Update VersionInfo.Number.Revision after branching -->
+	<property name="VersionInfo.Number.Revision.Internal" value="0i" />  
+	<property name="VersionInfo.Number.Revision.Commercial" value="0c" />  
+	<property name="VersionInfo.Number" value="${VersionInfo.Number.Major}.${VersionInfo.Number.Minor}.${VersionInfo.Number.Revision}" />
+	<property name="VersionInfo.Number.Internal" value="${VersionInfo.Number.Major}.${VersionInfo.Number.Minor}.${VersionInfo.Number.Revision.Internal}" />
+	<property name="VersionInfo.Number.Commercial" value="${VersionInfo.Number.Major}.${VersionInfo.Number.Minor}.${VersionInfo.Number.Revision.Commercial}" />
+	<property name="VersionInfo.Release" value="CTAT ${VersionInfo.Number}" />
+	<property name="VersionInfo.Release.Internal" value="CTAT ${VersionInfo.Number.Internal}" />
+	<property name="VersionInfo.Release.Commercial" value="CTAT ${VersionInfo.Number.Commercial}" />
+	<property name="ctatClassPath1" value="
+		${classpath}:
+		${lib}/logclient.jar:
+		${lib}/jess.jar:
+		${lib}/jdom.jar:
+		${lib}/jnlp.jar:
+		${lib}/idw.jar:
+		${lib}/mylib.jar:
+		${lib}/aima.jar:
+		${lib}/xml-writer.jar:
+		${lib}/xercesImpl.jar:
+		${lib}/TuTalkSlim.jar:
+		${eclipselib}/console.jar:
+		${eclipselib}/core.jar:
+		${eclipselib}/defaultAdaptor.jar:
+		${eclipselib}/eclipseAdaptor.jar:
+		${eclipselib}/ide.jar:
+		${eclipselib}/jface.jar:
+		${eclipselib}/jfacetext.jar:
+		${eclipselib}/osgi.jar:
+		${eclipselib}/resolver.jar:
+		${eclipselib}/resources.jar:
+		${eclipselib}/runtime.jar:
+		${eclipselib}/swt.jar:
+		${eclipselib}/text.jar:
+		${eclipselib}/ui.jar:
+		${eclipselib}/workbench.jar:
+		${cl_lib}/grant.jar:
+		${cl_lib}/cl_common.jar:
+		${cl_lib}/LMS.jar:
+		${cl_lib}/LMSfiledata.jar:
+		${cl_lib}/TT.jar:
+		${cl_lib}/utilities.jar:
+		${cl_lib}/tutors.jar:
+		${cl_lib}/thirdparty/webeq35.jar:
+		${cl_lib}/thirdparty/TableLayout.jar:
+				" />
+
+	<property name="excludes_file" value="${basedir}/ExcludeFiles.txt" />
+	<property name="fn_location" value="edu/cmu/pact/BehaviorRecorder/ProblemModel/Matcher/Functions" />
+	<property name="license_dir" value="${basedir}/../Licenses" />
+	<property name="license_file_academic" value="CTAT academic license.html" />
+	<property name="license_file_commercial" value="CTAT commercial license.html" />
+	<property name="installer_location" value="../installer" />
+	<property name="installer_include" value="${installer_location}/for_inclusion/" />
+	<property name="installer_output" value="${installer_location}/CTAT_Installer/build_output/" />
+	<property name="projectsParent" value="." />
+	<property name="test.src" value="${basedir}/test" />
+	<property name="test.build" value="${basedir}/testclasses" />
+	<property name="test.reports" value="${basedir}/reports/ctat" />
+	<property name="CL_Build.dir" value="${basedir}/CL_CurriculumExample/CL Applications/bin" />
+	<property name="ctat_applet" value="ctat_applet" />
+	<property name="tutor-applet" value="deploy-java-tutor-applet" />
+
+	<!-- bleber 03.21.2007 -->
+	<property name="docbook.tmp" value="tmp_doc" />
+
+	<!-- sewall 2013-03-14 for TSApplet.jar -->
+	<property name="preferences-xml" value="edu/cmu/pact/Preferences/InstallationPreferences.xml" />
+	<property name="deploy_applet_location" value="${basedir}/deploy-applet"/>
+	<property name="ts_applet_location" value="${deploy_applet_location}/ctat_applet"/>
+
+	<fileset dir="${lib}" id="tsApplet.jars">
+		<include name="**/TSApplet.jar" />
+		<include name="**/jdom.jar" />
+		<include name="**/logclient.jar" />
+		<include name="**/logging.jar" />
+		<include name="**/runcc.jar" />
+		<include name="**/jess.jar" />
+		<include name="**/HARTNetworking.jar" />
+	</fileset>
+
+	<fileset dir="${lib}" id="tutorApplet.jars">
+		<include name="TutorApplet.jar" />
+        <include name="TableLayout.jar" />
+		<include name="jdom.jar" />
+		<include name="logclient.jar" />
+		<include name="logging.jar" />
+		<include name="runcc.jar" />
+		<include name="jess.jar" />
+		<include name="HARTNetworking.jar" />
+	</fileset>
+	
+	<!--kckim 10/13/05 dynamically generate list of jar files for ctatClassPath -->
+	<fileset dir="${lib}" id="jars.lib">
+		<filename name="*.jar" />
+		<filename regex="ctat[^_][^h][^e].*" negate="true" />  <!-- include ctat_help.jar -->
+		<filename name="TSApplet.jar" negate="true" />
+	</fileset>
+	<fileset dir="${eclipselib}" id="jars.lib.eclipse">
+		<include name="*.jar" />
+	</fileset>
+	<fileset dir="${cl_lib}" id="jars.lib.cl">
+		<include name="**/*.jar" />
+	</fileset>
+
+	<pathconvert property="jarslist.lib" pathsep=":" refid="jars.lib" targetOS="windows"/>
+	<pathconvert property="jarslist.lib.cl" pathsep=":" refid="jars.lib.cl" targetOS="windows"/>
+	<pathconvert property="jarslist.lib.eclipse" pathsep=":" refid="jars.lib.eclipse" targetOS="windows"/>	
+	<property name="ctatClassPath" value = "${jarslist.lib}:${jarslist.lib.cl}:${jarslist.lib.eclipse}" />
+			
+	<pathconvert property="dist.classpath.lib" refid="jars.lib" pathsep=" " targetOS="unix">
+		<map from="${lib}\" to="" />
+		<map from="${lib}/" to="" />
+		<map from="${lib}" to="" />
+	</pathconvert>
+	<pathconvert property="dist.classpath.lib.cl" refid="jars.lib.cl" pathsep=" " targetOS="unix">
+		<map from="${lib}\" to="" />
+		<map from="${lib}/" to="" />
+		<map from="${lib}" to="" />
+	</pathconvert>
+	<pathconvert property="dist.classpath.lib.eclipse" refid="jars.lib.eclipse" pathsep=" " targetOS="unix">
+		<map from="${lib}\" to="" />
+		<map from="${lib}/" to="" />
+		<map from="${lib}" to="" />
+	</pathconvert>
+	<property name="dist.classpath" value = "${dist.classpath.lib} ${dist.classpath.lib.cl}" />
+	<pathconvert property="cl2006.dist.classpath.lib" refid="jars.lib" pathsep=" ">
+		<map from="${lib}\" to="ctat/" />
+		<map from="${lib}/" to="ctat/" />
+	</pathconvert>
+	<pathconvert property="cl2006.dist.classpath.lib.cl" refid="jars.lib.cl" pathsep=" ">
+		<map from="${lib}\cl\thirdparty\" to="" />
+		<map from="${lib}/cl/thirdparty/" to="" />
+		<map from="${lib}\cl\" to="" />
+		<map from="${lib}/cl/" to="" />
+		<map from="${lib}" to="" />
+	</pathconvert>
+	<property name="cl2006.dist.classpath" value="${cl2006.dist.classpath.lib} ${cl2006.dist.classpath.lib.cl}" />
+
+	
+	<path id="test.classpath">
+		<pathelement path="${test.build}" />
+		<pathelement path="${test.src}" />
+		<pathelement path="${classpath}" />
+		<pathelement path="Projects" />
+		<pathelement path="${lib}/ctat.jar" />
+		<pathelement path="${lib}/jess.jar" />
+		<pathelement path="${ctatClassPath}" />
+		<pathelement path="${lib}/junit.jar" />
+		<pathelement path="${test.src}/Marathon/marathon.jar" />
+	</path>
+	
+	<target name="clean">
+		<delete dir="${classes}" />
+		<delete dir="testclasses" />
+		<delete dir="classes2" />
+		<delete file="${user.home}/.friware/parsers/CTATFunctionsParser.ser" />
+		<delete file="${lib}/tempctat.jar" />
+		<delete file="${lib}/ctat.jar" />
+		<delete dir="${lib}/ctat.app" />
+		<delete file="${lib}/MinimalTS.jar" />
+		<delete file="${lib}/tempMinimalTS.jar" />
+		<delete file="${lib}/assistments.jar" />
+		<delete dir="${installer_include}" />
+		<delete>
+			<fileset dir="${ts_applet_location}" includes="*.jar" />
+		</delete>
+		<delete>
+			<fileset dir="Projects" includes="**/*.class,**/*.bload" />
+		</delete>
+		<delete dir="${CL_Build.dir}" />
+		<delete dir="${basedir}/${ctat_applet}" />
+		<delete includeemptydirs="true">
+			<fileset dir="${tutor-applet}" includes="**/*">
+				<exclude name="sample*"/>
+			</fileset>
+        </delete>
+	</target>
+	
+	<target name="clean.docbook">
+		<delete dir="${docbook.tmp}" />
+	</target>
+
+	<target name="init">
+		<mkdir dir="${classes}" />
+		<mkdir dir="classes2" />
+		<mkdir dir="${lib}" />
+		<mkdir dir="testclasses" />
+		<mkdir dir="Projects" />
+		<copy todir="${eclipseForInstall}/plugins/gov.sandia.jess_7.0.0">
+			<fileset dir="${lib}">
+				<include name="jess.jar"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="do_postinstall" description="Copy installers to final directories">
+		<mkdir dir="${installer_location}/MacOSX" />
+		<mkdir dir="${installer_location}/Windows" />
+		<mkdir dir="${installer_location}/Linux" />
+
+		<copy todir="${installer_location}/MacOSX">
+			<fileset dir="${installer_output}">
+				<include name="${macosx_installer}" />
+			</fileset>
+		</copy>
+		<copy todir="${installer_location}/Windows">
+			<fileset dir="${installer_output}">
+				<include name="${windows_installer}" />
+			</fileset>
+		</copy>
+		<gzip src="${installer_output}/${linux_installer}" 
+			destfile="${installer_location}/Linux/${linux_installer}.gz" />
+	</target>
+	
+	<!-- Create Projects/ in ${projectsParent} with templates -->
+	<target name="makeProjects">
+		<mkdir dir="${projectsParent}/Projects" />
+		<mkdir dir="${projectsParent}/Projects/lib" />
+		<mkdir dir="${projectsParent}/logfiles" />
+	</target>
+
+	<!-- Copy a single Example tutor to dest dirs for its code and .brd -->
+	<target name="copyOneInstallerExample">
+		<copy todir="${destDir}">
+			<fileset dir="${srcDir}">
+				<include name="**/*/" />
+				<exclude name="**/*.brd/" />
+				<exclude name="**/*.bload/" />
+				<exclude name="**/*.form/" />
+			</fileset>
+		</copy>
+		<copy todir="${destDir}">
+			<fileset dir="${srcDir}">
+				<include name="**/${brdFile}/" />
+			</fileset>
+		</copy>
+	</target> 
+    
+	<!-- Copy a single Flash Example tutor to dest dirs  -->
+	<target name="copyOneFlashInstallerExample">
+		<copy todir="${destDir}">
+			<fileset dir="${srcDir}">
+				<include name="**/*/" />
+			</fileset>
+		</copy>
+	</target> 
+
+
+	<!-- Copy Subtraction, AddititionTutorChaining, AddititionTutorNoChaining tutors to ${examplesHome} -->
+	<!-- <target name="copyInstallerExamples">
+		<antcall target="copyOneInstallerExample">
+			<param name="srcDir" value="${examples_source}/java/source/SubtractionTutor" />
+			<param name="destDir" value="${examplesHome}/SubtractionTutor" />
+			<param name="brdFile" value="47003-18754.brd" />
+		</antcall>
+		<antcall target="copyOneInstallerExample">
+			<param name="srcDir" value="${examples_source}/java/source/AdditionTutorChaining" />
+			<param name="destDir" value="${examplesHome}/AdditionTutorChaining" />
+			<param name="brdFile" value="start.brd" />
+		</antcall>
+		<antcall target="copyOneInstallerExample">
+			<param name="srcDir" value="${examples_source}/java/source/AdditionTutorNoChaining" />
+			<param name="destDir" value="${examplesHome}/AdditionTutorNoChaining" />
+			<param name="brdFile" value="start.brd" />
+		</antcall>
+		<antcall target="copyOneInstallerExample">
+			<param name="srcDir" value="${examples_source}/java/source/LogicTutor" />
+			<param name="destDir" value="${examplesHome}/LogicTutor" />
+			<param name="brdFile" value="LogicProblem4Vars.brd" />
+		</antcall>
+		<antcall target="copyOneInstallerExample">
+			<param name="srcDir" value="${examples_source}/java/source/FractionAdditionTutor" />
+			<param name="destDir" value="${examplesHome}/FractionAdditionTutor" />
+			<param name="brdFile" value="1-4_plus_1-6.brd" />
+		</antcall>
+
+		<antcall target="copyOneFlashInstallerExample">
+			<param name="srcDir" value="${examples_source}/flash/FractionAddition" />
+			<param name="destDir" value="${examplesHome}/FlashFractionAddition" />
+		</antcall>
+		<antcall target="copyOneFlashInstallerExample">
+			<param name="srcDir" value="${examples_source}/flash/DecimalArithmetic" />
+			<param name="destDir" value="${examplesHome}/FlashDecimalArithmetic" />
+		</antcall>
+		<antcall target="copyOneFlashInstallerExample">
+			<param name="srcDir" value="${examples_source}/flash/Factors" />
+			<param name="destDir" value="${examplesHome}/FlashFactors" />
+		</antcall>
+		
+
+	</target> -->
+
+	<!-- Create and populate developer's Projects/ in this directory -->
+	<target name="create_projects">
+		<antcall target="makeProjects">
+			<param name="projectsParent" value="." />
+		</antcall>
+		<!-- <antcall target="copyInstallerExamples">
+			<param name="examplesHome" value="Projects" />
+		</antcall> -->
+	</target>
+
+	<!-- Create, populate, recompile developer's Projects/ in this dir -->
+	<target name="projects" depends="buildJar,create_projects" description="Create, populate, recompile Projects/ in this dir">
+		<delete>
+			<fileset dir="Projects" includes="**/*.class,**/*.bload" />
+		</delete>
+		<antcall target="compileProjects">
+			<param name="projectsParent" value="." />
+		</antcall>
+	</target>
+
+	<!-- Create, populate, recompile installer's Projects/ in ${installer_include} dir -->
+	<target name="installerProjectsReduced" depends="buildJarReduced" description="Create, populate, recompile Projects/ in ${installer_include} dir for academic and commercial versions">
+		<antcall target="installerProjects" />
+	</target>
+	<target name="installerProjectsInternal" depends="buildJar" description="Create, populate, recompile Projects/ in ${installer_include} dir for internal version">
+		<antcall target="installerProjects" />
+	</target>
+	<target name="installerProjects" depends="" description="Create, populate, recompile Projects/ in ${installer_include} dir">
+		<mkdir dir="${projectsParent}/Projects/lib" />
+		<mkdir dir="${projectsParent}/logfiles" />
+		
+		<!-- <antcall target="copyInstallerExamples">
+			<param name="examplesHome" value="${installer_include}/Projects" />
+		</antcall> -->
+		<antcall target="compileProjects">
+			<param name="projectsParent" value="${installer_include}" />
+		</antcall>
+	</target>
+	
+	<!-- Compile Java sources in source2/ dir -->
+	<target name="compileSource2" depends="build" >
+		<javac sourcepath="" srcdir="source2" destdir="classes2" debug="${debug}" deprecation="false" optimize="${optimize}"  source="1.6" target="1.6">
+			<include name="**/*.java" />
+			<classpath>
+				<pathelement path="${classpath}" />
+				<pathelement path="classes2" />
+				<pathelement path="${classes}" />
+				<pathelement path="${ctatClassPath}" />
+			</classpath>
+		</javac>
+	</target>
+	
+	<!-- Compile java tutors in ${projectsParent}/Projects/ dir -->
+	<target name="compileProjects" >
+		<javac sourcepath="" srcdir="${projectsParent}/Projects" destdir="${projectsParent}/Projects" debug="${debug}" deprecation="false" optimize="${optimize}"  source="1.6" target="1.6">
+			<include name="**/*.java" />
+			<exclude name="**/TutorTemplate*.java" />
+			<exclude name="**/CLTemplate*.java" />
+			<classpath>
+				<pathelement path="${classpath}" />
+				<pathelement path="Projects" />
+				<fileset dir="Projects/lib">
+					<include name="**/*.jar" />
+				</fileset>
+				<pathelement path="${lib}/ctat.jar" />
+				<pathelement path="${ctatClassPath}" />
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="do_preinstall_internal" depends="buildJar" description="Copy files required for internal installer to ${installer_include}">
+		<!-- copy example tutors to installer Projects/ dir and compile java tutors -->
+		<antcall target="installerProjectsInternal" />
+		<copy todir="${installer_include}/flash/">
+			<fileset dir="../FlashComponents3">
+				<include name="CommComponentsAS3Internal.zxp" />
+				<exclude name="**/Classes/" />
+			</fileset>
+		</copy>
+       <antcall target="do_preinstall" /> 
+	</target>
+
+	<target name="do_preinstall_academic" depends="buildJarReduced" description="Copy files required for academic installer to ${installer_include}">
+		<!-- copy example tutors to installer Projects/ dir and compile java tutors -->
+		<antcall target="installerProjectsReduced" />
+		<copy todir="${installer_include}/flash/">
+			<fileset dir="../FlashComponents3">
+				<include name="CommComponentsAS3.zxp" />
+				<exclude name="**/Classes/" />
+			</fileset>
+		</copy>
+		<copy todir="${installer_include}/${tutor-applet}">
+			<fileset dir="./${tutor-applet}">
+				<include name="**" />
+				<exclude name="**/*.bload" />
+				<exclude name="**/*.form" />
+				<exclude name="**/*.java" />
+				<exclude name="**/*.class" />
+			</fileset>
+		</copy>
+		<copy todir="${installer_include}/deploy-applet">
+			<fileset dir="${deploy_applet_location}">
+				<include name="**/*.html" />
+				<include name="**/*.jnlp" />
+				<include name="**/*.js" />
+				<include name="**/*.txt" />
+				<include name="**/*.jar" />
+			</fileset>
+		</copy> 
+		<antcall target="do_preinstall" />
+	</target>
+
+    <target name="mark_trusted_tsAppletjars" >
+	    <delete dir="${tempDir}"/>
+		<mkdir dir="${tempDir}"/>
+		<copy todir="${tempDir}" preservelastmodified="true">
+		    <fileset refid="tsApplet.jars"/>
+		</copy>
+		<antcall target="mark_trusted"><param name="jar" value="${tempDir}/jdom.jar"/></antcall>
+		<antcall target="mark_trusted"><param name="jar" value="${tempDir}/jess.jar"/></antcall>
+		<antcall target="mark_trusted"><param name="jar" value="${tempDir}/runcc.jar"/></antcall>
+		<antcall target="mark_trusted"><param name="jar" value="${tempDir}/logging.jar"/></antcall>
+		<antcall target="mark_trusted"><param name="jar" value="${tempDir}/logclient.jar"/></antcall>
+		<antcall target="mark_trusted"><param name="jar" value="${tempDir}/HARTNetworking.jar"/></antcall>
+		<antcall target="mark_trusted"><param name="jar" value="${tempDir}/TSApplet.jar"/></antcall>
+    </target>
+
+    <target name="mark_trusted_tutorAppletjars" >
+	    <delete dir="${tempDir}"/>
+		<mkdir dir="${tempDir}"/>
+		<copy todir="${tempDir}" preservelastmodified="true">
+		    <fileset refid="tutorApplet.jars"/>
+		</copy>
+        <antcall target="mark_trusted"><param name="jar" value="${tempDir}/TableLayout.jar"/></antcall>
+		<antcall target="mark_trusted"><param name="jar" value="${tempDir}/jdom.jar"/></antcall>
+		<antcall target="mark_trusted"><param name="jar" value="${tempDir}/jess.jar"/></antcall>
+		<antcall target="mark_trusted"><param name="jar" value="${tempDir}/runcc.jar"/></antcall>
+		<antcall target="mark_trusted"><param name="jar" value="${tempDir}/logging.jar"/></antcall>
+		<antcall target="mark_trusted"><param name="jar" value="${tempDir}/logclient.jar"/></antcall>
+		<antcall target="mark_trusted"><param name="jar" value="${tempDir}/HARTNetworking.jar"/></antcall>
+		<antcall target="mark_trusted"><param name="jar" value="${tempDir}/TutorApplet.jar"/></antcall>
+    </target>
+
+    <target name="mark_trusted" >
+		<jar update="true" jarfile="${jar}">
+            <manifest>
+                <attribute name="Trusted-Library" value="true" />
+            </manifest>
+        </jar>
+    </target>
+
+
+
+	<target name="do_preinstall_commercial" depends="buildJarReduced" description="Copy files required for commercial installer to ${installer_include}">
+		<!-- copy example tutors to installer Projects/ dir and compile java tutors -->
+		<antcall target="installerProjectsReduced" />
+		<copy todir="${installer_include}/flash/">
+			<fileset dir="../FlashComponents3">
+				<include name="CommComponentsAS3.zxp" />
+				<exclude name="**/Classes/" />
+			</fileset>
+		</copy> 
+		<antcall target="do_preinstall" />
+	</target>
+
+	<target name="do_preinstall" depends="" description="Subtarget for do_preinstall_academic and do_preinstall_commercial">
+		<!-- copy example tutors to installer Projects/ dir and compile java tutors -->
+		<echo message="" file="${excludes_file}" append="false" />
+		<antcall target="createExcludesFiles" />
+		<copy todir="${installer_include}/lib">
+			<fileset dir="lib">
+				<include name="**/*.jar" />
+				<include name="PACTkeyStore" />
+				<exclude name="**/tutorshop.jar" />
+				<exclude name="**/tools.jar" />
+			</fileset>
+		</copy>
+		<copy todir="${installer_include}/eclipse">
+			<fileset dir="${eclipseForInstall}">
+				<include name="**/*" />
+				<exclude name="**/CVS" />
+			</fileset>
+		</copy>
+		<copy todir="${installer_include}/foil">
+			<fileset dir="source/edu/cmu/pact/miss/FOIL6/">
+				<include name="Mac/*" />
+				<include name="Win/*" />
+			</fileset>
+		</copy>
+		<copy todir="${installer_include}/perspectives">
+			<fileset dir="perspectives">
+				<include name="exampleTracingPerspective.bin" />
+				<include name="jessPerspective.bin" />
+				<include name="tdkPerspective.bin" />
+				<include name="simStudentPerspective.bin" />
+			</fileset>
+		</copy>
+		<copy todir="${installer_include}">
+			<fileset dir="source/edu/cmu/pact/Log/">
+				<include name="logformatprefs.xml" />
+			</fileset>
+			<fileset dir=".">
+				<include name="ctaticon.png" />
+			</fileset>
+		</copy>
+		<copy todir="${installer_include}/deploy-tutor">
+			<fileset dir="./deploy-tutor">
+				<include name="basic.html" />
+				<include name="basic.jnlp" />
+				<include name="build.properties" />
+				<include name="build.xml" />
+				<include name="jsch.jar" />
+			</fileset>
+		</copy>
+		<copy todir="${installer_include}/flash/Templates">
+			<fileset dir="${examples_source}/flash/Templates">
+				<include name="*.fla" />
+				<include name="*.txt" />
+				<exclude name="*.swf" />
+			</fileset>
+		</copy>
+		<copy todir="${installer_include}/license">
+			<fileset dir="${license_dir}">
+				<include name="${license_file_academic}" />
+				<include name="${license_file_commercial}" />
+			</fileset>
+		</copy> 
+		<delete file="${excludes_file}" />
+	</target>
+
+	<target name="build" depends="init">
+		<javac fork="true" memoryinitialsize="128m" memorymaximumsize="200m" srcdir="${source}:${TSLT}" destdir="${classes}" excludes="**/CVS" debug="${debug}" deprecation="false" optimize="${optimize}" source="1.6" target="1.6">
+			<classpath path="${classes}:${ctatClassPath}" />
+		</javac>
+	</target>
+
+	<target name="CL_Build">
+		<mkdir dir="${CL_Build.dir}" />
+		<mkdir dir="${CL_Build.dir}/ctat" />
+		<copy todir="${CL_Build.dir}/ctat" flatten="true" >
+			<fileset refid="jars.lib"/>
+		</copy>
+		<copy todir="${CL_Build.dir}" flatten="true" >
+			<fileset refid="jars.lib.cl"/>
+		</copy>
+		<delete file="${CL_Build.dir}/ctat/ctat.jar" />
+	</target>
+
+	<!--Added 9/6/06 by sewall for CL2006 interface. -->
+	<target name="CL_jar" depends="build, CL_Build">
+		<delete file="${lib}/ctat.jar" />
+		<manifest file="MANIFEST.MF">		
+			<attribute name="Class-Path" value="${cl2006.dist.classpath}"/>
+			<attribute name="Main-Class" value="edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher"/>
+
+			<section name="pact/CommWidgets/JCommTextField.class">
+				<attribute name="Java-Bean" value="True"/>
+			</section>
+			<section name="edu/cmu/pact/BehaviorRecorder/Controller/CTAT_Options.class">
+			 	<attribute name="Java-Bean" value="True"/>
+			</section>
+			<section name="pact/CommWidgets/HorizontalLine.class">
+			 	<attribute name="Java-Bean" value="True"/>
+		 	 </section>
+		  	<section name="pact/CommWidgets/Circle.class">
+			 	 <attribute name="Java-Bean" value="True"/>
+			</section>
+			<section name="pact/CommWidgets/JCommTable.class">
+			  	 <attribute name="Java-Bean" value="True"/>
+			 </section>
+			<section name="pact/CommWidgets/JCommButton.class">
+			  	 <attribute name="Java-Bean" value="True"/>
+			</section>
+			<section name="pact/CommWidgets/JCommAudioButton.class">
+			  	 <attribute name="Java-Bean" value="True"/>
+			</section>
+			<section name="pact/CommWidgets/JCommComboBox.class">
+			  	 <attribute name="Java-Bean" value="True"/>
+			</section>	
+			<section name="pact/CommWidgets/JCommRadioButton.class">
+			  	 <attribute name="Java-Bean" value="True"/>
+			</section>	
+			<section name="pact/CommWidgets/JCommTextArea.class">
+			  	 <attribute name="Java-Bean" value="True"/>
+			</section>	
+			<section name="pact/CommWidgets/JCommPicture.class">
+			  	 <attribute name="Java-Bean" value="True"/>
+			</section>	
+			<section name="pact/CommWidgets/JCommDrawingPad.class">
+			  	 <attribute name="Java-Bean" value="True"/>
+			</section>	
+			<section name="pact/CommWidgets/JCommList.class">
+			  	 <attribute name="Java-Bean" value="True"/>
+			</section>	
+			<section name="pact/CommWidgets/JCommChooser.class">
+			 	 <attribute name="Java-Bean" value="True"/>
+			</section>	
+			<section name="pact/CommWidgets/JCommComposer.class">
+			  	  <attribute name="Java-Bean" value="True"/>
+			</section>		  	
+			<section name="pact/CommWidgets/JCommLabel.class">
+			  	 <attribute name="Java-Bean" value="True"/>
+			 </section>
+			<section name="pact/CommWidgets/JCommMultipleChoice.class">
+			  	 <attribute name="Java-Bean" value="True"/>
+			</section>
+			<section name="pact/CommWidgets/JCommMultipleChoiceCheckBox.class">
+			  	 <attribute name="Java-Bean" value="True"/>
+			</section>
+			<section name="pact/CommWidgets/JCommQuestionTextField.class">
+			  	 <attribute name="Java-Bean" value="True"/>
+			</section>
+			<section name="pact/CommWidgets/JCommQuestionComboBox.class">
+		 		 <attribute name="Java-Bean" value="True"/>
+			</section>
+			<section name="pact/CommWidgets/JCommGeoSelectionDiagram.class">
+				 <attribute name="Java-Bean" value="True"/>
+			</section>
+			<section name="pact/CommWidgets/JCommGeoDiagramEditor.class">
+				 <attribute name="Java-Bean" value="True"/>
+			</section>
+	  </manifest>
+		
+		
+		<!--sewall 6/7/04: update="false" attr to jar doesn't seem to replace an old jar, so
+                    manually delete it before building anew -->
+		<!-- build a temp jar and copy over ctat.jar so that it can remain mounted in netbeans.
+			For some reason copying over the file while mounted in netbeans is ok but deleting and recreating
+			it is not -ymps -->
+		<delete file="${CL_Build.dir}/tempctat.jar" />
+		<delete dir="${classes}/info" />
+		<jar jarfile="${CL_Build.dir}/tempctat.jar" manifest="MANIFEST.MF" compress="true" update="false">
+			<fileset dir="${classes}" />
+			<fileset dir="include" />
+		</jar>
+		<copy file="${CL_Build.dir}/tempctat.jar" tofile="${CL_Build.dir}/ctat.jar" />
+		<!--sewall 6/2/04: I don't know why, but "jar i foo.jar" works better than the index attribute on the jar task. You get a more complete index. -->
+		<!--exec executable="jar" dir="${CL_Build.dir}" failonerror="true">
+		    <arg value="i"/>
+		    <arg value="ctat.jar"/>
+		</exec-->
+		<delete file="${CL_Build.dir}/tempctat.jar" />
+
+
+
+	</target>
+
+	<target name="SocketProxyTest" depends="buildTest" description="Assemble SocketProxyTest.jar" >
+		<jar jarfile="${lib}/SocketProxyTest.jar" compress="true" update="false">
+			<fileset dir="${test.src}">
+				<include name="edu/cmu/pact/SocketProxy/**" />
+				<exclude name="**/CVS" />
+			</fileset>
+			<fileset dir="${test.build}">
+				<include name="edu/cmu/pact/SocketProxy/**" />
+				<exclude name="**/CVS" />
+			</fileset>
+		</jar>
+	</target>
+
+	<target name="jar" depends="buildWithVersionInfo" description="Compile ctat.jar" />
+
+	<target name="manifest" description="Create MANIFEST.MF for ctat.jar.">
+		<!--kckim 10/13/05 create manifest file -->
+		<manifest file="MANIFEST.MF">		
+			<attribute name="Class-Path" value="${dist.classpath}"/>
+			<attribute name="Main-Class" value="edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher"/>
+				  	
+			<section name="pact/CommWidgets/JCommTextField.class">
+				<attribute name="Java-Bean" value="True"/>
+			</section>
+			<section name="edu/cmu/pact/BehaviorRecorder/Controller/CTAT_Options.class">
+			 	<attribute name="Java-Bean" value="True"/>
+			</section>
+			<section name="pact/CommWidgets/HorizontalLine.class">
+			 	<attribute name="Java-Bean" value="True"/>
+		 	 </section>
+		  	<section name="pact/CommWidgets/Circle.class">
+			 	 <attribute name="Java-Bean" value="True"/>
+			</section>
+			<section name="pact/CommWidgets/JCommTable.class">
+			  	 <attribute name="Java-Bean" value="True"/>
+			 </section>
+			<section name="pact/CommWidgets/JCommButton.class">
+			  	 <attribute name="Java-Bean" value="True"/>
+			</section>
+			<section name="pact/CommWidgets/JCommAudioButton.class">
+			  	 <attribute name="Java-Bean" value="True"/>
+			</section>
+			<section name="pact/CommWidgets/JCommComboBox.class">
+			  	 <attribute name="Java-Bean" value="True"/>
+			</section>	
+			<section name="pact/CommWidgets/JCommRadioButton.class">
+			  	 <attribute name="Java-Bean" value="True"/>
+			</section>	
+			<section name="pact/CommWidgets/JCommTextArea.class">
+			  	 <attribute name="Java-Bean" value="True"/>
+			</section>
+			<section name="pact/CommWidgets/JCommPicture.class">
+			  	 <attribute name="Java-Bean" value="True"/>
+			</section>
+			<section name="pact/CommWidgets/JCommDrawingPad.class">
+			  	 <attribute name="Java-Bean" value="True"/>
+			</section>			
+			<section name="pact/CommWidgets/JCommList.class">
+			  	 <attribute name="Java-Bean" value="True"/>
+			</section>	
+			<section name="pact/CommWidgets/JCommChooser.class">
+			 	 <attribute name="Java-Bean" value="True"/>
+			</section>	
+			<section name="pact/CommWidgets/JCommComposer.class">
+			  	  <attribute name="Java-Bean" value="True"/>
+			</section>		  	
+			<section name="pact/CommWidgets/JCommLabel.class">
+			  	 <attribute name="Java-Bean" value="True"/>
+			 </section>
+			<section name="pact/CommWidgets/JCommMultipleChoice.class">
+			  	 <attribute name="Java-Bean" value="True"/>
+			</section>
+			<section name="pact/CommWidgets/JCommMultipleChoiceCheckBox.class">
+			  	 <attribute name="Java-Bean" value="True"/>
+			</section>
+			<section name="pact/CommWidgets/JCommQuestionTextField.class">
+			  	 <attribute name="Java-Bean" value="True"/>
+			</section>
+			<section name="pact/CommWidgets/JCommQuestionComboBox.class">
+				 <attribute name="Java-Bean" value="True"/>
+			</section>
+			<section name="pact/CommWidgets/JCommGeoSelectionDiagram.class">
+				 <attribute name="Java-Bean" value="True"/>
+			</section>
+			<section name="pact/CommWidgets/JCommGeoDiagramEditor.class">
+				 <attribute name="Java-Bean" value="True"/>
+			</section>
+		</manifest>
+	</target>
+
+	<target name="manifestReduced" description="Create MANIFEST.MF for ctat.jar.">
+		<manifest file="MANIFEST.MF">		
+			<attribute name="Class-Path" value="${dist.classpath.lib}"/>
+			<attribute name="Main-Class" value="edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher"/>
+				  	
+			<section name="pact/CommWidgets/JCommTextField.class">
+				<attribute name="Java-Bean" value="True"/>
+			</section>
+			<section name="edu/cmu/pact/BehaviorRecorder/Controller/CTAT_Options.class">
+			 	<attribute name="Java-Bean" value="True"/>
+			</section>
+			<section name="pact/CommWidgets/HorizontalLine.class">
+			 	<attribute name="Java-Bean" value="True"/>
+		 	 </section>
+		  	<section name="pact/CommWidgets/Circle.class">
+			 	 <attribute name="Java-Bean" value="True"/>
+			</section>
+			<section name="pact/CommWidgets/JCommTable.class">
+			  	 <attribute name="Java-Bean" value="True"/>
+			 </section>
+			<section name="pact/CommWidgets/JCommButton.class">
+			  	 <attribute name="Java-Bean" value="True"/>
+			</section>
+			<section name="pact/CommWidgets/JCommAudioButton.class">
+			  	 <attribute name="Java-Bean" value="True"/>
+			</section>
+			<section name="pact/CommWidgets/JCommComboBox.class">
+			  	 <attribute name="Java-Bean" value="True"/>
+			</section>	
+			<section name="pact/CommWidgets/JCommRadioButton.class">
+			  	 <attribute name="Java-Bean" value="True"/>
+			</section>	
+			<section name="pact/CommWidgets/JCommTextArea.class">
+			  	 <attribute name="Java-Bean" value="True"/>
+			</section>
+			<section name="pact/CommWidgets/JCommPicture.class">
+			  	 <attribute name="Java-Bean" value="True"/>
+			</section>
+			<section name="pact/CommWidgets/JCommDrawingPad.class">
+			  	 <attribute name="Java-Bean" value="True"/>
+			</section>			
+			<section name="pact/CommWidgets/JCommList.class">
+			  	 <attribute name="Java-Bean" value="True"/>
+			</section>	
+			<section name="pact/CommWidgets/JCommChooser.class">
+			 	 <attribute name="Java-Bean" value="True"/>
+			</section>	
+			<section name="pact/CommWidgets/JCommComposer.class">
+			  	  <attribute name="Java-Bean" value="True"/>
+			</section>		  	
+			<section name="pact/CommWidgets/JCommLabel.class">
+			  	 <attribute name="Java-Bean" value="True"/>
+			 </section>
+			<section name="pact/CommWidgets/JCommMultipleChoice.class">
+			  	 <attribute name="Java-Bean" value="True"/>
+			</section>
+			<section name="pact/CommWidgets/JCommMultipleChoiceCheckBox.class">
+			  	 <attribute name="Java-Bean" value="True"/>
+			</section>
+			<section name="pact/CommWidgets/JCommQuestionTextField.class">
+			  	 <attribute name="Java-Bean" value="True"/>
+			</section>
+			<section name="pact/CommWidgets/JCommQuestionComboBox.class">
+				 <attribute name="Java-Bean" value="True"/>
+			</section>
+		</manifest>
+	</target>
+
+	<target name="buildJar" depends="build,manifest" description="Compile ctat.jar">
+		
+		<!-- build a temp jar and copy over ctat.jar so that it can remain mounted in netbeans.
+			For some reason copying over the file while mounted in netbeans is ok but deleting and recreating
+			it is not -ymps -->
+		<delete file="${lib}/tempctat.jar" />
+		<jar jarfile="${lib}/tempctat.jar" manifest="MANIFEST.MF" compress="true" update="false">
+			<fileset dir="${classes}">
+				<include name="**/*.class" />
+			</fileset>
+			<fileset dir="include" />
+		</jar>
+		<copy file="${lib}/tempctat.jar" tofile="${lib}/ctat.jar" />
+		<delete file="${lib}/tempctat.jar" />
+	</target>
+
+	<target name="buildJarReduced" depends="build,manifestReduced" description="Compile ctat.jar">
+		
+		<!--sewall 6/7/04: update="false" attr to jar doesn't seem to replace an old jar, so
+                    manually delete it before building anew -->
+		<!-- build a temp jar and copy over ctat.jar so that it can remain mounted in netbeans.
+			For some reason copying over the file while mounted in netbeans is ok but deleting and recreating
+			it is not -ymps -->
+		<echo message="buildJarReduced: Value of OmitRelatedContributorsCode is ${OmitRelatedContributorsCode};"/>
+		<delete file="${lib}/tempctat.jar" />
+		<echo message="" file="${excludes_file}" append="false" />
+		<antcall target="createExcludesFiles" />
+		<jar jarfile="${lib}/tempctat.jar" manifest="MANIFEST.MF" compress="true" update="false">
+			<fileset dir="${classes}">
+				<include name="**/*.class" />
+				<excludesfile name="${excludes_file}" />
+			</fileset>
+			<fileset dir="include" />
+		</jar>
+		<copy file="${lib}/tempctat.jar" tofile="${lib}/ctat.jar" />
+		<delete file="${lib}/tempctat.jar" />
+		<delete file="${excludes_file}" />
+	</target>
+
+	<target name="createExcludesFiles" description="Delete some files and create list of others to exclude."> <!-- if="OmitRelatedContributorsCode" -->
+		<echo message="createExcludesFiles: Value of OmitRelatedContributorsCode is ${OmitRelatedContributorsCode};"/>
+		<delete dir="${classes}/${cl_package}" quiet="true" includeemptydirs="true" />
+		<delete dir="${classes}/${old_pact_package}" quiet="true" includeemptydirs="true" />
+		<exec executable="grep" dir="${classes}" output="${excludes_file}" logError="true">
+			<arg value="-s"/>
+			<arg value="${SymbolManipulator}"/>
+			<arg value="${functions_package}/*.class"/>
+		</exec>
+		<exec executable="grep" dir="source/${fn_location}" output="${excludes_file}" append="true" logError="true">
+			<arg value="-ls"/>
+			<arg value="${SymbolManipulator}"/>
+			<arg value="*.java"/>
+		</exec>
+		<exec executable="grep" dir="${classes}" output="${excludes_file}" append="true" logError="true">
+			<arg value="-Es"/>
+			<arg value="${GeometryPad}"/>
+			<arg value="${CommWidgets_package}/*.class"/>
+		</exec>
+		<replace file="${excludes_file}">
+			<replacefilter token="Binary file " value=""/>
+			<replacefilter token=" matches" value=""/>
+		</replace>
+	</target>
+
+	<target name="eclipseJar" depends="manifest"
+			description="Compile EclipseCtat.jar from Eclipse dir: must have compiled in Eclipse first!">
+		<delete file="${lib}/tempctat.jar" />
+		<jar jarfile="${lib}/tempctat.jar" manifest="MANIFEST.MF" compress="true" update="false">
+			<fileset dir="${eclipseOutput}">
+				<include name="**/*.class"/>
+				<include name="**/*.gif"/>
+				<include name="**/*.png"/>
+				<include name="**/*.xml"/>
+				<exclude name="AdditionTutorChaining/**"/>
+				<exclude name="AdditionTutorNoChaining/**"/>
+				<exclude name="FractionAdditionTutor/**"/>
+				<exclude name="LogicTutor/**"/>
+				<exclude name="ProblemsOrganizer/**"/>
+				<exclude name="SubtractionTutor/**"/>
+			</fileset>
+		</jar>
+		<copy file="${lib}/tempctat.jar" tofile="${lib}/EclipseCtat.jar" />
+		<delete file="${lib}/tempctat.jar" />
+	</target>
+
+	<target name="clientjar" depends="build">
+		<jar jarfile="${lib}/tempclientjar.jar" compress="true">
+			<fileset dir="${classes}">
+				<include name = "pact/CommWidgets/JCommButton.class"/>
+				<include name = "pact/CommWidgets/FocusModel.class"/>
+				<include name = "pact/CommWidgets/JCommWidget.class"/>
+				<include name = "pact/CommWidgets/StudentInterfaceWrapper.class"/>
+				<include name = "pact/CommWidgets/WrapperSupport.class"/>
+				<include name = "pact/CommWidgets/event/HelpEvent.class"/>
+				<include name = "pact/CommWidgets/event/HelpEventListener.class"/>
+				<include name = "pact/CommWidgets/event/IncorrectActionEvent.class"/>
+				<include name = "pact/CommWidgets/event/IncorrectActionListener.class"/>
+				<include name = "pact/CommWidgets/event/ProblemDoneEvent.class"/>
+				<include name = "pact/CommWidgets/event/ProblemDoneListener.class"/>
+				<include name = "pact/CommWidgets/event/StudentActionEvent.class"/>
+				<include name = "pact/CommWidgets/event/StudentActionListener.class"/>
+				<include name = "edu/cmu/old_pact/comm/MessageObject.class" />
+				<include name = "edu/cmu/oli/log/client/*.class"/>
+				<include name = "edu/cmu/pact/BehaviorRecorder/View/HintWindow/*.class"/>
+				<include name = "edu/cmu/pact/BehaviorRecorder/Controller/HintMessagesManager.class"/>
+				<include name = "edu/cmu/pact/client/HintMessagesManagerForClient.class"/>
+				<include name = "edu/cmu/pact/client/MessageConnection*.class"/>
+				<include name = "edu/cmu/pact/client/ProblemAdvance.class"/>
+				<include name = "edu/cmu/pact/client/ProblemAdvancedListener.class"/>
+				<include name = "edu/cmu/pact/client/TutorAddon.class"/>
+				<include name = "edu/cmu/pact/client/TutorMessageDisplay.class"/>
+				<include name = "edu/cmu/pact/client/TutorshopAdvance.class"/>
+				<include name = "edu/cmu/pact/CommManager/CommMessageHandler.class"/>
+				<include name = "edu/cmu/pact/CommManager/CommMessageReceiver.class"/>
+				<include name = "edu/cmu/pact/ctat/TutorController.class"/>
+				<include name = "edu/cmu/pact/ctat/MsgType.class"/>
+				<include name = "edu/cmu/pact/Utilities/MessageEvent.class"/>
+				<include name = "edu/cmu/pact/Utilities/MessageEventListener.class"/>
+				<include name = "edu/cmu/pact/Utilities/OLIMessage*.class"/>
+				<include name = "edu/cmu/pact/Utilities/Logger.class"/>
+				<include name = "edu/cmu/pact/Utilities/SocketReader.class"/>
+				<include name = "edu/cmu/pact/Utilities/Utils.class"/>
+				<include name = "edu/cmu/pslc/logging/LogContext.class"/>
+				<include name = "edu/cmu/old_pact/comm/ObjectProxy.class"/>
+				<include name = "edu/cmu/pact/Utilities/CTAT_Controller.class"/>
+				<include name = "edu/cmu/old_pact/comm/trace.class"/>
+				<include name = "edu/cmu/old_pact/comm/ToolProxy.class"/>
+				<include name = "edu/cmu/old_pact/comm/CommonObjectProxy.class"/>
+				<include name = "edu/cmu/old_pact/comm/CommException.class"/>
+				<include name = "edu/cmu/old_pact/comm/MissingParameterException.class"/>
+				<include name = "edu/cmu/old_pact/comm/NoSuchPropertyException.class"/>
+				<include name = "edu/cmu/old_pact/comm/BadCoerceException.class"/>
+				<include name = "edu/cmu/old_pact/comm/DataFormatException.class"/>
+				<include name = "edu/cmu/old_pact/comm/MessageFormatException.class"/>
+				<include name = "edu/cmu/old_pact/comm/NoSuchObjectException.class"/>
+				<include name = "edu/cmu/old_pact/comm/ObjectSpecifier.class"/>
+				<include name = "edu/cmu/old_pact/comm/Communicator.class"/>
+				<include name = "edu/cmu/old_pact/comm/Communicable.class"/>
+				<include name = "edu/cmu/old_pact/comm/Range.class"/>
+				<include name = "edu/cmu/old_pact/comm/ExternalObject.class"/>
+				<include name = "pact/CommWidgets/JCommWidgetsToolProxy.class"/>					
+			</fileset>
+		</jar>
+		<copy file="${lib}/tempclientjar.jar" tofile="${lib}/clientjar.jar" />
+		<delete file="${lib}/tempclientjar.jar" />
+	</target>
+
+	<target name="buildWithVersionInfo" description="Compile ctat.jar with default version information">
+		<property name="SymbolManipulator" value="JunkStringThatShouldNotBeFound" />
+		<property name="cl_package" value="JunkStringThatShouldNotBeFound" />
+		<property name="old_pact_package" value="JunkStringThatShouldNotBeFound" />
+		<property name="GeometryPad" value="JunkStringThatShouldNotBeFound" />
+		<antcall target="setVersionInfo">
+			<param name="release-name" value="${VersionInfo.Release.Internal}" />
+			<param name="release-type" value="internal" />
+		</antcall>			
+		<antcall target="buildJar" />
+	</target>
+
+	<target name="setAcademicVersionProperties" description="Set the properties for building the academic version of the jars">
+		<property name="SymbolManipulator" value="SymbolManipulator" />
+		<property name="cl_package" value="cl" />
+		<property name="old_pact_package" value="edu/cmu/old_pact" />
+		<property name="GeometryPad" value="GeometryPad|JCommGeoDiagramEditor|JCommGeoSelectionDiagram" />
+		<property name="OmitRelatedContributorsCode" value="true" />
+		<antcall target="setVersionInfo">
+			<param name="release-name" value="${VersionInfo.Release}" />
+			<param name="release-type" value="academic" />
+		</antcall>			
+		<echo message="setAcademicVersionProperties: Value of OmitRelatedContributorsCode is ${OmitRelatedContributorsCode};"/>
+	</target>
+
+	<target name="buildWithAcademicVersionInfo" depends="setAcademicVersionProperties" description="Compile ctat.jar with version information">
+		<echo message="buildWithAcademicVersionInfo: Value of OmitRelatedContributorsCode is ${OmitRelatedContributorsCode};"/>
+		<antcall target="buildJarReduced" />
+	</target>
+
+	<target name="buildWithCommercialVersionInfo" description="Compile ctat.jar with version information">
+		<property name="SymbolManipulator" value="SymbolManipulator" />
+		<property name="cl_package" value="cl" />
+		<property name="old_pact_package" value="edu/cmu/old_pact" />
+		<property name="GeometryPad" value="GeometryPad|JCommGeoSelectionDiagram|JCommGeoSelectionDiagram" />
+		<property name="OmitRelatedContributorsCode" value="true" />
+		<antcall target="setVersionInfo">
+			<param name="release-name" value="${VersionInfo.Release.Commercial}" />
+			<param name="release-type" value="commercial" />
+		</antcall>			
+		<antcall target="buildJarReduced" />
+	</target>
+
+	<target name="setVersionInfo" depends="init">
+		<delete file="${source}/${VersionInfo}.java" />
+		<javac fork="true" listfiles="yes" sourcepath="" srcdir="${source}" destdir="${classes}" debug="${debug}" source="1.6" target="1.6">
+			<include name="edu/cmu/pact/Utilities/VersionInfoGenerator.java" />
+		</javac>
+		<java fork="true" classname="edu.cmu.pact.Utilities.VersionInfoGenerator" classpath="${classes}" error="${classes}/VersionInfoGeneratorError.txt/" output="${source}/${VersionInfo}.java">
+			<sysproperty key="VersionInfo.Release" value="${release-name}" />
+			<arg value="${release-type}" />
+		</java>
+	</target>
+
+	<target name="buildMxp" description="Build AS2 internal mxp using Adobe Extension Manager">
+		<ant inheritAll="false" antfile="${flash_source}/build.xml" target="buildInternalMxp"></ant>
+		<!--<ant inheritAll="false" antfile="${flash_source_as3}/build.xml" target="buildInternalMxp"></ant>-->
+	</target>
+
+	<target name="buildAcademicMxp" description="Build AS2 academic mxp using Adobe Extension Manager">
+		<ant inheritAll="false" antfile="${flash_source}/build.xml" target="buildAcademicMxp"></ant>
+		<!--<ant inheritAll="false" antfile="${flash_source_as3}/build.xml" target="buildAcademicMxp"></ant>-->
+	</target>
+
+	<target name="buildCommercialMxp" description="Build AS2 commercial mxp using Adobe Extension Manager">
+		<ant inheritAll="false" antfile="${flash_source}/build.xml" target="buildCommercialMxp"></ant>
+		<!--<ant inheritAll="false" antfile="${flash_source_as3}/build.xml" target="buildCommercialMxp"></ant>-->
+	</target>
+
+	<!-- builds all files needed for internal installer -->
+	<target name="buildForInstaller" depends="clean,buildWithVersionInfo" description="Build all files needed for internal installer">
+		<antcall target="do_preinstall_internal" />
+	</target>
+
+	<!-- builds all files needed for academic installer -->
+	<target name="buildForAcademicInstaller" depends="clean,buildWithAcademicVersionInfo" description="Build all files needed for academic installer">
+		<antcall target="buildTSApplet" />
+		<!-- tutor applet jars overwrite ts applet jars in "tempJars" directory! -->
+		<!--<antcall target="buildTutorApplet" />-->
+		<antcall target="do_preinstall_academic" />
+	</target>
+
+	<!-- builds all files needed for commercial installer -->
+	<target name="buildForCommercialInstaller" depends="clean,buildWithCommercialVersionInfo" description="Build all files needed for commercial installer">
+		<antcall target="do_preinstall_commercial" />
+	</target>
+
+	<!-- Builds the CTAT internal installers. This target requires that install4j is installed on local machine -->
+	<!-- Set the location of install4j in build.properties, e.g., local.install4j=e:\install4j -->
+	<target name="buildInstaller" depends="buildForInstaller" description="Build installers from install4j project file">
+		<echo message="location of install4j is ${local.install4j}"/>
+		<property name="internal_file_version" value="${VersionInfo.Number.Major}_${VersionInfo.Number.Minor}_${VersionInfo.Number.Revision.Internal}" />
+		<ant antfile="${installer_location}/build.xml" target="buildInternal" inheritAll="false">
+			<property name="local.install4j" value="${local.install4j}"/>
+			<property name="installer_file_version" value="${internal_file_version}"/>
+			<property name="install4j_file" value="${installer_location}/CTAT_Installer/CTAT_Installer.install4j" />
+			<property name="release_number" value="${VersionInfo.Number.Internal}" />
+			<property name="password" value="${cert.password}" />
+		</ant>
+		<antcall target="do_postinstall" >
+			<param name="windows_installer" value="CTAT_windows_${internal_file_version}.exe" />
+			<param name="macosx_installer" value="CTAT_macos_${internal_file_version}.dmg" />
+			<param name="linux_installer" value="CTAT_unix_${internal_file_version}.sh" />
+		</antcall>
+	</target>
+
+	<!-- Builds the CTAT academic installers. This target requires that install4j is installed on local machine -->
+	<!-- Set the location of install4j in build.properties, e.g., local.install4j=e:\install4j -->
+	<target name="buildAcademicInstaller" depends="buildForAcademicInstaller" description="Build installers from install4j project file">
+		<echo message="location of install4j is ${local.install4j}"/>
+		<property name="academic_file_version" value="${VersionInfo.Number.Major}_${VersionInfo.Number.Minor}_${VersionInfo.Number.Revision}" />
+		<ant antfile="${installer_location}/build.xml" target="buildAcademic" inheritAll="false">
+			<property name="local.install4j" value="${local.install4j}"/>
+			<property name="installer_file_version" value="${academic_file_version}"/>
+			<property name="install4j_file" value="${installer_location}/CTAT_Installer/CTAT_Installer.install4j" />
+			<property name="release_number" value="${VersionInfo.Number}" />
+			<property name="password" value="${cert.password}" />
+		</ant>
+		<antcall target="do_postinstall" >
+			<param name="windows_installer" value="CTAT_windows_${academic_file_version}.exe" />
+			<param name="macosx_installer" value="CTAT_macos_${academic_file_version}.dmg" />
+			<param name="linux_installer" value="CTAT_unix_${academic_file_version}.sh" />
+		</antcall>
+	</target>
+	
+	<!-- Builds the CTAT commercial installers. This target requires that install4j is installed on local machine -->
+	<!-- Set the location of install4j in build.properties, e.g., local.install4j=e:\install4j -->
+	<target name="buildCommercialInstaller" depends="buildForCommercialInstaller" description="Build installers from install4j project file">
+		<echo message="location of install4j is ${local.install4j}"/>
+		<property name="commercial_file_version" value="${VersionInfo.Number.Major}_${VersionInfo.Number.Minor}_${VersionInfo.Number.Revision.Commercial}" />
+		<ant antfile="${installer_location}/build.xml" target="buildCommercial" inheritAll="false">
+			<property name="local.install4j" value="${local.install4j}"/>
+			<property name="installer_file_version" value="${commercial_file_version}"/>
+			<property name="install4j_file" value="${installer_location}/CTAT_Installer/CTAT_Installer.install4j" />
+			<property name="release_number" value="${VersionInfo.Number.Commercial}" />
+			<property name="password" value="${cert.password}" />
+		</ant>
+		<antcall target="do_postinstall" >
+			<param name="windows_installer" value="CTAT_windows_${commercial_file_version}.exe" />
+			<param name="macosx_installer" value="CTAT_macos_${commercial_file_version}.dmg" />
+			<param name="linux_installer" value="CTAT_unix_${commercial_file_version}.sh" />
+		</antcall>
+	</target>
+	
+
+	<target name="buildTest" depends="buildWithVersionInfo,projects">
+		<javac srcdir="test" destdir="testclasses" debug="${debug}" deprecation="false" optimize="${optimize}" source="1.6" target="1.6">
+			<classpath>
+				<path refid="test.classpath" />
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="buildTestAcademic" depends="buildWithAcademicVersionInfo,projects">
+		<javac srcdir="test" destdir="testclasses" debug="${debug}" deprecation="false" optimize="${optimize}" source="1.6" target="1.6">
+			<exclude name="**/XMLConverterTest.java" />
+			<exclude name="**/SolverTutorTest.java" />
+			<classpath>
+				<path refid="test.classpath" />
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="buildTestOnly">
+		<javac srcdir="test" destdir="testclasses" debug="${debug}" deprecation="false" optimize="${optimize}" source="1.6" target="1.6">
+			<classpath>
+				<path refid="test.classpath" />
+			</classpath>
+		</javac>
+	</target>
+
+
+	<target name="minimalTSJar" depends="buildWithCommercialVersionInfo" description="Minimal Tutoring Service for Android">
+		<property name="jar" location="${lib}/MinimalTS.jar" />
+		<property name="manifest" location="${lib}/MinimalTS.mf" />
+		<echo message="" file="${excludes_file}" append="false" />
+		<antcall target="createExcludesFiles" />
+		<delete file="${lib}/tempMinimalTS.jar" />
+		<delete file="${manifest}" />
+		<manifest file="${manifest}">
+			<attribute name="Main-Class" value="edu.cmu.pact.TutoringService.LauncherServer"/>
+			<attribute name="Class-Path" value="jdom.jar logclient.jar logging.jar runcc.jar"/>
+		</manifest>
+		<jar jarfile="${lib}/tempMinimalTS.jar" manifest="${manifest}" compress="true">
+			<fileset dir="${classes}">
+				<exclude name="*" />
+				<include name="edu/cmu/hcii/**" />
+				<include name="com/brooksandrus/**" />
+				<include name="edu/cmu/pslc/**" />
+				<include name="edu/cmu/oli/**" />
+				<include name="edu/cmu/pact/**" />
+				<include name="pact/**" />
+				<excludesfile name="${excludes_file}" />
+			</fileset>
+			<fileset dir="include">
+				<include name="**/*.xml" />
+				<exclude name="**/CVS" />
+			</fileset>
+		</jar>
+		<copy file="${lib}/tempMinimalTS.jar" tofile="${jar}" />
+		<delete file="${lib}/tempMinimalTS.jar" />
+		<delete file="${excludes_file}" />
+	</target>
+
+	<target name="buildTSAppletManifest">
+		<property name="appletManifest" location="${lib}/TSApplet.mf" />
+		<delete file="${appletManifest}" />
+		<manifest file="${appletManifest}">
+			<attribute name="Class-Path" value="jdom.jar runcc.jar logging.jar logclient.jar jess.jar HARTNetworking.jar"/>
+			<attribute name="Application-Name" value="CTAT Tutoring Service Applet" />
+			<attribute name="Permissions" value="all-permissions" />
+			<attribute name="Caller-Allowable-Codebase" value="*.cs.cmu.edu *.web.cmu.edu localhost 127.0.0.1" />
+		</manifest>
+	</target>
+
+	<target name="buildTutorAppletManifest">
+		<property name="appletManifest" location="${lib}/TutorApplet.mf" />
+		<delete file="${appletManifest}" />
+		<manifest file="${appletManifest}">		
+			<attribute name="Class-Path" value="jdom.jar runcc.jar logging.jar logclient.jar jess.jar HARTNetworking.jar TableLayout.jar"/>
+			<attribute name="Application-Name" value="CTAT Tutor Applet" />
+			<attribute name="Permissions" value="all-permissions" />
+			<attribute name="Caller-Allowable-Codebase" value="*.cs.cmu.edu *.web.cmu.edu localhost 127.0.0.1" />
+		</manifest>
+	</target>
+	
+	<target name="buildTSApplet" depends="buildWithAcademicVersionInfo,buildTSAppletManifest,setAcademicVersionProperties"
+            description="Build Tutoring Service Applet">
+		<property name="jar" location="${lib}/TSApplet.jar" />
+		<echo message="" file="${excludes_file}" append="false" />
+		<antcall target="createExcludesFiles" />
+		<delete file="${lib}/tempTSApplet.jar" />		
+
+		<jar jarfile="${lib}/tempTSApplet.jar" manifest="${appletManifest}" compress="true">
+			<fileset dir="${classes}">
+				<exclude name="*" /> 
+				<include name="edu/cmu/hcii/ctat/**" />
+				<include name="edu/cmu/hcii/runcc/*" />
+				<include name="edu/cmu/oli/log/client/*" />
+				<include name="edu/cmu/pslc/**" />
+				<include name="edu/cmu/pact/BehaviorRecorder/*" />
+				<include name="edu/cmu/pact/BehaviorRecorder/Controller/*" />
+				<include name="edu/cmu/pact/BehaviorRecorder/ExpressionMatcher/**" />
+				<include name="edu/cmu/pact/BehaviorRecorder/ProblemModel/**" />
+				<include name="edu/cmu/pact/BehaviorRecorder/SolutionStateModel/*" />
+				<include name="edu/cmu/pact/client/*" />
+				<include name="edu/cmu/pact/CommManager/*" />
+				<include name="edu/cmu/pact/ctat/*" />
+				<include name="edu/cmu/pact/JavascriptBridge/*" />
+				<include name="edu/cmu/pact/jess/*" />
+				<include name="edu/cmu/pact/Log/*" />
+				<include name="edu/cmu/pact/miss/*" />
+				<include name="edu/cmu/pact/Preferences/*" />
+				<include name="edu/cmu/pact/SocketProxy/*" />
+				<include name="edu/cmu/pact/TutoringService/*" />
+				<include name="edu/cmu/pact/Utilities/*" />
+				<include name="edu/cmu/pact/ctat/model/*" />
+				<include name="pact/**" />
+
+				<include name="edu/cmu/pact/BehaviorRecorder/Dialogs/LoadFileDialog*.class" />
+				<include name="edu/cmu/pact/ctat/view/AbstractCtatWindow.class" />
+				<include name="edu/cmu/pact/BehaviorRecorder/StartStateEditor/CTATStartStateEvent.class" />
+				<include name="edu/cmu/pact/BehaviorRecorder/StartStateEditor/CTATComponent.class" />
+				<include name="edu/cmu/pact/BehaviorRecorder/StartStateEditor/CTATComponentBase.class" />
+				<include name="edu/cmu/pact/BehaviorRecorder/StartStateEditor/CTATParameter.class" />
+				<include name="edu/cmu/pact/BehaviorRecorder/StartStateEditor/CTATSAI.class" />
+				<include name="edu/cmu/pact/BehaviorRecorder/StartStateEditor/CTATSerializable*.class" />
+				<include name="edu/cmu/pact/BehaviorRecorder/StartStateEditor/CTATStyleProperty.class" />
+				<include name="edu/cmu/pact/ctat/view/CtatFrame.class" />
+				<include name="edu/cmu/pact/BehaviorRecorder/View/BR_Label.class" />
+				<include name="edu/cmu/pact/BehaviorRecorder/View/ActionLabel*" />
+				<include name="edu/cmu/pact/BehaviorRecorder/View/BRPanel.class" />
+				<include name="edu/cmu/pact/BehaviorRecorder/jgraphwindow/MarathonElement.class" />
+				<include name="edu/cmu/pact/BehaviorRecorder/View/JUndo$Undoable.class" />
+				<include name="edu/cmu/pact/BehaviorRecorder/Dialogs/DirectoryFilter.class" />
+
+				<include name="jess/**" />
+
+				<excludesfile name="${excludes_file}" />
+			</fileset>
+			<fileset dir="include">
+				<include name="**/${preferences-xml}" />
+			</fileset>
+		</jar>
+		<copy file="${lib}/tempTSApplet.jar" tofile="${jar}" />
+		<antcall target="mark_trusted_tsAppletjars"><param name="tempDir" value="tempJars"/></antcall>
+<!--    <signjar destDir="${basedir}/deploy-applet/ctat_applet" keystore="lib/PACTkeyStore" alias="mike" storepass="pact123" > -->
+        <signjar destDir="${basedir}/deploy-applet/ctat_applet" keystore="../installer/CodeSignCertAndKey.p12" storetype="pkcs12" alias="ctat" storepass="${cert.password}" tsaurl="http://timestamp.comodoca.com/rfc3161" >
+		    <fileset dir="tempJars"/>
+        </signjar>
+	    <delete dir="tempJars"/>
+		<delete file="${lib}/tempTSApplet.jar" />
+		<delete file="${lib}/TSApplet.jar" />
+		<delete file="${lib}/TSApplet.mf" />
+		<delete file="${excludes_file}" />
+	</target>
+	
+	<target name="buildTutorApplet" depends="buildWithAcademicVersionInfo,buildTutorAppletManifest,setAcademicVersionProperties"
+            description="Applet for Java Tutor">
+		<property name="jar" location="${lib}/TutorApplet.jar" />
+		<echo message="" file="${excludes_file}" append="false" />
+		<antcall target="createExcludesFiles" />
+		<delete file="${lib}/tempTutorApplet.jar" />		
+
+		<jar jarfile="${lib}/tempTutorApplet.jar" manifest="${appletManifest}" compress="true">
+			<fileset dir="${classes}">
+				<exclude name="*" /> 
+				<include name="edu/cmu/hcii/ctat/**" />
+				<include name="edu/cmu/hcii/runcc/*" />
+				<include name="edu/cmu/oli/log/client/*" />
+				<include name="edu/cmu/pslc/**" />
+				<include name="edu/cmu/pact/BehaviorRecorder/*" />
+				<include name="edu/cmu/pact/BehaviorRecorder/Controller/*" />
+				<include name="edu/cmu/pact/BehaviorRecorder/ExpressionMatcher/**" />
+				<include name="edu/cmu/pact/BehaviorRecorder/ProblemModel/**" />
+				<include name="edu/cmu/pact/BehaviorRecorder/SolutionStateModel/*" />
+				<include name="edu/cmu/pact/client/*" />
+				<include name="edu/cmu/pact/CommManager/*" />
+				<include name="edu/cmu/pact/ctat/*" />
+				<include name="edu/cmu/pact/JavascriptBridge/*" />
+				<include name="edu/cmu/pact/jess/*" />
+				<include name="edu/cmu/pact/Log/*" />
+				<include name="edu/cmu/pact/miss/*" />
+				<include name="edu/cmu/pact/Preferences/*" />
+				<include name="edu/cmu/pact/SocketProxy/*" />
+				<include name="edu/cmu/pact/TutoringService/*" />
+				<include name="edu/cmu/pact/Utilities/*" />
+				<include name="edu/cmu/pact/ctat/model/*" />
+				<include name="pact/**" />
+
+				<include name="edu/cmu/pact/BehaviorRecorder/Dialogs/LoadFileDialog*.class" />
+				<include name="edu/cmu/pact/ctat/view/**" />
+				<include name="edu/cmu/pact/BehaviorRecorder/StartStateEditor/CTATStartStateEvent.class" />
+				<include name="edu/cmu/pact/BehaviorRecorder/StartStateEditor/CTATComponent.class" />
+				<include name="edu/cmu/pact/BehaviorRecorder/StartStateEditor/CTATComponentBase.class" />
+				<include name="edu/cmu/pact/BehaviorRecorder/StartStateEditor/CTATParameter.class" />
+				<include name="edu/cmu/pact/BehaviorRecorder/StartStateEditor/CTATSAI.class" />
+				<include name="edu/cmu/pact/BehaviorRecorder/StartStateEditor/CTATSerializable*.class" />
+				<include name="edu/cmu/pact/BehaviorRecorder/StartStateEditor/CTATStyleProperty.class" />
+				<include name="edu/cmu/pact/BehaviorRecorder/View/BR_Label.class" />
+				<include name="edu/cmu/pact/BehaviorRecorder/View/ActionLabel*" />
+				<include name="edu/cmu/pact/BehaviorRecorder/View/BRPanel.class" />
+				<include name="edu/cmu/pact/BehaviorRecorder/jgraphwindow/MarathonElement.class" />
+				<include name="edu/cmu/pact/BehaviorRecorder/View/JUndo*" />
+				<include name="edu/cmu/pact/BehaviorRecorder/View/HintWindow/*" />
+				<include name="edu/cmu/pact/BehaviorRecorder/Dialogs/DirectoryFilter.class" />
+
+				<include name="jess/**" />
+
+				<excludesfile name="${excludes_file}" />
+			</fileset>
+			<fileset dir="include">
+				<include name="**/${preferences-xml}" />
+			</fileset>
+		</jar>
+		<copy file="${lib}/tempTutorApplet.jar" tofile="${jar}" />
+		<antcall target="finishtutorapplet"><param name="destDir" value="${tutor-applet}"/></antcall>
+		<delete file="${lib}/tempTutorApplet.jar" />
+		<delete file="${lib}/TutorApplet.jar" />
+		<delete file="${lib}/TutorApplet.mf" />
+		<delete file="${excludes_file}" />
+	</target>
+
+	<target name="Android" >
+		<echo>This is a dummy target.</echo>
+	</target>	
+
+	<!--Stand-alone SocketProxyTest application. -->
+	<target name="buildSocketProxyTest" depends="buildTest">
+		<property name="jar" location="testclasses/SocketProxyTest.jar" />
+		<property name="manifest" location="testclasses/SocketProxyTest.mf" />
+		<delete file="${jar}" />
+		<delete file="${manifest}" />
+		<echo file="${manifest}" append="true" level="error">Manifest-Version: 1.0
+Class-Path: ../lib/ctat.jar
+Main-Class: edu.cmu.pact.SocketProxy.SocketProxyTest
+</echo>
+		<jar jarfile="${jar}" manifest="${manifest}" compress="true">
+			<fileset dir="testclasses" includes="edu/cmu/pact/SocketProxy/" />
+		</jar>
+	</target>
+
+    <target name="makectatapplet" depends="buildTSApplet">  <!-- also needs genkey, but infrequently -->
+	    <mkdir dir="${basedir}/${ctat_applet}" />
+<!--    <signjar destDir="${basedir}/${ctat_applet}" keystore="lib/PACTkeyStore" alias="mike" storepass="pact123" > -->
+        <signjar destDir="${basedir}/${ctat_applet}" keystore="${basedir}/../installer/CodeSignCertAndKey.p12" storetype="pkcs12" alias="ctat" storepass="${cert.password}" tsaurl="http://timestamp.comodoca.com/rfc3161" >
+		    <fileset refid="tsApplet.jars"/>
+        </signjar>
+	</target>
+
+    <target name="finishtutorapplet" depends="projects">
+	    <delete dir="${destDir}/javascript" />
+	    <delete dir="${destDir}/ctat_applet" />
+	    <!--<delete dir="${destDir}/examples" /> -->
+	    <delete file="${destDir}/FractionAddition.jnlp" />
+	    <delete file="${destDir}/FractionAddition.html" />
+
+	    <mkdir dir="${destDir}/javascript" />
+	    <mkdir dir="${destDir}/ctat_applet" />
+	    <mkdir dir="${destDir}/examples" />
+
+		<copy todir="${destDir}/javascript" file="${deploy_applet_location}/javascript/deployJava.js"/>
+
+		<copy file="${tutor-applet}/sample.jnlp" tofile="${destDir}/FractionAddition.jnlp"/>
+		<replace file="${destDir}/FractionAddition.jnlp" value="FractionAddition.jnlp" token="__JNLP_FILE__"/>
+		<replace file="${destDir}/FractionAddition.jnlp" value="/${destDir}" token="__CODEBASE__"/>
+		<replace file="${destDir}/FractionAddition.jnlp" value="Fraction Addition" token="__TITLE__"/>
+		<replace file="${destDir}/FractionAddition.jnlp" value="Cognitive Tutor Authoring Tools" token="__VENDOR__"/>
+		<!--<replace file="${destDir}/FractionAddition.jnlp" value="examples/FractionAdditionTutor/FractionAddition.jar" token="__AUTHOR_JAR__"/>-->
+
+		<copy file="${tutor-applet}/sample.html" tofile="${destDir}/FractionAddition.html"/>
+		<replace file="${destDir}/FractionAddition.html" value="Fraction Addition" token="__TITLE__"/>
+		<replace file="${destDir}/FractionAddition.html" value="FractionAddition.jnlp" token="__JNLP_FILE__"/>
+		<replace file="${destDir}/FractionAddition.html" value="400" token="__WIDTH__"/>
+		<replace file="${destDir}/FractionAddition.html" value="450" token="__HEIGHT__"/>
+		<replace file="${destDir}/FractionAddition.html" value="FractionAdditionTutor.FractionAddition" token="__STUDENT_INTERFACE__"/>
+		<!--<replace file="${destDir}/FractionAddition.html" value="examples/FractionAdditionTutor/problems/1-4_plus_1-6.brd" token="__QUESTION_FILE__"/>-->
+		<replace file="${destDir}/FractionAddition.html" value="${destDir}" token="__CODEBASE__"/>
+		<replace file="${destDir}/FractionAddition.html" value="student1" token="__USERID__"/>
+		<replace file="${destDir}/FractionAddition.html" value="None" token="__LOGGING__"/>
+		<replace file="${destDir}/FractionAddition.html" value="http://pslc-qa.andrew.cmu.edu/log" token="__LOG_SERVER_URL__"/>
+		<replace file="${destDir}/FractionAddition.html" value="DeliveryMeans" token="__STUDY_CONDITION_TYPE1__"/>
+		<replace file="${destDir}/FractionAddition.html" value="OnlineProblem" token="__STUDY_CONDITION_NAME1__"/>
+		<replace file="${destDir}/FractionAddition.html" value="teacher1" token="__INSTRUCTOR_NAME__"/>
+		<replace file="${destDir}/FractionAddition.html" value="CTAT Elementary" token="__SCHOOL_NAME__"/>
+		<replace file="${destDir}/FractionAddition.html" value="Fourth Grade Math" token="__CLASS_NAME__"/>
+		<replace file="${destDir}/FractionAddition.html" value="Problem 1" token="__PROBLEM_CONTEXT__"/>
+		<replace file="${destDir}/FractionAddition.html" value="problem_1" token="__PROBLEM_NAME__"/>
+		<replace file="${destDir}/FractionAddition.html" value="fraction_addition_java" token="__DATASET_LEVEL_NAME2__"/>
+		<replace file="${destDir}/FractionAddition.html" value="ProblemSet" token="__DATASET_LEVEL_TYPE2__"/>
+		<replace file="${destDir}/FractionAddition.html" value="Default Assignment" token="__DATASET_LEVEL_NAME1__"/>
+		<replace file="${destDir}/FractionAddition.html" value="Assignment" token="__DATASET_LEVEL_TYPE1__"/>
+		<replace file="${destDir}/FractionAddition.html" value="Math Dataset" token="__DATASET_NAME__"/>
+		<replace file="${destDir}/FractionAddition.html" value="session1" token="__SESSION_ID__"/>
+		<replace file="${destDir}/FractionAddition.html" value="/cgi-bin/cat.exe" token="__PROBLEM_SUMMARY_URL__"/>
+		<!--<replace file="${destDir}/FractionAddition.html" value="examples/EndOfProblemSet.txt" token="__NEXT_PROBLEM_URL__"/>-->
+		<!--<echo file="${destDir}/examples/EndOfProblemSet.txt" append="false">
+            You have finished the problem set.
+        </echo> -->
+
+    	<!--<copy todir="${destDir}/examples">
+			<fileset dir="Projects">
+				<include name="FractionAdditionTutor/*.class"/>
+			</fileset>
+			<fileset dir="${examples_source}/java/source">
+				<include name="FractionAdditionTutor/**"/>
+				<exclude name="FractionAdditionTutor/*.java"/>
+				<exclude name="FractionAdditionTutor/*.form"/>
+			</fileset>
+		</copy>-->
+
+		<antcall target="mark_trusted_tutorAppletjars"><param name="tempDir" value="tempJars"/></antcall>
+		<jar jarfile="tempJars/FractionAddition.jar" compress="true">
+			<fileset dir="Projects">
+				<include name="FractionAdditionTutor/*.class"/>
+			</fileset>
+		</jar>
+		<antcall target="mark_trusted"><param name="jar" value="tempJars/FractionAddition.jar"/></antcall> 
+
+       <!-- <signjar destDir="${destDir}/ctat_applet" keystore="lib/PACTkeyStore" alias="mike" storepass="pact123" > -->
+        <signjar destDir="${destDir}/ctat_applet" keystore="${basedir}/../installer/CodeSignCertAndKey.p12" storetype="pkcs12" alias="ctat" storepass="${cert.password}" tsaurl="http://timestamp.comodoca.com/rfc3161" >
+		    <fileset dir="tempJars">
+				<include name="*.jar"/>
+		    </fileset>
+        </signjar> 
+
+        <copy todir="${destDir}/ctat_applet" preservelastmodified="true" >
+		    <fileset refid="tutorApplet.jars"/> 
+        </copy>                        <!-- tried unsigned jars, but Jess and runcc want reflection, which is privileged -->
+
+<!--		<move file="${destDir}/ctat_applet/FractionAddition.jar" todir="${destDir}/examples/FractionAdditionTutor"/>
+		<delete dir="tempJars"/>-->
+
+    	<chmod dir="${destDir}" type="both" perm="ugo+rx"/>
+        <chmod dir="${destDir}" type="both" perm="ug+w"/>
+        <chmod dir="${destDir}" type="both" perm="g+s"/> 
+  </target> 
+
+	<target name="genkey">
+		<genkey alias="mike"
+		  storepass="pact123"
+		  keystore="lib/PACTkeyStore"
+		  verbose="true">
+		  <dname>
+			<param name="CN" value="Cognitive Tutor Authoring Tools"/>
+			<param name="OU" value="Human Computer Interaction Institute"/>
+			<param name="O"  value="Carnegie Mellon University"/>
+			<param name="L"  value="Pittsburgh"/>
+			<param name="ST"  value="Pennsylvania"/>
+			<param name="C"  value="US"/>
+		  </dname>
+		</genkey>
+	</target>
+
+	<target name="signjars" depends="projects">
+<!--    <signjar jar="lib/ctat.jar" keystore="lib/PACTkeyStore" alias="mike" storepass="pact123" /> -->
+        <signjar jar="lib/ctat.jar" keystore="${basedir}/../installer/CodeSignCertAndKey.p12" storetype="pkcs12" alias="ctat" storepass="${cert.password}" tsaurl="http://timestamp.comodoca.com/rfc3161" />
+	</target>
+
+
+
+	<target name="test" depends="projects">
+		<junit printsummary="yes" fork="yes" haltonfailure="yes">
+			<formatter type="plain" />
+			<test name="CTAT_GlobalTestSuite" />
+		</junit>
+	</target>
+
+	<target name="matcher-test" depends="buildTestOnly">
+	  <junit printsummary="yes" fork="yes">
+	  	<jvmarg value="-DDebugCodes=${DebugCodes}"/>
+	    <classpath>
+	      <pathelement path="${test.build}" />
+	      <pathelement path="${lib}/ctat.jar" />
+	    </classpath>
+	    <formatter type="plain"/>
+	    <test name="edu.cmu.pact.BehaviorRecorder.ProblemModel.Matcher.MatcherTest"/>
+	  </junit>
+	</target>
+
+	<target name="socketproxy-test" depends="buildTestOnly">
+	  <junit printsummary="yes" fork="yes">
+	  	<jvmarg value="-DDebugCodes=${DebugCodes}"/>
+	    <classpath>
+	      <pathelement path="${test.build}" />
+	      <pathelement path="${lib}/ctat.jar" />
+	    </classpath>
+	    <formatter type="plain"/>
+	    <test name="edu.cmu.pact.SocketProxy.SocketProxyTest"/>
+	  </junit>
+	</target>
+	
+	<target name="unit_test_academic" depends="buildTestAcademic" description="Compile an academic version and run all unit tests">
+		<antcall target="run_unit_tests" />
+	</target>
+	
+	<target name="unit_test" depends="buildTest" description="Compile everything and run all unit tests">
+		<antcall target="run_unit_tests" />
+	</target>
+
+	<target name="run_unit_tests" >
+		<tstamp>
+			<format property="test.time" pattern="yyyy-MM-dd" unit="hour" />
+		</tstamp>
+
+		<mkdir dir="${test.reports}" />
+		<mkdir dir="${test.reports}/${test.time}/unit" />
+
+		<junit printsummary="withOutAndErr" showoutput="yes" timeout="3600000">
+			<classpath>
+				<path refid="test.classpath" />
+			</classpath>
+			<jvmarg value="-Xmx1024M" />
+			<jvmarg value="-DDebugCodes=${DebugCodes}"/>
+			<batchtest fork="yes" haltonerror="no" haltonfailure="no" todir="${test.reports}/${test.time}/unit">
+				<fileset dir="${test.src}">
+					<include name="**/CTAT_GlobalTestSuite.java" />
+					<exclude name="**/miss/**/*.java" />
+					<exclude name="**/BehaviorRecorder*.java" />
+					<exclude name="**/Comm*.java" />
+					<exclude name="**/Jess*.java" />
+				</fileset>
+				<formatter type="xml" />
+			</batchtest>
+		</junit>
+
+		<junitreport todir="${test.reports}/${test.time}/unit">
+			<fileset dir="${test.reports}/${test.time}/unit">
+				<include name="TEST-*.xml" />
+			</fileset>
+			<report format="frames" todir="${test.reports}/${test.time}/unit" />
+		</junitreport>
+	</target>
+
+	<target name="functions_javadoc" description="Generate Javadoc for Author Functions in javadoc/ subdirectory." >
+		<echo message="java.home:${java.home}"/>
+		<delete dir="tmp" failonerror="false"/>
+		<mkdir dir="tmp"/>
+		<unzip src="${java.home}/../src.zip" dest="tmp">
+			<patternset>
+				<include name="java/lang/Math.java"/>
+				<include name="java/lang/String.java"/>
+			</patternset>
+		</unzip>
+		<javadoc classpath="${ctatClassPath}:${java.home}/rt.jar" destdir="javadoc"
+				access="protected" maxmemory="512m" windowtitle="CTAT 3.0 Function Reference"
+				overview="functions_overview.html">
+			<fileset dir="source" defaultexcludes="yes">
+			    <include name="edu/cmu/pact/BehaviorRecorder/ProblemModel/Matcher/Functions/**"/>
+			    <exclude name="edu/cmu/pact/BehaviorRecorder/ProblemModel/Matcher/Functions/Expression.java"/>
+				<not>
+					<contains text="SymbolManipulator"/>
+				</not>
+			</fileset>
+			<source file="tmp/java/lang/Math.java"/>
+			<source file="tmp/java/lang/String.java"/>
+			<group title="CTAT Functions" packages="edu.cmu.pact.BehaviorRecorder.ProblemModel.Matcher.Functions"/>
+			<group title="Java Math and String Functions Usable from CTAT" packages="java.lang"/>
+			<doctitle><![CDATA[<span style="font-family:Arial,sans-serif">CTAT 3.0 Function Reference</span>]]></doctitle>
+			<header><![CDATA[CTAT 3.0 Function Reference]]></header>
+		</javadoc>
+		<delete dir="tmp" failonerror="false"/>
+	</target>
+
+	<target name="functions_javadoc_internal" description="Generate Javadoc for Author Functions in javadoc-internal/ subdirectory." >
+		<echo message="java.home:${java.home}"/>
+		<delete dir="tmp" failonerror="false"/>
+		<mkdir dir="tmp"/>
+		<unzip src="${java.home}/../src.zip" dest="tmp">
+			<patternset>
+				<include name="java/lang/Math.java"/>
+				<include name="java/lang/String.java"/>
+			</patternset>
+		</unzip>
+		<javadoc classpath="${ctatClassPath}:${java.home}/rt.jar" destdir="javadoc-internal"
+				access="protected" maxmemory="512m" windowtitle="CTAT 3.0 Function Reference"
+				overview="functions_overview.html">
+			<fileset dir="source" defaultexcludes="yes">
+			    <include name="edu/cmu/pact/BehaviorRecorder/ProblemModel/Matcher/Functions/**"/>
+			    <exclude name="edu/cmu/pact/BehaviorRecorder/ProblemModel/Matcher/Functions/Expression.java"/>
+			</fileset>
+			<source file="tmp/java/lang/Math.java"/>
+			<source file="tmp/java/lang/String.java"/>
+			<group title="CTAT Functions" packages="edu.cmu.pact.BehaviorRecorder.ProblemModel.Matcher.Functions"/>
+			<group title="Java Math and String Functions Usable from CTAT" packages="java.lang"/>
+			<doctitle><![CDATA[<span style="font-family:Arial,sans-serif">CTAT 3.0 Function Reference</span>]]></doctitle>
+			<header><![CDATA[CTAT 3.0 Function Reference]]></header>
+		</javadoc>
+		<delete dir="tmp" failonerror="false"/>
+	</target>
+
+	<target name="javadoc" description="Generate Javadoc html in javadoc/ subdirectory.">
+		<javadoc sourcepath="${source}" classpath="${ctatClassPath}" destdir="javadoc" access="package" maxmemory="512m">
+			<packageset dir="${source}"/>
+			<group title="Carnegie Learning Interface" packages="cl.*"/>
+			<group title="Student Interface" packages="pact.*"/>
+			<group title="Jess Interface" packages="edu.cmu.pact.jess:jess"/>
+			<group title="Legacy Code" packages="edu.cmu.old_pact.*"/>
+			<group title="OLI, PSLC extensions" packages="edu.cmu.oli.*:edu.cmu.pslc.*"/>
+			<group title="Simulated Student" packages="edu.cmu.pact.miss.*"/>
+			<group title="WPI Legacy Code" packages="edu.wpi.*"/>
+		</javadoc>
+	</target>
+
+	<!-- Build JavaHelp helpset from DocBook source. Author: bleber -->
+	<property name="javahelp.jhindexer" value="${local.javahelp}/javahelp/bin/jhindexer.jar" />
+	<property name="docbook" value="../UsersGuide" />
+	<property name="docbook.source" value="${docbook}/source/br_manual" />
+	<property name="docbook.source.xml" value="${docbook.source}/behavior_recorder_2_0.xml" />
+	<property name="docbook.xsl" value="${docbook}/docbook5-xsl" />
+	<property name="help.jar" value="ctat_help.jar" />
+
+	<target name="docbook.javahelp" description="Transform CTAT manual from DocBook5 to JavaHelp">
+		<antcall target="clean.docbook" />
+		<mkdir dir="${docbook.tmp}" />
+
+		<xslt basedir="${docbook.source}" destdir="${docbook.tmp}" style="${docbook.source}/ctat_2-javahelp.xsl"
+			includes="behavior_recorder_2_0.xml" classpath="${docbook}/lib/xalan.jar:${docbook}/lib/serializer.jar">
+		</xslt>
+		<delete file="${docbook.tmp}/behavior_recorder_2_0.html" /> <!-- Not sure why this file is being created -->
+		<copy todir="${docbook.tmp}/images">
+			<fileset dir="${docbook.source}/images" />
+		</copy>
+		<copy file="${docbook.source}/jhelp.css" tofile="${docbook.tmp}/jhelp.css" />
+
+		<java jar="${javahelp.jhindexer}" fork="true" dir="${docbook.tmp}">
+			<arg value="*.html" />
+		</java>
+
+		<jar basedir="${docbook.tmp}" destfile="${lib}/${help.jar}" compress="true" />
+	</target>
+	
+</project>

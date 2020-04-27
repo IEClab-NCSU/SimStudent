@@ -1,0 +1,119 @@
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+	<xsl:output method="html" encoding="UTF-8" />
+	<xsl:param name="useIds"/>
+
+	<xsl:template match="/Report">
+		<div style="font-weight: bold; font-size: medium; color: #5582d5">STUDENT SKILLS ASSESSMENT BY STRAND</div>
+		<xsl:element name="table" use-attribute-sets="top-table">
+			<!-- top-table -->
+			<tr height="10">
+				<!-- EMPTY ROW to add spacing -->
+				<td colspan="4"></td>
+			</tr>
+			<tr>
+				<td style="font-weight: bold; padding: 0 15px 0 0;">STUDENT</td>
+				<td style="font-weight: bold" nobreak="nobreak">
+					<xsl:choose>
+						<xsl:when test="$useIds = 'true'">
+							<xsl:choose>
+								<xsl:when test="Student/@id != ''">
+									<xsl:value-of select="Student/@id" />
+								</xsl:when>
+								<xsl:otherwise>
+									-
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="Student/@name" />
+						</xsl:otherwise>
+					</xsl:choose>
+				</td>
+				<td style="font-weight: bold; padding: 0 15px 0 30px;">INSTRUCTOR</td>
+				<td><xsl:value-of select="@instructor_name" /></td>
+			</tr>
+			<tr valign="top">
+				<td style="font-weight: bold; padding: 0 15px 0 0;">DATE</td>
+				<td><xsl:value-of select="@timestamp" /></td>
+				<td style="font-weight: bold; padding: 0 15px 0 30px;" valign="top">CLASS</td>
+				<td><xsl:value-of select="@class_name" /></td>
+			</tr>
+			<tr height="10">
+				<!-- EMPTY ROW to add spacing -->
+				<td colspan="4"></td>
+			</tr>
+			<!-- END top-table -->
+		</xsl:element>
+
+		<xsl:choose>
+			<xsl:when test="Student/Strand">
+				<xsl:element name="table" use-attribute-sets="unit-table">
+					<!-- unit-table -->
+					<tr style="background: #5582d5; color: #ffffff;">
+						<th width="10%" align="left">STRAND</th>
+						<th width="45%" align="left">SUBTOPIC</th>
+                        <!-- column for each test being reported -->
+                        <xsl:for-each select="Student/Test">
+                            <th width="15%" align="center"><xsl:value-of select="@label" /> - <xsl:value-of select="@status" /></th>
+                        </xsl:for-each>
+                    </tr>
+					<xsl:for-each select="Student/Strand">
+						<xsl:variable name="bkgd">
+							<xsl:choose>
+								<xsl:when test="position() mod 2 = 1">#ffffff</xsl:when>
+								<xsl:otherwise>#e4eef7</xsl:otherwise>
+							</xsl:choose>
+						</xsl:variable>
+                        <!-- output strand summary scores -->
+                        <tr style="background: {$bkgd};">
+							<td colspan="2"><b><xsl:value-of select="@name" /></b></td>
+							<xsl:for-each select="Test">
+                                <td align="center"><b><nobr><xsl:value-of select="@bucket" /></nobr></b></td>
+                            </xsl:for-each>
+                        </tr>
+						<xsl:for-each select="Skill">
+							<tr style="background: {$bkgd};">
+								<td></td>  <!-- strand name -->
+								<td><xsl:value-of select="@name" /></td>
+                                <xsl:for-each select="Test">
+                                    <td align="center"><nobr><xsl:value-of select="@bucket" /></nobr></td>
+                                </xsl:for-each>
+                            </tr>
+						</xsl:for-each>
+						<tr style="height: 10px;">
+                            <td><xsl:attribute name="colspan"> <xsl:value-of select="count(Student/Test)"/>+2 </xsl:attribute> <!-- blank line for spacing --></td></tr>
+					</xsl:for-each>
+					<tr style="height: 10px; background: #5582d5;">
+                        <td><xsl:attribute name="colspan"> <xsl:value-of select="count(Student/Test)"/>+2 </xsl:attribute>
+                            <!-- bookend -->
+                        </td>
+					</tr>
+					<!-- END unit-table -->
+				</xsl:element>
+			</xsl:when>
+			<xsl:otherwise>
+				<h2>No Assessment Data for this Student</h2>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
+	<xsl:attribute-set name="top-table">
+		<xsl:attribute name="border">0</xsl:attribute>
+		<xsl:attribute name="align">left</xsl:attribute>
+		<xsl:attribute name="cellpadding">0</xsl:attribute>
+		<xsl:attribute name="cellspacing">0</xsl:attribute>
+		<xsl:attribute name="clear">both</xsl:attribute>
+		<xsl:attribute name="style">clear: both; font-size: small;</xsl:attribute>
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="unit-table">
+		<xsl:attribute name="border">0</xsl:attribute>
+		<xsl:attribute name="align">left</xsl:attribute>
+		<xsl:attribute name="cellpadding">1</xsl:attribute>
+		<xsl:attribute name="cellspacing">0</xsl:attribute>
+		<xsl:attribute name="width">100%</xsl:attribute>
+		<xsl:attribute name="style">clear: both; font-size: small;</xsl:attribute>
+	</xsl:attribute-set>
+
+</xsl:stylesheet>
+

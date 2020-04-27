@@ -1,0 +1,91 @@
+FOIL 6.4   [January 1996]
+--------
+
+    Options:
+	minimum clause accuracy 1.36215e+09%
+
+Relation done
+
+Relation *NotNull
+
+Relation *IsDenominatorOf
+
+Relation *HasConstTerm
+
+Relation *IsSkillSubtract
+
+Relation *IsSkillMultiply
+
+Relation *IsNumeratorOf
+
+Relation *IsFractionTerm
+
+Relation *Homogeneous
+
+Relation *HasVarTerm
+
+Relation *IsSkillDivide
+
+Relation *Monomial
+
+Relation *IsSkillAdd
+
+Relation *HasCoefficient
+
+Relation *IsAVarTerm
+
+Relation *IsPolynomial
+
+Relation *IsConstant
+
+Relation *IsLastConstTermNegative
+
+Relation *HasParentheses
+
+----------
+done:
+
+State (3/10, 11.3 bits available)
+
+	Save Monomial(A) (3,4 value 3.4)
+	Save IsAVarTerm(A) (3,4 value 3.4)
+	Save not(HasVarTerm(A)) (3,4 value 3.4)
+	Save not(IsPolynomial(A)) (3,4 value 3.4)
+
+Best literal Homogeneous(A) (5.9 bits)
+
+State (3/4, 5.3 bits available)
+
+No literals
+
+Recover to done(A,B) :- Monomial(A).
+
+State (3/4, 5.3 bits available)
+
+No literals
+
+Recover to done(A,B) :- IsAVarTerm(A).
+
+State (3/4, 5.3 bits available)
+
+No literals
+
+Recover to done(A,B) :- not(HasVarTerm(A)).
+
+State (3/4, 5.3 bits available)
+
+No literals
+
+Recover to done(A,B) :- not(IsPolynomial(A)).
+
+State (3/4, 5.3 bits available)
+
+No literals
+
+Clause too inaccurate (3/4)
+
+***  Warning: the following definition
+***  does not cover 3 tuples in the relation
+
+
+Time 0.0 secs

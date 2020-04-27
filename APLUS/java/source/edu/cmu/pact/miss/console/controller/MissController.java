@@ -12,6 +12,7 @@ package edu.cmu.pact.miss.console.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Vector;
@@ -87,10 +88,9 @@ public class MissController implements MissControllerExternal {
     /** Mode to preserve existing production rules */
     public static final String PRESERVE_PR = "preserve_pr";
     
+    private String typeChecker = "edu.cmu.pact.miss.FeaturePredicate.valueTypeForAlgebra";
     
     public SimSt getSimSt() {
-    	//System.out.println(" this : "+this);
-    	//System.out.println("SimSt : "+this.simSt);
     	return this.simSt;
     }
     
@@ -193,6 +193,15 @@ public class MissController implements MissControllerExternal {
       //this should only happen when "Simulated Student" is selected
     	this.simSt = new SimSt(this);
     	this.missConsole = new MissConsole(this, brController);
+    	String runType = System.getProperty("appRunType");
+    	
+    	if(runType != null && runType.equalsIgnoreCase("servlet")){
+        	SimSt.setProjectDir(System.getProperty("projectDir"));
+    		getSimSt().setSsWebAuthoringMode(true);
+    	}
+    	else if(runType != null && runType.equalsIgnoreCase("webstart"))
+    		getSimSt().setWebStartMode(true);
+    	
     	getSimSt().initBKwithMissConsole();
         // Restore the FileChooser preference
         PreferencesModel pm = getPreferencesModel();
@@ -346,7 +355,7 @@ public class MissController implements MissControllerExternal {
      *
      */
     public void startNewProblem() {
-        getSimSt().startNewProblem();
+        this.getSimSt().startNewProblem();
     }
 
     /**
@@ -355,7 +364,7 @@ public class MissController implements MissControllerExternal {
      * @param initStateName a <code>String</code> value
      */
     public void startStateCreated(ProblemNode startProblemNode) {
-	getSimSt().startStateCreated(startProblemNode);
+	this.getSimSt().startStateCreated(startProblemNode);
     }
 
     /**
@@ -378,7 +387,7 @@ public class MissController implements MissControllerExternal {
      * @return a <code>boolean</code> value
      **/
     public boolean isFocusOfAttentionSpecified() {
-	return getSimSt().isFocusOfAttentionSpecified();
+	return this.getSimSt().isFocusOfAttentionSpecified();
     }
 
     /**
@@ -401,7 +410,7 @@ public class MissController implements MissControllerExternal {
      **/
     public void toggleFocusOfAttention(Object widget) {
 
-	getSimSt().toggleFocusOfAttention(widget);
+	this.getSimSt().toggleFocusOfAttention(widget);
     }
     
     /**
@@ -1048,7 +1057,7 @@ public class MissController implements MissControllerExternal {
         	
         	instructionsFile = new File(fileName); 
         	getSimSt().saveInstructions(instructionsFile);
-        } else { // For webstart
+        } else if(getSimSt().isWebStartMode()) { // For webstart
     		
         	try {
         		instructionsFile = new File(WebStartFileDownloader.SimStWebStartDir + fileName);
@@ -1057,6 +1066,10 @@ public class MissController implements MissControllerExternal {
     		} catch (IOException e) {
     			e.printStackTrace();
     		}
+         }else if(getSimSt().isSsWebAuthoringMode()){
+        	   instructionsFile = new File(getSimSt().getProjectDirectory()+"/"+fileName);
+        	// instructionsFile = new File(getSimSt().getPackageName()+"/"+ fileName);
+ 			 getSimSt().saveInstructions(instructionsFile);
          }
     		msg += "done";
     		getMissConsole().message(msg);
@@ -1096,7 +1109,11 @@ public class MissController implements MissControllerExternal {
     	String fileName = "instructions.txt";
         if(getSimSt() != null && getSimSt().getUserID() != null)
         	fileName = "instructions-"+getSimSt().getUserID()+".txt";
-    	File file = new File(fileName);
+        File file = null;
+        if(getSimSt().isSsWebAuthoringMode())
+        	file = new File(getSimSt().getProjectDirectory()+"/"+fileName);
+        else 
+        	file = new File(fileName);
 
     	// Check if application is running locally or using web-start
         if(!getSimSt().isWebStartMode()) {
@@ -1105,13 +1122,13 @@ public class MissController implements MissControllerExternal {
 	    	if(file!=null && file.exists()) {
 	        	getBrController().setDeletePrFile(true);
 	        	this.dealWithAnyExistingPrFile();
-	        	/*in webAuthoring, ask about the instructions*/
+	        	/*in webAuthoring, ask about the instructions
 	        	if (this.getSimSt().isSsWebAuthoringMode()){
 	        		int buttonPressed=askToResumeTraining();
 	        		 if (buttonPressed==JOptionPane.NO_OPTION){ 
 	        			 	return;
 	        		 }
-	        	}
+	        	}*/
 	        	
 	    		try {
 					getSimSt().loadInstructions(file);
@@ -1230,11 +1247,12 @@ public class MissController implements MissControllerExternal {
 	    		// Key associated when retrieving the .ser file is simst-getSimSt().getUserID()+.ser
     			//trace.err("retrieving object... " + "simst-"+getSimSt().getUserID()+".ser");
     			simStObj = (SimSt) storageClient.retrieveObject("simst-"+getSimSt().getUserID()+".ser");
-    			// getSimSt().printInfo(simStObj);
+    			System.out.println(simStObj);
 			} catch (IOException e) {
 				//if(trace.getDebugCode("rr"))
 					trace.err(e.getMessage());
 			}
+    		
 				
         	if(simStObj != null) { // relevant file was able to be downloaded 
         		trace.err("Object found, resuming files");
@@ -2126,6 +2144,8 @@ public class MissController implements MissControllerExternal {
                     	 setSsTypeMatcher(parameter[0]);
                     } else if(keyStem.equalsIgnoreCase("ssLogFolder")){
                     	setSsLogFolder(parameter[0]);
+                    } else if(keyStem.equalsIgnoreCase("ssProblemCheckerOracle")) {
+                    	setSsProblemCheckerOracle(parameter[0]);
                     }
                     else {	
                         throw new IllegalArgumentException ("Unknown SimStudent command line argument: " + keyStem);
@@ -2137,8 +2157,17 @@ public class MissController implements MissControllerExternal {
             }
         }
     }
+	/**
+	 * @author Vishnu Priya 
+	 * @param string
+	 * To set the oracle for problem Checker
+	 */
+    private void setSsProblemCheckerOracle(String oracleClass) {
+		// TODO Auto-generated method stub
+		getSimSt().setProblemCheckerOracle(oracleClass);
+	}
 
-    private void setSsLogFolder(String logFolder) {
+	private void setSsLogFolder(String logFolder) {
 		// TODO Auto-generated method stub
     	//@author Vishnu Priya Chandra Sekar
     	// enable to specify the log folder structure
@@ -2283,7 +2312,8 @@ public class MissController implements MissControllerExternal {
     }
 
     private void setSsTypeChecker(String typeChecker) {
-        getSimSt().setTypeChecker(typeChecker);     
+    	//setTypeChecker(typeChecker);
+        SimSt.setTypeChecker(typeChecker);     
     }
     
     private void setSsValidSkillChecker(String validSkillChecker) {
@@ -2483,6 +2513,7 @@ public class MissController implements MissControllerExternal {
     	} else {
     		SimSt.setProjectDir(projectDir);
     		this.setProjectDir(projectDir);
+    		this.getSimSt().setProjectDirectory(projectDir);
     	}
     }
 
@@ -2537,6 +2568,10 @@ public class MissController implements MissControllerExternal {
     			file = finder.findFile(filename);
     		trace.out("miss", "*Loading the prefs file webstart:  " + filename);
     		getBrController().getPreferencesModel().setPreferenceFile(file);
+    	}
+    	else if(getSimSt().isSsWebAuthoringMode()){
+    		trace.out("miss", "*Loading the prefs file locally:  " + getSimSt().getProjectDir()+System.getProperty("file.separator")+filename);
+    		getBrController().getPreferencesModel().setPreferenceFile(getSimSt().getProjectDirectory()+System.getProperty("file.separator")+filename);
     	}
     	else{
     		trace.out("miss", "*Loading the prefs file locally:  " + getSimSt().getProjectDir()+System.getProperty("file.separator")+filename);
@@ -2687,6 +2722,14 @@ public class MissController implements MissControllerExternal {
     		this.getSimSt().setWebAuthoringBackend(webAuthBack); 
     		
 	 }
+
+	/*public String getTypeChecker() {
+		return typeChecker;
+	}
+
+	public void setTypeChecker(String typeChecker) {
+		this.typeChecker = typeChecker;
+	}*/
     
     
     

@@ -1,0 +1,104 @@
+;; for Eclipse, etc., specify templates to read
+(require* wmeTypes "wmeTypes.clp")
+
+;;;; Fact assertions: slot assignments are below.
+
+(bind ?var1 (assert(MAIN::hint)))
+(bind ?var2 (assert(MAIN::textField (name ansNumFinal1))))
+(bind ?var3 (assert(MAIN::textField (name ansDen1))))
+(bind ?var4 (assert(MAIN::textField (name firstDenGiven))))
+(bind ?var5 (assert(MAIN::textField (name ansDenFinal1))))
+(bind ?var6 (assert(MAIN::textField (name secNumGiven))))
+(bind ?var7 (assert(MAIN::button (name hint))))
+(bind ?var8 (assert(MAIN::button (name done))))
+(bind ?var9 (assert(MAIN::textField (name ansNum1))))
+(bind ?var10 (assert(MAIN::textField (name firstNumCon))))
+(bind ?var11 (assert(MAIN::textField (name firstDenCon))))
+(bind ?var12 (assert(MAIN::textField (name firstNumGiven))))
+(bind ?var13 (assert(MAIN::textField (name secDenGiven))))
+(bind ?var14 (assert(MAIN::textField (name secNumCon))))
+(bind ?var15 (assert(MAIN::textField (name secDenCon))))
+(bind ?var16 (assert(MAIN::problem (name init))))
+
+;;;; Slot assignments
+
+; MAIN::hint
+(modify ?var1
+    (now FALSE)
+)
+; MAIN::textField
+(modify ?var2
+    (name ansNumFinal1)
+    (value nil)
+)
+; MAIN::textField
+(modify ?var3
+    (name ansDen1)
+    (value nil)
+)
+; MAIN::textField
+(modify ?var4
+    (name firstDenGiven)
+    (value nil)
+)
+; MAIN::textField
+(modify ?var5
+    (name ansDenFinal1)
+    (value nil)
+)
+; MAIN::textField
+(modify ?var6
+    (name secNumGiven)
+    (value nil)
+)
+; MAIN::button
+(modify ?var7
+    (name hint)
+)
+; MAIN::button
+(modify ?var8
+    (name done)
+)
+; MAIN::textField
+(modify ?var9
+    (name ansNum1)
+    (value nil)
+)
+; MAIN::textField
+(modify ?var10
+    (name firstNumCon)
+    (value nil)
+)
+; MAIN::textField
+(modify ?var11
+    (name firstDenCon)
+    (value nil)
+)
+; MAIN::textField
+(modify ?var12
+    (name firstNumGiven)
+    (value nil)
+)
+; MAIN::textField
+(modify ?var13
+    (name secDenGiven)
+    (value nil)
+)
+; MAIN::textField
+(modify ?var14
+    (name secNumCon)
+    (value nil)
+)
+; MAIN::textField
+(modify ?var15
+    (name secDenCon)
+    (value nil)
+)
+; MAIN::problem
+(modify ?var16
+    (name init)
+    (interface-elements ?var3 ?var5 ?var9 ?var2 ?var8 ?var11 ?var4 ?var10 ?var12 ?var7 ?var15 ?var13 ?var14 ?var6)
+    (subgoals)
+    (done nil)
+    (description nil)
+)

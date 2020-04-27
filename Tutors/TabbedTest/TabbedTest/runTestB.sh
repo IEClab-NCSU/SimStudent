@@ -7,12 +7,12 @@ then
 	CPS=";"
     fi
     if [ "${OS}" != "Windows_NT" ]; then
-	CVSDIR="${HOME}/CMU/pact-cvs-tree"
+	CVSDIR="${HOME}/Desktop/SimStudentGithub/SimStudent-master"
 	CPS=":"
     fi
 fi
 
-CtatJar="${CVSDIR}/AuthoringTools_3_1/java/lib/ctat.jar"
+CtatJar="${CVSDIR}/APLUS/java/lib/ctat.jar"
 
 
 if [ "${OS}" = "Windows_NT" ]; then
@@ -46,5 +46,5 @@ ${cmd};
 
 
 
-cmd="java ${VmOption} TabbedTest.TabbedTestB -ssLoadPrefsFile brPrefsTest.xml -ssUserID NIKOLAOS24e -ssLocalLogging  -ssLogging -ssLogURL http://pslc-qa.andrew.cmu.edu/log/server -Dcourse_name=simstOnlineTest-TestScores -DnoCtatWindow -DProblemFileLocation=./B2.brd -DDebugCodes=log" ;
-${cmd};
+#cmd="java ${VmOption} TabbedTest.TabbedTestB -ssLoadPrefsFile brPrefsTest.xml -ssUserID NIKOLAOS24e -ssLocalLogging  -ssLogging -ssLogURL http://pslc-qa.andrew.cmu.edu/log/server -Dcourse_name=simstOnlineTest-TestScores -DnoCtatWindow -DProblemFileLocation=./B2.brd -DDebugCodes=log" ;
+#${cmd};

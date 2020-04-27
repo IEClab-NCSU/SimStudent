@@ -258,5 +258,11 @@ public class FractionAdditionInputChecker extends InputChecker {
 		
 		return returnMsg;
 	}
+
+	@Override
+	public boolean checkSkipStep(String selection) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
 

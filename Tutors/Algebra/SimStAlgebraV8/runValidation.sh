@@ -10,12 +10,12 @@ then
 	CVSDIR="f:/pact-cvs-tree"
     fi
     if [ "${OS}" != "Windows_NT" ]; then
-	CVSDIR="${HOME}/CMU/pact-cvs-tree"
+	CVSDIR="${HOME}/Desktop/SimStudentGithub/SimStudent-master"
     fi
 fi
 
 #DorminJar="../lib/ctat.jar"
-DorminJar="${CVSDIR}/AuthoringTools_3_1/java/lib/ctat.jar"
+DorminJar="${CVSDIR}/APLUS/java/lib/ctat.jar"
 
 
 if [ "${OS}" = "Windows_NT" ]; then

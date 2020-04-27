@@ -14,6 +14,8 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
@@ -23,6 +25,7 @@ import java.util.zip.ZipOutputStream;
 
 import edu.cmu.pact.BehaviorRecorder.Controller.BR_Controller;
 import edu.cmu.pact.Utilities.trace;
+import edu.cmu.pact.miss.SimSt;
 
 /**
  * StorageClient - The client end of a storage servlet which communicates over http to
@@ -225,23 +228,22 @@ public class StorageClient extends StorageAccess {
 	public Object retrieveObject(String key) throws IOException {
 		
 		//String location = locationURL+"/SimStSVHS/stores?cmd=retrieveObj&file="+key;
-		String location = locationURL+"/Servlet/stores?cmd=retrieveObj&file="+key;
-		
+		//String location = locationURL+"/Servlet/storeObjects?cmd=retrieveObj&file="+key;
+		String location = "http://kona.education.tamu.edu:2401/Servlet/storeObjects?cmd=retrieveObj&file="+key;
 		URL servlet = new URL(location);
 		URLConnection servletConnection = servlet.openConnection();
-		trace.err("*** url is " + location);
+		//trace.err("*** url is " + location);
 		
 		servletConnection.setUseCaches(false);
 		servletConnection.setDefaultUseCaches(false);
 		ObjectInputStream inputFromServlet=null;
 
-		trace.err("*** servletConnection.getInputStream is " + servletConnection.getInputStream());
 		
 		try{
 		 inputFromServlet = new ObjectInputStream(servletConnection.getInputStream());
 		
 		} catch (IOException e) {
-			trace.err("### Exception while creating ObjectInputStream : " + e);
+			trace.err("### Exception while creating ObjectInputStream : " + e+ " object "+inputFromServlet);
 		}
 		
 		if (inputFromServlet==null)
@@ -272,7 +274,6 @@ public class StorageClient extends StorageAccess {
 		StorageAccess client = new StorageClient(/*"http://mocha.pslc.cs.cmu.edu"*/);
 		try {
 			client.storeString("hey", "instructions.txt");
-			System.out.println(client.retrieveFile("hey", "tmp4.txt"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -397,35 +398,23 @@ public class StorageClient extends StorageAccess {
 	public void storeObject(String key, Object object) throws IOException {
 		
 		//String location = locationURL+"/SimStSVHS/stores?cmd=storeObj&file="+key;
-		String location = locationURL+"/Servlet/stores?cmd=storeObj&file="+key;
+		//String location = locationURL+"/Servlet/storeObjects?cmd=saveObj&file="+key;
+		String location = "http://kona.education.tamu.edu:2401/Servlet/storeObjects?cmd=saveObj&file="+key;
+		SimSt obj = (SimSt)object;
 		URL servlet = new URL(location);
-		URLConnection servletConnection = servlet.openConnection();
-		
+		HttpURLConnection servletConnection = (HttpURLConnection)servlet.openConnection();
 		servletConnection.setDoInput(true);
 		servletConnection.setDoOutput(true);
 		servletConnection.setUseCaches(false);
 		servletConnection.setDefaultUseCaches(false);
 		servletConnection.setRequestProperty("Content-Type", "application/octet-stream");
-		
-		//OutputStream output = servletConnection.getOutputStream();
 		ObjectOutputStream output = new ObjectOutputStream(servletConnection.getOutputStream());
-		
-		output.writeObject(object);
+		output.writeObject(obj);
 		output.flush();
-		output.close();		
+		output.close();
+		System.out.println(" Code : "+servletConnection.getResponseMessage());
+
 		
-		InputStream input = servletConnection.getInputStream();
-
-		String dataString = "";
-		int data = input.read();
-		while(data != -1)
-		{
-			dataString = dataString + (char)data;
-			data = input.read();
-		}
-
-		input.close();
-		//System.out.print(dataString);
 	}
 	
 	
@@ -446,6 +435,8 @@ public class StorageClient extends StorageAccess {
 		toStore = encode(toStore);
 		//String location = locationURL+"/SimStSVHS/stores?cmd=store&userid="+key+"&text="+toStore;
 		String location = locationURL+"/Servlet/stores?cmd=store&userid="+key+"&text="+toStore;
+		//String location = "http://localhost:8080/Servlet/stores?cmd=store&userid="+key+"&text="+toStore;
+		
 		URL servlet = new URL(location);
 		URLConnection servletConnection = servlet.openConnection();
 		

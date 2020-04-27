@@ -314,7 +314,7 @@ public class Rule implements Serializable{
 			wmePath = wmePath.substring( 0, index );
 		    }
 		}
-		if(trace.getDebugCode("miss-rule"))trace.out("miss-rule", "Rule [" + name+ "]: wmePath = " + wmePath);
+		if(trace.getDebugCode("miss"))trace.out("miss-rule", "Rule [" + name+ "]: wmePath = " + wmePath);
 		
 		  
 		addLhsPath( wmePath );
@@ -490,7 +490,9 @@ public class Rule implements Serializable{
 			/*fix jess not accepting multiple bindings*/
 			int indx=line.indexOf("<-");
 			String firstVar=line.substring(0, indx-1);
-			if (set.contains(firstVar)){line=line.replace(firstVar+" ", firstVar+letters[i]+" ");}
+			if (set.contains(firstVar)){
+				line=line.replace(firstVar+" ", firstVar+letters[i]+" ");
+				}
 			set.add(firstVar);		
 			/*end of fix jess not accepting multiple bindings (there is also something further down on the selection wme)*/
 			
@@ -521,7 +523,9 @@ public class Rule implements Serializable{
 		int indx=selectionWme.indexOf("<-");
 		String firstVar=selectionWme.substring(0, indx-1);
 		lastLetterUsed++;
-		if (set.contains(firstVar)){selectionWme=selectionWme.replace(firstVar, firstVar+letters[lastLetterUsed]);}
+		if (set.contains(firstVar)){
+			selectionWme=selectionWme.replace(firstVar+" ", firstVar+letters[lastLetterUsed]+" ");
+		}
 		set.clear();
 		/*end of fix jess not accepting multiple bindings*/
 		
@@ -541,7 +545,6 @@ public class Rule implements Serializable{
 
         problemVar = str.split(" ")[0];
         
-       
 	return str;
     }
 

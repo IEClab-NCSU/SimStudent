@@ -1,0 +1,161 @@
+SimSt
+~~~
+!done
+MAIN::button|done|-1
+MAIN::cell|dorminTable1_C1R2|3x
+MAIN::cell|dorminTable2_C1R2|5
+ButtonPressed
+Id: null
+PreviousId: null
+~~~
+!done
+MAIN::button|done|-1
+MAIN::cell|dorminTable1_C1R2|3x
+MAIN::cell|dorminTable2_C1R2|5
+ButtonPressed
+Id: null
+PreviousId: null
+~~~
+!subtract
+MAIN::cell|dorminTable3_C1R1|subtract 3
+MAIN::cell|dorminTable1_C1R1|3x+2
+MAIN::cell|dorminTable2_C1R1|7
+UpdateTable
+Id: null
+PreviousId: null
+~~~
+!divide-typein
+MAIN::cell|dorminTable2_C1R2|7/3
+MAIN::cell|dorminTable2_C1R1|7
+MAIN::cell|dorminTable3_C1R1|subtract 3
+UpdateTable
+Id: null
+PreviousId: null
+~~~
+!divide-typein
+MAIN::cell|dorminTable1_C1R2|x/3+1
+MAIN::cell|dorminTable1_C1R1|x+3
+MAIN::cell|dorminTable3_C1R1|subtract 3
+UpdateTable
+Id: null
+PreviousId: null
+~~~
+done
+MAIN::button|done|-1
+MAIN::cell|dorminTable1_C1R2|3x
+MAIN::cell|dorminTable2_C1R2|5
+ButtonPressed
+Id: 1524592892_Done_3
+PreviousId: 1524592892_state9
+~~~
+done
+MAIN::button|done|-1
+MAIN::cell|dorminTable1_C1R2|x
+MAIN::cell|dorminTable2_C1R2|4
+ButtonPressed
+Id: 1476215867_Done
+PreviousId: 1476215867_state5
+~~~
+done
+MAIN::button|done|-1
+MAIN::cell|dorminTable1_C1R2|x
+MAIN::cell|dorminTable2_C1R2|4
+ButtonPressed
+Id: 1476215776_Done
+PreviousId: 1476215776_state3
+~~~
+subtract-typein
+MAIN::cell|dorminTable2_C1R2|5
+MAIN::cell|dorminTable2_C1R1|7
+MAIN::cell|dorminTable3_C1R1|subtract 2
+UpdateTable
+Id: 1524592892_state4
+PreviousId: 1524592892_state3
+~~~
+subtract-typein
+MAIN::cell|dorminTable1_C1R2|3x
+MAIN::cell|dorminTable1_C1R1|3x+2
+MAIN::cell|dorminTable3_C1R1|subtract 2
+UpdateTable
+Id: 1524592892_state3
+PreviousId: 1524592892_state2
+~~~
+subtract-typein
+MAIN::cell|dorminTable2_C1R2|4
+MAIN::cell|dorminTable2_C1R1|7
+MAIN::cell|dorminTable3_C1R1|subtract 3
+UpdateTable
+Id: 1476215867_state5
+PreviousId: 1476215867_state4
+~~~
+subtract-typein
+MAIN::cell|dorminTable1_C1R2|x
+MAIN::cell|dorminTable1_C1R1|x+3
+MAIN::cell|dorminTable3_C1R1|subtract 3
+UpdateTable
+Id: 1476215867_state4
+PreviousId: 1476215867_state1
+~~~
+divide-typein
+MAIN::cell|dorminTable2_C1R3|5/3
+MAIN::cell|dorminTable2_C1R2|5
+MAIN::cell|dorminTable3_C1R2|divide 3
+UpdateTable
+Id: 1524592892_state9
+PreviousId: 1524592892_state8
+~~~
+divide-typein
+MAIN::cell|dorminTable1_C1R3|x
+MAIN::cell|dorminTable1_C1R2|3x
+MAIN::cell|dorminTable3_C1R2|divide 3
+UpdateTable
+Id: 1524592892_state8
+PreviousId: 1524592892_state6
+~~~
+divide-typein
+MAIN::cell|dorminTable2_C1R2|4
+MAIN::cell|dorminTable2_C1R1|12
+MAIN::cell|dorminTable3_C1R1|divide 3
+UpdateTable
+Id: 1476215776_state3
+PreviousId: 1476215776_state2
+~~~
+divide-typein
+MAIN::cell|dorminTable1_C1R2|x
+MAIN::cell|dorminTable1_C1R1|3x
+MAIN::cell|dorminTable3_C1R1|divide 3
+UpdateTable
+Id: 1476215776_state2
+PreviousId: 1476215776_state1
+~~~
+subtract
+MAIN::cell|dorminTable3_C1R1|subtract 2
+MAIN::cell|dorminTable1_C1R1|3x+2
+MAIN::cell|dorminTable2_C1R1|7
+UpdateTable
+Id: 1524592892_state2
+PreviousId: start:3x+2_7
+~~~
+subtract
+MAIN::cell|dorminTable3_C1R1|subtract 3
+MAIN::cell|dorminTable1_C1R1|x+3
+MAIN::cell|dorminTable2_C1R1|7
+UpdateTable
+Id: 1476215867_state1
+PreviousId: start:x+3_7
+~~~
+divide
+MAIN::cell|dorminTable3_C1R2|divide 3
+MAIN::cell|dorminTable1_C1R2|3x
+MAIN::cell|dorminTable2_C1R2|5
+UpdateTable
+Id: 1524592892_state6
+PreviousId: 1524592892_state4
+~~~
+divide
+MAIN::cell|dorminTable3_C1R1|divide 3
+MAIN::cell|dorminTable1_C1R1|3x
+MAIN::cell|dorminTable2_C1R1|12
+UpdateTable
+Id: 1476215776_state1
+PreviousId: start:3x_12

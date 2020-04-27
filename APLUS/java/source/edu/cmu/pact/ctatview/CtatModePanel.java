@@ -170,13 +170,10 @@ public class CtatModePanel extends JComponent implements ChangeListener
         tutorTypeComboBox.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
         		getCtatLauncher().getFocusedController().getCtatModeModel().userSetMode((String) tutorTypeComboBox.getSelectedItem());
-        		getCtatLauncher().getLoggingSupport().authorActionLog(
-        				AuthorActionLog.BEHAVIOR_RECORDER, BR_Controller.SWITCH_MODE,
-        				tutorTypeComboBox.getSelectedItem().toString() + ", " +
-        				authorModeComboBox.getSelectedItem().toString());
+        		getCtatLauncher().getLoggingSupport().authorActionLog(AuthorActionLog.BEHAVIOR_RECORDER, BR_Controller.SWITCH_MODE,tutorTypeComboBox.getSelectedItem().toString() + ", " +authorModeComboBox.getSelectedItem().toString());
         	}
         });
-        
+
         
         final JLabel authorModeLabel = new JLabel("Author Mode:");
         authorModeLabel.setFont(new Font("Dialog", Font.PLAIN, 12));

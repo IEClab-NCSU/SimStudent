@@ -12,11 +12,13 @@ package edu.cmu.pact.miss;
 
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -26,6 +28,7 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.Serializable;
 import java.io.StringReader;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -62,11 +65,16 @@ import java.util.regex.Pattern;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 
 import jess.Activation;
 import jess.Defrule;
 import jess.Fact;
 import jess.Funcall;
+import jess.HasLHS;
 import jess.JessException;
 import jess.Value;
 import mylib.Combinations;
@@ -129,11 +137,13 @@ import edu.cmu.pact.miss.ProblemModel.Graph.SimStGraphNavigator;
 import edu.cmu.pact.miss.ProblemModel.Graph.SimStNode;
 import edu.cmu.pact.miss.ProblemModel.Graph.SimStProblemGraph;
 import edu.cmu.pact.miss.console.controller.MissController;
+import edu.cmu.pact.miss.jess.InquiryWebAuthoring;
 import edu.cmu.pact.miss.jess.ModelTraceWorkingMemory;
 import edu.cmu.pact.miss.jess.ModelTracer;
 import edu.cmu.pact.miss.jess.WorkingMemoryConstants;
 import edu.cmu.pact.miss.storage.FileZipper;
 import edu.cmu.pact.miss.userDef.algebra.EqFeaturePredicate;
+//import interaction.InquiryWebAuthoring;
 
 public final class SimSt implements Serializable {
 
@@ -261,8 +271,21 @@ public final class SimSt implements Serializable {
    	this.userID = userID;
    }
 
+   
+   private String problemCheckerOracle = "";
+   
+   public String getProblemCheckerOracle() {
+	return problemCheckerOracle;
+   }
+   public void setProblemCheckerOracle(String problemCheckerOracle) {
+	this.problemCheckerOracle = problemCheckerOracle;
+   }
+
+
+  
+   
    // Name of SimStudent that the student named
-   public static String SimStName = "Joe";
+   public static String SimStName = "";
    static String teacherName = "Mr. Williams";
 
    public static String getSimStName() {
@@ -435,6 +458,8 @@ public final class SimSt implements Serializable {
    	problemStepString = name;
    }
 
+   private InquiryWebAuthoring inquiryWebAuthoring;
+   
    
 
    // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
@@ -557,6 +582,10 @@ public final class SimSt implements Serializable {
    // flag to indicate whether CTAT is running in a batch mode.
    private boolean isBatchMode = false;
 
+   
+   //
+   
+   
 	/**
     * bit to keep track of whether the decomposeInput flag has already been processed 
     */
@@ -818,7 +847,23 @@ public final class SimSt implements Serializable {
    	if(trace.getDebugCode("miss"))trace.out("miss", "ProjectDir set to " + pDir );
        projectDir = pDir;
    }
+   
+   /***
+    *  This variable is meant for setting the project directory in the servlet 
+    */
+   private String projectDirectory = null;
 
+   public String getProjectDirectory() {
+	   if(projectDirectory == null)
+		   projectDirectory = new File(".").getPath();
+	    return projectDirectory;
+   }
+   public void setProjectDirectory(String directory) {
+	     projectDirectory = directory;
+   }
+
+   
+  
    // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
    // Student Interface class name
    // Mon Apr 24 22:27:31 2006
@@ -884,7 +929,7 @@ public final class SimSt implements Serializable {
        this.wmeTypeFile = wmeTypeFile.replace('\\','/');
        if(trace.getDebugCode("miss"))trace.out("miss", "Load WME types from " +  wmeTypeFile );
        if ( getInitStateFile() != null ) {
-           initRete( getWmeTypeFile(), getInitStateFile() );
+               initRete( getWmeTypeFile(), getInitStateFile() );
        }
    }
 
@@ -1159,11 +1204,13 @@ public final class SimSt implements Serializable {
    /*Domain dependent type checker, set by command line argument -ssTypeChecker.*/ 
    private static String typeChecker = "edu.cmu.pact.miss.FeaturePredicate.valueTypeForAlgebra";
    public static String getTypeChecker() {
-       return typeChecker;
+	   return typeChecker;
    }
    public static void setTypeChecker(String typeMatcher) {
        SimSt.typeChecker = typeMatcher;
    }
+   
+   
    
    //domain dependent method that checks if a skill is valid or not.
    private static String skillChecker = "edu.cmu.pact.miss.userDef.algebra.EqFeaturePredicate.isValidSimpleSkill";
@@ -1286,6 +1333,7 @@ public final class SimSt implements Serializable {
 	public void setSsMetaTutorMode(boolean ssMetaTutorMode) {
 		this.ssMetaTutorMode = ssMetaTutorMode;
 		if(isSsMetaTutorMode()){
+			//System.out.println(" Resettting the Memory ");
 			setModelTraceWM(new ModelTraceWorkingMemory());
 		}
 	}
@@ -1308,7 +1356,7 @@ public final class SimSt implements Serializable {
 		
 	 /** Boolean flag to indicate if the meta tutor is enabled or not.*/
 	   private transient boolean ssWebAuthoringMode = false;
-
+       public static boolean WEBAUTHORINGMODE = false;
 	   public boolean isSsWebAuthoringMode() {
 			return ssWebAuthoringMode;
 		}
@@ -1316,6 +1364,7 @@ public final class SimSt implements Serializable {
 	   public void setSsWebAuthoringMode(boolean ssWebAuthorMode) {
 			FoilData.WEBAUTHORINGMODE = ssWebAuthorMode;
 			this.ssWebAuthoringMode = ssWebAuthorMode;
+			WEBAUTHORINGMODE = ssWebAuthorMode;
 		}
 		
 	   /*Boolean indicating if we are in CogTutor mode*/
@@ -2073,7 +2122,8 @@ public final class SimSt implements Serializable {
 		    	fos.flush();
 		    	oos.close();
 		    	fos.close();
-		    	
+		       	if(trace.getDebugCode("miss"))trace.out("miss", "Save state");
+
 	    		Runnable runnable = new Runnable() {
 					@Override
 					public void run() {
@@ -2128,7 +2178,7 @@ public final class SimSt implements Serializable {
 		String productionRulesFile=jessFilesDirectory+ SimSt.PRODUCTION_RULE_FILE;
 		String wmeTypesFile=jessFilesDirectory+ SimSt.WME_TYPE_FILE;  
 		String initialFactsFile=jessFilesDirectory+  SimSt.INIT_STATE_FILE; 
-		String pleConfig=getProjectDir()+"/"+SimStPLE.CONFIG_FILE;
+		String pleConfig=getProjectDirectory()+"/"+SimStPLE.CONFIG_FILE;
 		
 		SimStSolver solver=new SimStSolver(SimSt.convertFromSafeProblemName(problem),productionRulesFile,wmeTypesFile, initialFactsFile, pleConfig, this ,getBrController().getModelTracer().getRete());
 		
@@ -2475,6 +2525,7 @@ public final class SimSt implements Serializable {
    }
    private void initRete( String wmeTypeFile, String initalWmeFile ) {
 
+	   System.out.println(" Initializing Rete ");
        try {
            getRete().reset();
            getRete().readFile( wmeTypeFile );
@@ -2702,8 +2753,83 @@ public final class SimSt implements Serializable {
 	   	return this.startStateChecker;
 	}
    
-   
-   
+  /* public boolean isSolvable(String oracleClass,String problemName,BR_Controller brController){
+		boolean answer = true;
+		
+		
+		SimStProblemGraph brGraph = new SimStProblemGraph();
+	    SimStNode problemNode = new SimStNode(SimSt.convertToSafeProblemName(problemName),brGraph);
+		brGraph.addSSNode(problemNode);
+		brController.getProblemModel().setStartNode(problemNode);
+		
+		
+		
+		
+		Class[] parameters = new Class[3];
+		parameters[0] = String.class;
+		parameters[1] = ProblemNode.class;
+		parameters[2] = BR_Controller.class;
+		
+		
+		try {
+			Class oracle = Class.forName("edu.cmu.pact.miss."+oracleClass);
+			Object oracleObj = oracle.newInstance();
+			Method askMethod = oracle.getMethod("askNextStep",parameters);
+			//System.out.println(" before while loop : "+answer);
+			while(answer){
+				//System.out.println("Inside the while loop");
+				//System.out.println("Next step for node : "+problemNode.toString());
+				Sai nextStep = (Sai)askMethod.invoke(oracleObj,problemName,problemNode,brController);
+				if(nextStep == null)
+					return false;
+				if(nextStep.getI().equalsIgnoreCase("donenosolution"))
+					return false;
+				else if(nextStep.getI().equalsIgnoreCase("done") || nextStep.getS().equalsIgnoreCase("done"))
+					break;
+				else{
+					SimStNode nextNode = new SimStGraphNavigator().simulatePerformingStep(problemNode,nextStep);	
+					problemNode = nextNode;
+					//System.out.println(" Next Node : "+nextStep.toString());
+				}
+								
+			}
+			//System.out.println(" After the while loop ");
+			brGraph.clear();
+			brController.createStartState(problemName);
+			//SimStNode previous = new SimStNode(SimSt.convertToSafeProblemName(problemName),brGraph);
+			//brController.getProblemModel().setStartNode(previous);
+			
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ProblemModelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			brGraph.clear();
+		}
+		 
+		
+		return answer;
+	}*/
    
    
    /* @author jinyul */
@@ -3064,12 +3190,20 @@ public final class SimSt implements Serializable {
 		trace.out("ss", "Removing "+rule.getName()+" "+rule.getAcceptedRatio()+" ("+instList.size()+" instructions)");
    }
 
+   public HasLHS findRule(String ruleName){
+	   return getBrController().getModelTracer().getRete().findDefrule(ruleName);
+   }
    // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
    // Communication with Miss Console
    //
    private static MissController missController = null;
-   public /*private*/ MissController getMissController() { return SimSt.missController; }
+   public /*private*/ MissController getMissController() {
+	   return SimSt.missController /*= SimSt.missControllerTable.get(this);
+	   return SimSt.missControllerTable.get(this)*/; 
+	   
+   }
    private void setMissController( MissController missController ) {
+	  // SimSt.missControllerTable.put(this,missController);
        SimSt.missController = missController;
    }
    public static boolean isMissControllerSet() {
@@ -3079,6 +3213,14 @@ public final class SimSt implements Serializable {
    public BR_Controller getBrController() {
        return getMissController().getBrController();
    };
+   
+   
+  /* public static Hashtable<SimSt,MissController> missControllerTable= new Hashtable<SimSt,MissController>();
+   
+   public static void setMissController(SimSt simst){
+	   if(simst != null)
+		   SimSt.missController= SimSt.missControllerTable.get(simst);
+   }*/
 
    private transient SimStRete ssRete = null;
 
@@ -3125,7 +3267,7 @@ public final class SimSt implements Serializable {
 	private transient ModelTraceWorkingMemory modelTraceWM = null;
 
 	public ModelTraceWorkingMemory getModelTraceWM() {
-		System.out.println("Model Trace Working Memory : "+modelTraceWM);
+		//System.out.println("Model Trace Working Memory : "+modelTraceWM);
 		return modelTraceWM;
 	}
 	public void setModelTraceWM(ModelTraceWorkingMemory modelTraceWM) {
@@ -3503,7 +3645,7 @@ public final class SimSt implements Serializable {
        getBrController().getModelTracer().setExternalRete(this.ssRete); 
        setJessOracleRete(new JessOracleRete(getBrController()));
        logger = new SimStLogger(missController.getBrController());
-
+        
        // Set "Home" dir
        URL codeBase = Utils.getCodeBaseURL( getClass() );
        trace.out ("codebase = " + codeBase);
@@ -3552,7 +3694,11 @@ public final class SimSt implements Serializable {
 	    	while(itr.hasNext()) { 
 	    		FoilData foilData = (FoilData)itr.next();
 	    		// Set up the foil-log and foil6.exe location
-	    		if(!isWebStartMode()) {
+	    		if(isSsWebAuthoringMode()){
+	    			foilData.setFoilDir();
+		    		foilData.setFoilLogDir(getProjectDirectory() + WebStartFileDownloader.separator + getFoilLogDir() + WebStartFileDownloader.separator);
+	    		}
+	    		else if(!isWebStartMode()) {
 	    		foilData.setFoilDir();
 	    		foilData.setFoilLogDir(getProjectDir() + WebStartFileDownloader.separator + getFoilLogDir() + WebStartFileDownloader.separator);
 	    		} else {
@@ -3724,55 +3870,83 @@ public final class SimSt implements Serializable {
    // Set default feature predicates and operator symbols
    public void initBackgroundKnowledge() {
 
-	trace.out("miss","****** Attempting to initialize SimSt background knowledge from directory " + getProjectDir());
+	trace.out("miss","****** Attempting to initialize SimSt background knowledge from directory " + getProjectDirectory());
 	 	 
 	trace.out("miss"," working folder is " + System.getProperty("user.dir"));
 	   
        // Read the feature-predicates from the file, if any,
        // otherwise, read them from a default list
-   	File featurePredicatesFile = null;
-   	featurePredicatesFile = new File(getProjectDir(), FEATURE_PREDICATES_FILE);
+   	String runType = System.getProperty("appRunType");
    	
-   	if (featurePredicatesFile==null)
-   		trace.out("miss","****** File " + FEATURE_PREDICATES_FILE + " not found in " + getProjectDir());
-   	else if (!featurePredicatesFile.exists()){
-   		trace.out("miss","****** File " + FEATURE_PREDICATES_FILE + " DOES NOT EXIST in " + getProjectDir());
-   	}
-   	else{
-   		trace.out("miss","*file handle is not null and file exists");
-   	}
-   	
-   	if(featurePredicatesFile != null && featurePredicatesFile.exists()) {
-   		if(trace.getDebugCode("miss"))trace.out("miss", "feature predicate file exists");
-           readFeaturePredicates( featurePredicatesFile.getAbsolutePath() );    		
-   	} else if(isWebStartMode()){ // For webstart
-   		if(trace.getDebugCode("miss"))trace.out("miss", "readFeaturePredicates WebStart");
-       	readFeaturePredicates(FEATURE_PREDICATES_FILE);
-   	} 
+
+    try{
+    		 if(runType.equalsIgnoreCase("webstart")){
+    		   		if(trace.getDebugCode("miss"))trace.out("miss", "readFeaturePredicates WebStart");
+    		       	readFeaturePredicates(WebStartFileDownloader.SimStAlgebraPackage+"/"+FEATURE_PREDICATES_FILE);
+    		       	if(trace.getDebugCode("miss"))trace.out("miss", "readRhsOpList WebStart");
+    		       	readRhsOpList(WebStartFileDownloader.SimStAlgebraPackage+"/"+RHS_OP_FILE); 
+    		    	if(trace.getDebugCode("miss"))trace.out("miss", "readConstraintPredicates WebStart");
+    		       	readConstraintPredicates(WebStartFileDownloader.SimStAlgebraPackage+"/"+CONSTRAINT_FILE); 
+    		   	}
+    		   	else if(runType.equalsIgnoreCase("servlet")){
+    		   		if(trace.getDebugCode("miss"))trace.out("miss", "readFeaturePredicates Servlet");
+    		       	readFeaturePredicates(System.getProperty("projectDir")+"/"+FEATURE_PREDICATES_FILE);
+    		       	if(trace.getDebugCode("miss"))trace.out("miss", "readRhsOpList WebAuthoring");
+    		   		readRhsOpList(System.getProperty("projectDir")+"/"+ RHS_OP_FILE);
+    		    	if(trace.getDebugCode("miss"))trace.out("miss", "readConstraintPredicates WebAuthoring");
+    		       	readConstraintPredicates(System.getProperty("projectDir")+"/"+CONSTRAINT_FILE);    		        	
+
+    		   		
+    		   	}
+    		   	else if(runType.equalsIgnoreCase("shellscript")) {
+    		   		if(trace.getDebugCode("miss"))trace.out("miss", "feature predicate file exists");
+    		   	        File featurePredicatesFile = new File(getProjectDir(), FEATURE_PREDICATES_FILE);
+    		   	    	File operatorFile = new File(getProjectDir(), RHS_OP_FILE);
+    		   	        File constraintFile = new File( getProjectDir(), CONSTRAINT_FILE );
+    		           if(featurePredicatesFile != null && featurePredicatesFile.exists())
+    		           readFeaturePredicates( featurePredicatesFile.getAbsolutePath() );  
+    		           if(operatorFile != null && operatorFile.exists())
+    		           readRhsOpList( operatorFile.getAbsolutePath() );
+    		           if(constraintFile != null  && constraintFile.exists())
+    		           readConstraintPredicates(constraintFile.getAbsolutePath());   
+
+    		           
+    		   	} 
+    	
+    }
+    catch(NullPointerException e){
+    	 trace.err(" Unknown application runtype");
+    }
+   
    	
    	// Reading the RHS operator symbols...
-   	File operatorFile = null;
+   /*	File operatorFile = null;
    	operatorFile = new File(getProjectDir(), RHS_OP_FILE);
    	
 	if (operatorFile==null)
    		trace.out("miss","****** File " + RHS_OP_FILE + " not found in " + getProjectDir());
 	
    
-   	if(operatorFile != null && operatorFile.exists()) {
+   	if(operatorFile != null && operatorFile.exists() && runType.equalsIgnoreCase("shellscript") ) {
            readRhsOpList( operatorFile.getAbsolutePath() );
-   	} else if(isWebStartMode()){ // For webstart
+   	} else if(runType.equalsIgnoreCase("webstart")){ // For webstart
    		if(trace.getDebugCode("miss"))trace.out("miss", "readRhsOpList WebStart");
        	readRhsOpList(RHS_OP_FILE);    		
+   	} else if(runType.equalsIgnoreCase("servlet")){
+   		if(trace.getDebugCode("miss"))trace.out("miss", "readRhsOpList WebAuthoring");
+   		readRhsOpList(System.getProperty("packageName")+"/"+ RHS_OP_FILE);
+   	}else{
+   		
    	}
 
    	File constraintFile = null;
        constraintFile = new File( getProjectDir(), CONSTRAINT_FILE );
-       if (constraintFile != null && constraintFile.exists()) {
+       if (constraintFile != null && constraintFile.exists() && runType.equalsIgnoreCase("shellscript")) {
            readConstraintPredicates(constraintFile.getAbsolutePath());   
        } else if(isWebStartMode()){ // For webstart
        	if(trace.getDebugCode("miss"))trace.out("miss", "readConstraintPredicates WebStart");
        	readConstraintPredicates(CONSTRAINT_FILE);    		        	
-       }
+       }*/
    }
 
    // -
@@ -3809,7 +3983,9 @@ public final class SimSt implements Serializable {
        //if(initWmeFile != null && initWmeFile.isAbsolute() && initWmeFile.exists() 
        //		&& wmeTypeFile != null && wmeTypeFile.isAbsolute() && wmeTypeFile.exists()) {
        	
-       if(!isWebStartMode()) {
+       String runType = System.getProperty("projectDir");
+       
+       if(runType.equals("shellscript")) {
        	initRete( getWmeTypeFile(), getInitStateFile() );
        } else {
 	        try {
@@ -3818,8 +3994,15 @@ public final class SimSt implements Serializable {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-	        parse(WebStartFileDownloader.SimStAlgebraPackage+"/"+WME_TYPE_FILE);
-			parse(WebStartFileDownloader.SimStAlgebraPackage+"/"+INIT_STATE_FILE); 
+	        if(isWebStartMode()){
+	        	parse(WebStartFileDownloader.SimStAlgebraPackage+"/"+WME_TYPE_FILE);
+				parse(WebStartFileDownloader.SimStAlgebraPackage+"/"+INIT_STATE_FILE); 
+	        }
+	        else{
+	        	parse(getProjectDirectory()+"/"+WME_TYPE_FILE);
+	        	parse(getProjectDirectory()+"/"+INIT_STATE_FILE);
+	        }
+	        
 		}
 
        // FOIL data
@@ -3885,10 +4068,15 @@ public final class SimSt implements Serializable {
        getMissController().consoleDisplayOperators( getRhsOpList() );
 
        File wmeTypeFile = null;
-       wmeTypeFile = new File(getProjectDir(), WME_TYPE_FILE);
+       String runType = System.getProperty("appRunType");
+       if(runType.equals("shellscript"))
+    	   wmeTypeFile = new File(getProjectDir(), WME_TYPE_FILE);
+       else if(runType.equals("servlet"))
+    	   wmeTypeFile = new File(System.getProperty("projectDir"), WME_TYPE_FILE);
+
        if(!isWebStartMode()) {
-       	setWmeTypeFile( wmeTypeFile.getAbsolutePath() );
-           getMissController().setConsoleWmeTypeFileLabel( getWmeTypeFile() );
+       	  setWmeTypeFile( wmeTypeFile.getAbsolutePath() );
+          getMissController().setConsoleWmeTypeFileLabel( getWmeTypeFile() );
        } else { // Added for webstart
            try {
    			getRete().reset();
@@ -3898,7 +4086,10 @@ public final class SimSt implements Serializable {
    		if(trace.getDebugCode("rr"))
    			trace.out("rr", "initBKWithMissConsole");
    		try {
-   			parse(WebStartFileDownloader.SimStAlgebraPackage+"/"+WME_TYPE_FILE);
+   			//if(!isWebStartMode())
+   			//	parse(getPackageName()+"/"+WME_TYPE_FILE);
+   		   // else
+   			    parse(WebStartFileDownloader.SimStAlgebraPackage+"/"+WME_TYPE_FILE);
    		} catch (Exception e) {
    			trace.errStack("Error parsing "+WebStartFileDownloader.SimStAlgebraPackage+
 					"/"+WME_TYPE_FILE, e);
@@ -3909,24 +4100,34 @@ public final class SimSt implements Serializable {
        }
 
        File initWmeFile = null;
-       initWmeFile = new File(getProjectDir(), INIT_STATE_FILE);
+       if(runType.equals("shellscript"))
+    	   initWmeFile = new File(getProjectDir(), INIT_STATE_FILE);
+       else if(runType.equals("servlet"))
+           initWmeFile = new File(System.getProperty("projectDir"), INIT_STATE_FILE);
+
        if(!isWebStartMode() && initWmeFile.exists()) {
            //the result of this should be getProjectDir/init.wme, trivially
            setInitStateFile( initWmeFile.getAbsolutePath() );
            getMissController().setConsoleInitWmeFileLabel( getInitStateFile() );
        } else if(isWebStartMode()){ //Added for webstart 
     	   parse(WebStartFileDownloader.SimStAlgebraPackage+"/"+INIT_STATE_FILE);         	
-       }
+       }/*else
+    	   parse(getPackageName()+"/"+INIT_STATE_FILE);*/
 
        File initWmeStructureFile = null;
-       initWmeStructureFile = new File(getProjectDir(), DEFAULT_STUCTURE_FILE );
+       if(runType.equals("shellscript"))
+    	   initWmeStructureFile = new File(getProjectDir(), DEFAULT_STUCTURE_FILE );
+       else if(runType.equals("servlet"))
+    	   initWmeStructureFile = new File(System.getProperty("projectDir"), DEFAULT_STUCTURE_FILE );
+
        if(!isWebStartMode() && initWmeStructureFile.exists()) {
            //the result of this should be getProjectDir/init.wme, trivially
            setWmeStructureFile( initWmeStructureFile.getAbsolutePath() );
            getMissController().setConsoleInitWmeFileLabel( getInitStateFile() );
        } else if(isWebStartMode()){ // Added for WebStart
     	   loadWMEStructureFromReader(WebStartFileDownloader.SimStAlgebraPackage+"/"+DEFAULT_STUCTURE_FILE);
-       }        
+       }/* else
+    	   loadWMEStructureFromReader(getPackageName()+"/"+DEFAULT_STUCTURE_FILE);*/
    }
 
    /**
@@ -3944,9 +4145,12 @@ public final class SimSt implements Serializable {
        initWmeFile = new File(getProjectDir(), INIT_STATE_FILE);
 
        // Reset Rete
-       if(!isWebStartMode()) {
+       
+       String runType = System.getProperty("appRunType");
+       
+       if(runType.equals("shellscript") || runType.equals("servlet")) {
        	initRete( getWmeTypeFile(), getInitStateFile() );
-       } else { // For webstart
+       } else if(isWebStartMode()) { // For webstart
        	try {
 				getRete().reset();
 			} catch (JessException e) {
@@ -3955,6 +4159,15 @@ public final class SimSt implements Serializable {
 			}
        		parse(WebStartFileDownloader.SimStAlgebraPackage+"/"+WME_TYPE_FILE);
        		parse(WebStartFileDownloader.SimStAlgebraPackage+"/"+INIT_STATE_FILE);
+       } else{
+    	   try {
+				getRete().reset();
+			} catch (JessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+      		//parse(getProjectDirectory()+"/"+WME_TYPE_FILE);
+      		//parse(getProjectDirectory()+"/"+INIT_STATE_FILE);
        }
 
        /*
@@ -6142,7 +6355,7 @@ public final class SimSt implements Serializable {
 			Vector activationList = gatherActivationList(currentNode, hm);
 				
 			Collection<RuleActivationNode> activList = createOrderedActivationList(activationList);
-			int activationListDuration = (int) (Calendar.getInstance().getTimeInMillis() - activationListStartTime);
+			int activationListDuration = (int) ((Calendar.getInstance().getTimeInMillis() - activationListStartTime)/1000);
 			
 			
 			//trace.err("Activation list is " + activationList);
@@ -8431,7 +8644,7 @@ public final class SimSt implements Serializable {
        if(trace.getDebugCode("miss"))trace.out("miss", "actualSelection: " + selection);
        if(trace.getDebugCode("miss"))trace.out("miss", "   actualAction: " + action);
        if(trace.getDebugCode("miss"))trace.out("miss", "    actualInput: " + input);
-       if(trace.getDebugCode("miss"))trace.out("miss", "    asking oracle: " + SimSt.RA_TEST_METHOD_JESS_ORACLE /*getRuleActivationTestMethod()*/);
+       if(trace.getDebugCode("miss"))trace.out("miss", "    asking oracle: " + getRuleActivationTestMethod() /*getRuleActivationTestMethod()*/);
        
        String mtStatus = null;
        if (this.isUseCacheOracleInquiry()){
@@ -8468,8 +8681,8 @@ public final class SimSt implements Serializable {
                    }
                    //nbarba 06/01/14: elseif condition to redirect to the Jess oracly inquiry function 
                    else if (getRuleActivationTestMethod().equalsIgnoreCase(RA_TEST_METHOD_WEBAUTHORING)){
-                	   mtStatus=this.getWebAuthoringBackend().inquireRAWebAuthoring(selection, input, action, problemNode, problemName);
                 	   
+                	   mtStatus=this.inquireRAWebAuthoring(selection, input, action, problemNode, problemName);
                 	   if (mtStatus.equals(EdgeData.CORRECT_ACTION)){
                 		   
                 			MessageObject mo = MessageObject.create("InterfaceAction");
@@ -8575,7 +8788,15 @@ public final class SimSt implements Serializable {
 
 
 
-   /*public String calcProblemStepString()
+   private String inquireRAWebAuthoring(String selection, String input, String action, ProblemNode problemNode,
+		String problemName) {
+	// TODO Auto-generated method stub
+	String returnValue = this.getInquiryWebAuthoring().isCorrectStep(selection, action, input) ? EdgeData.CORRECT_ACTION : EdgeData.UNTRACEABLE_ERROR;
+
+	return returnValue;
+}
+
+/*public String calcProblemStepString()
    {
        ProblemNode currentNode = getBrController().getCurrentNode();
        if(currentNode == null)
@@ -9553,6 +9774,7 @@ public final class SimSt implements Serializable {
    public void setCurrentBrdPath(String s){
        currentBrdPath = s;
    }
+  
 
    //also returns a ProblemNode (possible by setting a field)
    public String inquiryRuleActivationBRD(String selection, String action, String input, 
@@ -9641,8 +9863,9 @@ public final class SimSt implements Serializable {
        	// Model-tracing the student interface action (clicking either the Yes or No button) in response to the 
        	// SimStudent feedback request
        	if(isSsMetaTutorMode()) {
-
+  
 	      		if(getBrController() != null && getBrController().getAmt() != null) {
+	      			//System.out.println("Yes or No or Done button clicked ");
 	      			if(oracle == JOptionPane.YES_OPTION) {
 	      				
 	      				// If the feedback is for done then run the model-tracer for done, ButtonPressed, -1
@@ -9668,7 +9891,7 @@ public final class SimSt implements Serializable {
        		//}
        		if(logger.getLoggingEnabled())
        		{
-       			int verifyDuration = (int) (Calendar.getInstance().getTimeInMillis() - verifyRequestTime);
+       			int verifyDuration = (int) ((Calendar.getInstance().getTimeInMillis() - verifyRequestTime)/1000);
 	        		logger.simStLog(SimStLogger.SIM_STUDENT_INFO_RECEIVED, SimStLogger.INPUT_VERIFY_ACTION, step, 
 	        				status, title+":"+msg, sai,node,hint.getSelection(), hint.getAction(), hint.getInput(), verifyDuration,msg);
        		}
@@ -10527,7 +10750,7 @@ public final class SimSt implements Serializable {
                    //This is unnecessary
                    if (ruleLearned) {
                 	   //code added to store when a disjucnt is learned and if disjunct learning was acceptable or normal
-                	   int timeToLearnDisjunct = (int) (Calendar.getInstance().getTimeInMillis() - disjunctStartTime);
+                	   int timeToLearnDisjunct = (int) ((Calendar.getInstance().getTimeInMillis() - disjunctStartTime)/1000);
                 	   String reasonForCreatingDisjunct=timeOutOnFirstAttempt? SimStLogger.ACCEPTABLE_DISJUNCT : SimStLogger.NORMAL_DISJUNCT;
                 	   logger.simStLog(SimStLogger.SIM_STUDENT_LEARNING, SimStLogger.DISJUNCT_LEARNING, getProblemStepString(), reasonForCreatingDisjunct,"", null, timeToLearnDisjunct);
                 	  
@@ -10556,7 +10779,7 @@ public final class SimSt implements Serializable {
            ruleLearned = changeInstructionNameFor(disjunctiveName, name, node, instruction);
            if (ruleLearned) {
         	   //code added to store when a disjucnt is learned and if disjunct learning was acceptable or normal
-        	   int timeToLearnDisjunct = (int) (Calendar.getInstance().getTimeInMillis() - disjunctStartTime);
+        	   int timeToLearnDisjunct = (int) ((Calendar.getInstance().getTimeInMillis() - disjunctStartTime)/1000);
         	   String reasonForCreatingDisjunct=timeOutOnFirstAttempt? SimStLogger.ACCEPTABLE_DISJUNCT : SimStLogger.NORMAL_DISJUNCT;
         	   logger.simStLog(SimStLogger.SIM_STUDENT_LEARNING, SimStLogger.DISJUNCT_LEARNING, getProblemStepString(), reasonForCreatingDisjunct,"", null, timeToLearnDisjunct);
         	   
@@ -10582,7 +10805,7 @@ public final class SimSt implements Serializable {
            //ToDo: change this to show disjunctiveName also (or instead)
            if(trace.getDebugCode("miss"))trace.out( "miss", name + " has been learned " + getRuleFreq( name ) + " times" );
 
-           int ruleLearnDuration = (int) (Calendar.getInstance().getTimeInMillis() - ruleStartTime);
+           int ruleLearnDuration = (int) ((Calendar.getInstance().getTimeInMillis() - ruleStartTime)/1000);
 	        
            //if(isSsMetaTutorMode()){
            //	getModelTraceWM().getEventHistory().add(0, getModelTraceWM().new Event(SimStLogger.RULE_LEARN_PERFORMANCE_ACTION));
@@ -10749,8 +10972,8 @@ public final class SimSt implements Serializable {
    		//hint = new AskHintJessOracle(controller,currentNode, controller.getProblemName().replace("_", "="));
    		hint = new AskHintJessOracle(controller,currentNode);
   	else if(hintMethodName.equalsIgnoreCase(AskHint.HINT_METHOD_WEBAUTHORING))
-   		//hint = new AskHintWebAuthoring(controller, currentNode);
-  		hint=this.getWebAuthoringBackend().askForHintWebAuthoring(controller,currentNode);
+   		hint = new AskHintWebAuthoring(controller, currentNode);
+  		//hint=this.getWebAuthoringBackend().askForHintWebAuthoring(controller,currentNode);
    	else 
    		new Exception("No valid hint method was specified!").printStackTrace();
    	
@@ -11024,10 +11247,10 @@ public final class SimSt implements Serializable {
    		prFile = new File(WebStartFileDownloader.SimStWebStartDir + getPrFileName() );
        }
 
-  /* 	if (isSsWebAuthoringMode()){
-   		prFile = new File(FoilData.WEB_AUTHORING_TRAINING_DIRECTORY + getPrFileName() );
+  	if (isSsWebAuthoringMode()){
+   		prFile = new File(getProjectDirectory()+"/"+ getPrFileName() );
    	}
-    */
+    
    	  //File prFile = new File( getProjectDir(), getPrFileName() );
        FileOutputStream prFileOutputStream = null;
 
@@ -11053,11 +11276,11 @@ public final class SimSt implements Serializable {
        	ageFile = new File(fullAgePath + WebStartFileDownloader.separator + ageFileName);
        }
        
-    /*   if (isSsWebAuthoringMode()){
-    		fullAgePath = FoilData.WEB_AUTHORING_TRAINING_DIRECTORY + getPrAgeDir() + "_" + getUserID() + "_" + FileZipper.formattedDate();
-           	ageFile = new File(fullAgePath + WebStartFileDownloader.separator + ageFileName);
+      if (isSsWebAuthoringMode()){
+    	    fullAgePath = getProjectDirectory() +"/" + getPrAgeDir();
+           	ageFile = new File(getProjectDirectory()+ WebStartFileDownloader.separator +getPrAgeDir()+WebStartFileDownloader.separator+ ageFileName);
       	}
-      */ 
+      
        
 
        boolean userFile = false;
@@ -11329,7 +11552,7 @@ public final class SimSt implements Serializable {
 	                    getPredicates(),
 	                    getFocusOfAttention(name),
 	                    getFeaturePredicateCache(),
-	                    /*getProjectDir() + "\\" + getFoilLogDir() + "\\"*/ getProjectDir() + WebStartFileDownloader.separator + getFoilLogDir() + WebStartFileDownloader.separator, getFoilMaxTuples());
+	                    /*getProjectDir() + "\\" + getFoilLogDir() + "\\"*/ getProjectDirectory() + WebStartFileDownloader.separator + getFoilLogDir() + WebStartFileDownloader.separator, getFoilMaxTuples());
 	            foilData.setDecomposers(decomposers);
 	            foilDataHash.put( name, foilData );
 	            // getFoilData(instruction.getName(),instruction.numFocusOfAttention() -1);
@@ -11426,7 +11649,7 @@ public final class SimSt implements Serializable {
                        searchRhsOpsFor(instructions);
 
            endTime = (new Date()).getTime();
-           duration = endTime - startTime;
+           duration = (endTime - startTime)/1000;
            if (rhsOps!=null) {
                numOp = rhsOps.size();
            }
@@ -11481,7 +11704,7 @@ public final class SimSt implements Serializable {
             
             
            endTime = (new Date()).getTime();
-           duration = endTime - startTime;
+           duration = (endTime - startTime)/1000;
            int numPath = lhsPath.size();
            if(trace.getDebugCode("miss"))trace.out("miss", "... found " + numPath + " paths in " + duration + "ms.");
 
@@ -12154,7 +12377,9 @@ public final class SimSt implements Serializable {
        File wmeTypeFileExists = null;
        String wmeTypeFile = null;
        wmeTypeFileExists = new File(getProjectDir(), WME_TYPE_FILE);
-       if(!isWebStartMode()) {
+       if(isSsWebAuthoringMode())
+    	   wmeTypeFile = getProjectDirectory()+"/"+WME_TYPE_FILE;
+       else if(!isWebStartMode()) {
 			wmeTypeFile = wmeTypeFileExists.toString();
        } else {
     	   wmeTypeFile = WebStartFileDownloader.SimStAlgebraPackage+"/"+WME_TYPE_FILE;
@@ -12171,7 +12396,9 @@ public final class SimSt implements Serializable {
        File wmeTypeFileExists = null;
        String wmeTypeFile = null;
        wmeTypeFileExists = new File(getProjectDir(), WME_TYPE_FILE);
-       if(!isWebStartMode()) {
+       if(isSsWebAuthoringMode())
+    	   wmeTypeFile = getProjectDirectory()+"/"+WME_TYPE_FILE;
+       else if(!isWebStartMode()) {
        	wmeTypeFile = wmeTypeFileExists.toString();
        } else {
     	   wmeTypeFile = WebStartFileDownloader.SimStAlgebraPackage+"/"+WME_TYPE_FILE;
@@ -12192,16 +12419,21 @@ public final class SimSt implements Serializable {
    	//	if(trace.getDebugCode("nbarbaDebug"))trace.out("nbarbaDebug", "all instructinos to searchLhsPaths are: " + instructions);
     //  	if(trace.getDebugCode("nbarbaDebug"))trace.out("nbarbaDebug", "creating Lhs state from : " + instructions.get(0));
        LhsState initState = new LhsState( instructions.get(0) );
-       if(!isWebStartMode())
-       	successorFn = new LhsSearchSuccessorFn( new File(getProjectDir(), WME_TYPE_FILE).toString(),
-           		new File(getProjectDir(), INIT_STATE_FILE).toString(),
-           		new File(getProjectDir(), DEFAULT_STUCTURE_FILE).toString(),
-                   instructions,getConstraintPredicateClasses(), this.generalWmePaths,this.ssRete);
+       if(isSsWebAuthoringMode())
+    	   successorFn = new LhsSearchSuccessorFn(getProjectDirectory()+"/"+WME_TYPE_FILE,
+    			   getProjectDirectory()+"/"+INIT_STATE_FILE,
+    			   getProjectDirectory()+"/"+DEFAULT_STUCTURE_FILE,
+                       instructions,getConstraintPredicateClasses(), this.generalWmePaths,this.ssRete);
        else if(isWebStartMode())
        	successorFn = new LhsSearchSuccessorFn(WebStartFileDownloader.SimStAlgebraPackage+"/"+WME_TYPE_FILE,
        			WebStartFileDownloader.SimStAlgebraPackage+"/"+INIT_STATE_FILE,
        			WebStartFileDownloader.SimStAlgebraPackage+"/"+DEFAULT_STUCTURE_FILE,
                    instructions,getConstraintPredicateClasses(), this.generalWmePaths,this.ssRete);
+       else
+    	   successorFn = new LhsSearchSuccessorFn( new File(getProjectDir(), WME_TYPE_FILE).toString(),
+              		new File(getProjectDir(), INIT_STATE_FILE).toString(),
+              		new File(getProjectDir(), DEFAULT_STUCTURE_FILE).toString(),
+                      instructions,getConstraintPredicateClasses(), this.generalWmePaths,this.ssRete);
        LhsGoalTest goalTest = new LhsGoalTest();
        Problem problem = new Problem( initState, successorFn, goalTest );
 
@@ -12299,9 +12531,8 @@ public final class SimSt implements Serializable {
                logger.simStLogException(e);
            }    		
    	} else { // For webstart
-   			String file = WebStartFileDownloader.SimStAlgebraPackage+"/"+fileName;
 	    	ClassLoader cl = this.getClass().getClassLoader();
-	    	InputStream is = cl.getResourceAsStream(file);
+	    	InputStream is = cl.getResourceAsStream(fileName);
 	    	if(is == null) //File does not exist in provided jars
 	    		return;
 	    	InputStreamReader isr = new InputStreamReader(is);
@@ -12401,15 +12632,14 @@ public final class SimSt implements Serializable {
                e.printStackTrace();
                logger.simStLogException(e);
            }    		
-   	} else { // For webstart
-   			String file = WebStartFileDownloader.SimStAlgebraPackage+"/"+fpFile;
+   	} else{ // For webstart
 	    	ClassLoader cl = this.getClass().getClassLoader();
-	    	InputStream is = cl.getResourceAsStream(file);
+	    	InputStream is = cl.getResourceAsStream(fpFile);
 	    	if(is == null) //File does not exist in provided jars
 	    		return;
 	    	InputStreamReader isr = new InputStreamReader(is);
 	    	reader = new BufferedReader(isr);    		
-   	}
+   	} 
    	
 
        try {
@@ -12443,9 +12673,8 @@ public final class SimSt implements Serializable {
                logger.simStLogException(e);
            }    		
    	} else { // For webstart
-   			String file = WebStartFileDownloader.SimStAlgebraPackage+"/"+constraintFile;
 	    	ClassLoader cl = this.getClass().getClassLoader();
-	    	InputStream is = cl.getResourceAsStream(file);
+	    	InputStream is = cl.getResourceAsStream(constraintFile);
 	    	if(is == null)  //File does not exist in provided jars
 	    		return;
 	    	InputStreamReader isr = new InputStreamReader(is);
@@ -12917,6 +13146,58 @@ public final class SimSt implements Serializable {
    }
    */
 
+	public void restoreMTWMState(){
+		try{
+			File file =  null;
+			if(!isWebStartMode())
+				file = new File(getUserID()+"-wm.xml");
+			else
+				file = new File(WebStartFileDownloader.SimStWebStartDir+getUserID()+"-wm.xml");
+			if(file.exists()) {
+				JAXBContext jaxbContext = JAXBContext.newInstance(ModelTraceWorkingMemory.class);
+
+				Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+				ModelTraceWorkingMemory mt = (ModelTraceWorkingMemory) jaxbUnmarshaller.unmarshal(file);
+				setModelTraceWM(mt);
+			}
+		  } catch (JAXBException e) {
+			e.printStackTrace();
+		  }
+
+	}
+	
+	public void saveMTWMState(){
+		try{
+		
+			File file = null;
+			//System.out.println(" Web start ? "+isWebStartMode());
+			if(!isWebStartMode())
+				file = new File(getUserID()+"-wm.xml");
+			else
+				file = new File(WebStartFileDownloader.SimStWebStartDir+getUserID()+"-wm.xml");
+			
+			ModelTraceWorkingMemory mt = (ModelTraceWorkingMemory) getModelTraceWM().clone();
+			JAXBContext jaxbContext = JAXBContext.newInstance(ModelTraceWorkingMemory.class);
+			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+			jaxbMarshaller.marshal(mt, file);
+			//jaxbMarshaller.marshal(mt, System.out);
+		}
+		 catch (JAXBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		
+	}
+	public InquiryWebAuthoring getInquiryWebAuthoring() {
+		return inquiryWebAuthoring;
+	}
+	public void setInquiryWebAuthoring(InquiryWebAuthoring inquiryWebAuthoring) {
+		this.inquiryWebAuthoring = inquiryWebAuthoring;
+	}
+	
+	
 }
 
 

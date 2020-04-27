@@ -399,16 +399,16 @@ public class CtatModeModel implements BR_Controller.WillNotifyListeners {
 	 * Access for gui to set author mode.
 	 */
     public String userSetMode(String newMode) {
-		//trace.out("mg", "CtatModeModel (userSetMode): working with controller "
-		//		+ this.controller.getTabNumber() + ", old = " + getCurrentMode()
-		//		+ ", new = " + newMode);
+		trace.out("mg", "CtatModeModel (userSetMode): working with controller "
+				+ this.controller.getTabNumber() + ", old = " + getCurrentMode()
+				+ ", new = " + newMode);
     	String result = previousMode;
     	/*
          * 10/22/06 sewall: always shift to demonstrate mode for SimStudent.
          * Don't do anything special when changing out of SimStudent.
          */ 
         if (SIMULATED_STUDENT_MODE.equals(newMode) && !newMode.equals(previousMode)) {
-            //internalSetAuthorMode(DEMONSTRATING_SOLUTION);
+           // internalSetAuthorMode(DEMONSTRATING_SOLUTION);
         	// When switched to SimStudent Tutor Type the mode should always
         	// be set to "Set Start State"
         	internalSetAuthorMode(DEFINING_START_STATE);

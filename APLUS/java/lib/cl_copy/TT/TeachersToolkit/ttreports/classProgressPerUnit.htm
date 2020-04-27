@@ -1,0 +1,94 @@
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+	<xsl:output method="html" encoding="UTF-8" />
+	<xsl:template match="/Report">
+		<div style="font-weight: bold; font-size: medium; color: #5582d5">CLASS PROGRESS REPORT per UNIT</div>
+		<xsl:element name="table" use-attribute-sets="top-table">
+			<!-- top-table -->
+			<tr height="10px;">
+				<!-- EMPTY ROW to add spacing -->
+				<td colspan="4"></td>
+			</tr>
+			<tr>
+				<td style="font-weight: bold" width="70">STUDENT</td>
+				<td style="font-weight: bold" width="70">All</td>
+				<td style="font-weight: bold; padding: 0 0 0 30px;" width="120">INSTRUCTOR</td>
+				<td><xsl:value-of select="@instructor_name" /></td>
+			</tr>
+			<tr valign="top">
+				<td style="font-weight: bold">DATE</td>
+				<td><xsl:value-of select="@timestamp" /></td>
+				<td style="font-weight: bold; padding: 0 0 0 30px;" valign="top">CLASS</td>
+				<td><xsl:value-of select="@class_name" /></td>
+			</tr>
+			<tr height="10px;">
+				<!-- EMPTY ROW to add spacing -->
+				<td colspan="4"></td>
+			</tr>
+		<!-- END top-table -->
+		</xsl:element>
+		<xsl:element name="table" use-attribute-sets="main-table">
+			<tr style="background: #5582d5; color: #ffffff;">
+				<th style="text-align: left;" colspan="2">UNIT</th>
+				<th style="text-align: left;" colspan="2">NUMBER OF STUDENTS</th>
+			</tr>
+			<xsl:for-each select="Curriculum/Unit">
+				<xsl:variable name="bkgd">
+					<xsl:choose>
+						<xsl:when test="position() mod 2 = 1">#ffffff</xsl:when>
+						<xsl:otherwise>#e4eef7</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+				<tr style="background: {$bkgd};">
+					<td style="width: 20px; font-weight: bold;"><xsl:value-of select="@id" /></td>
+					<td style="width: 235px;"><xsl:value-of select="@name" /></td>
+					<xsl:variable name="student_count" select="@student_count" />
+					<td style="width: 10px; font-weight: bold; text-align: center; border: 1px"><xsl:value-of select="$student_count" /></td>
+					<td style="width: 240px; color: #5582d5;">
+						<xsl:call-template name="student-symbols">
+							<xsl:with-param name="count" select="$student_count" />
+						</xsl:call-template>
+					</td>
+				</tr>
+			</xsl:for-each>
+			<tr style="background: #5582d5;">
+				<td colspan="4"></td>
+			</tr>
+		<!-- END main table -->
+		</xsl:element>
+	</xsl:template>
+
+	<xsl:template name="student-symbols">
+		<xsl:param name="count" />
+		<xsl:if test="$count > 0">
+			&amp;#9679;
+			<xsl:call-template name="student-symbols">
+				<xsl:with-param name="count" select="$count - 1" />
+			</xsl:call-template>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:attribute-set name="top-table">
+		<xsl:attribute name="border">0</xsl:attribute>
+		<xsl:attribute name="align">left</xsl:attribute>
+		<xsl:attribute name="cellpadding">0</xsl:attribute>
+		<xsl:attribute name="cellspacing">0</xsl:attribute>
+		<!-- needs BOTH css attribute clear: both and html
+		     attribute clear="both" so it will be respected in
+			 all browsers and the HTML panel -->
+		<xsl:attribute name="clear">both</xsl:attribute>
+		<xsl:attribute name="style">font-size: small; clear: both;</xsl:attribute>
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="main-table">
+		<xsl:attribute name="border">0</xsl:attribute>
+		<xsl:attribute name="align">left</xsl:attribute>
+		<xsl:attribute name="cellpadding">1</xsl:attribute>
+		<xsl:attribute name="cellspacing">0</xsl:attribute>
+		<xsl:attribute name="width">620</xsl:attribute>
+		<!-- needs BOTH css attribute clear: both and html
+		     attribute clear="both" so it will be respected in
+			 all browsers and the HTML panel -->
+		<xsl:attribute name="clear">both</xsl:attribute>
+		<xsl:attribute name="style">font-size: small; clear: both;</xsl:attribute>
+	</xsl:attribute-set>
+</xsl:stylesheet>

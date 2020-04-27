@@ -6,6 +6,7 @@ import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Frame;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,9 +20,13 @@ import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JEditorPane;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.html.HTMLDocument;
 
@@ -45,8 +50,9 @@ public class SimStMessageDialog extends JDialog implements ActionListener{
 		public static final int SHOW_QUIZ_EXAMPLES=3;
 		public static final int SHOW_PRACTICE_EXAMPLES_COGTUTOR=4;
 		private static final String DONT_SHOW_AGAIN="Don't show this again";
-		
-		
+		private static final String okText = "<html><centre>I would like to edit my solution and resubmit.</centre></html>";
+		private static final String practiceText = "<html><centre>I would like to practice equations.</centre></html>";
+		private static final String reviewText = "<html><centre>I would like to review examples.</centre></html>";
 		
 		/** Message to display */
 		String message;
@@ -132,14 +138,13 @@ public class SimStMessageDialog extends JDialog implements ActionListener{
 		 * @param ShowTwoButtons	
 		 * @param buttonText		the text for the 2nd button.
 		 */
-		public SimStMessageDialog(Frame parent, SimStLogger log,String message, boolean showCheckBox ,int appearanceType,boolean ShowTwoButtons,String buttonText){
+		public SimStMessageDialog(Frame parent, SimStLogger log,String message, boolean showCheckBox ,int appearanceType,boolean ShowTwoButton,String buttonText){
 			super(parent, true); 
 			logger = log;
 			this.showCheckbox=showCheckBox;
 			this.appearanceType=appearanceType;
-			this.showTwoButtons=showTwoButtons;
+			this.showTwoButtons=ShowTwoButton;
 			this.buttonText=buttonText;
-			
 			init(message);
 			
 		}	
@@ -152,6 +157,7 @@ public class SimStMessageDialog extends JDialog implements ActionListener{
 		
 			setTitle(" Mr. Williams says    	");
 			
+			
 			setLocation(new java.awt.Point(400,200));
 			setSize(400,260);
 			setResizable(true);
@@ -162,110 +168,134 @@ public class SimStMessageDialog extends JDialog implements ActionListener{
 			setLocationRelativeTo(null);
 
 
-			
-			contentPane.setLayout(new BorderLayout());
-			
-			hintsJEditorPane = new JEditorPane();
-			hintsJEditorPane.setName("hintsJEditorPane");
-			hintsJEditorPane.setContentType("text/html");
-			hintsJEditorPane.setText("<html><br><br><br><br></html>");
-			hintsJEditorPane.setAutoscrolls(true);
-			hintsJEditorPane.setEditable(false);
-			hintsJEditorPane.setFocusable(false);
-			hintsJEditorPane.setMargin(new Insets(20,20,20,20));
+			if(this.appearanceType == SHOW_TRHREE_BUTTONS) {
+				
+				setSize(350,312);
+				setTitle(" What would I do next ?");
+				contentPane.setLayout(new BorderLayout());
+					
+				JPanel buttonPanel = new JPanel(new GridLayout(3,1,0,20));
+				contentPane.add(buttonPanel, BorderLayout.CENTER);
+				Border border = buttonPanel.getBorder();
+				Border margin = new EmptyBorder(35,50,50,50);
+				buttonPanel.setBorder(new CompoundBorder(border, margin));
+				
+				okJButton.setText(okText);
+				buttonPanel.add(okJButton);
+				
+				utilityJButton1.setText(practiceText);
+				buttonPanel.add(utilityJButton1);
 
-			
-			
-			hintsJEditorScrollPane = new JScrollPane(hintsJEditorPane);
-			contentPane.add(hintsJEditorPane, BorderLayout.CENTER);
-		
-			
-			
-	        okCancelPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-	        
-	        if (!this.showCheckbox)
-	        	okCancelPanel.setBorder(new EmptyBorder(0, 0, 15, 0));
-	        
-	        okJButton.setBackground(new Color(209,217,225)); 
-	        utilityJButton1.setBackground(new Color(209,217,225));   
-	        utilityJButton2.setBackground(new Color(209,217,225)); 	        
-	       
-	        /*    
-	        if (this.showTwoButtons){
-	        	okJButton.setText(REVIEW_EXAMPLES);
-		        okCancelPanel.add(okJButton);
-		        okCancelPanel.add(quizJButton);
-	        }
-	        else{
-		        okCancelPanel.add(okJButton);
-	        }
-	        */
-	        
-	        if (this.appearanceType==SHOW_PRACTICE_EXAMPLES){
-	        	okJButton.setText(START_PRACTICE);
-	        	utilityJButton1.setText(REVIEW_EXAMPLES);
-		        okCancelPanel.add(okJButton);
-		        okCancelPanel.add(utilityJButton1);
-	        }
-	        else if (this.appearanceType==SHOW_PRACTICE_EXAMPLES_COGTUTOR){
-	        	okJButton.setText(START_SOLVING);
-	        	utilityJButton1.setText(REVIEW_EXAMPLES);
-		        okCancelPanel.add(okJButton);
-		        okCancelPanel.add(utilityJButton1);
-	        }
-	        else if (this.appearanceType==SHOW_QUIZ_EXAMPLES){
-	        	okJButton.setText(TRY_NEXT_QUIZ);
-	        	utilityJButton1.setText(REVIEW_EXAMPLES);
-		        okCancelPanel.add(okJButton);
-		        okCancelPanel.add(utilityJButton1);
-	        }
-	        else if (this.appearanceType==SHOW_TRHREE_BUTTONS){
-				setSize(500,260);
-	        	okJButton.setText(EDIT_MY_SOLUTION);
-	        	utilityJButton1.setText(PRACTICE_EQUATIONS);
-	        	utilityJButton2.setText(REVIEW_EXAMPLES);
-		        okCancelPanel.add(okJButton);
-		        okCancelPanel.add(utilityJButton1);
-		        okCancelPanel.add(utilityJButton2);
+				
+	        	utilityJButton2.setText(reviewText);
+				buttonPanel.add(utilityJButton2);
 
-	        }
-	        else {
-	        	if (this.buttonText!=null)
-	        		okJButton.setText(this.buttonText);
-		        okCancelPanel.add(okJButton);
-
-	        }
-	        	
-	        bottomOptionsPanel.setLayout(new BorderLayout());
-	        
-	        bottomOptionsPanel.add(okCancelPanel,BorderLayout.CENTER);
-	        
-			if (this.showCheckbox){
-				dontShowThisAgain = new JCheckBox(DONT_SHOW_AGAIN);
-				dontShowThisAgain.setFont(AplusPlatform.MED_FONT);
-				dontShowThisAgain.setBackground(Color.WHITE);
-				dontShowThisAgain.addActionListener(this);
-		        dontShowPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-			    dontShowPanel.add(dontShowThisAgain);
-		        bottomOptionsPanel.add(dontShowPanel,BorderLayout.SOUTH);
+				
+				okJButton.addActionListener(this);
+		        utilityJButton1.addActionListener(this);
+		        utilityJButton2.addActionListener(this);
+		        
+				setVisible(true);
+				
+				
+				
 			}
-			
-			
-			
-	        contentPane.add(bottomOptionsPanel, BorderLayout.SOUTH);
+				
+			else {
+				contentPane.setLayout(new BorderLayout());
+				
+				hintsJEditorPane = new JEditorPane();
+				hintsJEditorPane.setName("hintsJEditorPane");
+				hintsJEditorPane.setContentType("text/html");
+				hintsJEditorPane.setText("<html><br><br><br><br></html>");
+				hintsJEditorPane.setAutoscrolls(true);
+				hintsJEditorPane.setEditable(false);
+				hintsJEditorPane.setFocusable(false);
+				hintsJEditorPane.setMargin(new Insets(20,20,20,20));
+
+				
+				
+				hintsJEditorScrollPane = new JScrollPane(hintsJEditorPane);
+				contentPane.add(hintsJEditorPane, BorderLayout.CENTER);
+				bottomOptionsPanel.setLayout(new BorderLayout());
+				contentPane.add(bottomOptionsPanel, BorderLayout.SOUTH);
+		        okCancelPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+		        
+		        if (!this.showCheckbox)
+		        	okCancelPanel.setBorder(new EmptyBorder(0, 0, 15, 0));
+		        
+		        okJButton.setBackground(new Color(209,217,225)); 
+		        utilityJButton1.setBackground(new Color(209,217,225));   
+		        utilityJButton2.setBackground(new Color(209,217,225)); 	        
+		            
+		        if (this.appearanceType==SHOW_PRACTICE_EXAMPLES){
+		        	okJButton.setText(START_PRACTICE);
+		        	utilityJButton1.setText(REVIEW_EXAMPLES);
+			        okCancelPanel.add(okJButton);
+			        okCancelPanel.add(utilityJButton1);
+		        }
+		        else if (this.appearanceType==SHOW_PRACTICE_EXAMPLES_COGTUTOR){
+		        	okJButton.setText(START_SOLVING);
+		        	utilityJButton1.setText(REVIEW_EXAMPLES);
+			        okCancelPanel.add(okJButton);
+			        okCancelPanel.add(utilityJButton1);
+		        }
+		        else if (this.appearanceType==SHOW_QUIZ_EXAMPLES){
+		        	okJButton.setText(TRY_NEXT_QUIZ);
+		        	utilityJButton1.setText(REVIEW_EXAMPLES);
+			        okCancelPanel.add(okJButton);
+			        okCancelPanel.add(utilityJButton1);
+		        }
+		        else {
+		        	if (this.buttonText!=null)
+		        		okJButton.setText(this.buttonText);
+			        okCancelPanel.add(okJButton);
+
+		        }
+		        	
+		        
+		        
+		        bottomOptionsPanel.add(okCancelPanel,BorderLayout.CENTER);
+		        
+				if (this.showCheckbox){
+					dontShowThisAgain = new JCheckBox(DONT_SHOW_AGAIN);
+					dontShowThisAgain.setFont(AplusPlatform.MED_FONT);
+					dontShowThisAgain.setBackground(Color.WHITE);
+					dontShowThisAgain.addActionListener(this);
+			        dontShowPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+				    dontShowPanel.add(dontShowThisAgain);
+			        bottomOptionsPanel.add(dontShowPanel,BorderLayout.SOUTH);
+				}
+					
+				
+				okJButton.addActionListener(this);
+		        utilityJButton1.addActionListener(this);
+		        utilityJButton2.addActionListener(this);
+		        
+		        
+		        if (message!=null){
+		        	hintsJEditorPane.setText(message);
+		        	
+		        	Font font=AplusPlatform.MED_FONT;// new Font("Comic Sans MS", Font.PLAIN,34);
+		        	 String bodyRule = "body { font-family: " + font.getFamily() + "; " +
+		        	            "font-size: " + font.getSize() + "pt; line-height: 120%; }";
+		        	    ((HTMLDocument)hintsJEditorPane.getDocument()).getStyleSheet().addRule(bodyRule);
+		        	    
+		 	        setVisible(true);
+		        }
+			}
+				
+
 	        
-	        
-	        okJButton.addActionListener(this);
-	        utilityJButton1.addActionListener(this);
-	        utilityJButton2.addActionListener(this);
 	        
 	        addWindowListener(new java.awt.event.WindowAdapter() {
 	        	public void windowClosing(java.awt.event.WindowEvent e) {
 	        		long endTime = (new Date()).getTime();
-	                int duration = (int) (endTime - openTime);
+	        		System.out.println(" Open Time : "+openTime+"  end Time : "+endTime);
+	                int duration = (int) ((endTime - openTime)/1000);
 	                String leavingMessage = hintsJEditorPane.getText();
 	        		leavingMessage = leavingMessage.replaceAll("\\<.*?>","");
-	                int durationHint = (int) (endTime - hintStartTime);
+	                int durationHint = (int) ((endTime - hintStartTime)/1000);
 	        		
 	                logger.simStLog(SimStLogger.SIM_STUDENT_METATUTOR_AL, SimStLogger.METATUTOR_LEFT_HINT_ACTION, "", ""+depth, "", durationHint, leavingMessage);
 	    			logger.simStLog(SimStLogger.SIM_STUDENT_METATUTOR_AL,SimStLogger.METATUTOR_CLOSE_HINT_ACTION, "", ""+depth, "", duration);
@@ -275,16 +305,7 @@ public class SimStMessageDialog extends JDialog implements ActionListener{
 	        	}
 	        });
 	        
-	        if (message!=null){
-	        	hintsJEditorPane.setText(message);
-	        	
-	        	Font font=AplusPlatform.MED_FONT;// new Font("Comic Sans MS", Font.PLAIN,34);
-	        	 String bodyRule = "body { font-family: " + font.getFamily() + "; " +
-	        	            "font-size: " + font.getSize() + "pt; line-height: 120%; }";
-	        	    ((HTMLDocument)hintsJEditorPane.getDocument()).getStyleSheet().addRule(bodyRule);
-	        	    
-	 	        setVisible(true);
-	        }
+	       
 		}
 
 		public void showMessage(String message) {
@@ -332,7 +353,8 @@ public class SimStMessageDialog extends JDialog implements ActionListener{
 		public void actionPerformed(ActionEvent ae) {
 
 			//JButton selectedButton = (JButton) ae.getSource();
-
+			
+			//System.out.println(" Action Listener called : ");
 			if (ae.getSource() instanceof JCheckBox){
 				logger.brController.getMissController().getSimStPLE().setShowPopupAtExamples(!dontShowThisAgain.isSelected());
 				return;
@@ -346,7 +368,11 @@ public class SimStMessageDialog extends JDialog implements ActionListener{
 				logger.brController.getMissController().getSimStPLE().setReviewExamplesAfterFail(false);
 
 			
-			String leavingMessage = hintsJEditorPane.getText();
+			String leavingMessage = "" ;
+			if(this.appearanceType == SHOW_TRHREE_BUTTONS)
+				leavingMessage = selectedButton.getText();
+			else
+				leavingMessage = hintsJEditorPane.getText();
 			leavingMessage = leavingMessage.replaceAll("\\<.*?>","");
 			long endTime = (new Date()).getTime();
 	        int durationHint = (int) (endTime - hintStartTime);
@@ -356,9 +382,9 @@ public class SimStMessageDialog extends JDialog implements ActionListener{
 				visibleFlag = false;
 				setVisible(false);
 				
-				if (selectedButton.getText().equals(REVIEW_EXAMPLES) && this.appearanceType==SHOW_PRACTICE_EXAMPLES)
+				if ((selectedButton.getText().equals(REVIEW_EXAMPLES) && this.appearanceType==SHOW_PRACTICE_EXAMPLES) || selectedButton.getText().equals(reviewText))
 					logger.brController.getMissController().getSimStPLE().getSsCognitiveTutor().reviewExampleSection();
-				else if (selectedButton.getText().equals(PRACTICE_EQUATIONS))
+				else if (selectedButton.getText().equals(PRACTICE_EQUATIONS) || selectedButton.getText().equals(practiceText))
 					logger.brController.getMissController().getSimStPLE().getSsCognitiveTutor().goToPractice();
 
 					

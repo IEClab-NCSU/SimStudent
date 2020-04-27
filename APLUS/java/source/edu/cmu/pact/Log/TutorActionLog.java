@@ -1144,7 +1144,7 @@ public class TutorActionLog extends ActionLog {
 	 */
 	private void setMetaData(MetaElement meta) {
 		// trace.out("log", "meta TutorActionLog.setMetaData("+meta+")");
-		System.out.println("Time zone in meta : "+meta.getTimeZone());
+		//System.out.println("Time zone in meta : "+meta.getTimeZone());
 		if (meta == null)
 			return;
 		String s = meta.getUserId();
@@ -1827,7 +1827,6 @@ public class TutorActionLog extends ActionLog {
 									int currentHintNumber,
 									int totalHintsAvailable) {
 		
-		System.out.println("tutorActionLog addActionEvaluation");
 		addActionEvaluation(text, Integer.toString(currentHintNumber),
 							Integer.toString(totalHintsAvailable));
 	}
@@ -1846,11 +1845,10 @@ public class TutorActionLog extends ActionLog {
 	public void addActionEvaluation(String text,
 									String currentHintNumber,
 									String totalHintsAvailable) {
-		if (actionEvaluations == null){	actionEvaluations = new LinkedList(); System.out.println("instantiating actionEvaluations list");}
+		if (actionEvaluations == null){	actionEvaluations = new LinkedList(); }
 		ActionEvaluation e = new ActionEvaluation(text, currentHintNumber,
 												  totalHintsAvailable);
 		
-		System.out.println("addActionEvaluation");
 		actionEvaluations.add(e);
 	}
 
@@ -2392,7 +2390,7 @@ public class TutorActionLog extends ActionLog {
 	}
 
 
-	public List getActionEvaluations() {System.out.println("getActionEvaluations "+actionEvaluations);
+	public List getActionEvaluations() {
 		return actionEvaluations;
 	}
 }

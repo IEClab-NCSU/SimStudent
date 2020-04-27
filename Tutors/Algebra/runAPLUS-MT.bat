@@ -16,7 +16,7 @@ if "%DatasetName%" == "" (
     echo * Provide a name for the dataset.					      *
     echo * To do this, assign a name to the variable 'DatasetName'		      *
     echo * For example, if you want to assign 'Logging2016' as a dataset name	      *
-    echo * then rewrite the following at line 3 in runAPLUS-CT.bat		      *
+    echo * then rewrite the following at line 3 in runAPLUS-MT.bat		      *
     echo *            set DatasetName=					              *
     echo *	      as							      *
     echo *            set DatasetName=Logging2016				      *
@@ -33,6 +33,7 @@ set TutorArg=-traceLevel 3 -debugCodes mt1
 set TutorArg=%TutorArg% -ssRunInPLE 
 set TutorArg=%TutorArg% -ssSelfExplainMode
 set TutorArg=%TutorArg% -ssRuleActivationTestMethod humanOracle -ssHintMethod humanDemonstration
+set TutorArg=%TutorArg% -ssProblemCheckerOracle ClOracle
 set TutorArg=%TutorArg% -ssOverviewPage curriculum.html
 set TutorArg=%TutorArg% -ssLoadPrefsFile brPrefsStacy.xml
 set TutorArg=%TutorArg% -ssCacheOracleInquiry false

@@ -1,0 +1,158 @@
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+	<xsl:output method="html" encoding="UTF-8" />
+	<xsl:param name="useIds"/>
+
+	<xsl:template match="/Report">
+		<div style="font-weight: bold; font-size: medium; color: #5582d5">CLASS SKILLS ALERT REPORT</div>
+		<xsl:element name="table" use-attribute-sets="top-table">
+			<!-- top-table -->
+			<tr height="10">
+				<!-- EMPTY ROW to add spacing -->
+				<td colspan="4"></td>
+			</tr>
+			<tr>
+				<td style="font-weight: bold" width="70">STUDENT</td>
+				<td style="font-weight: bold" width="70">All</td>
+				<td style="font-weight: bold; padding: 0 0 0 30px;" width="120">INSTRUCTOR</td>
+				<td><xsl:value-of select="@instructor_name" /></td>
+			</tr>
+			<tr valign="top">
+				<td style="font-weight: bold">DATE</td>
+				<td><xsl:value-of select="@timestamp" /></td>
+				<td style="font-weight: bold; padding: 0 0 0 30px;" valign="top">CLASS</td>
+				<td><xsl:value-of select="@class_name" /></td>
+			</tr>
+			<tr height="10">
+				<!-- EMPTY ROW to add spacing -->
+				<td colspan="4"></td>
+			</tr>
+			<!-- END top-table -->
+		</xsl:element>
+
+		<xsl:variable name="low_threshold" select="@low_threshold" />
+		<xsl:for-each select="Unit">
+			<xsl:element name="table" use-attribute-sets="unit-table">
+				<!-- unit-table -->
+				<tr style="background: #5582d5; color: #ffffff;">
+					<!-- Units come in 0-based in this report,
+					so add 1 -->
+					<th width="48%" align="left">Unit <xsl:value-of select="@id + 1" /> - <xsl:value-of select="@current_unit" /></th>
+					<th width="28%" align="left">LAST NAME, FIRST NAME</th>
+					<th width="12%" align="center">SKILL LEVEL</th> 
+					<th width="12%" align="center">% MASTERED</th>
+				</tr>
+				<xsl:for-each select="Section">
+					<!-- Test if a section has any skills
+					and if not, don't bother displaying
+					the section row -->
+					<xsl:if test="Skill">
+						<xsl:variable name="totalStudents" select="@student_count" />
+						<tr style="background: #96c8e2; color: #000000">
+							<td colspan="4" style="font-weight: bold">Section <xsl:value-of select="@id" /> - <xsl:value-of select="@name" /></td>
+						</tr>
+						<xsl:for-each select="Skill">
+							<xsl:variable name="bkgd">
+								<xsl:choose>
+									<xsl:when test="position() mod 2 = 1">#ffffff</xsl:when>
+									<xsl:otherwise>#e4eef7</xsl:otherwise>
+								</xsl:choose>
+							</xsl:variable>
+							<xsl:variable name="numMastered" select="@mastered_stu_count" />
+							<xsl:variable name="percentMastered" select="$numMastered div $totalStudents" />
+							<tr style="background: {$bkgd};">
+								<td>
+									<table border="0" cellpadding="0" cellspacing="0" style="font-size: small;">
+										<td valign="top"><b>Skill</b></td>
+										<td valign="top">
+											<xsl:text>&amp;nbsp;</xsl:text>
+											-
+											<xsl:text>&amp;nbsp;</xsl:text>
+										</td>
+										<td><xsl:value-of select="@name" /></td>
+									</table>
+								</td>
+								<td></td>
+								<td></td>
+								<td align="right">
+									<xsl:value-of select="$numMastered" />/<xsl:value-of select="$totalStudents" />
+									<xsl:text>&amp;nbsp;&amp;nbsp;&amp;nbsp;</xsl:text>
+									<xsl:value-of select='format-number($percentMastered, "##%")' />
+								</td>
+							</tr>
+							<xsl:for-each select="Student">
+								<tr style="background: {$bkgd};">
+									<td></td>
+									<td>
+										<xsl:choose>
+											<xsl:when test="$useIds = 'true'">
+												<b>
+													<xsl:choose>
+														<xsl:when test="@id != ''">
+															<xsl:value-of select="@id" />
+														</xsl:when>
+														<xsl:otherwise>
+															-
+														</xsl:otherwise>
+													</xsl:choose>
+												</b>
+											</xsl:when>
+											<xsl:otherwise>
+												<b><xsl:value-of select="@last_name" />,</b>
+												<xsl:text>&amp;nbsp;</xsl:text>
+												<xsl:value-of select="@first_name" />
+											</xsl:otherwise>
+										</xsl:choose>
+									</td>
+									<td align="center">
+										&amp;nbsp;
+										<xsl:value-of select="@p_know" />
+										<xsl:choose>
+											<xsl:when test="@p_know &lt; $low_threshold">
+												*
+											</xsl:when>
+											<xsl:otherwise>
+												&amp;nbsp;
+											</xsl:otherwise>
+										</xsl:choose>
+									</td>
+									<td></td>
+								</tr>
+								<!-- END for each student -->
+							</xsl:for-each>
+							<!-- END for each skill -->
+						</xsl:for-each>
+						<tr style="height: 4px;"></tr>
+					</xsl:if>
+					<!-- END for each section -->
+				</xsl:for-each>
+				<tr style="background: #5582d5; height: 2px;">
+					<td colspan="4"></td>
+				</tr>
+				<!-- /unit-table -->
+			</xsl:element>
+		</xsl:for-each>
+
+		<br style="clear: both" /><br />
+		<b>LEGEND</b><br />
+		*<xsl:text>&amp;#09;Student mastery is less than </xsl:text><xsl:value-of select="$low_threshold" />.
+	</xsl:template>
+
+	<xsl:attribute-set name="top-table">
+		<xsl:attribute name="border">0</xsl:attribute>
+		<xsl:attribute name="align">left</xsl:attribute>
+		<xsl:attribute name="cellpadding">0</xsl:attribute>
+		<xsl:attribute name="cellspacing">0</xsl:attribute>
+		<xsl:attribute name="clear">both</xsl:attribute>
+		<xsl:attribute name="style">clear: both; font-size: small;</xsl:attribute>
+	</xsl:attribute-set>
+
+	<xsl:attribute-set name="unit-table">
+		<xsl:attribute name="border">0</xsl:attribute>
+		<xsl:attribute name="align">left</xsl:attribute>
+		<xsl:attribute name="cellpadding">1</xsl:attribute>
+		<xsl:attribute name="cellspacing">0</xsl:attribute>
+		<xsl:attribute name="width">650</xsl:attribute>
+		<xsl:attribute name="style">clear: both; font-size: small;</xsl:attribute>
+	</xsl:attribute-set>
+
+</xsl:stylesheet>

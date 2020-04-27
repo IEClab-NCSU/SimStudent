@@ -196,10 +196,11 @@ public class QuizTest extends TestCase{
 		simSt.switchToSimStMode();		
 		assertTrue(brController.getCtatModeModel().getCurrentMode().equals(CtatModeModel.SIMULATED_STUDENT_MODE));
 		
-		//SimStPLE ple=new SimStPLE(brController,null);
+		SimStPLE ple=new SimStPLE(brController,null);
 		
 		ssInteractivelearning=new SimStInteractiveLearning(simSt);
 		*/
+
 	}
 
 	private void copyFile(String filename1, String filename2) {

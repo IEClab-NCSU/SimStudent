@@ -374,7 +374,7 @@ public class RhsState implements Cloneable {
 					e.printStackTrace();
 		  }
 	    //***//
-	     } catch (JessException e) {
+	   } catch (JessException e) {
 			e.printStackTrace();
 		}
 

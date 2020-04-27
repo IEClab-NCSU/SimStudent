@@ -43,6 +43,7 @@ import edu.cmu.pact.client.HintMessagesManagerForClient;
 import edu.cmu.pact.ctat.MessageObject;
 import edu.cmu.pact.ctat.TutorController;
 import edu.cmu.pact.miss.MissControllerExternal;
+import edu.cmu.pact.miss.PeerLearning.AplusPlatform;
 
 //////////////////////////////////////////////////////
 /**
@@ -920,7 +921,7 @@ public class JCommTable extends JCommWidget implements FocusListener,
                 	getController().setStartStateModified(true); // in case of delete cell value
             }
             if (trace.getDebugCode("inter")) trace.out("inter", "JCommTable: focusLost current cell C"+currentColumn+
-                    "R"+currentRow+", dirty "+dirty+", text "+cell.getText());
+                    "R"+currentRow+", dirty "+dirty+", text "+cell.getText()+ " cell Name "+cell.getCommName());
 
         
     
@@ -928,7 +929,12 @@ public class JCommTable extends JCommWidget implements FocusListener,
             if (dirty==false){
            	 if (getController()!=null && getController().getMissController()!=null &&  getController().getMissController().getSimSt()!=null &&  getController().getMissController().getSimSt().isSsAplusCtrlCogTutorMode()){
            		 if (getController().getMissController().getSimStPLE()!=null && getController().getMissController().getSimStPLE().getSsCognitiveTutor()!=null){
-           			 getController().getMissController().getSimStPLE().getSsCognitiveTutor().removeQuizStep(cell.getCommName());
+           			AplusPlatform aplus =  (AplusPlatform)getController().getMissController().getSimStPLE().getSimStPeerTutoringPlatform();
+           			 if(aplus.getAplusTabs().getSelectedIndex() == 5){
+           				// System.out.println(" Gonna remove : "+cell.getCommName());
+               			 getController().getMissController().getSimStPLE().getSsCognitiveTutor().removeQuizStep(cell.getCommName());
+
+           			 }
            		 }
            		 
 //          		JCommButton doneButton = (JCommButton) getController().lookupWidgetByName("Done");

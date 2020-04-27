@@ -31,21 +31,29 @@ else
 VmOption="-cp ${CPATH}"
 fi
 
+echo $VmOption
 ##java ${VmOption} TabbedPreTestA -DProblemFileLocation="./A.brd" -DBehaviorRecorderVisible=false -Dcourse_name=SimStPilotPreTestA.brd -Dschool_name=CMU
 
 #cmd="javac -cp "${CtatJar}" TabbedTestA.java"
-echo $cmd;	
+#echo $cmd;	
 #java "${CtatJar}" TabbedTestA -DProblemFileLocation="./A2.brd" -DBehaviorRecorderVisible=false -Dcourse_name=SimStPilotPreTestA.brd -Dschool_name=CMU
 
 
 
-cmd="javac ${VmOption} TabbedTestC.java -source 1.6 -target 1.6";
+cmd="javac ${VmOption} TabbedTestC.java -source 1.8 -target 1.8";
 echo $cmd;
 ${cmd};
 
+cmd="javac ${VmOption} TabbedTestB.java -source 1.8 -target 1.8";
+echo $cmd;
+${cmd};
+
+cmd="javac ${VmOption} TabbedTestA.java -source 1.8 -target 1.8";
+echo $cmd;
+${cmd};
 
 #cmd="java ${VmOption} TabbedTest.TabbedTestA -ssLocalLogging -Dcourse_name=simStPilotJanuary-TestScores -DnoCtatWindow -DProblemFileLocation=./A2.brd";
 #${cmd};
 
-cmd="java ${VmOption} TabbedTest.TabbedTestC -traceLevel 3 -debugCodes miss log -ssProjectDirectory /Users/simstudent/Desktop/SimStudentGithub/SimStudent-master/Tutors/TabbedTest -ssLoadPrefsFile brPrefsTest.xml -ssUserID NIKOLAOS3245 -ssLocalLogging  -ssLogging -ssLogURL http://pslc-qa.andrew.cmu.edu/log/server -Dcourse_name=simstOnlineTest-TestScores -DnoCtatWindow -DProblemFileLocation=./C2.brd";
-${cmd};
+#cmd="java ${VmOption} TabbedTest.TabbedTestC -traceLevel 3 -debugCodes miss log -ssProjectDirectory /Users/simstudent/Desktop/SimStudentGithub/SimStudent-master/Tutors/TabbedTest -ssLoadPrefsFile brPrefsTest.xml -ssUserID NIKOLAOS3245 -ssLocalLogging  -ssLogging -ssLogURL http://pslc-qa.andrew.cmu.edu/log/server -Dcourse_name=simstOnlineTest-TestScores -Dunit_name=Pre-Test -DnoCtatWindow -DProblemFileLocation=./C2.brd";
+#${cmd};

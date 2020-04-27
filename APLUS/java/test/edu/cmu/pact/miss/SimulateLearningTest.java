@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.Vector;
 
 import javax.swing.SwingUtilities;
@@ -300,9 +301,10 @@ public class SimulateLearningTest extends TestCase  {
         //prFile.lastModified();
 
         //assert that each line is correct
+        BufferedReader in = null;
         try{
             FileReader fReader = new FileReader(prFile);
-            BufferedReader in = new BufferedReader(fReader);
+            in = new BufferedReader(fReader);
 	    
             Vector lines = new Vector();
             String s; //temporary string
@@ -323,6 +325,15 @@ public class SimulateLearningTest extends TestCase  {
         }
         catch(Exception e){
             e.printStackTrace();
+        }
+        finally{
+        	  if(in != null)
+				try {
+					in.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
         }
     }
     

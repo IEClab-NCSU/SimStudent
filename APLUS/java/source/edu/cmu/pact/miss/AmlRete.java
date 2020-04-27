@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.Vector;
 import java.util.regex.Pattern;
 
@@ -130,7 +131,6 @@ public class AmlRete extends Rete implements Cloneable {
        	if ( wmePath == null ) { initializeWmePath(letter); }
     	String wmeKey = wmeType + "|" + wmeName;    	
     	
-    	  // System.out.println("wmeFacts is " + wmePath);
     	return (Vector)wmePath.get( wmeKey );
         }
     
@@ -433,7 +433,7 @@ public class AmlRete extends Rete implements Cloneable {
 
     
     private void searchWmePath( Value wme, WmePath path,String parentSlotName,String letter ) {
-    	   	   
+    	
     	   
         // if the WME is a list, then ...
         if ( wme.type() == RU.LIST ) {

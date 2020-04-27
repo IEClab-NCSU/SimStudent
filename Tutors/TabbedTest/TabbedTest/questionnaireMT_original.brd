@@ -1,6 +1,6 @@
 <?xml version="1.0" standalone="yes"?>
 
-<stateGraph firstCheckAllStates="true" caseInsensitive="true" unordered="false" lockWidget="false" version="2.1" suppressStudentFeedback="Show All Feedback" highlightRightSelection="true" startStateNodeName="%(startStateNodeName)%" tutorType="Example-tracing Tutor">
+<stateGraph firstCheckAllStates="true" caseInsensitive="true" unordered="false" lockWidget="false" hintPolicy="Use Both Kinds of Bias" version="2.1" suppressStudentFeedback="Show All Feedback" highlightRightSelection="true" startStateNodeName="%(startStateNodeName)%" tutorType="Example-tracing Tutor">
     <startNodeMessages>
         <message>
             <verb>NotePropertySet</verb>
@@ -99,22 +99,6 @@
             </properties>
         </message>
         <message>
-            <verb>NotePropertySet</verb>
-            <properties>
-                <MessageType>InterfaceAction</MessageType>
-                <Selection>
-                    <value>Done</value>
-                </Selection>
-                <Action>
-                    <value>UpdateText</value>
-                </Action>
-                <Input>
-                    <value>&lt;HTML&gt;&lt;b&gt;I'm Done&lt;/b&gt;, Submit My Answers</value>
-                </Input>
-                <transaction_id>T65a9c440:1365ffb6048:-7ffd</transaction_id>
-            </properties>
-        </message>
-        <message>
             <verb>SendNoteProperty</verb>
             <properties>
                 <MessageType>InterfaceDescription</MessageType>
@@ -131,22 +115,6 @@
             </properties>
         </message>
         <message>
-            <verb>NotePropertySet</verb>
-            <properties>
-                <MessageType>InterfaceAction</MessageType>
-                <Selection>
-                    <value>strategy9</value>
-                </Selection>
-                <Action>
-                    <value>UpdateText</value>
-                </Action>
-                <Input>
-                    <value>9. I tried to think of my own ideas about how to tutor my student better. </value>
-                </Input>
-                <transaction_id>T65a9c440:1365ffb6048:-7ffc</transaction_id>
-            </properties>
-        </message>
-        <message>
             <verb>SendNoteProperty</verb>
             <properties>
                 <MessageType>InterfaceDescription</MessageType>
@@ -160,22 +128,6 @@
                     <value>(assert (label (name test)))</value>
                 </jessInstances>
                 <ComponentDescription>v=true,x=20,y=10</ComponentDescription>
-            </properties>
-        </message>
-        <message>
-            <verb>NotePropertySet</verb>
-            <properties>
-                <MessageType>InterfaceAction</MessageType>
-                <Selection>
-                    <value>test</value>
-                </Selection>
-                <Action>
-                    <value>UpdateText</value>
-                </Action>
-                <Input>
-                    <value>&lt;HTML&gt;&lt;b&gt;Questionnaire&lt;/b&gt; (Version M)</value>
-                </Input>
-                <transaction_id>T65a9c440:1365ffb6048:-7ffb</transaction_id>
             </properties>
         </message>
         <message>
@@ -309,22 +261,6 @@
             </properties>
         </message>
         <message>
-            <verb>NotePropertySet</verb>
-            <properties>
-                <MessageType>InterfaceAction</MessageType>
-                <Selection>
-                    <value>condition20</value>
-                </Selection>
-                <Action>
-                    <value>UpdateText</value>
-                </Action>
-                <Input>
-                    <value>20. I didn’t think it was helpful to ask Mr. Williams what I should be doing next.</value>
-                </Input>
-                <transaction_id>T65a9c440:1365ffb6048:-7ffa</transaction_id>
-            </properties>
-        </message>
-        <message>
             <verb>SendNoteProperty</verb>
             <properties>
                 <MessageType>InterfaceDescription</MessageType>
@@ -341,22 +277,6 @@
             </properties>
         </message>
         <message>
-            <verb>NotePropertySet</verb>
-            <properties>
-                <MessageType>InterfaceAction</MessageType>
-                <Selection>
-                    <value>performance8</value>
-                </Selection>
-                <Action>
-                    <value>UpdateText</value>
-                </Action>
-                <Input>
-                    <value>8. I tried not to do worse than other students when I was tutoring my student.</value>
-                </Input>
-                <transaction_id>T65a9c440:1365ffb6048:-7ff9</transaction_id>
-            </properties>
-        </message>
-        <message>
             <verb>SendNoteProperty</verb>
             <properties>
                 <MessageType>InterfaceDescription</MessageType>
@@ -370,22 +290,6 @@
                     <value>(assert (label (name performance7)))</value>
                 </jessInstances>
                 <ComponentDescription>v=true,x=20,y=390</ComponentDescription>
-            </properties>
-        </message>
-        <message>
-            <verb>NotePropertySet</verb>
-            <properties>
-                <MessageType>InterfaceAction</MessageType>
-                <Selection>
-                    <value>performance7</value>
-                </Selection>
-                <Action>
-                    <value>UpdateText</value>
-                </Action>
-                <Input>
-                    <value>7. I tried not to perform poorly compared to others when I was tutoring my student. </value>
-                </Input>
-                <transaction_id>T65a9c440:1365ffb6048:-7ff8</transaction_id>
             </properties>
         </message>
         <message>
@@ -424,22 +328,6 @@
             </properties>
         </message>
         <message>
-            <verb>NotePropertySet</verb>
-            <properties>
-                <MessageType>InterfaceAction</MessageType>
-                <Selection>
-                    <value>performance6</value>
-                </Selection>
-                <Action>
-                    <value>UpdateText</value>
-                </Action>
-                <Input>
-                    <value>6. I tried to do well compared to other students in my class when I was tutoring my student. </value>
-                </Input>
-                <transaction_id>T65a9c440:1365ffb6048:-7ff7</transaction_id>
-            </properties>
-        </message>
-        <message>
             <verb>SendNoteProperty</verb>
             <properties>
                 <MessageType>InterfaceDescription</MessageType>
@@ -453,22 +341,6 @@
                     <value>(assert (label (name performance5)))</value>
                 </jessInstances>
                 <ComponentDescription>v=true,x=20,y=330</ComponentDescription>
-            </properties>
-        </message>
-        <message>
-            <verb>NotePropertySet</verb>
-            <properties>
-                <MessageType>InterfaceAction</MessageType>
-                <Selection>
-                    <value>performance5</value>
-                </Selection>
-                <Action>
-                    <value>UpdateText</value>
-                </Action>
-                <Input>
-                    <value>5. I tried to perform well relative to other students when I was tutoring my student. </value>
-                </Input>
-                <transaction_id>T65a9c440:1365ffb6048:-7ff6</transaction_id>
             </properties>
         </message>
         <message>
@@ -507,22 +379,6 @@
             </properties>
         </message>
         <message>
-            <verb>NotePropertySet</verb>
-            <properties>
-                <MessageType>InterfaceAction</MessageType>
-                <Selection>
-                    <value>explain21</value>
-                </Selection>
-                <Action>
-                    <value>UpdateText</value>
-                </Action>
-                <Input>
-                    <value>21. In the space below please explain what you thought was easy or hard about tutoring your student.</value>
-                </Input>
-                <transaction_id>T65a9c440:1365ffb6048:-7ff5</transaction_id>
-            </properties>
-        </message>
-        <message>
             <verb>SendNoteProperty</verb>
             <properties>
                 <MessageType>InterfaceDescription</MessageType>
@@ -539,22 +395,6 @@
             </properties>
         </message>
         <message>
-            <verb>NotePropertySet</verb>
-            <properties>
-                <MessageType>InterfaceAction</MessageType>
-                <Selection>
-                    <value>strategy12</value>
-                </Selection>
-                <Action>
-                    <value>UpdateText</value>
-                </Action>
-                <Input>
-                    <value>12. When I was confused about something in the program, I went back and tried to figure it out.</value>
-                </Input>
-                <transaction_id>T65a9c440:1365ffb6048:-7ff4</transaction_id>
-            </properties>
-        </message>
-        <message>
             <verb>SendNoteProperty</verb>
             <properties>
                 <MessageType>InterfaceDescription</MessageType>
@@ -568,22 +408,6 @@
                     <value>(assert (label (name strategy11)))</value>
                 </jessInstances>
                 <ComponentDescription>v=true,x=20,y=540</ComponentDescription>
-            </properties>
-        </message>
-        <message>
-            <verb>NotePropertySet</verb>
-            <properties>
-                <MessageType>InterfaceAction</MessageType>
-                <Selection>
-                    <value>strategy11</value>
-                </Selection>
-                <Action>
-                    <value>UpdateText</value>
-                </Action>
-                <Input>
-                    <value>11. I tried to use the quiz results to tutor my student better.</value>
-                </Input>
-                <transaction_id>T65a9c440:1365ffb6048:-7ff3</transaction_id>
             </properties>
         </message>
         <message>
@@ -622,22 +446,6 @@
             </properties>
         </message>
         <message>
-            <verb>NotePropertySet</verb>
-            <properties>
-                <MessageType>InterfaceAction</MessageType>
-                <Selection>
-                    <value>strategy10</value>
-                </Selection>
-                <Action>
-                    <value>UpdateText</value>
-                </Action>
-                <Input>
-                    <value>10. I tried to give explanations in my own words when my student asked me a question. </value>
-                </Input>
-                <transaction_id>T65a9c440:1365ffb6048:-7ff2</transaction_id>
-            </properties>
-        </message>
-        <message>
             <verb>SendNoteProperty</verb>
             <properties>
                 <MessageType>InterfaceDescription</MessageType>
@@ -673,22 +481,6 @@
             </properties>
         </message>
         <message>
-            <verb>NotePropertySet</verb>
-            <properties>
-                <MessageType>InterfaceAction</MessageType>
-                <Selection>
-                    <value>affect16</value>
-                </Selection>
-                <Action>
-                    <value>UpdateText</value>
-                </Action>
-                <Input>
-                    <value>16. It didn’t matter to me if my student solved problems correctly or incorrectly.</value>
-                </Input>
-                <transaction_id>T65a9c440:1365ffb6048:-7ff1</transaction_id>
-            </properties>
-        </message>
-        <message>
             <verb>SendNoteProperty</verb>
             <properties>
                 <MessageType>InterfaceDescription</MessageType>
@@ -702,22 +494,6 @@
                     <value>(assert (label (name affect15)))</value>
                 </jessInstances>
                 <ComponentDescription>v=true,x=20,y=690</ComponentDescription>
-            </properties>
-        </message>
-        <message>
-            <verb>NotePropertySet</verb>
-            <properties>
-                <MessageType>InterfaceAction</MessageType>
-                <Selection>
-                    <value>affect15</value>
-                </Selection>
-                <Action>
-                    <value>UpdateText</value>
-                </Action>
-                <Input>
-                    <value>15. I liked to see my student pass the quiz.</value>
-                </Input>
-                <transaction_id>T65a9c440:1365ffb6048:-7ff0</transaction_id>
             </properties>
         </message>
         <message>
@@ -737,22 +513,6 @@
             </properties>
         </message>
         <message>
-            <verb>NotePropertySet</verb>
-            <properties>
-                <MessageType>InterfaceAction</MessageType>
-                <Selection>
-                    <value>affect14</value>
-                </Selection>
-                <Action>
-                    <value>UpdateText</value>
-                </Action>
-                <Input>
-                    <value>14. I did not really care about the success of my student.</value>
-                </Input>
-                <transaction_id>T65a9c440:1365ffb6048:-7fef</transaction_id>
-            </properties>
-        </message>
-        <message>
             <verb>SendNoteProperty</verb>
             <properties>
                 <MessageType>InterfaceDescription</MessageType>
@@ -766,22 +526,6 @@
                     <value>(assert (label (name affect13)))</value>
                 </jessInstances>
                 <ComponentDescription>v=true,x=20,y=630</ComponentDescription>
-            </properties>
-        </message>
-        <message>
-            <verb>NotePropertySet</verb>
-            <properties>
-                <MessageType>InterfaceAction</MessageType>
-                <Selection>
-                    <value>affect13</value>
-                </Selection>
-                <Action>
-                    <value>UpdateText</value>
-                </Action>
-                <Input>
-                    <value>13. I was excited when I saw my student making progress.</value>
-                </Input>
-                <transaction_id>T65a9c440:1365ffb6048:-7fee</transaction_id>
             </properties>
         </message>
         <message>
@@ -801,22 +545,6 @@
             </properties>
         </message>
         <message>
-            <verb>NotePropertySet</verb>
-            <properties>
-                <MessageType>InterfaceAction</MessageType>
-                <Selection>
-                    <value>condition19</value>
-                </Selection>
-                <Action>
-                    <value>UpdateText</value>
-                </Action>
-                <Input>
-                    <value>19. I thought it was helpful to follow Mr. Williams’ advice.</value>
-                </Input>
-                <transaction_id>T65a9c440:1365ffb6048:-7fed</transaction_id>
-            </properties>
-        </message>
-        <message>
             <verb>SendNoteProperty</verb>
             <properties>
                 <MessageType>InterfaceDescription</MessageType>
@@ -830,22 +558,6 @@
                     <value>(assert (label (name condition18)))</value>
                 </jessInstances>
                 <ComponentDescription>v=true,x=20,y=810</ComponentDescription>
-            </properties>
-        </message>
-        <message>
-            <verb>NotePropertySet</verb>
-            <properties>
-                <MessageType>InterfaceAction</MessageType>
-                <Selection>
-                    <value>condition18</value>
-                </Selection>
-                <Action>
-                    <value>UpdateText</value>
-                </Action>
-                <Input>
-                    <value>18. I didn’t think Mr. Williams’ advice was helpful.</value>
-                </Input>
-                <transaction_id>T65a9c440:1365ffb6048:-7fec</transaction_id>
             </properties>
         </message>
         <message>
@@ -865,22 +577,6 @@
             </properties>
         </message>
         <message>
-            <verb>NotePropertySet</verb>
-            <properties>
-                <MessageType>InterfaceAction</MessageType>
-                <Selection>
-                    <value>mastery4</value>
-                </Selection>
-                <Action>
-                    <value>UpdateText</value>
-                </Action>
-                <Input>
-                    <value>4. I tried not to just pretend that I understand math when I was tutoring my student. </value>
-                </Input>
-                <transaction_id>T65a9c440:1365ffb6048:-7feb</transaction_id>
-            </properties>
-        </message>
-        <message>
             <verb>SendNoteProperty</verb>
             <properties>
                 <MessageType>InterfaceDescription</MessageType>
@@ -894,22 +590,6 @@
                     <value>(assert (label (name condition17)))</value>
                 </jessInstances>
                 <ComponentDescription>v=true,x=20,y=780</ComponentDescription>
-            </properties>
-        </message>
-        <message>
-            <verb>NotePropertySet</verb>
-            <properties>
-                <MessageType>InterfaceAction</MessageType>
-                <Selection>
-                    <value>condition17</value>
-                </Selection>
-                <Action>
-                    <value>UpdateText</value>
-                </Action>
-                <Input>
-                    <value>17. I thought Mr. Williams was helpful when I was tutoring my student.</value>
-                </Input>
-                <transaction_id>T65a9c440:1365ffb6048:-7fea</transaction_id>
             </properties>
         </message>
         <message>
@@ -929,22 +609,6 @@
             </properties>
         </message>
         <message>
-            <verb>NotePropertySet</verb>
-            <properties>
-                <MessageType>InterfaceAction</MessageType>
-                <Selection>
-                    <value>mastery3</value>
-                </Selection>
-                <Action>
-                    <value>UpdateText</value>
-                </Action>
-                <Input>
-                    <value>3. I tried not to make any mistakes when I was tutoring my student. </value>
-                </Input>
-                <transaction_id>T65a9c440:1365ffb6048:-7fe9</transaction_id>
-            </properties>
-        </message>
-        <message>
             <verb>SendNoteProperty</verb>
             <properties>
                 <MessageType>InterfaceDescription</MessageType>
@@ -958,22 +622,6 @@
                     <value>(assert (label (name mastery2)))</value>
                 </jessInstances>
                 <ComponentDescription>v=true,x=20,y=210</ComponentDescription>
-            </properties>
-        </message>
-        <message>
-            <verb>NotePropertySet</verb>
-            <properties>
-                <MessageType>InterfaceAction</MessageType>
-                <Selection>
-                    <value>mastery2</value>
-                </Selection>
-                <Action>
-                    <value>UpdateText</value>
-                </Action>
-                <Input>
-                    <value>2. I tried to learn as much as I can while tutoring my student.</value>
-                </Input>
-                <transaction_id>T65a9c440:1365ffb6048:-7fe8</transaction_id>
             </properties>
         </message>
         <message>
@@ -1009,22 +657,6 @@
                     <value>(assert (label (name mastery1)))</value>
                 </jessInstances>
                 <ComponentDescription>v=true,x=20,y=180</ComponentDescription>
-            </properties>
-        </message>
-        <message>
-            <verb>NotePropertySet</verb>
-            <properties>
-                <MessageType>InterfaceAction</MessageType>
-                <Selection>
-                    <value>mastery1</value>
-                </Selection>
-                <Action>
-                    <value>UpdateText</value>
-                </Action>
-                <Input>
-                    <value>1. I tried to understand linear equations as thoroughly as possible while tutoring my student.</value>
-                </Input>
-                <transaction_id>T65a9c440:1365ffb6048:-7fe7</transaction_id>
             </properties>
         </message>
         <message>
@@ -1139,6 +771,374 @@
                     <value>(bind ?question1_mastery (assert (multipleChoice (name question1_mastery) (choices "1" "2" "3" "4" "5" "6" "7" ) (question "") (value nil))))</value>
                 </jessInstances>
                 <ComponentDescription>v=true,x=575,y=180</ComponentDescription>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>Done</value>
+                </Selection>
+                <Action>
+                    <value>UpdateText</value>
+                </Action>
+                <Input>
+                    <value>&lt;HTML&gt;&lt;b&gt;I'm Done&lt;/b&gt;, Submit My Answers</value>
+                </Input>
+                <transaction_id>T65a9c440:1365ffb6048:-7ffd</transaction_id>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>strategy9</value>
+                </Selection>
+                <Action>
+                    <value>UpdateText</value>
+                </Action>
+                <Input>
+                    <value>9. I tried to think of my own ideas about how to tutor my student better. </value>
+                </Input>
+                <transaction_id>T65a9c440:1365ffb6048:-7ffc</transaction_id>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>test</value>
+                </Selection>
+                <Action>
+                    <value>UpdateText</value>
+                </Action>
+                <Input>
+                    <value>&lt;HTML&gt;&lt;b&gt;Questionnaire&lt;/b&gt; (Version M)</value>
+                </Input>
+                <transaction_id>T65a9c440:1365ffb6048:-7ffb</transaction_id>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>condition20</value>
+                </Selection>
+                <Action>
+                    <value>UpdateText</value>
+                </Action>
+                <Input>
+                    <value>20. I didn&#146;t think it was helpful to ask Mr. Williams what I should be doing next.</value>
+                </Input>
+                <transaction_id>T65a9c440:1365ffb6048:-7ffa</transaction_id>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>performance8</value>
+                </Selection>
+                <Action>
+                    <value>UpdateText</value>
+                </Action>
+                <Input>
+                    <value>8. I tried not to do worse than other students when I was tutoring my student.</value>
+                </Input>
+                <transaction_id>T65a9c440:1365ffb6048:-7ff9</transaction_id>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>performance7</value>
+                </Selection>
+                <Action>
+                    <value>UpdateText</value>
+                </Action>
+                <Input>
+                    <value>7. I tried not to perform poorly compared to others when I was tutoring my student. </value>
+                </Input>
+                <transaction_id>T65a9c440:1365ffb6048:-7ff8</transaction_id>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>performance6</value>
+                </Selection>
+                <Action>
+                    <value>UpdateText</value>
+                </Action>
+                <Input>
+                    <value>6. I tried to do well compared to other students in my class when I was tutoring my student. </value>
+                </Input>
+                <transaction_id>T65a9c440:1365ffb6048:-7ff7</transaction_id>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>performance5</value>
+                </Selection>
+                <Action>
+                    <value>UpdateText</value>
+                </Action>
+                <Input>
+                    <value>5. I tried to perform well relative to other students when I was tutoring my student. </value>
+                </Input>
+                <transaction_id>T65a9c440:1365ffb6048:-7ff6</transaction_id>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>explain21</value>
+                </Selection>
+                <Action>
+                    <value>UpdateText</value>
+                </Action>
+                <Input>
+                    <value>21. In the space below please explain what you thought was easy or hard about tutoring your student.</value>
+                </Input>
+                <transaction_id>T65a9c440:1365ffb6048:-7ff5</transaction_id>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>strategy12</value>
+                </Selection>
+                <Action>
+                    <value>UpdateText</value>
+                </Action>
+                <Input>
+                    <value>12. When I was confused about something in the program, I went back and tried to figure it out.</value>
+                </Input>
+                <transaction_id>T65a9c440:1365ffb6048:-7ff4</transaction_id>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>strategy11</value>
+                </Selection>
+                <Action>
+                    <value>UpdateText</value>
+                </Action>
+                <Input>
+                    <value>11. I tried to use the quiz results to tutor my student better.</value>
+                </Input>
+                <transaction_id>T65a9c440:1365ffb6048:-7ff3</transaction_id>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>strategy10</value>
+                </Selection>
+                <Action>
+                    <value>UpdateText</value>
+                </Action>
+                <Input>
+                    <value>10. I tried to give explanations in my own words when my student asked me a question. </value>
+                </Input>
+                <transaction_id>T65a9c440:1365ffb6048:-7ff2</transaction_id>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>affect16</value>
+                </Selection>
+                <Action>
+                    <value>UpdateText</value>
+                </Action>
+                <Input>
+                    <value>16. It didn&#146;t matter to me if my student solved problems correctly or incorrectly.</value>
+                </Input>
+                <transaction_id>T65a9c440:1365ffb6048:-7ff1</transaction_id>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>affect15</value>
+                </Selection>
+                <Action>
+                    <value>UpdateText</value>
+                </Action>
+                <Input>
+                    <value>15. I liked to see my student pass the quiz.</value>
+                </Input>
+                <transaction_id>T65a9c440:1365ffb6048:-7ff0</transaction_id>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>affect14</value>
+                </Selection>
+                <Action>
+                    <value>UpdateText</value>
+                </Action>
+                <Input>
+                    <value>14. I did not really care about the success of my student.</value>
+                </Input>
+                <transaction_id>T65a9c440:1365ffb6048:-7fef</transaction_id>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>affect13</value>
+                </Selection>
+                <Action>
+                    <value>UpdateText</value>
+                </Action>
+                <Input>
+                    <value>13. I was excited when I saw my student making progress.</value>
+                </Input>
+                <transaction_id>T65a9c440:1365ffb6048:-7fee</transaction_id>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>condition19</value>
+                </Selection>
+                <Action>
+                    <value>UpdateText</value>
+                </Action>
+                <Input>
+                    <value>19. I thought it was helpful to follow Mr. Williams&#146; advice.</value>
+                </Input>
+                <transaction_id>T65a9c440:1365ffb6048:-7fed</transaction_id>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>condition18</value>
+                </Selection>
+                <Action>
+                    <value>UpdateText</value>
+                </Action>
+                <Input>
+                    <value>18. I didn&#146;t think Mr. Williams&#146; advice was helpful.</value>
+                </Input>
+                <transaction_id>T65a9c440:1365ffb6048:-7fec</transaction_id>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>mastery4</value>
+                </Selection>
+                <Action>
+                    <value>UpdateText</value>
+                </Action>
+                <Input>
+                    <value>4. I tried not to just pretend that I understand math when I was tutoring my student. </value>
+                </Input>
+                <transaction_id>T65a9c440:1365ffb6048:-7feb</transaction_id>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>condition17</value>
+                </Selection>
+                <Action>
+                    <value>UpdateText</value>
+                </Action>
+                <Input>
+                    <value>17. I thought Mr. Williams was helpful when I was tutoring my student.</value>
+                </Input>
+                <transaction_id>T65a9c440:1365ffb6048:-7fea</transaction_id>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>mastery3</value>
+                </Selection>
+                <Action>
+                    <value>UpdateText</value>
+                </Action>
+                <Input>
+                    <value>3. I tried not to make any mistakes when I was tutoring my student. </value>
+                </Input>
+                <transaction_id>T65a9c440:1365ffb6048:-7fe9</transaction_id>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>mastery2</value>
+                </Selection>
+                <Action>
+                    <value>UpdateText</value>
+                </Action>
+                <Input>
+                    <value>2. I tried to learn as much as I can while tutoring my student.</value>
+                </Input>
+                <transaction_id>T65a9c440:1365ffb6048:-7fe8</transaction_id>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>mastery1</value>
+                </Selection>
+                <Action>
+                    <value>UpdateText</value>
+                </Action>
+                <Input>
+                    <value>1. I tried to understand linear equations as thoroughly as possible while tutoring my student.</value>
+                </Input>
+                <transaction_id>T65a9c440:1365ffb6048:-7fe7</transaction_id>
             </properties>
         </message>
         <message>
@@ -1377,10 +1377,10 @@
                 <Input>
                     <matcher>
                         <matcherType>WildcardMatcher</matcherType>
-                        <matcherParameter name="single">((\S)+|(\S)(.)+)</matcherParameter>
+                        <matcherParameter name="single">%(q1_mastery)%</matcherParameter>
                     </matcher>
                 </Input>
-                <Actor>Student</Actor>
+                <Actor linkTriggered="false">Student</Actor>
             </matchers>
         </actionLabel>
         <preCheckedStatus>No-Applicable</preCheckedStatus>
@@ -1440,7 +1440,7 @@
                         <matcherParameter name="single">((\S)+|(\S)(.)+)</matcherParameter>
                     </matcher>
                 </Input>
-                <Actor>Student</Actor>
+                <Actor linkTriggered="false">Student</Actor>
             </matchers>
         </actionLabel>
         <preCheckedStatus>No-Applicable</preCheckedStatus>
@@ -1500,7 +1500,7 @@
                         <matcherParameter name="single">((\S)+|(\S)(.)+)</matcherParameter>
                     </matcher>
                 </Input>
-                <Actor>Student</Actor>
+                <Actor linkTriggered="false">Student</Actor>
             </matchers>
         </actionLabel>
         <preCheckedStatus>No-Applicable</preCheckedStatus>
@@ -1560,7 +1560,7 @@
                         <matcherParameter name="single">((\S)+|(\S)(.)+)</matcherParameter>
                     </matcher>
                 </Input>
-                <Actor>Student</Actor>
+                <Actor linkTriggered="false">Student</Actor>
             </matchers>
         </actionLabel>
         <preCheckedStatus>No-Applicable</preCheckedStatus>
@@ -1620,7 +1620,7 @@
                         <matcherParameter name="single">((\S)+|(\S)(.)+)</matcherParameter>
                     </matcher>
                 </Input>
-                <Actor>Student</Actor>
+                <Actor linkTriggered="false">Student</Actor>
             </matchers>
         </actionLabel>
         <preCheckedStatus>No-Applicable</preCheckedStatus>
@@ -1680,7 +1680,7 @@
                         <matcherParameter name="single">((\S)+|(\S)(.)+)</matcherParameter>
                     </matcher>
                 </Input>
-                <Actor>Student</Actor>
+                <Actor linkTriggered="false">Student</Actor>
             </matchers>
         </actionLabel>
         <preCheckedStatus>No-Applicable</preCheckedStatus>
@@ -1740,7 +1740,7 @@
                         <matcherParameter name="single">((\S)+|(\S)(.)+)</matcherParameter>
                     </matcher>
                 </Input>
-                <Actor>Student</Actor>
+                <Actor linkTriggered="false">Student</Actor>
             </matchers>
         </actionLabel>
         <preCheckedStatus>No-Applicable</preCheckedStatus>
@@ -1800,7 +1800,7 @@
                         <matcherParameter name="single">((\S)+|(\S)(.)+)</matcherParameter>
                     </matcher>
                 </Input>
-                <Actor>Student</Actor>
+                <Actor linkTriggered="false">Student</Actor>
             </matchers>
         </actionLabel>
         <preCheckedStatus>No-Applicable</preCheckedStatus>
@@ -1860,7 +1860,7 @@
                         <matcherParameter name="single">((\S)+|(\S)(.)+)</matcherParameter>
                     </matcher>
                 </Input>
-                <Actor>Student</Actor>
+                <Actor linkTriggered="false">Student</Actor>
             </matchers>
         </actionLabel>
         <preCheckedStatus>No-Applicable</preCheckedStatus>
@@ -1920,7 +1920,7 @@
                         <matcherParameter name="single">((\S)+|(\S)(.)+)</matcherParameter>
                     </matcher>
                 </Input>
-                <Actor>Student</Actor>
+                <Actor linkTriggered="false">Student</Actor>
             </matchers>
         </actionLabel>
         <preCheckedStatus>No-Applicable</preCheckedStatus>
@@ -1980,7 +1980,7 @@
                         <matcherParameter name="single">((\S)+|(\S)(.)+)</matcherParameter>
                     </matcher>
                 </Input>
-                <Actor>Student</Actor>
+                <Actor linkTriggered="false">Student</Actor>
             </matchers>
         </actionLabel>
         <preCheckedStatus>No-Applicable</preCheckedStatus>
@@ -2040,7 +2040,7 @@
                         <matcherParameter name="single">((\S)+|(\S)(.)+)</matcherParameter>
                     </matcher>
                 </Input>
-                <Actor>Student</Actor>
+                <Actor linkTriggered="false">Student</Actor>
             </matchers>
         </actionLabel>
         <preCheckedStatus>No-Applicable</preCheckedStatus>
@@ -2100,7 +2100,7 @@
                         <matcherParameter name="single">((\S)+|(\S)(.)+)</matcherParameter>
                     </matcher>
                 </Input>
-                <Actor>Student</Actor>
+                <Actor linkTriggered="false">Student</Actor>
             </matchers>
         </actionLabel>
         <preCheckedStatus>No-Applicable</preCheckedStatus>
@@ -2160,7 +2160,7 @@
                         <matcherParameter name="single">((\S)+|(\S)(.)+)</matcherParameter>
                     </matcher>
                 </Input>
-                <Actor>Student</Actor>
+                <Actor linkTriggered="false">Student</Actor>
             </matchers>
         </actionLabel>
         <preCheckedStatus>No-Applicable</preCheckedStatus>
@@ -2220,7 +2220,7 @@
                         <matcherParameter name="single">((\S)+|(\S)(.)+)</matcherParameter>
                     </matcher>
                 </Input>
-                <Actor>Student</Actor>
+                <Actor linkTriggered="false">Student</Actor>
             </matchers>
         </actionLabel>
         <preCheckedStatus>No-Applicable</preCheckedStatus>
@@ -2280,7 +2280,7 @@
                         <matcherParameter name="single">((\S)+|(\S)(.)+)</matcherParameter>
                     </matcher>
                 </Input>
-                <Actor>Student</Actor>
+                <Actor linkTriggered="false">Student</Actor>
             </matchers>
         </actionLabel>
         <preCheckedStatus>No-Applicable</preCheckedStatus>
@@ -2340,7 +2340,7 @@
                         <matcherParameter name="single">((\S)+|(\S)(.)+)</matcherParameter>
                     </matcher>
                 </Input>
-                <Actor>Student</Actor>
+                <Actor linkTriggered="false">Student</Actor>
             </matchers>
         </actionLabel>
         <preCheckedStatus>No-Applicable</preCheckedStatus>
@@ -2400,7 +2400,7 @@
                         <matcherParameter name="single">((\S)+|(\S)(.)+)</matcherParameter>
                     </matcher>
                 </Input>
-                <Actor>Student</Actor>
+                <Actor linkTriggered="false">Student</Actor>
             </matchers>
         </actionLabel>
         <preCheckedStatus>No-Applicable</preCheckedStatus>
@@ -2460,7 +2460,7 @@
                         <matcherParameter name="single">((\S)+|(\S)(.)+)</matcherParameter>
                     </matcher>
                 </Input>
-                <Actor>Student</Actor>
+                <Actor linkTriggered="false">Student</Actor>
             </matchers>
         </actionLabel>
         <preCheckedStatus>No-Applicable</preCheckedStatus>
@@ -2520,7 +2520,7 @@
                         <matcherParameter name="single">((\S)+|(\S)(.)+)</matcherParameter>
                     </matcher>
                 </Input>
-                <Actor>Student</Actor>
+                <Actor linkTriggered="false">Student</Actor>
             </matchers>
         </actionLabel>
         <preCheckedStatus>No-Applicable</preCheckedStatus>
@@ -2580,7 +2580,7 @@
                         <matcherParameter name="single">((\S)+|(\S)(.)+)</matcherParameter>
                     </matcher>
                 </Input>
-                <Actor>Student</Actor>
+                <Actor linkTriggered="false">Student</Actor>
             </matchers>
         </actionLabel>
         <preCheckedStatus>No-Applicable</preCheckedStatus>
@@ -2638,7 +2638,6 @@
         <destID>23</destID>
         <traversalCount>0</traversalCount>
     </edge>
-
     <EdgesGroups ordered="true">
         <group name="group" ordered="false" reenterable="true">
             <link id="1"/>
@@ -2661,8 +2660,7 @@
             <link id="35"/>
             <link id="37"/>
             <link id="39"/>
-            <link id="41"/>
-        </group>
+            <link id="41"/></group>
     </EdgesGroups>
 </stateGraph>
 

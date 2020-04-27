@@ -138,6 +138,7 @@ public class SimStLogger {
    public static final String UNDO_ACTION = "Step Undone";
    public static final String AVATAR_CONFIGURE_BUTTON_ACTION = "Avatar Configure Button Clicked";
    public static final String AVATAR_SAVE_ACTION = "Avatar Image Saved";
+   public static final String RANDOMIZE_ACTION =" Roll a die Button Clicked";
    public static final String SKILLOMETER_UPDATE_ACTION = "Skillometer Updated";
    public static final String CHAT_DIALOG_ACTION = "Chat Dialog Entered";
    public static final String QUIZ_VIEW = "Quiz Solution Viewed";
@@ -266,9 +267,9 @@ public class SimStLogger {
    public SimStLogger(BR_Controller br)
    {
    	brController = br;
-   	System.out.println("Inital Dataset Basename : "+datasetBasename);
+   //	System.out.println("Inital Dataset Basename : "+datasetBasename);
    	datasetBasename = brController.getLoggingSupport().getCourseName();
-   	System.out.println("In SimStLogger : "+datasetBasename);
+   //	System.out.println("In SimStLogger : "+datasetBasename);
    }
 	
    public static final String UNPAIRED_LOG_ITEM = "UNPAIRED_LOG_ITEM";
@@ -343,6 +344,8 @@ public class SimStLogger {
    		String expAction, String expInput, int duration, String feedback, String opponent, String info, int myRating, boolean logBuffering, String hintType, String hintFollowed, String tool_event_time)
    {
        	   
+	//  System.out.println(" Duration :  "+duration); 
+	// System.out.println(" Gonna try logging "+action+ " hintype "+hintType+ "   resultDetails "+resultDetails);
 	   
 	String problemName = brController.getProblemModel().getProblemName();
 	
@@ -381,7 +384,7 @@ public class SimStLogger {
 
     	if (logEntryBuffered){
     		if(trace.getDebugCode("ss"))trace.out("ss", "Problem entered log agent handled a log entry.");
-    		System.out.println("Problem entered log agent handled a log entry." + action);
+    		//System.out.println("Problem entered log agent handled a log entry." + action);
     		returnNow=true;
     	}
     }
@@ -423,7 +426,7 @@ public class SimStLogger {
   
 	if (action.equals(LMS_PROBLEM_CONSIDERED)) {
 		problemName=step;
-		System.out.println("LMS problem :"+step);
+		//System.out.println("LMS problem :"+step);
 	}
 	
 	//if (action.equals(this.LMS_PROBLEM_CONSIDERED)) {
@@ -435,17 +438,21 @@ public class SimStLogger {
 
 	
 
-   	
-   	if (action.equals(this.METATUTOR_HINT_ACTION) && (feedback.equals("") || feedback.length()<1))
-   			return;
-   	
+   	//System.out.println(action.equals(METATUTOR_HINT_ACTION) && (feedback.equals("") || feedback.length()<1));
+   	if (action.equals(METATUTOR_HINT_ACTION) && (feedback.equals("") || feedback.length()<1)){
+   		//System.out.println(" returning ");
+   		return;
+   	}
+   			
+   //	System.out.println(" Gonna print context message");
    	
    	//get the context message
    	ContextMessage context = getContextMessage(action, problemName, resultDetails.toString());
-
+ //   System.out.println("Context  : "+context.toString());
    	ToolMessage logMessage = ToolMessage.create(context);
+ //	System.out.println(" Tool Message : "+logMessage.toString());
    	TutorMessage responseMessage = TutorMessage.create(logMessage);
-   	
+ //	System.out.println(" Tutor Message : "+responseMessage.toString());
    	// Logs the expected selection, expected action and expected input.
    	logExpected(action, correctness, result, sai, expSelection, expAction, expInput, step, resultDetails.toString(), logMessage, responseMessage);
    	if(sai != null && !action.equalsIgnoreCase(PROBLEM_ANSWER_SUBMIT_ACTION) &&
@@ -469,7 +476,7 @@ public class SimStLogger {
    	addLogItem(ACTION_TYPE_PROPERTY, actionType,logMessage);
    	addLogItem(ACTION_PROPERTY, action,logMessage);
    	//addLogItem(STEP_PROPERTY, "'"+step,logMessage);
-   	System.out.println("Result : "+result);
+   //	System.out.println("Result : "+result);
    	addLogItem(RESULT_PROPERTY, result,logMessage);
    	
    	if (action.equals(LMS_PROBLEM_CONSIDERED))
@@ -504,15 +511,15 @@ public class SimStLogger {
    	//	addLogItem(HINT_TYPE, hintType, logMessage);
    	
    	if(hintType == null || hintType.length()==0 || hintType.equals(" ")) hintType="empty";
-	     addLogItem(HINT_TYPE, hintType, logMessage);
+	  //  addLogItem(HINT_TYPE, hintType, logMessage);
    
    	
    	String hintSubject="empty";
    	String[] parts=hintType.split(" ");
 
    	if (parts.length==2){
-   		hintType=parts[0];
-   		hintSubject=parts[1];
+   		hintSubject=parts[0];
+   		hintType=parts[1];
    	}
 		
 	addLogItem(HINT_TYPE, hintType, logMessage);
@@ -557,6 +564,7 @@ public class SimStLogger {
    		logMessage.addSai(sai.getS(), sai.getA(), "'"+sai.getI());
    	
    	//Log tool message
+   //	System.out.println("Final  Tool Message : "+logMessage);
    	TutorActionLogV4 toLog = new TutorActionLogV4(logMessage);
    	
    	toLog.setSourceId(SIM_STUDENT_PLE);
@@ -679,6 +687,7 @@ public class SimStLogger {
 		}
    	else if (PROBLEM_ENTERED_ACTION.equalsIgnoreCase(action) || PROBLEM_START_ACTION.equalsIgnoreCase(action))
 		{
+   		//System.out.println("Problem Name from br : "+brController.getLoggingSupport().getProblemName()+"  Problem Name "+problemName);
    		if(problemName != null && problemName.length() > 0)
    			brController.getLoggingSupport().setProblemName("'"+problemName);
    		status = TUTOR_STATUS;
@@ -704,10 +713,14 @@ public class SimStLogger {
    		brController.getLoggingSupport().setProblemName("MATCHUP");
    		createContextMessages();
    	}
-   	    	
+   	else if(EXAMPLE_VIEW.equalsIgnoreCase(action) || EXAMPLE_VIEW_END.equalsIgnoreCase(action) ){
+   		//System.out.println(" Example Solution Viewed : "+AplusPlatform.exampleProblem);
+   		brController.getLoggingSupport().setProblemName("'"+AplusPlatform.exampleProblem);
+   		createContextMessages();
+   	}
    	
    	//Determine which type of context message to use, depending on the dataset it should go to
-   	System.out.println(" Action : "+action);
+ //  	System.out.println(" Action : "+action);
    	if( HINT_REQUEST_ACTION.equalsIgnoreCase(action) || CONFIRMATION_REQUEST_ACTION.equalsIgnoreCase(action)
    			|| CONFIRMATION_REQUEST_CL_ACTION.equalsIgnoreCase(action) || STEP_INPUT_ACTION.equals(action)
    			|| QUIZ_QUESTION_ANSWER_ACTION.equals(action))
@@ -733,8 +746,8 @@ public class SimStLogger {
 			context= brController.getLoggingSupport().getContextMessage();
 			System.out.println("Get the current contextMessage");
    	}
-   	System.out.println(" Context :   "+context);
-   	System.out.println("End of Context details");
+ //  	System.out.println(" Context :   "+context);
+//   	System.out.println("End of Context details");
    	return context;
 	}
 	
@@ -749,31 +762,31 @@ public class SimStLogger {
         
 		logging.setDatasetName(datasetBasename+SIMST_APPEND);
 		simStContext= logging.getContextMessage();
-		System.out.println("--------Logging the following in SimStudent database-----------");
-		System.out.println(simStContext.toString());
+	//	System.out.println("--------Logging the following in SimStudent database-----------");
+		//System.out.println(simStContext.toString());
 		logThis(simStContext);
-		System.out.println("--------End of storing the log in SimStudent database----------");
+	//	System.out.println("--------End of storing the log in SimStudent database----------");
 		
 		logging.setDatasetName(datasetBasename+STUDENT_APPEND);
 		studentContext= logging.getContextMessage();
-		System.out.println("---------Logging the following in Student database--------");
-		System.out.println(studentContext.toString());
+	//	System.out.println("---------Logging the following in Student database--------");
+		//System.out.println(studentContext.toString());
 		logThis(studentContext);
-		System.out.println("----------End of storing the log in Student database ----------");
+	//	System.out.println("----------End of storing the log in Student database ----------");
 		
 		logging.setDatasetName(datasetBasename);
 		flowContext= logging.getContextMessage();
-		System.out.println("-----------Logging the following in APLUS database--------------");
-		System.out.println(flowContext.toString());
+	//	System.out.println("-----------Logging the following in APLUS database--------------");
+		//System.out.println(flowContext.toString());
 		logThis(flowContext);
-		System.out.println("------------End of storing the log in APLUS database -------------\n");
+	//	System.out.println("------------End of storing the log in APLUS database -------------\n");
 		
 		logging.setDatasetName(datasetBasename+LMS_APPEND);
 		lmsContext= logging.getContextMessage();
-		System.out.println("-------------Logging the following in LMS database----------------");
-		System.out.println(lmsContext.toString());
+	//	System.out.println("-------------Logging the following in LMS database----------------");
+		//System.out.println(lmsContext.toString());
 		logThis(lmsContext);
-		System.out.println("-------------End of storing the following in the LMS database -------------");
+	//	System.out.println("-------------End of storing the following in the LMS database -------------");
 	}
 	
 	
@@ -1098,12 +1111,16 @@ public class SimStLogger {
 	public void simStLog(String actionType, String action, String step, String result, Object resultDetails, Sai sai, ProblemNode node, String correctness, String expSelection,
    		String expAction, String expInput, int duration, String feedback, String opponent, String info)
    {
+		// if(action.equals(PROBLEM_DURATION))
+			//   System.out.println(" Problem Duration "+duration);
 		simStLog(actionType, action, step, result, resultDetails, sai, node, correctness, expSelection,expAction, expInput, duration, feedback, opponent, info,0,true,null,null,getCurrentTime());
    }
 	
 	public void simStLog(String actionType, String action, String step, String result, Object resultDetails, Sai sai, ProblemNode node, String correctness, String expSelection,
    		String expAction, String expInput, int duration, String feedback, String opponent)
 	{
+		// if(action.equals(PROBLEM_DURATION))
+			//   System.out.println(" Problem Duration "+duration);
 		simStLog(actionType,action,step,result,resultDetails, sai, node, correctness, expSelection,
 			expAction, expInput, duration, feedback, opponent, "");	
 	}
@@ -1118,6 +1135,8 @@ public class SimStLogger {
 	public void simStLog(String actionType, String action, String step, String result, Object resultDetails, Sai sai, ProblemNode node, String correctness, String expSelection,
    		String expAction, String expInput, int duration, String feedback)
 	{
+		// if(action.equals(PROBLEM_DURATION))
+			//   System.out.println(" Problem Duration" +duration);
 		simStLog(actionType, action, step, result, resultDetails, sai, node, correctness, expSelection,
    		expAction, expInput, duration, feedback,"");
 	}
@@ -1125,6 +1144,8 @@ public class SimStLogger {
 
    public void simStLog(String actionType, String action, String step, String result, Object resultDetails, Sai sai)
    {
+	 //  if(action.equals(PROBLEM_DURATION))
+		//   System.out.println(" Problem Duration");
    	simStLog(actionType, action, step, result, resultDetails, sai, null, "","","","",0,"");
    }
 
@@ -1191,6 +1212,8 @@ public class SimStLogger {
 
    public void simStLog(String actionType, String action, String step, String result, Object resultDetails)
    {
+	  // if(action.equals(PROBLEM_DURATION))
+		//   System.out.println(" Problem Duration");
       simStLog(actionType, action, step, result, resultDetails, null);
    }
 
@@ -1386,11 +1409,11 @@ public class SimStLogger {
        	pm.setStringValue(BR_Controller.OLI_LOGGING_URL, log_url);
        	pm.setBooleanValue(BR_Controller.USE_DISK_LOGGING, logLocal);
        	// Check if running in WebStart Mode, then set the DEFAULT_LOG_DIR
-       	if(brController.getMissController().getSimSt().isWebStartMode())
+       /*	if(brController.getMissController().getSimSt().isWebStartMode())
        		pm.setStringValue(BR_Controller.DISK_LOGGING_DIR, WebStartFileDownloader.SimStWebStartDir + DEFAULT_LOG_DIR + "_" + userID + 
        				"_" + FileZipper.formattedDate());
        	else
-       		pm.setStringValue(BR_Controller.DISK_LOGGING_DIR, DEFAULT_LOG_DIR);
+       		pm.setStringValue(BR_Controller.DISK_LOGGING_DIR, DEFAULT_LOG_DIR);*/
        }
        //brController.getLoggingSupport().setEnableAuthorLog(true);
    	brController.getLogger().setAnonymizedStudentName(userID);

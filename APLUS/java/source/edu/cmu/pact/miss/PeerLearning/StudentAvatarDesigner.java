@@ -1,6 +1,12 @@
 package edu.cmu.pact.miss.PeerLearning;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
@@ -18,9 +24,13 @@ import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 
 import edu.cmu.pact.BehaviorRecorder.View.JUndo;
 import edu.cmu.pact.miss.SimSt;
+import java.awt.GridLayout;
+import java.awt.FlowLayout;
 
 
 public class StudentAvatarDesigner extends JPanel implements ActionListener {
@@ -63,7 +73,7 @@ public class StudentAvatarDesigner extends JPanel implements ActionListener {
 	protected String accountName = "default";
 	
 	SimStLogger logger;
-	
+	public static String saveString = "%";
 
 	protected String[] silhouettes = { "img/head1.png","img/head2.png","img/head3.png","img/head4.png"};
 	protected String[] hairdos = { "img/hair1.png","img/hair2.png","img/hair3.png","img/hair4.png","img/hair5.png","img/hair6.png",
@@ -91,7 +101,8 @@ public class StudentAvatarDesigner extends JPanel implements ActionListener {
     	setup();
     }
     
-    JPanel optionPanel, buttonPanel;
+    JPanel optionPanel, welcomePanel, avatarPanel, buttonPanel;
+    private JLabel label;
     
     protected void createOptionPanel()
     {
@@ -100,7 +111,6 @@ public class StudentAvatarDesigner extends JPanel implements ActionListener {
     	optionPanel.setLayout(new BoxLayout(optionPanel, BoxLayout.PAGE_AXIS));
         
         JPanel skinPanel = new JPanel();
-        skinPanel.setLayout(new BoxLayout(skinPanel, BoxLayout.X_AXIS));
         optionPanel.add(skinPanel);
         JPanel hairPanel = new JPanel();
         hairPanel.setLayout(new BoxLayout(hairPanel, BoxLayout.X_AXIS));
@@ -120,6 +130,7 @@ public class StudentAvatarDesigner extends JPanel implements ActionListener {
         //JLabel eyeChangeLabel = new JLabel("   Eyes   ");
         //JLabel noseChangeLabel = new JLabel("   Nose   ");
         JLabel shirtChangeLabel = new JLabel("   Shirt   ");
+        skinPanel.setLayout(new BoxLayout(skinPanel, BoxLayout.X_AXIS));
         
         prevBackground = new JButton("<");
         skinPanel.add(prevBackground);
@@ -174,33 +185,135 @@ public class StudentAvatarDesigner extends JPanel implements ActionListener {
 
     }
     
+    protected void createWelcomePanel(){
+    	welcomePanel= new JPanel();
+    	welcomePanel.setBorder(null);
+    	welcomePanel.setLayout(new BorderLayout());
+        
+        JPanel instructionPanel = new JPanel();
+    	instructionPanel.setLayout(new BorderLayout(0, 0));
+        //instructionPanel.setLayout(new)
+      
+    	//instructionPanel.add(Box.createHorizontalGlue());
+    	JLabel task = new JLabel("<html>Your first task is to configure your peer. Select a skin color, hair, and shirt for the peer. Click on the 'Roll a die' button to make the peer randomly. Name your peer and click the save button.</html>");
+    	task.setHorizontalAlignment(JLabel.LEFT);
+    	task.setVerticalAlignment(JLabel.CENTER);
+        task.setFont(new Font("Comic Sans MS", Font.PLAIN, 17));
+        instructionPanel.add(task);
+        welcomePanel.add(instructionPanel,BorderLayout.CENTER);
+        //welcomePanel.add(Box.createHorizontalGlue());
+        JLabel welcomeLabel = new JLabel(" Welcome!",SwingConstants.CENTER);
+        welcomeLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+        welcomeLabel.setBorder(new EmptyBorder(35,10,20,10));
+        instructionPanel.add(welcomeLabel, BorderLayout.NORTH);
+        welcomeLabel.setFont(new Font("Comic Sans MS", Font.PLAIN, 30));
+      //  instructionPanel.add(Box.createHorizontalGlue());*/
+       
+        
+       /* JLabel instruction1 = new JLabel("Your first task is to configure your peer.",SwingConstants.CENTER);
+        instruction1.setFont(new Font("Comic Sans MS", Font.PLAIN, 17));
+        welcomePanel.add(instruction1, BorderLayout.CENTER);
+        JLabel instruction2 = new JLabel("peer. Select a skin color, hair,and,shirt ",SwingConstants.CENTER);
+        instruction2.setFont(new Font("Comic Sans MS", Font.PLAIN, 17));
+        welcomePanel.add(instruction2, BorderLayout.);
+        
+       // welcomePanel.add(Box.createHorizontalGlue());*/
+    }
     protected void createButtonPanel()
     {
-    	buttonPanel = new JPanel();
-    	
-    	buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.PAGE_AXIS));
+        buttonPanel = new JPanel();
+        buttonPanel.setLayout(null);
  
         JPanel namePanel = new JPanel();
-        namePanel.setLayout(new BoxLayout(namePanel,BoxLayout.X_AXIS));
-        JLabel nameLabel = new JLabel(" Student Name: ");
-        
+        namePanel.setBounds(0, 0, 309, 91);
+        JLabel nameLabel = new JLabel(" Student Name");
+        nameLabel.setBounds(27, 29, 124, 16);
         buttonPanel.add(namePanel);
+        namePanel.setLayout(null);
         namePanel.add(nameLabel);
         name = new JTextField();
+        name.setBounds(163, 23, 114, 28);
         { JUndo.JTextUndoPacket jtup = JUndo.makeTextUndoable(name); }
-        namePanel.add(name);
         
-		random = new JButton("I'm feeling lucky!");
+        //label = new JLabel("");
+        //label.setBounds(197, 19, 0, 0);
+        //namePanel.add(label);
+        namePanel.add(name);
+        save = new JButton("Save");
+        save.setBounds(163, 63, 75, 29);
+        namePanel.add(save);
+        save.addActionListener(this);
+        
+		/*random = new JButton("I'm feeling lucky!");
 		buttonPanel.add(random);
-		random.addActionListener(this);
-
-		save = new JButton("Save");
-		buttonPanel.add(save);
-		save.addActionListener(this);
+		random.addActionListener(this);*/
+        
+       /* JPanel savePanel = new JPanel();
+        savePanel.setBounds(0, 91, 309, 91);
+		savePanel.setLayout(null);
+		buttonPanel.add(savePanel);*/
 		
 
     }
+    private void createAvatarPanel(){
+    	avatarPanel = new JPanel(new GridLayout(3,1));
+    	createOptionPanel();
+        avatarPanel.add(getOptionPanel());
+       
+        avatarPanel.add(createRandomize());
+        createButtonPanel();
+        avatarPanel.add(getButtonPanel());
+    	/*avatarPanel.setBorder(null);
+    	avatarPanel.setLayout(new BoxLayout(avatarPanel,  BoxLayout.PAGE_AXIS));
+    	//avatarPanel.setBackground(Color.blue);
+    	 	//createOptionPanel();
+    	//add(getOptionPanel());
+    	createOptionPanel();
+        avatarPanel.add(getOptionPanel());
+        randomize();
+        createLayeredImage();
+        //avatarPanel.add(Box.createRigidArea(new Dimension(1, 10)));
+        //avatarPanel.add(Box.createRigidArea(new Dimension(1, 10)));
+        avatarPanel.add(getLayeredImage());
+        random = new JButton("Roll a dice");
+        random.setBounds(177, 90, 109, 29);
+        layeredPane.add(random);
+        /*JLabel nameLabel = new JLabel(" Student Name");
+        nameLabel.setBounds(6, 191, 141, 28);
+        layeredPane.add(nameLabel);
+        name = new JTextField();
+        name.setBounds(110, 191, 176, 28);
+        layeredPane.add(name);
+        { JUndo.JTextUndoPacket jtup = JUndo.makeTextUndoable(name); }
+        
+		
+
+		save = new JButton("Save");
+		save.setBounds(152, 231, 75, 29);
+		layeredPane.add(save);
+		save.addActionListener(this);*/
+     /*   random.addActionListener(this);
+       
+       createButtonPanel();*/
+    	
+    }
     
+    public JPanel createRandomize() {
+    	JPanel randomize = new JPanel();
+    	
+    	createLayeredImage();
+        randomize.setLayout(null);
+        randomize.add(getLayeredImage());
+        
+       // randomize();
+        random = new JButton("Roll a die");
+        random.setBounds(160, 65, 109, 29);
+        random.addActionListener(this);
+        randomize.add(random);
+        
+        return randomize;
+        
+    }
     public void createLayeredImage()
     {
 
@@ -214,6 +327,7 @@ public class StudentAvatarDesigner extends JPanel implements ActionListener {
 
         //Create and set up the layered pane.
         layeredPane = new JLayeredPane();
+        layeredPane.setBounds(35, 5, 125, 140);
         layeredPane.setPreferredSize(new Dimension(StudentAvatarDisplay.PREFERRED_WIDTH, StudentAvatarDisplay.PREFERRED_HEIGHT));
 
         backgroundLabel = new JLabel(icon);
@@ -222,7 +336,7 @@ public class StudentAvatarDesigner extends JPanel implements ActionListener {
                                 icon.getIconWidth(),
                                 icon.getIconHeight());
         } 
-        layeredPane.add(backgroundLabel, new Integer(2), 0);
+        layeredPane.add(backgroundLabel, new Integer(2), 1);
 
         hairLabel = new JLabel(icon2);
         if (icon2 != null) {
@@ -230,7 +344,7 @@ public class StudentAvatarDesigner extends JPanel implements ActionListener {
                                 icon.getIconWidth(),
                                 icon.getIconHeight());
         } 
-        layeredPane.add(hairLabel, new Integer(3), 0);
+        layeredPane.add(hairLabel, new Integer(3), 1);
 
         /*expressionLabel = new JLabel(icon3);
         if (icon != null) {
@@ -256,7 +370,7 @@ public class StudentAvatarDesigner extends JPanel implements ActionListener {
                                 icon.getIconWidth(),
                                 icon.getIconHeight());
         } 
-        layeredPane.add(shirtLabel, new Integer(1), 0);
+        layeredPane.add(shirtLabel, new Integer(1), 1);
 
         faceLabel = new JLabel(icon6);
         if (icon != null) {
@@ -264,53 +378,83 @@ public class StudentAvatarDesigner extends JPanel implements ActionListener {
                                 icon.getIconWidth(),
                                 icon.getIconHeight());
         } 
-        layeredPane.add(faceLabel, new Integer(3), 0);
+        layeredPane.add(faceLabel, new Integer(3), 1);
 
-
+        random = new JButton("Roll a dice");
+		layeredPane.add(random,new Integer(4), 1);
+		random.addActionListener(this);
     	
     }
-    
+   
     public JPanel getOptionPanel()
     {
     	return optionPanel;
     }
-    public JPanel getButtonPanel()
+   public JPanel getButtonPanel()
     {
-    	return buttonPanel;
+	   return buttonPanel;
+    }
+    public JPanel getAvatarPanel(){
+    	return avatarPanel;
     }
     public JLayeredPane getLayeredImage()
     {
     	return layeredPane;
     }
     
+    public JPanel getWelcomePanel() {
+		// TODO Auto-generated method stub
+		return welcomePanel;
+	}
     public void setup()
     {
+    	//System.out.println(" background Index : "+backgroundIndex+"  hairIndex : "+hairIndex+"  ShirtIndex : "+shirtIndex);
     	startTime = Calendar.getInstance().getTimeInMillis();
-    	
-    	setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-
-    	createOptionPanel();
-    	add(getOptionPanel());
-        
+    	setLayout(new GridLayout(1,2)); 
+    	setBorder(new EmptyBorder(30, 40, 10, 5));
+    	createWelcomePanel();
+         add(getWelcomePanel());
+         
+         /*JLabel instruction = new JLabel(" Select the color, hair, and shirt for the peer.");
+         instruction.setFont(new Font("Comic Sans MS", Font.PLAIN, 17));
+         welcomePanel.add(instruction);
+         JLabel instruction3 = new JLabel("button.");
+         instruction3.setFont(new Font("Comic Sans MS", Font.PLAIN, 17));
+         welcomePanel.add(instruction3);
+         JLabel instruction2 = new JLabel("Name your peer and click the save");
+         instruction2.setFont(new Font("Comic Sans MS", Font.PLAIN, 17));
+         welcomePanel.add(instruction2);
+         JLabel instruction1 = new JLabel("Click on 'Roll on dice' button to make a peer randomly");
+         instruction1.setFont(new Font("Comic Sans MS", Font.PLAIN, 17));
+         welcomePanel.add(instruction1);*/
+     
+         createAvatarPanel();
+         add(getAvatarPanel());
+         
+        /*createOptionPanel();
+        add(getOptionPanel());
+    	//createOptionPanel();
+    	//add(getOptionPanel());
         randomize();
         
         createLayeredImage();
 
         add(Box.createRigidArea(new Dimension(0, 10)));
-        //add(Box.createRigidArea(new Dimension(0, 10)));
+        add(Box.createRigidArea(new Dimension(0, 10)));
         add(getLayeredImage());
+       
+       createButtonPanel();
+       add(getButtonPanel());*/
         
-        createButtonPanel();
-        add(getButtonPanel());
-        
-        frame.setPreferredSize(new Dimension(300,400));
+        frame.setPreferredSize(new Dimension(650,400));
         frame.setResizable(false);
         Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         frame.setLocation((int)screenSize.width/2,(int)screenSize.height/4);
     }
     
-    
-    /** Returns an ImageIcon, or null if the path was invalid. */
+  
+
+	/** Returns an ImageIcon, or null if the path was invalid. */
     protected ImageIcon createImageIcon(String path) {
     	String file = "/edu/cmu/pact/miss/PeerLearning"+"/"+path;
     	URL url = this.getClass().getResource(file);
@@ -385,6 +529,7 @@ public class StudentAvatarDesigner extends JPanel implements ActionListener {
 
     protected void randomize()
     {
+    	//System.out.println(" Random button called ");
 		backgroundIndex = (int) (Math.random()*silhouettes.length);
 		hairIndex = (int) (Math.random()*hairdos.length);
 		//expressionIndex = (int) (Math.random()*expressions.length);
@@ -394,10 +539,9 @@ public class StudentAvatarDesigner extends JPanel implements ActionListener {
     
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		if(arg0.getSource() == save)
+		if(arg0.getSource() == save && name.getText().length() > 0)
 		{
 			int acceptableNameLength = 16;
-			String saveString = "%";
 			saveString += silhouettes[backgroundIndex]+"%";
         		saveString += hairdos[hairIndex]+"%";
         		//saveString += expressions[expressionIndex]+"%";
@@ -405,6 +549,7 @@ public class StudentAvatarDesigner extends JPanel implements ActionListener {
         		saveString += shirts[shirtIndex];
 			//System.out.println(saveString);
         	SimStPLE.STUDENT_IMAGE = saveString;
+        	//System.out.println(" Avatar : "+SimStPLE.STUDENT_IMAGE);
         	if(gui != null && gui.getSimStAvatarLayerIcon() != null)
         		gui.setImage(saveString);
         	if(name.getText().length() > 0)
@@ -416,6 +561,8 @@ public class StudentAvatarDesigner extends JPanel implements ActionListener {
 	        	if(gui != null && gui.getSimStNameLabel() != null)
 	        		gui.setName(ssName);
 	        	if(gui != null && gui instanceof AplusPlatform) {
+	        		
+
 	        		((AplusPlatform)gui).updateSkillometerLabelText(ssName);
 	        		((AplusPlatform)gui).updateSectionMeterLabelText(ssName);        		
 	        		String msg = ((AplusPlatform)gui).getSpeechText().getText();
@@ -423,22 +570,27 @@ public class StudentAvatarDesigner extends JPanel implements ActionListener {
 	        		msg = msg.replace('\n', ' ');
 	        		((AplusPlatform)gui).clearSpeech();
 	        		((AplusPlatform)gui).appendSpeech(msg, SimSt.SimStName);
+	        		
 	        	}
+	        	frame.setVisible(false);
+	        	
+	        	SimStPLE.saveAccountFile(accountName+".account");
+	        	
+	        	int duration = (int) (( Calendar.getInstance().getTimeInMillis() - startTime)/1000);
+	        	
+	        	logger.simStShortLog(SimStLogger.SIM_STUDENT_PLE, SimStLogger.AVATAR_SAVE_ACTION, name.getText(),saveString, duration);
+	            
+	        	((AplusPlatform) gui).getBrController().getStudentInterface().setVisible(true);
+	        	((AplusPlatform) gui).showSplashScreen();
+	        	
+	        	
+	        	
+				return;
         	}
-        	frame.setVisible(false);
         	
-        	SimStPLE.saveAccountFile(accountName+".account");
-        	
-        	int duration = (int) ( Calendar.getInstance().getTimeInMillis() - startTime);
-        	
-        	logger.simStShortLog(SimStLogger.SIM_STUDENT_PLE, SimStLogger.AVATAR_SAVE_ACTION, name.getText(),saveString, duration);
-        	
-        	((AplusPlatform) gui).showSplashScreen();
-        	
-        	
-			return;
 		}
 
+		
 		if(arg0.getSource() == nextBackground)
 			backgroundIndex++;
 		if(backgroundIndex >= silhouettes.length)
@@ -485,6 +637,12 @@ public class StudentAvatarDesigner extends JPanel implements ActionListener {
 		if(arg0.getSource() == random)
 		{
 			randomize();
+			String randomString = "%"+silhouettes[backgroundIndex] +"%"+ hairdos[hairIndex] +"%"+ shirts[shirtIndex];
+			int duration = (int) (( Calendar.getInstance().getTimeInMillis() - startTime)/1000);
+			/**
+			 *  Log  randomize event. 
+			 */
+        	logger.simStShortLog(SimStLogger.SIM_STUDENT_PLE, SimStLogger.RANDOMIZE_ACTION," ",randomString, duration);
 		}
 
         final ImageIcon icon = createImageIcon(silhouettes[backgroundIndex]);

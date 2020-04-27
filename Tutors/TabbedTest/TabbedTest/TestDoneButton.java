@@ -58,6 +58,7 @@ public class TestDoneButton extends JCommButton {
      		JCommWidget obj=this.interfaceElements.get(selection);	
 		  	if (obj instanceof JCommMultipleChoiceRecover){
 		  		int input=((JCommMultipleChoiceRecover) obj).getSelectedChoiceIndex();
+		  		System.out.println("Input : "+input);
 		  		if (input==-1){
 		  		  //((JCommMultipleChoiceRecover) obj).setBackground(Color.RED);
 		  		  completed=false;

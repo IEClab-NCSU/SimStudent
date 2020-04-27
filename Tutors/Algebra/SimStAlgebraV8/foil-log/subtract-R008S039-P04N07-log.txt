@@ -1,0 +1,232 @@
+FOIL 6.4   [January 1996]
+--------
+
+    Options:
+	minimum clause accuracy 2.08729e+09%
+
+Relation subtract
+
+Relation *NotNull
+
+Relation *IsDenominatorOf
+
+Relation *HasConstTerm
+
+Relation *IsSkillSubtract
+
+Relation *IsSkillMultiply
+
+Relation *IsNumeratorOf
+
+Relation *IsFractionTerm
+
+Relation *Homogeneous
+
+Relation *HasVarTerm
+
+Relation *IsSkillDivide
+
+Relation *Monomial
+
+Relation *IsSkillAdd
+
+Relation *HasCoefficient
+
+Relation *IsAVarTerm
+
+Relation *IsPolynomial
+
+Relation *IsConstant
+
+Relation *IsLastConstTermNegative
+
+Relation *HasParentheses
+
+----------
+subtract:
+
+State (4/11, 13.0 bits available)
+
+	Save IsPolynomial(A) (4,6 value 3.1)
+	Save HasConstTerm(A) (4,6 value 3.1)
+	Save not(Homogeneous(A)) (4,6 value 3.1)
+	Save not(Monomial(A)) (4,6 value 3.1)
+
+Best literal HasVarTerm(A) (5.9 bits)
+
+State (4/6, 7.1 bits available)
+
+	Save Homogeneous(B) (4,5 value 4.0)
+	Save HasConstTerm(B) (4,5 value 4.0)
+	Save not(IsAVarTerm(B)) (4,5 value 4.0)
+	Save not(IsFractionTerm(B)) (4,5 value 4.0)
+
+Best literal IsConstant(B) (6.0 bits)
+
+State (4/5, 2.1 bits available)
+
+No literals
+
+Recover to subtract(A,B) :- HasVarTerm(A), Homogeneous(B).
+
+State (4/5, 2.1 bits available)
+
+No literals
+
+Recover to subtract(A,B) :- HasVarTerm(A), HasConstTerm(B).
+
+State (4/5, 2.1 bits available)
+
+No literals
+
+Recover to subtract(A,B) :- HasVarTerm(A), not(IsAVarTerm(B)).
+
+State (4/5, 2.1 bits available)
+
+No literals
+
+Recover to subtract(A,B) :- HasVarTerm(A), not(IsFractionTerm(B)).
+
+State (4/5, 2.1 bits available)
+
+No literals
+
+Recover to subtract(A,B) :- IsPolynomial(A).
+
+State (4/6, 7.1 bits available)
+
+	Save Homogeneous(B) (4,5 value 4.0)
+	Save HasConstTerm(B) (4,5 value 4.0)
+	Save not(IsAVarTerm(B)) (4,5 value 4.0)
+	Save not(IsFractionTerm(B)) (4,5 value 4.0)
+
+Best literal IsConstant(B) (6.0 bits)
+
+State (4/5, 2.1 bits available)
+
+No literals
+
+Recover to subtract(A,B) :- IsPolynomial(A), Homogeneous(B).
+
+State (4/5, 2.1 bits available)
+
+No literals
+
+Recover to subtract(A,B) :- IsPolynomial(A), HasConstTerm(B).
+
+State (4/5, 2.1 bits available)
+
+No literals
+
+Recover to subtract(A,B) :- IsPolynomial(A), not(IsAVarTerm(B)).
+
+State (4/5, 2.1 bits available)
+
+No literals
+
+Recover to subtract(A,B) :- IsPolynomial(A), not(IsFractionTerm(B)).
+
+State (4/5, 2.1 bits available)
+
+No literals
+
+Recover to subtract(A,B) :- HasConstTerm(A).
+
+State (4/6, 7.1 bits available)
+
+	Save Homogeneous(B) (4,5 value 4.0)
+	Save HasConstTerm(B) (4,5 value 4.0)
+	Save not(IsAVarTerm(B)) (4,5 value 4.0)
+	Save not(IsFractionTerm(B)) (4,5 value 4.0)
+
+Best literal IsConstant(B) (6.0 bits)
+
+State (4/5, 2.1 bits available)
+
+No literals
+
+Recover to subtract(A,B) :- HasConstTerm(A), Homogeneous(B).
+
+State (4/5, 2.1 bits available)
+
+No literals
+
+Recover to subtract(A,B) :- HasConstTerm(A), HasConstTerm(B).
+
+State (4/5, 2.1 bits available)
+
+No literals
+
+Recover to subtract(A,B) :- HasConstTerm(A), not(IsAVarTerm(B)).
+
+State (4/5, 2.1 bits available)
+
+No literals
+
+Recover to subtract(A,B) :- HasConstTerm(A), not(IsFractionTerm(B)).
+
+State (4/5, 2.1 bits available)
+
+No literals
+
+Recover to subtract(A,B) :- not(Homogeneous(A)).
+
+State (4/6, 7.1 bits available)
+
+	Save Homogeneous(B) (4,5 value 4.0)
+	Save HasConstTerm(B) (4,5 value 4.0)
+	Save not(IsAVarTerm(B)) (4,5 value 4.0)
+	Save not(IsFractionTerm(B)) (4,5 value 4.0)
+
+Best literal IsConstant(B) (6.0 bits)
+
+State (4/5, 2.1 bits available)
+
+No literals
+
+Recover to subtract(A,B) :- not(Homogeneous(A)), Homogeneous(B).
+
+State (4/5, 2.1 bits available)
+
+No literals
+
+Recover to subtract(A,B) :- not(Homogeneous(A)), HasConstTerm(B).
+
+State (4/5, 2.1 bits available)
+
+No literals
+
+Recover to subtract(A,B) :- not(Homogeneous(A)), not(IsAVarTerm(B)).
+
+State (4/5, 2.1 bits available)
+
+No literals
+
+Recover to subtract(A,B) :- not(Homogeneous(A)), not(IsFractionTerm(B)).
+
+State (4/5, 2.1 bits available)
+
+No literals
+
+Recover to subtract(A,B) :- not(Monomial(A)).
+
+State (4/6, 7.1 bits available)
+
+	Save Homogeneous(B) (4,5 value 4.0)
+	Save HasConstTerm(B) (4,5 value 4.0)
+	Save not(IsAVarTerm(B)) (4,5 value 4.0)
+	Save not(IsFractionTerm(B)) (4,5 value 4.0)
+
+Best literal IsConstant(B) (6.0 bits)
+
+State (4/5, 2.1 bits available)
+
+No literals
+
+Clause too inaccurate (4/5)
+
+***  Warning: the following definition
+***  does not cover 4 tuples in the relation
+
+
+Time 0.0 secs

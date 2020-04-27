@@ -166,6 +166,9 @@ public class MetatutorSplashScreen extends JDialog implements ActionListener {
 		setLocationRelativeTo(frame);
 		setAlwaysOnTop(true);
 		setVisible(true);
+	   
+		
+		
 
 	}
 

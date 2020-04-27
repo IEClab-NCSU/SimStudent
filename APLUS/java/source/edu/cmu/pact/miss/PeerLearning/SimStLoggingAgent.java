@@ -314,7 +314,7 @@ public class SimStLoggingAgent {
 	
 		if (action == SimStLogger.METATUTOR_HINT_REQUESTED){
 			this.setRequestType((String) resultDetails);
-		//	System.out.println("We have a hint request of type "+resultDetails+" , just logging it...");
+			System.out.println("We have a hint request of type "+resultDetails+" , just logging it...");
 			if (hintLogEntryRequest==null) {  hintLogEntryRequest= new LogEntry(); }
 			else hintLogEntryRequest.clear();
 			this.hintLogEntryRequest.fill(actionType, action, step, result,feedback , sai, node, correctness, expSelection, expAction, expInput, duration, (String) resultDetails, opponent, info, myRating, event_time); 
@@ -344,7 +344,7 @@ public class SimStLoggingAgent {
  	
     		if (!getHintGiven()){ 	//If no hint was given in the past
     			if (resovleHint(feedback,result) == QUIZ){   //If the hint is "Take QUIZ"
-    							System.out.println("We have a Quiz, waiting for quiz button...");
+    							//System.out.println("We have a Quiz, waiting for quiz button...");
     							setHintType(QUIZ);
     							setHintGiven(true);	
     							setTimeToLogHint(false);
@@ -355,7 +355,7 @@ public class SimStLoggingAgent {
     			}
     			else if(resovleHint(feedback,result) == FEEDBACK){ 
     							// return TRUE; 
-    							System.out.println("We have a Feedback hint... just log it");
+    							//System.out.println("We have a Feedback hint... just log it");
     							setFeedbackSuggestion(getFeedbackSuggestion(feedback));
         						setHintType(FEEDBACK);	
         						setTimeToLogHint(true);
@@ -368,7 +368,7 @@ public class SimStLoggingAgent {
     			else if(resovleHint(feedback,result) == RESOURCE){	//this might not be necessary as now I have a new function to handle cognitive and metacognitive hints
 					//SAI is empty so how should I now what Mr Williams wants ? 
     				setAnticipatedResource(result);
-					System.out.println("We have a resource usage hint ... waiting for "+ getAnticipatedResource() +" tab...");
+					//System.out.println("We have a resource usage hint ... waiting for "+ getAnticipatedResource() +" tab...");
 					setFeedbackSuggestion(getFeedbackSuggestion(feedback));
 					setHintType(RESOURCE);	
 					setTimeToLogHint(false);
@@ -381,7 +381,7 @@ public class SimStLoggingAgent {
     			}
     			else if(resovleHint(feedback,result) == COG_HINT){	//this might not be necessary as now I have a new function to handle cognitive and metacognitive hints
     					//SAI is empty so how should I now what Mr Williams wants ? 
-    					System.out.println("We have a demonstration hint ... just log it");
+    					//System.out.println("We have a demonstration hint ... just log it");
     					setFeedbackSuggestion(getFeedbackSuggestion(feedback));
     					setHintType(COG_HINT);	
     					setTimeToLogHint(true);
@@ -392,7 +392,7 @@ public class SimStLoggingAgent {
 		
     			}
     			else{
-    						System.out.println("We have a Problem, waiting for yes button.... ");
+    						//System.out.println("We have a Problem, waiting for yes button.... ");
     			
     						setHintType(resovleHint(feedback, result));  			
     						//copy_mtElementValuesHash();  	//safely store Mr Williams suggestion 
@@ -639,7 +639,7 @@ public class SimStLoggingAgent {
 	
 	public void reinstateDialogMessagesFromBuffer(String actionType, String action, Sai sai, SimStLogger logger){
 		
-    	System.out.println(sai);
+    	//System.out.println(sai);
 		if (actionType==SimStLogger.SIM_STUDENT_METATUTOR && action==SimStLogger.METATUTOR_MODEL_TRACING_ACTION){
     		//If action is "yes button clicked" then log an previously stored messages first//
     		if (sai.getS()=="yes" && sai.getA()=="ButtonPressed"){
@@ -648,7 +648,7 @@ public class SimStLoggingAgent {
 								LogEntry tmp=(LogEntry) it.next();
 						//		logger.simStLogBufferedEntry(tmp.actionType, tmp.action, tmp.step, tmp.result, tmp.resultDetails, tmp.sai, tmp.node, tmp.correctness, tmp.expSelection, tmp.expAction, tmp.expInput, tmp.duration, tmp.feedback, tmp.opponent, tmp.info, tmp.myRating,null,null,null);
 								it.remove();
-								System.out.println("popping out "+ tmp.feedback);
+								//System.out.println("popping out "+ tmp.feedback);
 						}				
     		}
     		

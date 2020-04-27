@@ -144,6 +144,10 @@ public class TutorWrapper extends TutorWindow implements StudentInterfaceWrapper
 	public void requestDone() {
 		return;
 	}
+	
+	public void setTutorResizable(boolean resizable){
+		super.setTutorResizable(resizable);
+	}
 }
 
 

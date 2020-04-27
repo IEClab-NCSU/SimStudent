@@ -462,7 +462,7 @@ public class JessModelTracingTest extends TestCase {
 			            		path + filenames[2],
 			            		path + filenames[3],
 			            		null);
-
+			//System.out.println("  Found ?  "+results[0]);
 			if (!results[0])
 				r.saveState(bloadFile);
 		} catch (Exception e) {

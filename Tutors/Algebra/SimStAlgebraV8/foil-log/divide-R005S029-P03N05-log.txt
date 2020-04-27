@@ -1,0 +1,58 @@
+FOIL 6.4   [January 1996]
+--------
+
+    Options:
+	minimum clause accuracy 1.868e+09%
+
+Relation divide
+
+Relation *NotNull
+
+Relation *IsDenominatorOf
+
+Relation *HasConstTerm
+
+Relation *IsSkillSubtract
+
+Relation *IsSkillMultiply
+
+Relation *IsNumeratorOf
+
+Relation *IsFractionTerm
+
+Relation *Homogeneous
+
+Relation *HasVarTerm
+
+Relation *IsSkillDivide
+
+Relation *Monomial
+
+Relation *IsSkillAdd
+
+Relation *HasCoefficient
+
+Relation *IsAVarTerm
+
+Relation *IsPolynomial
+
+Relation *IsConstant
+
+Relation *IsLastConstTermNegative
+
+Relation *HasParentheses
+
+----------
+divide:
+
+State (3/8, 9.7 bits available)
+
+Best literal HasCoefficient(A) (5.9 bits)
+
+Clause too inaccurate (2/2)
+
+***  Warning: the following definition
+***  does not cover 3 tuples in the relation
+
+
+Time 0.0 secs

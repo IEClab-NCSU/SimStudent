@@ -6,14 +6,21 @@ import java.util.HashMap;
 import java.util.Queue;
 import java.util.Stack;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import jess.Funcall;
 import jess.Value;
 
 
 /**
- * Working memory for the APlus environment. 
+ * 
+ *  This class acts like a monitor. In other words, it perceives the actions and updates the working memory accordingly.
+ *  This class must have only one instance for the APLUS environment. 
+ *  The name of the class is misleading . It has to be renamed as MTReteMonitor
  */
-public class ModelTraceWorkingMemory implements Serializable, Cloneable {
+@XmlRootElement
+public class ModelTraceWorkingMemory implements Serializable,  Cloneable {
 
 	/** Default Constant for serialization */
 	private static final long serialVersionUID = 1L;
@@ -28,6 +35,7 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 	 */
 	public static HashMap<String, Integer> quizProblemsTutoredListAllSections = new HashMap<String, Integer>();
 
+	@XmlElement
 	public HashMap<String, Integer> getQuizProblemsTutoredListAllSections() {
 		return quizProblemsTutoredListAllSections;
 	}
@@ -37,6 +45,7 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 	/**	 */
 	public static Stack<String> allTutoredProblemList= new Stack<String>();
 	
+	@XmlElement
 	public Stack<String> getAllTutoredProblemList() {
 		return allTutoredProblemList;
 	}
@@ -46,7 +55,8 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 	public ModelTraceWorkingMemory(){}
 	
 	private String lhsProblem;
-
+	
+	@XmlElement
 	public String getLhsProblem() {
 		return lhsProblem;
 	}
@@ -57,6 +67,7 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 
 	private String rhsProblem;
 	
+	@XmlElement
 	public String getRhsProblem() {
 		return rhsProblem;
 	}
@@ -68,6 +79,7 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 	
 	private String lastTutoredProblem;
 	
+	@XmlElement
 	public String getLastTutoredProblem() {
 		return lastTutoredProblem;
 	}
@@ -82,6 +94,8 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 	public void setQuizInProgress(String flag){
 		quizInProgress=flag;
 	}
+	
+	@XmlElement
 	public String getQuizInProgress() {
 		return quizInProgress;
 	}
@@ -91,7 +105,8 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 	public String getLhsQProblem() {
 		return lhsQProblem;
 	}
-
+	
+	@XmlElement
 	public void setLhsQProblem(String lhsQProblem) {
 		this.lhsQProblem = lhsQProblem;
 	}
@@ -101,7 +116,8 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 	public String getRhsQProblem() {
 		return rhsQProblem;
 	}
-
+	
+	@XmlElement
 	public void setRhsQProblem(String rhsQProblem) {
 		this.rhsQProblem = rhsQProblem;
 	}
@@ -111,6 +127,8 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 	public String getStudentEnteredProblem() {
 		return studentEnteredProblem;
 	}
+	
+	@XmlElement
 	public void setStudentEnteredProblem(String studentEnteredProblem) {
 		this.studentEnteredProblem = studentEnteredProblem;
 	}
@@ -124,6 +142,7 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 
 	private String solved;
 
+	@XmlElement
 	public String getSolved() {
 		return solved;
 	}
@@ -135,6 +154,7 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 	
 	private String currentQuizLevel;
 
+	@XmlElement
 	public String getCurrentQuizLevel() {
 		return currentQuizLevel;
 	}
@@ -145,7 +165,8 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 	
 	
 	private String allQuizFailed;
-
+	
+	@XmlElement
 	public String getAllQuizFailed() {
 		return allQuizFailed;
 	}
@@ -163,6 +184,7 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 	/**	 */
 	private String hintRequestSolvedQuizProblem;
 	
+	@XmlElement
 	public String getHintRequestSolvedQuizProblem() {
 		return hintRequestSolvedQuizProblem;
 	}
@@ -200,6 +222,7 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 	
 	private int tutoredProblemsWithoutHint = 0;
 	
+	@XmlElement
 	public int getTutoredProblemsWithoutHint() {
 		return tutoredProblemsWithoutHint;
 	}
@@ -210,6 +233,8 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 	
 	
 	private int solutionSteps = 0;//WorkingMemoryConstants.FALSE;
+	
+	@XmlElement
 	public int getSolutionSteps() {
 		return solutionSteps;
 	}
@@ -230,6 +255,7 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 	
 	private int restartCount = 0;
 	
+	@XmlElement
 	public int getRestartCount() {
 		return restartCount;
 	}
@@ -242,6 +268,7 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 	
 	private int quizFailCount = 0;
 	
+	@XmlElement
 	public int getQuizFailCount() {
 		return quizFailCount;
 	}
@@ -253,6 +280,7 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 	
 	private int allQuizFailCount = 0;
 	
+	@XmlElement
 	public int getAllQuizFailCount() {
 		return allQuizFailCount;
 	}
@@ -265,6 +293,7 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 	
 	private String canSolve = WorkingMemoryConstants.FALSE;
 	
+	@XmlElement
 	public String getCanSolve() {
 		return canSolve;
 	}
@@ -279,6 +308,7 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 	
 	private String restartClickedRepeatedly = WorkingMemoryConstants.FALSE;
 	
+	@XmlElement
 	public String getRestartClickedRepeatedly() {
 		return restartClickedRepeatedly;
 	}
@@ -289,6 +319,7 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 	
 	private String resourceViewed = WorkingMemoryConstants.FALSE;
 	
+	@XmlElement
 	public String getResourceViewed() {
 		return resourceViewed;
 	}
@@ -300,6 +331,7 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 	
 	private String tutoredProblemCorrectness = WorkingMemoryConstants.TRUE;
 	
+	@XmlElement
 	public String getTutoredProblemCorrectness() {
 		return tutoredProblemCorrectness;
 	}
@@ -314,6 +346,7 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 	
 	private String examplesTabClicked = WorkingMemoryConstants.FALSE;
 	
+	@XmlElement
 	public String getExamplesTabClicked() {
 		return examplesTabClicked;
 	}
@@ -325,6 +358,7 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 	
 	private String simStudentThinking = WorkingMemoryConstants.FALSE;
 	
+	@XmlElement
 	public String getSimStudentThinking() {
 		return simStudentThinking;
 	}
@@ -339,6 +373,7 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 	
 	private String UOTabClicked = WorkingMemoryConstants.FALSE;
 	
+	@XmlElement
 	public String getUOTabClicked() {
 		return UOTabClicked;
 	}
@@ -349,12 +384,13 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 
 	private String problemBankTabClicked = WorkingMemoryConstants.FALSE;
 	
+	@XmlElement
 	public String getProblemBankTabClicked() {
 		return problemBankTabClicked;
 	}
 
 	public void setProblemBankTabClicked(String problemBankTabClicked) {
-		System.out.println(" this : "+this+"  ProblemBankClicked : "+problemBankTabClicked);
+		//System.out.println(" this : "+this+"  ProblemBankClicked : "+problemBankTabClicked);
 		this.problemBankTabClicked = problemBankTabClicked;
 	}
 
@@ -363,6 +399,7 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 	/**	 */
 	private String problemType;
 	
+	@XmlElement
 	public String getProblemType() {
 		return problemType;
 	}
@@ -374,6 +411,7 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 	/**	 */
 	private String solutionCorrectness;
 	
+	@XmlElement
 	public String getSolutionCorrectness() {
 		return solutionCorrectness;
 	}
@@ -385,6 +423,7 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 	/**	 */
 	private String problemStatus;
 	
+	@XmlElement
 	public String getProblemStatus() {
 		return problemStatus;
 	}
@@ -396,6 +435,7 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 	/**	Variable set to "true" when the quiz is taken */
 	private String quizTaken = WorkingMemoryConstants.FALSE;
 
+	@XmlElement
 	public String getQuizTaken() {
 		return quizTaken;
 	}
@@ -408,6 +448,7 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 	/**	Variable set to "true" when the quiz is taken */
 	private String quizIncomplete = WorkingMemoryConstants.FALSE;
 
+	@XmlElement
 	public String getQuizIncomplete() {
 		return quizIncomplete;
 	}
@@ -424,6 +465,7 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 	/**	Variable set to "true" when SimStudent is thinking*/
 	private String thinking = WorkingMemoryConstants.FALSE;
 
+	@XmlElement
 	public String getThinking() {
 		return thinking;
 	}
@@ -435,6 +477,7 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 	/**	Variable set to "true" when SimStudent asks for self-explanation*/
 	private String selfExplanation = WorkingMemoryConstants.FALSE;
 
+	@XmlElement
 	public String getSelfExplanation() {
 		return selfExplanation;
 	}
@@ -446,6 +489,7 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 	/**	Variable set to "true" when SimStudent is thinking*/
 	private String solutionCheckError = WorkingMemoryConstants.FALSE;
 
+	@XmlElement
 	public String getSolutionCheckError() {
 		return solutionCheckError;
 	}
@@ -458,7 +502,9 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 	
 	
 	
-	public String studentSaiEntered=WorkingMemoryConstants.TRUE;
+	private String studentSaiEntered=WorkingMemoryConstants.TRUE;
+	
+	@XmlElement
 	public String getStudentSaiEntered(){
 		return studentSaiEntered;
 	}
@@ -468,7 +514,9 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 	
 	
 	
-	public String nextSelection="nil";
+	private String nextSelection="nil";
+	
+	@XmlElement
 	public String getNextSelection(){
 		return nextSelection;
 	}
@@ -477,7 +525,9 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 	}
 	
 	
-	public String nextAction="nil";
+	private String nextAction="nil";
+	
+	@XmlElement
 	public String getNextAction(){
 		return nextAction;
 	}
@@ -485,7 +535,9 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 		this.nextAction=nextAct;
 	}
 	
-	public String nextInput="nil";
+	private String nextInput="nil";
+	
+	@XmlElement
 	public String getNextInput(){
 		return nextInput;
 	}
@@ -495,17 +547,20 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 	
 	
 	private String solutionGiven=WorkingMemoryConstants.FALSE;
+	@XmlElement
 	public String getSolutionGiven(){return this.solutionGiven;}
 	public void setSolutionGiven(String sol){this.solutionGiven=sol;}
 	
 	
 	private String previousProblemType="nil";
+	@XmlElement
 	public String getPreviousProblemType(){return this.previousProblemType;}
 	public void setPreviousProblemType(String sol){this.previousProblemType=sol;}
 	
 	
 	
 	private String hintRequest=WorkingMemoryConstants.FALSE;
+	@XmlElement
 	public String getHintRequest(){return this.hintRequest;}
 	public void setHintRequest(String hintRequest){this.hintRequest=hintRequest;}
 	
@@ -515,6 +570,7 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 	/**	Variable set to "true" when SimStudent just took the quiz*/
 	private String afterQuiz = WorkingMemoryConstants.FALSE;
 
+	@XmlElement
 	public String getAfterQuiz() {
 		return afterQuiz;
 	}
@@ -528,6 +584,7 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 	/** Variable to keep track of the outcome of the quiz. Accepted values are "pass" / "fail" */
 	private String quizOutcome;
 	
+	@XmlElement
 	public String getQuizOutcome() {
 		return quizOutcome;
 	}
@@ -539,6 +596,7 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 	/**	Variable to keep track if the Unit Overview tab was visited by the student */
 	private String UOTabReviewed;
 	
+	@XmlElement
 	public String getUOTabReviewed() {
 		return UOTabReviewed;
 	}
@@ -551,6 +609,7 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 	/**	Variable to keep track if the Examples tab was visited by the student */
 	private String ExamplesReviewed=WorkingMemoryConstants.FALSE;
 	
+	@XmlElement
 	public String getExamplesReviewed() {
 		return ExamplesReviewed;
 	}
@@ -562,6 +621,7 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 	/**	 */
 	private String quizProblemsFailedList;
 	
+	@XmlElement
 	public String getQuizProblemsFailedList() {
 		return quizProblemsFailedList;
 	}
@@ -571,7 +631,9 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 	}
 
 	/*Added so we can access all failed quiz problems from a multi-slot from production rules */
-	public String[] quizFailedProblemsList;
+	private String[] quizFailedProblemsList;
+	
+	@XmlElement
 	public String[] getQuizFailedProblemsList() {
 		return quizFailedProblemsList;
 	}
@@ -581,6 +643,7 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 	
 	private String moreSteps=WorkingMemoryConstants.FALSE;
 	
+	@XmlElement
 	public String getMoreSteps() {
 		return moreSteps;
 	}
@@ -594,6 +657,7 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 	/**	 */
 	private String quizProblemsTutoredList;
 	
+	@XmlElement
 	public String getQuizProblemsTutoredList() {
 		return quizProblemsTutoredList;
 	}
@@ -605,6 +669,7 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 	/**	 */
 	private String quizProblemsPassed;
 	
+	@XmlElement
 	public String getQuizProblemsPassed() {
 		return quizProblemsPassed;
 	}
@@ -616,6 +681,7 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 	/** Slot to keep track of if the APlus was launched	 */
 	private String APlusLaunched = WorkingMemoryConstants.TRUE;
 
+	@XmlElement
 	public String getAPlusLaunched() {
 		return APlusLaunched;
 	}
@@ -623,7 +689,68 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 	public void setAPlusLaunched(String status) {
 		APlusLaunched = status;
 	}
+	
+	private int consecutiveResourceReview = 0;
+	
+	@XmlElement
+	public int getConsecutiveResourceReview() {
+		return consecutiveResourceReview;
+	}
 
+
+	public void setConsecutiveResourceReview(int consecutiveResourceReview) {
+		this.consecutiveResourceReview = consecutiveResourceReview;
+	}
+	
+	private boolean overviewScrolled = false;
+
+	@XmlElement
+	public boolean isOverviewScrolled() {
+		return overviewScrolled;
+	}
+
+
+	public void setOverviewScrolled(boolean overviewScrolled) {
+		this.overviewScrolled = overviewScrolled;
+		if(overviewScrolled)
+			this.consecutiveResourceReview++;
+	}
+
+	private boolean exampleProblemViewed = false;
+	
+	@XmlElement
+	public boolean isExampleProblemViewed() {
+		return exampleProblemViewed;
+	}
+
+
+	public void setExampleProblemViewed(boolean exampleProblemViewed) {
+		this.exampleProblemViewed = exampleProblemViewed;
+		if(exampleProblemViewed)
+			this.consecutiveResourceReview++;
+	}
+
+
+	private int quizLevelPassed = 0;
+	
+	@XmlElement
+	public int getQuizLevelPassed() {
+		return quizLevelPassed;
+	}
+
+
+	public void setQuizLevelPassed(int quizLevelPassed) {
+		this.quizLevelPassed = quizLevelPassed;
+	}
+
+	public static String suggestedProblem = "";
+
+	@XmlElement
+	public String getSuggestedProblem() {
+		return suggestedProblem;
+	}
+
+ 	
 	/**
 	 * @param out
 	 * @throws IOException
@@ -652,6 +779,20 @@ public class ModelTraceWorkingMemory implements Serializable, Cloneable {
 		ModelTraceWorkingMemory wm = new ModelTraceWorkingMemory();
 	}
 	
+	
+
+
+	
+
+
+
+
+
+
+
+
+
+
 	/**
 	 *
 	 */

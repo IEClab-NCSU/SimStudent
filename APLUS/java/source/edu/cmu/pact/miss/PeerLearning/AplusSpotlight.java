@@ -39,13 +39,15 @@ public class AplusSpotlight extends JDialog {
 	SpotlightPanel spotlight=null;
 	SimStRememberBubble thinkBubble=null;
 	SpotlightPanelBubble spotlightBubble=null;
+	SimStPeerTutoringPlatform parent = null;
 	/**
 	 * Constructor that does not display a think bubble
 	 * @param aplusWindow
 	 * @param highlightedComponent
 	 * @param dialog
 	 */
-	public  AplusSpotlight(SimStPeerTutoringPlatform aplusWindow,JPanel highlightedComponent,JDialog dialog){	
+	public  AplusSpotlight(SimStPeerTutoringPlatform aplusWindow,JPanel highlightedComponent,JDialog dialog){
+		
 		this(aplusWindow, highlightedComponent,-3,dialog);
 	}
 	
@@ -67,20 +69,22 @@ public class AplusSpotlight extends JDialog {
 	 */
 	public AplusSpotlight(SimStPeerTutoringPlatform aplusWindow,JPanel highlightedComponent,int bubbleDirection,JDialog dialog){
 		
-		int overalWidth=aplusWindow.getWidth();
+		int overalWidth=highlightedComponent.getWidth();
 		int width=overalWidth;
-		int height=aplusWindow.getHeight();
-		Point location=aplusWindow.getLocationOnScreen();
+		int height=highlightedComponent.getHeight();
+		Point location=highlightedComponent.getLocationOnScreen();
+		//Point location = new Point(100,50);
 	
 
-		spotlight =new SpotlightPanel(location, width,height, highlightedComponent.getLocationOnScreen(),highlightedComponent.getWidth()/2,highlightedComponent.getWidth(),highlightedComponent.getHeight());
+		//spotlight =new SpotlightPanel(location, width,height, highlightedComponent.getLocation(location),highlightedComponent.getWidth()/2,highlightedComponent.getWidth(),highlightedComponent.getHeight());
+		spotlight =new SpotlightPanel(bubbleDirection, location, width,height, highlightedComponent.getLocationOnScreen(),highlightedComponent.getWidth()/2,highlightedComponent.getWidth(),highlightedComponent.getHeight());
+		//spotlight =new SpotlightPanel(location, width,height, highlightedComponent.getLocationOnScreen(),100,highlightedComponent.getWidth(),highlightedComponent.getHeight());
+		//if (bubbleDirection==SimStRememberBubble.RIGHT)
+			//spotlightBubble =new SpotlightPanelBubble(highlightedComponent, location, width,height, highlightedComponent.getLocationOnScreen(),highlightedComponent.getWidth()/2,highlightedComponent.getWidth(),highlightedComponent.getHeight(),SimStRememberBubble.RIGHT);
+		//else if (bubbleDirection==SimStRememberBubble.LEFT)
+			//spotlightBubble =new SpotlightPanelBubble(highlightedComponent, location, width,height, highlightedComponent.getLocationOnScreen(),highlightedComponent.getWidth()/2,highlightedComponent.getWidth(),highlightedComponent.getHeight(),SimStRememberBubble.LEFT);
+
 		
-		if (bubbleDirection==SimStRememberBubble.RIGHT)
-			spotlightBubble =new SpotlightPanelBubble(highlightedComponent, location, width,height, highlightedComponent.getLocationOnScreen(),highlightedComponent.getWidth()/2,highlightedComponent.getWidth(),highlightedComponent.getHeight(),SimStRememberBubble.RIGHT);
-		else if (bubbleDirection==SimStRememberBubble.LEFT)
-			spotlightBubble =new SpotlightPanelBubble(highlightedComponent, location, width,height, highlightedComponent.getLocationOnScreen(),highlightedComponent.getWidth()/2,highlightedComponent.getWidth(),highlightedComponent.getHeight(),SimStRememberBubble.LEFT);
-
-
 			
 		if (dialog!=null)	
 			dialog.setVisible(true);
@@ -126,7 +130,7 @@ public class AplusSpotlight extends JDialog {
 		 * @param highlightedComponentHeight height of the component we want to spotlight
 		 */
 		
-		public SpotlightPanel(Point location, int width, int height, Point spotlightLocation, int spotlightWidth, int highlightedComponentWidth, int highlightedComponentHeight) {
+		public SpotlightPanel(int direction, Point location, int width, int height, Point spotlightLocation, int spotlightWidth, int highlightedComponentWidth, int highlightedComponentHeight) {
 			setUndecorated(true);			
 			//setBounds(0,0,aplusWindow.getWidth()-AplusPlatform.METATUTOR_IMAGE_WIDTH-100,aplusWindow.getHeight());
 			setBounds(0,0,width,height);
@@ -148,9 +152,16 @@ public class AplusSpotlight extends JDialog {
 	        Graphics2D g = img.createGraphics();
 
 	        	
-	        int ovalX = spotlightLocation.x - location.x+highlightedComponentWidth/2;
-	        int ovalY = spotlightLocation.y - location.y+highlightedComponentHeight/2;
-	        int ovalRadius = spotlightWidth;
+	        //int ovalX = spotlightLocation.x - location.x+highlightedComponentWidth/2;
+	        //int ovalY = spotlightLocation.y - location.y+highlightedComponentHeight/2;
+	        int ovalX = 100;
+	        int ovalY = 520;
+	        int ovalRadius = 100;
+	        
+	        if(SimStRememberBubble.RIGHT == direction) {
+	        	ovalX = 830;
+	        	ovalY = 520;
+	       }
 
 	        /* Draw the grey rectangle */
 	        g.setColor(new Color(0, 0, 0, 183));
@@ -170,9 +181,10 @@ public class AplusSpotlight extends JDialog {
 	                        
 	        this.setLocation(location);
 	        
-
+	        
 	        
 	        this.repaint();
+	       
 	       
 			setVisible(true);
 		}

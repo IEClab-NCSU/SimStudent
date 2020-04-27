@@ -345,7 +345,7 @@ public class MT {
 			thisPkg+".SetDefaultSkillCategory"
 		};
 		if(trace.getDebugCode("dumpjessinfo")) {
-			System.out.println("Jess Userfunction instances loaded:");
+			//System.out.println("Jess Userfunction instances loaded:");
 			for(String ufn : userfunctions) {
 				try {
 					Class<Userfunction> cls = (Class<Userfunction>) Class.forName(ufn);
@@ -816,7 +816,7 @@ public class MT {
                         rete.eval("(do-backward-chaining" + MTRete.CORRECTSAINAME + ")");
                         rete.eval("(do-backward-chaining" + MTRete.BUGGYSAINAME + ")");
                     }	
-
+                    
                     rete.saveState(findCognitiveModelDirectory()+problemName+".bload");
                     if(wmeEditor != null)
 						wmeEditor.getPanel().refresh();

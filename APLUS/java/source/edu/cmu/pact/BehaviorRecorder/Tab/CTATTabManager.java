@@ -44,8 +44,14 @@ public class CTATTabManager {
 	private CTATTab focusedTab;
 	/** The maximum number of graphs that may be opened at once. */
 	private static int MAX_TABS = 5;
+	/** The maximum number of graphs that may be opened at once for servler version**/
+	private int MAX_TABS_SERVLET = 5;
 	/** The number of graph tabs created. Incremented by {@link #getNewTab()}. */
 	private static int NUM_TABS = 0;
+	
+	/** The number of graph tabs created for the servlet */
+	private int NUM_TABS_SERVLET=0;
+	
 	/** Stores the number of LogConsole windows open currently.
 	 *  Tracks the # of windows open instead of using a boolean in case multipel windows open*/
 	private int numLogConsoles = 0;
@@ -54,7 +60,6 @@ public class CTATTabManager {
 	private HashMap<JMenuItem, boolean[]> menuItems = new HashMap<JMenuItem, boolean[]>();
 	
 	/** Set of menu item names to de*/
-	
 	public CTATTabManager(CTAT_Launcher server, String[] argv) {
 		this.argv = argv;
 		this.tabList = new ArrayList<CTATTab>();
@@ -109,6 +114,18 @@ public class CTATTabManager {
 	public static int getNumTabs() {
 		return NUM_TABS;
 	}
+	
+	
+	/**
+	 * 
+	 * @param num
+	 * @author Vishnu Priya
+	 */
+	public static void setNumTabs(int num) {
+		NUM_TABS = num;
+	}
+
+
 
 	/**
 	 * Searches for and returns a tab with an empty graph.
@@ -148,27 +165,54 @@ public class CTATTabManager {
 	 * 					{@link BR_Controller}.
 	 */
 	public CTATTab getNewTab(CTATTab newTab, SingleSessionLauncher launcher) {
-		if (NUM_TABS >= MAX_TABS) {
-			if(trace.getDebugCode("mg"))
-				trace.out("mg", "CTATTabManager (getNewTab): no more tabs ");
-			newTab = this.getFreeTab();
-			if (newTab == null) {
-				JOptionPane.showMessageDialog(this.getFocusedTab().getController().getActiveWindow(), 
-						"Only "+MAX_TABS+" graphs can be open at the same time. Please close an open graph and try again.", 
-						"Maximum number of graphs", JOptionPane.OK_OPTION);
+		//String runType = System.getProperty("appRunType");
+		
+		/*if(runType.equals("servlet")){
+			if (NUM_TABS_SERVLET >= MAX_TABS_SERVLET) {
+				if(trace.getDebugCode("mg"))
+					trace.out("mg", "CTATTabManager (getNewTab): no more tabs ");
+				newTab = this.getFreeTab();
+				if (newTab == null) {
+					JOptionPane.showMessageDialog(this.getFocusedTab().getController().getActiveWindow(), 
+							"Only "+MAX_TABS_SERVLET+" graphs can be open at the same time. Please close an open graph and try again.", 
+							"Maximum number of graphs", JOptionPane.OK_OPTION);
+				}
+				return newTab;
 			}
+			if(launcher == null) {
+				newTab = new CTATTab(this.nextTabNumber);
+				launcher = new SingleSessionLauncher(this.argv, this, this.server, newTab);
+			}
+			newTab.setLauncher(launcher);
+			this.tabList.add(newTab);
+			NUM_TABS_SERVLET++;
+			this.nextTabNumber++;
+			newTab.initializeCtatMenuItems(menuItems);
 			return newTab;
 		}
-		if(launcher == null) {
-			newTab = new CTATTab(this.nextTabNumber);
-			launcher = new SingleSessionLauncher(this.argv, this, this.server, newTab);
-		}
-		newTab.setLauncher(launcher);
-		this.tabList.add(newTab);
-		NUM_TABS++;
-		this.nextTabNumber++;
-		newTab.initializeCtatMenuItems(menuItems);
-		return newTab;
+		else{*/
+			if (NUM_TABS >= MAX_TABS) {
+				if(trace.getDebugCode("mg"))
+					trace.out("mg", "CTATTabManager (getNewTab): no more tabs ");
+				newTab = this.getFreeTab();
+				if (newTab == null) {
+					JOptionPane.showMessageDialog(this.getFocusedTab().getController().getActiveWindow(), 
+							"Only "+MAX_TABS+" graphs can be open at the same time. Please close an open graph and try again.", 
+							"Maximum number of graphs", JOptionPane.OK_OPTION);
+				}
+				return newTab;
+			}
+			if(launcher == null) {
+				newTab = new CTATTab(this.nextTabNumber);
+				launcher = new SingleSessionLauncher(this.argv, this, this.server, newTab);
+			}
+			newTab.setLauncher(launcher);
+			this.tabList.add(newTab);
+			NUM_TABS++;
+			this.nextTabNumber++;
+			newTab.initializeCtatMenuItems(menuItems);
+			return newTab;
+		//}
 	}
 	
 	/**
@@ -462,4 +506,20 @@ public class CTATTabManager {
 	public int getNumLogConsoles(){
 		return numLogConsoles;
 	} //TODO Change the way logconsoles are tracked and used with respect to tee sockets
+
+	/*public int getMaxTabsServlet() {
+		return MAX_TABS_SERVLET;
+	}
+
+	public void setMaxTabsServlet(int mAX_TABS_SERVLET) {
+		MAX_TABS_SERVLET = mAX_TABS_SERVLET;
+	}
+
+	public int getNumTabServlet() {
+		return NUM_TABS_SERVLET;
+	}
+
+	public void setNumTabServlet(int nUM_TABS_SERVLET) {
+		NUM_TABS_SERVLET = nUM_TABS_SERVLET;
+	}*/
 }

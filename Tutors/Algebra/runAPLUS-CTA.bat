@@ -5,7 +5,7 @@ set CVSDIR=%CD%
 cd SimStAlgebraV8
 set ProjectDir=%CVSDIR%\SimStAlgebraV8
 set CTATJAR=%CVSDIR%\lib\ctat.jar;%CVSDIR%\lib\jess.jar
-set CPATH=%CTATJAR%;..;.
+set CPATH="%CTATJAR%;..;."
 
 if "%DatasetName%" == "" (
     echo.
@@ -16,7 +16,7 @@ if "%DatasetName%" == "" (
     echo * Provide a name for the dataset.					      *
     echo * To do this, assign a name to the variable 'DatasetName'		      *
     echo * For example, if you want to assign 'Logging2016' as a dataset name	      *
-    echo * then rewrite the following at line 3 in runAPLUS-CT.bat		      *
+    echo * then rewrite the following at line 3 in runAPLUS-CTA.bat		      *
     echo *            set DatasetName=					              *
     echo *	      as							      *
     echo *            set DatasetName=Logging2016				      *
@@ -33,10 +33,12 @@ set TutorArg=-traceLevel 3 -debugCodes miss cogTutor ss sswme
 set TutorArg=%TutorArg% -ssRunInPLE 
 set TutorArg=%TutorArg% -ssSelfExplainMode
 set TutorArg=%TutorArg% -ssHintMethod builtInClSolverTutor -ssRuleActivationTestMethod builtInClSolverTutor 
+set TutorArg=%TutorArg% -ssProblemCheckerOracle ClOracle
 set TutorArg=%TutorArg% -ssIntroVideo aplus_controlS7.mov -ssOverviewPage curriculum.html
 set TutorArg=%TutorArg% -ssLoadPrefsFile brPrefsStacy.xml
-set TutorArg=%TutorArg% -ssCacheOracleInquiry false
+set TutorArg=%TutorArg% -ssLogFolder C:\Users\Public\SimStAlgebraV9\log\
 set TutorArg=%TutorArg% -ssLocalLogging true
+set TutorArg=%TutorArg% -ssCacheOracleInquiry false
 set TutorArg=%TutorArg% -ssSearchTimeOutDuration 20000
 set TutorArg=%TutorArg% -ssTutorServerTimeOutDuration 100000
 set TutorArg=%TutorArg% -ssMaxSearchDepth 3
@@ -48,14 +50,19 @@ set TutorArg=%TutorArg% -ssFoaGetterClass SimStAlgebraV8.AlgebraV8AdhocFoaGetter
 set TutorArg=%TutorArg% -ssSelectionOrderGetterClass SimStAlgebraV8.AlgebraV8AdhocSelectionGetter
 set TutorArg=%TutorArg% -ssClSolverTutorSAIConverter SimStAlgebraV8.AlgebraV8AdhocSAIConverter
 set TutorArg=%TutorArg% -ssActivationList AccuracySortedActivationList
+set TutorArg=%TutorArg% -ssInputMatcher edu.cmu.pact.miss.userDef.algebra.IsEquivalent
+set TutorArg=%TutorArg% -ssInputCheckerClass SimStAlgebraV8.AlgebraV8InputChecker
+set TutorArg=%TutorArg% -ssQuizProblemAbstractor SimStAlgebraV8.AlgebraV8AdhocQuizProblemAbstractor
 set TutorArg=%TutorArg% -ssFoaClickDisabled
-set TutorArg=%TutorArg% -ssProjectDir %ProjectDir%
+set TutorArg=%TutorArg% -ssCLQuizReqMode
+set TutorArg=%TutorArg% -ssProjectDirectory %ProjectDir%
 set TutorArg=%TutorArg% -ssNumBadInputRetries 2
 set TutorArg=%TutorArg% -ssProblemsPerQuizSection 2
+set TutorArg=%TutorArg% -ssOperatorFile operators.txt
 set TutorArg=%TutorArg% -Dcourse_name=%DatasetName%
 set TutorArg=%TutorArg% -Dschool_name=someSchool
 set TutorArg=%TutorArg% -Dclass_name=someClass
-set TutorArg=%TutorArg% -ssCondition devTesting
+set TutorArg=%TutorArg% -ssCondition AplusControl
 set TutorArg=%TutorArg% %ARGS%
 
 echo command line arguments : %TutorArg%
