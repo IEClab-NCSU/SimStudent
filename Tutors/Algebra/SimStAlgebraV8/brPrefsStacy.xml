@@ -63,12 +63,12 @@
   <preference>
     <name>Student Interface Location X</name>
     <class>java.lang.Integer</class>
-    <value>557</value>
+    <value>591</value>
   </preference>
   <preference>
     <name>Student Interface Location Y</name>
     <class>java.lang.Integer</class>
-    <value>334</value>
+    <value>23</value>
   </preference>
   <preference>
     <name>Use OLI Logging</name>
@@ -88,7 +88,7 @@
   <preference>
     <name>Disk Logging Directory</name>
     <class>java.lang.String</class>
-    <value>log</value>
+    <value>/Users/simstudent/Desktop/SimStudentGithub/SimStudent-master/Tutors/Algebra/SimStAlgebraV8/log/APLUS</value>
   </preference>
   <preference>
     <name>Student Interface Width</name>
@@ -108,7 +108,7 @@
   <preference>
     <name>BRD File other location</name>
     <class>java.lang.String</class>
-    <value>/Users/simstudent/Desktop</value>
+    <value>SimStAlgebraV8/</value>
   </preference>
   <preference>
     <name>Tutor Wrapper Vertical Divider Location</name>

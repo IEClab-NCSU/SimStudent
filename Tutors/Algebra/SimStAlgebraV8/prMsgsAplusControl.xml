@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <messages>
 	<message-set>
-		<name>simst-launch-take-quiz</name>
+		<name>simst-launch-take-quiz_Quiz</name>
 			<menu-option>
 				<meta-cognitive>MetaCognitiveHint: What should I do now?</meta-cognitive>
 			</menu-option>
@@ -19,31 +19,31 @@
 			</menu-option>
 	</message-set>
 	<message-set>
-		<name>simst-quiz-pass-take-quiz</name>
+		<name>simst-quiz-pass-take-quiz_Quiz</name>
 			<menu-option>
 				<meta-cognitive>MetaCognitiveHint: I passed the quiz section. What should I do next?</meta-cognitive>
 			</menu-option>
 	</message-set>
 	<message-set>
-		<name>simst-quiz-fail-again-enter-lhs-first-failed-quiz-problem-type</name>
+		<name>simst-quiz-fail-again-enter-lhs-first-failed-quiz-problem-type_ProblemType</name>
 			<menu-option>
 				<meta-cognitive>MetaCognitiveHint: I took the quiz. What should I do next?</meta-cognitive>
 			</menu-option>
 	</message-set>
 	<message-set>
-		<name>simst-quiz-fail-enter-lhs-failed-quiz-problem</name>
+		<name>simst-quiz-fail-enter-lhs-failed-quiz-problem_Problem</name>
 			<menu-option>
 				<meta-cognitive>MetaCognitiveHint: I took the quiz. What should I do next?</meta-cognitive>
 			</menu-option>
 	</message-set>
 	<message-set>
-		<name>simst-fail-quizP-solved-enter-lhs-solved-quizPType</name>
+		<name>simst-fail-quizP-solved-enter-lhs-solved-quizPType_ProblemType</name>
 			<menu-option>
 				<meta-cognitive>MetaCognitiveHint: What should I do next?</meta-cognitive>
 			</menu-option>
 	</message-set>
 	<message-set>
-		<name>simst-fail-quizP-solved-enter-lhs-different-failed-quizP</name>
+		<name>simst-fail-quizP-solved-enter-lhs-different-failed-quizP_Problem</name>
 			<menu-option>
 				<meta-cognitive>MetaCognitiveHint: What should I do next?</meta-cognitive>
 			</menu-option>
@@ -67,13 +67,13 @@
 			</menu-option>
 	</message-set>
 	<message-set>
-		<name>simst-fail-quizP-solved-take-quiz</name>
+		<name>simst-fail-quizP-solved-take-quiz_Quiz</name>
 			<menu-option>
 				<meta-cognitive>MetaCognitiveHint: What should I do next?</meta-cognitive>
 			</menu-option>
 	</message-set>
 	<message-set>
-		<name>simst-hint-request-demonstrate-step</name>
+		<name>simst-hint-request-demonstrate-step_DemonstrateStep</name>
 			<menu-option>
 				<cognitive>CognitiveHint: I'm stuck. What's the next step?,I'm stuck. How do I skill?</cognitive>
 				<meta-cognitive>MetaCognitiveHint: I know the next step but I don't know how to show it.,I know how to skill but I don't know how to show it.</meta-cognitive>
@@ -99,13 +99,13 @@
 			</menu-option>
 	</message-set>
 	<message-set>
-		<name>student-view-resource-examples</name>
+		<name>student-view-resource-examples_View-Resource</name>
 			<menu-option>
 				<meta-cognitive>MetaCognitiveHint: What should I do next?</meta-cognitive>
 			</menu-option>
 	</message-set>
 	<message-set>
-		<name>student-view-resource-uoverview</name>
+		<name>student-view-resource-uoverview_View-Resource</name>
 			<menu-option>
 				<meta-cognitive>MetaCognitiveHint: What should I do next?</meta-cognitive>
 			</menu-option>
@@ -129,7 +129,7 @@
 			</menu-option>
 	</message-set>
 	<message-set>
-	<name>simstudent-quiz-failed-repeatedly</name>
+	<name>simstudent-quiz-failed-repeatedly-view-resource_View-Resource</name>
 			<menu-option>
 				<meta-cognitive>MetaCognitiveHint: I took the quiz. What should I do next?</meta-cognitive>
 			</menu-option>
@@ -141,13 +141,13 @@
 			</menu-option>
 	</message-set>
 	<message-set>
-	<name>student-teach-same-problem-no-quiz</name>
+	<name>student-teach-same-problem-no-quiz-take-quiz_Quiz</name>
 			<menu-option>
 				<meta-cognitive>MetaCognitiveHint: What should I do next?</meta-cognitive>
 			</menu-option>
 	</message-set>
 	<message-set>
-	<name>student-click-restart-repeatedly</name>
+	<name>student-click-restart-repeatedly-informative_Problem</name>
 			<menu-option>
 				<meta-cognitive>MetaCognitiveHint: What should I do next?</meta-cognitive>
 			</menu-option>
@@ -156,6 +156,24 @@
 		<name>simst-all-quiz-failed-again-enter-lhs-similar-problem</name>
 			<menu-option>
 				<meta-cognitive>MetaCognitiveHint: I took the quiz. What should I do next?</meta-cognitive>
+			</menu-option>
+	</message-set>
+	<message-set>
+	<name>simstudent-quiz-failed-repeatedly-view-resource_View-Resource</name>
+			<menu-option>
+				<meta-cognitive>MetaCognitiveHint: What should I do next?</meta-cognitive>
+			</menu-option>
+	</message-set>
+	<message-set>
+	<name>student-teach-same-problem-no-quiz-take-quiz_Quiz</name>
+			<menu-option>
+				<meta-cognitive>MetaCognitiveHint: What should I do next?</meta-cognitive>
+			</menu-option>
+	</message-set>
+	<message-set>
+	<name>student-click-restart-repeatedly-informative_Problem</name>
+			<menu-option>
+				<meta-cognitive>MetaCognitiveHint: What should I do next?</meta-cognitive>
 			</menu-option>
 	</message-set>
 	<!--

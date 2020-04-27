@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<modelTraceWorkingMemory>
+    <APlusLaunched>false</APlusLaunched>
+    <afterQuiz>false</afterQuiz>
+    <allQuizFailCount>1</allQuizFailCount>
+    <allQuizFailed>false</allQuizFailed>
+    <allTutoredProblemList>3v+2=7</allTutoredProblemList>
+    <canSolve>false</canSolve>
+    <consecutiveResourceReview>0</consecutiveResourceReview>
+    <exampleProblemViewed>false</exampleProblemViewed>
+    <examplesReviewed>false</examplesReviewed>
+    <examplesTabClicked>false</examplesTabClicked>
+    <hintRequest>false</hintRequest>
+    <moreSteps>false</moreSteps>
+    <nextAction>nil</nextAction>
+    <nextInput>nil</nextInput>
+    <nextSelection>nil</nextSelection>
+    <overviewScrolled>false</overviewScrolled>
+    <previousProblemType></previousProblemType>
+    <problemBankTabClicked>false</problemBankTabClicked>
+    <problemType>failedQuizProblem</problemType>
+    <quizFailCount>2</quizFailCount>
+    <quizInProgress>false</quizInProgress>
+    <quizIncomplete>false</quizIncomplete>
+    <quizLevelPassed>0</quizLevelPassed>
+    <quizOutcome>fail</quizOutcome>
+    <quizProblemsFailedList>10=-6-4y:</quizProblemsFailedList>
+    <quizProblemsTutoredListAllSections>
+        <entry>
+            <key>Nv+N=N</key>
+            <value>1</value>
+        </entry>
+    </quizProblemsTutoredListAllSections>
+    <quizTaken>true</quizTaken>
+    <resourceViewed>false</resourceViewed>
+    <restartClickedRepeatedly>false</restartClickedRepeatedly>
+    <restartCount>0</restartCount>
+    <selfExplanation>false</selfExplanation>
+    <simStudentThinking>false</simStudentThinking>
+    <solutionCheckError>false</solutionCheckError>
+    <solutionGiven>false</solutionGiven>
+    <solutionSteps>7</solutionSteps>
+    <studentSaiEntered>true</studentSaiEntered>
+    <suggestedProblem>11t+2  =  8</suggestedProblem>
+    <thinking>false</thinking>
+    <tutoredProblemCorrectness>true</tutoredProblemCorrectness>
+    <tutoredProblemsWithoutHint>0</tutoredProblemsWithoutHint>
+    <UOTabClicked>false</UOTabClicked>
+</modelTraceWorkingMemory>

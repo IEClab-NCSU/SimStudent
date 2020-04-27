@@ -1,20 +1,21 @@
 Manifest-Version: 1.0
-Ant-Version: Apache Ant 1.9.6
+Ant-Version: Apache Ant 1.9.7
 Created-By: 1.8.0_40-b27 (Oracle Corporation)
 Main-Class: edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher
 Class-Path: HARTNetworking.jar TableLayout.jar TuTalkSlim.jar aima.jar
-  commons-lang-2.6.jar commons-lang3-3.0.1.jar ctat_test.jar customize
- r.jar foil.jar idw.jar jcalendar-1.4.jar jdom.jar je-5.0.34.jar jess.
- jar jgraphlayout.jar jh.jar jmf.jar jnlp.jar joda-time-2.1.jar junit.
- jar light.jar lightside.jar lingpipe-2.3.0.jar logclient.jar logging.
- jar mediaplayer.jar multiplayer.jar mylib.jar plugin.jar runcc.jar st
- anford-postagger-2010-05-26.jar swingx-core-1.6.2.jar trove.jar tutor
- shop.jar weka.jar xalan.jar xercesImpl.jar xercesSamples.jar xml-writ
- er.jar xpp3-1.1.3.4d_b4_min.jar xstream-1.1.3.jar yeritools.jar cl/LM
- S.jar cl/LMSfiledata.jar cl/TT.jar cl/XPlauncher.jar cl/cl_common.jar
-  cl/communication.jar cl/editor.jar cl/grant.jar cl/jzlib.jar cl/reso
- urces.jar cl/thirdparty/TableLayout.jar cl/thirdparty/webeq35.jar cl/
- tutors.jar cl/ui.jar cl/utilities.jar
+  cl.jar commons-lang-2.6.jar commons-lang3-3.0.1.jar ctat_test.jar cu
+ stomizer.jar foil.jar gstreamer-java-1.5.jar idw.jar jcalendar-1.4.ja
+ r jdom.jar je-5.0.34.jar jess.jar jgraphlayout.jar jh.jar jmf.jar jna
+ -4.1.0.jar jnlp.jar joda-time-2.1.jar junit.jar light.jar lightside.j
+ ar lingpipe-2.3.0.jar logclient.jar logging.jar mediaplayer.jar multi
+ player.jar mylib.jar plugin.jar runcc.jar stanford-postagger-2010-05-
+ 26.jar swingx-core-1.6.2.jar trove.jar tutorshop.jar weka.jar xalan.j
+ ar xercesImpl.jar xercesSamples.jar xml-writer.jar xpp3-1.1.3.4d_b4_m
+ in.jar xstream-1.1.3.jar yeritools.jar cl/LMS.jar cl/LMSfiledata.jar 
+ cl/TT.jar cl/XPlauncher.jar cl/cl_common.jar cl/communication.jar cl/
+ editor.jar cl/grant.jar cl/jzlib.jar cl/resources.jar cl/thirdparty/T
+ ableLayout.jar cl/thirdparty/webeq35.jar cl/tutors.jar cl/ui.jar cl/u
+ tilities.jar
 
 Name: pact/CommWidgets/JCommTextField.class
 Java-Bean: True

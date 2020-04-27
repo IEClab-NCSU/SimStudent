@@ -879,6 +879,7 @@ public class FoilData implements Serializable{
 		    String[] foilName = { WebStartFileDownloader.SimStWebStartDir +  FOIL_EXECUTABLE, "-a100" };
 	 	    if(trace.getDebugCode("miss"))trace.out("WebStartMode: " + FoilData.WEBSTARTMODE + "    " + foilName[0] +  "    " + getFoilLogDir());
 	 	    foilProcess = Runtime.getRuntime().exec( foilName );
+	 	    
 		} catch (IOException e) {
 		    e.printStackTrace();
 		}
@@ -1296,7 +1297,7 @@ public class FoilData implements Serializable{
 
     			InputStreamReader isr = new InputStreamReader(is);
     			BufferedReader br = new BufferedReader(isr);
-
+    			
     			String line=null;
     			while ( (line = br.readLine()) != null) {
 

@@ -145,15 +145,17 @@ public class APlusHintDialog extends JDialog implements ActionListener, StudentA
         addWindowListener(new java.awt.event.WindowAdapter() {
         	public void windowClosing(java.awt.event.WindowEvent e) {
         		long endTime = (new Date()).getTime();
-                int duration = (int) (endTime - openTime);
+                int duration = (int) ((endTime - openTime)/1000);
                 String leavingMessage = hintsJEditorPane.getText();
         		leavingMessage = leavingMessage.replaceAll("\\<.*?>","");
-                int durationHint = (int) (endTime - hintStartTime);
+                int durationHint = (int) ((endTime - hintStartTime)/1000);
         		
     			// Change the meta tutor image to normal
     			if(mtAvatar != null) {
     				mtAvatar.changeMetaTutorImage(SimStPLE.METATUTOR_IMAGE);
     			}
+    			
+    			//System.out.println(" Closing the pop up ");
 
                 logger.simStLog(SimStLogger.SIM_STUDENT_METATUTOR_AL, SimStLogger.METATUTOR_LEFT_HINT_ACTION, "", ""+depth, "", durationHint, leavingMessage);
     			logger.simStLog(SimStLogger.SIM_STUDENT_METATUTOR_AL,SimStLogger.METATUTOR_CLOSE_HINT_ACTION, "", ""+depth, "", duration);
@@ -165,7 +167,16 @@ public class APlusHintDialog extends JDialog implements ActionListener, StudentA
         		reset();
         		
         		visibleFlag = false;
+        		//System.out.println("Going to setVisible(false)");
         		setVisible(false);
+        		//System.out.println("Going to set the previus tab");
+        		if(proactiveMessage) {
+    				if(getPreviousTab() != aplus.getAplusTabs().getSelectedIndex())
+    					aplus.getAplusTabs().setSelectedIndex(previousTab);
+    				mtAvatar.getSimStudent().getMissController().getSimStPLE().setModelTracer(true);
+    				proactiveMessage = false;
+    				//System.out.println("Enabled the Model Tracer ");
+    			}
         	}
         });
 	}
@@ -236,27 +247,71 @@ public class APlusHintDialog extends JDialog implements ActionListener, StudentA
 	SimStRememberBubble thinkBubble=null;
 	Point originalLocation=null;
 	AplusSpotlight spotlight=null;
+	private int previousTab = 0;
+	AplusPlatform aplus;
+	boolean proactiveMessage = false;
 	
 	@Override
 	public void showThinkBubble(){	
-	
-		SimStPeerTutoringPlatform peerTutoringPlatform= mtAvatar.getSimStudent().getMissController().getSimStPLE().getSimStPeerTutoringPlatform();
-		String[] javaVersionElements = System.getProperty("java.version").split("\\.");
-		int major = Integer.parseInt(javaVersionElements[1]);
-
-		if (major>=7)
-			spotlight=new AplusSpotlight(peerTutoringPlatform, mtAvatar,SimStRememberBubble.LEFT,null);		
 		
-		//spotlight=new AplusSpotlight(peerTutoringPlatform, peerTutoringPlatform.getTutoringAvatarPanel(),SimStRememberBubble.RIGHT);
+		SimStPeerTutoringPlatform peerTutoringPlatform= mtAvatar.getSimStudent().getMissController().getSimStPLE().getSimStPeerTutoringPlatform();
+		
+		aplus =(AplusPlatform) mtAvatar.getSimStudent().getMissController().getSimStPLE().getSimStPeerTutoringPlatform();
+		
+		String[] javaVersionElements = System.getProperty("java.version").split("\\.");
+		proactiveMessage = true;
+		int major = Integer.parseInt(javaVersionElements[1]);
+		//System.out.println("Tab no : "+aplus.getAplusTabs()+"  "+(aplus.getAplusTabs().getSelectedIndex()));
+		//System.out.println(" Array : "+peerTutoringPlatform.getTargetWindow().split(":").toString());
+		String targetWindow =peerTutoringPlatform.getTargetWindow().split(":")[1].trim(); 
+		JPanel selectedTab = null;
+		//MetaTutorAvatarComponent avatar = 
+		//System.out.println("Target Window : "+targetWindow);
+		//System.out.println("Previous Tab : "+aplus.getAplusTabs().getSelectedIndex());
+		
+		setPreviousTab(aplus.getAplusTabs().getSelectedIndex());
+		if(targetWindow.equalsIgnoreCase("quiz")){
+			//System.out.println("Tab set ");
+			aplus.getAplusTabs().setSelectedIndex(5);
+			selectedTab = (JPanel)aplus.getAplusTabs().getComponentAt(5);
+		}
+		else if(targetWindow.equalsIgnoreCase("Practice")) {
+			aplus.getAplusTabs().setSelectedIndex(0);
+			selectedTab = (JPanel)aplus.getAplusTabs().getComponentAt(0);
 			
+		}
+		else if(targetWindow.equalsIgnoreCase("Unit overview")) {
+			aplus.getAplusTabs().setSelectedIndex(3);
+			selectedTab = (JPanel)aplus.getAplusTabs().getComponentAt(3);
+		}
+		else if(targetWindow.equalsIgnoreCase("examples")) {
+			aplus.getAplusTabs().setSelectedIndex(4);
+			selectedTab = (JPanel)aplus.getAplusTabs().getComponentAt(4);
+			
+		}
+		else {
+				aplus.getAplusTabs().setSelectedIndex(1);
+				selectedTab = (JPanel)aplus.getAplusTabs().getComponentAt(1);
+			}
+
+		
+	if (major>=7 ){
+			if(aplus.getAplusTabs().getSelectedIndex() == 0)
+				spotlight=new AplusSpotlight(peerTutoringPlatform,selectedTab,SimStRememberBubble.RIGHT,null);
+			else
+				  spotlight=new AplusSpotlight(peerTutoringPlatform,selectedTab,SimStRememberBubble.LEFT,null);
+
+		}
 		
 		
 		originalLocation=this.getLocation();
-		Point mtAvatarLocation= mtAvatar.getLocationOnScreen();
-		mtAvatarLocation.x=mtAvatarLocation.x-mtAvatar.getWidth();
-		mtAvatarLocation.y=mtAvatarLocation.y-mtAvatar.getHeight()-30;
-		setLocation(mtAvatarLocation);
+		Point mtAvatarLocation= selectedTab.getLocationOnScreen();
 
+		//Point mtAvatarLocation=aplus.getLocationOnScreen();
+		//mtAvatarLocation.x=mtAvatarLocation.x-.getWidth();
+		//mtAvatarLocation.y=mtAvatarLocation.y-selectedTab.getHeight()-30;
+		//setLocation(mtAvatarLocation);
+		setLocation(new Point(1000,400));
 			
 		
 	}
@@ -347,7 +402,7 @@ public class APlusHintDialog extends JDialog implements ActionListener, StudentA
 		String leavingMessage = hintsJEditorPane.getText();
 		leavingMessage = leavingMessage.replaceAll("\\<.*?>","");
 		long endTime = (new Date()).getTime();
-        int durationHint = (int) (endTime - hintStartTime);
+        int durationHint = (int) ((endTime - hintStartTime)/1000);
 		
 		if(selectedButton == okJButton) {
 					
@@ -359,7 +414,8 @@ public class APlusHintDialog extends JDialog implements ActionListener, StudentA
 				spotlight.removeSpotlight();
 			}
 			
-            int duration = (int) (endTime - openTime);
+            int duration = (int) ((endTime - openTime)/1000);
+           // System.out.println(" In action Performed : "+openTime+ "   End "+endTime);
             logger.simStLog(SimStLogger.SIM_STUDENT_METATUTOR_AL, SimStLogger.METATUTOR_LEFT_HINT_ACTION, "", ""+depth, "", durationHint, leavingMessage);
 			logger.simStLog(SimStLogger.SIM_STUDENT_METATUTOR_AL,SimStLogger.METATUTOR_CLOSE_HINT_ACTION, "", ""+depth, "", duration);
 			aPlusHintMessagesManger.dialogCloseCleanUp();
@@ -371,7 +427,17 @@ public class APlusHintDialog extends JDialog implements ActionListener, StudentA
 			
 			reset();
 			visibleFlag = false;
+			//System.out.println("Going to setVisible false");
 			setVisible(false);
+			//System.out.println(" Going to set to previous ttab : "+previousTab);
+			if(proactiveMessage) {
+				if(getPreviousTab() != aplus.getAplusTabs().getSelectedIndex())
+					aplus.getAplusTabs().setSelectedIndex(previousTab);
+				mtAvatar.getSimStudent().getMissController().getSimStPLE().setModelTracer(true);
+				proactiveMessage = false;
+				//System.out.println("Enabled the Model Tracer ");
+			}
+			
 			return;
 		}
 		
@@ -401,6 +467,18 @@ public class APlusHintDialog extends JDialog implements ActionListener, StudentA
 
 	@Override
 	public void studentActionPerformed(StudentActionEvent sae) {}
+
+	
+
+	public int getPreviousTab() {
+		return previousTab;
+	}
+
+	public void setPreviousTab(int previousTab) {
+		this.previousTab = previousTab;
+	}
+
+
 
 	/**
 	 * Combine a JButton with a marker interface telling that it's a hint button.

@@ -106,6 +106,7 @@ public class WmePathNode implements Cloneable {
 	setWme( wme );
     }
 
+   
     // -
     // - Methods - - - - - - - - - - - - - - - - - - - - - - - - -
     // -
@@ -129,7 +130,7 @@ public class WmePathNode implements Cloneable {
     /**
      * Replace the slot value, which should be a list, with a list of
      * '?' followed by a variable symbol at the place where the
-     * speficied wme fact is located, then followed by '$?'  For
+     * specified wme fact is located, then followed by '$?'  For
      * example, (cell <Fact-1> <Fact-2> ... <Fact-n>) would be (cell ?
      * ? ?varX $?) when <Fact-3> is given as the argument.  Return the
      * variable symbol. 

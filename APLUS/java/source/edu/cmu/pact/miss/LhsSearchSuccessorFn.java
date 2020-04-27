@@ -699,6 +699,7 @@ public class LhsSearchSuccessorFn implements SuccessorFunction {
     	
     	//Only check first path
     	WmePath path = (WmePath)curPathSet.get(0);
+    	System.out.println(" Path : "+path.getNodes());
     	paths.add(path);
     	int pathLength =  1 << path.length();
 

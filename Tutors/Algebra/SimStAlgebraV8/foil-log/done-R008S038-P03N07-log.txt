@@ -1,0 +1,70 @@
+FOIL 6.4   [January 1996]
+--------
+
+    Options:
+	minimum clause accuracy -1.9076e+09%
+
+Relation done
+
+Relation *NotNull
+
+Relation *IsDenominatorOf
+
+Relation *HasConstTerm
+
+Relation *IsSkillSubtract
+
+Relation *IsSkillMultiply
+
+Relation *IsNumeratorOf
+
+Relation *IsFractionTerm
+
+Relation *Homogeneous
+
+Relation *HasVarTerm
+
+Relation *IsSkillDivide
+
+Relation *Monomial
+
+Relation *IsSkillAdd
+
+Relation *HasCoefficient
+
+Relation *IsAVarTerm
+
+Relation *IsPolynomial
+
+Relation *IsConstant
+
+Relation *IsLastConstTermNegative
+
+Relation *HasParentheses
+
+----------
+done:
+
+State (3/10, 11.3 bits available)
+
+	Save clause ending with Homogeneous(A) (cover 3, accuracy 75%)
+
+	Save Monomial(A) (3,4 value 3.4)
+	Save IsAVarTerm(A) (3,4 value 3.4)
+	Save not(HasVarTerm(A)) (3,4 value 3.4)
+	Save not(IsPolynomial(A)) (3,4 value 3.4)
+
+Best literal Homogeneous(A) (5.9 bits)
+
+State (3/4, 5.3 bits available)
+
+No literals
+
+Clause 0: done(A,B) :- Homogeneous(A).
+
+***  Warning: the following definition
+***  matches 1 tuple not in the relation
+
+done(A,B) :- Homogeneous(A).
+
+Time 0.0 secs

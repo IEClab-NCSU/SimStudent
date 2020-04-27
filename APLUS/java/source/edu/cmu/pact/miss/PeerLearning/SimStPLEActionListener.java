@@ -43,7 +43,15 @@ public class SimStPLEActionListener implements ActionListener, ChangeListener {
 	private String exampleTitle = "";
 	private String quizTitle = "";
     
-    int previousSliderValue;
+    public long getExampleStartTime() {
+		return exampleStartTime;
+	}
+
+	public void setExampleStartTime(long exampleStartTime) {
+		this.exampleStartTime = exampleStartTime;
+	}
+
+	int previousSliderValue;
 
         
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -121,7 +129,7 @@ public class SimStPLEActionListener implements ActionListener, ChangeListener {
         			/*|| !brController.getMissController().getSimStPLE().getStatus().equals(SimStPLE.FINISHED_STATUS)*/)
         	{
         		SimSt simSt = getMissController().getSimSt();
-            	int problemDuration = (int) (Calendar.getInstance().getTimeInMillis() - simSt.getSsInteractiveLearning().getProblemStartTime());
+            	int problemDuration = (int) ((Calendar.getInstance().getTimeInMillis() - simSt.getSsInteractiveLearning().getProblemStartTime())/1000);
             	logger.simStLog(SimStLogger.SIM_STUDENT_PROBLEM, SimStLogger.PROBLEM_ABANDONED_ACTION, simSt.getProblemStepString(),
             			"","",problemDuration);
         	}
@@ -129,7 +137,7 @@ public class SimStPLEActionListener implements ActionListener, ChangeListener {
         	else if(brController.getCurrentNode()!= null && brController.getCurrentNode().isDoneState())
         	{
         		SimSt simSt = getMissController().getSimSt();
-            	int problemDuration = (int) (Calendar.getInstance().getTimeInMillis() - simSt.getSsInteractiveLearning().getProblemStartTime());
+            	int problemDuration = (int) ((Calendar.getInstance().getTimeInMillis() - simSt.getSsInteractiveLearning().getProblemStartTime())/1000);
             	logger.simStLog(SimStLogger.SIM_STUDENT_PROBLEM, SimStLogger.PROBLEM_COMPLETED_ACTION, simSt.getProblemStepString(),
             			"","",problemDuration);  	
         	}
@@ -286,6 +294,7 @@ public class SimStPLEActionListener implements ActionListener, ChangeListener {
     }
     
     
+    
     //when a tab is selected
 	@Override
 	public void stateChanged(ChangeEvent event) {
@@ -297,56 +306,80 @@ public class SimStPLEActionListener implements ActionListener, ChangeListener {
 			//	return;
 			//}
 				
-			JTabbedPane tabPane = (JTabbedPane) event.getSource();
+			  JTabbedPane tabPane = (JTabbedPane) event.getSource();
 		
+        	//System.out.println(" Tab Clicked , is Model Tracer enabled : "+brController.getMissController().getSimStPLE().isModelTracer());
+
 			//If there wasn't a previously viewed tab, say it was the first tab
 			if(lastTabViewed.length() == 0)
 			{
 				lastTabViewed = "Tutor";
 			}
-			int duration = (int) (Calendar.getInstance().getTimeInMillis() - lastTabViewStart);
+			
+			 if(lastTabViewed.contains(AplusPlatform.overviewTabTitle) && brController.getMissController().getSimStPLE().isModelTracer() && getBrController().getMissController().getSimSt().isSsMetaTutorMode()) {
+		       brController.getMissController().getSimSt().getModelTraceWM().setOverviewScrolled(false);
+			 }
+			 
+			 if(lastTabViewed.contains(AplusPlatform.exampleTabTitle) && brController.getMissController().getSimStPLE().isModelTracer()) {
+				 brController.getMissController().getSimSt().getModelTraceWM().setExampleProblemViewed(false);
+			 }
+			 
+			// System.out.println(" Tab Start time : "+lastTabViewStart);
+			int duration = (int) ((Calendar.getInstance().getTimeInMillis() - lastTabViewStart)/1000);
 	        lastTabViewStart = Calendar.getInstance().getTimeInMillis(); 
+
 
 	        if(brController.getMissController() != null && brController.getMissController().getSimSt() != null
 	        		&& brController.getMissController().getSimSt().isSsMetaTutorMode()) {
 
-	        	if(brController.getAmt() != null && brController.getMissController().getSimSt().isSsMetaTutorMode()) {
+	        	if(brController.getAmt() != null && brController.getMissController().getSimSt().isSsMetaTutorMode() && brController.getMissController().getSimStPLE().isModelTracer()) {
 	      
 	        		String tabText = tabPane.getTitleAt(tabPane.getSelectedIndex()).replaceAll("\\s+", "");
+	        		//System.out.println("Calling Model Tracer");
         			brController.getAmt().handleInterfaceAction(tabText, "TabClicked", "-1");
 	        	}
 	        }
 	        
+	        if(brController.getMissController().getSimStPLE().isModelTracer())
 	        logger.simStLog(SimStLogger.SIM_STUDENT_ACTION_LISTENER, SimStLogger.TAB_LEFT_ACTION, "",lastTabViewed,"",duration);
 
-	        if (tabPane.getTitleAt(tabPane.getSelectedIndex()).contains(AplusPlatform.exampleTabTitle)){
+	        if (tabPane.getTitleAt(tabPane.getSelectedIndex()).contains(AplusPlatform.exampleTabTitle) && brController.getMissController().getSimStPLE().isModelTracer()){
 	        	brController.getMissController().getSimSt().getModelTraceWM().setExamplesTabClicked("True");
 	    		brController.getMissController().getSimSt().getModelTraceWM().setResourceViewed("True");
       			brController.getMissController().getSimSt().getModelTraceWM().setQuizFailCount(0); 
 	        }
 	        
-	        if (tabPane.getTitleAt(tabPane.getSelectedIndex()).contains(AplusPlatform.overviewTabTitle)){
+	        if (tabPane.getTitleAt(tabPane.getSelectedIndex()).contains(AplusPlatform.overviewTabTitle) && brController.getMissController().getSimStPLE().isModelTracer()){
 	        	brController.getMissController().getSimSt().getModelTraceWM().setUOTabClicked("True");
 	        	brController.getMissController().getSimSt().getModelTraceWM().setResourceViewed("True");
       			brController.getMissController().getSimSt().getModelTraceWM().setQuizFailCount(0); 
-	        }
+      		}
 	        
-	        if (tabPane.getTitleAt(tabPane.getSelectedIndex()).contains(AplusPlatform.bankTabTitle)){
+	        if (tabPane.getTitleAt(tabPane.getSelectedIndex()).contains(AplusPlatform.bankTabTitle) && brController.getMissController().getSimStPLE().isModelTracer()){
 	        	brController.getMissController().getSimSt().getModelTraceWM().setProblemBankTabClicked("True");
 	        }
+	
+ 
+	        if(tabPane.getTitleAt(tabPane.getSelectedIndex()).contains(AplusPlatform.bankTabTitle) || tabPane.getTitleAt(tabPane.getSelectedIndex()).contains(AplusPlatform.videoTabTitle) && brController.getMissController().getSimStPLE().isModelTracer())
+	        	brController.getMissController().getSimSt().getModelTraceWM().setConsecutiveResourceReview(brController.getMissController().getSimSt().getModelTraceWM().getConsecutiveResourceReview()+1);;
+ 
 	        
-	        
-			//if was looking at an example and changed the tab, not looking anymore
-			if(lastTabViewed.contains(AplusPlatform.exampleTabTitle))
+	        	 if (trace.getDebugCode("mt")) trace.out("mt", " Tab " + tabPane.getTitleAt(tabPane.getSelectedIndex()) +" is clicked"); 
+	         
+
+	        	
+			if(lastTabViewed.contains(AplusPlatform.exampleTabTitle) && brController.getMissController().getSimStPLE().isModelTracer())
 			{
-				if(exampleTitle.length() > 0)
-		    	{
-		    		long exampleDuration = (Calendar.getInstance().getTimeInMillis() - exampleStartTime);
-		    		logger.simStLog(SimStLogger.SIM_STUDENT_ACTION_LISTENER, SimStLogger.EXAMPLE_VIEW_END_TAB, 
-		    				"", exampleTitle, "", (int) exampleDuration);
-		    	}
+				//if(exampleTitle.length() > 0)
+		    	//{
+		    		long exampleDuration = (Calendar.getInstance().getTimeInMillis() - getExampleStartTime())/1000;
+		    		//logger.simStLog(SimStLogger.SIM_STUDENT_ACTION_LISTENER, SimStLogger.EXAMPLE_VIEW_END, 
+		    			//	"", exampleTitle+"TabSwiched", "", (int) exampleDuration);
+		    		logger.simStLog(SimStLogger.SIM_STUDENT_ACTION_LISTENER, SimStLogger.EXAMPLE_VIEW_END, 
+		    				"","TabSwitched","", (int) exampleDuration);
+		    	//}
 			}
-			if(lastTabViewed.equals(AplusPlatform.quizTabTitle))
+			if(lastTabViewed.equals(AplusPlatform.quizTabTitle) && brController.getMissController().getSimStPLE().isModelTracer())
 			{
 				if(quizTitle.length() > 0)
 		    	{
@@ -357,7 +390,7 @@ public class SimStPLEActionListener implements ActionListener, ChangeListener {
 
 					
 					
-		    		long quizDuration = (Calendar.getInstance().getTimeInMillis() - quizStartTime);
+		    		long quizDuration = (Calendar.getInstance().getTimeInMillis() - quizStartTime)/1000;
 		    		logger.simStLog(SimStLogger.SIM_STUDENT_ACTION_LISTENER, SimStLogger.QUIZ_VIEW_END_TAB, 
 		    				"", quizTitle, "", (int) quizDuration);
 		    	}
@@ -374,11 +407,12 @@ public class SimStPLEActionListener implements ActionListener, ChangeListener {
 			String title = "Tutor";
 			if(tabPane.getSelectedIndex() > 0)
 				title = tabPane.getTitleAt(tabPane.getSelectedIndex());
+			if(brController.getMissController().getSimStPLE().isModelTracer())
 			logger.simStLog(SimStLogger.SIM_STUDENT_ACTION_LISTENER, SimStLogger.TAB_SWITCH_ACTION, title);
 			if(trace.getDebugCode("miss"))trace.out("miss", "In stateChanged and calling setUpTab");
 			
 			
-			if (getBrController().getMissController().getSimSt().isSsCogTutorMode()){
+			if (getBrController().getMissController().getSimSt().isSsCogTutorMode() && brController.getMissController().getSimStPLE().isModelTracer()){
 			      getBrController().getMissController().getSimSt().getModelTraceWM().setRequestType("hint-request");
 			      getBrController().getMissController().getSimStPLE().getSsCognitiveTutor().setQuizSolving(false);
 			      
@@ -386,10 +420,10 @@ public class SimStPLEActionListener implements ActionListener, ChangeListener {
 			
 			
 			/*if in aplus control, then when we click on quiz tab give the first unsolved solved problem. */
-			if (getBrController().getMissController().getSimSt().isSsAplusCtrlCogTutorMode() && tabPane.getTitleAt(tabPane.getSelectedIndex()).equals(AplusPlatform.quizTabTitle)){
+			if (getBrController().getMissController().getSimSt().isSsAplusCtrlCogTutorMode() && tabPane.getTitleAt(tabPane.getSelectedIndex()).equals(AplusPlatform.quizTabTitle) && brController.getMissController().getSimStPLE().isModelTracer()){
 				
 				/*first tell the model tracer that we are no longer in tutoring mode */
-				if (brController.getMissController().getSimSt().isSsMetaTutorMode()){
+				if (brController.getMissController().getSimSt().isSsMetaTutorMode() && brController.getMissController().getSimStPLE().isModelTracer()){
 	          		brController.getMissController().getSimSt().getModelTraceWM().setSolutionCheckError("false");
 	          		brController.getMissController().getSimSt().getModelTraceWM().setNextSelection("nil");
 	          		brController.getMissController().getSimSt().getModelTraceWM().setNextAction("nil");
@@ -402,6 +436,7 @@ public class SimStPLEActionListener implements ActionListener, ChangeListener {
 	          	}
 				/*tell cogTutor that its ok to expect student to give problem next time we come back on tutoring tab*/
 				getMissController().getSimStPLE().getSsCognitiveTutor().lockProblemEntering=false;
+				System.out.println(" Clearing the interface in the Aplus Control  : "+tabPane.getTitleAt(tabPane.getSelectedIndex()));
 				/*clear tutoring interface so next time we come back its ready*/
 				getMissController().getSimStPLE().requestEnterNewProblem();
 				
@@ -413,7 +448,7 @@ public class SimStPLEActionListener implements ActionListener, ChangeListener {
 			
 			/*This is very important: when a student types a solution on the quiz, all the SAI's get appended on the start state message. As a result, when trying (after
 			 * solving a quiz problem) to enter a new problem then the quiz solution apperas. With this we make sure that start state model is restarted */
-			if (getBrController().getMissController().getSimSt().isSsAplusCtrlCogTutorMode() && tabPane.getTitleAt(tabPane.getSelectedIndex()).equals("Practice")){
+			if (getBrController().getMissController().getSimSt().isSsAplusCtrlCogTutorMode() && tabPane.getTitleAt(tabPane.getSelectedIndex()).equals("Practice") && brController.getMissController().getSimStPLE().isModelTracer() ){
 				this.getBrController().getUniversalToolProxy().resetStartStateModel();	
 				//((AplusPlatform) this.getMissController().getSimStPLE().getSimStPeerTutoringPlatform()).nextProblemButton.doClick();
 	
@@ -462,7 +497,7 @@ public class SimStPLEActionListener implements ActionListener, ChangeListener {
 			else
 				lastTabViewed = "Tutor";
             //if switched to example tab and an example was open, now looking at it
-            if(lastTabViewed.equals(AplusPlatform.exampleTabTitle))
+            if(lastTabViewed.equals(AplusPlatform.exampleTabTitle) && brController.getMissController().getSimStPLE().isModelTracer())
 			{
 				if(exampleTitle.length() > 0)
 		    	{
@@ -470,7 +505,7 @@ public class SimStPLEActionListener implements ActionListener, ChangeListener {
 					logger.simStLog(SimStLogger.SIM_STUDENT_ACTION_LISTENER, SimStLogger.EXAMPLE_VIEW_TAB, exampleTitle);
 		    	}
 			}
-            if(lastTabViewed.equals(AplusPlatform.quizTabTitle))
+            if(lastTabViewed.equals(AplusPlatform.quizTabTitle) && brController.getMissController().getSimStPLE().isModelTracer())
 			{
 				if(quizTitle.length() > 0)
 		    	{
@@ -508,14 +543,15 @@ public class SimStPLEActionListener implements ActionListener, ChangeListener {
 	
 	public void exampleSwitched(String newExampleTitle)
 	{
-		if(exampleTitle.length() > 0)
+		/*if(exampleTitle.length() > 0)
     	{
     		long exampleDuration = (Calendar.getInstance().getTimeInMillis() - exampleStartTime);
     		logger.simStLog(SimStLogger.SIM_STUDENT_ACTION_LISTENER, SimStLogger.EXAMPLE_VIEW_END, 
     				"", exampleTitle, "", (int) exampleDuration);
-    	}
+    	}*/
+		
     	exampleTitle = newExampleTitle;
-    	exampleStartTime = Calendar.getInstance().getTimeInMillis();
+    	setExampleStartTime(Calendar.getInstance().getTimeInMillis());
 		logger.simStLog(SimStLogger.SIM_STUDENT_ACTION_LISTENER, SimStLogger.EXAMPLE_VIEW, newExampleTitle);
 	}
 	
@@ -523,12 +559,15 @@ public class SimStPLEActionListener implements ActionListener, ChangeListener {
 	{
 		if(quizTitle.length() > 0)
     	{
-    		long quizDuration = (Calendar.getInstance().getTimeInMillis() - quizStartTime);
+			//System.out.println("Quiz Start time : "+quizStartTime);
+    		long quizDuration = (Calendar.getInstance().getTimeInMillis() - quizStartTime)/1000;
     		logger.simStLog(SimStLogger.SIM_STUDENT_ACTION_LISTENER, SimStLogger.QUIZ_VIEW_END, 
     				"", quizTitle, "", (int) quizDuration);
     	}
     	quizTitle = newQuizTitle;
     	quizStartTime = Calendar.getInstance().getTimeInMillis();
+    	//System.out.println(" Setting the Start for quiz : "+quizStartTime);
+
 		logger.simStLog(SimStLogger.SIM_STUDENT_ACTION_LISTENER, SimStLogger.QUIZ_VIEW, newQuizTitle);
 	}
 	
@@ -537,12 +576,12 @@ public class SimStPLEActionListener implements ActionListener, ChangeListener {
     	//New quiz, start these over
     	quizTitle = "";
     	quizStartTime = 0;
-    	
+    	//System.out.println(" The start time for quiz : "+quizStartTime);
     	//the current problem is not complete
     	if(brController.getCurrentNode()!= null && !brController.getCurrentNode().isDoneState())
     	{
     		SimSt simSt = getMissController().getSimSt();
-        	int problemDuration = (int) (Calendar.getInstance().getTimeInMillis() - simSt.getSsInteractiveLearning().getProblemStartTime());
+        	int problemDuration = (int) ((Calendar.getInstance().getTimeInMillis()/1000 - simSt.getSsInteractiveLearning().getProblemStartTime()/1000));
         	logger.simStLog(SimStLogger.SIM_STUDENT_PROBLEM, SimStLogger.PROBLEM_LEFT_QUIZ_ACTION, simSt.getProblemStepString(),
         			"","",problemDuration);
     	}
@@ -550,7 +589,7 @@ public class SimStPLEActionListener implements ActionListener, ChangeListener {
     	else if(brController.getCurrentNode()!= null && brController.getCurrentNode().isDoneState())
     	{
     		SimSt simSt = getMissController().getSimSt();
-        	int problemDuration = (int) (Calendar.getInstance().getTimeInMillis() - simSt.getSsInteractiveLearning().getProblemStartTime());
+        	int problemDuration = (int) ((Calendar.getInstance().getTimeInMillis()/1000 - simSt.getSsInteractiveLearning().getProblemStartTime()/1000));
         	logger.simStLog(SimStLogger.SIM_STUDENT_PROBLEM, SimStLogger.PROBLEM_COMPLETED_ACTION, simSt.getProblemStepString(),
         			"","",problemDuration);
     	}

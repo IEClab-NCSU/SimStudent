@@ -1,8 +1,15 @@
 package edu.cmu.pact.miss.jess;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -227,6 +234,8 @@ public class ModelTracer {
 	}
 	public void setMatchedNode(RuleActivationNode node){
 		matchedNode = node;
+		/*if(matchedNode != null)
+		System.out.println(" This node taken : "+matchedNode.getDisplayName());*/
 	}
 	
 	
@@ -287,7 +296,7 @@ public class ModelTracer {
 	}
 	public HashMap<String, Integer> getCorrectFirings(){return this.correctFirings;}
 	*/
-	
+	private String targetWindow = "";
 	/**
 	 * @param rete
 	 */
@@ -445,8 +454,8 @@ public class ModelTracer {
 
 		iterativeDeepening(ssRete.getMaxDepth(), selection, action, input);
 				
-	
-		if(nodeSeq.size() > 0  && !isNodeSeqBuggy(nodeSeq)/*&& isHint || isCLHint*/) {
+	//  System.out.println(ssRete.findDefrule());
+		if(nodeSeq.size() > 0  && !isNodeSeqBuggy(nodeSeq)/*&& isHint || isCLHint*/ && !containsHelperProductionRule()) {
 			//if(isHint || isCLHint)
 				setMatchedNode((RuleActivationNode)(nodeSeq.get(0)));
 			
@@ -470,6 +479,56 @@ public class ModelTracer {
 	}
 	
 	
+	/****
+	 * method that ignores the helper production rules
+	 */
+	public boolean containsHelperProductionRule(){
+		HashSet<String> rules = readHelperProduction();
+		
+		 for (Iterator it = nodeSeq.iterator(); it.hasNext(); ) {
+		    	RuleActivationNode node = (RuleActivationNode) it.next();
+		        if (rules.contains(node.getName().replaceAll("MAIN::","")))
+		            return true;
+		    }
+		    return false;
+	}
+	
+	
+	public HashSet<String> readHelperProduction(){
+		HashSet<String> names = new HashSet<String>();
+		/*InputStreamReader isr = null;
+		String line = "";
+    	if(SimSt.WEBSTARTENABLED){
+    		ClassLoader cl = this.getClass().getClassLoader();  
+            InputStream is = cl.getResourceAsStream("HelperProductionRules.txt");
+            isr = new InputStreamReader(is);
+    	}
+    	else{
+    		InputStream is = null;
+			try {
+				  
+				is = new FileInputStream("HelperProductionRules.txt");
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			isr = new InputStreamReader(is);
+    	}
+    	
+        BufferedReader br = new BufferedReader(isr);
+        
+        try {
+        	System.out.println("Reading the file ");
+			while((line=br.readLine()) != null)
+				names.add(line);
+ 		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        */
+		names.add("simst-tab-clicked");
+		return names;
+	}
 	boolean proactiveHintGiven=false;
 	
 	boolean isNodeSeqBuggy(List<RuleActivationNode> nodeSeq){
@@ -628,7 +687,9 @@ public class ModelTracer {
 							String ruleName = child.getName().replaceAll("MAIN::", "");
 							/*get the first ran that did not match, and keep it to give proactive message*/
 							if (!isHint && !isCLHint && !nonMatchingMetaCogNodeFound && child.getHintMessages().size()>0){
+								//System.out.println(" Proactive Message to be shown ");
 								setNotMatchedMetaCogNode(child);
+								this.getController().getMissController().getSimStPLE().getSimStPeerTutoringPlatform().setTargetWindow (ssRete.findDefrule(child.getName()).getDocstring());
 								//addIncorrectFiring(child.getName());
 								nonMatchingMetaCogNodeFound=true;
 							}
@@ -894,5 +955,14 @@ public class ModelTracer {
 				}
 			}
 		}
+	}
+
+	public String getTargetWindow() {
+		return targetWindow;
+	}
+
+	public void setTargetWindow(String targetWindow) {
+		this.targetWindow = targetWindow;
+		this.getController().getMissController().getSimStPLE().getSimStPeerTutoringPlatform().setTargetWindow (targetWindow);
 	}
 }

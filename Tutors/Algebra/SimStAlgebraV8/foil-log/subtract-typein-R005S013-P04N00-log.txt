@@ -1,0 +1,105 @@
+FOIL 6.4   [January 1996]
+--------
+
+    Options:
+	minimum clause accuracy -1.43579e+09%
+
+Relation subtract-typein
+
+Relation *NotNull
+
+Relation *IsDenominatorOf
+
+Relation *HasConstTerm
+
+Relation *IsSkillSubtract
+
+Relation *IsSkillMultiply
+
+Relation *IsNumeratorOf
+
+Relation *IsFractionTerm
+
+Relation *Homogeneous
+
+Relation *HasVarTerm
+
+Relation *IsSkillDivide
+
+Relation *Monomial
+
+Relation *IsSkillAdd
+
+Relation *HasCoefficient
+
+Relation *IsAVarTerm
+
+Relation *IsPolynomial
+
+Relation *IsConstant
+
+Relation *IsLastConstTermNegative
+
+Relation *HasParentheses
+
+----------
+subtract-typein:
+
+State (4/52, 26.1 bits available)
+
+	Save clause ending with HasVarTerm(A) (cover 2, accuracy 12%)
+
+	Save IsPolynomial(A) (2,16 value 1.8)
+	Save not(Homogeneous(A)) (2,16 value 1.8)
+	Save not(Monomial(A)) (2,16 value 1.8)
+	Save IsSkillSubtract(B) (4,39 value 1.6)
+
+Best literal HasVarTerm(A) (5.0 bits)
+
+State (2/16, 12.7 bits available)
+
+	Save clause ending with IsSkillSubtract(B) (cover 2, accuracy 16%)
+
+	Save not(IsSkillDivide(B)) (2,12 value 2.6)
+
+Best literal IsSkillSubtract(B) (5.0 bits)
+
+State (2/12, 8.7 bits available)
+
+No literals
+
+Clause 0: subtract-typein(A,B) :- HasVarTerm(A), IsSkillSubtract(B).
+
+State (2/50, 17.7 bits available)
+
+	Save clause ending with IsConstant(A) (cover 2, accuracy 7%)
+
+Best literal IsConstant(A) (5.0 bits)
+
+State (2/28, 12.7 bits available)
+
+	Save clause ending with IsSkillSubtract(B) (cover 2, accuracy 9%)
+
+	Save not(IsSkillDivide(B)) (2,21 value 2.4)
+
+Best literal IsSkillSubtract(B) (5.0 bits)
+
+State (2/21, 8.7 bits available)
+
+	Save clause ending with not(IsFractionTerm(A)) (cover 2, accuracy 11%)
+
+Best literal not(IsFractionTerm(A)) (5.0 bits)
+
+State (2/18, 5.3 bits available)
+
+No literals
+
+Clause 1: subtract-typein(A,B) :- IsConstant(A), IsSkillSubtract(B), not(IsFractionTerm(A)).
+
+***  Warning: the following definition
+***  matches 26 tuples not in the relation
+
+subtract-typein(A,B) :- HasVarTerm(A), IsSkillSubtract(B).
+subtract-typein(A,B) :- IsConstant(A), IsSkillSubtract(B), not(IsFractionTerm(A)).
+
+Time 0.0 secs

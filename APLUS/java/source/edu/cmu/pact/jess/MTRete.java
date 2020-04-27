@@ -1155,11 +1155,12 @@ public class MTRete extends Rete implements Serializable, JessParser,
 	void saveState( String filename ) {
 		File file = null;
 		try {
+			
 			file = Utils.getFileAsResource(filename, this);
 			if (file != null)
 				{ if (trace.getDebugCode("mt")) trace.out("mt", "saving state to " + file.getAbsolutePath()); }
 			else
-				return;
+				file = new File(filename);
 			OutputStream binOutStrm =
 				new BufferedOutputStream(new FileOutputStream(file));
 			bsave(binOutStrm);

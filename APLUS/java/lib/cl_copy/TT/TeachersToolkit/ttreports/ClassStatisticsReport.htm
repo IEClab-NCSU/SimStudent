@@ -1,0 +1,85 @@
+<xsl:stylesheet version="1.0"
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+	<xsl:output method="html" />
+
+	<xsl:template match="/Report">
+		<!--
+		<Report name="Class Statistics Report" marker="marker">
+			<Unit id="1" name="Picture Algebra" student_count="2" total_problems="18" average_problems="9" average_time="000:04:00" fastest_time="   n/a   " slowest_time="000:00:00" average_time_per_problem="000:00:27" />
+			<Unit id="2" name="Least Common Multiple" student_count="2" total_problems="0" average_problems="0" average_time="000:00:00" fastest_time="   n/a   " slowest_time="000:00:00" average_time_per_problem="   n/a   " />
+			<Unit id="25" name="Two-Step Equations" student_count="1" total_problems="0" average_problems="0" average_time="000:00:00" fastest_time="   n/a   " slowest_time="000:00:00" average_time_per_problem="   n/a   " />
+		</Report>
+		-->
+		<div style="font-weight: bold; font-size: medium; color: #5582d5">ACCUMULATED CLASS STATISTICS</div>
+		<xsl:element name="table" use-attribute-sets="top-table">
+			<!-- top-table -->
+			<tr>
+				<!-- EMPTY ROW to add spacing -->
+				<td colspan="4"></td>
+			</tr>
+			<tr>
+				<td style="font-weight: bold" width="70">STUDENT</td>
+				<td style="font-weight: bold" width="70">All</td>
+				<td style="font-weight: bold; padding: 0 0 0 30px;" width="120">INSTRUCTOR</td>
+				<td><xsl:value-of select="@instructor_name" /></td>
+			</tr>
+			<tr valign="top">
+				<td style="font-weight: bold">DATE</td>
+				<td><xsl:value-of select="@timestamp" /></td>
+				<td style="font-weight: bold; padding: 0 0 0 30px;" valign="top">CLASS</td>
+				<td><xsl:value-of select="@class_name" /></td>
+			</tr>
+			<tr>
+				<!-- EMPTY ROW to add spacing -->
+				<td colspan="4"></td>
+			</tr>
+			<!-- END top-table -->
+		</xsl:element>
+		<xsl:element name="table" use-attribute-sets="inner-table">
+			<tr style="background: #5582d5; color: #ffffff; text-align: center; vertical-align: bottom;">
+				<th width="6%">UNIT</th>
+				<th width="11%"># STUDENTS</th>
+				<th width="11%">TOTAL PROBLEMS</th>
+				<th width="12%">AVERAGE PROBLEMS</th>
+				<th width="15%">AVG TIME / UNIT</th>
+				<th width="15%">FASTEST TIME</th>
+				<th width="15%">SLOWEST TIME</th>
+				<th width="15%">AVG TIME / PROBLEM</th>
+			</tr>
+			<xsl:for-each select="Unit">
+				<xsl:sort select="@id" data-type="number" />
+				<tr> <!-- color every other line -->
+					<xsl:if test="(position() mod 2) = 0">
+						<xsl:attribute name="bgcolor">#98c8e2</xsl:attribute>
+					</xsl:if>
+					<xsl:if test="(position() mod 2) = 1">
+						<xsl:attribute name="bgcolor">#ffffff</xsl:attribute>
+					</xsl:if>
+					<td align="center"><xsl:value-of select="@id" /></td>
+					<td align="center"><xsl:value-of select="@student_count" /></td>
+					<td align="center"><xsl:value-of select="@total_problems" /></td>
+					<td align="center"><xsl:value-of select="@average_problems" /></td>
+					<td align="center"><xsl:value-of select="@average_time" /></td>
+					<td align="center"><xsl:value-of select="@fastest_time" /></td>
+					<td align="center"><xsl:value-of select="@slowest_time" /></td>
+					<td align="center"><xsl:value-of select="@average_time_per_problem" /></td>
+				</tr>
+			</xsl:for-each>
+		</xsl:element>
+	</xsl:template>
+	<xsl:attribute-set name="inner-table">
+		<xsl:attribute name="width">610</xsl:attribute>
+		<xsl:attribute name="border">0</xsl:attribute>
+		<xsl:attribute name="align">center</xsl:attribute>
+		<xsl:attribute name="cellspacing">4</xsl:attribute>
+		<xsl:attribute name="cellpadding">0</xsl:attribute>
+	</xsl:attribute-set>
+	<xsl:attribute-set name="top-table">
+		<xsl:attribute name="border">0</xsl:attribute>
+		<xsl:attribute name="align">left</xsl:attribute>
+		<xsl:attribute name="cellpadding">0</xsl:attribute>
+		<xsl:attribute name="cellspacing">0</xsl:attribute>
+		<xsl:attribute name="clear">both</xsl:attribute>
+	</xsl:attribute-set>
+</xsl:stylesheet>
+

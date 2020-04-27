@@ -78,9 +78,9 @@ public class XMLReader {
 			String mode=simSt.getSsMetaTutorModeLevel();
 			String actualFile=PR_MESSAGES_FILE;
 			if (mode.equals(SimSt.METACOGNITIVE))
-				actualFile=this.PR_MESSAGESMETACOG_FILE;
+				actualFile=PR_MESSAGESMETACOG_FILE;
 			else if (mode.equals(SimSt.COGNITIVE))
-				actualFile=this.PR_MESSAGESCOG_FILE;
+				actualFile=PR_MESSAGESCOG_FILE;
 			
 			if (simSt.isSsAplusCtrlCogTutorMode())
 				actualFile=PR_MESSAGESAPLUSCTRL_FILE;
@@ -113,9 +113,9 @@ public class XMLReader {
 	 * @return
 	 */
 	public void parseXMLFile(String ruleName, ArrayList<ArrayList<String>> list) {
-		
+		//System.out.println(" Rule Name : "+ruleName);
 		NodeList messageSet = doc.getElementsByTagName("message-set");
-		
+		//System.out.println(messageSet.getLength());
 		for(int i=0; i < messageSet.getLength(); i++) {
 			
 			Node node = messageSet.item(i);
@@ -152,7 +152,7 @@ public class XMLReader {
 	
 	
 	private void setMenuOptionMessage(String msg, ArrayList<ArrayList<String>> list) {
-
+		//System.out.println(" Message : "+msg);
 		if(msg != null)
 			msg = msg.trim();
 		if(msg.length() > 0) {

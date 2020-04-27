@@ -21,13 +21,16 @@ import java.awt.event.MouseListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -91,7 +94,6 @@ import edu.cmu.pact.jess.MTRete;
 import edu.cmu.pact.jess.RuleActivationNode;
 import edu.cmu.pact.miss.AlgebraProblemAssessor;
 import edu.cmu.pact.miss.AskHint;
-import edu.cmu.pact.miss.AskHintInBuiltClAlgebraTutor;
 import edu.cmu.pact.miss.HashMap;
 import edu.cmu.pact.miss.Instruction;
 import edu.cmu.pact.miss.JTabbedPaneWithCloseIcons;
@@ -111,6 +113,7 @@ import edu.cmu.pact.miss.PeerLearning.GameShow.ProblemType;
 import edu.cmu.pact.miss.ProblemModel.Graph.SimStNode;
 import edu.cmu.pact.miss.ProblemModel.Graph.SimStProblemGraph;
 import edu.cmu.pact.miss.console.controller.MissController;
+import edu.cmu.pact.miss.jess.ModelTraceWorkingMemory;
 import edu.cmu.pact.miss.jess.WorkingMemoryConstants;
 import edu.cmu.pact.miss.storage.StorageClient;
 
@@ -153,7 +156,7 @@ public class SimStPLE {
     private static final String PROBLEM_CHOICE_EXPLANATION_HEADER = "problemChoiceExplanations";
     private static final String HINT_EXPLANATION_HEADER = "hintExplanations";
     private static final String SECTIONS_HEADER = "sections";
-    private static final String PROBLEM_DELIMITER_HEADER = "problemDelimiter";
+    public static final String PROBLEM_DELIMITER_HEADER = "problemDelimiter";
     private static final String VALID_SELECTIONS_FOR_SE = "validSelectionsForSelfExplanation";   
 
     private final String USER_ID_REQUEST_TITLE = "User ID"; 
@@ -285,8 +288,18 @@ public class SimStPLE {
 
     /** Singleton Lock object for the quiz thread. Before starting the quiz, the thread must acquire the lock. */
 	public static Object quizLock = new Object();
+	
+	private List<String> components = new ArrayList<String>();
 
-    public String getStatus()
+    public List<String> getComponents() {
+		return components;
+	}
+
+	public void setComponents(List<String> components) {
+		this.components = components;
+	}
+
+	public String getStatus()
     {
     	return status;
     }
@@ -388,7 +401,8 @@ public class SimStPLE {
     private Hashtable<String,LinkedList<Explanation>> problemChoiceExplanations;
     private Hashtable<String,LinkedList<Explanation>> hintExplanations;
     private HashSet<String> validSelections;
-     
+    private boolean modelTracer = true;
+    
     public ArrayList<String> getSections()
     {
     	return sections;
@@ -600,6 +614,8 @@ public class SimStPLE {
         
         //trace.out("miss", "Exiting SimStPLE");
         //readComponentNames();
+        if(trace.getDebugCode("miss"))trace.out("miss", "Restore Model Tracer Working Memory");
+        brController.getMissController().getSimSt().restoreMTWMState();
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -623,7 +639,7 @@ public class SimStPLE {
     }
     
     
-    public static String passedProblemsList="";
+    public static String passedProblemsList="NA,";
     public void loadAccountInfoAplusCogTutor(){
     	
     	if(trace.getDebugCode("miss"))trace.out("miss", "loadAccountInfo: " + getSimSt().getUserID());
@@ -638,6 +654,7 @@ public class SimStPLE {
     		try {
     			
     			// Key associated when retrieving the .account file is the getSimSt().getUserID()+.account
+    		
     			successful = getMissController().getStorageClient().retrieveFile(getSimSt().getUserID()+".account", accountInfo,
     					WebStartFileDownloader.SimStWebStartDir );
     		} catch (IOException e1) {
@@ -668,8 +685,11 @@ public class SimStPLE {
     			passedProblemsList=read.readLine();
     			if (passedProblemsList!=null && passedProblemsList.length()>1){
     				String[] parts=passedProblemsList.split(",");
-    				cogTutorCurrentProblem= Integer.parseInt(parts[parts.length-1]);
-    				cogTutorCurrentProblem++;
+    				if(!parts[parts.length-1].equalsIgnoreCase("NA")){
+    					cogTutorCurrentProblem= Integer.parseInt(parts[parts.length-1]);
+        				cogTutorCurrentProblem++;
+    				}
+    				
     			}
     			
     			
@@ -757,8 +777,10 @@ public class SimStPLE {
 
     				//add appropriate section medals
     				//divide by getProblemsPerQuiz to give 1 medal/section
-    				if (getSimStPeerTutoringPlatform()!=null)
+    				if (getSimStPeerTutoringPlatform()!=null){
     					getSimStPeerTutoringPlatform().augmentMedals(currentProblem, false);
+    				}
+    					
     			}
 
     			read.close();
@@ -774,7 +796,7 @@ public class SimStPLE {
     		if (!getSimSt().isSsCogTutorMode()){
     			StudentAvatarDesigner.createAndShowGUI(simStPeerTutoringPlatform, simSt.getUserID());
     		}else {
-    			getSimSt().setSimStName("Practice");
+    			SimSt.setSimStName("Practice");
     			SimStPLE.saveAccountFile(simSt.getUserID()+".account");
     		}
     	}
@@ -864,14 +886,20 @@ public class SimStPLE {
     					getSimStPeerTutoringPlatform().addTrophy(false);
 
     				}
-
+    				
+    				
     				// We don't want to restart, now we have multiple final challenges...
     				//if(quizLevel >= allQuizProblems.size())
     				//    					quizLevel = 0;
     				quizProblems= allQuizProblems.get(quizLevel);
     				quizSections = allQuizSections.get(quizLevel);
+    				//System.out.println(" Quiz Sections completed : "+quizSections +" "+" Quiz Level "+quizLevel);
     				currentQuizSection = new ArrayList<String>();
     				currentQuizSectionNumber = quizSections.get(currentProblem);
+    				
+    				//if(trace.getDebugCode("miss"))trace.out("miss", "Quiz level passed: " + currentQuizSectionNumber);
+    				
+    				//brController.getMissController().getSimSt().getModelTraceWM().setQuizLevelPassed(currentQuizSectionNumber);
     				
     				//JOptionPane.showMessageDialog(null, "faskelo2 quiz level " + currentQuizSectionNumber);
     				if (getSimSt().isSsCogTutorMode())
@@ -903,8 +931,10 @@ public class SimStPLE {
 
     				//add appropriate section medals
     				//divide by getProblemsPerQuiz to give 1 medal/section
-    				if (getSimStPeerTutoringPlatform()!=null)
+    				if (getSimStPeerTutoringPlatform()!=null) 
     					getSimStPeerTutoringPlatform().augmentMedals(currentProblem, false);
+    				   
+    					
     			}
 
     			read.close();
@@ -925,7 +955,7 @@ public class SimStPLE {
     			
     		}
     		else {
-    			getSimSt().setSimStName("Practice");
+    			SimSt.setSimStName("Practice");
     			SimStPLE.saveAccountFile(simSt.getUserID()+".account");
     		}
     	}
@@ -1117,9 +1147,12 @@ public class SimStPLE {
 			String line = br.readLine();
 			while(line != null && line.length() > 0)
 			{
+				if(getSimSt().isSsAplusCtrlCogTutorMode())
+					components.add(line);
 				addFoAStateListener(line);
 				line = br.readLine();
 			}
+			components.add("done");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -1183,6 +1216,7 @@ public class SimStPLE {
     			line = reader.readLine();
 	   	
 	    	}
+	    	
 	    	
 	    	trace.out("ss", "Sections-------------------------------");
 	    	for(int i=0;i<sections.size();i++)
@@ -2590,7 +2624,7 @@ public class SimStPLE {
         			//	getSimSt().getModelTraceWM().getEventHistory().add(0, getSimSt().getModelTraceWM().new Event(SimStLogger.UNDO_ACTION));
         			//}
 
-        	    	int problemDuration = (int) (Calendar.getInstance().getTimeInMillis() - getSsInteractiveLearning().getProblemRecentTime());
+        	    	int problemDuration = (int) ((Calendar.getInstance().getTimeInMillis() - getSsInteractiveLearning().getProblemRecentTime())/1000);
         	    	getSsInteractiveLearning().setProblemRecentTime(Calendar.getInstance().getTimeInMillis());
         	    	
         			logger.simStLog(SimStLogger.SIM_STUDENT_STEP, SimStLogger.UNDO_ACTION, simSt.getProblemStepString(),
@@ -2861,7 +2895,7 @@ public class SimStPLE {
     		simSt.displayMessage("Problem Restart", RESTART_MSG);
     	
     	
-    	int problemDuration = (int) (Calendar.getInstance().getTimeInMillis() - getSsInteractiveLearning().getProblemRecentTime());
+    	int problemDuration = (int) ((Calendar.getInstance().getTimeInMillis() - getSsInteractiveLearning().getProblemRecentTime())/1000);
     	getSsInteractiveLearning().setProblemRecentTime(Calendar.getInstance().getTimeInMillis());
     	    	
     	logger.simStLog(SimStLogger.SIM_STUDENT_PROBLEM,SimStLogger.PROBLEM_RESTART_ACTION, step, "","",problemDuration);
@@ -3088,7 +3122,7 @@ public class SimStPLE {
             if(result)
             	numCorrect++;
             
-            long quizQuestionDuration = Calendar.getInstance().getTimeInMillis() - startQuizQuestionTime;
+            long quizQuestionDuration = (Calendar.getInstance().getTimeInMillis() - startQuizQuestionTime)/1000;
             logger.simStLog(SimStLogger.SIM_STUDENT_QUIZ, SimStLogger.QUIZ_QUESTION_ANSWER_ACTION, "Quiz"+currentQuizSectionNumber+"."+(currentProblem+i), solutionSteps(problem,solution), "", result, (int) quizQuestionDuration);
             /*
             System.out.println("SimStPLE.QuizSimSt DONE on " + problem);
@@ -3099,7 +3133,7 @@ public class SimStPLE {
 
         float pctCorrect = ((float)(numCorrect+currentProblem)/getQuizProblems().size());
 
-        int quizDuration = (int) (Calendar.getInstance().getTimeInMillis() - startQuizTime);
+        int quizDuration = (int) ((Calendar.getInstance().getTimeInMillis() - startQuizTime)/1000);
         logger.simStLog(SimStLogger.SIM_STUDENT_QUIZ, SimStLogger.QUIZ_COMPLETED_ACTION, "Quiz"+currentQuizSectionNumber, ""+pctCorrect, ""+numCorrect+"/"+getQuizProblems().size(), quizDuration);
         currentCorrect = numCorrect;
         
@@ -3593,6 +3627,7 @@ public class SimStPLE {
     public void addFoAStateListener(String element)
     {
     	Object widget = brController.lookupWidgetByName(element);
+    	//System.out.println(" Widget  "+widget.toString()+"   Name : "+element);
     	if(widget != null && widget instanceof TableExpressionCell)
     	{
     		TableExpressionCell cell = (TableExpressionCell)widget;
@@ -4971,6 +5006,7 @@ public class SimStPLE {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 	    	getSimStPeerTutoringPlatform().showButtons(false);
+	    	
 	    	if(e.getActionCommand().equals(""+JOptionPane.YES_OPTION))
 	    	{
 	        	getSimStPeerTutoringPlatform().appendSpeech("Yes","Me");
@@ -5036,6 +5072,8 @@ public class SimStPLE {
         {
         	if(validateQuestion()){
         		startProblem();
+        		
+        				
         	}
         }
         else if(arg != null && arg.equals(""+JOptionPane.NO_OPTION))
@@ -5081,15 +5119,24 @@ public class SimStPLE {
     	passed = checkVariableUsedStartState();    	
 		String problemName1 = simSt.getSsInteractiveLearning().createName(getSimStPeerTutoringPlatform().getStudentInterface().getComponents());
     	String prob=SimSt.convertFromSafeProblemName(problemName1);
-    	if ((prob.contains("/0") && !prob.contains("/0."))|| (prob.startsWith("0") && !prob.startsWith("0.")) || prob.contains("=0")) {
-    		 String actualMessage=ENTER_ANOTHER_PROBLEM.replace("SimStName", simSt.getSimStName());
+    	
+    	
+    	/**
+    	 * @author Vishnu
+    	 * @date March 29th 2017
+    	 * The following 'if' condition was commented because the constraint didn't allow student to enter problems like 8n+5=0 and 0=7x+3
+    	 */
+    	
+    	//if ((prob.contains("/0") && !prob.contains("/0."))|| (prob.startsWith("0") && !prob.startsWith("0.")) || prob.contains("=0"))
+    	if ((prob.contains("/0") && !prob.contains("/0."))) {
+    		 String actualMessage=ENTER_ANOTHER_PROBLEM.replace("SimStName", SimSt.getSimStName());
 			 giveDialogMessage(actualMessage);
 			 return false;
     	}
     
     	String[] parts=prob.split("=");
     	if (parts[0].equals(parts[1]) ||  hasMoreThanOneVariables(prob)){
-    		 String actualMessage=ENTER_ANOTHER_PROBLEM.replace("SimStName", simSt.getSimStName());
+    		 String actualMessage=ENTER_ANOTHER_PROBLEM.replace("SimStName", SimSt.getSimStName());
 			 giveDialogMessage(actualMessage);
 			 return false;
     		
@@ -5100,14 +5147,28 @@ public class SimStPLE {
     	//trace.err("Ok we gave a problem....");
     	if (simSt.isStartStateCheckerDefined() && brController.getMissController().isSimStPleOn() && simSt.isSsMetaTutorMode()){	
     		String problemName = simSt.getSsInteractiveLearning().createName(getSimStPeerTutoringPlatform().getStudentInterface().getComponents());
-			boolean isOKProblem=simSt.getStartStateChecker().checkStartState(SimSt.convertFromSafeProblemName(problemName) , brController);		
+			boolean isOKProblem=simSt.getStartStateChecker().checkStartState(SimSt.convertFromSafeProblemName(problemName) , brController);
+			
+		//	this.wait();
 			 if (!isOKProblem){
-				 String actualMessage=ENTER_ANOTHER_PROBLEM.replace("SimStName", simSt.getSimStName());
+				 String actualMessage=ENTER_ANOTHER_PROBLEM.replace("SimStName", SimSt.getSimStName());
 				 giveDialogMessage(actualMessage);
 				 return false;
 			 }
+			
 		}	
-	    	
+    	//System.out.println(" Before the  Checker ");
+	    
+        if(simSt.isSsMetaTutorMode() || simSt.isSsAplusCtrlCogTutorMode()) {
+        	String problemName = simSt.getSsInteractiveLearning().createName(getSimStPeerTutoringPlatform().getStudentInterface().getComponents());
+			boolean solveable = simSt.getSsInteractiveLearning().isSolvable(simSt.getProblemCheckerOracle(), problemName, brController);
+			//System.out.println(" Is it solvable : "+solveable);
+	    	if(!solveable) {
+				 String message = "	Try giving solvable equation ";
+				 giveDialogMessage(message);
+				 return false;
+			 }
+		}
     	
     	if(!passed) {
     		giveDialogMessage(getSimSt().getInputChecker().invalidVariablesMessage(cellText1, cellText1));
@@ -5115,8 +5176,11 @@ public class SimStPLE {
     		return false;	
     	}
     	
-    	
     	//trace.err("returning true....");
+    	getSimSt().getModelTraceWM().setStudentEnteredProblem(prob);
+    	if( prob.equals(ModelTraceWorkingMemory.suggestedProblem.replaceAll("\\s+", "")))
+			getSimSt().getModelTraceWM().setProblemType("failedQuizProblem");
+		
     	return true;
     }
     
@@ -5708,6 +5772,8 @@ public class SimStPLE {
 		public void run(){
 			// Adding the synchronized block on the whole quiz. If two threads come in only the one which
 			// acquires the lock goes ahead while the other waits.
+			
+			System.out.println(" This is the quiz !!! ");
 			synchronized (quizLock) {
 	            
 	           
@@ -5803,7 +5869,10 @@ public class SimStPLE {
 					currentProblem += currentQuizSection.size();
 					currentOverallProblem += currentQuizSection.size();
 					currentCorrect = 0;
-
+					/***
+					 * Update in the working memory 
+					 */
+					brController.getMissController().getSimSt().getModelTraceWM().setQuizLevelPassed(currentQuizSectionNumber);
 					currentQuizSectionNumber++;
 					currentQuizSection.clear();
 					currentQuizSection = new ArrayList<String>();
@@ -6107,7 +6176,11 @@ public class SimStPLE {
 		if (simSt.isSsMetaTutorMode())
 			this.getSimSt().getModelTraceWM().setQuizInProgress("true");
 		
+		/**
+		 * reset the wm for consective resource review
+		 */
 		
+		//this.getSimSt().getModelTraceWM().setConsecutiveResourceReview(0);
 		//if(trace.getDebugCode("rr"))trace.out("rr", "####### startQuizProblems...");
 		long startQuizTime = Calendar.getInstance().getTimeInMillis();
         int numCorrect = 0;
@@ -6135,7 +6208,8 @@ public class SimStPLE {
         
             getBrController().startNewProblem(); // To set the platform for starting a new problem.
      
-       	 
+       	    //problem = "3x+3x=0";
+            System.out.println("Problem : "+problem);
             getSsInteractiveLearning().createStartStateQuizProblem(problem);
         	logger.simStLog(SimStLogger.SIM_STUDENT_QUIZ, SimStLogger.QUIZ_QUESTION_GIVEN_ACTION, "Quiz"+(currentQuizSectionNumber+1)+"."+(currentProblem+i+1),problem,"");
         	
@@ -6161,12 +6235,20 @@ public class SimStPLE {
         	
         	
             SimStProblemGraph problemGraph = getSsInteractiveLearning().getQuizGraph();
-     
+           
             SimStNode startNode = problemGraph.getStartNode();
    
             Vector<ProblemEdge> solution = startNode.findSolutionPath();
+            
+            /*for(int e=0 ; e<solution.size(); e++){
+            	ProblemEdge edge = solution.get(e);
+            	System.out.println("Edge : "+edge.getSelection()+" Action : "+edge.getAction()+" Input : "+edge.getInput()+" Result : "+edge.isCorrect());
+            }*/
+            
+        	//String v_solution = simSt.getProblemAssessor().determineSolution(problem, startNode /*getSsInteractiveLearning().getQuizGraph().getStartNode() */);	
+
            
-            long questionDuration = Calendar.getInstance().getTimeInMillis() - startQuizQuestionTime;
+            long questionDuration = (Calendar.getInstance().getTimeInMillis() - startQuizQuestionTime)/1000;
             
            
             boolean result = false;//correctCompleteAnswers(problem, solution);
@@ -6195,7 +6277,7 @@ public class SimStPLE {
 
          	 
         	
-            long quizQuestionDuration = Calendar.getInstance().getTimeInMillis() - startQuizQuestionTime;
+            long quizQuestionDuration = (Calendar.getInstance().getTimeInMillis() - startQuizQuestionTime)/1000;
             logger.simStLog(SimStLogger.SIM_STUDENT_QUIZ, SimStLogger.QUIZ_QUESTION_ANSWER_ACTION, "Quiz"+(currentQuizSectionNumber+1)+"."+(currentProblem+i+1), quizSolutionSteps(problem,solution), "", result, (int) quizQuestionDuration);
 
             getSsInteractiveLearning().setQuizGraph(null);
@@ -6355,7 +6437,7 @@ public class SimStPLE {
       	
       	
         float pctCorrect = ((float)(numCorrect+currentProblem)/getQuizProblems().size());
-        int quizDuration = (int) (Calendar.getInstance().getTimeInMillis() - startQuizTime);
+        int quizDuration = (int) ((Calendar.getInstance().getTimeInMillis() - startQuizTime)/1000);
     
         if(numCorrect == currentQuizSection.size()) {
         	
@@ -6371,7 +6453,7 @@ public class SimStPLE {
         	        	
         }
      
-        
+        //System.out.println(" isSsMetaTutorMode : "+simSt.isSsMetaTutorMode());
         if(simSt.isSsMetaTutorMode()) {
         
         	
@@ -6401,35 +6483,60 @@ public class SimStPLE {
 
 	
 	public void updateWorkingMemoryWithQuizResults(int numCorrect, String failedQuizProblems){
-		
 		String quizResult = "";
     	String input = ""; // input = pass || input = fail:3x+6=15:2x+1=5x-8
-    	if(numCorrect == currentQuizSection.size()) {
-    		quizResult = WorkingMemoryConstants.QUIZ_SECTION_PASSED;
-    		input = quizResult;
-  			brController.getMissController().getSimSt().getModelTraceWM().setQuizFailCount(0); 
-  			brController.getMissController().getSimSt().getModelTraceWM().setAllQuizFailCount(0); 
-    	} else {
-        	/*update the fail quiz in working memory*/
-   			int count=this.getMissController().getSimSt().getModelTraceWM().getQuizFailCount();		
-   			brController.getMissController().getSimSt().getModelTraceWM().setQuizFailCount(++count); 
-   			
-   			
-    		quizResult = WorkingMemoryConstants.QUIZ_SECTION_FAILED;
-    		input = quizResult+":"+failedQuizProblems;
+    	
+    	/***
+    	 * In AplusControl & CogTutor Control mode, we update working memory after attempting each problem in the quiz
+    	 * So the number of Correct answer is either 0 or 1 
+    	 * there is no need to update 'AllQuizFailCount' working memory as the student cannot attend all the 
+    	 * questions in a section at a time
+    	 */
+    	if(brController.getMissController().getSimSt().isSsAplusCtrlCogTutorMode() || brController.getMissController().getSimSt().isSsCogTutorMode()) {
+    		 if(numCorrect == 0) {
+    			 quizResult = WorkingMemoryConstants.QUIZ_SECTION_FAILED;
+   			  	 input = quizResult+":"+failedQuizProblems;
+   			     int count=this.getMissController().getSimSt().getModelTraceWM().getQuizFailCount();		
+        		 brController.getMissController().getSimSt().getModelTraceWM().setQuizFailCount(++count); 
+   		  	 }
+   		  	 else {
+   		  		 input = WorkingMemoryConstants.QUIZ_SECTION_PASSED;
+   		  		 brController.getMissController().getSimSt().getModelTraceWM().setQuizFailCount(0); 
+   		  	 }
+   		  	 brController.getAmt().handleInterfaceAction("ssquizCompleted", "implicit", input);
+         	 this.getSimSt().getModelTraceWM().setQuizInProgress("false");
+    	}
+    	else {
+    		if(numCorrect == currentQuizSection.size()) {
+        		quizResult = WorkingMemoryConstants.QUIZ_SECTION_PASSED;
+        		input = quizResult;
+      			brController.getMissController().getSimSt().getModelTraceWM().setQuizFailCount(0); 
+      			brController.getMissController().getSimSt().getModelTraceWM().setAllQuizFailCount(0); 
+        	} 
+    		else {
+            	/*update the fail quiz in working memory*/
+       			int count=this.getMissController().getSimSt().getModelTraceWM().getQuizFailCount();		
+       			brController.getMissController().getSimSt().getModelTraceWM().setQuizFailCount(++count); 	
+        		quizResult = WorkingMemoryConstants.QUIZ_SECTION_FAILED;
+        		input = quizResult+":"+failedQuizProblems;
+        	}
+        	
+        	// This sends a message to the WM about the status of the quiz and failed problems
+        	brController.getAmt().handleInterfaceAction("ssquizCompleted", "implicit", input);
+        	this.getSimSt().getModelTraceWM().setQuizInProgress("false");
+        	
+      
+        	if (numCorrect==0){
+        		this.getSimSt().getModelTraceWM().setAllQuizFailed("true");
+        		int count=this.getMissController().getSimSt().getModelTraceWM().getAllQuizFailCount();		
+       			brController.getMissController().getSimSt().getModelTraceWM().setAllQuizFailCount(++count); 	
+        	}
     	}
     	
-    	
-    	// This sends a message to the WM about the status of the quiz and failed problems
-    	brController.getAmt().handleInterfaceAction("ssquizCompleted", "implicit", input);
-    	this.getSimSt().getModelTraceWM().setQuizInProgress("false");
-    	
-  
-    	if (numCorrect==0){
-    		this.getSimSt().getModelTraceWM().setAllQuizFailed("true");
-    		int count=this.getMissController().getSimSt().getModelTraceWM().getAllQuizFailCount();		
-   			brController.getMissController().getSimSt().getModelTraceWM().setAllQuizFailCount(++count); 	
-    	}
+    	//System.out.println(" Faliure Count ");
+    	//System.out.println(" All Quiz failed : "+this.getSimSt().getModelTraceWM().getAllQuizFailed());
+    	//System.out.println(" No of failed : "+this.getMissController().getSimSt().getModelTraceWM().getAllQuizFailCount());
+    	//System.out.println(" Failed count so far : "+this.getMissController().getSimSt().getModelTraceWM().getQuizFailCount());
 	}
 	
 	
@@ -6556,7 +6663,20 @@ public class SimStPLE {
 	 *  Perform any clean-up for properly shut-down PLE
 	 */
 	public void shutdown() {
-		int pleDuration = (int) (Calendar.getInstance().getTimeInMillis() - startPleTime);
+		int pleDuration = (int) ((Calendar.getInstance().getTimeInMillis() - startPleTime)/1000);
+		//System.out.println( " Right place for shutting down the application ");
+		brController.getMissController().getSimSt().saveMTWMState();
+		
 		logger.simStShortLog(SimStLogger.SIM_STUDENT_PLE, SimStLogger.PLE_CLOSED_ACTION, "", "", pleDuration);
 	}
+
+	public boolean isModelTracer() {
+		return modelTracer;
+	}
+
+	public void setModelTracer(boolean modelTracer) {
+		this.modelTracer = modelTracer;
+	}
+	
+	
 }

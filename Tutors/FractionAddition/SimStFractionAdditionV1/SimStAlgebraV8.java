@@ -4,7 +4,7 @@
  * Created on October 18, 2005, 5:33 PM
  */
 
-package SimStAlgebraV8;
+package SimStFractionAdditionV1;
 
 import edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher;
 import javax.swing.UIManager;

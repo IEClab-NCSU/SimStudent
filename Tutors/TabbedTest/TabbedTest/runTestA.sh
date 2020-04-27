@@ -7,12 +7,12 @@ then
 	CPS=";"
     fi
     if [ "${OS}" != "Windows_NT" ]; then
-	CVSDIR="${HOME}/CMU/pact-cvs-tree"
+	CVSDIR="${HOME}/Desktop/SimStudentGithub/SimStudent-master"
 	CPS=":"
     fi
 fi
 
-CtatJar="${CVSDIR}/AuthoringTools_3_1/java/lib/ctat.jar"
+CtatJar="${CVSDIR}/APLUS/java/lib/ctat.jar"
 
 
 if [ "${OS}" = "Windows_NT" ]; then
@@ -39,7 +39,7 @@ fi
 
 
 
-cmd="javac ${VmOption} TabbedTestA.java TestCheckBox.java TestDoneButton.java -source 1.6 -target 1.6";
+cmd="javac ${VmOption} TabbedTestA.java TestCheckBox.java TestDoneButton.java -source 1.8 -target 1.8";
 echo $cmd;
 ${cmd};
 
@@ -47,8 +47,8 @@ ${cmd};
 #cmd="java ${VmOption} TabbedTest.TabbedTestA -ssLocalLogging -Dcourse_name=simStPilotJanuary-TestScores -DnoCtatWindow -DProblemFileLocation=./A2.brd";
 #${cmd};
 
-cmd="java ${VmOption} TabbedTest.TabbedTestA -DDebugCodes=log -ssLoadPrefsFile brPrefsTest.xml -ssUserID Dwrrww -ssLocalLogging -ssLogging -ssLogURL http://172.17.4.1:1502/log/server -Dcourse_name=simstOnlineTest-TestScores -DProblemFileLocation=./A2.brd";
-${cmd};
+#cmd="java ${VmOption} TabbedTest.TabbedTestA -DDebugCodes=log -ssLoadPrefsFile brPrefsTest.xml -ssUserID Dwrrww -ssLocalLogging -ssLogging -ssLogURL http://172.17.4.1:1502/log/server -Dcourse_name=simstOnlineTest-TestScores -DProblemFileLocation=./A2.brd";
+#${cmd};
 
 
 

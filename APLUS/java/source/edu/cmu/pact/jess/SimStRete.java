@@ -326,6 +326,50 @@ public class SimStRete extends MTRete implements Serializable, JessParser {
 	    		try{reader.close();}catch(Exception e){	}
 	    	}
 		}
+		else if(getController().getMissController() != null && getController().getMissController().getSimSt().isSsWebAuthoringMode()){
+			startElements = new ArrayList<String>();
+			
+			BufferedReader br = null;
+			try
+	    	{
+	    		//reader=new BufferedReader(new FileReader(file));
+				String file = this.getController().getMissController().getSimSt().getProjectDirectory()+"/"+SimStPLE.CONFIG_FILE;
+
+	        	br = new BufferedReader(new FileReader(file));
+	    		String line = br.readLine();
+	    		
+	    		while(line != null)
+	    		{
+	    			if(line.equals(SimStPLE.START_STATE_ELEMENTS_HEADER))
+	    			{
+	    				line = br.readLine();
+	    				while(line != null && line.length() > 0) //Blank line starts next section
+	    				{
+	    					startElements.add(line);
+	    					line = br.readLine();
+	    				}
+	    			}
+	    			else if(line.equals(SimStPLE.PROBLEM_DELIMITER_HEADER)){
+	    				SimSt.problemDelimiter = br.readLine();
+	    			}
+	    			if(line != null)
+	    			{
+	    				line = br.readLine();
+	    			}
+	    		}
+
+	    	}
+			catch(Exception e)
+	    	{
+	    		if(trace.getDebugCode("miss"))trace.out("miss", "Unable to read config file: "+e.getMessage());
+	    		e.printStackTrace();
+	    	}
+			finally 
+	    	{
+	    		if(br != null)
+	    			br.close();
+	    	}
+		}
 		else {
 			throw new Exception("Need to initialize the working memory with start state elements.");
 		}
@@ -343,6 +387,7 @@ public class SimStRete extends MTRete implements Serializable, JessParser {
 	  //		setSAIDirectly(startElements.get(1), SimStRete.ACTION, problem[1]);
 	//		setSAIDirectly(startElements.get(0), SimStRete.ACTION, problem[0]);
 	//	}
+		
 		String[] problem=SimStRete.PROBLEM_NAME.split(SimSt.problemDelimiter);
 		if (problem[0].contains("="))  problem=SimStRete.PROBLEM_NAME.split("=");	
 		if (!problem[0].isEmpty()){
@@ -813,7 +858,9 @@ public class SimStRete extends MTRete implements Serializable, JessParser {
 	 */
 	private void loadJessFile(String rulesFile) {
 		
-		String fileName = getDirectory(rulesFile) + rulesFile;
+		String fileName = rulesFile; 
+		if(!getController().getMissController().getSimSt().isSsWebAuthoringMode())
+		 fileName = getDirectory(rulesFile) + rulesFile;
 		String[] fileNames = {fileName};
 		Object[] files = findFiles(fileNames);
 		
@@ -821,10 +868,11 @@ public class SimStRete extends MTRete implements Serializable, JessParser {
         String resource = null;
         for(int i=0; i< files.length; i++) {
         if(getController().getMissController() != null 
-        		&& getController().getMissController().isPLEon()){
+        		&& getController().getMissController().isPLEon() || getController().getMissController().getSimSt().isSsWebAuthoringMode()){
 	        parse(files[i], false, false);
         	
         }
+        //System.out.println(" Completed parsing the file !!!!");
         }
 	}
 	
@@ -859,10 +907,13 @@ public class SimStRete extends MTRete implements Serializable, JessParser {
 
 
 		boolean[] results = null;
-		for (int i = 0; i < filenames.length; ++i) {
+		if(!getController().getMissController().getSimSt().isSsWebAuthoringMode()){
+			for (int i = 0; i < filenames.length; ++i) {
 				filenames[i] = getDirectory(filenames[i]) + filenames[i]; // trailing "/" separator
-		}
+		   }
 
+		}
+		
 			
 		if (!useBinary)
 			filenames[0] = null;
@@ -1137,7 +1188,9 @@ public class SimStRete extends MTRete implements Serializable, JessParser {
 	    textOutput.append("\n");
 	      //if (interfaceTemplatesList!=null)
 	    	//	loadInterfaceTemplates(interfaceTemplatesList);
-  
+	   /* System.out.println("Completed parsing the file !!!");
+	    for(int i=0; i<results.length; i++)
+	    	System.out.println(" File : "+files[i]+"  result : "+results[i]);*/
 	    
 	    return results;
 	}
@@ -1197,7 +1250,11 @@ public class SimStRete extends MTRete implements Serializable, JessParser {
 				results[i] = f;
 			} else {
 				//trace.out("miss","	#@$&&#$@#%* " + filenames[i] + " not... going for getFileAsResource " );
-				results[i] = Utils.getFileAsResource(filenames[i], this);
+				System.out.println(" Directory : "+getController().getMissController().getSimSt().getProjectDirectory());
+				if(this.getController().getMissController().getSimSt().isSsWebAuthoringMode())
+					results[i] = new File(this.getController().getMissController().getSimSt().getProjectDirectory()+"/"+filenames[i]);
+				else 
+				    results[i] = Utils.getFileAsResource(filenames[i], this);
 				if (null == results[i] || !((File) results[i]).exists()){
 					
 					
@@ -1374,9 +1431,18 @@ public class SimStRete extends MTRete implements Serializable, JessParser {
 		if (!(rdr instanceof BufferedReader || rdr instanceof StringReader))
 			rdr = new BufferedReader(rdr);
 		// addInputRouter(uid.toString(), rdr, false); // false=>not consoleLike
+	//	System.out.println("Parsing ..............");
 		Jesp jesp = new Jesp(rdr, this);
-		
+	//	System.out.println(" Jesp object .... "+jesp.toString());
+	//	System.out.println(" Rete   : "+this.getGlobalContext().toString());
+		System.out.println(" Before Working memory : "+this.getController().getModelTracer().getRete().getFacts());
+
 		Value result = jesp.parse(false, this.getGlobalContext());
+		
+		System.out.println(" MTRete  Working memory : "+this.getController().getModelTracer().getRete().getFacts());
+		//System.out.println(" SimSTRete After  Working memory : "+this.getController().getMissController().getSimSt().getSsRete().getFacts());
+
+	//	System.out.println(" Result of parsing : "+result.toString());
 		// removeInputRouter(uid.toString());
 		// if (removeBuggyRules)
 		// unloadBuggyRules();
@@ -1558,8 +1624,26 @@ public class SimStRete extends MTRete implements Serializable, JessParser {
 	    	  boolean isWebstartMode= this.getController().getMissController().getSimSt().isWebStartMode();
 	    	  
 
-	         
-	          if(!isWebstartMode) {
+	          boolean isWebAuthoring = this.getController().getMissController().getSimSt().isSsWebAuthoringMode();
+	          
+	          if(isWebAuthoring){
+	        	  /*ClassLoader cl = this.getController().getMissController().getSimSt().getClass().getClassLoader();
+	        	  InputStream is = cl.getResourceAsStream(this.getController().getMissController().getSimSt().getPackageName()+"/wmeStructure.txt");
+	              InputStreamReader isr = new InputStreamReader(is);*/
+	        	  System.out.println(" Project Directory : "+this.getController().getMissController().getSimSt().getProjectDirectory());
+	        	  file=new File(this.getController().getMissController().getSimSt().getProjectDirectory()+"/"+structureFilePath);
+	        	  try
+		  	    	{
+		  	    		reader=new BufferedReader(new FileReader(file));
+		  	    	}
+		  	    	catch(FileNotFoundException e)
+		  	    	{
+		  	    		e.printStackTrace();
+		  	    		return false;
+		  	    	}
+		        	  
+	          }
+	          else if(!isWebstartMode) {
 	   
 	        	  file=new File(structureFilePath);
 	        	  try
@@ -1646,7 +1730,17 @@ public class SimStRete extends MTRete implements Serializable, JessParser {
 	    		}
 	    		
 	    	} while(curLine!=null);
-
+	    	
+	    	if(reader != null){
+	    		try {
+	    			//System.out.println(" Successfully read the file");
+					reader.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	    	}
+				
 			return true;
 	    }
 	 

@@ -320,6 +320,7 @@ public class DockManager extends CTATBase {
 		try {
 			FileInputStream fileInputStream = new FileInputStream(new File(
 					filename));
+			System.out.println(" File Name : "+filename);
 			rootWindow.read(new ObjectInputStream(fileInputStream));
 			fileInputStream.close();
 			layoutLoaded = true;
@@ -1124,7 +1125,9 @@ public class DockManager extends CTATBase {
 	 * Cleanup: reset view titles and icons before saving.
 	 */
 	public void clearGraphViews(String mode) {
-		for (int i = 0; i < CTATTabManager.getNumTabs(); i++) {
+		int tabs = 0;
+	    tabs = CTATTabManager.getNumTabs();
+		for (int i = 0; i < tabs; i++) {
 			// get the view
 			int tabNumber = i + 1;
 			View view = this.graphViewMap.getView(tabNumber);

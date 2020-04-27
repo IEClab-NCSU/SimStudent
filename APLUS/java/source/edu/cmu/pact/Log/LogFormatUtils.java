@@ -1303,8 +1303,6 @@ public class LogFormatUtils {
 		Document doc = LogFormatUtils.parseLog(inf, convert);
 		
 		if(trace.getDebugCode("log")) {
-			System.out.println("doc.getRootElement().toString() "+doc.getRootElement().toString());
-			System.out.println("entire document "+new XMLOutputter().outputString(doc.getRootElement()));
 			int i = 0;
 			for(Object elt : doc.getRootElement().getChildren("log_action")) {
 				Element e = (Element) elt;

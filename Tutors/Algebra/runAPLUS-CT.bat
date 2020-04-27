@@ -5,7 +5,7 @@ set CVSDIR=%CD%
 cd SimStAlgebraV8
 set ProjectDir=%CVSDIR%\SimStAlgebraV8
 set CTATJAR=%CVSDIR%\lib\ctat.jar;%CVSDIR%\lib\jess.jar
-set CPATH=%CTATJAR%;..;.
+set CPATH="%CTATJAR%;..;."
 
 if "%DatasetName%" == "" (
     echo.
@@ -50,7 +50,7 @@ set TutorArg=%TutorArg% -ssSelectionOrderGetterClass SimStAlgebraV8.AlgebraV8Adh
 set TutorArg=%TutorArg% -ssClSolverTutorSAIConverter SimStAlgebraV8.AlgebraV8AdhocSAIConverter
 set TutorArg=%TutorArg% -ssActivationList AccuracySortedActivationList
 set TutorArg=%TutorArg% -ssFoaClickDisabled
-set TutorArg=%TutorArg% -ssProjectDir %ProjectDir%
+set TutorArg=%TutorArg% -ssProjectDirectory %ProjectDir%
 set TutorArg=%TutorArg% -ssNumBadInputRetries 2
 set TutorArg=%TutorArg% -ssProblemsPerQuizSection 2
 set TutorArg=%TutorArg% -Dcourse_name=%DatasetName%

@@ -124,7 +124,8 @@ public class MetaTutorModelTracingSAIHandler extends SAIHandler {
 	
 	public String processSAI(){
 		try {
-
+			
+			
 			if(ModelTracer.isSAIToBeModelTraced(selection, action)){	
 				result = amt.runModelTrace(false, false, selection,action,input,messages);		
 					
@@ -136,9 +137,11 @@ public class MetaTutorModelTracingSAIHandler extends SAIHandler {
 				result = amt.runModelTrace(false, true, selection, "", "", messages);
 		    }
 			/*trigger event to send results to the listeners */
+		
 			ModelTracingEvent e=new ModelTracingEvent(this,selection,action,input,result,amt.getMatchedNode(),messages);
 		//	notifyListeners(e);
 			getController().getMissController().getSimSt().getBrController().getAmt().modelTracingController(e);
+			amt.setMatchedNode(null);
 			
 		} catch(Exception e){
 			e.printStackTrace();

@@ -77,9 +77,16 @@ public class GetSimilarProblem implements Userfunction, Serializable {
 				Problem abstractor = new Problem(problem);
 				String abstractedPWithSignPreserved = abstractor.getSignedAbstraction();
 				
-				Integer problemCount = ModelTraceWorkingMemory.quizProblemsTutoredListAllSections.get(abstractedPWithSignPreserved);
-				if(abstractedPWithSignPreserved.equals(lastAbstractedProblem) && problemCount != null
-						&& problemCount.intValue() == lastAbstractedProblemSolvedCount) {
+				//System.out.println(" Abstracted problem :  "+abstractedPWithSignPreserved);
+				
+				
+				int	problemCount = ModelTraceWorkingMemory.quizProblemsTutoredListAllSections.getOrDefault(abstractedPWithSignPreserved, new Integer(0)) ;
+				//System.out.println(" Problem Count : "+problemCount+"  lastAbstractedProblemSolvedCount  : "+lastAbstractedProblemSolvedCount);
+				
+				//System.out.println(" Last Abstracted Problem : "+lastAbstractedProblem);
+				
+				if(abstractedPWithSignPreserved.equals(lastAbstractedProblem)
+						&& lastAbstractedProblemSolvedCount == problemCount ) {
 				
 					return new Value(lastSimilarProblem, RU.STRING);
 				} else { // generate a similar problem 
@@ -89,8 +96,10 @@ public class GetSimilarProblem implements Userfunction, Serializable {
 					// Update the static variables for tracking
 					lastAbstractedProblem = abstractedPWithSignPreserved;
 					lastSimilarProblem = similarP;
-					if(problemCount != null)
-						lastAbstractedProblemSolvedCount = ModelTraceWorkingMemory.quizProblemsTutoredListAllSections.get(lastAbstractedProblem);
+					 ModelTraceWorkingMemory.suggestedProblem = similarP;
+					 
+						//if(problemCount > 0)
+						lastAbstractedProblemSolvedCount = ModelTraceWorkingMemory.quizProblemsTutoredListAllSections.getOrDefault(lastAbstractedProblem, new Integer(0));
 				
 					return new Value(similarP, RU.STRING);
 				}

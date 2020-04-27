@@ -102,22 +102,6 @@
             </properties>
         </message>
         <message>
-            <verb>NotePropertySet</verb>
-            <properties>
-                <MessageType>InterfaceAction</MessageType>
-                <Selection>
-                    <value>demog4</value>
-                </Selection>
-                <Action>
-                    <value>UpdateText</value>
-                </Action>
-                <Input>
-                    <value>4. Have you used the SimStudent program in a previous study?</value>
-                </Input>
-                <transaction_id>T-6cdaae:13679ec874a:-7ffd</transaction_id>
-            </properties>
-        </message>
-        <message>
             <verb>SendNoteProperty</verb>
             <properties>
                 <MessageType>InterfaceDescription</MessageType>
@@ -131,22 +115,6 @@
                     <value>(assert (label (name demog3)))</value>
                 </jessInstances>
                 <ComponentDescription>v=true,x=20,y=390</ComponentDescription>
-            </properties>
-        </message>
-        <message>
-            <verb>NotePropertySet</verb>
-            <properties>
-                <MessageType>InterfaceAction</MessageType>
-                <Selection>
-                    <value>demog3</value>
-                </Selection>
-                <Action>
-                    <value>UpdateText</value>
-                </Action>
-                <Input>
-                    <value>3. What is your age?</value>
-                </Input>
-                <transaction_id>T-6cdaae:13679ec874a:-7ffc</transaction_id>
             </properties>
         </message>
         <message>
@@ -166,22 +134,6 @@
             </properties>
         </message>
         <message>
-            <verb>NotePropertySet</verb>
-            <properties>
-                <MessageType>InterfaceAction</MessageType>
-                <Selection>
-                    <value>demog2</value>
-                </Selection>
-                <Action>
-                    <value>UpdateText</value>
-                </Action>
-                <Input>
-                    <value>2. What race do you consider yourself?</value>
-                </Input>
-                <transaction_id>T-6cdaae:13679ec874a:-7ffb</transaction_id>
-            </properties>
-        </message>
-        <message>
             <verb>SendNoteProperty</verb>
             <properties>
                 <MessageType>InterfaceDescription</MessageType>
@@ -195,22 +147,6 @@
                     <value>(assert (label (name test)))</value>
                 </jessInstances>
                 <ComponentDescription>v=true,x=20,y=10</ComponentDescription>
-            </properties>
-        </message>
-        <message>
-            <verb>NotePropertySet</verb>
-            <properties>
-                <MessageType>InterfaceAction</MessageType>
-                <Selection>
-                    <value>test</value>
-                </Selection>
-                <Action>
-                    <value>UpdateText</value>
-                </Action>
-                <Input>
-                    <value>&lt;HTML&gt;&lt;b&gt;Questionnaire&lt;/b&gt; (Demographic)</value>
-                </Input>
-                <transaction_id>T-6cdaae:13679ec874a:-7ffa</transaction_id>
             </properties>
         </message>
         <message>
@@ -249,22 +185,6 @@
             </properties>
         </message>
         <message>
-            <verb>NotePropertySet</verb>
-            <properties>
-                <MessageType>InterfaceAction</MessageType>
-                <Selection>
-                    <value>demog1</value>
-                </Selection>
-                <Action>
-                    <value>UpdateText</value>
-                </Action>
-                <Input>
-                    <value>1. What is your gender?</value>
-                </Input>
-                <transaction_id>T-6cdaae:13679ec874a:-7ff9</transaction_id>
-            </properties>
-        </message>
-        <message>
             <verb>SendNoteProperty</verb>
             <properties>
                 <MessageType>InterfaceDescription</MessageType>
@@ -278,6 +198,86 @@
                     <value>(assert (button (name Done)))</value>
                 </jessInstances>
                 <ComponentDescription>v=true,x=230,y=540</ComponentDescription>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>demog4</value>
+                </Selection>
+                <Action>
+                    <value>UpdateText</value>
+                </Action>
+                <Input>
+                    <value>4. Have you used the SimStudent program in a previous study?</value>
+                </Input>
+                <transaction_id>T-6cdaae:13679ec874a:-7ffd</transaction_id>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>demog3</value>
+                </Selection>
+                <Action>
+                    <value>UpdateText</value>
+                </Action>
+                <Input>
+                    <value>3. What is your age?</value>
+                </Input>
+                <transaction_id>T-6cdaae:13679ec874a:-7ffc</transaction_id>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>demog2</value>
+                </Selection>
+                <Action>
+                    <value>UpdateText</value>
+                </Action>
+                <Input>
+                    <value>2. What race do you consider yourself?</value>
+                </Input>
+                <transaction_id>T-6cdaae:13679ec874a:-7ffb</transaction_id>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>test</value>
+                </Selection>
+                <Action>
+                    <value>UpdateText</value>
+                </Action>
+                <Input>
+                    <value>&lt;HTML&gt;&lt;b&gt;Questionnaire&lt;/b&gt; (Demographic)</value>
+                </Input>
+                <transaction_id>T-6cdaae:13679ec874a:-7ffa</transaction_id>
+            </properties>
+        </message>
+        <message>
+            <verb>NotePropertySet</verb>
+            <properties>
+                <MessageType>InterfaceAction</MessageType>
+                <Selection>
+                    <value>demog1</value>
+                </Selection>
+                <Action>
+                    <value>UpdateText</value>
+                </Action>
+                <Input>
+                    <value>1. What is your gender?</value>
+                </Input>
+                <transaction_id>T-6cdaae:13679ec874a:-7ff9</transaction_id>
             </properties>
         </message>
         <message>

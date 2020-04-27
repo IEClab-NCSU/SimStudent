@@ -73,7 +73,11 @@ public class CTAT_Launcher {
 	private boolean initialized;
 	private Monitor monitor;
 	private AuthorLauncherServer authorLauncherServer;
-    
+	private boolean isWebStart ;
+	private boolean standAlone;
+	private boolean servlet;
+	
+    private String packageName;
     /* ************************* INITIALIZATION ************************* */
 	
 	public CTAT_Launcher() {
@@ -92,8 +96,7 @@ public class CTAT_Launcher {
     		System.exit(0);   // pass brd name and quit if another instance is active
     	
     	// Just one tab for SimStudent
-		if(hasSimStArgs(argv))
-			CTATTabManager.setMaxNumTabs(1);
+		
 		
 		VersionInformation.setRunningSimSt(hasSimStArgs(argv));    
 
@@ -107,6 +110,20 @@ public class CTAT_Launcher {
 		this.tabManager = new CTATTabManager(this, argv);
         this.authorLauncherServer = createAuthorLauncherServer(argv);
 
+        determineEnvironment();
+
+        if(hasSimStArgs(argv)){
+			
+			/*if(isServlet()){
+				System.out.println(" No of Max Tabs allowed "+this.tabManager.getMaxTabsServlet());
+				System.out.println(" No of Tabs created : "+this.tabManager.getNumTabServlet());
+				this.tabManager.setMaxTabsServlet(1);
+			}
+			else*/
+				CTATTabManager.setMaxNumTabs(1);
+
+		}
+        
         /*nbarba 01/15/2014: option to show ctat window must be here, not SingleSessionLauncher*/
         String noTutorInterface = System.getProperty("noCtatWindow");
         if (noTutorInterface != null) {
@@ -144,9 +161,10 @@ public class CTAT_Launcher {
 			getCtatMenuBar();
 			
 		//}
-        
-    
+         
 		
+           
+           
         if (!isInAppletMode()) {
 	        // sewall 2011/07/02: ensure SimSt controller is non-null
         	// nbarba 01/16/2014: SimStudent in now initialized in MissController, argv should be passed .
@@ -165,6 +183,22 @@ public class CTAT_Launcher {
         authorLauncherServer.startListener();
 	}
 
+	private void determineEnvironment() {
+		// TODO Auto-generated method stub
+		String appContainer = System.getProperty("appRunType");
+		if(appContainer != null ){
+			if(appContainer.equalsIgnoreCase("webstart"))
+				setWebStart(true);
+			else if(appContainer.equalsIgnoreCase("servlet"))
+					setServlet(true);
+				
+			else if(appContainer.equalsIgnoreCase("shellscript"))
+				   setStandAlone(true);
+		}
+		
+			
+	}
+
 	/**
 	 * Start a {@link Monitor} thread to listen for double-clicks to open files.
 	 * @param argv no-op if {@value #SKIP_MONITOR_ARG} is among the args
@@ -173,7 +207,7 @@ public class CTAT_Launcher {
 		for(String arg : argv) {
 			if(arg.toLowerCase().contains(SKIP_MONITOR_ARG))
 				return;
-		}
+		}   
     	monitor = new Monitor(Monitor.MONITOR_PORT);
     	monitor.addRequestHandler(LoadFileDialog.NAME, new LoadFileDialog(this));
     	monitor.start();
@@ -396,6 +430,8 @@ public class CTAT_Launcher {
 
     /** Taken from {@link BR_Controller}. */
     private void exit(BR_Controller controller, final boolean saveBrdFile) {
+    	String appType = System.getProperty("appRunType");
+    	
     	if(trace.getDebugCode("mg"))
     		trace.printStack("mg", "CTAT_Launcher (exit): start");
 
@@ -421,7 +457,7 @@ public class CTAT_Launcher {
             }
         }
             // loop over all tabs and save if necessary
-            for(int i = 0; i < CTATTabManager.getNumTabs(); i++) {
+            for(int i = 0; i < getTabManager().getNumTabs(); i++) {
             	int tabNumber = i+1;
             	if(tabNumber == currentTab) continue; // already saved this
             	BR_Controller control = getTabManager().getTabByNumber(tabNumber).getController();
@@ -451,8 +487,9 @@ public class CTAT_Launcher {
         
 //        if (brFrame != null)
 //        	brFrame.dispose();
-
-        System.exit(0);
+        
+        if(appType != null && !appType.equals("servlet"))
+        			System.exit(0);
     }
     
 	public PreferencesModel getPreferencesModel() {
@@ -676,5 +713,37 @@ public class CTAT_Launcher {
 	public void loadLayout(String mode) {
 		if(getDockManager() != null)
 			getDockManager().loadLayout(mode);
+	}
+
+	public boolean isWebStart() {
+		return isWebStart;
+	}
+
+	public void setWebStart(boolean isWebStart) {
+		this.isWebStart = isWebStart;
+	}
+
+	public boolean isStandAlone() {
+		return standAlone;
+	}
+
+	public void setStandAlone(boolean standAlone) {
+		this.standAlone = standAlone;
+	}
+
+	public boolean isServlet() {
+		return servlet;
+	}
+
+	public void setServlet(boolean servlet) {
+		this.servlet = servlet;
+	}
+
+	public String getPackageName() {
+		return packageName;
+	}
+
+	public void setPackageName(String packageName) {
+		this.packageName = packageName;
 	}
 }

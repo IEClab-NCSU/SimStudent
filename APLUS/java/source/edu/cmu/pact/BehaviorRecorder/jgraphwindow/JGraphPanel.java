@@ -69,7 +69,7 @@ public class JGraphPanel extends JComponent {
     		BR_Controller brController, final int tabNumber) {
 		if (trace.getDebugCode("graphPanel")) trace.out("graphPanel", "JGraphPanel constructor, CTAT_Launcher is " + server);
     	
-        jgraph = new BR_JGraph(graphModel, graphView, brController);
+       jgraph = new BR_JGraph(graphModel, graphView, brController);
         this.windowID = tabNumber;
         graphModel.addGraphModelListener(jgraph);
         jgraph.setAntiAliased(true);
@@ -132,7 +132,7 @@ public class JGraphPanel extends JComponent {
 	}
 	trace.out ("background = " + getBackground());
 	trace.out ("foreground = " + getForeground());
-        box.add(brPane);
+       box.add(brPane);
 
 	//       statusLabel = new JLabel();
 	//       statusLabel.setName("Status Label");

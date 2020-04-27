@@ -254,7 +254,7 @@ public class SimStTutalk {
 			explanation = interactiveActivity.getSimSt().getMissController().getSimStPLE().giveMessageFreeTextResponse(question);
 		}
 	
-		int explainDuration = (int) (Calendar.getInstance().getTimeInMillis() - explainRequestTime);
+		int explainDuration = (int) ((Calendar.getInstance().getTimeInMillis() - explainRequestTime)/1000);
 	
 		if(trace.getDebugCode("sstt"))trace.out("sstt", "Got answer, submitting: " + explanation);
 	

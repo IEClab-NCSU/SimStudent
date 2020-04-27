@@ -75,7 +75,7 @@ public class SimStProblemStartLogAgent extends SimStLogAgent{
 	 * @throws ParseException 
 	 */
 	int getTimeOnTask(String event_time) throws ParseException{				 
-		 return isDoneClicked() ? ((int) (getDoneClickedDate().getTime() - getPRoblemEnteredDate().getTime())) : ((int) (stringToDate(event_time).getTime() - getPRoblemEnteredDate().getTime()));
+		 return isDoneClicked() ? ((int) (getDoneClickedDate().getTime()/1000 - getPRoblemEnteredDate().getTime()/1000)) : ((int) (stringToDate(event_time).getTime()/1000 - getPRoblemEnteredDate().getTime()/1000));
 	}
 	
 	
@@ -110,8 +110,10 @@ public class SimStProblemStartLogAgent extends SimStLogAgent{
 			boolean returnValue=false;	//if false is returned, SimStLogger will continue logging. True indicates that SimStProblemStartLogAgent took action...
 			/*If its problem started, hold the entry*/
 			if (action.equals(SimStLogger.PROBLEM_DURATION /*SimStLogger.PROBLEM_ENTERED_ACTION*/)) { 
+				//System.out.println(" Duration in manageLogEntry : "+duration);
 				setProblemEntered(true);
 				setProblemEnteredDate(event_time);
+				//System.out.println(" Log Buffered  "+action+" Feedback "+feedback);
 				logBuffer.add(new LogEntry(actionType, action, step, result, resultDetails, sai, node, correctness, expSelection, expAction, expInput, duration, feedback, opponent, info, myRating, event_time));
 				returnValue=true;	
 				
@@ -123,6 +125,7 @@ public class SimStProblemStartLogAgent extends SimStLogAgent{
 			}
 			/*if problem is entered and quiz button is clicked or new problem is entered or PLE is closed then its time to log what was buffered*/
 			else if (isProblemEntered() && (action.equals(SimStLogger.QUIZ_BUTTON_ACTION) || action.equals(SimStLogger.UNTAKEN_QUIZ_INITIATE_ACTION) || action.equals(SimStLogger.NEXT_PROBLEM_BUTTON_ACTION) || action.equals(SimStLogger.PROBLEM_ENTERED_BUTTON_ACTION) || action.equals(SimStLogger.PLE_CLOSED_ACTION))){				
+				//System.out.println(" Log size : "+logBuffer.size());
 				logBuffer.pop().log(logger,getTimeOnTask(event_time));
 				System.out.println("****** logged time " + getTimeOnTask(event_time) );
 				setProblemEntered(false);
@@ -134,6 +137,7 @@ public class SimStProblemStartLogAgent extends SimStLogAgent{
 				returnValue=false;
 			}	
 			
+			//System.out.println(" The return Value is : "+returnValue);
 			return returnValue;		
 		}
 	

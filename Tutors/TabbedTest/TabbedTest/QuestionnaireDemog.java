@@ -27,7 +27,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
-
+/***
+ * @deprecated
+ * Submit button not working, hint window appears
+ * use QuestionnaireDemographics
+ * @author Vishnu Priya
+ *
+ */
 public class QuestionnaireDemog extends javax.swing.JPanel implements DoneButton {
 
 	private static final long serialVersionUID = 1L;
@@ -184,9 +190,10 @@ public class QuestionnaireDemog extends javax.swing.JPanel implements DoneButton
         
 
         Done.setText("<HTML><b>I'm Done</b>, Submit My Answers");
+       
         Done.addStudentActionListener(new pact.CommWidgets.event.StudentActionListener() {
-            public void studentActionPerformed(pact.CommWidgets.event.StudentActionEvent evt) {
-                promptNow(evt);
+            public void studentActionPerformed(pact.CommWidgets.event.StudentActionEvent evt) {  
+                promptNow(evt);              
             }
 
         });

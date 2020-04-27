@@ -1,0 +1,81 @@
+FOIL 6.4   [January 1996]
+--------
+
+    Options:
+	minimum clause accuracy -9.99638e+08%
+
+Relation subtract
+
+Relation *NotNull
+
+Relation *IsDenominatorOf
+
+Relation *HasConstTerm
+
+Relation *IsSkillSubtract
+
+Relation *IsSkillMultiply
+
+Relation *IsNumeratorOf
+
+Relation *IsFractionTerm
+
+Relation *Homogeneous
+
+Relation *HasVarTerm
+
+Relation *IsSkillDivide
+
+Relation *Monomial
+
+Relation *IsSkillAdd
+
+Relation *HasCoefficient
+
+Relation *IsAVarTerm
+
+Relation *IsPolynomial
+
+Relation *IsConstant
+
+Relation *IsLastConstTermNegative
+
+Relation *HasParentheses
+
+----------
+subtract:
+
+State (4/10, 12.1 bits available)
+
+	Save clause ending with not(Homogeneous(A)) (cover 4, accuracy 66%)
+
+	Save IsPolynomial(A) (4,6 value 2.6)
+	Save HasConstTerm(A) (4,6 value 2.6)
+	Save not(Homogeneous(A)) (4,6 value 2.6)
+	Save not(Monomial(A)) (4,6 value 2.6)
+
+Best literal HasVarTerm(A) (5.9 bits)
+
+State (4/6, 6.2 bits available)
+
+	Save clause ending with IsConstant(B) (cover 4, accuracy 80%)
+
+	Save Homogeneous(B) (4,5 value 3.5)
+	Save HasConstTerm(B) (4,5 value 3.5)
+	Save not(IsAVarTerm(B)) (4,5 value 3.5)
+	Save not(IsFractionTerm(B)) (4,5 value 3.5)
+
+Best literal IsConstant(B) (6.0 bits)
+
+State (4/5, 1.2 bits available)
+
+No literals
+
+Clause 0: subtract(A,B) :- HasVarTerm(A), IsConstant(B).
+
+***  Warning: the following definition
+***  matches 1 tuple not in the relation
+
+subtract(A,B) :- HasVarTerm(A), IsConstant(B).
+
+Time 0.0 secs

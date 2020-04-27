@@ -1,0 +1,70 @@
+FOIL 6.4   [January 1996]
+--------
+
+    Options:
+	minimum clause accuracy -5.35079e+07%
+
+Relation subtract
+
+Relation *NotNull
+
+Relation *IsDenominatorOf
+
+Relation *HasConstTerm
+
+Relation *IsSkillSubtract
+
+Relation *IsSkillMultiply
+
+Relation *IsNumeratorOf
+
+Relation *IsFractionTerm
+
+Relation *Homogeneous
+
+Relation *HasVarTerm
+
+Relation *IsSkillDivide
+
+Relation *Monomial
+
+Relation *IsSkillAdd
+
+Relation *HasCoefficient
+
+Relation *IsAVarTerm
+
+Relation *IsPolynomial
+
+Relation *IsConstant
+
+Relation *IsLastConstTermNegative
+
+Relation *HasParentheses
+
+----------
+subtract:
+
+State (3/8, 9.7 bits available)
+
+	Save clause ending with HasVarTerm(A) (cover 3, accuracy 75%)
+
+	Save IsPolynomial(A) (3,4 value 2.5)
+	Save HasConstTerm(A) (3,4 value 2.5)
+	Save not(Homogeneous(A)) (3,4 value 2.5)
+	Save not(Monomial(A)) (3,4 value 2.5)
+
+Best literal HasVarTerm(A) (5.9 bits)
+
+State (3/4, 3.8 bits available)
+
+No literals
+
+Clause 0: subtract(A,B) :- HasVarTerm(A).
+
+***  Warning: the following definition
+***  matches 1 tuple not in the relation
+
+subtract(A,B) :- HasVarTerm(A).
+
+Time 0.0 secs

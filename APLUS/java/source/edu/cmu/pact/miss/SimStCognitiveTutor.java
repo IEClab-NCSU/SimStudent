@@ -1,12 +1,8 @@
 package edu.cmu.pact.miss;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.Dialog;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.Point;
 import java.awt.Dialog.ModalityType;
@@ -14,8 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -224,6 +218,9 @@ public class SimStCognitiveTutor {
 	public void giveProblem(String problem){
 
 		incProblemsGivenCount();
+		
+		getSimStPLE().getSsInteractiveLearning().createStartStateOnProblem(problem);
+		
 		/*Log that new problem is entered. SOS: this transaction will held by the "back to the future" mechanism. it will be released once student clicks done correctly.*/
 		if (getSimStPLE().getSimSt().isSsAplusCtrlCogTutorMode())
 			getSimStLogger().simStLog(SimStLogger.SIM_STUDENT_PROBLEM, SimStLogger.PROBLEM_ENTERED_ACTION, problem, "", "");		
@@ -235,14 +232,11 @@ public class SimStCognitiveTutor {
 
 		getSimStLogger().simStLog(SimStLogger.SIM_STUDENT_PROBLEM, SimStLogger.PROBLEM_DURATION, problem, "", "");
 		
-		getSimStPLE().getSsInteractiveLearning().createStartStateOnProblem(problem);
-		
-		
 		if (this.getSimStPLE().getSimSt().isSsAplusCtrlCogTutorMode()){
 				repaintStartStateOnStudentInterface(SimSt.convertFromSafeProblemName(problem));
 				getSimStPLE().setFocusOfStartStateElementsStudentInterface(false);			
 		}
-		
+		//getSimStPLE().getSsInteractiveLearning().createStartStateOnProblem(problem);
 		//make all cells available to student except from the start state elements.
 		getSimStPLE().blockInput(false);  
 		getSimStPLE().setFocusOfStartStateElements(false);	//<-- This fixed the error of ModelTracer not working when switching tabs
@@ -304,10 +298,12 @@ public class SimStCognitiveTutor {
 	public void prepareModeltracer(){
 
 		/*notify that problem is started*/
+		//System.out.println(" Notify the problem is started");
 		getBrController().getAmt().handleInterfaceAction("yes","ButtonPressed","-1");
 		/*initialize all variables*/
 		getSimStPLE().getSsInteractiveLearning().initModelTracerForProblem();
 		/*notify MT that we are always expecting for a hint*/
+		System.out.println(" Preparing for Model Tracer !!!");
 		getBrController().getMissController().getSimSt().getModelTraceWM().setRequestType("hint-request");
 	}
 
@@ -411,28 +407,50 @@ public class SimStCognitiveTutor {
 
 
 		//quizSolution.add(new Sai(selection, action, input));
+		//System.out.println(" In the hash : "+selection+"  value : "+input);
 		getQuizSolutionHash().put(selection, new Sai(selection, action, input));
 		
-		/*set the quiz graph so quiz grading methods work*/
+		
+
+	
+	/*set the quiz graph so quiz grading methods work*/
 		this.getBrController().getMissController().getSimSt().setQuizGraph(this.getSimStPLE().getSsInteractiveLearning().getQuizGraph());
 	
 		/*Convert the quiz solution hash to Vector<Sai> because thats what the SimStPLE grading method expects.*/
 		Vector<Sai> tmpSolution = new Vector<Sai>();
-		for (String key : getQuizSolutionHash().keySet()) {
-			          tmpSolution.add(getQuizSolutionHash().get(key));
-		}
+		List<String> components = this.getBrController().getMissController().getSimStPLE().getComponents();
 		
-
+		 for(int i=0; i< components.size(); i++) {
+			 String key = components.get(i);
+			 if(getQuizSolutionHash().containsKey(key)){
+				// System.out.println(" Key : "+key+"   value : "+getQuizSolutionHash().get(key));
+				 tmpSolution.add(getQuizSolutionHash().get(key));
+			 } 
+			/* else 
+				System.out.println("Not found in the hash  "+key);*/
+		 }
+		/*for (String key : getQuizSolutionHash().keySet()) {
+			          tmpSolution.add(getQuizSolutionHash().get(key));
+					 // if(!key.equalsIgnoreCase("done"))
+						//  		components.add(key);
+			          System.out.println(" Key "+key+" Selection : "+getQuizSolutionHash().get(key).getS()+"  Action : "+getQuizSolutionHash().get(key).getA()+" Input :   "+getQuizSolutionHash().get(key).getI());
+		}*/
+		
+	
+		
 		/*call existing quiz grading method to see if solution is correct*/
 		String res=this.getSimStPLE().getSsInteractiveLearning().gradeQuizProblemSolution(tmpSolution/*quizSolution*/, null);
+		//System.out.println(" Result  :  "+res);
 		String quizAssessment ="";
 		
 		String problem=SimSt.convertFromSafeProblemName(getSimStPLE().getSsInteractiveLearning().getQuizGraph().getStartNode().getName());
 		
 		boolean isQuizSolutionCorrect=false;
+		int correct = 0;
 		if (res.equals(SimStInteractiveLearning.QUIZ_SOLUTION_CORRECT)){
 			//if solution is correct then update the passedProblemList
 						
+			correct = 1;
 			SimStPLE.passedProblemsList=SimStPLE.passedProblemsList+SimStPLE.cogTutorCurrentProblem+",";
 
 			SimStPLE.cogTutorCurrentProblem++;
@@ -449,7 +467,7 @@ public class SimStCognitiveTutor {
 		}
 		else{
 			quizAssessment = QUIZ_SOLVED_INCORRECTLY;
-    
+			correct = 0;
 			if (failedQuizProblemSolutionHash==null) initFailedQuizSolutionHash();
         	failedQuizProblemSolutionHash.putAll(quizSolutionHash);
         	
@@ -459,7 +477,13 @@ public class SimStCognitiveTutor {
 		isTakingQuiz=false;
 		
 		/*update the model tracer working memory with the quiz results*/
-		this.getSimStPLE().updateWorkingMemoryWithQuizResults(getSimStPLE().currentCorrect, problem);
+		//System.out.println(" Updating the working memory ");
+		/**
+		 * The next line is a bug. It updates the working memory with the No of problems that have been attempted correctly so far
+		 * So the next line is commented 
+		 */
+		//this.getSimStPLE().updateWorkingMemoryWithQuizResults(getSimStPLE().currentCorrect, problem);
+		this.getSimStPLE().updateWorkingMemoryWithQuizResults(correct, problem);
     	
 		
 		/*lock the quiz interface so students cannot change their decision*/			
@@ -526,7 +550,7 @@ public class SimStCognitiveTutor {
 		/*Start of logging the result. Here we must log two things
 		 * 1. QUIZ_QUESTION_ANSWER_ACTION, which has the solution steps
 		 * 2. QUIZ_COMPLETED_ACTION, which tells us what is going in the quiz.*/
-			int quizDuration = (int) (Calendar.getInstance().getTimeInMillis() - startQuizTime);
+			int quizDuration = (int) ((Calendar.getInstance().getTimeInMillis() - startQuizTime)/1000);
 			//ProblemNode startState = getBrController().getProblemModel().getStartNode();
 						
 			//Vector<Vector <ProblemEdge>> solutions = new Vector<Vector <ProblemEdge>>();
@@ -587,7 +611,7 @@ public class SimStCognitiveTutor {
 		else{
 				
 			if (!isQuizSolutionCorrect){
-					quizAssessment=quizAssessment+this.QUIZ_SOLVED_INCORRECTLY_EXAMPLES_ADD.replace("<level>", getSimStPLE().getSections().get(currentLevel));
+					quizAssessment=quizAssessment+QUIZ_SOLVED_INCORRECTLY_EXAMPLES_ADD.replace("<level>", getSimStPLE().getSections().get(currentLevel));
 
 				new SimStMessageDialog(new Frame(),this.getSimStPLE().getSimSt().getSimStLogger(), quizAssessment,false,SimStMessageDialog.SHOW_TRHREE_BUTTONS);
 			//	reviewExamplesShownForThisSection=true;
@@ -601,7 +625,7 @@ public class SimStCognitiveTutor {
 
 		
 		/*update the account file*/
-		getSimStPLE().saveAccountFileAplusCogTutor( getBrController().getMissController().getSimSt().getUserID()+".account");
+		SimStPLE.saveAccountFileAplusCogTutor( getBrController().getMissController().getSimSt().getUserID()+".account");
 		
 		if (isFinalChallengePassed){
 			this.addFinalChallenge();
@@ -672,7 +696,7 @@ public class SimStCognitiveTutor {
 	boolean finalChallengeReached=false;
 	
 	void addFinalChallenge(){
-		getSimStPLE().passedProblemsList="";
+		SimStPLE.passedProblemsList="NA";
 		finalChallengeReached=true;
 		SimStPLE.cogTutorCurrentProblem=0;
 		
@@ -681,12 +705,12 @@ public class SimStCognitiveTutor {
 		if (reply == JOptionPane.YES_OPTION) {
 
 			getSimStPLE().getSimSt().archiveAndSaveFilesOnLogout();
-			getSimStPLE().saveAccountFileAplusCogTutor(getSimStPLE().getSimSt().getUserID()+".account");
+			SimStPLE.saveAccountFileAplusCogTutor(getSimStPLE().getSimSt().getUserID()+".account");
 
 			getSimStPLE().quizProblems= getSimStPLE().allQuizProblems.get(getSimStPLE().quizLevel);
 			getSimStPLE().quizSections = getSimStPLE().allQuizSections.get(getSimStPLE().quizLevel);
-			getSimStPLE().quizPassed = false;
-			getSimStPLE().currentProblem = 0;
+			SimStPLE.quizPassed = false;
+			SimStPLE.currentProblem = 0;
 
 			
 			if (getSimStPLE().getSimSt().isSsAplusCtrlCogTutorMode())
@@ -729,7 +753,7 @@ public class SimStCognitiveTutor {
 		else{	            			
 			JOptionPane.showMessageDialog(null, "<html><p>Thank you for your participation in our study!</p><p>Click OK to close SimStudent now.</p>",
 					"You did it!", JOptionPane.INFORMATION_MESSAGE);           
-			getSimStPLE().saveAccountFile(getSimStPLE().getSimSt().getUserID()+".account");
+			SimStPLE.saveAccountFile(getSimStPLE().getSimSt().getUserID()+".account");
 			System.exit(SimStPLE.QUIZ_COMPLETED_EXIT);	            			
 		}
 		
@@ -751,7 +775,7 @@ public class SimStCognitiveTutor {
 			
 	    	for(int i=0;i<components.length;i++)
 	    	{
-	    		getSimStPLE().setComponentEnabled(true, components[i]);
+	    		SimStPLE.setComponentEnabled(true, components[i]);
 	    	}
 	    	
 	    }
@@ -767,7 +791,7 @@ public class SimStCognitiveTutor {
 	 * @return
 	 */
 	private boolean addQuizStep(String selection,String action,String input){
-		
+		//System.out.println(" Step added : " + selection + " "+ input);
 		//updateInterfaceElementWithTutorResponse("Done", startColor);
 		setInterfaceElementColor("Done",startColor);
 		
@@ -777,6 +801,7 @@ public class SimStCognitiveTutor {
 			this.initQuizSolutionHash();
 		}
 		
+		//System.out.println(" In the hash : "+selection+"  value : "+input);
 		getQuizSolutionHash().put(selection, new Sai(selection, action, input));
 		
 		failedQuizProblemSolutionHash.put(selection, new Sai(selection, action, input));
@@ -808,6 +833,7 @@ public class SimStCognitiveTutor {
 		restoreFailedQuizSolution();
 		
 		if (quizSolutionHash!=null){
+			//System.out.println(" Removed from hash : "+selection);
 			quizSolutionHash.remove(selection);
 		}
 		
@@ -1138,7 +1164,7 @@ public class SimStCognitiveTutor {
 				currentQuizSection.add(getSimStPLE().quizProblems.get(i));
 			}
 		}	
-		getSimStPLE().currentOverallProblem+=currentQuizSection.size();
+		SimStPLE.currentOverallProblem+=currentQuizSection.size();
 		
 		currentLevel++;
 			
@@ -1151,7 +1177,7 @@ public class SimStCognitiveTutor {
 			
 			JOptionPane.showMessageDialog(null, "<html><p>Thank you for your participation in our study!</p><p>Click OK to close SimStudent now.</p>",
 					"You did it!", JOptionPane.INFORMATION_MESSAGE);           
-			getSimStPLE().saveAccountFile(getSimStPLE().getSimSt().getUserID()+".account");
+			SimStPLE.saveAccountFile(getSimStPLE().getSimSt().getUserID()+".account");
 			System.exit(SimStPLE.QUIZ_COMPLETED_EXIT);	            			
 		
 		}
@@ -1159,7 +1185,7 @@ public class SimStCognitiveTutor {
 		
 		currentLevel=this.getSimStPLE().currentQuizSectionNumber;
 
-		getSimStPLE().saveAccountFile(getSimStPLE().getSimSt().getUserID()+".account");
+		SimStPLE.saveAccountFile(getSimStPLE().getSimSt().getUserID()+".account");
 
 		String currentLevelString=getSimStPLE().getSections().get(currentLevel-1);
 		String nextLevelString=getSimStPLE().getSections().get(currentLevel);
@@ -1368,6 +1394,7 @@ public class SimStCognitiveTutor {
 		
 		
 	}
+
 	
 	
 	

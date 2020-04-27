@@ -16,6 +16,8 @@ import java.awt.LinearGradientPaint;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -23,6 +25,7 @@ import java.awt.geom.Point2D;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.LinkedList;
@@ -202,6 +205,8 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 	private static final String  BUTTON_FBWD = "Fast Backward Button";
 	private static final int MAX_NUMBER_OF_TABS=5;
 	
+	//private boolean modelTracer = true;
+	
 	private SimStExample exampleTemp;
 	private String currentStep;
 	private  HashSet validSteps4display; //hash set to hold all the FOA that must be displayed in examples tab steps
@@ -222,12 +227,15 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 	public static int EXAMPLES_TAB_INDEX=3;
 	public static int VIDEO_TAB_INDEX=2;
 	
+	//public static boolean overviewScrolled = false;
+	//public static boolean exampleReviewed = false;
+	
 	/*The panel that contains the progress bars*/
     public JPanel sectionMeterPanel;
 	public JPanel getSectionMeterPanel(){return sectionMeterPanel;}
     JLabel sectionMeterLabel;
 	TitledBorder title;
-	
+	public static String exampleProblem = "";
 	
 	
 	
@@ -720,7 +728,7 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 		
 		if(SimStPLE.videoIntroductionName != null && SimStPLE.videoIntroductionName.length() > 0)
         	browser.setVideoSource(SimStPLE.videoIntroductionName);
-
+     
 		Component video = browser.getVideoPanel();
 		
 		videoTab.setLayout(new BorderLayout());
@@ -747,8 +755,25 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 		
 		if(SimStPLE.overviewPageName != null && SimStPLE.overviewPageName.length() > 0)
 				browser.setHtmlSource(SimStPLE.overviewPageName);
-		
 		Component overview = browser.getBrowserPane();
+		
+	    JScrollPane scrollbar = (JScrollPane)overview;
+	   
+		scrollbar.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener(){
+
+			@Override
+			public void adjustmentValueChanged(AdjustmentEvent e) {
+				// TODO Auto-generated method stub
+				if(e.getValueIsAdjusting()){
+				
+					//System.out.println("Scrolled ");
+					if(!brController.getMissController().getSimSt().getModelTraceWM().isOverviewScrolled())
+						brController.getMissController().getSimSt().getModelTraceWM().setOverviewScrolled(true);
+					//System.out.println("********************************");
+				}
+			}
+			
+		});
 		overviewTab.setLayout(new GridBagLayout());
 		
 		GridBagConstraints ovConst = new GridBagConstraints();
@@ -761,7 +786,7 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 		ovConst.fill = GridBagConstraints.BOTH;
 		
 		overviewTab.add(overview, ovConst);
-		
+	
 		JPanel avatarPanel = new JPanel();
 		avatarPanel.setBackground(overviewColor);
 		overviewTeacher = new JLabel(createImageIcon(SimStPLE.TEACHER_IMAGE));
@@ -777,14 +802,14 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 		otConst.anchor = GridBagConstraints.LAST_LINE_START;
 				
 		// Add a mouse listener to exampleTeacher label to direct students to use SimStudent tab for asking
-		if(getSimStPLE() != null && getSimStPLE().getSimSt() != null && getSimStPLE().getSimSt()
+		/*if(getSimStPLE() != null && getSimStPLE().getSimSt() != null && getSimStPLE().getSimSt()
 				.isSsMetaTutorMode()) {
 			overviewTeacher.addMouseListener(new MouseAdapter() {
 				public void mousePressed(MouseEvent me) {
 					showMenuWithTeacherMessage(me);
 				}
 			});
-		}
+		}*/
 		
 		overviewTab.add(overviewTeacher, otConst);
 
@@ -793,6 +818,8 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 		tabPane.addTab(overviewTabTitle, overviewTab);
 		int index = tabPane.getTabCount()-1;
 		tabPane.setBackgroundAt(index, unfocusColors[index]);
+		//System.out.println ("");
+		
 	}
 
 	private void setUpExampleTab()
@@ -1431,7 +1458,7 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 		otConst.anchor = GridBagConstraints.LAST_LINE_START;
 
 		// Add a mouse listener to exampleTeacher label to direct students to use SimStudent tab for asking
-		if(getSimStPLE() != null && getSimStPLE().getSimSt() != null && getSimStPLE().getSimSt()
+		/*if(getSimStPLE() != null && getSimStPLE().getSimSt() != null && getSimStPLE().getSimSt()
 				.isSsMetaTutorMode()) {
 			overviewTeacherBankTab.addMouseListener(new MouseAdapter() {
 
@@ -1451,7 +1478,7 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 
 
 			});
-		}
+		}*/
 
 		bankTab.add(overviewTeacherBankTab, otConst);
 
@@ -1868,14 +1895,14 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 		exampleTeacher = new JLabel(createImageIcon(SimStPLE.TEACHER_IMAGE));
 				
 		// Add a mouse listener to exampleTeacher label to direct students to use SimStudent tab for asking
-		if(getSimStPLE() != null && getSimStPLE().getSimSt() != null && getSimStPLE().getSimSt()
+		/*if(getSimStPLE() != null && getSimStPLE().getSimSt() != null && getSimStPLE().getSimSt()
 				.isSsMetaTutorMode()) {
 			exampleTeacher.addMouseListener(new MouseAdapter() {
 				public void mousePressed(MouseEvent me) {
 					showMenuWithTeacherMessage(me);
 				}
 			});
-		}
+		}*/
 		
 		commPanel.add(exampleTeacher);
 
@@ -1898,7 +1925,7 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 		exampleTeacher = new JLabel(createImageIcon(SimStPLE.TEACHER_IMAGE));
 				
 		// Add a mouse listener to exampleTeacher label to direct students to use SimStudent tab for asking
-		if(getSimStPLE() != null && getSimStPLE().getSimSt() != null && getSimStPLE().getSimSt().isSsMetaTutorMode()) {
+		/*if(getSimStPLE() != null && getSimStPLE().getSimSt() != null && getSimStPLE().getSimSt().isSsMetaTutorMode()) {
 			    exampleTeacher.addMouseListener(new MouseAdapter() {
 				public void mousePressed(MouseEvent me) {
 					showMenuWithTeacherMessage(me);
@@ -1914,7 +1941,7 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 				}
 				
 			});
-		}
+		}*/
 		
 		commPanel.add(exampleTeacher);
 		
@@ -1976,6 +2003,8 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 	public JButton prevButton = null;
     public JButton nextButton = null;
 	public JButton ffwdButton = null;
+	public int nextButtonClicked = 0;
+	public boolean isLogged = false;
 	private JPanel setUpExamplePlayerButtons(JPanel buttonPane){
 		
 		
@@ -2017,6 +2046,8 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 			  public void mouseClicked(MouseEvent e) {
 				  		  
 			  	/*If example has been initalized and we are not in the last step*/
+				  
+				  //System.out.println(" Current Step : "+currentStep+"  Last Step : "+exampleTemp.getLastStep());
 				  if (!currentStep.equals("-1") && !currentStep.equals(exampleTemp.getLastStep())){
 					  
 					  
@@ -2025,7 +2056,11 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 							
 					  
 				  			clearInterface(exampleInterface);
-				  			
+				  			nextButtonClicked++;
+				  			if(nextButtonClicked >= 2 && !brController.getMissController().getSimSt().getModelTraceWM().isExampleProblemViewed()){
+				  				//System.out.println("Next button Clicked : "+nextButtonClicked);
+				  				 brController.getMissController().getSimSt().getModelTraceWM().setExampleProblemViewed(true);
+				  			}
 				  			
 				  			String nextStep=exampleTemp.getNextStep4Display(currentStep);
 				  			
@@ -2035,13 +2070,23 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 				  			validSteps4display = exampleTemp.getValidSteps4display(nextStep);
 	
 				  			setSpeechHTML(exampleTemp.getStepTooltipHover(nextStep));
-				  			
+				  			//System.out.println(" To be filled : "+exampleTemp+ " current Step : "+currentStep+ " validStep4dispaly :"+validSteps4display);
 				  			fillInExampleStep(exampleInterface,exampleTemp);
+				  			if(currentStep.equals("done") && !isLogged) {
+				  				 long exampleDuration = (Calendar.getInstance().getTimeInMillis() - actionListener.getExampleStartTime())/1000;
+						    		logger.simStLog(SimStLogger.SIM_STUDENT_ACTION_LISTENER, SimStLogger.EXAMPLE_VIEW_END, 
+						    				"","FinalStep", "", (int) exampleDuration);
+						    		isLogged = true;
+				  			}
+				  			
 				  			if(!prevButton.isEnabled())
 				  				prevButton.setEnabled(true);
 				  }
-				  else if(currentStep.equals(exampleTemp.getLastStep()))
-			          nextButton.setEnabled(false);     
+				  else if(currentStep.equals(exampleTemp.getLastStep())) {
+					  nextButton.setEnabled(false);
+					  nextButtonClicked = 0;
+				  }
+			              
 			  }
 			  
 			  public void mouseEntered(MouseEvent me){
@@ -2197,7 +2242,7 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 		quizTeacher = new JLabel(createImageIcon(SimStPLE.TEACHER_IMAGE));
 		
 		// Add a mouse listener to quizTeacher label to direct students to use SimStudent tab for asking
-		if(getSimStPLE() != null && getSimStPLE().getSimSt() != null && getSimStPLE().getSimSt()
+		/*if(getSimStPLE() != null && getSimStPLE().getSimSt() != null && getSimStPLE().getSimSt()
 				.isSsMetaTutorMode()) {
 			quizTeacher.addMouseListener(new MouseAdapter() {
 				public void mousePressed(MouseEvent me) {
@@ -2205,14 +2250,14 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 				}
 			});
 		}
-		
-		if (!getBrController().getMissController().getSimSt().isSsAplusCtrlCogTutorMode())
+		*/
+		//if (!getBrController().getMissController().getSimSt().isSsAplusCtrlCogTutorMode())
 			commPanel.add(quizTeacher);
 
-		if (getBrController().getMissController().getSimSt().isSsAplusCtrlCogTutorMode()){
+		/*if (getBrController().getMissController().getSimSt().isSsAplusCtrlCogTutorMode()){
 			    JComponent metaTutorComponent1 = new MetaTutorAvatarComponent(SimStPLE.METATUTOR_IMAGE, getBrController().
 	    			getMissController().getSimSt());
-			    APlusHintDialogInterface aPlusHintDialogInterface1 = new APlusHintDialog(new Frame(),simStPLE.getMissController().
+			   APlusHintDialogInterface aPlusHintDialogInterface1 = new APlusHintDialog(new Frame(),simStPLE.getMissController().
 	            		getAPlusHintMessagesManager(), logger, metaTutorComponent);
 	            if(aPlusHintDialogInterface1 instanceof JDialog) {
 	            	((JDialog)aPlusHintDialogInterface1).setLocationRelativeTo(this);
@@ -2222,7 +2267,7 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 	            metaTutorComponent1.setBackground(quizColor);
 	            commPanel.add(metaTutorComponent1);
 	            
-		}
+		}*/
 		
 		
 		/*quizSpeechText = new JTextArea();
@@ -2987,8 +3032,12 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 			    	validSteps4display = example.getValidSteps4display(currentStep);
 			
 			    	clearInterface(exampleInterface);
-
+			    	//System.out.println(" Before the example Switched ");
+			    	isLogged = false;
+			    	nextButtonClicked = 0;
+			    	exampleProblem = example.getTitle();
 			    	actionListener.exampleSwitched(example.getTitle());
+			    	//System.out.println(" Action Listener ");
 			    	//setSpeech(example.getShortDescription());
 			    	setSpeechHTML(example.getShortDescription());
 			    	
@@ -4409,7 +4458,12 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 	{
 		this.showTextResponse(show);
 	}
-	
+	public String getExampleProblem() {
+		return exampleProblem;
+	}
+	public void setExampleProblem(String exampleProblem) {
+		this.exampleProblem = exampleProblem;
+	}
 	
 	
 }

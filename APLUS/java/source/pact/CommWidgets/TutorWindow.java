@@ -117,6 +117,14 @@ public class TutorWindow extends AbstractCtatWindow implements MouseListener {
         setDockable(false);
     }
 
+    /***
+     * @author Vishnu Priya Chandra Sekar
+     * To resize the Tutor window
+     * @param resizable
+     */
+    public void setTutorResizable(boolean resizable) {
+    	setResizable(resizable);
+    }
     public void setVisible(boolean visible) {
     	if (trace.getDebugCode("wh")) trace.printStack("wh", "tutorWindow");
         super.setVisible(visible);

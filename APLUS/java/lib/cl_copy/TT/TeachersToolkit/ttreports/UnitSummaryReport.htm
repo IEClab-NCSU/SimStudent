@@ -1,0 +1,122 @@
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+	<xsl:output method="html" />
+	<xsl:param name="useIds"/>
+
+	<xsl:template match="/Report">
+		<div style="font-weight: bold; font-size: medium; color: #5582d5">STUDENT SUMMARY REPORT per UNIT</div>
+		<xsl:element name="table" use-attribute-sets="top-table">
+			<!-- top-table -->
+			<tr style="height: 10px">
+				<td colspan="4"></td>
+			</tr>
+			<tr>
+				<td style="font-weight: bold" width="70">STUDENT</td>
+				<td style="font-weight: bold">
+					<xsl:choose>
+						<xsl:when test="$useIds = 'true'">
+							<xsl:choose>
+								<xsl:when test="Student/@id != ''">
+									<xsl:value-of select="Student/@id" />
+								</xsl:when>
+								<xsl:otherwise>
+									-
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="Student/@name" />
+						</xsl:otherwise>
+					</xsl:choose>
+				</td>
+                <xsl:choose>
+                    <xsl:when test="@marker != ''">
+                        <td style="font-weight: bold; padding: 0 0 0 30px;" width="120">MARKER</td>
+                        <xsl:value-of select="@marker" />
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <td style="font-weight: bold; padding: 0 0 0 30px;" width="120">INSTRUCTOR</td>
+                       <td><xsl:value-of select="@instructor_name" /></td>
+                    </xsl:otherwise>
+                </xsl:choose>
+			</tr>
+			<tr valign="top">
+				<td style="font-weight: bold">DATE</td>
+				<td><xsl:value-of select="@timestamp" /></td>
+				<td style="font-weight: bold; padding: 0 0 0 30px;" valign="top">CLASS</td>
+				<td><xsl:value-of select="@class_name" /></td>
+			</tr>
+			<tr style="height: 10px">
+				<td colspan="4"></td>
+			</tr>
+			<!-- END top-table -->
+		</xsl:element>
+		<xsl:element name="table" use-attribute-sets="main_table">
+			<tr style="background: #5582d5; color: #ffffff;" valign="top">
+				<th>UNIT</th>
+				<th>PROBLEMS SOLVED</th>
+				<th>AVERAGE TIME PER PROBLEM</th>
+				<th>TOTAL TIME</th>
+				<th>AVERAGE HELP REQUESTS PER PROBLEM</th>
+				<th>AVERAGE ERRORS PER PROBLEM</th>
+			</tr>
+			<tr></tr>
+			<xsl:for-each select="Student/Unit">
+				<tr>
+					<td style="font-weight: bold; background: #e4eef7;" colspan="6">Unit <xsl:value-of select="@id" /> - <xsl:value-of select="@name" /></td>
+				</tr>
+				<tr style="text-align: center;">
+					<td></td>
+					<td><xsl:value-of select="@total_problems" /></td>
+					<td><xsl:value-of select="@average_time" /></td>
+					<td><xsl:value-of select="@total_time" /></td>
+					<td><xsl:value-of select="@num_hints" /></td>
+					<td><xsl:value-of select="@num_errors" /></td>
+				</tr>
+				<tr></tr>
+			</xsl:for-each>
+			<tr style="background: #5582d5; color: #ffffff;" valign="top"><td colspan="6"></td></tr>
+		</xsl:element>
+		<br style="clear: both;" />
+		<!-- add this later, maybe. right now, we don't have unit or section numbers in XML
+		also, the students current placement is generally the unit after the
+		last one they completed
+		<xsl:element name="table">
+			<tr>
+				<th colspan="2" align="left">CURRENT PLACE IN CURRICULUM</th>
+			</tr>
+			<tr>
+				<th width="80" align="left">Unit <xsl:value-of select="Student/@unit_seq + 1" /></th>
+				<td><xsl:value-of select="Student/@current_unit" /></td>
+			</tr>
+			<tr>
+				<th width="80" align="left">Section <xsl:value-of select="Student/@section_seq" /></th>
+				<td><xsl:value-of select="Student/@current_section" /></td>
+			</tr>
+		</xsl:element>
+		-->
+	</xsl:template>
+
+	<xsl:attribute-set name="top-table">
+		<xsl:attribute name="border">0</xsl:attribute>
+		<xsl:attribute name="align">left</xsl:attribute>
+		<xsl:attribute name="cellpadding">1</xsl:attribute>
+		<xsl:attribute name="cellspacing">0</xsl:attribute>
+		<!-- needs BOTH css attribute clear: both and html
+		     attribute clear="both" so it will be respected in
+			 all browsers and the HTML panel -->
+		<xsl:attribute name="clear">both</xsl:attribute>
+		<xsl:attribute name="style">font-size: small; clear: both;</xsl:attribute>
+	</xsl:attribute-set>
+	<xsl:attribute-set name="main_table">
+		<xsl:attribute name="border">0</xsl:attribute>
+		<xsl:attribute name="align">left</xsl:attribute>
+		<xsl:attribute name="cellpadding">1</xsl:attribute>
+		<xsl:attribute name="cellspacing">0</xsl:attribute>
+		<xsl:attribute name="width">610</xsl:attribute>
+		<!-- needs BOTH css attribute clear: both and html
+		     attribute clear="both" so it will be respected in
+			 all browsers and the HTML panel -->
+		<xsl:attribute name="clear">both</xsl:attribute>
+		<xsl:attribute name="style">font-size: small; clear: both;</xsl:attribute>
+	</xsl:attribute-set>
+</xsl:stylesheet>

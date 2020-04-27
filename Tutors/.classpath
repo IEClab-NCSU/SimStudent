@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="Algebra"/>
-	<classpathentry kind="src" path="FractionAddition"/>
-	<classpathentry kind="src" path="TabbedTest"/>
+	<classpathentry kind="src" output="Algebra" path="Algebra"/>
+	<classpathentry kind="src" output="FractionAddition" path="FractionAddition"/>
+	<classpathentry kind="src" output="TabbedTest" path="TabbedTest"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/java">
 		<attributes>
@@ -13,7 +13,6 @@
 	<classpathentry kind="lib" path="/Users/simstudent/Desktop/SimStudentGithub/SimStudent-master/Tutors/Algebra/lib/swingx-beaninfo-1.6.2.jar"/>
 	<classpathentry kind="lib" path="/Users/simstudent/Desktop/SimStudentGithub/SimStudent-master/Tutors/Algebra/lib/cl/utilities.jar"/>
 	<classpathentry kind="lib" path="/Users/simstudent/Desktop/SimStudentGithub/SimStudent-master/APLUS/java/lib/swingx-core-1.6.2.jar"/>
-	<classpathentry kind="lib" path="/Users/simstudent/Desktop/SimStudentGithub/SimStudent-master/APLUS/java/lib/ctat.jar"/>
 	<classpathentry kind="lib" path="/Users/simstudent/Desktop/SimStudentGithub/SimStudent-master/Tutors/TabbedTest"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

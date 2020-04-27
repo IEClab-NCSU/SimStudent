@@ -1,0 +1,305 @@
+SimSt
+~~~
+!divide
+MAIN::cell|dorminTable3_C1R2|divide 8
+MAIN::cell|dorminTable1_C1R2|x/8+1
+MAIN::cell|dorminTable2_C1R2|1/2
+UpdateTable
+Id: null
+PreviousId: null
+~~~
+!subtract
+MAIN::cell|dorminTable3_C1R1|subtract 8
+MAIN::cell|dorminTable1_C1R1|x+8
+MAIN::cell|dorminTable2_C1R1|4
+UpdateTable
+Id: null
+PreviousId: null
+~~~
+!done
+MAIN::button|done|-1
+MAIN::cell|dorminTable1_C1R2|3v
+MAIN::cell|dorminTable2_C1R2|5
+ButtonPressed
+Id: null
+PreviousId: null
+~~~
+!divide
+MAIN::cell|dorminTable3_C1R1|divide 3
+MAIN::cell|dorminTable1_C1R1|3v+2
+MAIN::cell|dorminTable2_C1R1|7
+UpdateTable
+Id: null
+PreviousId: null
+~~~
+!done
+MAIN::button|done|-1
+MAIN::cell|dorminTable1_C1R2|3v
+MAIN::cell|dorminTable2_C1R2|5
+ButtonPressed
+Id: null
+PreviousId: null
+~~~
+!done
+MAIN::button|done|-1
+MAIN::cell|dorminTable1_C1R2|3v
+MAIN::cell|dorminTable2_C1R2|5
+ButtonPressed
+Id: null
+PreviousId: null
+~~~
+!subtract
+MAIN::cell|dorminTable3_C1R1|subtract 3
+MAIN::cell|dorminTable1_C1R1|3v+2
+MAIN::cell|dorminTable2_C1R1|7
+UpdateTable
+Id: null
+PreviousId: null
+~~~
+!divide-typein
+MAIN::cell|dorminTable2_C1R2|7/3
+MAIN::cell|dorminTable2_C1R1|7
+MAIN::cell|dorminTable3_C1R1|subtract 3
+UpdateTable
+Id: null
+PreviousId: null
+~~~
+!divide-typein
+MAIN::cell|dorminTable1_C1R2|x/3+1
+MAIN::cell|dorminTable1_C1R1|x+3
+MAIN::cell|dorminTable3_C1R1|subtract 3
+UpdateTable
+Id: null
+PreviousId: null
+~~~
+done
+MAIN::button|done|-1
+MAIN::cell|dorminTable1_C1R2|3v
+MAIN::cell|dorminTable2_C1R2|5
+ButtonPressed
+Id: 1517435746_Done_2
+PreviousId: 1517435746_state8
+~~~
+done
+MAIN::button|done|-1
+MAIN::cell|dorminTable1_C1R2|3v
+MAIN::cell|dorminTable2_C1R2|5
+ButtonPressed
+Id: 1517435637_Done_3
+PreviousId: 1517435637_state9
+~~~
+done
+MAIN::button|done|-1
+MAIN::cell|dorminTable1_C1R2|x
+MAIN::cell|dorminTable2_C1R2|5
+ButtonPressed
+Id: 1510762737_Done
+PreviousId: 1510762737_state3
+~~~
+done
+MAIN::button|done|-1
+MAIN::cell|dorminTable1_C1R2|x
+MAIN::cell|dorminTable2_C1R2|4
+ButtonPressed
+Id: 1476215867_Done
+PreviousId: 1476215867_state5
+~~~
+done
+MAIN::button|done|-1
+MAIN::cell|dorminTable1_C1R2|x
+MAIN::cell|dorminTable2_C1R2|4
+ButtonPressed
+Id: 1476215776_Done
+PreviousId: 1476215776_state3
+~~~
+subtract-typein
+MAIN::cell|dorminTable2_C1R2|5
+MAIN::cell|dorminTable2_C1R1|7
+MAIN::cell|dorminTable3_C1R1|subtract 2
+UpdateTable
+Id: 1517435746_state4
+PreviousId: 1517435746_state3
+~~~
+subtract-typein
+MAIN::cell|dorminTable1_C1R2|3v
+MAIN::cell|dorminTable1_C1R1|3v+2
+MAIN::cell|dorminTable3_C1R1|subtract 2
+UpdateTable
+Id: 1517435746_state3
+PreviousId: 1517435746_state2
+~~~
+subtract-typein
+MAIN::cell|dorminTable1_C1R2|3v
+MAIN::cell|dorminTable1_C1R1|3v+2
+MAIN::cell|dorminTable3_C1R1|subtract 2
+UpdateTable
+Id: 1517435637_state4
+PreviousId: 1517435637_state3
+~~~
+subtract-typein
+MAIN::cell|dorminTable2_C1R2|5
+MAIN::cell|dorminTable2_C1R1|7
+MAIN::cell|dorminTable3_C1R1|subtract 2
+UpdateTable
+Id: 1517435637_state3
+PreviousId: 1517435637_state2
+~~~
+subtract-typein
+MAIN::cell|dorminTable2_C1R2|5
+MAIN::cell|dorminTable2_C1R1|10
+MAIN::cell|dorminTable3_C1R1|subtract 5
+UpdateTable
+Id: 1510762737_state3
+PreviousId: 1510762737_state2
+~~~
+subtract-typein
+MAIN::cell|dorminTable1_C1R2|x
+MAIN::cell|dorminTable1_C1R1|x+5
+MAIN::cell|dorminTable3_C1R1|subtract 5
+UpdateTable
+Id: 1510762737_state2
+PreviousId: 1510762737_state1
+~~~
+subtract-typein
+MAIN::cell|dorminTable2_C1R2|4
+MAIN::cell|dorminTable2_C1R1|7
+MAIN::cell|dorminTable3_C1R1|subtract 3
+UpdateTable
+Id: 1476215867_state5
+PreviousId: 1476215867_state4
+~~~
+subtract-typein
+MAIN::cell|dorminTable1_C1R2|x
+MAIN::cell|dorminTable1_C1R1|x+3
+MAIN::cell|dorminTable3_C1R1|subtract 3
+UpdateTable
+Id: 1476215867_state4
+PreviousId: 1476215867_state1
+~~~
+divide-typein
+MAIN::cell|dorminTable2_C1R2|1/2
+MAIN::cell|dorminTable2_C1R1|4
+MAIN::cell|dorminTable3_C1R1|divide 8
+UpdateTable
+Id: 1525098540_state4
+PreviousId: 1525098540_state3
+~~~
+divide-typein
+MAIN::cell|dorminTable1_C1R2|x/8+1
+MAIN::cell|dorminTable1_C1R1|x+8
+MAIN::cell|dorminTable3_C1R1|divide 8
+UpdateTable
+Id: 1525098540_state3
+PreviousId: 1525098540_state2
+~~~
+divide-typein
+MAIN::cell|dorminTable1_C1R3|v
+MAIN::cell|dorminTable1_C1R2|3v
+MAIN::cell|dorminTable3_C1R2|divide 3
+UpdateTable
+Id: 1517435746_state8
+PreviousId: 1517435746_state7
+~~~
+divide-typein
+MAIN::cell|dorminTable2_C1R3|5/3
+MAIN::cell|dorminTable2_C1R2|5
+MAIN::cell|dorminTable3_C1R2|divide 3
+UpdateTable
+Id: 1517435746_state7
+PreviousId: 1517435746_state6
+~~~
+divide-typein
+MAIN::cell|dorminTable2_C1R3|5/3
+MAIN::cell|dorminTable2_C1R2|5
+MAIN::cell|dorminTable3_C1R2|divide 3
+UpdateTable
+Id: 1517435637_state9
+PreviousId: 1517435637_state8
+~~~
+divide-typein
+MAIN::cell|dorminTable1_C1R3|v
+MAIN::cell|dorminTable1_C1R2|3v
+MAIN::cell|dorminTable3_C1R2|divide 3
+UpdateTable
+Id: 1517435637_state8
+PreviousId: 1517435637_state6
+~~~
+divide-typein
+MAIN::cell|dorminTable2_C1R2|4
+MAIN::cell|dorminTable2_C1R1|12
+MAIN::cell|dorminTable3_C1R1|divide 3
+UpdateTable
+Id: 1476215776_state3
+PreviousId: 1476215776_state2
+~~~
+divide-typein
+MAIN::cell|dorminTable1_C1R2|x
+MAIN::cell|dorminTable1_C1R1|3x
+MAIN::cell|dorminTable3_C1R1|divide 3
+UpdateTable
+Id: 1476215776_state2
+PreviousId: 1476215776_state1
+~~~
+subtract
+MAIN::cell|dorminTable3_C1R1|subtract 2
+MAIN::cell|dorminTable1_C1R1|3v+2
+MAIN::cell|dorminTable2_C1R1|7
+UpdateTable
+Id: 1517435746_state2
+PreviousId: start:3v+2_7
+~~~
+subtract
+MAIN::cell|dorminTable3_C1R1|subtract 2
+MAIN::cell|dorminTable1_C1R1|3v+2
+MAIN::cell|dorminTable2_C1R1|7
+UpdateTable
+Id: 1517435637_state2
+PreviousId: start:3v+2_7
+~~~
+subtract
+MAIN::cell|dorminTable3_C1R1|subtract 5
+MAIN::cell|dorminTable1_C1R1|x+5
+MAIN::cell|dorminTable2_C1R1|10
+UpdateTable
+Id: 1510762737_state1
+PreviousId: start:x+5_10
+~~~
+subtract
+MAIN::cell|dorminTable3_C1R1|subtract 3
+MAIN::cell|dorminTable1_C1R1|x+3
+MAIN::cell|dorminTable2_C1R1|7
+UpdateTable
+Id: 1476215867_state1
+PreviousId: start:x+3_7
+~~~
+divide
+MAIN::cell|dorminTable3_C1R1|divide 8
+MAIN::cell|dorminTable1_C1R1|x+8
+MAIN::cell|dorminTable2_C1R1|4
+UpdateTable
+Id: 1525098540_state2
+PreviousId: start:x+8_4
+~~~
+divide
+MAIN::cell|dorminTable3_C1R2|divide 3
+MAIN::cell|dorminTable1_C1R2|3v
+MAIN::cell|dorminTable2_C1R2|5
+UpdateTable
+Id: 1517435746_state6
+PreviousId: 1517435746_state4
+~~~
+divide
+MAIN::cell|dorminTable3_C1R2|divide 3
+MAIN::cell|dorminTable1_C1R2|3v
+MAIN::cell|dorminTable2_C1R2|5
+UpdateTable
+Id: 1517435637_state6
+PreviousId: 1517435637_state4
+~~~
+divide
+MAIN::cell|dorminTable3_C1R1|divide 3
+MAIN::cell|dorminTable1_C1R1|3x
+MAIN::cell|dorminTable2_C1R1|12
+UpdateTable
+Id: 1476215776_state1
+PreviousId: start:3x_12

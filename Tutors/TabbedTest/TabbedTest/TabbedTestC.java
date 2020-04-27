@@ -3,6 +3,8 @@ package TabbedTest;
 import edu.cmu.pact.BehaviorRecorder.Controller.BR_Controller;
 import edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher;
 import edu.cmu.pact.Preferences.PreferencesModel;
+import edu.cmu.pact.Utilities.Utils;
+import edu.cmu.pact.Utilities.trace;
 import edu.cmu.pact.miss.WebStartFileDownloader;
 import edu.cmu.pact.miss.storage.StorageClient;
 import TabbedTest.TestCheckBox;
@@ -12,50 +14,36 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JTextArea;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import pact.CommWidgets.JCommButton;
-import pact.CommWidgets.JCommMultipleChoice;
-import pact.CommWidgets.JCommWidget;
+
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Rectangle;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.lang.reflect.Field;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.Hashtable;
-import java.util.Vector;
-
 import javax.swing.JButton;
 import TabbedTest.TestDoneButton;
-
+import pact.CommWidgets.JCommButton;
+import pact.CommWidgets.JCommWidget;
+import pact.CommWidgets.TutorWrapper;
 import TabbedTest.recover.AfterTestQuestionaire;
 import TabbedTest.recover.AfterTestDialog;
 import TabbedTest.recover.JCommComboBoxRecover;
 import TabbedTest.recover.JCommMultipleChoiceRecover;
-import TabbedTest.recover.JCommRecover;
 import TabbedTest.recover.JCommTextAreaRecover;
 import TabbedTest.recover.JCommTextFieldRecover;
 import TabbedTest.recover.RecoverFileHandler;
-import TabbedTest.recover.TestRecover;
-
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.ScrollPaneConstants;
 
 public class TabbedTestC extends javax.swing.JPanel implements DoneButton, TabbedTest {
 
@@ -245,6 +233,7 @@ public class TabbedTestC extends javax.swing.JPanel implements DoneButton, Tabbe
         jPanel4 = new javax.swing.JPanel();
 
         jScrollPane1 = new javax.swing.JScrollPane();
+        jScrollPane1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         jScrollPane2 = new javax.swing.JScrollPane();
         jScrollPane3 = new javax.swing.JScrollPane();
         
@@ -262,7 +251,8 @@ public class TabbedTestC extends javax.swing.JPanel implements DoneButton, Tabbe
         
         cTAT_Options1.setSeparateHintWindow(true);
         cTAT_Options2.setSeparateHintWindow(true);
-
+        add(cTAT_Options1);
+        add(cTAT_Options2);
         setBackground(new java.awt.Color(255, 255, 255));
         setMaximumSize(new java.awt.Dimension(200, 200));
         setMinimumSize(new java.awt.Dimension(200, 200));
@@ -270,7 +260,7 @@ public class TabbedTestC extends javax.swing.JPanel implements DoneButton, Tabbe
         setLayout(null);
 
         test.setFont(new java.awt.Font("SansSerif", 0, 18));
-        test.setText("<HTML><b>Test</b> (Version %(test_version)%)");
+        test.setText("<HTML><b>Test</b> (Version C)");
         add(test);
         test.setBounds(20, 19, 420, 50);
         
@@ -995,11 +985,10 @@ public class TabbedTestC extends javax.swing.JPanel implements DoneButton, Tabbe
         Done.setCommName("done");
         Done.addStudentActionListener(new pact.CommWidgets.event.StudentActionListener() {
             public void studentActionPerformed(pact.CommWidgets.event.StudentActionEvent evt) {  
-                promptNow(evt);              
+            	promptNow(evt);
             }
 
         });
-
         jPanel4.add(Done);
         Done.setBounds(230, 290, 250, 30);
         done_instructions.setForeground(new java.awt.Color(255, 0, 0));
@@ -1031,8 +1020,8 @@ public class TabbedTestC extends javax.swing.JPanel implements DoneButton, Tabbe
     	
     	
         jScrollPane1.getVerticalScrollBar().setSize(15,15);
-        jScrollPane2.getVerticalScrollBar().setSize(15,15);
-        jScrollPane3.getVerticalScrollBar().setSize(15,15);
+       jScrollPane2.getVerticalScrollBar().setSize(15,15);
+       jScrollPane3.getVerticalScrollBar().setSize(15,15);
         
 
         LT_problem1_option1.setBackground(Color.WHITE);
@@ -1076,6 +1065,7 @@ public class TabbedTestC extends javax.swing.JPanel implements DoneButton, Tabbe
         effective_problem2_option2.setBackground(Color.WHITE);
         effective_problem2_option3.setBackground(Color.WHITE);
         effective_problem2_option4.setBackground(Color.WHITE);
+        
 
 	}
 
@@ -1083,10 +1073,11 @@ public class TabbedTestC extends javax.swing.JPanel implements DoneButton, Tabbe
 
     	CTAT_Launcher launch = new CTAT_Launcher(argv);
     	    	        
-    	TabbedTestC test=new TabbedTestC(launch.getController());
+    	TabbedTestC test=new TabbedTestC(launch.getFocusedController());
     	launch.launch (test); 	
-    	BR_Controller brController = launch.getController();
-        PreferencesModel pm = brController.getPreferencesModel();
+    	((TutorWrapper)test.brController.getStudentInterface()).setTutorResizable(true);
+    	/*BR_Controller brController = launch.getController();
+        PreferencesModel pm = brController.getPreferencesModel();*/
     /*    if (pm != null)
         {
         	pm.setBooleanValue(BR_Controller.USE_DISK_LOGGING, true);
@@ -1103,12 +1094,17 @@ public class TabbedTestC extends javax.swing.JPanel implements DoneButton, Tabbe
 		
     }
 	static String argv1[];
-
-	private static void updateBrd(String str){
+	public URL codeBase ;
+	
+	private  void updateBrd(String str){
 		for (int i=0;i<argv1.length;i++){	
 		System.out.println("argv1[i] = " + argv1[i]);
-  			if (argv1[i].contains("DProblemFileURL=jar:http://kona.education.tamu.edu:2401/studyTests/lib_nb/tabbedtest.jar!/")){
-  				argv1[i]="-DProblemFileURL=jar:http://kona.education.tamu.edu:2401/studyTests/lib_nb/tabbedtest.jar!/TabbedTest/"+str;
+  			if (argv1[i].contains("DProblemFileURL=")){
+  				if(checkWebStart())
+					argv1[i]="-DProblemFileURL="+ codeBase+ "TabbedTest/"+str;
+  				else
+  					argv1[i]="-DProblemFileURL=TabbedTest/"+str;
+  			
   				System.out.println("new arg is " + argv1[i]);
   				break;
   			}
@@ -1116,6 +1112,34 @@ public class TabbedTestC extends javax.swing.JPanel implements DoneButton, Tabbe
 		
 	}
 	
+	private boolean checkWebStart(){
+		 // Set "Home" dir
+	       codeBase = Utils.getCodeBaseURL( getClass() );
+	       trace.out ("codebase = " + codeBase);
+
+	       URI codeURI = null;
+	       try {
+	           codeURI = new URI( codeBase.getFile() );
+	       } catch (URISyntaxException e) {
+	           e.printStackTrace();
+	       }
+	       trace.out ("uri = " + codeURI);
+	       File codeFile = new File(codeURI.toString());
+	       // Get "../../" of the codeFile
+	       String codeDir = codeFile.getParentFile().getParent();
+	       codeDir = codeDir.replace('\\','/');
+	       if (System.getProperty("os.name").toUpperCase().startsWith("WINDOWS")) {
+	           // Windows has "file:/F:/foo/bar/... as the codeDir
+	           codeDir = codeDir.replaceFirst("file:/","");
+	       } else {
+	           // Mac OS X has "file:/foo/bar/... as the codeDir
+	           codeDir = codeDir.replaceFirst("file:","");
+	       }
+	       
+	       return codeDir.contains("http:");
+	       
+	    
+	}
 	
 	private static String getCondition(){
 		String condition="";
@@ -1139,7 +1163,7 @@ public class TabbedTestC extends javax.swing.JPanel implements DoneButton, Tabbe
         // TODO add your handling code here:
 
         promptSuccess.setText("Congratulations! You've completed the Test!");
-        
+       // Done.setEnabled(false);
         String condition=getCondition();
 		brController.closeStudentInterface();
 		if (condition.equals(POSTTEST_STEM)){
@@ -1150,12 +1174,11 @@ public class TabbedTestC extends javax.swing.JPanel implements DoneButton, Tabbe
 			
 			if(dialogResult == AfterTestDialog.YES_OPTION){
 				updateBrd(QUESTIONNAIRE_BRD);
-
 				CTAT_Launcher launch1 = new CTAT_Launcher(argv1);
-
-				launch1.getController().getLogger().setUnitName("Questionnaire");
-				QuestionnaireMT questionaire = new QuestionnaireMT(launch1.getController());
+				launch1.getFocusedController().getLogger().setUnitName("Questionnaire");
+				QuestionnaireMT questionaire = new QuestionnaireMT(launch1.getFocusedController());
 				launch1.launch (questionaire);
+				((TutorWrapper)questionaire.brController.getStudentInterface()).setTutorResizable(true);
 
 			}
 			else{
@@ -1173,9 +1196,10 @@ public class TabbedTestC extends javax.swing.JPanel implements DoneButton, Tabbe
 			if(dialogResult == AfterTestQuestionaire.YES_OPTION){
 				updateBrd(DEMOGRAPHIC_BRD);
 				CTAT_Launcher launch1 = new CTAT_Launcher(argv1);
-				launch1.getController().getLogger().setUnitName("Demographics");
-				QuestionnaireDemog demog = new QuestionnaireDemog();
+				launch1.getFocusedController().getLogger().setUnitName("Demographics");
+				QuestionnaireDemographics demog = new QuestionnaireDemographics(launch1.getFocusedController());
 				launch1.launch (demog);
+				((TutorWrapper)demog.brController.getStudentInterface()).setTutorResizable(true);
 			}
 			else{
 				JOptionPane.showMessageDialog(null, "Thank you for your participation in the study!");
@@ -1190,7 +1214,7 @@ public class TabbedTestC extends javax.swing.JPanel implements DoneButton, Tabbe
 		}
   		
 
-         Done.setEnabled(false);
+         //
    
 
     }//GEN-LAST:event_promptNow
@@ -1330,6 +1354,4 @@ public class TabbedTestC extends javax.swing.JPanel implements DoneButton, Tabbe
     protected javax.swing.JLabel goPage3;
     protected javax.swing.JLabel goDone;
     private JButton btnTimeout;
-	
-	
 }

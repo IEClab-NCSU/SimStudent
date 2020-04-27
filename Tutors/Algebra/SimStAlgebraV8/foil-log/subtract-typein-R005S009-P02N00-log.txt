@@ -1,0 +1,101 @@
+FOIL 6.4   [January 1996]
+--------
+
+    Options:
+	minimum clause accuracy -7.93176e+08%
+
+Relation subtract-typein
+
+Relation *NotNull
+
+Relation *IsDenominatorOf
+
+Relation *HasConstTerm
+
+Relation *IsSkillSubtract
+
+Relation *IsSkillMultiply
+
+Relation *IsNumeratorOf
+
+Relation *IsFractionTerm
+
+Relation *Homogeneous
+
+Relation *HasVarTerm
+
+Relation *IsSkillDivide
+
+Relation *Monomial
+
+Relation *IsSkillAdd
+
+Relation *HasCoefficient
+
+Relation *IsAVarTerm
+
+Relation *IsPolynomial
+
+Relation *IsConstant
+
+Relation *IsLastConstTermNegative
+
+Relation *HasParentheses
+
+----------
+subtract-typein:
+
+State (2/30, 15.0 bits available)
+
+	Save clause ending with not(Homogeneous(A)) (cover 1, accuracy 11%)
+
+	Save not(IsSkillDivide(B)) (2,20 value 1.1)
+	Save HasVarTerm(A) (1,9 value 1.0)
+	Save IsPolynomial(A) (1,9 value 1.0)
+	Save not(Homogeneous(A)) (1,9 value 1.0)
+
+Best literal IsSkillSubtract(B) (5.0 bits)
+
+State (2/20, 10.0 bits available)
+
+	Save clause ending with not(Homogeneous(A)) (cover 1, accuracy 16%)
+
+	Save IsPolynomial(A) (1,6 value 1.6)
+	Save not(Homogeneous(A)) (1,6 value 1.6)
+	Save not(Monomial(A)) (1,6 value 1.6)
+
+Best literal HasVarTerm(A) (5.0 bits)
+
+State (1/6, 1.8 bits available)
+
+No literals
+
+Clause 0: subtract-typein(A,B) :- IsSkillSubtract(B), HasVarTerm(A).
+
+State (1/29, 10.8 bits available)
+
+	Save clause ending with IsConstant(A) (cover 1, accuracy 6%)
+
+Best literal IsConstant(A) (5.0 bits)
+
+State (1/15, 5.8 bits available)
+
+	Save clause ending with not(IsSkillDivide(B)) (cover 1, accuracy 10%)
+
+	Save not(IsSkillDivide(B)) (1,10 value 1.4)
+
+Best literal IsSkillSubtract(B) (5.0 bits)
+
+State (1/10, 1.8 bits available)
+
+No literals
+
+Clause 1: subtract-typein(A,B) :- IsConstant(A), IsSkillSubtract(B).
+
+***  Warning: the following definition
+***  matches 14 tuples not in the relation
+
+subtract-typein(A,B) :- IsSkillSubtract(B), HasVarTerm(A).
+subtract-typein(A,B) :- IsConstant(A), IsSkillSubtract(B).
+
+Time 0.0 secs

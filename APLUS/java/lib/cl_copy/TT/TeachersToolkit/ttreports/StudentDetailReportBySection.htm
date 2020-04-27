@@ -1,0 +1,194 @@
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+	<xsl:output method="html" encoding="UTF-8" />
+	<xsl:param name="useIds"/>
+
+	<xsl:template match="/Report">
+		<div style="font-weight: bold; font-size: medium; color: #5582d5">STUDENT DETAIL REPORT by SECTION</div>
+		<xsl:element name="table" use-attribute-sets="top-table">
+			<!-- top-table -->
+			<tr style="height: 10px;">
+				<td colspan="4"></td>
+			</tr>
+			<tr>
+				<td style="font-weight: bold" width="70">STUDENT</td>
+				<td style="font-weight: bold">
+					<xsl:choose>
+						<xsl:when test="$useIds = 'true'">
+							<xsl:choose>
+								<xsl:when test="Student/@id != ''">
+									<xsl:value-of select="Student/@id" />
+								</xsl:when>
+								<xsl:otherwise>
+									-
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="Student/@name" />
+						</xsl:otherwise>
+					</xsl:choose>
+				</td>
+                <xsl:choose>
+                    <xsl:when test="@marker != ''">
+                        <td style="font-weight: bold; padding: 0 0 0 30px;" width="120">MARKER</td>
+                        <xsl:value-of select="@marker" />
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <td style="font-weight: bold; padding: 0 0 0 30px;" width="120">INSTRUCTOR</td>
+                       <td><xsl:value-of select="@instructor_name" /></td>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </tr>
+			<tr valign="top">
+				<td style="font-weight: bold">DATE</td>
+				<td><xsl:value-of select="@timestamp" /></td>
+				<td style="font-weight: bold; padding: 0 0 0 30px;" valign="top">CLASS</td>
+				<td><xsl:value-of select="@class_name" /></td>
+			</tr>
+			<tr style="height: 10px;">
+				<td colspan="4"></td>
+			</tr>
+			<!-- END top-table -->
+		</xsl:element>
+		<xsl:element name="table" use-attribute-sets="main-table">
+			<tr style="background: #5582d5; color: #ffffff; vertical-align: bottom;" valign="bottom">
+				<th width="7%">CODE</th>
+				<th>SECTION</th>
+				<th>PROBLEMS SOLVED</th>
+				<th>AVERAGE TIME PER PROBLEM</th>
+				<th width="10%">TOTAL TIME</th>
+				<th>AVERAGE HELP REQUESTS PER PROBLEM</th>
+				<th>AVERAGE ERRORS PER PROBLEM</th>
+				<th>MASTERED SKILLS</th>
+			</tr>
+			<tr><td colspan="8">&amp;nbsp;</td></tr>
+			<xsl:for-each select="Student/Unit">
+				<tr style="background: #96c8e2; text-align: left;">
+					<th colspan="8" style="text-align: left;">
+						UNIT <xsl:value-of select="@id" /> - <xsl:value-of select="@name" />
+					</th>
+				</tr>
+				<xsl:for-each select="Section">
+					<tr style="text-align: center;">
+						<td>
+							<xsl:if test="@promoted = 'true'">P</xsl:if>
+							<xsl:if test="@relocated = 'true'">R</xsl:if>
+							<xsl:if test="@bad_data = 'true'">B</xsl:if>
+						</td>
+						<td>
+							<xsl:value-of select="@id" />
+						</td>
+						<td>
+							<xsl:value-of select="@total_problems" />
+						</td>
+						<td>
+							<xsl:value-of select="@average_time" />
+						</td>
+						<td>
+							<xsl:value-of select="@total_time" />
+						</td>
+						<td>
+							<xsl:value-of select="@num_hints" />
+						</td>
+						<td>
+							<xsl:value-of select="@num_errors" />
+						</td>
+						<td>
+							<xsl:value-of select="@mastered_skill_count" /> of <xsl:value-of select="@skill_count" />
+						</td>
+					</tr>
+					<!-- END for-each section -->
+				</xsl:for-each>
+				<tr style="height: 1px; line-height: 1px;" height="1">
+					<td colspan="8"><hr /></td>
+				</tr>
+				<tr style="vertical-align: top;">
+					<th colspan="2" align="left">Summary</th>
+					<th><xsl:value-of select="@total_problems" /></th>
+					<th><xsl:value-of select="@average_time" /></th>
+					<th><xsl:value-of select="@total_time" /></th>
+					<th><xsl:value-of select="@num_hints" /></th>
+					<th><xsl:value-of select="@num_errors" /></th>
+					<th></th>
+				</tr>
+				<tr><td colspan="8" style="height: 3px" height="3"></td></tr>
+				<!-- END for-each unit -->
+			</xsl:for-each>
+			<tr><th colspan="8" style="background: #5582d5;">&amp;nbsp;</th></tr>
+			<tr style="font-size: medium; font-weight:bold;">
+				<th colspan="2" style="text-align: left;">TOTAL</th>
+				<td style="text-align: center;"><xsl:value-of select="Student/@total_problems" />*</td>
+				<td></td>
+				<td style="text-align: center;"><xsl:value-of select="Student/@total_time" /></td>
+				<td colspan="3" style="text-align: right;"><xsl:value-of select="Student/@total_mastered_skills" /> of <xsl:value-of select="Student/@total_skills" />
+                    <!--<xsl:value-of select="Student/@completed_units" />**  -->
+                </td>
+			</tr>
+            <tr style="font-size: medium; font-weight:bold;">
+                <th colspan="8" style="text-align: left;">TOTAL Completed Units: <xsl:value-of select="Student/@completed_units" />**</th>
+            </tr>
+            <tr style="font-size: medium; font-weight:bold;">
+                <th colspan="8" style="text-align: left;">TOTAL Completed Sections: <xsl:value-of select="Student/@completed_sections" /></th>
+            </tr>
+			<!-- END main table -->
+		</xsl:element>
+		<br style="clear: both;" />
+		<div style="font-size: 1em; font-weight: bold;">LEGEND</div>
+		<xsl:element name="table" use-attribute-sets="top-table">
+			<tr>
+				<th style="text-align: right; padding-right: 8px;" valign="top">*</th>
+				<td style="text-align: left;">Curriculum progress is a better measure of student performance and mastery of skills than the total problem completion count.The number of problems a student encounters can vary greatly depending upon the rate at which the student attains skill mastery.</td>
+			</tr>
+			<tr>
+				<th style="text-align: right; padding-right: 8px; width: 35px;" valign="top">**</th>
+				<td style="text-align: left;">Units are counted as <i>completed</i> only when the student graduates or is promoted from every section in the unit.</td>
+			</tr>
+			<tr>
+				<th style="text-align: right; padding-right: 8px;">R</th>
+				<td style="text-align: left;">Student's position within the curriculum was changed.</td>
+			</tr>
+			<tr>
+				<th style="text-align: right; padding-right: 8px;">P</th>
+				<td style="text-align: left;">Student was promoted to the next section without having mastered all skills.</td>
+			</tr>
+			<tr>
+				<th style="text-align: right; padding-right: 8px;">B</th>
+				<td style="text-align: left;">Time inconsistencies found in student data, so time spent may be incorrectly reported.</td>
+			</tr>
+			<tr><td>&amp;nbsp;</td></tr>
+			<tr>
+				<th style="text-align: left;" colspan="2">Notes:</th>
+			</tr>
+			<xsl:for-each select="Student/Note">
+				<tr>
+					<td></td>
+					<td style="vertical-align: top; text-align: left;"><xsl:value-of select="." /></td>
+				</tr>
+			</xsl:for-each>
+		</xsl:element>
+		<br style="clear: both;" />
+	</xsl:template>
+	<xsl:attribute-set name="top-table">
+		<xsl:attribute name="border">0</xsl:attribute>
+		<xsl:attribute name="align">left</xsl:attribute>
+		<xsl:attribute name="cellpadding">0</xsl:attribute>
+		<xsl:attribute name="cellspacing">0</xsl:attribute>
+		<!-- needs BOTH css attribute clear: both and html
+		attribute clear="both" so it will be respected in
+		all browsers and the HTML panel -->
+		<xsl:attribute name="clear">both</xsl:attribute>
+		<xsl:attribute name="style">font-size: small; clear: both;</xsl:attribute>
+	</xsl:attribute-set>
+	<xsl:attribute-set name="main-table">
+		<xsl:attribute name="border">0</xsl:attribute>
+		<xsl:attribute name="align">left</xsl:attribute>
+		<xsl:attribute name="cellpadding">0</xsl:attribute>
+		<xsl:attribute name="cellspacing">0</xsl:attribute>
+		<xsl:attribute name="width">610</xsl:attribute>
+		<!-- needs BOTH css attribute clear: both and html
+		attribute clear="both" so it will be respected in
+		all browsers and the HTML panel -->
+		<xsl:attribute name="clear">both</xsl:attribute>
+		<xsl:attribute name="style">font-size: small; clear: both;</xsl:attribute>
+	</xsl:attribute-set>
+</xsl:stylesheet>

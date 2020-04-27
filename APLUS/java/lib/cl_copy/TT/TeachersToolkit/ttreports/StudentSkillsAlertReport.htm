@@ -1,0 +1,139 @@
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+	<xsl:output method="html" />
+	<xsl:param name="useIds"/>
+
+	<xsl:template match="/Report">
+		<div style="font-weight: bold; font-size: medium; color: #5582d5">STUDENT SKILLS ALERT</div>
+		<xsl:element name="table" use-attribute-sets="top-table">
+			<!-- top-table -->
+			<tr>
+				<!-- must include height attribute for viewing in
+						Mozilla/IE -->
+				<td colspan="4" height="10px"></td>
+			</tr>
+			<tr>
+				<td style="font-weight: bold" width="70">STUDENT</td>
+				<td style="font-weight: bold">
+					<xsl:choose>
+						<xsl:when test="$useIds = 'true'">
+							<xsl:choose>
+								<xsl:when test="Student/@id != ''">
+									<xsl:value-of select="Student/@id" />
+								</xsl:when>
+								<xsl:otherwise>
+									-
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="Student/@name" />
+						</xsl:otherwise>
+					</xsl:choose>
+				</td>
+                <xsl:choose>
+                    <xsl:when test="@marker != ''">
+                        <td style="font-weight: bold; padding: 0 0 0 30px;" width="120">MARKER</td>
+                        <xsl:value-of select="@marker" />
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <td style="font-weight: bold; padding: 0 0 0 30px;" width="120">INSTRUCTOR</td>
+                       <td><xsl:value-of select="@instructor_name" /></td>
+                    </xsl:otherwise>
+                </xsl:choose>
+			</tr>
+			<tr valign="top">
+				<td style="font-weight: bold">DATE</td>
+				<td><xsl:value-of select="@timestamp" /></td>
+				<td style="font-weight: bold; padding: 0 0 0 30px;" valign="top">CLASS</td>
+				<td><xsl:value-of select="@class_name" /></td>
+			</tr>
+			<tr>
+				<!-- must include height attribute for viewing in
+						Mozilla/IE -->
+				<td colspan="4" height="10px"></td>
+			</tr>
+			<!-- END top-table -->
+		</xsl:element>
+		<xsl:element name="table" use-attribute-sets="main_table">
+			<tr style="background: #5582d5; color: #ffffff;" valign="top">
+				<th width="47%" align="left">UNIT/SECTION NAME</th>
+				<th width="37%" align="left">UNMASTERED SKILL</th>
+				<th width="16%" align="center">SKILL LEVEL</th>
+			</tr>
+			<tr></tr>
+			<xsl:if test="not (Student/Unit)">
+				<tr style="background: #96c8e2; color: #000000;">
+					<th colspan="3">There are no unmastered skills to report for this student</th>
+				</tr>
+				<tr></tr>
+			</xsl:if>
+			<xsl:for-each select="Student/Unit">
+				<tr style="background: #96c8e2; color: #000000;">
+					<th colspan="3" align="left">UNIT <xsl:value-of select="@id" /> - <xsl:value-of select="@name" /></th>
+				</tr>
+				<xsl:for-each select="Section">
+					<tr valign="top">
+						<td align="left">SECT <xsl:value-of select="@id" /> - <xsl:value-of select="@name" /></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<xsl:for-each select="Skill">
+						<tr valign="top">
+							<td></td>
+							<td><xsl:value-of select="@name" /></td>
+							<td align="center"><xsl:value-of select='format-number(@value, "##")' /></td>
+						</tr>
+					</xsl:for-each>
+					<!-- TODO: how to add hr between each skill - eg after all but the last -->
+				</xsl:for-each>
+				<tr></tr>
+			</xsl:for-each>
+			<tr style="background: #5582d5; color: #ffffff;">
+				<td colspan="4">&amp;nbsp;</td>
+			</tr>
+		</xsl:element>
+
+		<br style="clear: both" /><br />
+
+		<table style="clear: both; font-size: small;" clear="both">
+			<tr>
+				<th colspan="2" align="left">CURRENT PLACE IN CURRICULUM</th>
+			</tr>
+			<tr>
+				<th width="80" align="left">Unit <xsl:value-of select="Student/@unit_seq + 1" /></th>
+				<td><xsl:value-of select="Student/@current_unit" /></td>
+			</tr>
+			<tr>
+				<th width="80" align="left">Section <xsl:value-of select="Student/@section_seq" /></th>
+				<td><xsl:value-of select="Student/@current_section" /></td>
+			</tr>
+		</table>
+		<br style="clear: both;" />
+	</xsl:template>
+
+	<xsl:attribute-set name="top-table">
+		<xsl:attribute name="border">0</xsl:attribute>
+		<xsl:attribute name="align">left</xsl:attribute>
+		<xsl:attribute name="cellpadding">1</xsl:attribute>
+		<xsl:attribute name="cellspacing">0</xsl:attribute>
+		<!-- needs BOTH css attribute clear: both and html
+		     attribute clear="both" so it will be respected in
+			 all browsers and the HTML panel -->
+		<xsl:attribute name="clear">both</xsl:attribute>
+		<xsl:attribute name="style">font-size: small; clear: both;</xsl:attribute>
+	</xsl:attribute-set>
+	<xsl:attribute-set name="main_table">
+		<xsl:attribute name="border">0</xsl:attribute>
+		<xsl:attribute name="align">left</xsl:attribute>
+		<xsl:attribute name="cellpadding">1</xsl:attribute>
+		<xsl:attribute name="cellspacing">0</xsl:attribute>
+		<xsl:attribute name="width">610</xsl:attribute>
+		<!-- needs BOTH css attribute clear: both and html
+		     attribute clear="both" so it will be respected in
+			 all browsers and the HTML panel -->
+		<xsl:attribute name="clear">both</xsl:attribute>
+		<xsl:attribute name="style">font-size: small; clear: both;</xsl:attribute>
+	</xsl:attribute-set>
+
+
+</xsl:stylesheet>

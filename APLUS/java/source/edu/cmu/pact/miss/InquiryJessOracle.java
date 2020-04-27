@@ -301,12 +301,14 @@ public class InquiryJessOracle extends InquiryClSolverTutor{
 									 
         			 		if (simSt.isValidationMode()){
         			 			SimStNode startNode=getSimSt().getValidationGraph().getStartNode();  
+        			 			//System.out.println(" Validation : "+startNode);
         			 			Vector<ProblemEdge> vec = findPathDepthFirst(startNode,problemNode); 
         			 			oracleRete.reset();	
         			 			oracleRete.goToWMState(startNode ,vec, true);
         			 		}
         			 		else{
         			 			ProblemNode startNode = brController.getProblemModel().getStartNode(); 
+        			 			//System.out.println(" Start Node : "+startNode);
         			 			Vector<ProblemEdge> vec = findPathDepthFirst(startNode,problemNode); 
         			 			oracleRete.reset();
         			 			oracleRete.goToWMState(startNode ,vec, true);

@@ -189,8 +189,14 @@ public class AskHintHumanOracle extends AskHint {
       setSai(saiAndSkillName.sai);
       this.skillName = saiAndSkillName.skillName;
       
+     //System.out.println(" Skill  :  "+this.skillName);
       if (this.brController.getMissController().isPLEon())
     	  this.brController.getMissController().getSimStPLE().blockInput(true);
+      
+      if(brController.getMissController().getSimSt().isSsMetaTutorMode() && this.saiAndSkillName.sai.getS().equalsIgnoreCase("done") && this.saiAndSkillName.sai.getA().equalsIgnoreCase("ButtonPressed")){
+
+    	  brController.getMissController().getSimSt().getModelTraceWM().setProblemStatus("solved");
+      }
       
       if (hint!=null && brController.getMissController().getSimSt().isSsMetaTutorMode() )
     	  brController.getMissController().getSimSt().getModelTraceWM().setStudentSaiEntered(WorkingMemoryConstants.TRUE);  
@@ -205,6 +211,7 @@ public class AskHintHumanOracle extends AskHint {
       
 		JCommButton doneButton = (JCommButton) brController.lookupWidgetByName("Done");
    		if (doneButton!=null){
+   			//System.out.println(" Done button is clicked ");
    			doneButton.setText(SimStPLE.DONE_CAPTION_ENABLED);
    		}
    		
@@ -228,7 +235,7 @@ public class AskHintHumanOracle extends AskHint {
 		    	correct = true;
 		      */
 		
-		      	int hintDuration = (int) (Calendar.getInstance().getTimeInMillis() - hintRequestTime);
+		      	int hintDuration = (int) ((Calendar.getInstance().getTimeInMillis() - hintRequestTime)/1000);
 		      	step = brController.getMissController().getSimSt().getProblemStepString();
 		      	
 		      	logger.simStLog(SimStLogger.SIM_STUDENT_INFO_RECEIVED, SimStLogger.HINT_RECEIVED, 
@@ -298,7 +305,7 @@ public class AskHintHumanOracle extends AskHint {
       		  parentNode, saiAndSkillName.sai.getS(), saiAndSkillName.sai.getA(), saiAndSkillName.sai.getI()).equals(EdgeData.CORRECT_ACTION))
       	  correct = true;*/
 
-	      	int hintDuration = (int) (Calendar.getInstance().getTimeInMillis() - hintRequestTime);
+	      	int hintDuration = (int) ((Calendar.getInstance().getTimeInMillis() - hintRequestTime)/1000);
 	      	
 	      	step = brController.getMissController().getSimSt().getProblemStepString();
 

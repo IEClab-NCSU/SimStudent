@@ -55,6 +55,7 @@ import edu.cmu.pact.ctatview.CtatMenuBar;
 import edu.cmu.pact.miss.MissControllerExternal;
 import edu.cmu.pact.miss.SimSt;
 import edu.cmu.pact.miss.WebStartFileDownloader;
+import edu.cmu.pact.miss.PeerLearning.StudentAvatarDesigner;
 
 public class SingleSessionLauncher 
 {
@@ -107,6 +108,9 @@ public class SingleSessionLauncher
     {
     	return projectDir;
     }
+    
+    
+	private String packageName = "";
     
     /**
      * Entry point for running the tools independently of a particular student
@@ -484,11 +488,19 @@ public class SingleSessionLauncher
 
         controller.setOptions(ctatOptions);
 
-        if (!hideCTAT)
-            wrapper.setVisible(true);
-        
-        if (controller.getDockedFrame() != null)
-        	((CtatFrame)controller.getDockedFrame()).getCtatMenuBar().enableInterfaceMenus(true);
+        if (!hideCTAT && getMissController() != null && getMissController().getSimSt() != null){
+        	
+        	if(getMissController().getSimSt().isSsCogTutorMode() || getMissController().getSimSt().isSsAplusCtrlCogTutorMode() || SimSt.getSimStName().length() > 0)
+        	      wrapper.setVisible(true);        	 
+        		
+        }
+        else
+        	 wrapper.setVisible(true);
+            
+        if (controller.getDockedFrame() != null){
+        	((CtatFrame)controller.getDockedFrame()).getCtatMenuBar().enableInterfaceMenus(false);
+        	//((CtatFrame)controller.getDockedFrame()).setEnabled(false);
+        }
      
         //30Nov2006: in order to run JUnitTests, we need to pass an absolute path (projectDir)
         //the default case (-ssProjectDir not passed) is like before, getPackageNameAsPath(tutorPanel).
@@ -692,6 +704,7 @@ public class SingleSessionLauncher
      *              in propName; else uses element 0
      */
     private void setSystemProperty(String propName, String[] values) {
+    	
     	if (propName.length() < 2)
     		throw new IllegalArgumentException("missing system property");
 
@@ -741,9 +754,9 @@ public class SingleSessionLauncher
     // Thu Oct 27 16:35:11 2005 :: Noboru
     // A simple but generic parser for the command line arguments (CLA)
     private void parseArgv(String[] argv) {
-
+    	
         for (int i = 0; i < argv.length; i++) {
-
+        	//System.out.println("argv[" + i + "] = " + argv[i]);
         	if(trace.getDebugCode("miss"))trace.out("miss","argv[" + i + "] = " + argv[i]);
 
             String key = argv[i];
@@ -1069,7 +1082,12 @@ public class SingleSessionLauncher
                     	;  // just don't complain
                     } else if(keyStem.equalsIgnoreCase(CTAT_Launcher.SKIP_MONITOR_ARG)) {
                     	;  // just don't complain
-                    } else if (keyStem.startsWith("ss")){
+                    } 
+                    else if (keyStem.equalsIgnoreCase("ssPackageName")) {
+                    	ctatLauncher.setPackageName(parameter[0]);
+                    	
+                    } 
+                    else if (keyStem.startsWith("ss")){
                     	//SimStudent arguments are now parsed in miss controller. This is just to avoid the IllegalArgumentException
                     }
                     
@@ -1158,7 +1176,15 @@ public class SingleSessionLauncher
         return getCTATLauncher().getMissController();
     }
     
-    /**
+    public String getPackageName() {
+		return packageName;
+	}
+
+	public void setPackageName(String packageName) {
+		this.packageName = packageName;
+	}
+
+	/**
      * Keep the Behavior Recorder and Student Interface hidden. Useful for
      * tests. Makes them run faster.
      * 

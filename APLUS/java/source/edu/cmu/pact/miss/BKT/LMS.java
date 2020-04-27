@@ -278,8 +278,9 @@ public class LMS {
 		
 		updateProblemCountPerSkill(pickedProblem);
 		String problem = trimSectionFromProblem(pickedProblem);
+		System.out.println("Problem pattern : "+problem );
 		String actualProblemGiven=GameShowUtilities.generate(problem);
-			
+		System.out.println("Actual Problem : "+actualProblemGiven);	
 
 		/* check if problem about to be given has the necessary skills.
 		 * if not generate a new one that has */

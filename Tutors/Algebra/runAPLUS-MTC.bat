@@ -32,6 +32,7 @@ set TutorArg=-traceLevel 3 -debugCodes mt1
 set TutorArg=%TutorArg% -ssRunInPLE 
 set TutorArg=%TutorArg% -ssSelfExplainMode
 set TutorArg=%TutorArg% -ssRuleActivationTestMethod humanOracle -ssHintMethod humanDemonstration
+set TutorArg=%TutorArg% -ssProblemCheckerOracle ClOracle
 set TutorArg=%TutorArg% -ssIntroVideo metatutor.mov -ssOverviewPage curriculum.html
 set TutorArg=%TutorArg% -ssLoadPrefsFile brPrefsStacy.xml
 set TutorArg=%TutorArg% -ssCacheOracleInquiry false

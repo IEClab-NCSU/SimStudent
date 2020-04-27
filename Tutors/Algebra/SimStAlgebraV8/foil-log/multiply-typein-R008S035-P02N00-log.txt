@@ -1,0 +1,70 @@
+FOIL 6.4   [January 1996]
+--------
+
+    Options:
+	minimum clause accuracy 9.28855e+08%
+
+Relation multiply-typein
+
+Relation *HasVarTerm
+
+Relation *IsNumeratorOf
+
+Relation *IsFractionTerm
+
+Relation *IsAVarTerm
+
+Relation *IsSkillAdd
+
+Relation *IsLastConstTermNegative
+
+Relation *HasCoefficient
+
+Relation *IsConstant
+
+Relation *IsPolynomial
+
+Relation *IsDenominatorOf
+
+Relation *HasParentheses
+
+Relation *IsSkillSubtract
+
+Relation *IsSkillMultiply
+
+Relation *Homogeneous
+
+Relation *NotNull
+
+Relation *Monomial
+
+Relation *HasConstTerm
+
+Relation *IsSkillDivide
+
+----------
+multiply-typein:
+
+State (2/8, 8.6 bits available)
+
+	Save not(IsSkillDivide(B)) (2,4 value 1.7)
+
+Best literal IsSkillMultiply(B) (5.0 bits)
+
+State (2/4, 3.6 bits available)
+
+No literals
+
+Recover to multiply-typein(A,B) :- not(IsSkillDivide(B)).
+
+State (2/4, 3.6 bits available)
+
+No literals
+
+Clause too inaccurate (2/4)
+
+***  Warning: the following definition
+***  does not cover 2 tuples in the relation
+
+
+Time 0.0 secs
