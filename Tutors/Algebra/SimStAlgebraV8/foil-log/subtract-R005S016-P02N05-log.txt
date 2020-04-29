@@ -1,0 +1,58 @@
+FOIL 6.4   [January 1996]
+--------
+
+    Options:
+	minimum clause accuracy -4.99122e+08%
+
+Relation subtract
+
+Relation *IsAVarTerm
+
+Relation *Homogeneous
+
+Relation *IsDenominatorOf
+
+Relation *IsPolynomial
+
+Relation *IsConstant
+
+Relation *IsSkillAdd
+
+Relation *IsSkillDivide
+
+Relation *Monomial
+
+Relation *IsFractionTerm
+
+Relation *HasConstTerm
+
+Relation *HasParentheses
+
+Relation *HasCoefficient
+
+Relation *IsLastConstTermNegative
+
+Relation *HasVarTerm
+
+Relation *NotNull
+
+Relation *IsNumeratorOf
+
+Relation *IsSkillSubtract
+
+Relation *IsSkillMultiply
+
+----------
+subtract:
+
+State (2/7, 7.9 bits available)
+
+	Save clause ending with not(IsAVarTerm(A)) (cover 2, accuracy 100%)
+
+Best literal not(IsAVarTerm(A)) (5.9 bits)
+
+Clause 0: subtract(A,B) :- not(IsAVarTerm(A)).
+
+subtract(A,B) :- not(IsAVarTerm(A)).
+
+Time 0.0 secs

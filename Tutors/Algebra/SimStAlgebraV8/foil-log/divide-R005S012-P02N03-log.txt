@@ -2,45 +2,45 @@ FOIL 6.4   [January 1996]
 --------
 
     Options:
-	minimum clause accuracy -2.56674e+07%
+	minimum clause accuracy -2.89931e+08%
 
 Relation divide
 
-Relation *NotNull
-
-Relation *IsDenominatorOf
-
-Relation *HasConstTerm
-
-Relation *IsSkillSubtract
-
-Relation *IsSkillMultiply
-
-Relation *IsNumeratorOf
-
-Relation *IsFractionTerm
+Relation *IsAVarTerm
 
 Relation *Homogeneous
 
-Relation *HasVarTerm
-
-Relation *IsSkillDivide
-
-Relation *Monomial
-
-Relation *IsSkillAdd
-
-Relation *HasCoefficient
-
-Relation *IsAVarTerm
+Relation *IsDenominatorOf
 
 Relation *IsPolynomial
 
 Relation *IsConstant
 
-Relation *IsLastConstTermNegative
+Relation *IsSkillAdd
+
+Relation *IsSkillDivide
+
+Relation *Monomial
+
+Relation *IsFractionTerm
+
+Relation *HasConstTerm
 
 Relation *HasParentheses
+
+Relation *HasCoefficient
+
+Relation *IsLastConstTermNegative
+
+Relation *HasVarTerm
+
+Relation *NotNull
+
+Relation *IsNumeratorOf
+
+Relation *IsSkillSubtract
+
+Relation *IsSkillMultiply
 
 ----------
 divide:

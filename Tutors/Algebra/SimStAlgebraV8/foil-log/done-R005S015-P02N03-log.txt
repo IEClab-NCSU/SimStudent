@@ -2,57 +2,63 @@ FOIL 6.4   [January 1996]
 --------
 
     Options:
-	minimum clause accuracy 1.94681e+09%
+	minimum clause accuracy 6.64535e+07%
 
 Relation done
 
-Relation *NotNull
-
-Relation *IsDenominatorOf
-
-Relation *HasConstTerm
-
-Relation *IsSkillSubtract
-
-Relation *IsSkillMultiply
-
-Relation *IsNumeratorOf
-
-Relation *IsFractionTerm
+Relation *IsAVarTerm
 
 Relation *Homogeneous
 
-Relation *HasVarTerm
-
-Relation *IsSkillDivide
-
-Relation *Monomial
-
-Relation *IsSkillAdd
-
-Relation *HasCoefficient
-
-Relation *IsAVarTerm
+Relation *IsDenominatorOf
 
 Relation *IsPolynomial
 
 Relation *IsConstant
 
-Relation *IsLastConstTermNegative
+Relation *IsSkillAdd
+
+Relation *IsSkillDivide
+
+Relation *Monomial
+
+Relation *IsFractionTerm
+
+Relation *HasConstTerm
 
 Relation *HasParentheses
+
+Relation *HasCoefficient
+
+Relation *IsLastConstTermNegative
+
+Relation *HasVarTerm
+
+Relation *NotNull
+
+Relation *IsNumeratorOf
+
+Relation *IsSkillSubtract
+
+Relation *IsSkillMultiply
 
 ----------
 done:
 
 State (2/5, 6.2 bits available)
 
+	Save Homogeneous(A) (2,3 value 1.2)
 	Save Monomial(A) (2,3 value 1.2)
-	Save IsAVarTerm(A) (2,3 value 1.2)
-	Save not(HasVarTerm(A)) (2,3 value 1.2)
+	Save not(HasConstTerm(A)) (2,3 value 1.2)
 	Save not(IsPolynomial(A)) (2,3 value 1.2)
 
-Best literal Homogeneous(A) (5.9 bits)
+Best literal IsAVarTerm(A) (5.9 bits)
+
+State (2/3, 0.3 bits available)
+
+No literals
+
+Recover to done(A,B) :- Homogeneous(A).
 
 State (2/3, 0.3 bits available)
 
@@ -64,13 +70,7 @@ State (2/3, 0.3 bits available)
 
 No literals
 
-Recover to done(A,B) :- IsAVarTerm(A).
-
-State (2/3, 0.3 bits available)
-
-No literals
-
-Recover to done(A,B) :- not(HasVarTerm(A)).
+Recover to done(A,B) :- not(HasConstTerm(A)).
 
 State (2/3, 0.3 bits available)
 

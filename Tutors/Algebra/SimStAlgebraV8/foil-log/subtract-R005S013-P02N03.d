@@ -1,26 +1,45 @@
-V1: x+3, 3x+2, x, 3x, 7, 4, 12, 5, -1, x/3+1, 7/3.
-V4: subtract 3, subtract 2, divide 3.
+V1: x+3, 3v+2, x, 3x, 3v, 7, 4, 12, 5, v, -1, x/3+1, 7/3.
+V4: divide 3, subtract 3, subtract 2.
 
 subtract(V1, V1) ##
 x+3, 7
-3x+2, 7
+3v+2, 7
 ;
 x, 4
 3x, 12
-3x, 5
+3v, 5
 .
-*NotNull(V1) #
+*IsAVarTerm(V1) #
+3x
+x
+3v
+v
+;
 -1
 x+3
+12
+4
+7
+x/3+1
+7/3
+3v+2
+5
+.
+*Homogeneous(V1) #
+-1
 3x
 12
 4
 x
 7
-x/3+1
 7/3
-3x+2
+3v
 5
+v
+;
+x+3
+x/3+1
+3v+2
 .
 *IsDenominatorOf(V1, V1) ##
 ;
@@ -58,50 +77,135 @@ x+3, 4
 4, x+3
 4, 7
 x, 7
-3x+2, x+3
-7, 3x+2
-3x+2, 7
-x+3, 3x+2
-3x+2, 3x
-3x+2, x
-x+3, 3x
-4, 3x+2
-3x, x+3
-3x+2, 4
-3x, 3x+2
-3x, 7
-x, 3x+2
-5, 3x
-5, 3x+2
+7, 3v+2
+3v+2, x+3
+3v+2, 7
+x+3, 3v+2
+3v, 4
+3v, 7
+x, 3v
+3v+2, x
+x+3, 3v
+4, 3v+2
+3v+2, 4
+x, 3v+2
+3v, x
+3v, 3v+2
+3v+2, 3v
+7, 3v
+4, 3v
+3v, x+3
+5, 3v
+5, 3v+2
+5, 4
 5, 7
--1, 3x
-3x, -1
+3v, 12
+3x, 3v
+3v, 5
+-1, 3v
+5, 3x
+3v, 3x
 5, -1
 4, 5
 12, 5
 5, x
+3v, -1
 3x, 5
 x, 5
 -1, 5
 5, 12
-5, 4
-x/3+1, 3x
-12, x/3+1
-7/3, 4
-12, 7/3
-x/3+1, 7
-x/3+1, 4
-x/3+1, 12
-x+3, x/3+1
-x/3+1, x+3
-7/3, 3x
-12, x+3
-12, 7
-x/3+1, x
-x/3+1, 7/3
-x+3, 7/3
-7/3, x
-x+3, 12
+12, 3v
+v, x+3
+v, 12
+v, 4
+v, 7
+7, v
+7/3, 3v
+v, 3v
+v, 3x
+3v, x/3+1
+v, x/3+1
+3v, 7/3
+3v, v
+7/3, v
+v, 7/3
+v, x
+.
+*IsPolynomial(V1) #
+x+3
+x/3+1
+3v+2
+;
+-1
+3x
+12
+4
+x
+7
+7/3
+3v
+5
+v
+.
+*IsConstant(V1) #
+-1
+12
+4
+7
+7/3
+5
+;
+x+3
+3x
+x
+x/3+1
+3v+2
+3v
+v
+.
+*IsSkillAdd(V4) #
+;
+divide 3
+subtract 3
+subtract 2
+.
+*IsSkillDivide(V4) #
+divide 3
+;
+subtract 3
+subtract 2
+.
+*Monomial(V1) #
+-1
+3x
+12
+4
+x
+7
+7/3
+3v
+5
+v
+;
+x+3
+x/3+1
+3v+2
+.
+*IsFractionTerm(V1) #
+7/3
+;
+-1
+x+3
+3x
+12
+4
+x
+7
+x/3+1
+3v+2
+3v
+5
+v
 .
 *HasConstTerm(V1) #
 -1
@@ -111,23 +215,92 @@ x+3
 7
 x/3+1
 7/3
-3x+2
+3v+2
 5
 ;
 3x
 x
+3v
+v
 .
-*IsSkillSubtract(V4) #
-subtract 3
-subtract 2
+*HasParentheses(V1) #
 ;
-divide 3
+-1
+x+3
+3x
+12
+4
+x
+7
+x/3+1
+7/3
+3v+2
+3v
+5
+v
 .
-*IsSkillMultiply(V4) #
+*HasCoefficient(V1) #
+3x
+3v
 ;
-divide 3
-subtract 3
-subtract 2
+-1
+x+3
+12
+4
+x
+7
+x/3+1
+7/3
+3v+2
+5
+v
+.
+*IsLastConstTermNegative(V1) #
+;
+-1
+x+3
+3x
+12
+4
+x
+7
+x/3+1
+7/3
+3v+2
+3v
+5
+v
+.
+*HasVarTerm(V1) #
+x+3
+x/3+1
+3v+2
+;
+-1
+3x
+12
+4
+x
+7
+7/3
+3v
+5
+v
+.
+*NotNull(V1) #
+-1
+x+3
+3x
+12
+4
+x
+7
+x/3+1
+7/3
+3v+2
+3v
+5
+v
 .
 *IsNumeratorOf(V1, V1) ##
 7, 7/3
@@ -165,201 +338,70 @@ x+3, 4
 4, x+3
 4, 7
 x, 7
-3x+2, x+3
-7, 3x+2
-3x+2, 7
-x+3, 3x+2
-3x+2, 3x
-3x+2, x
-x+3, 3x
-4, 3x+2
-3x, x+3
-3x+2, 4
-3x, 3x+2
-3x, 7
-x, 3x+2
-5, 3x
-5, 3x+2
+7, 3v+2
+3v+2, x+3
+3v+2, 7
+x+3, 3v+2
+3v, 4
+3v, 7
+x, 3v
+3v+2, x
+x+3, 3v
+4, 3v+2
+3v+2, 4
+x, 3v+2
+3v, x
+3v, 3v+2
+3v+2, 3v
+7, 3v
+4, 3v
+3v, x+3
+5, 3v
+5, 3v+2
+5, 4
 5, 7
--1, 3x
-3x, -1
+3v, 12
+3x, 3v
+3v, 5
+-1, 3v
+5, 3x
+3v, 3x
 5, -1
 4, 5
 12, 5
 5, x
+3v, -1
 3x, 5
 x, 5
 -1, 5
 5, 12
-5, 4
-x/3+1, 3x
-12, x/3+1
-7/3, 4
-12, 7/3
-x/3+1, 7
-x/3+1, 4
-x/3+1, 12
-x+3, x/3+1
-x/3+1, x+3
-7/3, 3x
-12, x+3
-12, 7
-x/3+1, x
-x/3+1, 7/3
-x+3, 7/3
-7/3, x
-x+3, 12
+12, 3v
+v, x+3
+v, 12
+v, 4
+v, 7
+7, v
+7/3, 3v
+v, 3v
+v, 3x
+3v, x/3+1
+v, x/3+1
+3v, 7/3
+3v, v
+7/3, v
+v, 7/3
+v, x
 .
-*IsFractionTerm(V1) #
-7/3
-;
--1
-x+3
-3x
-12
-4
-x
-7
-x/3+1
-3x+2
-5
-.
-*Homogeneous(V1) #
--1
-3x
-12
-4
-x
-7
-7/3
-5
-;
-x+3
-x/3+1
-3x+2
-.
-*HasVarTerm(V1) #
-x+3
-x/3+1
-3x+2
-;
--1
-3x
-12
-4
-x
-7
-7/3
-5
-.
-*IsSkillDivide(V4) #
-divide 3
-;
+*IsSkillSubtract(V4) #
 subtract 3
 subtract 2
-.
-*Monomial(V1) #
--1
-3x
-12
-4
-x
-7
-7/3
-5
 ;
-x+3
-x/3+1
-3x+2
+divide 3
 .
-*IsSkillAdd(V4) #
+*IsSkillMultiply(V4) #
 ;
 divide 3
 subtract 3
 subtract 2
-.
-*HasCoefficient(V1) #
-3x
-;
--1
-x+3
-12
-4
-x
-7
-x/3+1
-7/3
-3x+2
-5
-.
-*IsAVarTerm(V1) #
-3x
-x
-;
--1
-x+3
-12
-4
-7
-x/3+1
-7/3
-3x+2
-5
-.
-*IsPolynomial(V1) #
-x+3
-x/3+1
-3x+2
-;
--1
-3x
-12
-4
-x
-7
-7/3
-5
-.
-*IsConstant(V1) #
--1
-12
-4
-7
-7/3
-5
-;
-x+3
-3x
-x
-x/3+1
-3x+2
-.
-*IsLastConstTermNegative(V1) #
-;
--1
-x+3
-3x
-12
-4
-x
-7
-x/3+1
-7/3
-3x+2
-5
-.
-*HasParentheses(V1) #
-;
--1
-x+3
-3x
-12
-4
-x
-7
-x/3+1
-7/3
-3x+2
-5
 .
 

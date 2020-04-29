@@ -6,13 +6,51 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/java">
 		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="/Users/simstudent/Desktop/SimStudentGithub/SimStudent-master/APLUS/java/lib"/>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="/Users/tasmiashahriar/Documents/GitHub/SimStudent/APLUS/java/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/Users/simstudent/Desktop/SimStudentGithub/SimStudent-master/Tutors/Algebra/lib/jess.jar"/>
-	<classpathentry kind="lib" path="/Users/simstudent/Desktop/SimStudentGithub/SimStudent-master/Tutors/Algebra/lib/swingx-beaninfo-1.6.2.jar"/>
-	<classpathentry kind="lib" path="/Users/simstudent/Desktop/SimStudentGithub/SimStudent-master/Tutors/Algebra/lib/cl/utilities.jar"/>
-	<classpathentry kind="lib" path="/Users/simstudent/Desktop/SimStudentGithub/SimStudent-master/APLUS/java/lib/swingx-core-1.6.2.jar"/>
-	<classpathentry kind="lib" path="/Users/simstudent/Desktop/SimStudentGithub/SimStudent-master/Tutors/TabbedTest"/>
+	<classpathentry kind="lib" path="/Users/tasmiashahriar/Documents/GitHub/SimStudent/Tutors/Algebra/lib/aima.jar"/>
+	<classpathentry kind="lib" path="/Users/tasmiashahriar/Documents/GitHub/SimStudent/Tutors/Algebra/lib/commons-lang-2.6.jar"/>
+	<classpathentry kind="lib" path="/Users/tasmiashahriar/Documents/GitHub/SimStudent/Tutors/Algebra/lib/commons-lang3-3.0.1.jar"/>
+	<classpathentry kind="lib" path="/Users/tasmiashahriar/Documents/GitHub/SimStudent/Tutors/Algebra/lib/ctat.jar"/>
+	<classpathentry kind="lib" path="/Users/tasmiashahriar/Documents/GitHub/SimStudent/Tutors/Algebra/lib/customizer.jar"/>
+	<classpathentry kind="lib" path="/Users/tasmiashahriar/Documents/GitHub/SimStudent/Tutors/Algebra/lib/foil.jar"/>
+	<classpathentry kind="lib" path="/Users/tasmiashahriar/Documents/GitHub/SimStudent/Tutors/Algebra/lib/HARTNetworking.jar"/>
+	<classpathentry kind="lib" path="/Users/tasmiashahriar/Documents/GitHub/SimStudent/Tutors/Algebra/lib/idw.jar"/>
+	<classpathentry kind="lib" path="/Users/tasmiashahriar/Documents/GitHub/SimStudent/Tutors/Algebra/lib/jcalendar-1.4.jar"/>
+	<classpathentry kind="lib" path="/Users/tasmiashahriar/Documents/GitHub/SimStudent/Tutors/Algebra/lib/jdom.jar"/>
+	<classpathentry kind="lib" path="/Users/tasmiashahriar/Documents/GitHub/SimStudent/Tutors/Algebra/lib/je-5.0.34.jar"/>
+	<classpathentry kind="lib" path="/Users/tasmiashahriar/Documents/GitHub/SimStudent/Tutors/Algebra/lib/jess.jar"/>
+	<classpathentry kind="lib" path="/Users/tasmiashahriar/Documents/GitHub/SimStudent/Tutors/Algebra/lib/jgraphlayout.jar"/>
+	<classpathentry kind="lib" path="/Users/tasmiashahriar/Documents/GitHub/SimStudent/Tutors/Algebra/lib/jh.jar"/>
+	<classpathentry kind="lib" path="/Users/tasmiashahriar/Documents/GitHub/SimStudent/Tutors/Algebra/lib/jmf.jar"/>
+	<classpathentry kind="lib" path="/Users/tasmiashahriar/Documents/GitHub/SimStudent/Tutors/Algebra/lib/jnlp.jar"/>
+	<classpathentry kind="lib" path="/Users/tasmiashahriar/Documents/GitHub/SimStudent/Tutors/Algebra/lib/joda-time-2.1.jar"/>
+	<classpathentry kind="lib" path="/Users/tasmiashahriar/Documents/GitHub/SimStudent/Tutors/Algebra/lib/junit.jar"/>
+	<classpathentry kind="lib" path="/Users/tasmiashahriar/Documents/GitHub/SimStudent/Tutors/Algebra/lib/light.jar"/>
+	<classpathentry kind="lib" path="/Users/tasmiashahriar/Documents/GitHub/SimStudent/Tutors/Algebra/lib/lightside.jar"/>
+	<classpathentry kind="lib" path="/Users/tasmiashahriar/Documents/GitHub/SimStudent/Tutors/Algebra/lib/lingpipe-2.3.0.jar"/>
+	<classpathentry kind="lib" path="/Users/tasmiashahriar/Documents/GitHub/SimStudent/Tutors/Algebra/lib/logclient.jar"/>
+	<classpathentry kind="lib" path="/Users/tasmiashahriar/Documents/GitHub/SimStudent/Tutors/Algebra/lib/logging.jar"/>
+	<classpathentry kind="lib" path="/Users/tasmiashahriar/Documents/GitHub/SimStudent/Tutors/Algebra/lib/mediaplayer.jar"/>
+	<classpathentry kind="lib" path="/Users/tasmiashahriar/Documents/GitHub/SimStudent/Tutors/Algebra/lib/multiplayer.jar"/>
+	<classpathentry kind="lib" path="/Users/tasmiashahriar/Documents/GitHub/SimStudent/Tutors/Algebra/lib/mylib.jar"/>
+	<classpathentry kind="lib" path="/Users/tasmiashahriar/Documents/GitHub/SimStudent/Tutors/Algebra/lib/plugin.jar"/>
+	<classpathentry kind="lib" path="/Users/tasmiashahriar/Documents/GitHub/SimStudent/Tutors/Algebra/lib/runcc.jar"/>
+	<classpathentry kind="lib" path="/Users/tasmiashahriar/Documents/GitHub/SimStudent/Tutors/Algebra/lib/stanford-postagger-2010-05-26.jar"/>
+	<classpathentry kind="lib" path="/Users/tasmiashahriar/Documents/GitHub/SimStudent/Tutors/Algebra/lib/swingx-beaninfo-1.6.2.jar"/>
+	<classpathentry kind="lib" path="/Users/tasmiashahriar/Documents/GitHub/SimStudent/Tutors/Algebra/lib/swingx-core-1.6.2.jar"/>
+	<classpathentry kind="lib" path="/Users/tasmiashahriar/Documents/GitHub/SimStudent/Tutors/Algebra/lib/TableLayout.jar"/>
+	<classpathentry kind="lib" path="/Users/tasmiashahriar/Documents/GitHub/SimStudent/Tutors/Algebra/lib/trove.jar"/>
+	<classpathentry kind="lib" path="/Users/tasmiashahriar/Documents/GitHub/SimStudent/Tutors/Algebra/lib/TuTalkSlim.jar"/>
+	<classpathentry kind="lib" path="/Users/tasmiashahriar/Documents/GitHub/SimStudent/Tutors/Algebra/lib/tutorshop.jar"/>
+	<classpathentry kind="lib" path="/Users/tasmiashahriar/Documents/GitHub/SimStudent/Tutors/Algebra/lib/weka.jar"/>
+	<classpathentry kind="lib" path="/Users/tasmiashahriar/Documents/GitHub/SimStudent/Tutors/Algebra/lib/xalan.jar"/>
+	<classpathentry kind="lib" path="/Users/tasmiashahriar/Documents/GitHub/SimStudent/Tutors/Algebra/lib/xercesImpl.jar"/>
+	<classpathentry kind="lib" path="/Users/tasmiashahriar/Documents/GitHub/SimStudent/Tutors/Algebra/lib/xercesSamples.jar"/>
+	<classpathentry kind="lib" path="/Users/tasmiashahriar/Documents/GitHub/SimStudent/Tutors/Algebra/lib/xml-writer.jar"/>
+	<classpathentry kind="lib" path="/Users/tasmiashahriar/Documents/GitHub/SimStudent/Tutors/Algebra/lib/xpp3-1.1.3.4d_b4_min.jar"/>
+	<classpathentry kind="lib" path="/Users/tasmiashahriar/Documents/GitHub/SimStudent/Tutors/Algebra/lib/xstream-1.1.3.jar"/>
+	<classpathentry kind="lib" path="/Users/tasmiashahriar/Documents/GitHub/SimStudent/Tutors/Algebra/lib/yeritools.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

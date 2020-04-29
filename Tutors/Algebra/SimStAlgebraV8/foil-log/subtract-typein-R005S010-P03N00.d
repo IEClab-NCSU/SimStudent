@@ -1,22 +1,38 @@
-V1: x+3, 7, 3x+2, x/3+1, -1, 3x, 12, x, 4, 7/3.
+V1: x+3, 7, 3v+2, 3x, x, 3v, x/3+1, -1, 12, 4, 7/3.
 V4: subtract 3, subtract 2, divide 3.
 
 subtract-typein(V1, V4) ##
 x+3, subtract 3
 7, subtract 3
-3x+2, subtract 2
+3v+2, subtract 2
 .
-*NotNull(V1) #
+*IsAVarTerm(V1) #
+3x
+x
+3v
+;
 x/3+1
 -1
-3x
 x+3
+12
+4
+7
+7/3
+3v+2
+.
+*Homogeneous(V1) #
+-1
+3x
 12
 x
 4
 7
 7/3
-3x+2
+3v
+;
+x/3+1
+x+3
+3v+2
 .
 *IsDenominatorOf(V1, V1) ##
 ;
@@ -44,23 +60,92 @@ x, 7
 x, -1
 -1, x
 -1, 4
-3x+2, x+3
-7, 3x+2
-3x+2, 7
-x+3, 3x+2
-3x+2, 3x
-x, 3x
-3x+2, x
-x+3, 3x
-3x, x
-4, 3x+2
-3x, x+3
-3x+2, 4
-3x, 3x+2
-3x, 4
-3x, 7
-x, 3x+2
-4, 3x
+7, 3v+2
+3v+2, x+3
+3v+2, 7
+x+3, 3v+2
+3v, 4
+3v, 7
+x, 3v
+3v+2, x
+x+3, 3v
+4, 3v+2
+3v+2, 4
+x, 3v+2
+3v, x
+3v, 3v+2
+3v+2, 3v
+7, 3v
+4, 3v
+3v, x+3
+.
+*IsPolynomial(V1) #
+x/3+1
+x+3
+3v+2
+;
+-1
+3x
+12
+x
+4
+7
+7/3
+3v
+.
+*IsConstant(V1) #
+-1
+12
+4
+7
+7/3
+;
+x/3+1
+3x
+x+3
+x
+3v+2
+3v
+.
+*IsSkillAdd(V4) #
+;
+divide 3
+subtract 3
+subtract 2
+.
+*IsSkillDivide(V4) #
+divide 3
+;
+subtract 3
+subtract 2
+.
+*Monomial(V1) #
+-1
+3x
+12
+x
+4
+7
+7/3
+3v
+;
+x/3+1
+x+3
+3v+2
+.
+*IsFractionTerm(V1) #
+7/3
+;
+x/3+1
+-1
+3x
+x+3
+12
+x
+4
+7
+3v+2
+3v
 .
 *HasConstTerm(V1) #
 x/3+1
@@ -70,22 +155,80 @@ x+3
 4
 7
 7/3
-3x+2
+3v+2
 ;
 3x
 x
+3v
 .
-*IsSkillSubtract(V4) #
-subtract 3
-subtract 2
+*HasParentheses(V1) #
 ;
-divide 3
+x/3+1
+-1
+3x
+x+3
+12
+x
+4
+7
+7/3
+3v+2
+3v
 .
-*IsSkillMultiply(V4) #
+*HasCoefficient(V1) #
+3x
+3v
 ;
-divide 3
-subtract 3
-subtract 2
+x/3+1
+-1
+x+3
+12
+x
+4
+7
+7/3
+3v+2
+.
+*IsLastConstTermNegative(V1) #
+;
+x/3+1
+-1
+3x
+x+3
+12
+x
+4
+7
+7/3
+3v+2
+3v
+.
+*HasVarTerm(V1) #
+x/3+1
+x+3
+3v+2
+;
+-1
+3x
+12
+x
+4
+7
+7/3
+3v
+.
+*NotNull(V1) #
+x/3+1
+-1
+3x
+x+3
+12
+x
+4
+7
+7/3
+3v+2
+3v
 .
 *IsNumeratorOf(V1, V1) ##
 7, 7/3
@@ -113,164 +256,35 @@ x, 7
 x, -1
 -1, x
 -1, 4
-3x+2, x+3
-7, 3x+2
-3x+2, 7
-x+3, 3x+2
-3x+2, 3x
-x, 3x
-3x+2, x
-x+3, 3x
-3x, x
-4, 3x+2
-3x, x+3
-3x+2, 4
-3x, 3x+2
-3x, 4
-3x, 7
-x, 3x+2
-4, 3x
+7, 3v+2
+3v+2, x+3
+3v+2, 7
+x+3, 3v+2
+3v, 4
+3v, 7
+x, 3v
+3v+2, x
+x+3, 3v
+4, 3v+2
+3v+2, 4
+x, 3v+2
+3v, x
+3v, 3v+2
+3v+2, 3v
+7, 3v
+4, 3v
+3v, x+3
 .
-*IsFractionTerm(V1) #
-7/3
-;
-x/3+1
--1
-3x
-x+3
-12
-x
-4
-7
-3x+2
-.
-*Homogeneous(V1) #
--1
-3x
-12
-x
-4
-7
-7/3
-;
-x/3+1
-x+3
-3x+2
-.
-*HasVarTerm(V1) #
-x/3+1
-x+3
-3x+2
-;
--1
-3x
-12
-x
-4
-7
-7/3
-.
-*IsSkillDivide(V4) #
-divide 3
-;
+*IsSkillSubtract(V4) #
 subtract 3
 subtract 2
-.
-*Monomial(V1) #
--1
-3x
-12
-x
-4
-7
-7/3
 ;
-x/3+1
-x+3
-3x+2
+divide 3
 .
-*IsSkillAdd(V4) #
+*IsSkillMultiply(V4) #
 ;
 divide 3
 subtract 3
 subtract 2
-.
-*HasCoefficient(V1) #
-3x
-;
-x/3+1
--1
-x+3
-12
-x
-4
-7
-7/3
-3x+2
-.
-*IsAVarTerm(V1) #
-3x
-x
-;
-x/3+1
--1
-x+3
-12
-4
-7
-7/3
-3x+2
-.
-*IsPolynomial(V1) #
-x/3+1
-x+3
-3x+2
-;
--1
-3x
-12
-x
-4
-7
-7/3
-.
-*IsConstant(V1) #
--1
-12
-4
-7
-7/3
-;
-x/3+1
-3x
-x+3
-x
-3x+2
-.
-*IsLastConstTermNegative(V1) #
-;
-x/3+1
--1
-3x
-x+3
-12
-x
-4
-7
-7/3
-3x+2
-.
-*HasParentheses(V1) #
-;
-x/3+1
--1
-3x
-x+3
-12
-x
-4
-7
-7/3
-3x+2
 .
 

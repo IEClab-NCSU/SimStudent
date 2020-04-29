@@ -63,7 +63,7 @@
   <preference>
     <name>Student Interface Location X</name>
     <class>java.lang.Integer</class>
-    <value>591</value>
+    <value>410</value>
   </preference>
   <preference>
     <name>Student Interface Location Y</name>
@@ -78,7 +78,7 @@
   <preference>
     <name>OLI Logging URL</name>
     <class>java.lang.String</class>
-    <value>http://learnlab.web.cmu.edu/log/server</value>
+    <value>http://pslc-qa.andrew.cmu.edu/log/server</value>
   </preference>
   <preference>
     <name>Use Disk Logging</name>
@@ -88,7 +88,7 @@
   <preference>
     <name>Disk Logging Directory</name>
     <class>java.lang.String</class>
-    <value>/Users/simstudent/Desktop/SimStudentGithub/SimStudent-master/Tutors/Algebra/SimStAlgebraV8/log/APLUS</value>
+    <value>/Users/tasmiashahriar/Documents/GitHub/SimStudent/Tutors/Algebra/SimStAlgebraV8/log/APLUS</value>
   </preference>
   <preference>
     <name>Student Interface Width</name>

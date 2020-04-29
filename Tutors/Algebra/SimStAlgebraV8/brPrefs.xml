@@ -13,12 +13,12 @@
   <preference>
     <name>frame0 Location X</name>
     <class>java.lang.Integer</class>
-    <value>440</value>
+    <value>320</value>
   </preference>
   <preference>
     <name>frame0 Location Y</name>
     <class>java.lang.Integer</class>
-    <value>116</value>
+    <value>27</value>
   </preference>
   <preference>
     <name>Show Action Labels</name>

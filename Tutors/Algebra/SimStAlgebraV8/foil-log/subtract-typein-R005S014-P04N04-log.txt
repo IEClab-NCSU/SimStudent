@@ -2,45 +2,45 @@ FOIL 6.4   [January 1996]
 --------
 
     Options:
-	minimum clause accuracy 1.25978e+09%
+	minimum clause accuracy 1.08803e+09%
 
 Relation subtract-typein
 
-Relation *NotNull
-
-Relation *IsDenominatorOf
-
-Relation *HasConstTerm
-
-Relation *IsSkillSubtract
-
-Relation *IsSkillMultiply
-
-Relation *IsNumeratorOf
-
-Relation *IsFractionTerm
+Relation *IsAVarTerm
 
 Relation *Homogeneous
 
-Relation *HasVarTerm
-
-Relation *IsSkillDivide
-
-Relation *Monomial
-
-Relation *IsSkillAdd
-
-Relation *HasCoefficient
-
-Relation *IsAVarTerm
+Relation *IsDenominatorOf
 
 Relation *IsPolynomial
 
 Relation *IsConstant
 
-Relation *IsLastConstTermNegative
+Relation *IsSkillAdd
+
+Relation *IsSkillDivide
+
+Relation *Monomial
+
+Relation *IsFractionTerm
+
+Relation *HasConstTerm
 
 Relation *HasParentheses
+
+Relation *HasCoefficient
+
+Relation *IsLastConstTermNegative
+
+Relation *HasVarTerm
+
+Relation *NotNull
+
+Relation *IsNumeratorOf
+
+Relation *IsSkillSubtract
+
+Relation *IsSkillMultiply
 
 ----------
 subtract-typein:

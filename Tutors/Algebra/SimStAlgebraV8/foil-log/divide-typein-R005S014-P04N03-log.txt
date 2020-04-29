@@ -1,0 +1,58 @@
+FOIL 6.4   [January 1996]
+--------
+
+    Options:
+	minimum clause accuracy -2.01648e+09%
+
+Relation divide-typein
+
+Relation *IsAVarTerm
+
+Relation *Homogeneous
+
+Relation *IsDenominatorOf
+
+Relation *IsPolynomial
+
+Relation *IsConstant
+
+Relation *IsSkillAdd
+
+Relation *IsSkillDivide
+
+Relation *Monomial
+
+Relation *IsFractionTerm
+
+Relation *HasConstTerm
+
+Relation *HasParentheses
+
+Relation *HasCoefficient
+
+Relation *IsLastConstTermNegative
+
+Relation *HasVarTerm
+
+Relation *NotNull
+
+Relation *IsNumeratorOf
+
+Relation *IsSkillSubtract
+
+Relation *IsSkillMultiply
+
+----------
+divide-typein:
+
+State (4/7, 8.7 bits available)
+
+	Save clause ending with not(IsSkillSubtract(B)) (cover 4, accuracy 100%)
+
+Best literal not(IsSkillSubtract(B)) (5.0 bits)
+
+Clause 0: divide-typein(A,B) :- not(IsSkillSubtract(B)).
+
+divide-typein(A,B) :- not(IsSkillSubtract(B)).
+
+Time 0.0 secs

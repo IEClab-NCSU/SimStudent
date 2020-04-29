@@ -2,97 +2,131 @@ FOIL 6.4   [January 1996]
 --------
 
     Options:
-	minimum clause accuracy -1.92926e+09%
+	minimum clause accuracy 1.8761e+09%
 
 Relation subtract-typein
 
-Relation *NotNull
-
-Relation *IsDenominatorOf
-
-Relation *HasConstTerm
-
-Relation *IsSkillSubtract
-
-Relation *IsSkillMultiply
-
-Relation *IsNumeratorOf
-
-Relation *IsFractionTerm
+Relation *IsAVarTerm
 
 Relation *Homogeneous
 
-Relation *HasVarTerm
-
-Relation *IsSkillDivide
-
-Relation *Monomial
-
-Relation *IsSkillAdd
-
-Relation *HasCoefficient
-
-Relation *IsAVarTerm
+Relation *IsDenominatorOf
 
 Relation *IsPolynomial
 
 Relation *IsConstant
 
-Relation *IsLastConstTermNegative
+Relation *IsSkillAdd
+
+Relation *IsSkillDivide
+
+Relation *Monomial
+
+Relation *IsFractionTerm
+
+Relation *HasConstTerm
 
 Relation *HasParentheses
+
+Relation *HasCoefficient
+
+Relation *IsLastConstTermNegative
+
+Relation *HasVarTerm
+
+Relation *NotNull
+
+Relation *IsNumeratorOf
+
+Relation *IsSkillSubtract
+
+Relation *IsSkillMultiply
 
 ----------
 subtract-typein:
 
-State (3/30, 18.6 bits available)
+State (3/33, 19.2 bits available)
 
-	Save clause ending with not(Homogeneous(A)) (cover 2, accuracy 22%)
+	Save HasVarTerm(A) (2,9 value 2.7)
+	Save not(Homogeneous(A)) (2,9 value 2.7)
+	Save not(Monomial(A)) (2,9 value 2.7)
 
-	Save IsPolynomial(A) (2,9 value 2.4)
-	Save not(Homogeneous(A)) (2,9 value 2.4)
-	Save not(Monomial(A)) (2,9 value 2.4)
+Best literal IsPolynomial(A) (5.0 bits)
 
-Best literal HasVarTerm(A) (5.0 bits)
+State (2/9, 10.5 bits available)
 
-State (2/9, 10.0 bits available)
-
-	Save clause ending with not(IsSkillDivide(B)) (cover 2, accuracy 33%)
-
-	Save not(IsSkillDivide(B)) (2,6 value 3.5)
+	Save not(IsSkillDivide(B)) (2,6 value 3.7)
 
 Best literal IsSkillSubtract(B) (5.0 bits)
 
-State (2/6, 6.0 bits available)
+State (2/6, 6.5 bits available)
 
 No literals
 
-Clause 0: subtract-typein(A,B) :- HasVarTerm(A), IsSkillSubtract(B).
+Recover to subtract-typein(A,B) :- IsPolynomial(A), not(IsSkillDivide(B)).
 
-State (1/28, 10.8 bits available)
+State (2/6, 6.5 bits available)
 
-	Save clause ending with IsConstant(A) (cover 1, accuracy 6%)
+No literals
 
-Best literal IsConstant(A) (5.0 bits)
+Recover to subtract-typein(A,B) :- HasVarTerm(A).
 
-State (1/15, 5.8 bits available)
+State (2/9, 10.5 bits available)
 
-	Save clause ending with not(IsSkillDivide(B)) (cover 1, accuracy 10%)
-
-	Save not(IsSkillDivide(B)) (1,10 value 1.4)
+	Save not(IsSkillDivide(B)) (2,6 value 3.7)
 
 Best literal IsSkillSubtract(B) (5.0 bits)
 
-State (1/10, 1.8 bits available)
+State (2/6, 6.5 bits available)
 
 No literals
 
-Clause 1: subtract-typein(A,B) :- IsConstant(A), IsSkillSubtract(B).
+Recover to subtract-typein(A,B) :- HasVarTerm(A), not(IsSkillDivide(B)).
+
+State (2/6, 6.5 bits available)
+
+No literals
+
+Recover to subtract-typein(A,B) :- not(Homogeneous(A)).
+
+State (2/9, 10.5 bits available)
+
+	Save not(IsSkillDivide(B)) (2,6 value 3.7)
+
+Best literal IsSkillSubtract(B) (5.0 bits)
+
+State (2/6, 6.5 bits available)
+
+No literals
+
+Recover to subtract-typein(A,B) :- not(Homogeneous(A)), not(IsSkillDivide(B)).
+
+State (2/6, 6.5 bits available)
+
+No literals
+
+Recover to subtract-typein(A,B) :- not(Monomial(A)).
+
+State (2/9, 10.5 bits available)
+
+	Save not(IsSkillDivide(B)) (2,6 value 3.7)
+
+Best literal IsSkillSubtract(B) (5.0 bits)
+
+State (2/6, 6.5 bits available)
+
+No literals
+
+Recover to subtract-typein(A,B) :- not(Monomial(A)), not(IsSkillDivide(B)).
+
+State (2/6, 6.5 bits available)
+
+No literals
+
+Clause too inaccurate (2/6)
 
 ***  Warning: the following definition
-***  matches 13 tuples not in the relation
+***  does not cover 3 tuples in the relation
 
-subtract-typein(A,B) :- HasVarTerm(A), IsSkillSubtract(B).
-subtract-typein(A,B) :- IsConstant(A), IsSkillSubtract(B).
 
 Time 0.0 secs

@@ -1,0 +1,80 @@
+FOIL 6.4   [January 1996]
+--------
+
+    Options:
+	minimum clause accuracy 1.55733e+09%
+
+Relation done
+
+Relation *IsAVarTerm
+
+Relation *Homogeneous
+
+Relation *IsDenominatorOf
+
+Relation *IsPolynomial
+
+Relation *IsConstant
+
+Relation *IsSkillAdd
+
+Relation *IsSkillDivide
+
+Relation *Monomial
+
+Relation *IsFractionTerm
+
+Relation *HasConstTerm
+
+Relation *HasParentheses
+
+Relation *HasCoefficient
+
+Relation *IsLastConstTermNegative
+
+Relation *HasVarTerm
+
+Relation *NotNull
+
+Relation *IsNumeratorOf
+
+Relation *IsSkillSubtract
+
+Relation *IsSkillMultiply
+
+----------
+done:
+
+State (3/9, 10.5 bits available)
+
+	Save not(HasConstTerm(A)) (3,6 value 1.5)
+	Save not(HasCoefficient(A)) (3,6 value 1.5)
+	Save IsFractionTerm(B) (1,1 value 1.3)
+
+Best literal IsAVarTerm(A) (5.9 bits)
+
+State (3/6, 4.6 bits available)
+
+No literals
+
+Recover to done(A,B) :- not(HasConstTerm(A)).
+
+State (3/6, 4.6 bits available)
+
+No literals
+
+Recover to done(A,B) :- not(HasCoefficient(A)).
+
+State (3/6, 4.6 bits available)
+
+No literals
+
+Recover to done(A,B) :- IsFractionTerm(B).
+
+Clause too inaccurate (1/1)
+
+***  Warning: the following definition
+***  does not cover 3 tuples in the relation
+
+
+Time 0.0 secs
