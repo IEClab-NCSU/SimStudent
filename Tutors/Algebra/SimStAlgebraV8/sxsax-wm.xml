@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<modelTraceWorkingMemory>
+    <APlusLaunched>true</APlusLaunched>
+    <afterQuiz>false</afterQuiz>
+    <allQuizFailCount>0</allQuizFailCount>
+    <allTutoredProblemList>3v+2=7</allTutoredProblemList>
+    <allTutoredProblemList>3v+2=7</allTutoredProblemList>
+    <canSolve>false</canSolve>
+    <consecutiveResourceReview>0</consecutiveResourceReview>
+    <exampleProblemViewed>false</exampleProblemViewed>
+    <examplesReviewed>false</examplesReviewed>
+    <examplesTabClicked>false</examplesTabClicked>
+    <hintRequest>false</hintRequest>
+    <moreSteps>false</moreSteps>
+    <nextAction>UpdateTable</nextAction>
+    <nextInput>v</nextInput>
+    <nextSelection>dorminTable1_C1R3</nextSelection>
+    <overviewScrolled>false</overviewScrolled>
+    <previousProblemType></previousProblemType>
+    <problemBankTabClicked>false</problemBankTabClicked>
+    <quizFailCount>0</quizFailCount>
+    <quizInProgress>false</quizInProgress>
+    <quizIncomplete>false</quizIncomplete>
+    <quizLevelPassed>0</quizLevelPassed>
+    <quizProblemsTutoredListAllSections/>
+    <quizTaken>false</quizTaken>
+    <resourceViewed>false</resourceViewed>
+    <restartClickedRepeatedly>false</restartClickedRepeatedly>
+    <restartCount>0</restartCount>
+    <selfExplanation>false</selfExplanation>
+    <simStudentThinking>false</simStudentThinking>
+    <solutionCheckError>false</solutionCheckError>
+    <solutionGiven>true</solutionGiven>
+    <solutionSteps>3</solutionSteps>
+    <studentSaiEntered>true</studentSaiEntered>
+    <suggestedProblem></suggestedProblem>
+    <thinking>false</thinking>
+    <tutoredProblemCorrectness>true</tutoredProblemCorrectness>
+    <tutoredProblemsWithoutHint>0</tutoredProblemsWithoutHint>
+    <UOTabClicked>false</UOTabClicked>
+</modelTraceWorkingMemory>

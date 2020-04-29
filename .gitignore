@@ -1,3 +1,11 @@
-
+# OS junk files
 **/.DS_Store
 .idea/
+
+# Project files
+Tutors/Algebra/SimStAlgebraV8/foil-log/*
+Tutors/Algebra/SimStAlgebraV8/**/*.pr
+APLUS/java/**/*.log
+Tutors/Algebra/SimStAlgebraV8/log/*
+Tutors/Algebra/SimStAlgebraV8/**/*.account
+Tutors/Algebra/SimStAlgebraV8/*.bload
