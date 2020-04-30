@@ -3,9 +3,14 @@
 .idea/
 
 # Project files
+*.class
+.*log
 Tutors/Algebra/SimStAlgebraV8/foil-log/*
 Tutors/Algebra/SimStAlgebraV8/**/*.pr
 APLUS/java/**/*.log
 Tutors/Algebra/SimStAlgebraV8/log/*
 Tutors/Algebra/SimStAlgebraV8/**/*.account
+APLUS/java/*.log
 Tutors/Algebra/SimStAlgebraV8/*.bload
+Tutors/Algebra/SimStAlgebraV8/*.class
+APLUS/java/bin/edu/cmu/pact/Log/*

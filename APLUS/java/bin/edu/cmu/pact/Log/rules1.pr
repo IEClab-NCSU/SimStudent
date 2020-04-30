@@ -1,3 +1,0 @@
-(defrule rule1 (aaa) => )
-
-(defrule rule2 (bbb) => )
