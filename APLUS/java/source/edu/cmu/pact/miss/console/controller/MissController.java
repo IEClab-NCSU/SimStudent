@@ -199,8 +199,13 @@ public class MissController implements MissControllerExternal {
         	SimSt.setProjectDir(System.getProperty("projectDir"));
     		getSimSt().setSsWebAuthoringMode(true);
     	}
-    	else if(runType != null && runType.equalsIgnoreCase("webstart"))
+    	else if(runType != null && runType.equalsIgnoreCase("webstart")) {
     		getSimSt().setWebStartMode(true);
+    	}
+    	else if(runType != null && runType.equalsIgnoreCase("springBoot")) {
+    		SimSt.setProjectDir(System.getProperty("projectDir"));
+    		getSimSt().setSsWebAuthoringMode(true);
+    	}
     	
     	getSimSt().initBKwithMissConsole();
         // Restore the FileChooser preference

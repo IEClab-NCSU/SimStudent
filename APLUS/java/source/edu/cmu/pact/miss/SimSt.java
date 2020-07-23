@@ -3895,8 +3895,6 @@ public final class SimSt implements Serializable {
     		   		readRhsOpList(System.getProperty("projectDir")+"/"+ RHS_OP_FILE);
     		    	if(trace.getDebugCode("miss"))trace.out("miss", "readConstraintPredicates WebAuthoring");
     		       	readConstraintPredicates(System.getProperty("projectDir")+"/"+CONSTRAINT_FILE);    		        	
-
-    		   		
     		   	}
     		   	else if(runType.equalsIgnoreCase("shellscript")) {
     		   		if(trace.getDebugCode("miss"))trace.out("miss", "feature predicate file exists");
@@ -3909,9 +3907,14 @@ public final class SimSt implements Serializable {
     		           readRhsOpList( operatorFile.getAbsolutePath() );
     		           if(constraintFile != null  && constraintFile.exists())
     		           readConstraintPredicates(constraintFile.getAbsolutePath());   
-
-    		           
-    		   	} 
+    		   	} else if(runType.equalsIgnoreCase("springBoot")) {
+    		   		if(trace.getDebugCode("miss"))trace.out("miss", "read feature predicate springboot");
+    		   		readFeaturePredicates(System.getProperty("projectDir")+"/"+FEATURE_PREDICATES_FILE);
+    		       	if(trace.getDebugCode("miss"))trace.out("miss", "readRhsOpList springboot");
+    		   		readRhsOpList(System.getProperty("projectDir")+"/"+ RHS_OP_FILE);
+    		    	if(trace.getDebugCode("miss"))trace.out("miss", "readConstraintPredicates springboot");
+    		       	readConstraintPredicates(System.getProperty("projectDir")+"/"+CONSTRAINT_FILE);
+    		   	}
     	
     }
     catch(NullPointerException e){
@@ -4073,6 +4076,8 @@ public final class SimSt implements Serializable {
     	   wmeTypeFile = new File(getProjectDir(), WME_TYPE_FILE);
        else if(runType.equals("servlet"))
     	   wmeTypeFile = new File(System.getProperty("projectDir"), WME_TYPE_FILE);
+       else if(runType.equals("springBoot"))
+    	   wmeTypeFile = new File(System.getProperty("projectDir"), WME_TYPE_FILE);
 
        if(!isWebStartMode()) {
        	  setWmeTypeFile( wmeTypeFile.getAbsolutePath() );
@@ -4104,7 +4109,9 @@ public final class SimSt implements Serializable {
     	   initWmeFile = new File(getProjectDir(), INIT_STATE_FILE);
        else if(runType.equals("servlet"))
            initWmeFile = new File(System.getProperty("projectDir"), INIT_STATE_FILE);
-
+       else if(runType.equals("springBoot"))
+           initWmeFile = new File(System.getProperty("projectDir"), INIT_STATE_FILE);
+       
        if(!isWebStartMode() && initWmeFile.exists()) {
            //the result of this should be getProjectDir/init.wme, trivially
            setInitStateFile( initWmeFile.getAbsolutePath() );
@@ -4118,6 +4125,8 @@ public final class SimSt implements Serializable {
        if(runType.equals("shellscript"))
     	   initWmeStructureFile = new File(getProjectDir(), DEFAULT_STUCTURE_FILE );
        else if(runType.equals("servlet"))
+    	   initWmeStructureFile = new File(System.getProperty("projectDir"), DEFAULT_STUCTURE_FILE );
+       else if(runType.equals("springBoot"))
     	   initWmeStructureFile = new File(System.getProperty("projectDir"), DEFAULT_STUCTURE_FILE );
 
        if(!isWebStartMode() && initWmeStructureFile.exists()) {
@@ -4148,7 +4157,7 @@ public final class SimSt implements Serializable {
        
        String runType = System.getProperty("appRunType");
        
-       if(runType.equals("shellscript") || runType.equals("servlet")) {
+       if(runType.equals("shellscript") || runType.equals("servlet") || runType.equals("springBoot")) {
        	initRete( getWmeTypeFile(), getInitStateFile() );
        } else if(isWebStartMode()) { // For webstart
        	try {

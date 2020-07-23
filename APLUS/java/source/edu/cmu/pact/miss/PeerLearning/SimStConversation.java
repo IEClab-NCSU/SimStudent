@@ -128,18 +128,28 @@ public class SimStConversation {
 			// worked like that
 	    	//String file = brController.getMissController().getSimSt().getProjectDir() + "/"+filename;
 			//BufferedReader reader=null;
-			
-		String file = WebStartFileDownloader.SimStAlgebraPackage+"/"+filename;
+		BufferedReader reader=null;
+		String runType = System.getProperty("appRunType");
+		String file = null;
+		InputStreamReader isr = null;
+		
+		if(runType.equals("springBoot")) {
+			file = brController.getMissController().getSimSt().getProjectDir() + "/"+filename;
+		} else {
+			file = WebStartFileDownloader.SimStAlgebraPackage+"/"+filename;
 			ClassLoader cl = this.getClass().getClassLoader();
 			InputStream is = cl.getResourceAsStream(file);
-			InputStreamReader isr = new InputStreamReader(is);
-			BufferedReader reader=null;
-    	
+			isr = new InputStreamReader(is);
+		}	
 	    	
 	    	try
 	    	{
-	    		//reader=new BufferedReader(new FileReader(file));
-	        	reader = new BufferedReader(isr);
+	    		if(runType.equalsIgnoreCase("springBoot")) {
+	    			reader=new BufferedReader(new FileReader(file));
+	    		} else {
+	    			reader = new BufferedReader(isr);
+	    		}
+	    		
 	    		String line = reader.readLine();
 	    		
 	    		while(line != null)
