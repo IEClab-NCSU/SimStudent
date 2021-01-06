@@ -120,7 +120,7 @@ public class SimStInteractiveLearning implements Runnable {
 	public void clearQuizGraph(){
 		quizGraph=null;
 	}
-	
+	String runType = System.getProperty("appRunType");
 	private Hashtable<String, String> filledInComponents = new Hashtable<String, String>();
 
 	// used by
@@ -211,9 +211,18 @@ public class SimStInteractiveLearning implements Runnable {
 	public AskHint getHint() {
 		return hint;
 	}
+	
+	private String givenProblemName;
+	
+	
+	public String getGivenProblemName() {
+		return givenProblemName;
+	}
 
-	
-	
+	public void setGivenProblemName(String givenProblemName) {
+		this.givenProblemName = givenProblemName;
+	}
+
 	public boolean explanationGiven=false;
 	public boolean getExplanationGiven(){return this.explanationGiven;}
 	public void setExplanationGiven(boolean flag){this.explanationGiven=flag;}
@@ -1553,14 +1562,14 @@ public void fillInQuizProblem(String problemName) {
 			long stepStartTime = Calendar.getInstance().getTimeInMillis();
 
 			if (trace.getDebugCode("ss"))
-				trace.out(
-						"ss",
-						"----------------" + step + " IL: "
-								+ simSt.isInteractiveLearning());
+				trace.out("ss","----------------" + step + " IL: "+ simSt.isInteractiveLearning());
 			// Set SimStudent to thinking
-			if (getBrController(getSimSt()).getMissController().isPLEon() && !isTakingQuiz())
-				getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarThinking();
-
+			
+			if(!runType.equals("springBoot")) {
+				if (getBrController(getSimSt()).getMissController().isPLEon() && !isTakingQuiz())
+					getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarThinking();
+			}
+			
 			ProblemNode nextCurrentNode = null;
 
 			// Should gather activation list
@@ -1642,9 +1651,10 @@ public void fillInQuizProblem(String problemName) {
 			activations = true;
 
 			// Finish SimStudent thinking
-			if (getBrController(getSimSt()).getMissController().isPLEon() && !isTakingQuiz())
-				getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
-
+			if(!runType.equals("springBoot")) {
+				if (getBrController(getSimSt()).getMissController().isPLEon() && !isTakingQuiz())
+					getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
+			}
 			boolean hintReceived = false;
 
 			// Mon Aug 31 16:53:50 2009: Noboru code-sharing for Quiz SimSt for
@@ -2744,17 +2754,17 @@ public void fillInQuizProblem(String problemName) {
 	public ProblemNode askWhatToDoNext(ProblemNode currentNode) {
 
 		String problemName = currentNode.getProblemModel().getProblemName();
-		boolean successful = false; // To signify that learning has been
+//		boolean successful = false; // To signify that learning has been
 									// successful or not
-		boolean stillLearning = true; // To signify that SimStudent has not yet
+//		boolean stillLearning = true; // To signify that SimStudent has not yet
 										// learned a step
-		ProblemNode node = null;
+//		ProblemNode node = null;
 		trace.out("miss", "runInteractiveLearning: getting a hint on node "
 				+ currentNode);
 		// hint = askHint(brController, currentNode);
 		
 		hint = simSt.askForHint(getBrController(getSimSt()), currentNode);
-
+		
 		trace.out("miss","hint returned is " + hint);
 		simSt.createNewNodeAndEdgeForHintReceived(hint, currentNode);
 		if (trace.getDebugCode("miss"))
@@ -2765,6 +2775,18 @@ public void fillInQuizProblem(String problemName) {
 		trace.out("miss", "runInteractiveLearning: learning a skill " + hint.skillName);
 
 		// used to calc time used in processing learning attempt
+		setGivenProblemName(problemName);
+		return askNodeSkillName(problemName, null);
+	}
+	
+	
+	public ProblemNode askNodeSkillName(String problemName, AskHint hintInfo) {
+		ProblemNode node = null;
+		boolean successful = false; 
+		boolean stillLearning = true;
+		if(hintInfo != null) {
+			this.hint = hintInfo;
+		}
 		long learningStartTime = Calendar.getInstance().getTimeInMillis();
 		int repeats = 0;
 
@@ -2772,16 +2794,15 @@ public void fillInQuizProblem(String problemName) {
 		do {
 			foaCorrectness = true;
 			learningStartTime = Calendar.getInstance().getTimeInMillis();
-
-			
-			
 			// if hint = killer SAI/skillname, return killer node, i.e. null
+			if(hint.skillName == null) return node;
 			if (!hint.skillName.equals(SimSt.KILL_INTERACTIVE_LEARNING)) {
 
 				// Set SimStudent to thinking
-				if (getBrController(getSimSt()).getMissController().isPLEon()) 
-					getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarThinking();
-
+				if(runType.isEmpty()) {
+					if (getBrController(getSimSt()).getMissController().isPLEon()) 
+						getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarThinking();
+				}
 				// Create a new node and edge using the hint SAI
 				simSt.stepDemonstrated(hint.node, hint.getSai(), hint.edge,null);
 				
@@ -2844,10 +2865,11 @@ public void fillInQuizProblem(String problemName) {
 				}
 
 				// SimStudent is done thinking
+				if(!getBrController(getSimSt()).getRunType().equals("springBoot")) {
 				if (getBrController(getSimSt()).getMissController().isPLEon())
 					getBrController(getSimSt()).getMissController().getSimStPLE()
 							.setAvatarNormal();
-
+				}
 				// failure to learn on inputted step and we have not used up
 				// additional attempts
 				if (stillLearning && repeats < simSt.getSsNumBadInputRetries()) {
@@ -3295,6 +3317,14 @@ public void fillInQuizProblem(String problemName) {
 	
 	String previousPositiveInstructionID=null;
 	
+	public String getPreviousPositiveInstructionID() {
+		return previousPositiveInstructionID;
+	}
+
+	public void setPreviousPositiveInstructionID(String previousPositiveInstructionID) {
+		this.previousPositiveInstructionID = previousPositiveInstructionID;
+	}
+
 	// instruction is correct - process as positive example
 	private void signalInstructionAsPositiveExample(RuleActivationNode ran,
 			ProblemNode node, Sai sai, Vector edgePath) {

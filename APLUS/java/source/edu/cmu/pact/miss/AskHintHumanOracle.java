@@ -46,8 +46,7 @@ public class AskHintHumanOracle extends AskHint {
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     // Constructor
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 	
     public AskHintHumanOracle(BR_Controller brController, ProblemNode parentNode){
         setBrController(brController);
         logger = new SimStLogger(brController);
@@ -74,14 +73,17 @@ public class AskHintHumanOracle extends AskHint {
     public static void sendTheKillThreadMessage() {
     }
 
-    private SaiAndSkillName waitForSaiAndSkillName() {
+    private SaiAndSkillName waitForSaiAndSkillName(SaiAndSkillName saiNamedSkill) {
         
         String skillName = null;      
         this.saiDrop = new SaiDrop();
         isWaitingForSai = true;    
-        
-        
-        Sai sai = saiDrop.getSai();
+        Sai sai  = null;
+        if(brController.getRunType().isEmpty()) {
+        	sai = saiDrop.getSai();
+        } else {
+        	sai = saiNamedSkill.sai;
+        }
         isWaitingForSai = false;
        
         if (sai.getI().isEmpty()) {
@@ -119,6 +121,7 @@ public class AskHintHumanOracle extends AskHint {
     	  	//hint = new AskHintInBuiltClAlgebraTutor(brController, parentNode);    		
     	  	//CL oracle must not be hardcoded! Whichever oracle grades the quiz should provide hint for logging
       		hint = brController.getMissController().getSimSt().askForHintQuizGradingOracle(brController,parentNode); 
+      		brController.setHintInfo(hint);
       		trace.err("*** hint from designated oracle is :" + hint.getAction() + hint.getInput());	
       }
       
@@ -179,13 +182,22 @@ public class AskHintHumanOracle extends AskHint {
 		  getBrController().getMissController().getSimSt().getModelTraceWM().setRequestType("hint-request");
 	  }
 
-	  long hintRequestTime = Calendar.getInstance().getTimeInMillis();
+//	  long hintRequestTime = Calendar.getInstance().getTimeInMillis();
       
 	 
 	  if (hint!=null && brController.getMissController().getSimSt().isSsMetaTutorMode() )
     	  brController.getMissController().getSimSt().getModelTraceWM().setStudentSaiEntered(WorkingMemoryConstants.FALSE);  
-	     
-      saiAndSkillName = waitForSaiAndSkillName();
+	  
+	  brController.setStepInfo(step);
+	  brController.setParentNodeInfo(parentNode);
+	  brController.setMessageInfo(message[0]);
+	  if(!brController.getRunType().isEmpty()) {
+		  brController.setBrController(brController);
+	  }
+	  if(brController.getRunType()== "") {
+		  SkillNameandSAISet(hint, step, parentNode, message[0], null, brController);
+	  }
+     /* saiAndSkillName = waitForSaiAndSkillName();
       setSai(saiAndSkillName.sai);
       this.skillName = saiAndSkillName.skillName;
       
@@ -228,12 +240,12 @@ public class AskHintHumanOracle extends AskHint {
     	  if(logger.getLoggingEnabled())
     	  {
 		      //hint = new AskHintInBuiltClAlgebraTutor(brController, parentNode);
-		      /*
-		      boolean correct = false;
-		      if(brController.getMissController().getSimSt().verifyStep(brController.getProblemModel().getProblemName(),
-		    	parentNode, saiAndSkillName.sai.getS(), saiAndSkillName.sai.getA(), saiAndSkillName.sai.getI()).equals(EdgeData.CORRECT_ACTION))
-		    	correct = true;
-		      */
+		      
+//		      boolean correct = false;
+//		      if(brController.getMissController().getSimSt().verifyStep(brController.getProblemModel().getProblemName(),
+//		    	parentNode, saiAndSkillName.sai.getS(), saiAndSkillName.sai.getA(), saiAndSkillName.sai.getI()).equals(EdgeData.CORRECT_ACTION))
+//		    	correct = true;
+		      
 		
 		      	int hintDuration = (int) ((Calendar.getInstance().getTimeInMillis() - hintRequestTime)/1000);
 		      	step = brController.getMissController().getSimSt().getProblemStepString();
@@ -255,7 +267,87 @@ public class AskHintHumanOracle extends AskHint {
       {
     	  edge.getEdgeData().addRuleName(saiAndSkillName.skillName);
       }
-      
+      */
+    }
+    
+    public void SkillNameandSAISet(AskHint hint, String step, ProblemNode parentNode, String message,SaiAndSkillName saiNamedSkill, BR_Controller brController) {
+    	long hintRequestTime = Calendar.getInstance().getTimeInMillis();
+    	if(brController.getRunType().isEmpty()) {
+    		saiAndSkillName = waitForSaiAndSkillName(null);
+    	} else {
+    		saiAndSkillName = waitForSaiAndSkillName(saiNamedSkill);
+    	}
+        setSai(saiAndSkillName.sai);
+        this.skillName = saiAndSkillName.skillName;
+        
+       //System.out.println(" Skill  :  "+this.skillName);
+        if(brController.getRunType().isEmpty()) {
+        	if (this.brController.getMissController().isPLEon())
+        		this.brController.getMissController().getSimStPLE().blockInput(true);
+        }
+        
+        if(brController.getMissController().getSimSt().isSsMetaTutorMode() && this.saiAndSkillName.sai.getS().equalsIgnoreCase("done") && this.saiAndSkillName.sai.getA().equalsIgnoreCase("ButtonPressed")){
+
+      	  brController.getMissController().getSimSt().getModelTraceWM().setProblemStatus("solved");
+        }
+        
+        if (hint!=null && brController.getMissController().getSimSt().isSsMetaTutorMode() )
+      	  brController.getMissController().getSimSt().getModelTraceWM().setStudentSaiEntered(WorkingMemoryConstants.TRUE);  
+        
+  	  if (hint!=null && brController.getMissController().getSimSt().isSsMetaTutorMode() ){
+  	    	  brController.getMissController().getSimSt().getModelTraceWM().setNextSelection(hint.getSelection());
+  	   		  brController.getMissController().getSimSt().getModelTraceWM().setNextAction(hint.getAction());
+  	   		  brController.getMissController().getSimSt().getModelTraceWM().setNextInput(hint.getInput());  		  
+  	   		  brController.getMissController().getSimSt().hintRequest=true;
+  	  
+  	  }
+  	  if(brController.getRunType().isEmpty()) {
+  		  JCommButton doneButton = (JCommButton) brController.lookupWidgetByName("Done");
+  		  if (doneButton!=null){
+  			  //System.out.println(" Done button is clicked ");
+  			  doneButton.setText(SimStPLE.DONE_CAPTION_ENABLED);
+  		  }
+  	  }
+        
+        if (!skillName.equals(SimSt.KILL_INTERACTIVE_LEARNING)){
+      	
+      	  // TODO: Need to figure out a unified way to handle all the interface actions at one place
+  	      // Model-tracing the student interface action in response to the SimStudent help request
+  	      if(brController.getMissController().getSimSt().isSsMetaTutorMode()) {
+  	  	      getBrController().getMissController().getSimSt().getModelTraceWM().setRequestType("");
+  	    	  brController.getAmt().handleInterfaceAction(saiAndSkillName.sai.getS(), saiAndSkillName.sai.getA(), saiAndSkillName.sai.getI());
+  	      }
+  	      	
+      	  if(logger.getLoggingEnabled())
+      	  {
+  		      //hint = new AskHintInBuiltClAlgebraTutor(brController, parentNode);
+  		      
+//  		      boolean correct = false;
+//  		      if(brController.getMissController().getSimSt().verifyStep(brController.getProblemModel().getProblemName(),
+//  		    	parentNode, saiAndSkillName.sai.getS(), saiAndSkillName.sai.getA(), saiAndSkillName.sai.getI()).equals(EdgeData.CORRECT_ACTION))
+//  		    	correct = true;
+  		      
+  		
+  		      	int hintDuration = (int) ((Calendar.getInstance().getTimeInMillis() - hintRequestTime)/1000);
+  		      	step = brController.getMissController().getSimSt().getProblemStepString();
+  		      	
+  		      	logger.simStLog(SimStLogger.SIM_STUDENT_INFO_RECEIVED, SimStLogger.HINT_RECEIVED, 
+  		    		  step,"","",saiAndSkillName.sai,parentNode, hint.getSelection(),
+  		    		  hint.getAction(), hint.getInput(), hintDuration,message);
+      	  }
+        		
+            // ProblemModel pModel = brController.getProblemModel();
+            // ProblemNode startNode = pModel.getStartNode();
+            //this.node = brController.getCurrentNode();
+            //this.edge = brController.getProblemModel().returnsEdge(parentNode,node);      
+        }
+
+        //this.node = brController.getCurrentNode();
+        //this.edge = brController.getProblemModel().returnsEdge(parentNode,node); 
+        if(saiAndSkillName != null && edge != null)
+        {
+      	  edge.getEdgeData().addRuleName(saiAndSkillName.skillName);
+        }
     }
     
     public String[] getRetryMessage()
@@ -291,7 +383,7 @@ public class AskHintHumanOracle extends AskHint {
 	  	long hintRequestTime = Calendar.getInstance().getTimeInMillis();
       	
 	  	if(trace.getDebugCode("miss")) trace.out("miss","Calling waitForSaiAndSkillName");
-        saiAndSkillName = waitForSaiAndSkillName();
+        saiAndSkillName = waitForSaiAndSkillName(null);
 
         setSai(saiAndSkillName.sai);
         this.skillName = saiAndSkillName.skillName;     

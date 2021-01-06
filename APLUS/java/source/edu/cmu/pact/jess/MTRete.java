@@ -177,10 +177,28 @@ public class MTRete extends Rete implements Serializable, JessParser,
 	
 	static boolean stopModelTracing = false;
 	
-	
+	String runType = "";
+    
+    public void setRunType(String runTypeProperty) {
+    	this.runType = runTypeProperty;
+    }
+    
+    public String getRunType() {
+    	return this.runType;
+    }
 
 	public static boolean useSalience = true;
-  
+	
+	private String projectDirectory = "";
+	
+	public String getProjectDirectory() {
+		return projectDirectory;
+	}
+
+	public void setProjectDirectory(String projectDirectory) {
+		this.projectDirectory = projectDirectory;
+	}
+
 	/** List of the deftemplate names of facts in the cache. */
 	private static final String[] cacheKeys = {
 		CORRECTSAINAME,
@@ -1155,8 +1173,12 @@ public class MTRete extends Rete implements Serializable, JessParser,
 	void saveState( String filename ) {
 		File file = null;
 		try {
-			
-			file = Utils.getFileAsResource(filename, this);
+			if(runType.equals("springBoot")) {
+				String tempFileName = (filename.contains("/"))? filename.split("/")[1] : filename;
+				file = new File(getProjectDirectory()+"/"+tempFileName);
+			} else {
+				file = Utils.getFileAsResource(filename, this);
+			}
 			if (file != null)
 				{ if (trace.getDebugCode("mt")) trace.out("mt", "saving state to " + file.getAbsolutePath()); }
 			else

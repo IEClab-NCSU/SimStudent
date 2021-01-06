@@ -41,6 +41,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -161,6 +163,7 @@ import edu.cmu.pact.ctatview.CtatMenuBar;
 import edu.cmu.pact.ctatview.CtatModePanel;
 import edu.cmu.pact.jess.MT;
 import edu.cmu.pact.jess.RuleActivationTree;
+import edu.cmu.pact.miss.AskHint;
 import edu.cmu.pact.miss.InputChecker;
 import edu.cmu.pact.miss.MissControllerExternal;
 import edu.cmu.pact.miss.Sai;
@@ -223,7 +226,16 @@ public class BR_Controller extends TutorController implements PropertyChangeList
     private boolean allowCurrentStateChange = true;
     private boolean traversalCountEnabled;
     public  Lock  widgetSynchronizedLock = new Lock();
+    String runType = "";
     
+    public void setRunType(String runTypeProperty) {
+    	super.setRunType(runTypeProperty);
+    	this.runType = runTypeProperty;
+    }
+    
+    public String getRunType() {
+    	return this.runType;
+    }
     /** Constants for selected Preference items. */
     public static final String LOCK_WIDGETS = "Lock Widgets",
             COMMUTATIVITY = "Commutativity", 
@@ -327,6 +339,8 @@ public class BR_Controller extends TutorController implements PropertyChangeList
      */
     private boolean deletePrFile = false;
     private ProblemModelManager problemModelManager;
+    
+    protected Hashtable<String, String> widgetTable = new Hashtable<String, String>();
 
 	/**
 	 * Listeners for state changes in the connection to the interface. The listener list is maintained
@@ -335,7 +349,55 @@ public class BR_Controller extends TutorController implements PropertyChangeList
 	 */
 	private List<ChangeListener> changeListeners = new LinkedList<ChangeListener>();
     
-    public BR_Controller() 
+	// Skill Name Setter - Variables
+	private AskHint hintInfo;
+    
+    public AskHint getHintInfo() {
+		return hintInfo;
+	}
+	
+    public void setHintInfo(AskHint hintInfo) {
+		this.hintInfo = hintInfo;
+	}
+    
+   // AskHint hint, String step, ProblemNode parentNode, String message[]
+    private String stepInfo;
+    private ProblemNode parentNodeInfo;
+    private String messageInfo;
+	
+    public String getStepInfo() {
+		return stepInfo;
+	}
+
+	public void setStepInfo(String stepInfo) {
+		this.stepInfo = stepInfo;
+	}
+
+	public ProblemNode getParentNodeInfo() {
+		return parentNodeInfo;
+	}
+
+	public void setParentNodeInfo(ProblemNode parentNodeInfo) {
+		this.parentNodeInfo = parentNodeInfo;
+	}
+	
+	BR_Controller brCtrl = null;
+    public BR_Controller getBrController() {
+        return brCtrl;
+    }
+    public void setBrController(BR_Controller brCtrl) {
+        this.brCtrl = brCtrl;
+    }
+
+	public String getMessageInfo() {
+		return messageInfo;
+	}
+
+	public void setMessageInfo(String messageInfo) {
+		this.messageInfo = messageInfo;
+	}
+
+	public BR_Controller() 
     {
     	this (true, false, null, null, 1); // FIXME: 1 is a bad way to do this by default
     }
@@ -503,6 +565,17 @@ public class BR_Controller extends TutorController implements PropertyChangeList
         		public void advanceProblem() {}
         	});
         }
+	}
+	
+	public void addCelltoWidgetTable(String selection, String input) {
+    	widgetTable.put(selection, input);
+    }
+    
+    public String getWidgetTable(String selection) {
+		if(widgetTable.containsKey(selection)) {
+			return widgetTable.get(selection);
+		}
+		return "";
 	}
 
     /* ******************************* HANDLING/NOTIFS ******************************* */
@@ -1572,21 +1645,37 @@ public class BR_Controller extends TutorController implements PropertyChangeList
         String[] foaValues = null;
         if(getMissController().getSimSt().getFoaGetter() != null)
         {
-        	Vector<Object> vFoa = getMissController().getSimSt().getFoaGetter().foaGetter(this, selectionString, actionString, inputString, null);
-        	foaValues = new String[vFoa.size()];
-        	int count = 0;
-        	for(Object obj:vFoa)
-        	{
-        		if(!(obj instanceof TableExpressionCell))
+        	if(!runType.equals("springBoot")) {
+        		Vector<Object> vFoa = getMissController().getSimSt().getFoaGetter().foaGetter(this, selectionString, actionString, inputString, null);
+        		foaValues = new String[vFoa.size()];
+        		int count = 0;
+        		for(Object obj:vFoa)
         		{
-        			foaValues[count] = "";
+        			if(!(obj instanceof TableExpressionCell))
+        			{
+        				foaValues[count] = "";
+        			}
+        			else
+        			{
+        				TableExpressionCell cell = (TableExpressionCell) obj;
+        				foaValues[count] = cell.getText();
+        			}
+        			count++;
         		}
-        		else
-        		{
-        			TableExpressionCell cell = (TableExpressionCell) obj;
-        			foaValues[count] = cell.getText();
-        		}
-        		count++;
+        	} else {
+//        		if(selectionString.equals("dorminTable3_C0R0")) {
+//        			foaValues = new String[2];
+//        			int count = 0;
+//        			foaValues[count++] = this.widgetTable.get("dorminTable1_C0R0");
+//        			foaValues[count++] = this.widgetTable.get("dorminTable2_C0R0");
+//        		} else {
+        			Vector<Object> vFoa = getMissController().getSimSt().getFoaGetter().foaGetter(this, selectionString, actionString, inputString, null);
+            		foaValues = new String[vFoa.size()];
+            		int count = 0;
+            		for(Object elt: vFoa) {
+            			foaValues[count++] = elt.toString();
+            		}
+//        		}
         	}
         }
         

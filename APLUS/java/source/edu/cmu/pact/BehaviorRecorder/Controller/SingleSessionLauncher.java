@@ -72,6 +72,7 @@ public class SingleSessionLauncher
     private TutorWrapper wrapper;
     private Applet applet = null;
     private CTATTabManager tabManager;
+    private String runType = System.getProperty("appRunType");;
 //    private final int portOffset;
 
     
@@ -97,6 +98,10 @@ public class SingleSessionLauncher
     private boolean hideCTAT;
 
 	private CTAT_Launcher ctatLauncher;
+	
+	public void setRunType(String runType) {
+		this.runType = runType;
+	}
     
     
     private void setProjectDir(String pDir)
@@ -404,7 +409,10 @@ public class SingleSessionLauncher
      */
     public void launch(JComponent tutorPanel) {
     	  // nbarba 01/16/2014: all SimStudent related code now reside in MissController so all calls to SimStudent fields should be made through getMissController().
-        installNativeLookAndFeel();
+//        installNativeLookAndFeel();
+    	if(runType == null || !runType.equals("springBoot")) {
+    		installNativeLookAndFeel();
+    	}
        
         wrapper = getMissController().createWrapper(getMissController().isSimStPleOn(), getMissController().isSsContest(), controller);
        
@@ -434,7 +442,10 @@ public class SingleSessionLauncher
     }
     
     
-   
+   public void launchSessionSession() {
+	   JComponent panel = null;
+	   launch(panel);
+   }
     
     
     
@@ -465,13 +476,25 @@ public class SingleSessionLauncher
      * @param tutorPanel
      */
     private void continueLaunch(StudentInterfaceWrapper wrapper, JComponent tutorPanel) {
-        CTAT_Options ctatOptions = wrapper.setTutorPanel(tutorPanel);
-        if (trace.getDebugCode("inter")) trace.out("inter", "options = " + ctatOptions); 
-        
-        if (tutorPanel instanceof StudentInterfacePanel){
-        	((StudentInterfacePanel) tutorPanel).setController(controller);
-        	
-        }
+//        CTAT_Options ctatOptions = wrapper.setTutorPanel(tutorPanel);
+//        if (trace.getDebugCode("inter")) trace.out("inter", "options = " + ctatOptions); 
+//        
+//        if (tutorPanel instanceof StudentInterfacePanel){
+//        	((StudentInterfacePanel) tutorPanel).setController(controller);
+//        	
+//        }
+    	
+    	CTAT_Options ctatOptions = null;
+    	if(runType == null || !runType.equals("springBoot")) {
+    		ctatOptions = wrapper.setTutorPanel(tutorPanel);
+    		if (trace.getDebugCode("inter")) trace.out("inter", "options = " + ctatOptions);
+    		if (tutorPanel instanceof StudentInterfacePanel){
+            	((StudentInterfacePanel) tutorPanel).setController(controller);	
+            }
+    	} 
+//    	else if(runType.equals("springBoot")) {
+//    		ctatOptions = wrapper.setTutorPanel(null);
+//    	}
         
         if (ctatOptions == null) {
             ctatOptions = new CTAT_Options();
@@ -487,15 +510,14 @@ public class SingleSessionLauncher
                     + ctatOptions.getShowBehaviorRecorder());
 
         controller.setOptions(ctatOptions);
-
-        if (!hideCTAT && getMissController() != null && getMissController().getSimSt() != null){
-        	
-        	if(getMissController().getSimSt().isSsCogTutorMode() || getMissController().getSimSt().isSsAplusCtrlCogTutorMode() || SimSt.getSimStName().length() > 0)
+        if(runType == null || !runType.equals("springBoot")) {
+        	if (!hideCTAT && getMissController() != null && getMissController().getSimSt() != null){
+        		if(getMissController().getSimSt().isSsCogTutorMode() || getMissController().getSimSt().isSsAplusCtrlCogTutorMode() || SimSt.getSimStName().length() > 0)
         	      wrapper.setVisible(true);        	 
-        		
+        	}
+        	else
+        		wrapper.setVisible(true);
         }
-        else
-        	 wrapper.setVisible(true);
             
         if (controller.getDockedFrame() != null){
         	((CtatFrame)controller.getDockedFrame()).getCtatMenuBar().enableInterfaceMenus(false);
@@ -504,11 +526,20 @@ public class SingleSessionLauncher
      
         //30Nov2006: in order to run JUnitTests, we need to pass an absolute path (projectDir)
         //the default case (-ssProjectDir not passed) is like before, getPackageNameAsPath(tutorPanel).
-        String projDir = getProjectDir();
-        String homeDirPath = projDir != null ? projDir : getPackageNameAsPath(tutorPanel);
-        //String homeDirPath = getPackageNameAsPath(tutorPanel);
-        if (trace.getDebugCode("miss")) trace.out("miss", "homeDirPath = " + homeDirPath);
-        setInterfaceHome(homeDirPath, tutorPanel);
+//        String projDir = getProjectDir();
+//        String homeDirPath = projDir != null ? projDir : getPackageNameAsPath(tutorPanel);
+//        //String homeDirPath = getPackageNameAsPath(tutorPanel);
+//        if (trace.getDebugCode("miss")) trace.out("miss", "homeDirPath = " + homeDirPath);
+//        setInterfaceHome(homeDirPath, tutorPanel);
+        String projDir = "";
+        String homeDirPath = "";
+        if(runType == null || !runType.equals("springBoot")) {
+        	projDir = getProjectDir();
+        	homeDirPath = projDir != null ? projDir : getPackageNameAsPath(tutorPanel);
+            //String homeDirPath = getPackageNameAsPath(tutorPanel);
+            if (trace.getDebugCode("miss")) trace.out("miss", "homeDirPath = " + homeDirPath);
+            setInterfaceHome(homeDirPath, tutorPanel);
+        }
 
         /** Override compile-time CTAT_Options in interface with runtime env */
         controller.loadControlFromSystemProperties();

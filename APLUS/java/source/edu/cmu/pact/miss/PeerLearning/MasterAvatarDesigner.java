@@ -174,7 +174,7 @@ public class MasterAvatarDesigner extends StudentAvatarDesigner implements Docum
         		SimSt.WEBSTARTENABLED = false;
         		status.setText("Saved Account "+accountName+" to Local File");
         	}
-        	SimStPLE.saveAccountFile(accountName+".account");
+        	SimStPLE.saveAccountFile(accountName+"M1.account");
 
             setBorder(BorderFactory.createLineBorder(Color.black, 1));
 			return;

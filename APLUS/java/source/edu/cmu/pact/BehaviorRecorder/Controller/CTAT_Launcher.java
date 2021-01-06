@@ -78,6 +78,8 @@ public class CTAT_Launcher {
 	private boolean servlet;
 	
     private String packageName;
+    private SingleSessionLauncher ssLauncher;
+    
     /* ************************* INITIALIZATION ************************* */
 	
 	public CTAT_Launcher() {
@@ -140,7 +142,7 @@ public class CTAT_Launcher {
 			tabManager.setFocusedTab(firstTab, true);
 //			SingleSessionLauncher launcher = new SingleSessionLauncher(argv, tabManager, this, firstTab);
 			SingleSessionLauncher launcher = new SingleSessionLauncher(argv, tabManager, this, firstTab);
-
+			setSingleSessionLauncher(launcher);
 			initCtatFrameController();  // must have a BR_Controller
 			tabManager.getNewTab(firstTab, launcher);
 			tabManager.setTabVisibility(tabNumber, true);
@@ -577,7 +579,15 @@ public class CTAT_Launcher {
     	}
     	return this.ctatMenuBar;
     }
-
+    
+    public void setSingleSessionLauncher(SingleSessionLauncher ssLauncher) {
+    	this.ssLauncher = ssLauncher;
+    }
+    
+    public SingleSessionLauncher getSingleSessionLauncher() {
+    	return this.ssLauncher;
+    }
+    
     public AbstractCtatWindow getDockedFrame() {
     	AbstractCtatWindow result = null;
     	CtatFrameController cfController = getCtatFrameController();

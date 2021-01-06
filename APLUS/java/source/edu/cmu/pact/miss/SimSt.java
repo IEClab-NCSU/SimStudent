@@ -102,6 +102,7 @@ import edu.cmu.pact.BehaviorRecorder.ProblemModel.Graph.EdgeData;
 import edu.cmu.pact.BehaviorRecorder.ProblemModel.Graph.ProblemEdge;
 import edu.cmu.pact.BehaviorRecorder.ProblemModel.Graph.ProblemGraph;
 import edu.cmu.pact.BehaviorRecorder.ProblemModel.Graph.ProblemNode;
+import edu.cmu.pact.Preferences.PreferencesModel;
 import edu.cmu.pact.Utilities.CTAT_Controller;
 import edu.cmu.pact.Utilities.Utils;
 import edu.cmu.pact.Utilities.trace;
@@ -192,6 +193,14 @@ public final class SimSt implements Serializable {
    private static final String NO_ACTIVATIONS = "NoActivations";
    private static final String NOT_SPECIFIED = "NotSpecified";
 
+   String logDirectory = null;
+   String runType = System.getProperty("appRunType");
+   public String getLogDirectory() {
+	   PreferencesModel pm = getBrController().getPreferencesModel();
+	   logDirectory = pm.getStringValue(BR_Controller.DISK_LOGGING_DIR);
+	   return logDirectory;// = System.getProperty("logDirectory");
+   }
+   
    public static void setActivationListType(String type)
    {
    	activationListType = type;
@@ -253,7 +262,7 @@ public final class SimSt implements Serializable {
 	private boolean localLoggingEnabled = false;
    public boolean getLocalLoggingEnabled()
    {
-   	return localLoggingEnabled;
+		return localLoggingEnabled;
    }
    public void setLocalLoggingEnabled(boolean logEnabled)
    {
@@ -567,7 +576,7 @@ public final class SimSt implements Serializable {
    // private final String PRODUCTION_RULE_FILE = "ss-productionRules.pr";
    public final static String PRODUCTION_RULE_FIL_ORACEE = "productionRulesJessOracle.pr";
    public final static String PRODUCTION_RULE_FILE = "productionRules.pr";
-   private final String USER_PRODUCTION_RULE_FILE = "productionRules-$.pr";
+   private final String USER_PRODUCTION_RULE_FILE = "productionRules-$.pr";//"$_productionRules.pr";
    //Jinyu
    private final String INSTRUCTIONS_FILE = "instructions.txt";
    public String getInsFileName() {return INSTRUCTIONS_FILE; }
@@ -871,20 +880,24 @@ public final class SimSt implements Serializable {
    //
    private String studentInterfaceClass = null;
    public String getStudentInterfaceClass() {
-
-       if (this.studentInterfaceClass == null) {
-           BR_Controller brCtl = getBrController();
-           StudentInterfaceWrapper tWrapper = brCtl.getStudentInterface();
-           if(trace.getDebugCode("miss"))trace.out("miss", "tWrapper = " + tWrapper);
-           if (tWrapper != null) {
-               JComponent sInterface = tWrapper.getTutorPanel();
-               String interfaceClass = sInterface.getClass().getName();
-               int dotPos = interfaceClass.lastIndexOf('.');
-               interfaceClass = interfaceClass.substring(0,dotPos);
-               setStudentInterfaceClass(interfaceClass);
-               if(trace.getDebugCode("miss"))trace.out("miss", "StudentInterface: " +  interfaceClass);
-           }
-       }
+	   if(runType.equals("springBoot")) {
+		   studentInterfaceClass=this.getPackageName();
+	   }
+	   else {
+		   if (this.studentInterfaceClass == null) {
+			   BR_Controller brCtl = getBrController();
+			   StudentInterfaceWrapper tWrapper = brCtl.getStudentInterface();
+			   if(trace.getDebugCode("miss"))trace.out("miss", "tWrapper = " + tWrapper);
+			   if (tWrapper != null) {
+				   JComponent sInterface = tWrapper.getTutorPanel();
+				   String interfaceClass = sInterface.getClass().getName();
+				   int dotPos = interfaceClass.lastIndexOf('.');
+				   interfaceClass = interfaceClass.substring(0,dotPos);
+				   setStudentInterfaceClass(interfaceClass);
+				   if(trace.getDebugCode("miss"))trace.out("miss", "StudentInterface: " +  interfaceClass);
+			   }
+		   }
+	   }
        if (studentInterfaceClass==null) studentInterfaceClass=this.getPackageName();
        return studentInterfaceClass;
    }
@@ -2087,9 +2100,13 @@ public final class SimSt implements Serializable {
 
    	// file name in which the object is serialized
    	String filename = "simst.ser";
+   	File serFileUser = null;
+   	FileOutputStream serFileUserStream = null;
    	if(getUserID() != null) {
    		filename = "simst-"+getUserID()+".ser";
+//   		filename = getUserID()+"_simst.ser";
    	}
+   	serFileUser = new File(getLogDirectory(), filename);
    	
    	final SimSt simStObj = this;
    	FileOutputStream fos = null;
@@ -2098,7 +2115,8 @@ public final class SimSt implements Serializable {
    	if(!isWebStartMode()) {
    		
    		try {
-				fos = new FileOutputStream(filename);
+//				fos = new FileOutputStream(filename);
+   				fos = new FileOutputStream(serFileUser);
 		    	oos = new ObjectOutputStream(fos);
 
 				oos.writeObject(simStObj);
@@ -2523,8 +2541,8 @@ public final class SimSt implements Serializable {
    AmlRete getRete() { 
        return rete;
    }
+   
    private void initRete( String wmeTypeFile, String initalWmeFile ) {
-
 	   System.out.println(" Initializing Rete ");
        try {
            getRete().reset();
@@ -2959,10 +2977,12 @@ public final class SimSt implements Serializable {
            Object[] args = null;
            Method getCommNameMethod = null;
            try {
-        	   
-               getCommNameMethod = getWidgetClass().getMethod( "getCommName", argTypes );
-               this.commName = (String)getCommNameMethod.invoke( getWidget(), args );
-
+        	   if(!runType.equals("springBoot")) {
+        		   getCommNameMethod = getWidgetClass().getMethod( "getCommName", argTypes );
+                   this.commName = (String)getCommNameMethod.invoke( getWidget(), args );
+        	   } else {
+        		   this.commName = (String) widget;
+        	   }
                
            } catch (Exception e) {
                e.printStackTrace();
@@ -2990,6 +3010,10 @@ public final class SimSt implements Serializable {
          //  return isSsFoaElement() ? getValueSsFoaElement() : getValueCommWidget();
    
     	   if (this.widget==null) return getValueCommWidget();
+    	   if(runType.equals("springBoot")) {
+    		   String value = getBrController().getWidgetTable(this.widget.toString());
+    		   return value;
+    	   }
     	   
     	   return this.widget==null? getValueCommWidget() : (isSsFoaElement() ? getValueSsFoaElement() : getValueCommWidget() );
     	   
@@ -3876,7 +3900,7 @@ public final class SimSt implements Serializable {
 	   
        // Read the feature-predicates from the file, if any,
        // otherwise, read them from a default list
-   	String runType = System.getProperty("appRunType");
+//   	String runType = System.getProperty("appRunType");
    	
 
     try{
@@ -5625,7 +5649,15 @@ public final class SimSt implements Serializable {
    public String instructionIdentifierStem=null;
    
    
-   //This method sets the focusOfAttention of the instruction object, preparing it for learning
+   public String getInstructionIdentifierStem() {
+	   return instructionIdentifierStem;
+   }
+
+   public void setInstructionIdentifierStem(String instructionIdentifierStem) {
+	   this.instructionIdentifierStem = instructionIdentifierStem;
+   }
+
+//This method sets the focusOfAttention of the instruction object, preparing it for learning
    /**
     * @return null
     */
@@ -5660,7 +5692,7 @@ public final class SimSt implements Serializable {
        String wmeType = getRete().wmeType( selection );
            
        String sai = wmeType + "|" + selection + "|" + input;
-   
+       
        String instructionID= instructionIdentifierStem + "_" + problemNode.getName();	
        Instruction instruction;
        
@@ -10993,7 +11025,6 @@ public final class SimSt implements Serializable {
    	return hint;
    }
 
-   
    transient Sai saiCache=null;
    public void setSaiCache(Sai sai){	   
 	   this.saiCache=sai; 
@@ -11277,8 +11308,9 @@ public final class SimSt implements Serializable {
        String numR = prettyNumRules();
        String numS = prettyNumAllInstructions();
        ageFileName += "R" + numR + "S" + numS;
-
-       String fullAgePath = getProjectDir() + "/" + getPrAgeDir();
+       String fullAgePath = getLogDirectory() + "/" + getPrAgeDir();
+       
+       
        File ageFile = new File( fullAgePath, ageFileName ).getAbsoluteFile();
        if(isWebStartMode()) {
        	fullAgePath = WebStartFileDownloader.SimStWebStartDir + getPrAgeDir() + "_" + getUserID() + "_" + FileZipper.formattedDate();
@@ -11286,11 +11318,15 @@ public final class SimSt implements Serializable {
        }
        
       if (isSsWebAuthoringMode()){
-    	    fullAgePath = getProjectDirectory() +"/" + getPrAgeDir();
+//    	    fullAgePath = getProjectDirectory() +"/" + getPrAgeDir();
+    	  	fullAgePath = getLogDirectory() + "/" + getPrAgeDir();
            	ageFile = new File(getProjectDirectory()+ WebStartFileDownloader.separator +getPrAgeDir()+WebStartFileDownloader.separator+ ageFileName);
       	}
       
-       
+      if(runType.equalsIgnoreCase("springBoot")) {
+    	  fullAgePath = getProjectDir() + "/" + getPrAgeDir();
+    	  ageFile = new File(fullAgePath + WebStartFileDownloader.separator + ageFileName);
+      }
 
        boolean userFile = false;
        String userProdRuleFile = "";
@@ -11304,7 +11340,8 @@ public final class SimSt implements Serializable {
        		id = getUserID();
        	userProdRuleFile = USER_PRODUCTION_RULE_FILE.replace("$", id);
 
-       	prFileUser = new File(getProjectDir(), userProdRuleFile);
+//       	prFileUser = new File(getProjectDir(), userProdRuleFile);
+       	prFileUser = new File(getLogDirectory(), userProdRuleFile);
        	// Check if the application is running locally or via webstart
        	if(isWebStartMode()) {
        		prFileUser = new File(WebStartFileDownloader.SimStWebStartDir + userProdRuleFile );
@@ -13158,10 +13195,13 @@ public final class SimSt implements Serializable {
 	public void restoreMTWMState(){
 		try{
 			File file =  null;
+			String val = BR_Controller.DISK_LOGGING_DIR;
 			if(!isWebStartMode())
-				file = new File(getUserID()+"-wm.xml");
+//				file = new File(getUserID()+"-wm.xml");
+				file = new File(getLogDirectory(), getUserID()+"-wm.xml");
 			else
 				file = new File(WebStartFileDownloader.SimStWebStartDir+getUserID()+"-wm.xml");
+//				file = new File(WebStartFileDownloader.SimStWebStartDir+getUserID()+"_wm.xml");
 			if(file.exists()) {
 				JAXBContext jaxbContext = JAXBContext.newInstance(ModelTraceWorkingMemory.class);
 
@@ -13181,9 +13221,12 @@ public final class SimSt implements Serializable {
 			File file = null;
 			//System.out.println(" Web start ? "+isWebStartMode());
 			if(!isWebStartMode())
-				file = new File(getUserID()+"-wm.xml");
+//				file = new File(getUserID()+"-wm.xml");
+				
+				file = new File(getLogDirectory(), getUserID()+"-wm.xml");
 			else
 				file = new File(WebStartFileDownloader.SimStWebStartDir+getUserID()+"-wm.xml");
+//				file = new File(WebStartFileDownloader.SimStWebStartDir+getUserID()+"_wm.xml");
 			
 			ModelTraceWorkingMemory mt = (ModelTraceWorkingMemory) getModelTraceWM().clone();
 			JAXBContext jaxbContext = JAXBContext.newInstance(ModelTraceWorkingMemory.class);

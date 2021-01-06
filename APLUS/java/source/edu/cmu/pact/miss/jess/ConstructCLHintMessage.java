@@ -293,12 +293,11 @@ public class ConstructCLHintMessage implements Userfunction, Serializable {
 			String[] sai = token[0].split(",");
 			sb.append(sai[0]+",");
 			sb.append(sai[1]+",");
-			
+			String runType = ((BR_Controller)amt.getController()).getMissController().getSimSt().getSsRete().getRunType();
 			if(sai.length == 3) {
 				
 				String skill = sai[2], foa1 = "", foa2 = "";
 				Vector focusOfAttn = null;
-
 				if(amt != null)
 					focusOfAttn = ((BR_Controller)amt.getController()).getMissController().getSimSt().
 						getFoaGetter().foaGetter((BR_Controller)amt.getController(), sai[0].trim(), sai[1].trim(), sai[2], null);
@@ -311,6 +310,8 @@ public class ConstructCLHintMessage implements Userfunction, Serializable {
 						foa1 = (String) ((JCommComboBox)focusOfAttn.elementAt(0)).getValue();
 					else if (focusOfAttn.elementAt(0) instanceof JCommTextField  )
 						foa1 = ((JCommTextField )focusOfAttn.elementAt(0)).getText();
+					else if(runType.equals("springBoot"))
+						foa1 = focusOfAttn.elementAt(0).toString();
 					else 
 						foa1 = ((TableExpressionCell)focusOfAttn.elementAt(0)).getText();
 				
@@ -319,6 +320,8 @@ public class ConstructCLHintMessage implements Userfunction, Serializable {
 						foa2 = (String) ((JCommComboBox)focusOfAttn.elementAt(1)).getValue();
 					else if (focusOfAttn.elementAt(1) instanceof JCommTextField  )
 						foa2 = ((JCommTextField )focusOfAttn.elementAt(1)).getText();
+					else if(runType.equals("springBoot"))
+						foa2 = focusOfAttn.elementAt(1).toString();
 					else 	
 						foa2 = ((TableExpressionCell)focusOfAttn.elementAt(1)).getText();
 							

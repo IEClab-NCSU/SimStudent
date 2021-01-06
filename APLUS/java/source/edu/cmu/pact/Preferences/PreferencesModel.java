@@ -328,6 +328,13 @@ public class PreferencesModel {
 
 	/**
 	 * Default docFile name.
+	 * 09/11/2020 - Bug in JavaAPLUS
+	 * If the command line argument -ssLoadPrefsFile brPrefsStacy.xml is specified then the log files 
+	 * are generated in two folders.
+	 * On Launch of the application the docFile is set to brPrefs.xml and LogService.log and simstudent.log files
+	 * are generated in mentioned Disk Logging Directory property. Thereafter the command line arguments are read and the docFile is set to brPrefsStacy.xml
+	 * The other student-specific files are generated in the specified Disk Logging Directory property.
+	 * 
 	 */
 	private final String PREFERENCES_FILE = "brPrefs.xml";
 

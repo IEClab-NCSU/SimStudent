@@ -26,6 +26,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Vector;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import javax.swing.JOptionPane;
 
@@ -171,7 +173,29 @@ public class SimStRete extends MTRete implements Serializable, JessParser {
 	public void setAmt(ModelTracer amt) {
 		this.amt = amt;
 	}
+	
+	private String runType = "";
+	
+	public String getRunType() {
+		return runType;
+	}
 
+	public void setRunType(String runType) {
+		super.setRunType(runType);
+		this.runType = runType;
+	}
+
+	private String projectDirectory = "";
+	
+	public String getProjectDirectory() {
+		return projectDirectory;
+	}
+
+	public void setProjectDirectory(String projectDirectory) {
+		super.setProjectDirectory(projectDirectory);
+		this.projectDirectory = projectDirectory;
+	}
+	
 	HashMap wmeChildSlots = new edu.cmu.pact.miss.HashMap();
     Vector getWmeChildSlots( String wmeType ) throws Exception {
     	Vector childSlots = (Vector)wmeChildSlots.get( wmeType );
@@ -215,9 +239,6 @@ public class SimStRete extends MTRete implements Serializable, JessParser {
 	public void setTextOutput(TextOutput textOutput) {
 		this.textOutput = textOutput;
 	}
-
-	
-	
 	/***
 	 * Method that returns the value of a fact
 	 * 
@@ -822,7 +843,10 @@ public class SimStRete extends MTRete implements Serializable, JessParser {
 	public Fact getFactByName(SimStRete ssRete, String name) {
 		Iterator it;
 		Fact fact = null;
+		
 		it = ssRete.listFacts();
+		
+		
 		try {
 			while (it.hasNext()) {
 				fact = (Fact) it.next();
@@ -1251,9 +1275,14 @@ public class SimStRete extends MTRete implements Serializable, JessParser {
 			} else {
 				//trace.out("miss","	#@$&&#$@#%* " + filenames[i] + " not... going for getFileAsResource " );
 				System.out.println(" Directory : "+getController().getMissController().getSimSt().getProjectDirectory());
-				if(this.getController().getMissController().getSimSt().isSsWebAuthoringMode())
-					results[i] = new File(this.getController().getMissController().getSimSt().getProjectDirectory()+"/"+filenames[i]);
-				else 
+				if(this.getController().getMissController().getSimSt().isSsWebAuthoringMode()) {
+					if(this.getController().getRunType().equals("springBoot")) {
+						String tempFileName = (filenames[i].contains("/"))? filenames[i].split("/")[1] : filenames[i];
+						results[i] = new File(this.getController().getMissController().getSimSt().getProjectDirectory()+"/"+tempFileName);
+					} else {
+						results[i] = new File(this.getController().getMissController().getSimSt().getProjectDirectory()+"/"+filenames[i]);
+					}
+				} else 
 				    results[i] = Utils.getFileAsResource(filenames[i], this);
 				if (null == results[i] || !((File) results[i]).exists()){
 					

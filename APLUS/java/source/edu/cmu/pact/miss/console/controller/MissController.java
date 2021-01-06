@@ -62,7 +62,8 @@ public class MissController implements MissControllerExternal {
 	/**	Hint messages manager to display hints to student tutor in meta-tutor mode */
 	private APlusHintMessagesManager aPlusHintMessagesManager;
 	private CTAT_Launcher ctatLauncher;
-
+	String runType = System.getProperty("appRunType");
+	
     // Menu items on the Miss Console menu bar
     public static final String FILE_MENU = "File";
     public static final String NEW_PROBLEM = "New Problem";
@@ -1050,6 +1051,7 @@ public class MissController implements MissControllerExternal {
         String fileName = "instructions.txt";
         if(getSimSt() != null && getSimSt().getUserID() != null)
         	fileName = "instructions-"+getSimSt().getUserID()+".txt";
+//        	fileName = getSimSt().getUserID()+"_instructions.txt";
         msg += "done\nSaved work to " + fileName + "...";
     	getMissConsole().message (msg);
 
@@ -1060,7 +1062,8 @@ public class MissController implements MissControllerExternal {
         
         if(wmeTypeFile != null && wmeTypeFile.isAbsolute() && wmeTypeFile.exists()) {
         	
-        	instructionsFile = new File(fileName); 
+//        	instructionsFile = new File(fileName); 
+        	instructionsFile = new File(getSimSt().getLogDirectory(), fileName); 
         	getSimSt().saveInstructions(instructionsFile);
         } else if(getSimSt().isWebStartMode()) { // For webstart
     		
@@ -1221,7 +1224,7 @@ public class MissController implements MissControllerExternal {
     	String fileName = "SimStDefault.ser";
     	if(getSimSt() != null && getSimSt().getUserID() != null)
     		fileName = "simst-"+getSimSt().getUserID()+".ser";
-    	File serFile = new File(fileName); 
+    	File serFile = new File(getSimSt().getLogDirectory(), fileName); 
     	// Check if the application is running locally or using Webstart
     	if(!getSimSt().isWebStartMode()) { // Running locally
     		trace.err("Simstudent running locally...");
@@ -1235,6 +1238,7 @@ public class MissController implements MissControllerExternal {
     			
     			fileName = "SimStDefault.ser";
     			serFile = new File(fileName);
+    			
     			if(serFile != null && serFile.exists()) {
 
 	        	getBrController().setDeletePrFile(true);

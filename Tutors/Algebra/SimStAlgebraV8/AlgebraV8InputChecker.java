@@ -20,8 +20,16 @@ public class AlgebraV8InputChecker extends InputChecker {
 	private String[] operatorPhrasing = {"add", "subtract", "multiply by", "divide by", "combine like terms", "distribute", "combine like terms in", "combine like term", "combine", "clt"};
 	private char[] validSymbols = {'+','-','*','/','(',')','.'};
 	private static char[] invalidVariables = {'d', 'e', 'f', 'l', 'D', 'E', 'F', 'L'};
+	private String runType;
 	
+	public String getRunType() {
+		return runType;
+	}
 	
+	public void setRunType(String runType) {
+		this.runType = runType;
+	}
+
 	BR_Controller controller;
 	
 	@Override

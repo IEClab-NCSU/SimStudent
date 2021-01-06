@@ -33,7 +33,7 @@
   <preference>
     <name>Docked Window Location Y</name>
     <class>java.lang.Integer</class>
-    <value>125</value>
+    <value>33</value>
   </preference>
   <preference>
     <name>Docked Window Width</name>

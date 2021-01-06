@@ -1,4 +1,4 @@
-	package SimStAlgebraV8;
+package SimStAlgebraV8;
 
 
 import edu.cmu.pact.miss.StartStateChecker;

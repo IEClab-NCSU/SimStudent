@@ -574,7 +574,7 @@ public class StudentAvatarDesigner extends JPanel implements ActionListener {
 	        	}
 	        	frame.setVisible(false);
 	        	
-	        	SimStPLE.saveAccountFile(accountName+".account");
+//	        	SimStPLE.saveAccountFile(accountName+".account");
 	        	
 	        	int duration = (int) (( Calendar.getInstance().getTimeInMillis() - startTime)/1000);
 	        	

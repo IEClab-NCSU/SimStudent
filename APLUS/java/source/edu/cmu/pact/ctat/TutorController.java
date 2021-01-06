@@ -93,8 +93,18 @@ public class TutorController extends CTATBase implements CTAT_Controller
 
 	/** Link to the top-level student runtime object. */
 	private TSLauncherServer tsLauncherServer;
+	
+	private String runType = "";
 
-    /** System properties to check in {@link #loadControlFromSystemProperties()}. */
+    public String getRunType() {
+		return runType;
+	}
+
+	public void setRunType(String runType) {
+		this.runType = runType;
+	}
+
+	/** System properties to check in {@link #loadControlFromSystemProperties()}. */
     private static final String[] systemPropertiesToCheck = {
 		Logger.DISK_LOG_DIR_PROPERTY,
 		Logger.AUTH_TOKEN_PROPERTY,
@@ -306,9 +316,9 @@ public class TutorController extends CTATBase implements CTAT_Controller
             }
 
             
-            if (type.equalsIgnoreCase("CorrectAction")) {            	
-            	doCorrectAction_movedFromCommWidget(propertyNames,
-            			propertyValues);
+            if (type.equalsIgnoreCase("CorrectAction")) {
+            	if(getRunType() == "")
+            		doCorrectAction_movedFromCommWidget(propertyNames,propertyValues);
             	return;
             }
             if (type.equalsIgnoreCase("IncorrectAction")) {
@@ -319,7 +329,8 @@ public class TutorController extends CTATBase implements CTAT_Controller
             
             
             if (type.equalsIgnoreCase("LISPCheckAction")) {
-                doLispCheckAction_movedFromCommWidget(propertyNames,propertyValues);
+            	if(getRunType() == "")
+            		doLispCheckAction_movedFromCommWidget(propertyNames,propertyValues);
                 return;
             }
             if (type.equalsIgnoreCase("StateGraph")) {

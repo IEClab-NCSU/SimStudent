@@ -140,7 +140,7 @@ fi
 TutorArg="${TutorArg} -ssProjectDirectory ${ProjectDir}"
 TutorArg="${TutorArg} -ssOverviewPage curriculum.html"
 TutorArg="${TutorArg} -ssLoadPrefsFile brPrefsStacy.xml"
-TutorArg="${TutorArg} -sslogFolder ${ProjectDir}/log/APLUS"
+TutorArg="${TutorArg} -sslogFolder log/APLUSTER"
 TutorArg="${TutorArg} -ssCacheOracleInquiry false"
 TutorArg="${TutorArg} -ssSearchTimeOutDuration 20000"
 TutorArg="${TutorArg} -ssTutorServerTimeOutDuration 100000"
