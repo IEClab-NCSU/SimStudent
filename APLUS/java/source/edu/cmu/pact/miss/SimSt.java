@@ -9622,7 +9622,8 @@ public final class SimSt implements Serializable {
 
                } catch (Exception e) {
                    // TODO Figure out what is causing this error
-                   e.printStackTrace();
+//                   e.printStackTrace();
+                   result = immatureSkillOperand(selection, input);
                }
 
 
