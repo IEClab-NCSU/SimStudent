@@ -351,16 +351,25 @@ public class BR_Controller extends TutorController implements PropertyChangeList
     
 	// Skill Name Setter - Variables
 	private AskHint hintInfo;
-    
     public AskHint getHintInfo() {
 		return hintInfo;
 	}
 	
     public void setHintInfo(AskHint hintInfo) {
 		this.hintInfo = hintInfo;
+		setSkillInfo(hintInfo.skillName);
 	}
     
-   // AskHint hint, String step, ProblemNode parentNode, String message[]
+    private String skillInfo;
+    
+    public String getSkillInfo() {
+		return skillInfo;
+	}
+
+	public void setSkillInfo(String skillInfo) {
+		this.skillInfo = skillInfo;
+	}
+	// AskHint hint, String step, ProblemNode parentNode, String message[]
     private String stepInfo;
     private ProblemNode parentNodeInfo;
     private String messageInfo;
@@ -4281,7 +4290,7 @@ public class BR_Controller extends TutorController implements PropertyChangeList
      * @param selectionP if the 1st selection matches "Done", call this a done node
      * @return new node
      */
-    private ProblemNode createProblemNode(List<String> selectionP) {
+    public ProblemNode createProblemNode(List<String> selectionP) {
     	if(trace.getDebugCode("mg"))
     		trace.printStack("mg", "BR_Ctlr.createProblemNode() selectionP="+selectionP);
 
@@ -4311,7 +4320,7 @@ public class BR_Controller extends TutorController implements PropertyChangeList
         
         //Create a new state
         newProblemNode = problemGraph.addProblemNode(node);
-
+//        setParentNodeInfo(newProblemNode);//save the parentnode state
 		//[Kevin Zhao](kzhao) edit here for testing
         //getProblemModel().fireProblemModelEvent(new NodeCreatedEvent(this, newProblemNode));
         

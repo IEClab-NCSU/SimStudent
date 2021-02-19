@@ -3723,8 +3723,9 @@ public final class SimSt implements Serializable {
 		    		foilData.setFoilLogDir(getProjectDirectory() + WebStartFileDownloader.separator + getFoilLogDir() + WebStartFileDownloader.separator);
 	    		}
 	    		else if(!isWebStartMode()) {
-	    		foilData.setFoilDir();
-	    		foilData.setFoilLogDir(getProjectDir() + WebStartFileDownloader.separator + getFoilLogDir() + WebStartFileDownloader.separator);
+		    		foilData.setFoilDir();
+		    		String foilLogDir = getProjectDir() + WebStartFileDownloader.separator + getLogDirectory() +  WebStartFileDownloader.separator + getUserID() + "-" + getFoilLogDir() +  WebStartFileDownloader.separator;
+		    		foilData.setFoilLogDir(foilLogDir);
 	    		} else {
 	    			foilData.setFoilLogDir(WebStartFileDownloader.SimStWebStartDir+FOIL_LOG + "_" + getUserID() + 
 	    					"_" + FileZipper.formattedDate()+System.getProperty("file.separator"));
@@ -9621,7 +9622,8 @@ public final class SimSt implements Serializable {
 
                } catch (Exception e) {
                    // TODO Figure out what is causing this error
-                   e.printStackTrace();
+//                   e.printStackTrace();
+                   result = immatureSkillOperand(selection, input);
                }
 
 
@@ -11308,7 +11310,7 @@ public final class SimSt implements Serializable {
        String numR = prettyNumRules();
        String numS = prettyNumAllInstructions();
        ageFileName += "R" + numR + "S" + numS;
-       String fullAgePath = getLogDirectory() + "/" + getPrAgeDir();
+       String fullAgePath = getLogDirectory() + WebStartFileDownloader.separator + getUserID() + "-" + getPrAgeDir();
        
        
        File ageFile = new File( fullAgePath, ageFileName ).getAbsoluteFile();

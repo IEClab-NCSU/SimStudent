@@ -63,12 +63,12 @@
   <preference>
     <name>Student Interface Location X</name>
     <class>java.lang.Integer</class>
-    <value>0</value>
+    <value>93</value>
   </preference>
   <preference>
     <name>Student Interface Location Y</name>
     <class>java.lang.Integer</class>
-    <value>46</value>
+    <value>126</value>
   </preference>
   <preference>
     <name>Use OLI Logging</name>
