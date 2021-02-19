@@ -178,7 +178,7 @@ done:We can stop working on the problem.
 :It cancels out the term (F).
 :It simplifies the equation.
 .
-text:What is it about (P) that made you know to (O)?
+text:Why do you think I need to (O) next for (P)?
 !typein,add;subtract:The term (F) is positive.
 !typein,add;subtract:The term (F) is negative.
 !typein,add;subtract:There are variables on both sides of the equation.

@@ -383,8 +383,8 @@ public class Instruction implements Serializable{
     	
     	if(isSearchFailed())
     	{
-    		trace.err("Initializing a search that has already failed");
-    		new Exception().printStackTrace();
+    		/*trace.err("Initializing a search that has already failed");
+    		new Exception().printStackTrace();*/
     		setSearchFailed(false);
     	}
     	
