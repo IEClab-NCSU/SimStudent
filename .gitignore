@@ -1,6 +1,9 @@
 # OS junk files
+.DS_Store
 **/.DS_Store
 .idea/
+.classpath
+**/.classpath
 
 # Project files
 *.class
