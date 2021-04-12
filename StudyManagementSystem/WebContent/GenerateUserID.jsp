@@ -1,3 +1,5 @@
+<%@ page import="edu.tamu.config.Config" %>
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -11,7 +13,13 @@
 </head>
 <body>
 <h2> Generate user ID</h2>
-<sql:setDataSource var="ds" driver="com.mysql.jdbc.Driver" url="jdbc:mysql://kona.education.tamu.edu:3306/studymanagement" user="simstudent" password="simstudent"/>
+<%
+	String JDBC_DRIVER = Config.config.get("jdbcDriver");
+	String DB_URL = Config.config.get("database");
+	String user = Config.config.get("dbUser");
+	String password = Config.config.get("dbPassword");
+%>
+<sql:setDataSource var="ds" driver="<%=JDBC_DRIVER%>" url="<%=DB_URL%>" user="<%=user%>" password="<%=password%>"/>
 <sql:query dataSource="${ds}" sql="select study_name from study order by creation_time asc " var="study"/>
 
 <a href="/StudyManagementSystem/study.jsp">Study Form</a> &nbsp;  &nbsp;
@@ -26,7 +34,7 @@ Study Name				<select name="studyName">
 						</c:forEach>
 						</select>
 						<br>
-	<input type="submit" name="">
+	<input type="submit" name="" value="Download">
 </form>
 </body>
 </html>

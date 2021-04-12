@@ -8,6 +8,39 @@
     <welcome-file>index.jsp</welcome-file>
     <welcome-file>default.html</welcome-file>
     <welcome-file>default.htm</welcome-file>
-    <welcome-file>default.jsp</welcome-file>
+  	<welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  <context-param>
+  	<param-name>jdbcDriver</param-name>
+  	<param-value>com.mysql.jdbc.Driver</param-value>
+  </context-param>
+  <context-param>
+  	<param-name>database</param-name>
+  	<param-value>jdbc:mysql://192.168.1.176:52000/studymanagement</param-value>
+  </context-param>
+  <context-param>
+  	<param-name>dbUser</param-name>
+  	<param-value>root</param-value>
+  </context-param>
+  <context-param>
+  	<param-name>dbPassword</param-name>
+  	<param-value>simstudent</param-value>
+  </context-param>
+  <context-param>
+  	<param-name>probUrl</param-name>
+  	<param-value></param-value>
+  </context-param>
+  <context-param>
+  	<param-name>genaratedFilePath</param-name>
+  	<param-value>/Users/ieclab/Downloads</param-value>
+  </context-param>
+  <context-param>
+  	<param-name>generatedFileName</param-name>
+  	<param-value>StudySessionConfiguration</param-value>
+  </context-param>
+  <servlet>  
+   <servlet-name>TeacherServlet</servlet-name>  
+   <servlet-class>edu.tamu.teacherServlet.TeacherServlet</servlet-class>  
+   <load-on-startup>0</load-on-startup>  
+  </servlet>  
 </web-app>

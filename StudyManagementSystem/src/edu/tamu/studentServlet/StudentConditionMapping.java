@@ -2,9 +2,11 @@ package edu.tamu.studentServlet;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -18,7 +20,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -28,6 +33,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
 
+import edu.tamu.config.Config;
 import edu.tamu.entity.Student;
 import edu.tamu.entity.StudySchool;
 import edu.tamu.entity.Teacher;
@@ -38,16 +44,31 @@ import edu.tamu.entity.Teacher;
 @WebServlet("/StudentConditionMapping")
 public class StudentConditionMapping extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	final String JDBC_DRIVER="com.mysql.jdbc.Driver";
-	final String DB_URL = "jdbc:mysql://kona.education.tamu.edu:3306/studymanagement";
-	final String user = "simstudent";
-	final String password = "simstudent";   
+	private static String JDBC_DRIVER="";
+	private static String DB_URL = "";
+	private static String user = "";
+	private static String password = "";
+	private static String generatedFilePath = "";
+	private static String generatedFileName = "";
     /**
      * @see HttpServlet#HttpServlet()
      */
     public StudentConditionMapping() {
         super();
         // TODO Auto-generated constructor stub
+    }
+    
+    public void init(ServletConfig servletConfig) {
+    	System.out.println("Calling Init");
+		
+		Map<String, String> config = Config.getConfig(servletConfig);
+		
+    	JDBC_DRIVER = config.get("jdbcDriver");
+    	DB_URL = config.get("database");
+    	user = config.get("dbUser");
+    	password = config.get("dbPassword");
+    	generatedFilePath = config.get("generatedFilePath");
+    	generatedFileName = config.get("generatedFileName");
     }
 
 	/**
@@ -72,17 +93,17 @@ public class StudentConditionMapping extends HttpServlet {
 		String assignmentType = "";
 		
 		
-		response.setContentType("text/html");
-		PrintWriter out = response.getWriter();
-		String title = "Successfully generated";
-	    String docType =
+		//response.setContentType("text/html");
+		//PrintWriter out = response.getWriter();
+		//String title = "Successfully generated";
+	    /*String docType =
 	        "<!doctype html public \"-//w3c//dtd html 4.0 " +
 	         "transitional//en\">\n";
 	         out.println(docType +
 	         "<html>\n" +
 	         "<head><title>" + title + "</title></head>\n" +
 	         "<body bgcolor=\"#f0f0f0\">\n" +
-	         "<h1 align=\"center\">" + title + "</h1>\n");
+	         "<h1 align=\"center\">" + title + "</h1>\n");*/
 	         try {
 				Class.forName(JDBC_DRIVER);
 				Connection con = (Connection) DriverManager.getConnection(DB_URL,user,password);
@@ -161,11 +182,11 @@ public class StudentConditionMapping extends HttpServlet {
 					ResultSet rs2 = stat2.executeQuery(sql2);
 					while(rs2.next()){
 						if(!teacherKey.contains(rs2.getInt("teacher_key"))) {
-							newTeacherList.add(new Teacher(rs2.getInt("teacher_key"),rs2.getString("teacher_name"),rs2.getString("class_name"),school_study_id.get(i),rs2.getInt("no_of_students"),anon_prefix.get(i)));
+							newTeacherList.add(new Teacher(rs2.getInt("teacher_key"),rs2.getString("teacher"),rs2.getString("class_name"),school_study_id.get(i),rs2.getInt("no_of_students"),anon_prefix.get(i)));
 							//classMap.put(rs2.getInt("study_school_key"), rs2.getString("class_name"));
 						}
 						else
-							oldTeacherList.add(new Teacher(rs2.getInt("teacher_key"),rs2.getString("teacher_name"),rs2.getString("class_name"),school_study_id.get(i),rs2.getInt("no_of_students"),anon_prefix.get(i)));
+							oldTeacherList.add(new Teacher(rs2.getInt("teacher_key"),rs2.getString("teacher"),rs2.getString("class_name"),school_study_id.get(i),rs2.getInt("no_of_students"),anon_prefix.get(i)));
 					}
 						
 				}
@@ -222,6 +243,7 @@ public class StudentConditionMapping extends HttpServlet {
 				else
 					schoolLevelAssignment(studentList,conditions,conditionCount);
 				
+				
 				testVersionAssignment(studentList,conditions,versions);
 				
 				insertDatabase(studentList,con);
@@ -229,14 +251,14 @@ public class StudentConditionMapping extends HttpServlet {
 				studentList.clear();
 				Statement stat6 = (Statement) con.createStatement();
 				for(int i=0; i< school_study_id.size(); i++) {
-					String sql6 = "select distinct s.studentid, s.conditions, s.pretest_version, s.posttest_version, s.delayedtest_version, t.teacher_name, "
+					String sql6 = "select distinct s.studentid, s.conditions, s.pretest_version, s.posttest_version, s.delayedtest_version, t.teacher, "
 							+ "t.class_name, sc.schoolname, sc.pretest, sc.intervention_from, sc.intervention_to, sc.posttest, sc.delayedtest, sc.windowslog_dir, sc.maclog_dir from "
 							+ "shortid_table s, teacher t, school sc where s.study_school_key = t.study_school_key AND s.study_school_key=sc.study_school_key and t.teacher_key=s.teacher_key and sc.study_school_key= "+school_study_id.get(i)
-							+ " and (sc.pretest >= CURDATE() or sc.intervention_to >= CURDATE() or sc.intervention_from >= CURDATE() or sc.posttest >= CURDATE() or sc.delayedtest >= CURDATE()) order by sc.schoolname, t.teacher_name, s.conditions asc";
+							+ " and (sc.pretest >= CURDATE() or sc.intervention_to >= CURDATE() or sc.intervention_from >= CURDATE() or sc.posttest >= CURDATE() or sc.delayedtest >= CURDATE()) order by sc.schoolname, t.teacher, s.conditions asc";
 					ResultSet rs6 = stat6.executeQuery(sql6);
 					while(rs6.next()){
 						System.out.println(rs6.getString("studentid"));
-						Teacher t = new Teacher(rs6.getString("teacher_name"),rs6.getString("class_name"),school_study_id.get(i),rs6.getString("windowslog_dir"),rs6.getString("maclog_dir"),rs6.getString("schoolname"));
+						Teacher t = new Teacher(rs6.getString("teacher"),rs6.getString("class_name"),school_study_id.get(i),rs6.getString("windowslog_dir"),rs6.getString("maclog_dir"),rs6.getString("schoolname"));
 						Student st = new Student(rs6.getString("studentid"),t,rs6.getString("pretest"),rs6.getString("posttest"),rs6.getString("delayedtest"),rs6.getString("intervention_from"),rs6.getString("intervention_to")
 								,rs6.getString("conditions"),rs6.getString("pretest_version"),rs6.getString("posttest_version"),rs6.getString("delayedtest_version"));
 						studentList.add(st);
@@ -245,6 +267,43 @@ public class StudentConditionMapping extends HttpServlet {
 				}
 				createConfigurationFile(studentList,studyName);
 				
+				
+				String filePath = generatedFilePath+"/"+generatedFileName+".csv";
+				File downloadFile = new File(filePath);
+				FileInputStream inStream = new FileInputStream(downloadFile);
+				
+				String relativePath = request.getServletContext().getRealPath("");
+				System.out.println("relativePath = " + relativePath);
+				
+				ServletContext context = request.getServletContext();
+				
+				String mimeType = context.getMimeType(filePath);
+		        if (mimeType == null) {
+		            mimeType = "application/octet-stream";
+		        }
+		        System.out.println("MIME type: " + mimeType);
+		         
+		        // modifies response
+		        response.setContentType(mimeType);
+		        response.setContentLength((int) downloadFile.length());
+		         
+		        // forces download
+		        String headerKey = "Content-Disposition";
+		        String headerValue = String.format("attachment; filename=\"%s\"", downloadFile.getName());
+		        response.setHeader(headerKey, headerValue);
+		         
+		        // obtains response's output stream
+		        OutputStream outStream = response.getOutputStream();
+		         
+		        byte[] buffer = new byte[4096];
+		        int bytesRead = -1;
+		         
+		        while ((bytesRead = inStream.read(buffer)) != -1) {
+		            outStream.write(buffer, 0, bytesRead);
+		        }
+		         
+		        inStream.close();
+		        outStream.close();     
 				
 				
 			} catch (ClassNotFoundException e) {
@@ -286,11 +345,11 @@ public class StudentConditionMapping extends HttpServlet {
 	private void createConfigurationFile(List<Student> studentList, String studyName) {
 		try {
 			
-			File file = new File("/usr/local/apache-tomcat-8.0.38/webapps/Servlet/StudySessionConfiguration.csv");
+			File file = new File(generatedFilePath+"/"+generatedFileName+".csv");
 			if(file.exists()){
 				DateFormat df = new SimpleDateFormat("MM-dd-yyyy");
 				java.util.Date date = new java.util.Date();
-				file.renameTo(new File("/usr/local/apache-tomcat-8.0.38/webapps/Servlet/StudySession-Archive/StudySessionConfiguration_"+df.format(date)+".csv"));
+				file.renameTo(new File(generatedFilePath+"/"+generatedFileName+"_"+df.format(date)+".csv"));
 			}
 			FileWriter fw = new FileWriter(file);
 			for(int i=0; i<studentList.size(); i++) {
@@ -360,7 +419,7 @@ public class StudentConditionMapping extends HttpServlet {
 	private List<Student> divideStudents(List<Student> studentList,String condition) {
 		 List<Student> tmp = new ArrayList<Student>();
 		 for(int i=0; i<studentList.size(); i++) {
-			 if(studentList.get(i).getCondition().equals(condition))
+			 if(studentList.get(i).getCondition() != null && studentList.get(i).getCondition().equals(condition))
 				 tmp.add(studentList.get(i));
 		 }
 			 
