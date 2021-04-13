@@ -1222,9 +1222,18 @@ public class MissController implements MissControllerExternal {
     	trace.err("Loading InstnDeSerialize");
     	if(trace.getDebugCode("miss"))trace.out("miss", "Inside loadInstnDeSerialize");
     	String fileName = "SimStDefault.ser";
-    	if(getSimSt() != null && getSimSt().getUserID() != null)
+    	if(getSimSt() != null && getSimSt().getUserID() != null) {
     		fileName = "simst-"+getSimSt().getUserID()+".ser";
-    	File serFile = new File(getSimSt().getLogDirectory(), fileName); 
+    		if (runType.equalsIgnoreCase("springBoot")) {
+    			fileName = "simSt.ser";
+    		}
+    	}
+    	File serFile;
+    	if (runType.equalsIgnoreCase("springBoot")) {
+    		serFile = new File(getSimSt().getUserBundleDirectory(), fileName);
+    	} else {
+    		serFile = new File(getSimSt().getLogDirectory(), fileName);		
+    	}
     	// Check if the application is running locally or using Webstart
     	if(!getSimSt().isWebStartMode()) { // Running locally
     		trace.err("Simstudent running locally...");

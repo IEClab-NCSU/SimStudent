@@ -2118,11 +2118,15 @@ public final class SimSt implements Serializable {
    	String filename = "simst.ser";
    	File serFileUser = null;
    	FileOutputStream serFileUserStream = null;
-   	if(getUserID() != null) {
+   	if(getUserID() != null && !runType.equalsIgnoreCase("springBoot")) {
    		filename = "simst-"+getUserID()+".ser";
-//   		filename = getUserID()+"_simst.ser";
    	}
-   	serFileUser = new File(getLogDirectory(), filename);
+   	
+   	if (runType.equalsIgnoreCase("springBoot")) {
+   		serFileUser = new File(getUserBundleDirectory(), filename);
+   	} else {
+   		serFileUser = new File(getLogDirectory(), filename);
+   	}
    	
    	final SimSt simStObj = this;
    	FileOutputStream fos = null;
