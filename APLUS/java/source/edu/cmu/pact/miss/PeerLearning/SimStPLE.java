@@ -606,10 +606,8 @@ public class SimStPLE {
 			trace.out("miss", "Loading the instructions now");
 		long startTime = System.currentTimeMillis();
 		boolean loadingSucceeded = false;
-		if(!runType.equals("springBoot")) {
-			loadingSucceeded = getMissController().loadInstDeSerialize();
-		}
-
+		loadingSucceeded = getMissController().loadInstDeSerialize();
+		
 		if (!loadingSucceeded) {
 			if (getSimStPeerTutoringPlatform() != null)
 				getSimStPeerTutoringPlatform().showWaitMessage(true);
