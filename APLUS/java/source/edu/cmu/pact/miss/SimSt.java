@@ -867,7 +867,7 @@ public final class SimSt implements Serializable {
 	   if (userBundleDirectory == null) {
 		   trace.err("Missing path for user bundle directory");
 	   }
-	   return userBundleDirectory;
+	   return userBundleDirectory + "/" + getUserID();
    }
    public void setUserBundleDirectory(String directory) {
 	   userBundleDirectory = directory;
@@ -3736,11 +3736,12 @@ public final class SimSt implements Serializable {
 	    		// Set up the foil-log and foil6.exe location
 	    		if(isSsWebAuthoringMode()){
 	    			foilData.setFoilDir();
-		    		foilData.setFoilLogDir(getProjectDirectory() + WebStartFileDownloader.separator + getFoilLogDir() + WebStartFileDownloader.separator);
+	    			String foilLogDir = getUserBundleDirectory() + "/" + getFoilLogDir() +  "/";
+		    		foilData.setFoilLogDir(foilLogDir);
 	    		}
 	    		else if(!isWebStartMode()) {
 		    		foilData.setFoilDir();
-		    		String foilLogDir = getProjectDir() + WebStartFileDownloader.separator + getLogDirectory() +  WebStartFileDownloader.separator + getUserID() + "-" + getFoilLogDir() +  WebStartFileDownloader.separator;
+		    		String foilLogDir = getProjectDir() + "/" + getLogDirectory() +  "/" + getUserID() + "-" + getFoilLogDir() +  "/";
 		    		foilData.setFoilLogDir(foilLogDir);
 	    		} else {
 	    			foilData.setFoilLogDir(WebStartFileDownloader.SimStWebStartDir+FOIL_LOG + "_" + getUserID() + 
@@ -11345,15 +11346,9 @@ public final class SimSt implements Serializable {
        }
        
       if (isSsWebAuthoringMode()){
-//    	    fullAgePath = getProjectDirectory() +"/" + getPrAgeDir();
-    	  	fullAgePath = getLogDirectory() + "/" + getPrAgeDir();
-           	ageFile = new File(getProjectDirectory()+ WebStartFileDownloader.separator +getPrAgeDir()+WebStartFileDownloader.separator+ ageFileName);
+    	    fullAgePath = getUserBundleDirectory() +"/" + getPrAgeDir();
+           	ageFile = new File(fullAgePath + "/" + ageFileName);
       	}
-      
-      if(runType.equalsIgnoreCase("springBoot")) {
-    	  fullAgePath = getProjectDir() + "/" + getPrAgeDir();
-    	  ageFile = new File(fullAgePath + WebStartFileDownloader.separator + ageFileName);
-      }
 
        boolean userFile = false;
        String userProdRuleFile = "";
@@ -11621,11 +11616,16 @@ public final class SimSt implements Serializable {
 	            Instruction instruction = instructions.get(0);
 	            int arity = instruction.numFocusOfAttention() -1;
 	            
+	            foilLogDir = getProjectDirectory() + "/" + getLogDirectory() + "/" + getUserID() + "-" + getFoilLogDir() + "/";
+	            if (isSsWebAuthoringMode()) {
+	            	foilLogDir = getUserBundleDirectory() + "/" + getFoilLogDir() + "/";
+	            }
+	            
 	            foilData = new FoilData( name, arity, 
 	                    getPredicates(),
 	                    getFocusOfAttention(name),
 	                    getFeaturePredicateCache(),
-	                    /*getProjectDir() + "\\" + getFoilLogDir() + "\\"*/ getProjectDirectory() + WebStartFileDownloader.separator + getFoilLogDir() + WebStartFileDownloader.separator, getFoilMaxTuples());
+	                    foilLogDir , getFoilMaxTuples());
 	            foilData.setDecomposers(decomposers);
 	            foilDataHash.put( name, foilData );
 	            // getFoilData(instruction.getName(),instruction.numFocusOfAttention() -1);
