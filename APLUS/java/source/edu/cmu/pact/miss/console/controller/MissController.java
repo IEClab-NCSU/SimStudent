@@ -1049,9 +1049,8 @@ public class MissController implements MissControllerExternal {
     public void autoSaveInstructions() {
     	String msg="";
         String fileName = "instructions.txt";
-        if(getSimSt() != null && getSimSt().getUserID() != null)
+        if(getSimSt() != null && getSimSt().getUserID() != null && !getSimSt().isSsWebAuthoringMode())
         	fileName = "instructions-"+getSimSt().getUserID()+".txt";
-//        	fileName = getSimSt().getUserID()+"_instructions.txt";
         msg += "done\nSaved work to " + fileName + "...";
     	getMissConsole().message (msg);
 
@@ -1061,9 +1060,11 @@ public class MissController implements MissControllerExternal {
         wmeTypeFile = new File(new File(".").getAbsolutePath(), SimSt.WME_TYPE_FILE);
         
         if(wmeTypeFile != null && wmeTypeFile.isAbsolute() && wmeTypeFile.exists()) {
-        	
-//        	instructionsFile = new File(fileName); 
-        	instructionsFile = new File(getSimSt().getLogDirectory(), fileName); 
+        	if(getSimSt().isSsWebAuthoringMode()) {
+        		instructionsFile = new File(getSimSt().getUserBundleDirectory(), fileName);
+        	} else {
+        		instructionsFile = new File(getSimSt().getLogDirectory(), fileName); 
+        	}
         	getSimSt().saveInstructions(instructionsFile);
         } else if(getSimSt().isWebStartMode()) { // For webstart
     		
@@ -1074,14 +1075,13 @@ public class MissController implements MissControllerExternal {
     		} catch (IOException e) {
     			e.printStackTrace();
     		}
-         }else if(getSimSt().isSsWebAuthoringMode()){
-        	   instructionsFile = new File(getSimSt().getProjectDirectory()+"/"+fileName);
-        	// instructionsFile = new File(getSimSt().getPackageName()+"/"+ fileName);
- 			 getSimSt().saveInstructions(instructionsFile);
+         } else if (getSimSt().isSsWebAuthoringMode()) {
+        	 instructionsFile = new File(getSimSt().getUserBundleDirectory(), fileName);
+        	 getSimSt().saveInstructions(instructionsFile);
          }
-    		msg += "done";
-    		getMissConsole().message(msg);
-         }
+        msg += "done";
+        getMissConsole().message(msg);
+    }
     
     public void loadInstructions() {
     	String msg = "Select file to load previously demonstrated steps...";
@@ -1115,11 +1115,11 @@ public class MissController implements MissControllerExternal {
     public void autoLoadInstructions() {
     	
     	String fileName = "instructions.txt";
-        if(getSimSt() != null && getSimSt().getUserID() != null)
+    	if(getSimSt() != null && getSimSt().getUserID() != null && !getSimSt().isSsWebAuthoringMode())
         	fileName = "instructions-"+getSimSt().getUserID()+".txt";
         File file = null;
         if(getSimSt().isSsWebAuthoringMode())
-        	file = new File(getSimSt().getProjectDirectory()+"/"+fileName);
+        	file = new File(getSimSt().getUserBundleDirectory(), fileName);
         else 
         	file = new File(fileName);
 
