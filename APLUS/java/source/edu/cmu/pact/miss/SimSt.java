@@ -858,6 +858,21 @@ public final class SimSt implements Serializable {
        projectDir = pDir;
    }
    
+   /**
+    * This variable is used to set user bundle directory in webaplus and watson 
+    */
+   private String userBundleDirectory = null;
+   
+   public String getUserBundleDirectory() {
+	   if (userBundleDirectory == null) {
+		   trace.err("Missing path for user bundle directory");
+	   }
+	   return userBundleDirectory;
+   }
+   public void setUserBundleDirectory(String directory) {
+	   userBundleDirectory = directory;
+   }
+   
    /***
     *  This variable is meant for setting the project directory in the servlet 
     */

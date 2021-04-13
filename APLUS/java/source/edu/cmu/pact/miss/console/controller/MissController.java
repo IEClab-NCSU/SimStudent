@@ -2003,8 +2003,12 @@ public class MissController implements MissControllerExternal {
 
                     } else if (keyStem.equalsIgnoreCase("ssProjectDirectory")) {
                         setSsProjectDir(parameter[0]);
-
                     } 
+                    else if(keyStem.equalsIgnoreCase("ssUserBundleDir")) {
+                    	// @author raj
+                    	// this flag will allow us to set the user bundle space
+                    	setSsUserBundleDir(parameter[0]);
+                    }
                     else if (keyStem.equalsIgnoreCase("ssPackageName")) {
                     	setSsPackageName(parameter[0]);
                     } 
@@ -2184,6 +2188,11 @@ public class MissController implements MissControllerExternal {
 
     	PreferencesModel pm = getBrController().getPreferencesModel();
     	pm.setStringValue(BR_Controller.DISK_LOGGING_DIR, logFolder);
+	}
+	
+	private void setSsUserBundleDir (String userBundleDir) {
+		trace.out("miss", "Setting the user bundle directory :  " + userBundleDir);
+		this.getSimSt().setUserBundleDirectory(userBundleDir);
 	}
 
 	// Thu Oct 27 15:20:09 2005:: Noboru
