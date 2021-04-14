@@ -27,10 +27,6 @@
   	<param-value>simstudent</param-value>
   </context-param>
   <context-param>
-  	<param-name>probUrl</param-name>
-  	<param-value></param-value>
-  </context-param>
-  <context-param>
   	<param-name>genaratedFilePath</param-name>
   	<param-value>/Users/ieclab/Downloads</param-value>
   </context-param>
