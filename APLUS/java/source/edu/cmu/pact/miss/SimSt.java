@@ -11620,9 +11620,10 @@ public final class SimSt implements Serializable {
 	            Instruction instruction = instructions.get(0);
 	            int arity = instruction.numFocusOfAttention() -1;
 	            
-	            foilLogDir = getProjectDirectory() + "/" + getLogDirectory() + "/" + getUserID() + "-" + getFoilLogDir() + "/";
 	            if (isSsWebAuthoringMode()) {
 	            	foilLogDir = getUserBundleDirectory() + "/" + getFoilLogDir() + "/";
+	            } else {
+	            	foilLogDir = getProjectDirectory() + "/" + getLogDirectory() + "/" + getUserID() + "-" + getFoilLogDir() + "/";
 	            }
 	            
 	            foilData = new FoilData( name, arity, 
