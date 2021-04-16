@@ -1246,7 +1246,7 @@ public class MissController implements MissControllerExternal {
     		} else if(serFile == null || !serFile.exists() || getSimSt() != null) { // Else load the simst.ser file if it exists
     			
     			fileName = "SimStDefault.ser";
-    			serFile = new File(fileName);
+    			serFile = new File(getSimSt().getProjectDir(), fileName);
     			
     			if(serFile != null && serFile.exists()) {
 
