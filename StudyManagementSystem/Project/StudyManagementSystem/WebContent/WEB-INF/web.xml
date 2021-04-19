@@ -16,7 +16,7 @@
   </context-param>
   <context-param>
   	<param-name>database</param-name>
-  	<param-value>jdbc:mysql://192.168.1.176:52000/studymanagement</param-value>
+  	<param-value>jdbc:mysql://10.154.30.212:3100/studymanagement</param-value>
   </context-param>
   <context-param>
   	<param-name>dbUser</param-name>
@@ -24,11 +24,11 @@
   </context-param>
   <context-param>
   	<param-name>dbPassword</param-name>
-  	<param-value>simstudent</param-value>
+  	<param-value>password</param-value>
   </context-param>
   <context-param>
   	<param-name>genaratedFilePath</param-name>
-  	<param-value>/Users/ieclab/Downloads</param-value>
+  	<param-value>.</param-value>
   </context-param>
   <context-param>
   	<param-name>generatedFileName</param-name>
