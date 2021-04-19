@@ -359,6 +359,8 @@ public class StudentConditionMapping extends HttpServlet {
 							 +"	"+studentList.get(i).getPostTestVersion()+"	"+studentList.get(i).getDelayedTestVersion());
 				fw.append(st.getStudentID());
 				fw.append(",");
+				fw.append(st.getStudentID()+"@example.com");
+				fw.append(",");
 				fw.append(st.getInterventionFrom());
 				fw.append(",");
 				fw.append(st.getInterventionTo());
