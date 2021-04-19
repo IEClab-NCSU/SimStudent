@@ -3,7 +3,9 @@ version: '3.2'
 services:
 
   mysql:
-    build: ./sql.Dockerfile
+    build: 
+        context: ./
+        dockerfile: sql.Dockerfile
     image: studymanagement-db:latest
     restart: always
     ports: 
@@ -11,15 +13,18 @@ services:
     command: --init-file /data/application/studymanagement.sql
     hostname: mysql
     environment:
-      MYSQL_DATABASE: studymanagement
       MYSQL_ROOT_USER: root
       MYSQL_ROOT_PASSWORD: password
+    volumes:
+      - /data:/var/lib/mysql
 
   studymanagement:
-    build: ./Dockerfile
+    build: 
+        context: ./
+        dockerfile: Dockerfile
     image: studymanagement:latest
     ports:
-      - 9010:8000
+      - 9010:8080
     depends_on: 
       - mysql
     restart: always
