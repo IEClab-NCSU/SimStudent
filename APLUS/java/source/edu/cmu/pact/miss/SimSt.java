@@ -858,6 +858,21 @@ public final class SimSt implements Serializable {
        projectDir = pDir;
    }
    
+   /**
+    * This variable is used to set user bundle directory in webaplus and watson 
+    */
+   private String userBundleDirectory = null;
+   
+   public String getUserBundleDirectory() {
+	   if (userBundleDirectory == null) {
+		   trace.err("Missing path for user bundle directory");
+	   }
+	   return userBundleDirectory;
+   }
+   public void setUserBundleDirectory(String directory) {
+	   userBundleDirectory = directory;
+   }
+   
    /***
     *  This variable is meant for setting the project directory in the servlet 
     */
@@ -2103,11 +2118,15 @@ public final class SimSt implements Serializable {
    	String filename = "simst.ser";
    	File serFileUser = null;
    	FileOutputStream serFileUserStream = null;
-   	if(getUserID() != null) {
+   	if(getUserID() != null && !runType.equalsIgnoreCase("springBoot")) {
    		filename = "simst-"+getUserID()+".ser";
-//   		filename = getUserID()+"_simst.ser";
    	}
-   	serFileUser = new File(getLogDirectory(), filename);
+   	
+   	if (runType.equalsIgnoreCase("springBoot")) {
+   		serFileUser = new File(getUserBundleDirectory(), filename);
+   	} else {
+   		serFileUser = new File(getLogDirectory(), filename);
+   	}
    	
    	final SimSt simStObj = this;
    	FileOutputStream fos = null;
@@ -3721,11 +3740,12 @@ public final class SimSt implements Serializable {
 	    		// Set up the foil-log and foil6.exe location
 	    		if(isSsWebAuthoringMode()){
 	    			foilData.setFoilDir();
-		    		foilData.setFoilLogDir(getProjectDirectory() + WebStartFileDownloader.separator + getFoilLogDir() + WebStartFileDownloader.separator);
+	    			String foilLogDir = getUserBundleDirectory() + "/" + getFoilLogDir() +  "/";
+		    		foilData.setFoilLogDir(foilLogDir);
 	    		}
 	    		else if(!isWebStartMode()) {
 		    		foilData.setFoilDir();
-		    		String foilLogDir = getProjectDir() + WebStartFileDownloader.separator + getLogDirectory() +  WebStartFileDownloader.separator + getUserID() + "-" + getFoilLogDir() +  WebStartFileDownloader.separator;
+		    		String foilLogDir = getProjectDir() + "/" + getLogDirectory() +  "/" + getUserID() + "-" + getFoilLogDir() +  "/";
 		    		foilData.setFoilLogDir(foilLogDir);
 	    		} else {
 	    			foilData.setFoilLogDir(WebStartFileDownloader.SimStWebStartDir+FOIL_LOG + "_" + getUserID() + 
@@ -11330,15 +11350,9 @@ public final class SimSt implements Serializable {
        }
        
       if (isSsWebAuthoringMode()){
-//    	    fullAgePath = getProjectDirectory() +"/" + getPrAgeDir();
-    	  	fullAgePath = getLogDirectory() + "/" + getPrAgeDir();
-           	ageFile = new File(getProjectDirectory()+ WebStartFileDownloader.separator +getPrAgeDir()+WebStartFileDownloader.separator+ ageFileName);
+    	    fullAgePath = getUserBundleDirectory() +"/" + getPrAgeDir();
+           	ageFile = new File(fullAgePath + "/" + ageFileName);
       	}
-      
-      if(runType.equalsIgnoreCase("springBoot")) {
-    	  fullAgePath = getProjectDir() + "/" + getPrAgeDir();
-    	  ageFile = new File(fullAgePath + WebStartFileDownloader.separator + ageFileName);
-      }
 
        boolean userFile = false;
        String userProdRuleFile = "";
@@ -11606,11 +11620,17 @@ public final class SimSt implements Serializable {
 	            Instruction instruction = instructions.get(0);
 	            int arity = instruction.numFocusOfAttention() -1;
 	            
+	            if (isSsWebAuthoringMode()) {
+	            	foilLogDir = getUserBundleDirectory() + "/" + getFoilLogDir() + "/";
+	            } else {
+	            	foilLogDir = getProjectDirectory() + "/" + getLogDirectory() + "/" + getUserID() + "-" + getFoilLogDir() + "/";
+	            }
+	            
 	            foilData = new FoilData( name, arity, 
 	                    getPredicates(),
 	                    getFocusOfAttention(name),
 	                    getFeaturePredicateCache(),
-	                    /*getProjectDir() + "\\" + getFoilLogDir() + "\\"*/ getProjectDirectory() + WebStartFileDownloader.separator + getFoilLogDir() + WebStartFileDownloader.separator, getFoilMaxTuples());
+	                    foilLogDir , getFoilMaxTuples());
 	            foilData.setDecomposers(decomposers);
 	            foilDataHash.put( name, foilData );
 	            // getFoilData(instruction.getName(),instruction.numFocusOfAttention() -1);
