@@ -40,6 +40,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -192,7 +193,7 @@ public final class SimSt implements Serializable {
 
    private static final String NO_ACTIVATIONS = "NoActivations";
    private static final String NOT_SPECIFIED = "NotSpecified";
-
+      
    String logDirectory = null;
    String runType = System.getProperty("appRunType");
    public String getLogDirectory() {
@@ -4625,8 +4626,17 @@ public final class SimSt implements Serializable {
 	    contest.contestOnProblem("6x=9");*/
 	    //contest.contest(currentNode);
    }
-
-
+   
+   public boolean getNodeDoneState() {
+       ProblemNode parentNode = getBrController().getParentNodeInfo();
+       return parentNode.getDoneState();
+   }
+   
+   public void setNodeDoneState(boolean nodeState) {
+       ProblemNode parentNode = getBrController().getParentNodeInfo();//getBrController().getSolutionState().getCurrentNode();
+       parentNode.setDoneState(nodeState);
+   }
+   
    public void ssLogStudentsLearning( String training, String output ) {
 
        File trainingFile = new File(training); 
@@ -5783,7 +5793,7 @@ public final class SimSt implements Serializable {
        for (int i = 0; i < numCurrentFoA(); i++) {
            String foaStr = getCurrentFoA().get(i).foaString();
           
-           foaStrs.add(getCurrentFoA().get(i).foaString());
+           foaStrs.add(foaStr);//getCurrentFoA().get(i).foaString());
        }
        
        
