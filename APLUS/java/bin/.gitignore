@@ -1,4 +1,5 @@
 /AdditionTutorChaining/
+/NewFractionAddition/
 /WebAPLUS/
 /apple/
 /cl/
@@ -6,4 +7,10 @@
 /jess/
 /org/
 /pact/
-/NewFractionAddition/
+/solver.brd
+/solverNotAutoSimplify.brd
+/solverTypein.brd
+/testFalse.brd
+/testMultiple.brd
+/testTrue.brd
+/x_eq_4over2.brd
