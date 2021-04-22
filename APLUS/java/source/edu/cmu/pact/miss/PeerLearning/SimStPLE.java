@@ -3891,7 +3891,8 @@ public class SimStPLE {
 		// getSimStPeerTutoringPlatform().getSimStAvatarLayerIcon().setBorder(BorderFactory.createLineBorder(Color.green,
 		// BORDER_WIDTH));
 		// Do not allow editing of values once avatar is done
-		blockInput(true);
+		if(!runType.equals("springBoot"))
+			blockInput(true);
 		// jinyul - Save instructions now that a particular problem has been finished.
 		if (trace.getDebugCode("miss"))
 			trace.out("miss", "Enter setAvatarFinished to call autoSaveInstructions()");
@@ -3902,11 +3903,12 @@ public class SimStPLE {
 		giveMessage(conversation.getMessage(SimStConversation.SOLVED_TOPIC));
 		startStatus = false;
 		// getSimStPeerTutoringPlatform().setImage(STUDENT_SUCCESS_IMAGE);
-		getSimStPeerTutoringPlatform().setExpression(SUCCESS_EXPRESSION);
-		getSimStPeerTutoringPlatform().setUndoButtonEnabled(true);
-		getSimStPeerTutoringPlatform().setRestartButtonEnabled(true);
-		getSimStPeerTutoringPlatform().setWait(false);
-
+		if(!runType.equals("springBoot")) {
+			getSimStPeerTutoringPlatform().setExpression(SUCCESS_EXPRESSION);
+			getSimStPeerTutoringPlatform().setUndoButtonEnabled(true);
+			getSimStPeerTutoringPlatform().setRestartButtonEnabled(true);
+			getSimStPeerTutoringPlatform().setWait(false);
+		}
 		if (brController != null && brController.getMissController().getSimSt().isSsMetaTutorMode()) {
 			// keep the previous problem just in case student clicks restart
 
@@ -3948,7 +3950,8 @@ public class SimStPLE {
 		// BORDER_WIDTH));
 		// Do not allow editing of values while avatar is thinking - disable all cells
 		// of tables
-		blockInput(true);
+		if(!runType.equals("springBoot"))
+			blockInput(true);
 		// giveMessage(THINK_MESSAGE);
 		giveMessage(conversation.getMessage(SimStConversation.THINK_TOPIC));
 		startStatus = false;

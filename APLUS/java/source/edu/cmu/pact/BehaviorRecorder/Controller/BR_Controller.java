@@ -405,6 +405,16 @@ public class BR_Controller extends TutorController implements PropertyChangeList
 	public void setMessageInfo(String messageInfo) {
 		this.messageInfo = messageInfo;
 	}
+	
+	private String doneButtonText;
+	
+	public String getDoneButtonText() {
+		return doneButtonText;
+	}
+
+	public void setDoneButtonText(String doneButtonText) {
+		this.doneButtonText = doneButtonText;
+	}
 
 	public BR_Controller() 
     {

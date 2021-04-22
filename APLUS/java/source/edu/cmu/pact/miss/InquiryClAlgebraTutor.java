@@ -548,6 +548,54 @@ public class InquiryClAlgebraTutor {
     	}
     	return edgeCount;
     }
+    
+    protected int searchWebLastEquation(String[] problem, ProblemEdge[] edgeQueue, Vector /* ProblemEdge */ pathEdges, String runType) {
+        
+    	int edgeCount = 0;
+
+    	for (int i = 0; i < pathEdges.size(); i++) {
+    		
+    		edgeQueue[edgeCount++] = (ProblemEdge)pathEdges.get(i);
+    		
+    		if (edgeCount == 3) {
+    			String[] eqSide = new String[2];
+    			for (int j = 0; j < 2; j++) {
+    				EdgeData edgeData = edgeQueue[j+1].getEdgeData();
+    				String selection = (String)edgeData.getSelection().get(0);
+    				if(selection.length() < SimSt.COMM_STEM.length()){
+    					return -2;
+    				}
+    				char table = selection.charAt(SimSt.COMM_STEM.length());
+	   				if(table != '1') //Not Single table format.  Switch multi table format to multi column, single table
+	   				{
+	   					int rowIndex = selection.indexOf('R')+1;
+	   			    	char row = selection.charAt(rowIndex);
+	   			    	selection = SimSt.COMM_STEM+"1_C"+table+"R"+row;
+	   				}
+    				String input = (String)edgeData.getInput().get(0);
+    				if ("1".equals(getSelectionColumn(selection))) {
+    					eqSide[0] = input;
+    				} else if ("2".equals(getSelectionColumn(selection))) {
+    					eqSide[1] = input;
+    				} else if(runType.equals("springBoot")) {
+    					if ("0".equals(getSelectionColumn(selection))) {
+        					eqSide[0] = input;
+        				} else if ("1".equals(getSelectionColumn(selection))) {
+        					eqSide[1] = input;
+        				}
+        			} else {
+    					return -2;
+    				}
+    			}
+    			problem[0] = eqSide[0] + " = " + eqSide[1];
+    			edgeCount = 0;
+    			for (int k = 0; k < 3; k++) {
+    				edgeQueue[k] = null;
+    			}
+    		}
+    	}
+    	return edgeCount;
+    }
 
     public static Vector /* ProblemEdge */ findPathDepthFirst(ProblemNode startNode, ProblemNode endNode) {
 

@@ -1162,19 +1162,25 @@ public class EdgeData implements Serializable {
                     .equalsIgnoreCase("Hint")))
                 defaultHint = BUTTON_DEFAULT;
             if (firstSelection.equalsIgnoreCase("Done")) {
-            	JCommWidget d = null;
-            	try {
-            		if (controller != null)
-            			d = controller.getCommWidget(firstSelection);
-            	} catch (RuntimeException re) {
-            		d = null;
-            	}
-                if (d != null) {
-                    JCommButton dd = (JCommButton) d;
-                    inputText = dd.getText();
-                    defaultHint = DONE_BUTTON_FRONT + inputText
+            	if(!controller.getRunType().equals("springBoot")) {
+            		JCommWidget d = null;
+            		try {
+            			if (controller != null)
+            				d = controller.getCommWidget(firstSelection);
+            		} catch (RuntimeException re) {
+            			d = null;
+            		}
+            		if (d != null) {
+            			JCommButton dd = (JCommButton) d;
+            			inputText = dd.getText();
+            			defaultHint = DONE_BUTTON_FRONT + inputText
                             + DONE_BUTTON_REAR;
-                }
+            		}
+            	} else {
+            		inputText = controller.getDoneButtonText();
+        			defaultHint = DONE_BUTTON_FRONT + inputText
+                        + DONE_BUTTON_REAR;
+            	}
             }
         } else if (actionName.equals("UpdateRadioButton")) {
             // radioButton's text

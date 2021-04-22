@@ -163,8 +163,13 @@ public class InquiryClSolverTutor extends InquiryClAlgebraTutor {
 			 Vector /* ProblemEdge */ pathEdges = findPathDepthFirst(startNode, currentNode);
 			 // Returns the last complete equation as problem[0] 
 			 // and the following intermediate steps as edgeQueue[]
-			 if(pathEdges != null) 	
-				 edgeCount = searchLastEquation(problem, edgeQueue, pathEdges);
+			 if(pathEdges != null) {
+				 if(brController.getRunType().equals("springBoot")) {
+					 edgeCount = searchWebLastEquation(problem, edgeQueue, pathEdges, "springBoot");
+				 } else {
+					 edgeCount = searchLastEquation(problem, edgeQueue, pathEdges);
+				 }
+			 }
 		 }
 		 problem[0] = SimSt.convertFromSafeProblemName(problem[0]);
 		 /*problem[0] = problem[0].replaceAll(SimSt.EQUAL_SIGN, "=");

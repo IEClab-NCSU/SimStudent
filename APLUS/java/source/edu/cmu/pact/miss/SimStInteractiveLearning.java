@@ -82,7 +82,7 @@ public class SimStInteractiveLearning implements Runnable {
 		if (simSt.getSsInteractiveLearning() == null)
 			simSt.setSsInteractiveLearning(this);
 	}
-
+	
 	// TODO: stop using static
 	public static BR_Controller brController; // used by simulateCellTextEntry()
 
@@ -101,6 +101,8 @@ public class SimStInteractiveLearning implements Runnable {
 	public SimStLogger getLogger() {
 		return logger;
 	}
+	
+	final int CHANCE = 60;
 
 	public void setLogger(SimStLogger log) {
 		logger = log;
@@ -1977,10 +1979,28 @@ public void fillInQuizProblem(String problemName) {
 				stepDuration);
 	}
 	
+	public String problemStepName() {
+		String problemName = getBrController(getSimSt()).getProblemModel().getProblemName();
+		if(runType.equals("SpringBoot")) {
+			problemName = brController.getStepInfo();
+		}
+		return problemName;
+	}
+	
+	public ProblemNode problemStartNode() {
+		ProblemNode startNode = brController.getProblemModel().getStartNode();
+		if(runType.equals("SpringBoot")) {
+			startNode = brController.getProblemModel().getStartNode();
+		}
+		return startNode;
+	}
+	
 	public void doneNodeState() {
-		solution = simSt.getProblemAssessor().determineSolution(getBrController(getSimSt()).getProblemModel().getProblemName(),brController.getProblemModel().getStartNode());	
+//		solution = simSt.getProblemAssessor().determineSolution(getBrController(getSimSt()).getProblemModel().getProblemName(),brController.getProblemModel().getStartNode());	
+		solution = simSt.getProblemAssessor().determineSolution(problemStepName(),problemStartNode());	
 		setSolution(solution);
-		correct = simSt.getProblemAssessor().isSolution( getBrController(getSimSt()).getProblemModel().getProblemName(), solution);
+//		correct = simSt.getProblemAssessor().isSolution( getBrController(getSimSt()).getProblemModel().getProblemName(), solution);
+		correct = simSt.getProblemAssessor().isSolution( problemStepName(), solution);
 		setCorrect(correct);
 		
 //		If solution checking failed, then log the reason of failing
@@ -2112,7 +2132,7 @@ public void fillInQuizProblem(String problemName) {
 			return true;
 	}
 
-	private void pruneBadRules() {
+	public void pruneBadRules() {
 		// Delete bad rules
 		double average = 0;
 		int total = 0;
@@ -2407,7 +2427,7 @@ public void fillInQuizProblem(String problemName) {
 	
 	
 	HashSet<String> explainedWhyRightSkills = new HashSet<String>();
-	
+	HashSet<String> explainedSelectionSkills = new HashSet<String>();
 	
 	/**
 	 * Method that returns true if selection is marked in SimStudent configuration file as
@@ -2442,14 +2462,16 @@ public void fillInQuizProblem(String problemName) {
 		if (explainedWhyRightSkills==null)
 			explainedWhyRightSkills = new HashSet<String>();
 		
-		
+		Random r = new Random();
+	    int probability = r.nextInt(100);
 		
 		//if (simSt.isSelfExplainMode() && !skillName.contains("typein") && !skillName.contains("unnamed")) {
 		//10/06/2014: now selection is the one that defines if SimStudent should ask for self explanation
-		if (simSt.isSelfExplainMode() && isSelectionValidForSelfExplanation(edge.getSelection()) && !explainedWhyRightSkills.contains(skillName)){
+		if (simSt.isSelfExplainMode() && isSelectionValidForSelfExplanation(edge.getSelection()) && !explainedWhyRightSkills.contains(skillName) 
+			&& probability <= CHANCE && !explainedSelectionSkills.contains(edge.getSelection())){
 			
 			explainedWhyRightSkills.add(skillName);
-				
+			explainedSelectionSkills.add(edge.getSelection());
 			
 			Sai sai = edge.getSai();
 			step = simSt.getProblemStepString();
@@ -2568,7 +2590,6 @@ public void fillInQuizProblem(String problemName) {
 			Sai sai = new Sai(ran.getActualSelection(), ran.getActualAction(),
 					ran.getActualInput());
 			String ruleName = ran.getName().replaceAll("MAIN::", "");
-
 			if (trace.getDebugCode("sstt"))
 				trace.out("sstt",
 						"Why wrong TutalkI Trace skillName: " + ran.getName()
@@ -2690,8 +2711,8 @@ public void fillInQuizProblem(String problemName) {
 					}
 					return;
 				}
-					
-
+				
+				explainedSelectionSkills.add(sai.getS());
 				Instruction inst=getBrController(getSimSt()).getMissController().getSimSt().getWhyNotInstruction();				
 				if (inst.getPreviousID()==null)
 					return;
