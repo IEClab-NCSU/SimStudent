@@ -867,7 +867,7 @@ public final class SimSt implements Serializable {
 	   if (userBundleDirectory == null) {
 		   trace.err("Missing path for user bundle directory");
 	   }
-	   return userBundleDirectory + "/" + getUserID();
+	   return userBundleDirectory;
    }
    public void setUserBundleDirectory(String directory) {
 	   userBundleDirectory = directory;
