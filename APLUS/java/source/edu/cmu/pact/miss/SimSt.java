@@ -8733,7 +8733,7 @@ public final class SimSt implements Serializable {
                    } 
                    else if (getRuleActivationTestMethod().equalsIgnoreCase(RA_TEST_METHOD_HO)) {
                        // ruleActivated.getName()
-                       mtStatus = inquiryRuleActivationOracle(selection, action, input, problemNode, problemName, ruleName, ran);
+                       mtStatus = inquiryRuleActivationOracle(selection, action, input, problemNode, problemName, ruleName, ran, null);
                    }
                    else if (getRuleActivationTestMethod().equalsIgnoreCase(RA_TEST_METHOD_CL)) {
                        String problem = startNode.getName();
@@ -9863,7 +9863,7 @@ public final class SimSt implements Serializable {
    // 
    public String inquiryRuleActivationOracle(String actualSelection, String actualAction, String actualInput, 
                                              ProblemNode node, String problemName, String ruleName,
-                                             RuleActivationNode ran) {
+                                             RuleActivationNode ran, Boolean isInquiryCorrect) {
 
 	   
 		String step = getProblemStepString();
@@ -9875,17 +9875,17 @@ public final class SimSt implements Serializable {
        	
        	String title = "Applying the rule " + ruleName.replaceAll("MAIN::", "");
        	String message[] = generateQueryMessage(actualSelection, actualAction, actualInput, ran);
-       	
-       	JFrame frame = getBrController().getActiveWindow();
-       	
-       	if(getMissController().getSimStPLE() != null)
-       		getMissController().getSimStPLE().setFocusTab(SimStPLE.SIM_ST_TAB);
-       	
-
-       	
        	String msg = "";
        	for(int i=0;i<message.length;i++)
        		msg += message[i]+" ";
+       	
+       	if (isInquiryCorrect == null && runType.equals("springBoot")) {
+	       	return msg;
+       	}
+       	
+       	if(!runType.equals("springBoot") && getMissController().getSimStPLE() != null)
+       		getMissController().getSimStPLE().setFocusTab(SimStPLE.SIM_ST_TAB);
+       	
        	Sai sai = new Sai(actualSelection, actualAction, actualInput);
        	AskHint hint = null;
        	
@@ -9924,7 +9924,12 @@ public final class SimSt implements Serializable {
 	        		
        	}
 
-       	int oracle = displayConfirmMessage(title,message);
+       	int oracle = 0;
+       	if(!runType.equals("springBoot")) {
+       		oracle = displayConfirmMessage(title,message);       		
+       	} else {
+       		oracle = isInquiryCorrect ? JOptionPane.YES_OPTION : JOptionPane.NO_OPTION;
+       	}
        	if (oracle == JOptionPane.YES_OPTION) {
        		status = EdgeData.CORRECT_ACTION;
        		if(isSkillNameGetterDefined()) {
