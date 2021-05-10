@@ -1933,8 +1933,8 @@ public final class SimSt implements Serializable {
    	} catch(IOException e) {
    		e.printStackTrace();
    	} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
+		e.printStackTrace();
+	}
 				
    	// Restore the current simStudent to the same state
    	this.instructions = simStObj.instructions;

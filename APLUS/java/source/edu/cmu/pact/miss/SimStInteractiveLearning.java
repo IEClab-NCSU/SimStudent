@@ -2129,7 +2129,9 @@ public void fillInQuizProblem(String problemName) {
 
 		if (getBrController(getSimSt()).getMissController().isPLEon() && doCheck) {
 			SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();
-			ple.setAvatarThinking();
+			if(!runType.contentEquals("springBoot")) {
+				ple.setAvatarThinking();
+			}
 			return simSt.getProblemAssessor().performInteractiveAnswerCheck(
 					ple, problem, solution);
 
