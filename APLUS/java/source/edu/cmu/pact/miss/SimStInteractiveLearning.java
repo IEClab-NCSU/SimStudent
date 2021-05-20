@@ -1724,12 +1724,36 @@ public void fillInQuizProblem(String problemName) {
 				if (getBrController(getSimSt()).getMissController().isPLEon())
 					getBrController(getSimSt()).getMissController().getSimStPLE().checkForQuizTutoringBehaviourDiscrepency(brController.getProblemName(),null);	
 				
+				/*// Previous code start
 				nextCurrentNode = askWhatToDoNext(currentNode);
 				hintReceived = true;
 				if (trace.getDebugCode("ss"))
 					trace.out("ss", "Calling askWhatToDoNext  "
 							+ "currentNode: " + currentNode
 							+ " nextCurrentNode: " + nextCurrentNode);
+				// Previous code ends */
+				
+				// Tasmia added code starts here
+				// Ask if tutor knows what to do next.
+				String title = "Asking the tutor what to do next";
+				String message = "I am stuck. Do you know what step to perform next?";
+				int oracle = getSimSt().displayConfirmMessage(title,message);
+				// setting avatar to normal mode.
+				getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
+				if (oracle == JOptionPane.YES_OPTION) {
+					// ask for the demonstration of the step.
+					nextCurrentNode = askWhatToDoNext(currentNode);
+					hintReceived = true;
+					if (trace.getDebugCode("ss"))
+						trace.out("ss", "Calling askWhatToDoNext  "
+								+ "currentNode: " + currentNode
+								+ " nextCurrentNode: " + nextCurrentNode);
+		       	}
+				else {
+					// Tutor is  confused and don't know what to do next.
+					// Ask the initial tutee inquiry when tutor does not know what to do next.
+				}
+				// Tasmia added code ends here* */
 			}
 
 			// Null nextCurrentNode after the Oracle inquiry means that the user
