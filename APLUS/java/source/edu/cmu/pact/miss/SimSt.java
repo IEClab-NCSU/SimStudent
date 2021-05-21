@@ -2997,13 +2997,12 @@ public final class SimSt implements Serializable {
            Object[] args = null;
            Method getCommNameMethod = null;
            try {
-        	   if(!runType.equals("springBoot")) {
+        	   if(runType.equals("springBoot")) {
+        		   this.commName = (String) widget;
+        	   } else {
         		   getCommNameMethod = getWidgetClass().getMethod( "getCommName", argTypes );
                    this.commName = (String)getCommNameMethod.invoke( getWidget(), args );
-        	   } else {
-        		   this.commName = (String) widget;
         	   }
-               
            } catch (Exception e) {
                e.printStackTrace();
                logger.simStLogException(e);
@@ -9881,7 +9880,6 @@ public final class SimSt implements Serializable {
 	       	
           	try{
            		if(logger.getLoggingEnabled()){
-    	
         			//hint = new AskHintInBuiltClAlgebraTutor(getBrController(), node);
            			//CL oracle should not be hardcoded. Whichever oracle grades the quiz should be provide hint for logging
            			hint = askForHintQuizGradingOracle(getBrController(),node);

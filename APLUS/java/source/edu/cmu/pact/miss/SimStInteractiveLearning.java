@@ -1972,10 +1972,12 @@ public void fillInQuizProblem(String problemName) {
 				trace.out("ss", "killMessageReceived is true.");
 
 				// Finish SimStudent thinking
-		if (getBrController(getSimSt()).getMissController().isPLEon()
+		if(!runType.equals("springBoot")) {
+			if (getBrController(getSimSt()).getMissController().isPLEon()
 						&& !getBrController(getSimSt()).getMissController().getSimStPLE()
 								.isStartStatus()) {
-			getBrController(getSimSt()).getMissController().getSimStPLE().blockInput(true);
+				getBrController(getSimSt()).getMissController().getSimStPLE().blockInput(true);
+			}
 		}
 	}
 	
@@ -2535,10 +2537,10 @@ public void fillInQuizProblem(String problemName) {
 				 * question = qa.getQuestion(); explanation =
 				 * ple.giveMessageSelectableResponse(question, qa.getAnswers());
 				 */
-				if(!runType.equals("springBoot")) {
-					explanation = ple.giveMessageFreeTextResponse(question);
-				} else {
+				if(runType.equals("springBoot")) {
 					explanation = getHintInformation();
+				} else {
+					explanation = ple.giveMessageFreeTextResponse(question);
 				}
 				if (explanation != null && explanation.length() > 0) {
 					ple.giveMessage(ple.getConversation().getMessage(
