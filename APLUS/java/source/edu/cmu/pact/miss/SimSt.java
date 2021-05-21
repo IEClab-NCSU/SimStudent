@@ -2997,13 +2997,12 @@ public final class SimSt implements Serializable {
            Object[] args = null;
            Method getCommNameMethod = null;
            try {
-        	   if(!runType.equals("springBoot")) {
+        	   if(runType.equals("springBoot")) {
+        		   this.commName = (String) widget;
+        	   } else {
         		   getCommNameMethod = getWidgetClass().getMethod( "getCommName", argTypes );
                    this.commName = (String)getCommNameMethod.invoke( getWidget(), args );
-        	   } else {
-        		   this.commName = (String) widget;
         	   }
-               
            } catch (Exception e) {
                e.printStackTrace();
                logger.simStLogException(e);
@@ -9925,10 +9924,10 @@ public final class SimSt implements Serializable {
        	}
 
        	int oracle = 0;
-       	if(!runType.equals("springBoot")) {
-       		oracle = displayConfirmMessage(title,message);       		
-       	} else {
+       	if(runType.equals("springBoot")) {
        		oracle = isInquiryCorrect ? JOptionPane.YES_OPTION : JOptionPane.NO_OPTION;
+       	} else {
+       		oracle = displayConfirmMessage(title,message);       		
        	}
        	if (oracle == JOptionPane.YES_OPTION) {
        		status = EdgeData.CORRECT_ACTION;
