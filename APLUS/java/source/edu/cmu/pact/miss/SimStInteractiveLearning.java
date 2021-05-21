@@ -1882,6 +1882,10 @@ public void fillInQuizProblem(String problemName) {
 		///brController.getMissController().getSimSt().getModelTraceWM().setSolved("false");
 	}
 	
+	public boolean isDoneState() {
+		return this.currentNode.isDoneState();
+	}
+	
 	public void calculateFullStepTime(ProblemNode currentNode) {
 		step = simSt.getProblemAssessor().calcProblemStepString(currentNode.getProblemModel().getStartNode(), currentNode,simSt.getLastSkillOperand());
 		setStep(step);
@@ -2054,18 +2058,49 @@ public void fillInQuizProblem(String problemName) {
 	
 	public void takingQuiz(String solution, boolean correct) {
 		simSt.setIsInteractiveLearning(false);
-
 		// conversation about double-checking work
 		if (trace.getDebugCode("rr"))
-			trace.out("rr", "Calling checkAnswer: " + getBrController(getSimSt()).getProblemName() + " solution: " + solution + " correct: " + correct);
+			trace.out("rr", "Calling checkAnswer: " + getBrController(getSimSt()).getProblemName() + " solution: " + solution);
 		
-		boolean verified = checkAnswer(getBrController(getSimSt()).getProblemName(), solution, correct);
+		boolean verified = checkAnswer(getBrController(getSimSt()).getProblemName(), solution);
+		
+		logAndModelTraceAnswer(verified);
+	}
+
+	public String currentType="";
+	public String previousType="";
+	
+	public boolean shouldCheckAnswer() {
+		boolean doCheck = false;
+		if (simSt.isSelfExplainMode() && getBrController(getSimSt()).getMissController().isPLEon()) {
+			if (Math.random() < .4)
+				doCheck = true;
+			if (this.simSt.isSs2014FractionAdditionAdhoc())
+				doCheck = false;
+		}
+		return doCheck;
+	}
+	
+	private boolean checkAnswer(String problem, String solution) {
+		boolean doCheck = shouldCheckAnswer();
+
+		if (doCheck) {
+			SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();
+			if(!runType.contentEquals("springBoot")) {
+				ple.setAvatarThinking();
+			}
+			return simSt.getProblemAssessor().performInteractiveAnswerCheck(
+					ple, problem, solution);
+
+		} else
+			return true;
+	}
+	
+	public void logAndModelTraceAnswer(boolean verified) {
 		if (trace.getDebugCode("rr")) trace.out("rr", "Called checkAnswer: verified " + verified);
 
 		if (!verified && simSt.isSsMetaTutorMode())
 			 simSt.getModelTraceWM().setSolutionCheckError("true");
-		
-		
 		
 		if (getBrController(getSimSt()).getMissController().getSimSt().isSsMetaTutorMode()){
 			simSt.getModelTraceWM().setSolutionGiven("true");
@@ -2077,10 +2112,7 @@ public void fillInQuizProblem(String problemName) {
 			}else{
 				getBrController(getSimSt()).getMissController().getSimSt().getModelTraceWM().setTutoredProblemsWithoutHint(0);
 			}
-					
-			
 		}
-
 		
 		if (getBrController(getSimSt()).getMissController() != null
 				&& getBrController(getSimSt()).getMissController().getSimSt() != null
@@ -2098,47 +2130,21 @@ public void fillInQuizProblem(String problemName) {
 		}
 
 		// Block SimSt until next problem
-		if (getBrController(getSimSt()).getMissController().isPLEon() && verified)
-			getBrController(getSimSt()).getMissController().getSimStPLE()
-					.setAvatarFinished();
-		else if (getBrController(getSimSt()).getMissController().isPLEon())
-			getBrController(getSimSt()).getMissController().getSimStPLE()
-					.setAvatarFinishedWrong();
-		
-
+		if (!runType.equalsIgnoreCase("springboot")) {
+			if (getBrController(getSimSt()).getMissController().isPLEon() && verified)
+				getBrController(getSimSt()).getMissController().getSimStPLE()
+						.setAvatarFinished();
+			else if (getBrController(getSimSt()).getMissController().isPLEon())
+				getBrController(getSimSt()).getMissController().getSimStPLE()
+						.setAvatarFinishedWrong();
+		}
 		if (simSt.isSsMetaTutorMode())
 			getBrController(getSimSt()).getAmt().handleInterfaceAction("solved", "implicit", "-1");
 	}
-
-	public String currentType="";
-	public String previousType="";
 	
-	private boolean checkAnswer(String problem, String solution, boolean correct) {
-		if (!simSt.isSelfExplainMode())
-			return true;
-		
-		boolean doCheck = false;
-		// TODO adhoc values, weighted towards doing it when incorrect - may not
-		// be a good way to
-		// go past initial testing
-		if (Math.random() < .4)
-			doCheck = true;
-		
-		//doCheck = false;
-		
-		if (this.simSt.isSs2014FractionAdditionAdhoc())
-			doCheck=false;
-
-		if (getBrController(getSimSt()).getMissController().isPLEon() && doCheck) {
-			SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();
-			if(!runType.contentEquals("springBoot")) {
-				ple.setAvatarThinking();
-			}
-			return simSt.getProblemAssessor().performInteractiveAnswerCheck(
-					ple, problem, solution);
-
-		} else
-			return true;
+	public List<String> getAnswerCheckMessages(String problem, String solution) {
+		SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();
+		return simSt.getProblemAssessor().getInteractiveAnswerCheckMessages(ple, problem, solution);
 	}
 
 	public void pruneBadRules() {

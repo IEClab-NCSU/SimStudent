@@ -1,5 +1,7 @@
 package edu.cmu.pact.miss;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import edu.cmu.pact.BehaviorRecorder.ProblemModel.Graph.ProblemEdge;
@@ -33,5 +35,11 @@ public abstract class ProblemAssessor {
 	public boolean performInteractiveAnswerCheck(SimStPLE ple, String problem, String solution) 
 	{ 
 		return true;
+	}
+	
+	public List<String> getInteractiveAnswerCheckMessages(SimStPLE ple, String problem, String solution) {
+		List<String> messages = new ArrayList<String>();
+		messages.add("true");
+		return messages;
 	}
 }
