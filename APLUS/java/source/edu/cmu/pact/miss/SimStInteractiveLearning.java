@@ -2130,14 +2130,12 @@ public void fillInQuizProblem(String problemName) {
 		}
 
 		// Block SimSt until next problem
-		if (!runType.equalsIgnoreCase("springboot")) {
-			if (getBrController(getSimSt()).getMissController().isPLEon() && verified)
-				getBrController(getSimSt()).getMissController().getSimStPLE()
-						.setAvatarFinished();
-			else if (getBrController(getSimSt()).getMissController().isPLEon())
-				getBrController(getSimSt()).getMissController().getSimStPLE()
-						.setAvatarFinishedWrong();
-		}
+		if (getBrController(getSimSt()).getMissController().isPLEon() && verified)
+			getBrController(getSimSt()).getMissController().getSimStPLE()
+					.setAvatarFinished();
+		else if (getBrController(getSimSt()).getMissController().isPLEon())
+			getBrController(getSimSt()).getMissController().getSimStPLE()
+					.setAvatarFinishedWrong();
 		if (simSt.isSsMetaTutorMode())
 			getBrController(getSimSt()).getAmt().handleInterfaceAction("solved", "implicit", "-1");
 	}
