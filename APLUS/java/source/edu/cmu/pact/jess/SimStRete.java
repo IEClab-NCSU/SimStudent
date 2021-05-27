@@ -1274,7 +1274,7 @@ public class SimStRete extends MTRete implements Serializable, JessParser {
 				results[i] = f;
 			} else {
 				//trace.out("miss","	#@$&&#$@#%* " + filenames[i] + " not... going for getFileAsResource " );
-				System.out.println(" Directory : "+getController().getMissController().getSimSt().getProjectDirectory());
+				trace.out(" Directory : "+getController().getMissController().getSimSt().getProjectDirectory());
 				if(this.getController().getMissController().getSimSt().isSsWebAuthoringMode()) {
 					if(this.getController().getRunType().equals("springBoot")) {
 						String tempFileName = (filenames[i].contains("/"))? filenames[i].split("/")[1] : filenames[i];
@@ -1464,11 +1464,11 @@ public class SimStRete extends MTRete implements Serializable, JessParser {
 		Jesp jesp = new Jesp(rdr, this);
 	//	System.out.println(" Jesp object .... "+jesp.toString());
 	//	System.out.println(" Rete   : "+this.getGlobalContext().toString());
-		System.out.println(" Before Working memory : "+this.getController().getModelTracer().getRete().getFacts());
+		trace.out(" Before Working memory : "+this.getController().getModelTracer().getRete().getFacts());
 
 		Value result = jesp.parse(false, this.getGlobalContext());
 		
-		System.out.println(" MTRete  Working memory : "+this.getController().getModelTracer().getRete().getFacts());
+		trace.out(" MTRete  Working memory : "+this.getController().getModelTracer().getRete().getFacts());
 		//System.out.println(" SimSTRete After  Working memory : "+this.getController().getMissController().getSimSt().getSsRete().getFacts());
 
 	//	System.out.println(" Result of parsing : "+result.toString());
@@ -1659,7 +1659,7 @@ public class SimStRete extends MTRete implements Serializable, JessParser {
 	        	  /*ClassLoader cl = this.getController().getMissController().getSimSt().getClass().getClassLoader();
 	        	  InputStream is = cl.getResourceAsStream(this.getController().getMissController().getSimSt().getPackageName()+"/wmeStructure.txt");
 	              InputStreamReader isr = new InputStreamReader(is);*/
-	        	  System.out.println(" Project Directory : "+this.getController().getMissController().getSimSt().getProjectDirectory());
+	        	  trace.out(" Project Directory : "+this.getController().getMissController().getSimSt().getProjectDirectory());
 	        	  file=new File(this.getController().getMissController().getSimSt().getProjectDirectory()+"/"+structureFilePath);
 	        	  try
 		  	    	{

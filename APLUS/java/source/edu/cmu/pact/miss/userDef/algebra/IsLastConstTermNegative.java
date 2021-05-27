@@ -22,4 +22,9 @@ public class IsLastConstTermNegative extends EqFeaturePredicate{
 		else 
 			return null;
 	}
+	
+	/*@Override
+    public String getDescription() {
+    	return "contain a negative constant term at the end";
+    }*/
 }

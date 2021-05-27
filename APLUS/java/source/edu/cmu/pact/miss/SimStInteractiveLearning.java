@@ -1593,7 +1593,6 @@ public void fillInQuizProblem(String problemName) {
 		ProblemAssessor assessor = new AlgebraProblemAssessor();
 	    currentType=assessor.classifyProblem(problem);
 	    setAskedExplanation(false);
-	    
 		
 		// when running not from a BRD, it never gets "done" - reaching a done
 		// state breaks out of loop
@@ -1635,6 +1634,7 @@ public void fillInQuizProblem(String problemName) {
 
 				/*kept ony for miss output*/
 				Vector activationList = simSt.gatherActivationList(currentNode);
+				// activationList outputs [MAIN::subtract] or [MAIN::divide] and so on
 				//Collection<RuleActivationNode> activList = simSt.createOrderedActivationList(activationList);
 
 				Collection<RuleActivationNode> activList=getActivations(currentNode);
@@ -1660,6 +1660,8 @@ public void fillInQuizProblem(String problemName) {
 		       			
 						
 						for (RuleActivationNode ran : activList) {
+							trace.out(ran.getActualSelection()+" : "+ran.getActualAction()+" : "+ran.getActualInput());
+							// we got "dorminTable3_C1R1 : UpdateTable : divide 3" for 3x_6 problem name
 							Sai sai = new Sai(ran.getActualSelection(), ran.getActualAction(), ran.getActualInput());
 							if (!sai.getI().equals("NotSpecified") && !sai.getI().equals("FALSE")) {
 								ran.setAgendaIndex(count);
@@ -1897,6 +1899,10 @@ public void fillInQuizProblem(String problemName) {
 		
 		pruneBadRules();
 		///brController.getMissController().getSimSt().getModelTraceWM().setSolved("false");
+	}
+	
+	public void findSimilarProblems() {
+		
 	}
 	
 	public void calculateFullStepTime(ProblemNode currentNode) {
@@ -2740,7 +2746,7 @@ public void fillInQuizProblem(String problemName) {
 				if (major>=7)
 					spotlight=new AplusSpotlight(getBrController(getSimSt()).getMissController().getSimStPLE().getSimStPeerTutoringPlatform(), brController.getMissController().getSimStPLE().getSimStPeerTutoringPlatform().getTutoringAvatarPanel(),SimStRememberBubble.RIGHT,null);
 				
-				
+				// This part is responsible for showing the contrasting interface prompt.
 				SimStExplainWhyNotDlg whyNotDlg=new SimStExplainWhyNotDlg(getBrController(getSimSt()).getMissController().getSimStPLE().getSimStPeerTutoringPlatform().getStudentInterface() ,brController,sai,inst,question);
 							
 				//explanation = ple.giveMessageSelectableResponse(question, qa.getAnswers());
@@ -2784,6 +2790,59 @@ public void fillInQuizProblem(String problemName) {
 						explainDuration, question);
 			}
 		}
+	}
+	
+	// Added by Tasmia
+	// Convert the feature predicates to class
+	public static String toFeatureClassName(String givenString) {
+	    String[] arr = givenString.split("-");
+	    StringBuffer sb = new StringBuffer();
+
+	    for (int i = 0; i < arr.length; i++) {
+	        sb.append(Character.toUpperCase(arr[i].charAt(0)))
+	            .append(arr[i].substring(1));
+	    }          
+	    return sb.toString().trim();
+	}
+	
+	// This function lets the tutee agent to speak out the rationale behind a production rule 
+	// using the feature predicates
+	public void ruleApplicationLogic(ProblemNode currentNode,
+			RuleActivationNode ran) {
+		
+		System.out.println("hihi");
+		trace.out(ran.getName());
+		Rule rule = getSimSt().getRule(ran.getName().replace("MAIN::", ""));
+		ArrayList feature_predicates = rule.getLhsFeatures();
+		if (feature_predicates.size()<1) return;
+		String[] arr_feature_predicates = (String[]) feature_predicates.get(0);
+		for(int m=0; m<arr_feature_predicates.length; m++) {
+			if(arr_feature_predicates[m].contains("not")) continue;
+			trace.out(arr_feature_predicates[m]);
+			//String trimed_predicates = arr_feature_predicates[m].replace(, newChar);
+			String predicate_name = "edu.cmu.pact.miss.userDef.oldpredicates."+toFeatureClassName("has-coefficient");
+			Class predicate_class = null;
+			try {
+				predicate_class = Class.forName(predicate_name);
+				try {
+					FeaturePredicate clsInstance = (FeaturePredicate) predicate_class.newInstance();
+					//Vector args = clsInstance.getArgs();
+					trace.out(clsInstance.getDescription());
+				} catch (InstantiationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+
+		}
+		
 	}
 
 	// Examine an activation rule to see if it is valid. If OKed, return the new
@@ -2874,6 +2933,8 @@ public void fillInQuizProblem(String problemName) {
 					signalInstructionAsPositiveExample(ran, nextCurrentNode,
 							sai, null);
 				}
+				ruleApplicationLogic(currentNode,ran);
+				
 			}
 			// Rule is not correct, but taking quiz, so may want to use as
 			// backup
@@ -3778,7 +3839,7 @@ public void fillInQuizProblem(String problemName) {
 
 			// continue when something is entered.
 			while (sai.equals("")) {
-				System.out.print(inputMessage);
+				trace.out(inputMessage);
 				sai = br.readLine();
 			}
 

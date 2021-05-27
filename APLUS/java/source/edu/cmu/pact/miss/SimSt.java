@@ -2543,7 +2543,7 @@ public final class SimSt implements Serializable {
    }
    
    private void initRete( String wmeTypeFile, String initalWmeFile ) {
-	   System.out.println(" Initializing Rete ");
+	   trace.out(" Initializing Rete ");
        try {
            getRete().reset();
            getRete().readFile( wmeTypeFile );
