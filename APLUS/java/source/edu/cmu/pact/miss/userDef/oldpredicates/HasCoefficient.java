@@ -28,9 +28,5 @@ public class HasCoefficient extends EqFeaturePredicate {
     public String apply( Vector /* String */ args ) {
     	return hasCoefficient( (String)args.get(0) );
     }
-    @Override
-    public String getDescription() {
-    	return "contains a variable term that has a coefficient";
-    }
     
 }

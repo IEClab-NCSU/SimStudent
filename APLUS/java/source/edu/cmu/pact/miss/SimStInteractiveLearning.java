@@ -2795,7 +2795,18 @@ public void fillInQuizProblem(String problemName) {
 	// Added by Tasmia
 	// Convert the feature predicates to class
 	public static String toFeatureClassName(String givenString) {
-	    String[] arr = givenString.split("-");
+	    // givenString looks like (has-coefficient ?val1)
+		// Ommit everything after ?
+		String feature_name = "";
+		if(givenString.contains("?"))
+			feature_name = givenString.substring(0, givenString.indexOf("?"));
+		//String feature_name = givenString;
+		// Ommit everything before the first character
+		if(feature_name.contains("("))
+			feature_name = feature_name.replace("(", "");
+		
+		feature_name = feature_name.replace(" ", "");
+		String[] arr = feature_name.split("-");
 	    StringBuffer sb = new StringBuffer();
 
 	    for (int i = 0; i < arr.length; i++) {
@@ -2810,37 +2821,32 @@ public void fillInQuizProblem(String problemName) {
 	public void ruleApplicationLogic(ProblemNode currentNode,
 			RuleActivationNode ran) {
 		
-		System.out.println("hihi");
 		trace.out(ran.getName());
 		Rule rule = getSimSt().getRule(ran.getName().replace("MAIN::", ""));
-		ArrayList feature_predicates = rule.getLhsFeatures();
-		if (feature_predicates.size()<1) return;
-		String[] arr_feature_predicates = (String[]) feature_predicates.get(0);
-		for(int m=0; m<arr_feature_predicates.length; m++) {
-			if(arr_feature_predicates[m].contains("not")) continue;
-			trace.out(arr_feature_predicates[m]);
-			//String trimed_predicates = arr_feature_predicates[m].replace(, newChar);
-			String predicate_name = "edu.cmu.pact.miss.userDef.oldpredicates."+toFeatureClassName("has-coefficient");
-			Class predicate_class = null;
-			try {
-				predicate_class = Class.forName(predicate_name);
-				try {
-					FeaturePredicate clsInstance = (FeaturePredicate) predicate_class.newInstance();
-					//Vector args = clsInstance.getArgs();
-					trace.out(clsInstance.getDescription());
-				} catch (InstantiationException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+		// need to put rule == null checking.
+		if (rule != null) {
+			ArrayList feature_predicates = rule.getLhsFeatures();
+			if (feature_predicates.size()<1) return;
+			String[] arr_feature_predicates = (String[]) feature_predicates.get(0);
+			HashMap all_predicates_map = getSimSt().getFeaturePredicateCache();
+			System.out.println("lhs features");
+			for(int m=0; m<arr_feature_predicates.length; m++) {
+				System.out.println(arr_feature_predicates[m]);
+				if(arr_feature_predicates[m].contains("not")) continue;
+				String feature_full_classname = null;
+				String feature_end_classname = toFeatureClassName(arr_feature_predicates[m]);
+				//String feature_end_classname = toFeatureClassName("has-coefficient");
+				for (Object value : all_predicates_map.keySet()) {
+					String s = value.toString();
+				    if(s.contains(feature_end_classname)){
+				    	feature_full_classname = s;
+				        break;
+				    }
 				}
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				FeaturePredicate predicate=FeaturePredicate.getPredicateByClassName(feature_full_classname);
+				trace.out(predicate.getFeatureDescription().getDescriptions());
+	
 			}
-			
-
 		}
 		
 	}

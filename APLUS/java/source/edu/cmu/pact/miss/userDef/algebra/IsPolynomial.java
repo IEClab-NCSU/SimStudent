@@ -12,6 +12,8 @@ public class IsPolynomial extends EqFeaturePredicate
 		setArity(1);
 		setName("is-polynomial");
 		setArgValueType(new int[]{TYPE_ARITH_EXP});
+		setFeatureDescription(getName(),"is a polynomial meaning the expression has more than just one term");
+
 	}
 
 	public String apply(Vector args) 

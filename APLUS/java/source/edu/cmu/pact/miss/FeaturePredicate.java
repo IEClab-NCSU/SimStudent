@@ -55,9 +55,6 @@ public abstract class FeaturePredicate
      * @param args
      * @return
      */
-    public String getDescription() {
-		return null;
-	}
     public void setName( String name ) { this.name = name; }
     // A list of arguments
     private Vector /* of String */ args = new Vector();

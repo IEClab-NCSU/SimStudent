@@ -5,16 +5,11 @@ public class IsFractionTerm extends EqFeaturePredicate
 {
 	public IsFractionTerm() 
 	{
-		 
-		
-			setArity(1);
-			setName("is-fraction-term");
-			setArgValueType(new int[]{TYPE_ARITH_EXP});
+		setArity(1);
+		setName("is-fraction-term");
+		setArgValueType(new int[]{TYPE_ARITH_EXP});			
+		setFeatureDescription(getName(),"is a fraction term");
 			
-		
-
-		
-
 	}
 	public String apply(Vector args) 
 	{

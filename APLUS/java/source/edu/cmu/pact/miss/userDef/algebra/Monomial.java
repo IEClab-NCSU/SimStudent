@@ -8,6 +8,7 @@ public class Monomial extends EqFeaturePredicate
 	setArity(1);
 	setName("monomial");
 	setArgValueType(new int[]{TYPE_ARITH_EXP});
+	setFeatureDescription(getName(),"is a monomial meaning the expression has only one term");
     }
     
     public String apply(Vector args) 

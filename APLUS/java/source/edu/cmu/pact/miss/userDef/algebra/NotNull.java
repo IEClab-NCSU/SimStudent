@@ -11,6 +11,8 @@ public class NotNull extends EqFeaturePredicate
 	setName( "not-null" );
 	setArity( 1 );
 	setArgValueType(new int[]{TYPE_ARITH_EXP});
+	setFeatureDescription(getName(),"is not null/empty/blank");
+
     }
 
     public String apply( Vector /* String */ args ) 
