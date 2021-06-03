@@ -342,13 +342,33 @@ public final class SimSt implements Serializable {
    }
 
    private boolean selfExplainMode = false;
+   private boolean selfCTI_ITI_Mode = false;
+   private boolean selfCTI_FTI_Mode = false;
    public void setSSSelfExplainMode(boolean explainMode)
    {
    	this.selfExplainMode = explainMode;
    }
+   // Added by Tasmia to turn on CTI Initial tutee inquiry
+   public void setSsConstructiveTuteeInquiryITIMode(boolean CTIMode)
+   {
+   	this.selfCTI_ITI_Mode = CTIMode;
+   }
+   public void setSsConstructiveTuteeInquiryFTIMode(boolean CTIMode)
+   {
+   	this.selfCTI_FTI_Mode = CTIMode;
+   }
    public boolean isSelfExplainMode()
    {
    	return selfExplainMode;
+   }
+   
+   public boolean isCTIInitialInquiryMode()
+   {
+   	return selfCTI_ITI_Mode;
+   }
+   public boolean isCTIFollowupInquiryMode()
+   {
+   	return selfCTI_FTI_Mode;
    }
 
   private transient ProblemAssessor problemAssessor = new AlgebraProblemAssessor();

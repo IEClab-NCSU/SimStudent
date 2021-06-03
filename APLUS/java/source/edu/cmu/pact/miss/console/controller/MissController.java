@@ -874,6 +874,23 @@ public class MissController implements MissControllerExternal {
 			getSimSt().setSSSelfExplainMode(true);
 		}
 	}
+	
+	// Added by Tasmia for CTI
+	public void setSsConstructiveTuteeInquiryITIMode()
+	{    	
+		if(getSimSt()!= null)
+		{
+			getSimSt().setSsConstructiveTuteeInquiryITIMode(true);
+		}
+	}
+	
+	public void setSsConstructiveTuteeInquiryFTIMode()
+	{    	
+		if(getSimSt()!= null)
+		{
+			getSimSt().setSsConstructiveTuteeInquiryFTIMode(true);
+		}
+	}
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // Background knowledge I/O
@@ -2131,6 +2148,10 @@ public class MissController implements MissControllerExternal {
                     	setSsCLQuizReqMode();
                     } else if(keyStem.equalsIgnoreCase("ssSelfExplainMode")) {
                     	setSsSelfExplainMode();
+                    } else if(keyStem.equalsIgnoreCase("ssConstructiveTuteeInquiryITIMode")) {
+                    	setSsConstructiveTuteeInquiryITIMode();
+                    } else if(keyStem.equalsIgnoreCase("ssConstructiveTuteeInquiryFTIMode")) {
+                    	setSsConstructiveTuteeInquiryFTIMode();
                     } else if(keyStem.equalsIgnoreCase("ssIntroVideo")) {
                     	setSsIntroVideo(parameter[0]);
                     } else if(keyStem.equalsIgnoreCase("ssLoadPrefsFile")) {

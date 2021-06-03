@@ -1566,6 +1566,8 @@ public void fillInQuizProblem(String problemName) {
 	// repeat mistakes and move straight to questioning
 	public void runInteractiveLearning(ProblemNode currentNode,
 			boolean startWithActivations) {
+		
+		//findNearSimilarProblems("3x+8_7");
 			
 //		int numStepsPerformed = 0;
 		this.numStepsPerformed = 0;
@@ -1726,7 +1728,40 @@ public void fillInQuizProblem(String problemName) {
 				if (getBrController(getSimSt()).getMissController().isPLEon())
 					getBrController(getSimSt()).getMissController().getSimStPLE().checkForQuizTutoringBehaviourDiscrepency(brController.getProblemName(),null);	
 				
-				/*// Previous code start
+				// Tasmia added code starts here
+				if(simSt.isCTIInitialInquiryMode()) {
+					// Ask if tutor knows what to do next so that there opens an opportunity 
+					// for the tutee to ask initial tutee inquiry when tutor is also stuck.
+					String title = "Asking the tutor what to do next";
+					String message = "I am stuck. Do you know what step to perform next?";
+					int oracle = getSimSt().displayConfirmMessage(title,message);
+					// setting avatar to normal mode.
+					getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
+					if (oracle == JOptionPane.YES_OPTION) {
+						// ask for the demonstration of the step.
+						nextCurrentNode = askWhatToDoNext(currentNode);
+						hintReceived = true;
+						if (trace.getDebugCode("ss"))
+							trace.out("ss", "Calling askWhatToDoNext  "
+									+ "currentNode: " + currentNode
+									+ " nextCurrentNode: " + nextCurrentNode);
+			       	}
+					else {
+						// Tutor is  confused and don't know what to do next.
+						// Ask the initial tutee inquiry when tutor does not know what to do next.
+					}
+				}
+				else {
+					// Previous code start
+					nextCurrentNode = askWhatToDoNext(currentNode);
+					hintReceived = true;
+					if (trace.getDebugCode("ss"))
+						trace.out("ss", "Calling askWhatToDoNext  "
+								+ "currentNode: " + currentNode
+								+ " nextCurrentNode: " + nextCurrentNode);
+				}
+				
+				/*// Previous code intact start
 				nextCurrentNode = askWhatToDoNext(currentNode);
 				hintReceived = true;
 				if (trace.getDebugCode("ss"))
@@ -1735,27 +1770,6 @@ public void fillInQuizProblem(String problemName) {
 							+ " nextCurrentNode: " + nextCurrentNode);
 				// Previous code ends */
 				
-				// Tasmia added code starts here
-				// Ask if tutor knows what to do next.
-				String title = "Asking the tutor what to do next";
-				String message = "I am stuck. Do you know what step to perform next?";
-				int oracle = getSimSt().displayConfirmMessage(title,message);
-				// setting avatar to normal mode.
-				getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
-				if (oracle == JOptionPane.YES_OPTION) {
-					// ask for the demonstration of the step.
-					nextCurrentNode = askWhatToDoNext(currentNode);
-					hintReceived = true;
-					if (trace.getDebugCode("ss"))
-						trace.out("ss", "Calling askWhatToDoNext  "
-								+ "currentNode: " + currentNode
-								+ " nextCurrentNode: " + nextCurrentNode);
-		       	}
-				else {
-					// Tutor is  confused and don't know what to do next.
-					// Ask the initial tutee inquiry when tutor does not know what to do next.
-				}
-				// Tasmia added code ends here* */
 			}
 
 			// Null nextCurrentNode after the Oracle inquiry means that the user
@@ -2816,6 +2830,71 @@ public void fillInQuizProblem(String problemName) {
 	    return sb.toString().trim();
 	}
 	
+	// This function creates similar problems in edit distance 1 from the current problem
+	public ArrayList<String> findNearSimilarProblems(String currentProblem){
+		ArrayList<String> similar_problems = new ArrayList<String>();
+		ArrayList<String> parsed_equation = parseEquationToEditDistances(currentProblem);
+		int i = 0;
+		while(i<parsed_equation.size()) {
+			String new_equation_1 = "";
+			String new_equation_2 = "";
+			String temp_term = "";
+			if(parsed_equation.get(i).contains("+")) {
+				temp_term = parsed_equation.get(i).replace("+", "-");
+			}
+			else if(parsed_equation.get(i).contains("-")) {
+				temp_term = parsed_equation.get(i).replace("-", "+");
+			}
+			else {
+				temp_term = "-"+parsed_equation.get(i);
+			}
+			for (int l = 0; l < parsed_equation.size(); l++) {
+				if(i!=l) { 
+					new_equation_1+=parsed_equation.get(l);
+					new_equation_2+=parsed_equation.get(l);
+				}
+				else {
+					new_equation_2+=temp_term;
+				}
+			}
+			similar_problems.add(new_equation_1);
+			similar_problems.add(new_equation_2);
+			i++;
+			if(i<parsed_equation.size() && parsed_equation.get(i).contains("_")) {
+				new_equation_1+=parsed_equation.get(i);
+				new_equation_2+=parsed_equation.get(i);
+				i++;
+			}
+		}
+		return similar_problems;
+	}
+	
+	public ArrayList<String> parseEquationToEditDistances(String currentProblem){
+		ArrayList<String> parsed_equation = new ArrayList<String>();
+		String current_term = "";
+		int start = 0;
+		for (int i = 0; i < currentProblem.length(); i++) {
+			if(currentProblem.charAt(i) == '_'){
+				parsed_equation.add(current_term);
+				parsed_equation.add("_");
+        		start = 0;
+        		current_term = "";
+			}
+			else if((currentProblem.charAt(i) == '+' || currentProblem.charAt(i) == '-') && start!=0) {
+            	parsed_equation.add(current_term);
+            	current_term = String.valueOf(currentProblem.charAt(i));
+            	start = 1;
+            	
+            }
+            else {
+            	start = 1;
+            	current_term+= currentProblem.charAt(i); 
+            }
+        }
+		parsed_equation.add(current_term);
+		return parsed_equation;
+	}
+	
 	// This function lets the tutee agent to speak out the rationale behind a production rule 
 	// using the feature predicates
 	public void ruleApplicationLogic(ProblemNode currentNode,
@@ -2823,29 +2902,36 @@ public void fillInQuizProblem(String problemName) {
 		
 		trace.out(ran.getName());
 		Rule rule = getSimSt().getRule(ran.getName().replace("MAIN::", ""));
-		// need to put rule == null checking.
 		if (rule != null) {
-			ArrayList feature_predicates = rule.getLhsFeatures();
-			if (feature_predicates.size()<1) return;
-			String[] arr_feature_predicates = (String[]) feature_predicates.get(0);
-			HashMap all_predicates_map = getSimSt().getFeaturePredicateCache();
-			System.out.println("lhs features");
-			for(int m=0; m<arr_feature_predicates.length; m++) {
-				System.out.println(arr_feature_predicates[m]);
-				if(arr_feature_predicates[m].contains("not")) continue;
-				String feature_full_classname = null;
-				String feature_end_classname = toFeatureClassName(arr_feature_predicates[m]);
-				//String feature_end_classname = toFeatureClassName("has-coefficient");
-				for (Object value : all_predicates_map.keySet()) {
-					String s = value.toString();
-				    if(s.contains(feature_end_classname)){
-				    	feature_full_classname = s;
-				        break;
-				    }
+			/*if (rule.getName().contains("typein")) {
+				// Question will be different
+			}
+			else */
+			{
+				ArrayList feature_predicates = rule.getLhsFeatures();
+				if (feature_predicates.size()<1) return;
+				HashMap all_predicates_map = getSimSt().getFeaturePredicateCache();
+				for(int l=0; l<feature_predicates.size(); l++) {
+					String[] arr_feature_predicates = (String[]) feature_predicates.get(l);
+					for(int m=0; m<arr_feature_predicates.length; m++) {
+						System.out.println(arr_feature_predicates[m]);
+						if(arr_feature_predicates[m].contains("not")) continue;
+						//String feature_full_classname = null;
+						String feature_end_classname = toFeatureClassName(arr_feature_predicates[m]);
+						//String feature_end_classname = toFeatureClassName("has-coefficient");
+						String feature_full_classname = "edu.cmu.pact.miss.userDef.algebra."+ feature_end_classname;
+						/*for (Object value : all_predicates_map.keySet()) {
+							String s = value.toString();
+						    if(s.contains(feature_end_classname)){
+						    	feature_full_classname = s;
+						        break;
+						    }
+						}*/
+						FeaturePredicate predicate=FeaturePredicate.getPredicateByClassName(feature_full_classname);
+						System.out.println(predicate.getFeatureDescription().getDescriptions());
+			
+					}
 				}
-				FeaturePredicate predicate=FeaturePredicate.getPredicateByClassName(feature_full_classname);
-				trace.out(predicate.getFeatureDescription().getDescriptions());
-	
 			}
 		}
 		
@@ -2939,7 +3025,8 @@ public void fillInQuizProblem(String problemName) {
 					signalInstructionAsPositiveExample(ran, nextCurrentNode,
 							sai, null);
 				}
-				ruleApplicationLogic(currentNode,ran);
+				//ruleApplicationLogic(currentNode,ran);
+				//findNearSimilarProblems("3x+8_7");
 				
 			}
 			// Rule is not correct, but taking quiz, so may want to use as
