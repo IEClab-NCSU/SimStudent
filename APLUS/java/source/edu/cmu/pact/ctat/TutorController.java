@@ -322,7 +322,8 @@ public class TutorController extends CTATBase implements CTAT_Controller
             	return;
             }
             if (type.equalsIgnoreCase("IncorrectAction")) {
-            	doIncorrectAction_movedFromCommWidget(propertyNames,
+            	if(getRunType() == "")
+            		doIncorrectAction_movedFromCommWidget(propertyNames,
             			propertyValues);
             	return;
             }

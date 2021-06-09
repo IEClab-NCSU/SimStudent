@@ -9899,16 +9899,7 @@ public final class SimSt implements Serializable {
           	
           	int oracle = 0;
 	       	oracle = askInquiry(ruleName, msg);
-	       	if (oracle == JOptionPane.YES_OPTION) {
-	       		status = EdgeData.CORRECT_ACTION;
-	       		if(isSkillNameGetterDefined()) {
-	       			getSkillNameGetter().skillNameGetter(getBrController(), actualSelection, actualAction, actualInput);
-	       		}
-	       	}
-	       	// TODO: Need to figure out a unified way to handle all the interface actions at one place
-	       	// Model-tracing the student interface action (clicking either the Yes or No button) in response to the 
-	       	// SimStudent feedback request
-	       	performModelTracingForInquiryResponse(oracle, ruleName);
+	       	status = getStatusByInquiryResponseAndUpdateSkill(ran, oracle == JOptionPane.YES_OPTION);
 	       	
 	       	if(getSsInteractiveLearning() != null)
 	       	{
@@ -9949,10 +9940,19 @@ public final class SimSt implements Serializable {
 	   return displayConfirmMessage(title,message);		   
    }
    
-   public String getStatusByInquiryResponse(String ruleName, Boolean isInquiryCorrect) {
-	   performModelTracingForInquiry();
+   public void updateSkillName(String actualSelection, String actualAction, String actualInput) {
+      	if(isSkillNameGetterDefined()) {
+      		getSkillNameGetter().skillNameGetter(getBrController(), actualSelection, actualAction, actualInput);
+      	}
+   }
+   
+   public String getStatusByInquiryResponseAndUpdateSkill(RuleActivationNode ran, Boolean isInquiryCorrect) {
+	   if(runType.equalsIgnoreCase("springboot"))
+		   performModelTracingForInquiry();
 	   int oracle = isInquiryCorrect ? JOptionPane.YES_OPTION : JOptionPane.NO_OPTION;
-	   performModelTracingForInquiryResponse(oracle, ruleName);
+	   if (isInquiryCorrect)
+		   updateSkillName(ran.getActualSelection(), ran.getActualAction(), ran.getActualInput());   
+	   performModelTracingForInquiryResponse(oracle, ran.getName());
 	   return isInquiryCorrect ? EdgeData.CORRECT_ACTION : EdgeData.CLT_ERROR_ACTION;
    }
    
