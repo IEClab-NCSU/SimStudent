@@ -3221,6 +3221,65 @@ public class BR_Controller extends TutorController implements PropertyChangeList
     }
 
     /**
+	 * Does not set the text from the GUI element
+	 */
+    public void goToStartStateForRuleTutors(String text) {
+    	
+    	if (trace.getDebugCode("br")) trace.out("br", "go to start state()");
+
+        if (getProblemModel().getStartNode() == null)
+            return;
+
+        // fix the bug #1112
+        Cursor hourglassCursor = new Cursor(Cursor.WAIT_CURSOR);
+        //brPanel.setCursor(hourglassCursor);
+
+        if (getCtatModeModel().isJessTracing()) {  // Jess or SimSt
+        	if (trace.getDebugCode("br")) trace.out("br", "getCtatModeModel().isJessTracing()");
+            resetTraversedLinks();
+            getPseudoTutorMessageHandler().initializePseudoTutor();
+        }
+
+        if (getSolutionState().getCurrentNode() != getProblemModel()
+                .getStartNode())
+            setCurrentNode2(getProblemModel().getStartNode());
+
+        MessageObject newMessage = 
+        	MessageObject.create(MsgType.RESTORE_INITIAL_WM_STATE, "SendNoteProperty");
+
+        if (getProblemModel().getStartNode().getNodeView() != null)
+        {        	
+        	if (trace.getDebugCode("br")) 
+        		trace.out("br", "getProblemModel().getStartNode().getNodeView() ");
+        	NodeView startVertex = getProblemModel().getStartNode().getNodeView();
+        	newMessage.setProperty("ProblemName", text);
+        }
+		
+        utp.sendProperty(newMessage);
+			
+			
+        //Gustavo 2Dec2006: for each message in startNodeMessageVector, send it.
+        Iterator<MessageObject> it = getProblemModel().startNodeMessagesIterator();        
+        for (int i = 0; it.hasNext(); i++) {
+        	MessageObject msg = it.next();
+            trace.out("mt", "Sending start Comm Message " + (i+1) +" to LISP: " + msg);
+            trace.out("ss", "Sending start Comm Message " + (i+1) +" to LISP: " + msg);
+        	utp.sendProperty(msg);          
+        }
+
+        // send Start state Comm MSGs to UniversalToolProxy
+        sendCommMsgs(getProblemModel().getStartNode(), getProblemModel()
+                .getStartNode());
+
+        // fix the bug #1112
+        Cursor normalCursor = new Cursor(Cursor.DEFAULT_CURSOR);
+        //brPanel.setCursor(normalCursor);
+        if (!Utils.isRuntime())
+        	getJGraphWindow().getJGraph().repaint();
+        return;
+    }
+
+    /**
      * @param true means show cancel option on save-file dialog
      * @return response to save-file dialog 
      */

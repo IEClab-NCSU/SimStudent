@@ -83,7 +83,7 @@ public class ProblemNode implements Serializable {
     public ProblemNode(ProblemModel problemModel, String name) {
         this(null, name, problemModel);
     }
-
+    
     public ProblemNode(NodeView nodeView, ProblemModel problemModel) {
         this(nodeView, null, problemModel);
     }
