@@ -275,6 +275,11 @@ public class SimStInteractiveLearning implements Runnable {
 	public void setCorrect(boolean correct) {
 		this.correct = correct;
 	}
+	
+	public ProblemNode nextCurrentNode = null;
+	public RuleActivationNode backupRan = null;
+	public int ruleQueryCounter = 0;
+	public int firstStategy = 0;
 
 	public boolean explanationGiven=false;
 	public boolean getExplanationGiven(){return this.explanationGiven;}
@@ -1877,6 +1882,10 @@ public void fillInQuizProblem(String problemName) {
 		///brController.getMissController().getSimSt().getModelTraceWM().setSolved("false");
 	}
 	
+	public boolean isDoneState() {
+		return this.currentNode.isDoneState();
+	}
+	
 	public void calculateFullStepTime(ProblemNode currentNode) {
 		step = simSt.getProblemAssessor().calcProblemStepString(currentNode.getProblemModel().getStartNode(), currentNode,simSt.getLastSkillOperand());
 		setStep(step);
@@ -1963,10 +1972,12 @@ public void fillInQuizProblem(String problemName) {
 				trace.out("ss", "killMessageReceived is true.");
 
 				// Finish SimStudent thinking
-		if (getBrController(getSimSt()).getMissController().isPLEon()
+		if(!runType.equals("springBoot")) {
+			if (getBrController(getSimSt()).getMissController().isPLEon()
 						&& !getBrController(getSimSt()).getMissController().getSimStPLE()
 								.isStartStatus()) {
-			getBrController(getSimSt()).getMissController().getSimStPLE().blockInput(true);
+				getBrController(getSimSt()).getMissController().getSimStPLE().blockInput(true);
+			}
 		}
 	}
 	
@@ -2047,18 +2058,49 @@ public void fillInQuizProblem(String problemName) {
 	
 	public void takingQuiz(String solution, boolean correct) {
 		simSt.setIsInteractiveLearning(false);
-
 		// conversation about double-checking work
 		if (trace.getDebugCode("rr"))
-			trace.out("rr", "Calling checkAnswer: " + getBrController(getSimSt()).getProblemName() + " solution: " + solution + " correct: " + correct);
+			trace.out("rr", "Calling checkAnswer: " + getBrController(getSimSt()).getProblemName() + " solution: " + solution);
 		
-		boolean verified = checkAnswer(getBrController(getSimSt()).getProblemName(), solution, correct);
+		boolean verified = checkAnswer(getBrController(getSimSt()).getProblemName(), solution);
+		
+		logAndModelTraceAnswer(verified);
+	}
+
+	public String currentType="";
+	public String previousType="";
+	
+	public boolean shouldCheckAnswer() {
+		boolean doCheck = false;
+		if (simSt.isSelfExplainMode() && getBrController(getSimSt()).getMissController().isPLEon()) {
+			if (Math.random() < .4)
+				doCheck = true;
+			if (this.simSt.isSs2014FractionAdditionAdhoc())
+				doCheck = false;
+		}
+		return doCheck;
+	}
+	
+	private boolean checkAnswer(String problem, String solution) {
+		boolean doCheck = shouldCheckAnswer();
+
+		if (doCheck) {
+			SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();
+			if(!runType.contentEquals("springBoot")) {
+				ple.setAvatarThinking();
+			}
+			return simSt.getProblemAssessor().performInteractiveAnswerCheck(
+					ple, problem, solution);
+
+		} else
+			return true;
+	}
+	
+	public void logAndModelTraceAnswer(boolean verified) {
 		if (trace.getDebugCode("rr")) trace.out("rr", "Called checkAnswer: verified " + verified);
 
 		if (!verified && simSt.isSsMetaTutorMode())
 			 simSt.getModelTraceWM().setSolutionCheckError("true");
-		
-		
 		
 		if (getBrController(getSimSt()).getMissController().getSimSt().isSsMetaTutorMode()){
 			simSt.getModelTraceWM().setSolutionGiven("true");
@@ -2070,10 +2112,7 @@ public void fillInQuizProblem(String problemName) {
 			}else{
 				getBrController(getSimSt()).getMissController().getSimSt().getModelTraceWM().setTutoredProblemsWithoutHint(0);
 			}
-					
-			
 		}
-
 		
 		if (getBrController(getSimSt()).getMissController() != null
 				&& getBrController(getSimSt()).getMissController().getSimSt() != null
@@ -2097,39 +2136,13 @@ public void fillInQuizProblem(String problemName) {
 		else if (getBrController(getSimSt()).getMissController().isPLEon())
 			getBrController(getSimSt()).getMissController().getSimStPLE()
 					.setAvatarFinishedWrong();
-		
-
 		if (simSt.isSsMetaTutorMode())
 			getBrController(getSimSt()).getAmt().handleInterfaceAction("solved", "implicit", "-1");
 	}
-
-	public String currentType="";
-	public String previousType="";
 	
-	private boolean checkAnswer(String problem, String solution, boolean correct) {
-		if (!simSt.isSelfExplainMode())
-			return true;
-		
-		boolean doCheck = false;
-		// TODO adhoc values, weighted towards doing it when incorrect - may not
-		// be a good way to
-		// go past initial testing
-		if (Math.random() < .4)
-			doCheck = true;
-		
-		//doCheck = false;
-		
-		if (this.simSt.isSs2014FractionAdditionAdhoc())
-			doCheck=false;
-
-		if (getBrController(getSimSt()).getMissController().isPLEon() && doCheck) {
-			SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();
-			ple.setAvatarThinking();
-			return simSt.getProblemAssessor().performInteractiveAnswerCheck(
-					ple, problem, solution);
-
-		} else
-			return true;
+	public List<String> getAnswerCheckMessages(String problem, String solution) {
+		SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();
+		return simSt.getProblemAssessor().getInteractiveAnswerCheckMessages(ple, problem, solution);
 	}
 
 	public void pruneBadRules() {
@@ -2182,173 +2195,144 @@ public void fillInQuizProblem(String problemName) {
 
 	
 		
-		ProblemNode nextCurrentNode = null;
+		nextCurrentNode = null;
 		ProblemNode successiveNode = null;
 		// ProblemNode backupNode = null;
-		RuleActivationNode backupRan = null;
-		int ruleQueryCounter=0;
-		int firstStategy=this.ASK_UNINITIALIZED;
+		backupRan = null;
+		ruleQueryCounter=0;
+		firstStategy=ASK_UNINITIALIZED;
 		
 		
 		// Tracks all activation rules looked at, but nothing is currently done
 		// to display this info
 		String listAssessment = "";
+		StringBuilder listAssessmentBuilder = new StringBuilder();
 
 		// Go through full activationList and inspect each until a good
 		// activation is found
 		for (RuleActivationNode ran : activationList) {
-
-			// RuleActivationNode ran = (RuleActivationNode)
-			// activationList.get(i);
-			trace.out("ss", "Checking RAN: " + ran);
-			// Do not process FALSE inputs, just move on to next
-			if (ran.getActualInput().equalsIgnoreCase("FALSE")){
-				trace.out("miss","Input with selection " + ran.getActualSelection() + "with FALSE selection detected....moving on to next.");
-				continue;
-			}
-			
-	
-			/*Check for any inconsistencies between tutoring and quiz*/
-			if (getBrController(getSimSt()).getMissController().isPLEon())
-				getBrController(getSimSt()).getMissController().getSimStPLE().checkForQuizTutoringBehaviourDiscrepency(brController.getProblemName(),ran);
-
-			successiveNode = inspectRuleActivation(currentNode, ran);
-			ruleQueryCounter++;
-			
-			if (successiveNode != null) {
-				
-				// On the quiz, we want to maintain a backup answer to use if
-				// none of them are correct
-				if (nextCurrentNode == null && isTakingQuiz()) {
-					// Only process nodes we can get to
-					if (successiveNode.getInDegree() > 0) {
-						String lastSkill = "";
-						// Only include the operator of the last skill operand
-						// in the variable lastSkill
-						if (simSt.getLastSkillOperand() != null
-								&& simSt.getLastSkillOperand().indexOf(' ') >= 0) {
-							lastSkill = simSt.getLastSkillOperand()
-									.substring(
-											0,
-											simSt.getLastSkillOperand()
-													.indexOf(' '));
-						}
-
-						// Correct case - assign directly to nextCurrentNode
-						if (((ProblemEdge) successiveNode.getIncomingEdges()
-								.get(0)).isCorrect()) {
-							listAssessment += "Correct: Input: "
-									+ ran.getActualInput() + " " + lastSkill
-									+ " (" + ran.getName() + ")\n";
-							nextCurrentNode = successiveNode;
-							// JOptionPane.showMessageDialog(null, "Correct");
-						}
-						// Valid backups can be anything at the start state
-						// (last operand is null),
-						// a skill which was not also the last skill used, or
-						// any typein step.
-						else if (!ran.getActualInput().contains("FALSE")
-								&& (simSt.getLastSkillOperand() == null || !ran
-										.getName().contains(lastSkill))
-								|| ran.getName().contains("typein")) {
-							listAssessment += "Backup: Input: "
-									+ ran.getActualInput() + " " + lastSkill
-									+ " (" + ran.getName() + ")\n";
-							backupRan = ran;
-							if (trace.getDebugCode("miss"))
-								trace.out("miss", " backupRan: " + backupRan);
-						}
-						// All other nodes are not valid backups as they could
-						// result in getting caught in a loop
-						// eg x+2=4, add 2 -> x+4=6. add 4 would be a repetitive
-						// loop, but is not valid for backup
-						// because add is also the last skill used
-						else {
-							listAssessment += "Not usable: Input: "
-									+ ran.getActualInput() + " " + lastSkill
-									+ " (" + ran.getName() + ")\n";
-						}
-					}
-				}
-				// not possibly backup, definitely OKed node, just use
-				else if (nextCurrentNode == null) {
-			
-					
-					nextCurrentNode = successiveNode;
-				}
-				if (nextCurrentNode != null && getSimSt().dontShowAllRA()) {
-					break;
-				}
-			}
-			else {
-				
-				
-				
-				/*Rule r=simSt.getRule("divide");
-				System.out.println(ran.getRuleFoas());
-				System.out.println(r.getNumFoA());
-				System.out.println(r.getRhsOp());
-				*/
-				
-				/*JLabel ss=brController.getMissController().getSimStPLE().getSimStPeerTutoringPlatform().getSimStAvatorIcon();
-				SimStRememberBubble think=new SimStRememberBubble(ss);
-				think.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-				think.setVisible(true);
-				*/
-				
-				/*
-				 * 
-				 * 
-				 * 
-				 */
-
-				
-				if (!isTakingQuiz() && !ran.getActualInput().equalsIgnoreCase("FALSE") && !ran.getActualInput().equalsIgnoreCase(MTRete.NOT_SPECIFIED)){				
-						if (ruleQueryCounter==1){
-							setFirstRanStudentSaidNo(ran);
-							firstStategy=firstStrategyToAskSelfExplQ(activationList.size());
-						}
-						
-								
-						if ((firstStategy==ASK_IMMEDIATELY || (firstStategy==ASK_AFTER_SECOND_NO && ruleQueryCounter==2)) && secondStrategyToAskSelfExplQ(ran)){
-							setLastSkillExplained(getFirstRanStudentSaidNo().getName());
-							explainWhyWrong(getFirstRanStudentSaidNo());	
-						}
-						
-				}
-				
-				
-				/*when student said no, then consider if SimStudent should ask for self-explanation question
-				if (isItOkToAskForSelfExplanationQuestion(ran)) {
-						if (ruleQueryCounter==1){
-							setFirstRanStudentSaidNo(ran);
-							askStrategy=getFirstStrategyOutcome(activationList.size());
-						}
-						
-						if (askStrategy==SELF_EXPL_STRATEGY_IMMEDIATELLY || (askStrategy==SELF_EXPL_STRATEGY_AFTER_SECOND_NO && ruleQueryCounter==2)){
-							
-							explainWhyWrong(getFirstRanStudentSaidNo());	
-						}
-		
-				}*/
-						
-			}
+			// Added to support calling the method for individual activations from WebAPLUS
+			boolean cont = inspectAgendaRuleActivation(currentNode, ran, successiveNode, activationList.size(), listAssessmentBuilder);
+			if (!cont)
+				break;
 		}
+		
+		listAssessment = listAssessmentBuilder.toString();
 
 		// if we've gotten through all the nodes and have a backup for the quiz
 		// but no selected answer
 		// use the backup
-		if (nextCurrentNode == null && isTakingQuiz() && backupRan != null) {
-			listAssessment += "Backup used: " + backupRan.getName() + " "
-					+ backupRan.getActualInput() + "\n";
-			nextCurrentNode = inspectRuleActivation(currentNode, backupRan);
-			if (trace.getDebugCode("miss"))
-				trace.out("miss", "Backup used:");
+		if (!runType.equals("springBoot")) {
+			if (nextCurrentNode == null && isTakingQuiz() && backupRan != null) {
+				listAssessment += "Backup used: " + backupRan.getName() + " "
+						+ backupRan.getActualInput() + "\n";
+				nextCurrentNode = inspectRuleActivation(currentNode, backupRan, null);
+				if (trace.getDebugCode("miss"))
+					trace.out("miss", "Backup used:");
+			} else {
+				listAssessment += "Not backup used\n";
+			}	
 		} else {
-			listAssessment += "Not backup used\n";
+			// TODO handle backup option for the quiz for spring boot
+		}
+		return nextCurrentNode;
+	}
+	
+	public boolean inspectAgendaRuleActivation(ProblemNode currentNode, RuleActivationNode ran, ProblemNode successiveNode, int totalActivations, StringBuilder listAssessmentBuilder) {
+		// RuleActivationNode ran = (RuleActivationNode)
+		// activationList.get(i);
+		trace.out("ss", "Checking RAN: " + ran);
+		// Do not process FALSE inputs, just move on to next
+		if (ran.getActualInput().equalsIgnoreCase("FALSE")){
+			trace.out("miss","Input with selection " + ran.getActualSelection() + "with FALSE selection detected....moving on to next.");
+			return true;
 		}
 		
-		return nextCurrentNode;
+		/*Check for any inconsistencies between tutoring and quiz*/
+		if (getBrController(getSimSt()).getMissController().isPLEon())
+			getBrController(getSimSt()).getMissController().getSimStPLE().checkForQuizTutoringBehaviourDiscrepency(brController.getProblemName(),ran);
+
+		if (!runType.equalsIgnoreCase("SpringBoot"))
+			successiveNode = inspectRuleActivation(currentNode, ran, null);
+		ruleQueryCounter++;
+		
+		if (successiveNode != null) {
+			
+			// On the quiz, we want to maintain a backup answer to use if
+			// none of them are correct
+			if (nextCurrentNode == null && isTakingQuiz()) {
+				// Only process nodes we can get to
+				if (successiveNode.getInDegree() > 0) {
+					String lastSkill = "";
+					// Only include the operator of the last skill operand
+					// in the variable lastSkill
+					if (simSt.getLastSkillOperand() != null
+							&& simSt.getLastSkillOperand().indexOf(' ') >= 0) {
+						lastSkill = simSt.getLastSkillOperand()
+								.substring(
+										0,
+										simSt.getLastSkillOperand()
+												.indexOf(' '));
+					}
+
+					// Correct case - assign directly to nextCurrentNode
+					if (((ProblemEdge) successiveNode.getIncomingEdges()
+							.get(0)).isCorrect()) {
+						listAssessmentBuilder.append("Correct: Input: " +
+								          ran.getActualInput() + " " + lastSkill +
+								          " (" + ran.getName() + ")\n");
+						nextCurrentNode = successiveNode;
+						// JOptionPane.showMessageDialog(null, "Correct");
+					}
+					// Valid backups can be anything at the start state
+					// (last operand is null),
+					// a skill which was not also the last skill used, or
+					// any typein step.
+					else if (!ran.getActualInput().contains("FALSE")
+							&& (simSt.getLastSkillOperand() == null || !ran
+									.getName().contains(lastSkill))
+							|| ran.getName().contains("typein")) {
+						listAssessmentBuilder.append("Backup: Input: " +
+								          ran.getActualInput() + " " + lastSkill +
+								          " (" + ran.getName() + ")\n");
+						backupRan = ran;
+						if (trace.getDebugCode("miss"))
+							trace.out("miss", " backupRan: " + backupRan);
+					}
+					// All other nodes are not valid backups as they could
+					// result in getting caught in a loop
+					// eg x+2=4, add 2 -> x+4=6. add 4 would be a repetitive
+					// loop, but is not valid for backup
+					// because add is also the last skill used
+					else {
+						listAssessmentBuilder.append("Not usable: Input: " +
+								          ran.getActualInput() + " " + lastSkill +
+								          " (" + ran.getName() + ")\n");
+					}
+				}
+			}
+			// not possibly backup, definitely OKed node, just use
+			else if (nextCurrentNode == null) {
+				nextCurrentNode = successiveNode;
+			}
+			if (nextCurrentNode != null && getSimSt().dontShowAllRA()) {
+				return false;
+			}
+		}
+		else {
+			if (!isTakingQuiz() && !ran.getActualInput().equalsIgnoreCase("FALSE") && !ran.getActualInput().equalsIgnoreCase(MTRete.NOT_SPECIFIED)){				
+					if (ruleQueryCounter==1){
+						setFirstRanStudentSaidNo(ran);
+						firstStategy=firstStrategyToAskSelfExplQ(totalActivations);
+					}
+					
+					if ((firstStategy==ASK_IMMEDIATELY || (firstStategy==ASK_AFTER_SECOND_NO && ruleQueryCounter==2)) && secondStrategyToAskSelfExplQ(ran)){
+						setLastSkillExplained(getFirstRanStudentSaidNo().getName());
+						// TODO handle explain why queries for spring boot
+					}
+			}
+		}
+		return true;
 	}
 
 	/**
@@ -2364,11 +2348,11 @@ public void fillInQuizProblem(String problemName) {
 	boolean getAskedExplanation(){return this.askedExplanation;}
 	
 	RuleActivationNode firstRanStudentSaidNo;
-	void setFirstRanStudentSaidNo(RuleActivationNode ran){this.firstRanStudentSaidNo=ran;}
-	RuleActivationNode getFirstRanStudentSaidNo(){return this.firstRanStudentSaidNo;}
+	public void setFirstRanStudentSaidNo(RuleActivationNode ran){this.firstRanStudentSaidNo=ran;}
+	public RuleActivationNode getFirstRanStudentSaidNo(){return this.firstRanStudentSaidNo;}
 
 	String lastSkillExplained="";
-	void setLastSkillExplained(String skill){this.lastSkillExplained=skill;}
+	public void setLastSkillExplained(String skill){this.lastSkillExplained=skill;}
 	String getLastSkillExplained(){return this.lastSkillExplained;}
 	
 	/**
@@ -2551,10 +2535,10 @@ public void fillInQuizProblem(String problemName) {
 				 * question = qa.getQuestion(); explanation =
 				 * ple.giveMessageSelectableResponse(question, qa.getAnswers());
 				 */
-				if(!runType.equals("springBoot")) {
-					explanation = ple.giveMessageFreeTextResponse(question);
-				} else {
+				if(runType.equals("springBoot")) {
 					explanation = getHintInformation();
+				} else {
+					explanation = ple.giveMessageFreeTextResponse(question);
 				}
 				if (explanation != null && explanation.length() > 0) {
 					ple.giveMessage(ple.getConversation().getMessage(
@@ -2583,7 +2567,7 @@ public void fillInQuizProblem(String problemName) {
 		}
 	}
 
-	private void explainWhyWrong(RuleActivationNode ran) {
+	public void explainWhyWrong(RuleActivationNode ran) {
 		
 		if (simSt.isSelfExplainMode()) {
 
@@ -2787,8 +2771,8 @@ public void fillInQuizProblem(String problemName) {
 	// node in the BR graph
 	// If not OK, return null
 	public String previousMessageGiven="";
-	private ProblemNode inspectRuleActivation(ProblemNode currentNode,
-			RuleActivationNode ran) {
+	public ProblemNode inspectRuleActivation(ProblemNode currentNode,
+			RuleActivationNode ran, String inquiryResult) {
 	
 		ProblemNode nextCurrentNode = null;
 
@@ -2825,8 +2809,10 @@ public void fillInQuizProblem(String problemName) {
 			edge.getEdgeData().setActionType(EdgeData.GIVEN_ACTION);
 	
 			// Ask if the rule is correct
-			String inquiryResult = simSt.inquiryRuleActivation(problemName,
-					currentNode, ran);
+			if (!runType.equals("springBoot")) {
+				inquiryResult = simSt.inquiryRuleActivation(problemName, 
+						currentNode, ran);				
+			}
 			if (!inquiryResult.equals(EdgeData.CORRECT_ACTION) && getBrController(getSimSt()).getMissController().isPLEon()){			
 				SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();			
 				//brController.getMissController().getSimSt().displayMessage("",ple.getConversation().getMessage(SimStConversation.THINK_TOPIC));			
@@ -2996,6 +2982,9 @@ public void fillInQuizProblem(String problemName) {
 	
 	
 	public ProblemNode askNodeSkillName(ProblemNode currentNode, String problemName, AskHint hintInfo) {
+		if (problemName == null && currentNode != null) {
+			problemName = currentNode.getProblemModel().getProblemName();
+		}
 		ProblemNode node = null;
 		boolean successful = false; 
 		boolean stillLearning = true;

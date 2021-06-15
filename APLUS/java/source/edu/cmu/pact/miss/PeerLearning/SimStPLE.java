@@ -520,7 +520,64 @@ public class SimStPLE {
 	public void resetRestartClickCount() {
 		restartClickCount = 0;
 	}
+	
+	ProblemEdge edge;
+	public ProblemEdge getEdge() {
+		return edge;
+	}
 
+	public void setEdge(ProblemEdge edge) {
+		this.edge = edge;
+	}
+	
+	Sai sai;
+	public Sai getSai() {
+		return sai;
+	}
+
+	public void setSai(Sai sai) {
+		this.sai = sai;
+	}
+	
+	ProblemNode currentNode;
+	
+	public ProblemNode getCurrentNode() {
+		return this.currentNode;
+	}
+	
+	public void setCurrentNode(ProblemNode currentNode) {
+		this.currentNode = currentNode;
+	}
+	
+	String query;
+	public String getQuery() {
+		return query;
+	}
+
+	public void setQuery(String query) {
+		this.query = query;
+	}
+	
+	String undoButtonTextInfo;
+	
+	public String getUndoButtonTextInfo() {
+		return undoButtonTextInfo;
+	}
+
+	public void setUndoButtonTextInfo(String undoButtonTextInfo) {
+		this.undoButtonTextInfo = undoButtonTextInfo;
+	}
+	
+	String undoMessage;
+	
+	public String getUndoMessage() {
+		return undoMessage;
+	}
+
+	public void setUndoMessage(String undoMessage) {
+		this.undoMessage = undoMessage;
+	}
+	
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 	// Constructor
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2157,7 +2214,9 @@ public class SimStPLE {
 	}
 
 	public void undo() {
-		setFocusTab(SIM_ST_TAB);
+		if(!runType.equals("springBoot")) {
+			setFocusTab(SIM_ST_TAB);
+		}
 		new Thread(new UndoThread()).start();
 	}
 
@@ -2166,7 +2225,7 @@ public class SimStPLE {
 	private String wasNormal = "Was Normal HintRequest";
 	private String wasVerify = "Was Verifying Production";
 
-	class UndoThread implements Runnable {
+	public class UndoThread implements Runnable {
 		private String undoThroughSelection = "";
 
 		public UndoThread() {
@@ -2374,145 +2433,196 @@ public class SimStPLE {
 
 			// JOptionPane.showMessageDialog(null,
 			// ((ProblemEdge)brController.getCurrentNode().getIncomingEdges().get(0)).getSai());
-
-			blockInput(true);
+			if(!runType.equals("springBoot")) {
+				blockInput(true);
+			}
 
 			ProblemEdge edge = ((ProblemEdge) brController.getCurrentNode().getIncomingEdges().get(0));
 			Sai sai = edge.getSai();
+			
 
-			Object obj = brController.lookupWidgetByName(sai.getS());
-			if (obj != null && obj instanceof JCommTable.TableCell) {
-				((JCommTable.TableCell) obj).setBackground(Color.pink);
+			if(!runType.equals("springBoot")) {
+				Object obj = brController.lookupWidgetByName(sai.getS());
+				if (obj != null && obj instanceof JCommTable.TableCell) {
+					((JCommTable.TableCell) obj).setBackground(Color.pink);
+				}
 			}
 
 			String query = generateUndoQueryMessage(sai.getS(), sai.getA(), sai.getI());
-			int result = simSt.displayConfirmMessage("Undo?", query);
+			int result = 0;
+			setEdge(edge);
+			setSai(sai);
+			setQuery(query);
+			
+			if(!runType.equals("springBoot")) {
+				result = simSt.displayConfirmMessage("Undo?", query);
+				Object obj = brController.lookupWidgetByName(sai.getS());
 
-			if (obj != null && obj instanceof JCommTable.TableCell) {
-				((JCommTable.TableCell) obj).setBackground(Color.white);
-			}
-
-			if (result == JOptionPane.YES_OPTION) {
-
-				if (trace.getDebugCode("rr"))
-					trace.out("rr", "Modeltracing the student action: " + SimStPLE.UNDO + "  ButtonPressed" + "  -1");
-				if (simSt.isSsMetaTutorMode() && brController.getAmt() != null)
-					brController.getAmt().handleInterfaceAction(SimStPLE.UNDO, "ButtonPressed", "-1");
-
-				String currentStatus = wasNormal;
-				if (!simSt.isInteractiveLearning()) {
-					if (brController.getCurrentNode().getDoneState())
-						currentStatus = wasDone;
-					else
-						currentStatus = wasFailToLearn;
+				if (obj != null && obj instanceof JCommTable.TableCell) {
+					((JCommTable.TableCell) obj).setBackground(Color.white);
 				}
-
-				// AskHint hint = new AskHintInBuiltClAlgebraTutor(brController,
-				// edge.getSource());
-				// CL oracle must not be hardcoded! Whichever oracle grades the quiz should
-				// provide hint for logging
-				AskHint hint = simSt.askForHintQuizGradingOracle(brController, edge.getSource());
-
-				if (hint != null) {
-					/*
-					 * if(simSt.isSsMetaTutorMode()) { if(simSt.getModelTraceWM() != null) {
-					 * simSt.getModelTraceWM().setStepUndone(WorkingMemoryConstants.TRUE); } }
-					 */
-					// if(getSimSt().isSsMetaTutorMode()) {
-					// getSimSt().getModelTraceWM().getEventHistory().add(0,
-					// getSimSt().getModelTraceWM().new Event(SimStLogger.UNDO_ACTION));
-					// }
-
-					int problemDuration = (int) ((Calendar.getInstance().getTimeInMillis()
-							- getSsInteractiveLearning().getProblemRecentTime()) / 1000);
-					getSsInteractiveLearning().setProblemRecentTime(Calendar.getInstance().getTimeInMillis());
-
-					logger.simStLog(SimStLogger.SIM_STUDENT_STEP, SimStLogger.UNDO_ACTION, simSt.getProblemStepString(),
-							currentStatus, "", sai, edge.getSource(), hint.getSelection(), hint.getAction(),
-							hint.getInput(), problemDuration, query);
-
-				}
-
-				boolean traversed = false;
-				// undo!
-
-				if (edge.getSource().isStudentBeginsHereState()) {
-					brController.goToStartState();
-					traversed = true;
+				
+				if (result == JOptionPane.YES_OPTION) {
+					onUndoYes(edge, sai, query);
 				} else {
-					traversed = brController.goToState(edge.getSource());
-				}
-				// JOptionPane.showMessageDialog(null, "Done Node Style: "+traversed);
-
-				// Learning must be started again and let it handle it (but do stop it from
-				// coming up with activation lists again - after undo SimStudent expects
-				// Student to enter hint)
-
-				if (traversed) {
-					if (edge.getSource().getInDegree() > 0) {
-						ProblemEdge prev = (ProblemEdge) edge.getSource().getIncomingEdges().get(0);
-
-						getSimStPeerTutoringPlatform().setUndoButtonText(getUndoButtonTitleString(prev.getInput()));
-					} else {
-						getSimStPeerTutoringPlatform().setUndoButtonText(getUndoButtonTitleString());
-					}
-
-					if (currentStatus.equals(wasDone)) {
-						simSt.displayMessage("SimStudent says...", BACK_TO_WORK_MSG);
-					} else {
-						simSt.displayMessage("SimStudent asks...", SHOULD_DO_MSG.replace("$", sai.getI()));
-						if (simSt.getLastSkillOperand() == null) {
-							String NOTHING_DONE_YET = "I don't remember having done anything before that...";
-							simSt.displayMessage(null, NOTHING_DONE_YET);
-						} else if (!simSt.getLastSkillOperand().equals(sai.getI())) {
-							simSt.displayMessage("SimStudent says...",
-									"I remember I was trying to " + simSt.getLastSkillOperand() + ".");
-						} else {
-							String tmp = simSt.revertLastSkillOperand();
-						}
-					}
-
-					Instruction inst = simSt.lookupInstructionWithNode(edge.getDest());
-					simSt.negateBadPositiveExample(inst);
-					simSt.signalInstructionAsNegativeExample(inst);
-
-					simSt.setIsInteractiveLearning(true);
-					getSsInteractiveLearning().runInteractiveLearning(edge.getSource(), false);
-				}
-
-				/*
-				 * if(!simSt.isInteractiveLearning()) { //if(edge.getDest().getDoneState()) //{
-				 * if(edge.getSource().isStudentBeginsHereState()) {
-				 * brController.goToStartState(); traversed = true; } else { traversed =
-				 * brController.goToState(edge.getSource()); }
-				 * //JOptionPane.showMessageDialog(null, "Done Node Style: "+traversed);
-				 * 
-				 * //Learning must be started again when undoing a done state, so handle this
-				 * differently //with messaging - just restart the learning and let it handle it
-				 * (but do stop it from //coming up with activation lists again - after undo
-				 * SimStudent expects Student to enter hint)
-				 * 
-				 * if(traversed) { simSt.setIsInteractiveLearning(true);
-				 * getSsInteractiveLearning().runInteractiveLearning(edge.getSource(),false); }
-				 * return; //} } else if(edge.getSource().isStudentBeginsHereState()) {
-				 * brController.goToStartState(); traversed = true;
-				 * simSt.displayMessage("SimStudent asks...", SHOULD_DO_MSG); } else { traversed
-				 * = brController.goToState(edge.getSource()); if(traversed)
-				 * simSt.displayMessage("SimStudent asks...", SHOULD_DO_MSG); } if(!traversed) {
-				 * simSt.displayMessage("Error", UNDO_ERROR_MSG); return; } String newStep =
-				 * simSt.calcProblemStepString(); simSt.setProblemStepString(newStep);
-				 * logger.simStLog(SimStLogger.SIM_STUDENT_STEP,
-				 * SimStLogger.STEP_STARTED_ACTION, newStep,"",""); blockInput(false);
-				 */
-			} else {
-				if (!brController.getCurrentNode().getDoneState()) {
-					blockInput(false);
-					simSt.displayMessage("SimStudent asks...", RESUME_MSG);
+					onUndoNo();
 				}
 			}
+		}
+
+	}
+	
+	public void onUndoYes(ProblemEdge edge, Sai sai, String query) {
+		if (trace.getDebugCode("rr"))
+			trace.out("rr", "Modeltracing the student action: " + SimStPLE.UNDO + "  ButtonPressed" + "  -1");
+		if (simSt.isSsMetaTutorMode() && brController.getAmt() != null)
+			brController.getAmt().handleInterfaceAction(SimStPLE.UNDO, "ButtonPressed", "-1");
+
+		String currentStatus = wasNormal;
+		if (!simSt.isInteractiveLearning()) {
+			if (brController.getCurrentNode().getDoneState())
+				currentStatus = wasDone;
+			else
+				currentStatus = wasFailToLearn;
+		}
+
+		// AskHint hint = new AskHintInBuiltClAlgebraTutor(brController,
+		// edge.getSource());
+		// CL oracle must not be hardcoded! Whichever oracle grades the quiz should
+		// provide hint for logging
+		AskHint hint = simSt.askForHintQuizGradingOracle(brController, edge.getSource());
+
+		if (hint != null) {
+			/*
+			 * if(simSt.isSsMetaTutorMode()) { if(simSt.getModelTraceWM() != null) {
+			 * simSt.getModelTraceWM().setStepUndone(WorkingMemoryConstants.TRUE); } }
+			 */
+			// if(getSimSt().isSsMetaTutorMode()) {
+			// getSimSt().getModelTraceWM().getEventHistory().add(0,
+			// getSimSt().getModelTraceWM().new Event(SimStLogger.UNDO_ACTION));
+			// }
+
+			int problemDuration = (int) ((Calendar.getInstance().getTimeInMillis()
+					- getSsInteractiveLearning().getProblemRecentTime()) / 1000);
+			getSsInteractiveLearning().setProblemRecentTime(Calendar.getInstance().getTimeInMillis());
+
+			logger.simStLog(SimStLogger.SIM_STUDENT_STEP, SimStLogger.UNDO_ACTION, simSt.getProblemStepString(),
+					currentStatus, "", sai, edge.getSource(), hint.getSelection(), hint.getAction(),
+					hint.getInput(), problemDuration, query);
 
 		}
 
+		boolean traversed = false;
+		// undo!
+
+		if (edge.getSource().isStudentBeginsHereState()) {
+			brController.goToStartState();
+			traversed = true;
+		} else {
+			traversed = brController.goToState(edge.getSource());
+		}
+		// JOptionPane.showMessageDialog(null, "Done Node Style: "+traversed);
+
+		// Learning must be started again and let it handle it (but do stop it from
+		// coming up with activation lists again - after undo SimStudent expects
+		// Student to enter hint)
+
+		if (traversed) {
+			if (edge.getSource().getInDegree() > 0) {
+				ProblemEdge prev = (ProblemEdge) edge.getSource().getIncomingEdges().get(0);
+				if(runType.equals("springBoot")) {
+					setUndoButtonTextInfo(getUndoButtonTitleString(prev.getInput()));
+				} else {
+					getSimStPeerTutoringPlatform().setUndoButtonText(getUndoButtonTitleString(prev.getInput()));
+				}
+			} else {
+				if(runType.equals("springBoot")) {
+					setUndoButtonTextInfo(getUndoButtonTitleString());
+				} else {
+					getSimStPeerTutoringPlatform().setUndoButtonText(getUndoButtonTitleString());
+				}
+			}
+			
+			if(runType.equals("springBoot")) {
+				String undoMsg = "";
+				if (currentStatus.equals(wasDone)) {
+					undoMsg = BACK_TO_WORK_MSG;
+				} else {
+					undoMsg = SHOULD_DO_MSG.replace("$", sai.getI());
+					if (simSt.getLastSkillOperand() == null) {
+						String NOTHING_DONE_YET = "I don't remember having done anything before that...";
+						undoMsg += "\n"+ NOTHING_DONE_YET;
+					} else if (!simSt.getLastSkillOperand().equals(sai.getI())) {
+						undoMsg += "\n" +"I remember I was trying to " + simSt.getLastSkillOperand() + ".";
+					} else {
+						String tmp = simSt.revertLastSkillOperand();
+					}
+				}
+				setUndoMessage(undoMsg);
+			} else {
+				if (currentStatus.equals(wasDone)) {
+					simSt.displayMessage("SimStudent says...", BACK_TO_WORK_MSG);
+				} else {
+					simSt.displayMessage("SimStudent asks...", SHOULD_DO_MSG.replace("$", sai.getI()));
+					if (simSt.getLastSkillOperand() == null) {
+						String NOTHING_DONE_YET = "I don't remember having done anything before that...";
+						simSt.displayMessage(null, NOTHING_DONE_YET);
+					} else if (!simSt.getLastSkillOperand().equals(sai.getI())) {
+						simSt.displayMessage("SimStudent says...",
+							"I remember I was trying to " + simSt.getLastSkillOperand() + ".");
+					} else {
+						String tmp = simSt.revertLastSkillOperand();
+					}
+				}
+			}
+
+			Instruction inst = simSt.lookupInstructionWithNode(edge.getDest());
+			simSt.negateBadPositiveExample(inst);
+			simSt.signalInstructionAsNegativeExample(inst);
+
+			simSt.setIsInteractiveLearning(true);
+			if (runType.equalsIgnoreCase("springboot")) {
+				this.setCurrentNode(edge.getSource());
+			} else {
+				getSsInteractiveLearning().runInteractiveLearning(edge.getSource(), false);				
+			}
+		}
+
+		/*
+		 * if(!simSt.isInteractiveLearning()) { //if(edge.getDest().getDoneState()) //{
+		 * if(edge.getSource().isStudentBeginsHereState()) {
+		 * brController.goToStartState(); traversed = true; } else { traversed =
+		 * brController.goToState(edge.getSource()); }
+		 * //JOptionPane.showMessageDialog(null, "Done Node Style: "+traversed);
+		 * 
+		 * //Learning must be started again when undoing a done state, so handle this
+		 * differently //with messaging - just restart the learning and let it handle it
+		 * (but do stop it from //coming up with activation lists again - after undo
+		 * SimStudent expects Student to enter hint)
+		 * 
+		 * if(traversed) { simSt.setIsInteractiveLearning(true);
+		 * getSsInteractiveLearning().runInteractiveLearning(edge.getSource(),false); }
+		 * return; //} } else if(edge.getSource().isStudentBeginsHereState()) {
+		 * brController.goToStartState(); traversed = true;
+		 * simSt.displayMessage("SimStudent asks...", SHOULD_DO_MSG); } else { traversed
+		 * = brController.goToState(edge.getSource()); if(traversed)
+		 * simSt.displayMessage("SimStudent asks...", SHOULD_DO_MSG); } if(!traversed) {
+		 * simSt.displayMessage("Error", UNDO_ERROR_MSG); return; } String newStep =
+		 * simSt.calcProblemStepString(); simSt.setProblemStepString(newStep);
+		 * logger.simStLog(SimStLogger.SIM_STUDENT_STEP,
+		 * SimStLogger.STEP_STARTED_ACTION, newStep,"",""); blockInput(false);
+		 */
+	}
+	
+	public void onUndoNo() {
+		if (!brController.getCurrentNode().getDoneState()) {
+			if(runType.equals("springBoot")) {
+				setUndoMessage(RESUME_MSG);
+			} else {
+				blockInput(false);
+				simSt.displayMessage("SimStudent asks...", RESUME_MSG);
+			}
+		}
 	}
 
 	public String generateUndoQueryMessage(String selection, String action, String input) {
@@ -3920,7 +4030,8 @@ public class SimStPLE {
 		// getSimStPeerTutoringPlatform().getSimStAvatarLayerIcon().setBorder(BorderFactory.createLineBorder(Color.green,
 		// BORDER_WIDTH));
 		// Do not allow editing of values once avatar is done
-		blockInput(true);
+		if(!runType.equals("springBoot"))
+			blockInput(true);
 		// jinyul - Save instructions now that a particular problem has been finished.
 		if (trace.getDebugCode("miss"))
 			trace.out("miss", "Enter setAvatarFinished to call autoSaveInstructions()");
@@ -3929,11 +4040,12 @@ public class SimStPLE {
 		getMissController().getSimSt().saveSimStState();
 		giveMessage(conversation.getMessage(SimStConversation.VERIFY_WRONG));
 		startStatus = false;
-		getSimStPeerTutoringPlatform().setExpression(CONFUSE_EXPRESSION);
-		getSimStPeerTutoringPlatform().setUndoButtonEnabled(true);
-		getSimStPeerTutoringPlatform().setRestartButtonEnabled(true);
-		getSimStPeerTutoringPlatform().setWait(false);
-
+		if(!runType.equals("springBoot")) {
+			getSimStPeerTutoringPlatform().setExpression(CONFUSE_EXPRESSION);
+			getSimStPeerTutoringPlatform().setUndoButtonEnabled(true);
+			getSimStPeerTutoringPlatform().setRestartButtonEnabled(true);
+			getSimStPeerTutoringPlatform().setWait(false);
+		}
 		// if (brController!=null &&
 		// brController.getMissController().getSimSt().isSsMetaTutorMode() )
 		// brController.getMissController().getSimSt().getModelTraceWM().setStudentEnteredProblem(null);
@@ -4730,13 +4842,13 @@ public class SimStPLE {
 
 		boolean passed = false;
 		String problemName1 = "";
-		if (!runType.equals("springBoot")) {
+		if (runType.equals("springBoot")) { 
+			passed = getSimSt().getInputChecker().checkVariables(inputs.get(0), inputs.get(1));
+    		problemName1 = createComponentName(inputs);
+		} else {
 			passed = checkVariableUsedStartState();
 			problemName1 = simSt.getSsInteractiveLearning()
 					.createName(getSimStPeerTutoringPlatform().getStudentInterface().getComponents());
-		} else {
-			passed = getSimSt().getInputChecker().checkVariables(inputs.get(0), inputs.get(1));
-    		problemName1 = createComponentName(inputs);
 		}
 		String prob = SimSt.convertFromSafeProblemName(problemName1);
 
@@ -4758,11 +4870,11 @@ public class SimStPLE {
 		if (simSt.isStartStateCheckerDefined() && brController.getMissController().isSimStPleOn()
 				&& simSt.isSsMetaTutorMode()) {
 			String problemName = "";
-			if (!runType.equals("springBoot")) {
+			if (runType.equals("springBoot")) {
+				problemName = createComponentName(inputs);
+			} else {
 				problemName = simSt.getSsInteractiveLearning()
 						.createName(getSimStPeerTutoringPlatform().getStudentInterface().getComponents());
-			} else {
-				problemName = createComponentName(inputs);
 			}
 			
 			boolean isOKProblem = simSt.getStartStateChecker()
@@ -4779,11 +4891,11 @@ public class SimStPLE {
 		
 		if (simSt.isSsMetaTutorMode() || simSt.isSsAplusCtrlCogTutorMode()) {
 			String problemName = "";
-			if (!runType.equals("springBoot")) {
+			if (runType.equals("springBoot")) {
+				problemName = createComponentName(inputs);
+			} else {
 				problemName = simSt.getSsInteractiveLearning()
 						.createName(getSimStPeerTutoringPlatform().getStudentInterface().getComponents());
-			} else {
-				problemName = createComponentName(inputs);
 			}
 			boolean solveable = simSt.getSsInteractiveLearning().isSolvable(simSt.getProblemCheckerOracle(),
 					problemName, brController);
@@ -4797,10 +4909,10 @@ public class SimStPLE {
 		
 		if (!passed) {
 			String message = "";
-			if (!runType.equals("springBoot")) {
-				message = getSimSt().getInputChecker().invalidVariablesMessage(cellText1, cellText1);
-			} else {
+			if (runType.equals("springBoot")) {
 				message = getSimSt().getInputChecker().invalidVariablesMessage(inputs.get(0), inputs.get(1));
+			} else {
+				message = getSimSt().getInputChecker().invalidVariablesMessage(cellText1, cellText1);
 			}
 			quesMessage.add("false");
 			quesMessage.add(message);

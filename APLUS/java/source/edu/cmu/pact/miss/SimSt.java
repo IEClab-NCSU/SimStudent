@@ -1933,8 +1933,8 @@ public final class SimSt implements Serializable {
    	} catch(IOException e) {
    		e.printStackTrace();
    	} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
+		e.printStackTrace();
+	}
 				
    	// Restore the current simStudent to the same state
    	this.instructions = simStObj.instructions;
@@ -2997,13 +2997,12 @@ public final class SimSt implements Serializable {
            Object[] args = null;
            Method getCommNameMethod = null;
            try {
-        	   if(!runType.equals("springBoot")) {
+        	   if(runType.equals("springBoot")) {
+        		   this.commName = (String) widget;
+        	   } else {
         		   getCommNameMethod = getWidgetClass().getMethod( "getCommName", argTypes );
                    this.commName = (String)getCommNameMethod.invoke( getWidget(), args );
-        	   } else {
-        		   this.commName = (String) widget;
         	   }
-               
            } catch (Exception e) {
                e.printStackTrace();
                logger.simStLogException(e);
@@ -8733,7 +8732,7 @@ public final class SimSt implements Serializable {
                    } 
                    else if (getRuleActivationTestMethod().equalsIgnoreCase(RA_TEST_METHOD_HO)) {
                        // ruleActivated.getName()
-                       mtStatus = inquiryRuleActivationOracle(selection, action, input, problemNode, problemName, ruleName, ran);
+                       mtStatus = inquiryRuleActivationOracle(selection, action, input, problemNode, problemName, ruleName, ran, null);
                    }
                    else if (getRuleActivationTestMethod().equalsIgnoreCase(RA_TEST_METHOD_CL)) {
                        String problem = startNode.getName();
@@ -9863,117 +9862,126 @@ public final class SimSt implements Serializable {
    // 
    public String inquiryRuleActivationOracle(String actualSelection, String actualAction, String actualInput, 
                                              ProblemNode node, String problemName, String ruleName,
-                                             RuleActivationNode ran) {
+                                             RuleActivationNode ran, Boolean isInquiryCorrect) {
 
 	   
-		String step = getProblemStepString();
        // See if there has been an oracle for the inquired rule activation 
-       String status = EdgeData.CLT_ERROR_ACTION;
-
-       if (!actualSelection.equals(MTRete.NOT_SPECIFIED) &&
-       		(actualInput.toUpperCase().indexOf("FALSE") == -1) ) {
-       	
-       	String title = "Applying the rule " + ruleName.replaceAll("MAIN::", "");
-       	String message[] = generateQueryMessage(actualSelection, actualAction, actualInput, ran);
-       	
-       	JFrame frame = getBrController().getActiveWindow();
-       	
-       	if(getMissController().getSimStPLE() != null)
-       		getMissController().getSimStPLE().setFocusTab(SimStPLE.SIM_ST_TAB);
-       	
-
-       	
-       	String msg = "";
-       	for(int i=0;i<message.length;i++)
-       		msg += message[i]+" ";
-       	Sai sai = new Sai(actualSelection, actualAction, actualInput);
-       	AskHint hint = null;
-       	
-    
-       	long verifyRequestTime = Calendar.getInstance().getTimeInMillis();
-       	
-       	// Should update the working memory for model-tracing i.e. actor and stepCorrectness from here
-       	if(isSsMetaTutorMode()){	
-       		//String result = builtInInquiryClTutor(actualSelection, actualAction, actualInput, node, problemName);
-     		  	long start = Calendar.getInstance().getTimeInMillis();
-     		  	//getBrController().getAmt().handleInterfaceAction("ssfeedback","implicit", "-1");
-     		  	getBrController().getMissController().getSimSt().getModelTraceWM().setRequestType("feedback-request"); 	
-     		  	long end = Calendar.getInstance().getTimeInMillis();
-       	} 
-
-      
-
-    	
-       	try{
-       		if(logger.getLoggingEnabled()){
-	
-    			//hint = new AskHintInBuiltClAlgebraTutor(getBrController(), node);
-       			//CL oracle should not be hardcoded. Whichever oracle grades the quiz should be provide hint for logging
-       			hint = askForHintQuizGradingOracle(getBrController(),node);
-       			
-       		}
-       	}
-       	catch(Exception ex){
-       				ex.printStackTrace(); logger.simStLogException(ex);
-       	}
-       	
-       	if(logger.getLoggingEnabled())
-       	{
-       	logger.simStLog(SimStLogger.SIM_STUDENT_INFO_RECEIVED, SimStLogger.CONFIRMATION_REQUEST_ACTION, step, 
-    			"", title+":"+msg, sai,node, hint.getSelection(), hint.getAction(), hint.getInput(),0,msg);		
-	        		
-       	}
-
-       	int oracle = displayConfirmMessage(title,message);
-       	if (oracle == JOptionPane.YES_OPTION) {
-       		status = EdgeData.CORRECT_ACTION;
-       		if(isSkillNameGetterDefined()) {
-       			getSkillNameGetter().skillNameGetter(getBrController(), actualSelection, actualAction, actualInput);
-       		}
-       	}
-       	
-       	// TODO: Need to figure out a unified way to handle all the interface actions at one place
-       	// Model-tracing the student interface action (clicking either the Yes or No button) in response to the 
-       	// SimStudent feedback request
-       	if(isSsMetaTutorMode()) {
-  
-	      		if(getBrController() != null && getBrController().getAmt() != null) {
-	      			//System.out.println("Yes or No or Done button clicked ");
-	      			if(oracle == JOptionPane.YES_OPTION) {
-	      				
-	      				// If the feedback is for done then run the model-tracer for done, ButtonPressed, -1
-	      				if(ruleName.replaceAll("MAIN::", "").contains(WorkingMemoryConstants.DONE_BUTTON_SELECTION)) {
-	      					getBrController().getAmt().handleInterfaceAction(WorkingMemoryConstants.DONE_BUTTON_SELECTION,
-	      							WorkingMemoryConstants.BUTTON_ACTION, WorkingMemoryConstants.BUTTON_INPUT);
-	      				} else {
-	      					getBrController().getAmt().handleInterfaceAction(WorkingMemoryConstants.YES_BUTTON_SELECTION,
-	      							WorkingMemoryConstants.BUTTON_ACTION, WorkingMemoryConstants.BUTTON_INPUT);
-	      				}
-	      			} else if(oracle == JOptionPane.NO_OPTION) {
-	      				
-	      				getBrController().getAmt().handleInterfaceAction(WorkingMemoryConstants.NO_BUTTON_SELECTION,
-	      						WorkingMemoryConstants.BUTTON_ACTION, WorkingMemoryConstants.BUTTON_INPUT);	      				
-	      			}
-	      		}
-       	}
-       	
-       	if(getSsInteractiveLearning() != null)
-       	{
-       		//if(isSsMetaTutorMode()) {
-       		//	getModelTraceWM().getEventHistory().add(0, getModelTraceWM().new Event(SimStLogger.INPUT_VERIFY_ACTION));
-       		//}
-       		if(logger.getLoggingEnabled())
-       		{
-       			int verifyDuration = (int) ((Calendar.getInstance().getTimeInMillis() - verifyRequestTime)/1000);
-	        		logger.simStLog(SimStLogger.SIM_STUDENT_INFO_RECEIVED, SimStLogger.INPUT_VERIFY_ACTION, step, 
-	        				status, title+":"+msg, sai,node,hint.getSelection(), hint.getAction(), hint.getInput(), verifyDuration,msg);
-       		}
-       		
-       	}
+	   String status = EdgeData.CLT_ERROR_ACTION;
+       
+       String msg = getInquiry(actualSelection, actualAction, actualInput, ran);
+       
+       if (msg != EdgeData.CLT_ERROR_ACTION) {
+    	   	Sai sai = new Sai(actualSelection, actualAction, actualInput);
+          	AskHint hint = null;
+          	String title = "Applying the rule " + ruleName.replaceAll("MAIN::", "");
+          	String step = getProblemStepString();
+          	
+          	long verifyRequestTime = Calendar.getInstance().getTimeInMillis();
+	       	
+          	try{
+           		if(logger.getLoggingEnabled()){
+        			//hint = new AskHintInBuiltClAlgebraTutor(getBrController(), node);
+           			//CL oracle should not be hardcoded. Whichever oracle grades the quiz should be provide hint for logging
+           			hint = askForHintQuizGradingOracle(getBrController(),node);
+           			
+           		}
+           	}
+           	catch(Exception ex){
+           				ex.printStackTrace(); logger.simStLogException(ex);
+           	}
+           	
+           	if(logger.getLoggingEnabled())
+           	{
+           		logger.simStLog(SimStLogger.SIM_STUDENT_INFO_RECEIVED, SimStLogger.CONFIRMATION_REQUEST_ACTION, step, 
+        			"", title+":"+msg, sai,node, hint.getSelection(), hint.getAction(), hint.getInput(),0,msg);		
+    	        		
+           	}
+          	
+          	int oracle = 0;
+	       	oracle = askInquiry(ruleName, msg);
+	       	status = getStatusByInquiryResponseAndUpdateSkill(ran, oracle == JOptionPane.YES_OPTION);
+	       	
+	       	if(getSsInteractiveLearning() != null)
+	       	{
+	       		if(logger.getLoggingEnabled())
+	       		{
+	       			int verifyDuration = (int) ((Calendar.getInstance().getTimeInMillis() - verifyRequestTime)/1000);
+		        		logger.simStLog(SimStLogger.SIM_STUDENT_INFO_RECEIVED, SimStLogger.INPUT_VERIFY_ACTION, step, 
+		        				status, title+":"+msg, sai,node,hint.getSelection(), hint.getAction(), hint.getInput(), verifyDuration,msg);
+	       		}
+	       		
+	       	}
        }
 
        if(trace.getDebugCode("miss"))trace.out("miss", "Oracle status ==> " + status );
+       
        return status;
+   }
+   
+   public String getInquiry(String actualSelection, String actualAction, String actualInput, 
+           RuleActivationNode ran) {
+       if (!actualSelection.equals(MTRete.NOT_SPECIFIED) &&
+       		(actualInput.toUpperCase().indexOf("FALSE") == -1) ) {
+	       	String message[] = generateQueryMessage(actualSelection, actualAction, actualInput, ran);
+	       	String msg = "";
+	       	for(int i=0;i<message.length;i++)
+	       		msg += message[i]+" ";
+	       	return msg;
+       } else {
+    	   return EdgeData.CLT_ERROR_ACTION;
+       }
+   }
+   
+   public int askInquiry(String ruleName, String message) {
+	   performModelTracingForInquiry();
+	   String title = "Applying the rule " + ruleName.replaceAll("MAIN::", "");
+	   if(getMissController().getSimStPLE() != null)
+		   getMissController().getSimStPLE().setFocusTab(SimStPLE.SIM_ST_TAB);
+	   return displayConfirmMessage(title,message);		   
+   }
+   
+   public void updateSkillName(String actualSelection, String actualAction, String actualInput) {
+      	if(isSkillNameGetterDefined()) {
+      		getSkillNameGetter().skillNameGetter(getBrController(), actualSelection, actualAction, actualInput);
+      	}
+   }
+   
+   public String getStatusByInquiryResponseAndUpdateSkill(RuleActivationNode ran, Boolean isInquiryCorrect) {
+	   if(runType.equalsIgnoreCase("springboot"))
+		   performModelTracingForInquiry();
+	   int oracle = isInquiryCorrect ? JOptionPane.YES_OPTION : JOptionPane.NO_OPTION;
+	   if (isInquiryCorrect)
+		   updateSkillName(ran.getActualSelection(), ran.getActualAction(), ran.getActualInput());   
+	   performModelTracingForInquiryResponse(oracle, ran.getName());
+	   return isInquiryCorrect ? EdgeData.CORRECT_ACTION : EdgeData.CLT_ERROR_ACTION;
+   }
+   
+   // Should update the working memory for model-tracing i.e. actor and stepCorrectness from here
+   public void performModelTracingForInquiry() {
+	   if(isSsMetaTutorMode()){
+		   long start = Calendar.getInstance().getTimeInMillis();
+		   getBrController().getMissController().getSimSt().getModelTraceWM().setRequestType("feedback-request"); 	
+		   long end = Calendar.getInstance().getTimeInMillis();
+	   }
+   }
+   
+   public void performModelTracingForInquiryResponse(int oracle, String ruleName) {
+	   if(isSsMetaTutorMode() && getBrController() != null && getBrController().getAmt() != null) {
+ 			//System.out.println("Yes or No or Done button clicked ");
+ 			if(oracle == JOptionPane.YES_OPTION) {
+ 				// If the feedback is for done then run the model-tracer for done, ButtonPressed, -1
+ 				if(ruleName.replaceAll("MAIN::", "").contains(WorkingMemoryConstants.DONE_BUTTON_SELECTION)) {
+ 					getBrController().getAmt().handleInterfaceAction(WorkingMemoryConstants.DONE_BUTTON_SELECTION,
+ 							WorkingMemoryConstants.BUTTON_ACTION, WorkingMemoryConstants.BUTTON_INPUT);
+ 				} else {
+ 					getBrController().getAmt().handleInterfaceAction(WorkingMemoryConstants.YES_BUTTON_SELECTION,
+ 							WorkingMemoryConstants.BUTTON_ACTION, WorkingMemoryConstants.BUTTON_INPUT);
+ 				}
+ 			} else if(oracle == JOptionPane.NO_OPTION) {
+ 				getBrController().getAmt().handleInterfaceAction(WorkingMemoryConstants.NO_BUTTON_SELECTION,
+ 						WorkingMemoryConstants.BUTTON_ACTION, WorkingMemoryConstants.BUTTON_INPUT);	      				
+ 			}
+ 		}
    }
 
    	boolean hintRequest=false;
@@ -11619,6 +11627,7 @@ public final class SimSt implements Serializable {
            {
 	            Instruction instruction = instructions.get(0);
 	            int arity = instruction.numFocusOfAttention() -1;
+	            String foilLogDir;
 	            
 	            if (isSsWebAuthoringMode()) {
 	            	foilLogDir = getUserBundleDirectory() + "/" + getFoilLogDir() + "/";

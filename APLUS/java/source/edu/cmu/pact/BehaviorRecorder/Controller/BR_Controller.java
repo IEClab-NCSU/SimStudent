@@ -1664,7 +1664,14 @@ public class BR_Controller extends TutorController implements PropertyChangeList
         String[] foaValues = null;
         if(getMissController().getSimSt().getFoaGetter() != null)
         {
-        	if(!runType.equals("springBoot")) {
+        	if(runType.equals("springBoot")) {
+        		Vector<Object> vFoa = getMissController().getSimSt().getFoaGetter().foaGetter(this, selectionString, actionString, inputString, null);
+            	foaValues = new String[vFoa.size()];
+            	int count = 0;
+            	for(Object elt: vFoa) {
+            		foaValues[count++] = elt.toString();
+            	}
+        	} else {
         		Vector<Object> vFoa = getMissController().getSimSt().getFoaGetter().foaGetter(this, selectionString, actionString, inputString, null);
         		foaValues = new String[vFoa.size()];
         		int count = 0;
@@ -1681,20 +1688,6 @@ public class BR_Controller extends TutorController implements PropertyChangeList
         			}
         			count++;
         		}
-        	} else {
-//        		if(selectionString.equals("dorminTable3_C0R0")) {
-//        			foaValues = new String[2];
-//        			int count = 0;
-//        			foaValues[count++] = this.widgetTable.get("dorminTable1_C0R0");
-//        			foaValues[count++] = this.widgetTable.get("dorminTable2_C0R0");
-//        		} else {
-        			Vector<Object> vFoa = getMissController().getSimSt().getFoaGetter().foaGetter(this, selectionString, actionString, inputString, null);
-            		foaValues = new String[vFoa.size()];
-            		int count = 0;
-            		for(Object elt: vFoa) {
-            			foaValues[count++] = elt.toString();
-            		}
-//        		}
         	}
         }
         
