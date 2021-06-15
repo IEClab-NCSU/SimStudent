@@ -28,6 +28,8 @@ public class SimStConversation {
 	public static final String NOT_FIRST_ACTIVATION = "<A2>";
 	public static final String BEHAVIOUR_DISCREPENCY = "<BD>";
 	public static final String SAI = "<sai>";
+	public static final String PROBLEM = "<problem>";
+	public static final String LOGIC = "<logic>";
 	
 	public static final String NEW_PROBLEM_TOPIC = "NEW_PROBLEM";
 	public static final String NEW_PROBLEM_COG_TUTOR_TOPIC = "NEW_PROBLEM_COG_TUTOR";
@@ -74,6 +76,11 @@ public class SimStConversation {
 	public static final String FEEDBACK_NEGATIVE_TOPIC = "FEEDBACK_NEGATIVE";
 	public static final String FEEDBACK_NEGATIVE_DONE_TOPIC = "FEEDBACK_NEGATIVE_DONE";
 	public static final String ALL_QUIZ_FAILED_TOPIC = "ALL_QUIZ_FAILED";
+	// Added by Tasmia
+	public static final String ASKING_IF_TUTOR_KNOWS_STEP_TOPIC = "ASKING_IF_TUTOR_KNOWS_STEP";
+	public static final String BRAINSTORMING_QUESTION_TOPIC = "BRAINSTORMING_QUESTION";
+	public static final String BRAINSTORMING_QUESTION_WHEN_NO_FEATURE_FOUND_TOPIC = "BRAINSTORMING_QUESTION_WHEN_NO_FEATURE_FOUND";
+
 	
 	
 	
@@ -235,6 +242,20 @@ public class SimStConversation {
 		return replaceVariables(message, selection, action, input, operation);
 	}
 	
+	public String getMessage(String topic, String input, String problem, String logic)
+	{
+		ArrayList<String> messages = topics.get(topic);   
+	
+		String message = messages.get((int)(Math.random()*messages.size()));
+	
+		if(!messageWorks(message, input, problem, logic)) {
+			message = getFilteredMessage(messages, input, problem, logic);
+
+		}
+					
+		return replaceVariables(message, input, problem, logic);
+	}
+	
 	public String getFilteredMessage(ArrayList<String> messages,String selection, String input, String operation, int activationNum)
 	{
 		ArrayList<String> filtered = new ArrayList<String>();
@@ -243,6 +264,24 @@ public class SimStConversation {
 		
 			String message = messages.get(i);
 			if(messageWorks(message, selection, input, operation, activationNum)) {
+				filtered.add(message);
+			}
+		}
+		if(filtered.size() == 0)
+			return "";
+		
+		
+		return filtered.get((int)(Math.random()*filtered.size()));
+	}
+	
+	public String getFilteredMessage(ArrayList<String> messages, String input, String problem, String logic)
+	{
+		ArrayList<String> filtered = new ArrayList<String>();
+		for(int i=0;i<messages.size();i++)
+		{	
+		
+			String message = messages.get(i);
+			if(messageWorks(message, input, problem, logic)) {
 				filtered.add(message);
 			}
 		}
@@ -315,7 +354,79 @@ public class SimStConversation {
 		{
 			if(message.contains(NO_ACTIVATIONS))
 				return false;
+		}
+		if(input == null)
+		{
+			if(message.contains(PROBLEM))
+				return false;
+		}
+		if(input == null)
+		{
+			if(message.contains(LOGIC))
+				return false;
+		}
+			
+		return true;
+	}
+
+	
+	public boolean messageWorks(String message, String input, String problem, String logic)
+	{		
+
+		if(!modelTraced || !metatutored)
+		{//!metatutor
+			if(message.contains(METATUTOR))
+				return false;
+		}
+		if (getBehaviourDiscrepency()){		//from the specific topic, if  is set selection only what is marked as BD in simSt-speech.txt.
+			if (!message.contains(BEHAVIOUR_DISCREPENCY))
+				return false;
 		}	
+		if(!modelTraced || WorkingMemoryConstants.FALSE.equals(mtwm.getQuizTaken()))
+		{//!quiz
+			if(message.contains(QUIZ))
+				return false;
+		}
+		if(!metatutored || apmt.getTraceHistoryIncorrectCount() < ERROR_THRESHOLD)
+		{
+			if(message.contains(MODEL_TRACE_ERROR))
+				return false;
+		}
+		/*if(selection == null)
+		{
+			if(message.contains(SELECTION))
+				return false;
+		}*/
+		if(input == null)
+		{
+			if(message.contains(INPUT))
+				return false;
+		}
+		/*if(activationNum == -1)
+		{
+			if(message.contains(NO_ACTIVATIONS) || message.contains(NOT_FIRST_ACTIVATION))
+				return false;
+		}
+		if(activationNum < 1)
+		{
+			if(message.contains(NOT_FIRST_ACTIVATION))
+				return false;
+		}
+		if(activationNum > 0)
+		{
+			if(message.contains(NO_ACTIVATIONS))
+				return false;
+		}*/
+		if(input == null)
+		{
+			if(message.contains(PROBLEM))
+				return false;
+		}
+		if(input == null)
+		{
+			if(message.contains(LOGIC))
+				return false;
+		}
 			
 		return true;
 	}
@@ -335,6 +446,26 @@ public class SimStConversation {
 		
 		if (brController.getMissController().getSimStPLE()!=null)
 			message=brController.getMissController().getSimStPLE().messageComposer(message,selection,action,input);
+		
+		return message;
+	}
+	
+	public String replaceVariables(String message, String input, String problem, String logic)
+	{
+		
+		message = message.replaceAll(BEHAVIOUR_DISCREPENCY, "");
+		message = message.replaceAll(METATUTOR, "");
+		message = message.replaceAll(INPUT, input);
+		//message = message.replaceAll(OPERATION, operation);
+		message = message.replaceAll(NO_ACTIVATIONS, "");
+		message = message.replaceAll(NOT_FIRST_ACTIVATION, "");
+		message = message.replaceAll(MODEL_TRACE_ERROR, "");
+		message = message.replaceAll(QUIZ, "");
+		message = message.replaceAll(PROBLEM, problem);
+		message = message.replaceAll(LOGIC, logic);
+		
+		/*if (brController.getMissController().getSimStPLE()!=null)
+			message=brController.getMissController().getSimStPLE().messageComposer(message,selection,action,input);*/
 		
 		return message;
 	}

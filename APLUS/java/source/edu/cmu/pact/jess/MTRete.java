@@ -1063,6 +1063,7 @@ public class MTRete extends Rete implements Serializable, JessParser,
                 break;
             result.add(act);
         }
+        
         return result;
     }
     

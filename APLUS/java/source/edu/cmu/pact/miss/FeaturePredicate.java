@@ -50,7 +50,11 @@ public abstract class FeaturePredicate
      */
     protected boolean isDecomposedRelationship=false;
     public String getName() { return this.name; }
-    
+    /**
+     * This function returns the description of a particular feature.
+     * @param args
+     * @return
+     */
     public void setName( String name ) { this.name = name; }
     // A list of arguments
     private Vector /* of String */ args = new Vector();

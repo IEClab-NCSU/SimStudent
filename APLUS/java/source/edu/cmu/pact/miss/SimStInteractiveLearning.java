@@ -24,8 +24,11 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
+import jess.Activation;
+import jess.Defrule;
 import jess.Fact;
 import jess.JessException;
+import jess.Node1RTLTest;
 import jess.Rete;
 import jess.Value;
 import pact.CommWidgets.JCommTable;
@@ -49,6 +52,7 @@ import edu.cmu.pact.ctat.MsgType;
 import edu.cmu.pact.ctat.model.CtatModeModel;
 import edu.cmu.pact.jess.MTRete;
 import edu.cmu.pact.jess.RuleActivationNode;
+import edu.cmu.pact.miss.SimSt.FoA;
 import edu.cmu.pact.miss.PeerLearning.AplusPlatform;
 import edu.cmu.pact.miss.PeerLearning.AplusSpotlight;
 import edu.cmu.pact.miss.PeerLearning.SimStConversation;
@@ -1446,6 +1450,19 @@ public void fillInQuizProblem(String problemName) {
 		return activList;
 	}
 	
+	public Collection<RuleActivationNode> getActivations(ProblemNode currentNode, boolean isNearSimilar){
+		
+		if (currentNode==null){
+			currentNode=this.currentNode;
+		}
+		
+		
+		Vector activationList = simSt.gatherActivationList(currentNode, isNearSimilar);	
+		Collection<RuleActivationNode> activList = simSt.createOrderedActivationList(activationList);
+			 
+		return activList;
+	}
+	
 	/**
 	 * Method called to make SimStudnet take the next step. Used only for webAuthoring...
 	 * @return A list of SAI's, if SimStudent has a suggestion, or Nothing.
@@ -1476,7 +1493,8 @@ public void fillInQuizProblem(String problemName) {
 	
 	}
 	
-	   public boolean isSolvable(String oracleClass,String problemName,BR_Controller brController){
+	
+	public boolean isSolvable(String oracleClass,String problemName,BR_Controller brController){
 			boolean answer = true;
 			
 			
@@ -1573,6 +1591,7 @@ public void fillInQuizProblem(String problemName) {
 	// repeat mistakes and move straight to questioning
 	public void runInteractiveLearning(ProblemNode currentNode,
 			boolean startWithActivations) {
+		
 			
 //		int numStepsPerformed = 0;
 		this.numStepsPerformed = 0;
@@ -1600,7 +1619,6 @@ public void fillInQuizProblem(String problemName) {
 		ProblemAssessor assessor = new AlgebraProblemAssessor();
 	    currentType=assessor.classifyProblem(problem);
 	    setAskedExplanation(false);
-	    
 		
 		// when running not from a BRD, it never gets "done" - reaching a done
 		// state breaks out of loop
@@ -1642,6 +1660,7 @@ public void fillInQuizProblem(String problemName) {
 
 				/*kept ony for miss output*/
 				Vector activationList = simSt.gatherActivationList(currentNode);
+				// activationList outputs [MAIN::subtract] or [MAIN::divide] and so on
 				//Collection<RuleActivationNode> activList = simSt.createOrderedActivationList(activationList);
 
 				Collection<RuleActivationNode> activList=getActivations(currentNode);
@@ -1667,6 +1686,8 @@ public void fillInQuizProblem(String problemName) {
 		       			
 						
 						for (RuleActivationNode ran : activList) {
+							trace.out(ran.getActualSelection()+" : "+ran.getActualAction()+" : "+ran.getActualInput());
+							// we got "dorminTable3_C1R1 : UpdateTable : divide 3" for 3x_6 problem name
 							Sai sai = new Sai(ran.getActualSelection(), ran.getActualAction(), ran.getActualInput());
 							if (!sai.getI().equals("NotSpecified") && !sai.getI().equals("FALSE")) {
 								ran.setAgendaIndex(count);
@@ -1731,12 +1752,88 @@ public void fillInQuizProblem(String problemName) {
 				if (getBrController(getSimSt()).getMissController().isPLEon())
 					getBrController(getSimSt()).getMissController().getSimStPLE().checkForQuizTutoringBehaviourDiscrepency(brController.getProblemName(),null);	
 				
+				// Tasmia added code starts here
+				//if(simSt.isCTIInitialInquiryMode()) 
+				{
+					// Ask if tutor knows what to do next so that there opens an opportunity 
+					// for the tutee to ask initial tutee inquiry when tutor is also stuck.
+					String title = SimStConversation.ASKING_IF_TUTOR_KNOWS_STEP_TOPIC;
+					//String message = "I am stuck. Do you know what step to perform next?";
+					SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();
+					String message = ple.getConversation().getMessage(SimStConversation.ASKING_IF_TUTOR_KNOWS_STEP_TOPIC);
+					int oracle = getSimSt().displayConfirmMessage(title,message);
+					// setting avatar to normal mode.
+					getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
+					if (oracle == JOptionPane.YES_OPTION) {
+						// ask for the demonstration of the step.
+						nextCurrentNode = askWhatToDoNext(currentNode);
+						hintReceived = true;
+			       	}
+					else {
+						// Tutor is  confused and don't know what to do next.
+						// Ask the initial tutee inquiry when tutor does not know what to do next.
+						if(getSimSt().isNearSimilarProblemsGetterDefined()) {
+							 NearSimilarProblemsGetter nspg = getSimSt().getNearSimilarProblemsGetter();
+							 ArrayList<String> similar_problems = nspg.nearSimilarProblemsGetter(currentNode);       
+							 for(int i=0; i<similar_problems.size(); i++) {
+									ProblemNode similarNode = currentNode;
+									similarNode.setName(similar_problems.get(i));
+									Collection<RuleActivationNode> activList_2=getActivations(similarNode, true);
+									if(activList_2 != null) {
+										for (RuleActivationNode ran : activList_2) {
+											String logic = ruleApplicationLogic(similarNode,ran); // need to make this domain independent by using getter
+											if(logic == "") {
+												logic = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_QUESTION_WHEN_NO_FEATURE_FOUND_TOPIC);
+												askBrainstormingQuestion(logic, false);
+											}
+											else {
+												// we would need the explanation to check for transformation for further followup
+												Sai s_a_i = getSai(ran); // dorminTable3_C1R1, UpdateTable, divide 3
+												String problem_name = similarNode.getName().replace("_", "=");
+												String msg = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_QUESTION_TOPIC,s_a_i.getI(),problem_name,logic);
+												String explanation = askBrainstormingQuestion(msg, true);
+											}
+											// Need to implement listener for nextNode just like askWhatToDoNext. 
+											currentNode.setName(problem);
+											//nextCurrentNode = brainstormWhatToDoNext(currentNode);
+											nextCurrentNode = askWhatToDoNext(currentNode);
+											hintReceived = true;
+											if (trace.getDebugCode("ss"))
+												trace.out("ss", "CallingbrainstormWhatToDoNext  "
+														+ "currentNode: " + currentNode
+														+ " nextCurrentNode: " + nextCurrentNode);
+										}
+										break;
+									}
+									
+									
+								}
+						 }
+						 else {
+							String logic = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_QUESTION_WHEN_NO_FEATURE_FOUND_TOPIC);
+							askBrainstormingQuestion(logic, false);
+							nextCurrentNode = askWhatToDoNext(currentNode);
+							hintReceived = true;
+							if (trace.getDebugCode("ss"))
+								trace.out("ss", "CallingbrainstormWhatToDoNext  "
+										+ "currentNode: " + currentNode
+										+ " nextCurrentNode: " + nextCurrentNode);
+						 }
+						
+						
+					}
+				}
+				
+				
+				/*// Previous code intact start
 				nextCurrentNode = askWhatToDoNext(currentNode);
 				hintReceived = true;
 				if (trace.getDebugCode("ss"))
 					trace.out("ss", "Calling askWhatToDoNext  "
 							+ "currentNode: " + currentNode
 							+ " nextCurrentNode: " + nextCurrentNode);
+				// Previous code ends */
+				
 			}
 
 			// Null nextCurrentNode after the Oracle inquiry means that the user
@@ -2422,7 +2519,7 @@ public void fillInQuizProblem(String problemName) {
 	private boolean isSelectionValidForSelfExplanation(String selection){	
 		return simSt.getBrController().getMissController().getSimStPLE().getValidSelections()!=null && simSt.getBrController().getMissController().getSimStPLE().getValidSelections().contains(selection);
 	}
-	
+		
 	public void explainWhyRight(ProblemNode node) {
 		
 		
@@ -2567,6 +2664,34 @@ public void fillInQuizProblem(String problemName) {
 		}
 	}
 
+
+	public String askBrainstormingQuestion(String question, boolean requireResponse) {
+		
+		String explanation = "";
+		if (getBrController(getSimSt()).getMissController().getSimSt().isSsMetaTutorMode())
+				getBrController(getSimSt()).getAmt().handleInterfaceAction("selfExp", "implicit", "-1");
+			 
+		long explainRequestTime = Calendar.getInstance().getTimeInMillis();
+		if (getBrController(getSimSt()).getMissController().getSimStPLE() == null) {
+				explanation = JOptionPane.showInputDialog(null, question,
+						"Please Provide an Explanation",
+						JOptionPane.PLAIN_MESSAGE);
+		} else {
+				SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();
+				if(requireResponse == false) {
+					ple.giveMessage(question);
+				}
+				else {
+					explanation = ple.giveMessageFreeTextResponse(question);
+				}
+		}
+
+		int explainDuration = (int) (Calendar.getInstance()
+					.getTimeInMillis() - explainRequestTime);
+		return explanation;
+	}
+
+	
 	public void explainWhyWrong(RuleActivationNode ran) {
 		
 		if (simSt.isSelfExplainMode()) {
@@ -2721,7 +2846,7 @@ public void fillInQuizProblem(String problemName) {
 				if (major>=7)
 					spotlight=new AplusSpotlight(getBrController(getSimSt()).getMissController().getSimStPLE().getSimStPeerTutoringPlatform(), brController.getMissController().getSimStPLE().getSimStPeerTutoringPlatform().getTutoringAvatarPanel(),SimStRememberBubble.RIGHT,null);
 				
-				
+				// This part is responsible for showing the contrasting interface prompt.
 				SimStExplainWhyNotDlg whyNotDlg=new SimStExplainWhyNotDlg(getBrController(getSimSt()).getMissController().getSimStPLE().getSimStPeerTutoringPlatform().getStudentInterface() ,brController,sai,inst,question);
 							
 				//explanation = ple.giveMessageSelectableResponse(question, qa.getAnswers());
@@ -2765,6 +2890,79 @@ public void fillInQuizProblem(String problemName) {
 						explainDuration, question);
 			}
 		}
+	}
+	
+	// This function lets the tutee agent to speak out the rationale behind a production rule 
+	// using the feature predicates
+	public String ruleApplicationLogic(ProblemNode currentNode,
+			RuleActivationNode ran) {
+		// I could have applied <transformation (rule.getName + number)> if I had <feature predicates>.
+		// Do you have any idea on how to reach to that point from this current equation?
+		String logic = "";
+		System.out.println(ran.getName()+" "+currentNode.getName());
+		Rule rule = getSimSt().getRule(ran.getName().replace("MAIN::", ""));
+		if (rule != null) {
+			/*if (rule.getName().contains("typein")) {
+				// Question will be different
+			}
+			else */
+			{
+				ArrayList feature_predicates = rule.getLhsFeatures();
+				ArrayList feature_path = rule.getLhsPath();
+				// if I know to which dormintable element predicate variable maps to,
+				// I can use this code to get LHS getMissController().getSimStPLE().getComponentName(selection)
+				if (feature_predicates.size()<1) return "";
+				Activation act = ran.getActivation();
+				Defrule d = act.getRule();
+				ArrayList<String> node_names = new ArrayList<String>();
+				HashMap predicate_args = new HashMap();
+				for (Iterator it1 = d.getNodes(); it1.hasNext();) {
+		        	String nodeName = it1.next().toString();
+		        	if(nodeName.contains("slot_value")) {
+		        		String[] token_predicate = nodeName.split("slot_value=");
+		        		node_names.add(convertjessPredicatesToJavaClass.getPredicatePart(token_predicate[1].split(";")[0], predicate_args));
+		        	}
+		        }
+				int flag = 0;
+				for(int l=0; l<feature_predicates.size(); l++) {
+					
+					String[] arr_feature_predicates = (String[]) feature_predicates.get(l);
+					
+					for(int m=0; m<arr_feature_predicates.length; m++) {
+						if(flag != 0) logic+= "and";
+						else flag = 1;
+						System.out.println(arr_feature_predicates[m]);
+						
+						if(arr_feature_predicates[m].contains("not")) continue;
+						
+						String name = convertjessPredicatesToJavaClass.getPredicatePart(arr_feature_predicates[m]);
+						
+						if(!node_names.contains(name)) continue;
+						String cell_name = convertjessPredicatesToJavaClass.constructWmeElement((String) predicate_args.get(name), feature_path).trim();
+						String wme_content = getBrController(getSimSt()).getMissController()
+								.getSimStPLE().getComponentName(cell_name); 
+						//if(flag == 0) logic = "I could have applied "+ rule.getName()+" number for the equation "+currentNode.getName()+" because the lhs ";
+						//flag = 1;
+						String feature_end_classname = convertjessPredicatesToJavaClass.upperCaseFirstLetterOmmittingDelimeter(name, "-");
+						String feature_full_classname = "edu.cmu.pact.miss.userDef.algebra."+ feature_end_classname;
+						/*for (Object value : all_predicates_map.keySet()) {
+							String s = value.toString();
+						    if(s.contains(feature_end_classname)){
+						    	feature_full_classname = s;
+						        break;
+						    }
+						}*/
+						FeaturePredicate predicate=FeaturePredicate.getPredicateByClassName(feature_full_classname);
+						logic += wme_content+" "+predicate.getFeatureDescription().getDescriptions();
+						//System.out.println(predicate.getFeatureDescription().getDescriptions());
+			
+					}
+				}
+			}
+		}
+		
+		return logic;
+		
 	}
 
 	// Examine an activation rule to see if it is valid. If OKed, return the new
@@ -2857,6 +3055,8 @@ public void fillInQuizProblem(String problemName) {
 					signalInstructionAsPositiveExample(ran, nextCurrentNode,
 							sai, null);
 				}
+				
+				
 			}
 			// Rule is not correct, but taking quiz, so may want to use as
 			// backup
@@ -2979,7 +3179,6 @@ public void fillInQuizProblem(String problemName) {
 		setGivenProblemName(problemName);
 		return askNodeSkillName(currentNode, problemName, null);
 	}
-	
 	
 	public ProblemNode askNodeSkillName(ProblemNode currentNode, String problemName, AskHint hintInfo) {
 		if (problemName == null && currentNode != null) {
@@ -3764,7 +3963,7 @@ public void fillInQuizProblem(String problemName) {
 
 			// continue when something is entered.
 			while (sai.equals("")) {
-				System.out.print(inputMessage);
+				trace.out(inputMessage);
 				sai = br.readLine();
 			}
 

@@ -26,5 +26,4 @@ public class IsFractionTerm extends EqFeaturePredicate {
     public String apply( Vector /* String */ args ) {
 	return isFractionTerm( (String)args.get(0) );
     }
-
 }

@@ -8,6 +8,7 @@ public class HasVarTerm extends EqFeaturePredicate
 	setArity(1);
 	setName("has-var-term");
 	setArgValueType(new int[]{TYPE_ARITH_EXP});
+	setFeatureDescription(getName(),"contain a variable term");
     }
 
     public String apply(Vector args) 

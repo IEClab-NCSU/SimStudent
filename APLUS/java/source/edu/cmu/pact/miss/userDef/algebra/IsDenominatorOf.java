@@ -13,6 +13,7 @@ public class IsDenominatorOf extends EqFeaturePredicate {
 		argNames.add("denom");
 		argNames.add("exp");
 		setArgValueType(new int[]{TYPE_ARITH_EXP, TYPE_ARITH_EXP});
+		//setDescription("is a monomial meaning the expression has only one term");
 	}
 
 	public String apply(Vector args) 

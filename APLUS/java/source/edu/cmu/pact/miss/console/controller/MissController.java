@@ -659,6 +659,11 @@ public class MissController implements MissControllerExternal {
     	getSimSt().setSsSkillNameGetter(skillNameGetter);
     }
     
+    /* @author: Tasmia */
+    public void setSsNearSimilarProblemsGetterClass(String nearSimilarProblemsGetter) {
+    	getSimSt().setSsNearSimilarProblemsGetter(nearSimilarProblemsGetter);
+    }
+    
     public void setSsPathOrderingClass(String className) {
         getSimSt().setSsPathOrderer(className);
     }    
@@ -872,6 +877,15 @@ public class MissController implements MissControllerExternal {
 		if(getSimSt()!= null)
 		{
 			getSimSt().setSSSelfExplainMode(true);
+		}
+	}
+	
+	// Added by Tasmia for CTI
+	public void setSsConstructiveTuteeInquiryFTIMode()
+	{    	
+		if(getSimSt()!= null)
+		{
+			getSimSt().setSsConstructiveTuteeInquiryFTIMode(true);
 		}
 	}
 
@@ -1914,6 +1928,13 @@ public class MissController implements MissControllerExternal {
                      * skill name based on current selection. */
                     else if (keyStem.equalsIgnoreCase("ssSkillNameGetterClass")) {
                     	setSsSkillNameGetterClass(parameter[0]);
+                    } 
+                    /*@author: Tasmia, 
+                     * nearSimilarProblemsGetter is an method that returns similar looking problems
+                     * that are in edit distance 1 from the current problem
+                     * */
+                    else if (keyStem.equalsIgnoreCase("ssNearSimilarProblemsGetterClass")) {
+                    	setSsNearSimilarProblemsGetterClass(parameter[0]);
                     } else if (keyStem.equalsIgnoreCase("ssFoaSearch")) {
                         setSsFoaSearch(true);
                         
@@ -2144,6 +2165,8 @@ public class MissController implements MissControllerExternal {
                     	setSsCLQuizReqMode();
                     } else if(keyStem.equalsIgnoreCase("ssSelfExplainMode")) {
                     	setSsSelfExplainMode();
+                    } else if(keyStem.equalsIgnoreCase("ssConstructiveTuteeInquiryFTIMode")) {
+                    	setSsConstructiveTuteeInquiryFTIMode();
                     } else if(keyStem.equalsIgnoreCase("ssIntroVideo")) {
                     	setSsIntroVideo(parameter[0]);
                     } else if(keyStem.equalsIgnoreCase("ssLoadPrefsFile")) {

@@ -133,6 +133,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 		String coefficient = coefficient( term );
 		if ( coefficient != null && !coefficient.equals( "1" ) )
 		    hasCoefficient = "T";
+		    
 	    /*
 	    } catch (NullPointerException e) {
 		System.out.println("hasCoefficient( " + term + " )");

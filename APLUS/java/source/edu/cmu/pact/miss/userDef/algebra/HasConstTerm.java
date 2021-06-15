@@ -8,10 +8,12 @@ public class HasConstTerm extends EqFeaturePredicate
 	setArity(1);
 	setName("has-const-term");
 	setArgValueType(new int[]{TYPE_ARITH_EXP});
+	setFeatureDescription(getName(),"contain a constant term");
     }
     
     public String apply(Vector args) 
     {
 	return hasConstTerm((String)args.get(0)); 
     }
+    
 }

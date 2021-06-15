@@ -343,13 +343,23 @@ public final class SimSt implements Serializable {
    }
 
    private boolean selfExplainMode = false;
+   private boolean selfCTI_FTI_Mode = false;
    public void setSSSelfExplainMode(boolean explainMode)
    {
    	this.selfExplainMode = explainMode;
    }
+   // Added by Tasmia to turn on CTI follow-up tutee inquiry
+   public void setSsConstructiveTuteeInquiryFTIMode(boolean CTIMode)
+   {
+   	this.selfCTI_FTI_Mode = CTIMode;
+   }
    public boolean isSelfExplainMode()
    {
    	return selfExplainMode;
+   }
+   public boolean isCTIFollowupInquiryMode()
+   {
+   	return selfCTI_FTI_Mode;
    }
 
   private transient ProblemAssessor problemAssessor = new AlgebraProblemAssessor();
@@ -2563,7 +2573,7 @@ public final class SimSt implements Serializable {
    }
    
    private void initRete( String wmeTypeFile, String initalWmeFile ) {
-	   System.out.println(" Initializing Rete ");
+	   trace.out(" Initializing Rete ");
        try {
            getRete().reset();
            getRete().readFile( wmeTypeFile );
@@ -2873,12 +2883,18 @@ public final class SimSt implements Serializable {
    /* @author jinyul */
    // Domain dependent ad-hoc method to identify skill name
    public /*private*/ boolean isSkillNameGetterDefined() { return skillNameGetterClassDefined; }
+   public /*private*/ boolean isNearSimilarProblemsGetterDefined() { return nearSimilarProblemsGetterClassDefined; }
    private boolean skillNameGetterClassDefined = false;
+   private boolean nearSimilarProblemsGetterClassDefined = false;
    //private boolean skillNameGetterClassDefined = true;
    public void setSkillNameGetterClassDefined(boolean flag) {
    	skillNameGetterClassDefined = flag;
    }
+   public void setNearSimilarProblemsGetterClassDefined(boolean flag) {
+	   nearSimilarProblemsGetterClassDefined = flag;
+   }
    private transient SkillNameGetter skillNameGetter = null;
+   private transient  NearSimilarProblemsGetter nearSimilarProblemsGetter = null;
    public void setSsSkillNameGetter(String skillNameGetterClassName) {
    	try {
    		if(trace.getDebugCode("miss"))trace.out("miss","DEBUG: "+skillNameGetterClassName);
@@ -2890,6 +2906,17 @@ public final class SimSt implements Serializable {
            logger.simStLogException(e);
    	}
    }
+   
+   public void setSsNearSimilarProblemsGetter(String nearSimilarProblemsGetterClassName) {
+	   	try {
+	   		Class nearSimilarProblemsGetterClass = Class.forName(nearSimilarProblemsGetterClassName);
+	   		this.nearSimilarProblemsGetter = (NearSimilarProblemsGetter)nearSimilarProblemsGetterClass.newInstance();
+	   		setNearSimilarProblemsGetterClassDefined(true);
+	   	} catch (Exception e) {
+	   		e.printStackTrace();
+	           logger.simStLogException(e);
+	   	}
+	   }
 
 
    public /*private*/ boolean isPathOrdererDefined() { return pathOrderingClassDefined; }
@@ -2963,6 +2990,11 @@ public final class SimSt implements Serializable {
    /* @author jinyul */
    public SkillNameGetter getSkillNameGetter() {
    	return this.skillNameGetter;
+   }
+   
+   /* @author Tasmia */
+   public NearSimilarProblemsGetter getNearSimilarProblemsGetter() {
+   	return this.nearSimilarProblemsGetter;
    }
    /**
     * Inner class representing a WME inside the focus of attention
@@ -9171,6 +9203,115 @@ public final class SimSt implements Serializable {
                // The problemNode is a Start State   
         	   if(trace.getDebugCode("miss")) trace.out("miss", " Problem is a start state "); 
                getBrController().goToStartStateForRuleTutors();	
+           } else {
+        	   if(trace.getDebugCode("miss")) trace.out("miss", " We are not in a start state .... "); 
+               // Go to the given state and get the productions fire
+               boolean useInterfaceTemplate = MTRete.getUseInterfaceTemplates();
+               MTRete.setUseInterfaceTemplates(false);
+               boolean loadJessFilesSucceeded = false;
+              
+               while (!loadJessFilesSucceeded) {
+                   // Why does this line change the state?
+            	  
+            	   getBrController().checkProductionRulesChainNew(currentNode);
+            	  
+                   if (!MTRete.loadInterfacetemplatesFailed()) {
+                       loadJessFilesSucceeded = true;
+                   } else {
+                   		if(trace.getDebugCode("miss"))trace.out("miss", "gatherActivationList: RETRYING checkProductionRulesChainNew...");
+                   }
+                   
+               }
+               MTRete.setUseInterfaceTemplates(useInterfaceTemplate);
+
+           }
+
+   		
+       	
+       // showActivationList();
+
+           // Get a root rule-activation node
+           RuleActivationTree tree = getBrController().getRuleActivationTree();
+           TreeTableModel ttm = tree.getActivationModel();
+           RuleActivationNode root = (RuleActivationNode) ttm.getRoot();
+	            MTRete mtRete = getBrController().getModelTracer().getRete();
+	            //MTRete mtRete= this.getSsRete();
+	            root.saveState(mtRete);
+	            //mtRete.setResolutionStrategy(new SimStSolver.SuccessRatioConflictResolutiionStrategy(this));	            
+	            	            
+	            //showActivationList();
+	            
+	            // Wed Oct  3 16:55:15 EDT 2007 :: Noboru
+	            // There may be inactive activations in wholeAgenda, but they are 
+	            // excluded in the RuleActivationTree created by createChildren() below
+	            List /* Activation */ wholeAgenda = mtRete.getAgendaAsList(null); 
+	            
+	            if(trace.getDebugCode("miss"))trace.out("miss", "Gathering activation list... Agenda is : " + wholeAgenda);
+	            if(trace.getDebugCode("miss"))trace.out("miss", "mtRete facts are " + mtRete.getFacts());
+	        //    if(trace.getDebugCode("miss"))trace.out("miss", "ssRete facts are " + this.getSsRete().getFacts());
+	            
+	           // printInactiveActivations(wholeAgenda);
+	                        
+	            boolean omitBuggyRules = false;
+	            root.createChildren(wholeAgenda, omitBuggyRules);
+	            List children = root.getChildren();
+	            JessModelTracing jmt = mtRete.getJmt();
+	            for (int i = 0; i < children.size(); ++i) {
+	                RuleActivationNode child = (RuleActivationNode)children.get(i);
+	                // mtRete.dumpAgenda("gatherActivationList: before setUpState[" + i + "]");
+	                root.setUpState(mtRete, i);
+	                // mtRete.dumpAgenda("gatherActivationList:  after setUpState[" + i + "]");
+	                
+	                jmt.fireNode(child);                //child.fire(mtRete);
+	                activationList.add(child);
+	            }
+	          
+       }
+       catch(Exception e){
+       	e.printStackTrace();
+           logger.simStLogException(e);
+       } 
+
+
+       
+       activationList = removeDuplicateActivations(activationList);
+       
+
+       return activationList;
+   }
+
+   /**
+    * Finds the activations that are fired at a given problemNode
+    * @param problemNode
+    * @return Vector<RuleActivationNode>
+    */
+   public Vector /* RuleActivationNode */<RuleActivationNode> gatherActivationList(ProblemNode problemNode, boolean isNearSimilar) {
+
+       Vector /* RuleActivationNode */<RuleActivationNode> activationList = new Vector<RuleActivationNode>();
+       
+       //showActivationList();
+       try{
+    	   if(trace.getDebugCode("miss")) trace.out("miss", "gatherActivationList: currentNode ==>> " + problemNode); 
+    	   trace.out("webAuth","******* Hm... current facts are : " + getSsRete().getFacts());
+    	   Set<String> nameSet=getRuleNames();     	
+	   	   	for (String skillName : nameSet) {
+	   	   		trace.out("webAuth","******* found a skill named: " + skillName);
+	   	   	}
+    	   
+    	   
+           if (problemNode != getBrController().getSolutionState().getCurrentNode()) {    
+        	   if(trace.getDebugCode("miss")) trace.out("miss", "problem node != solution state "); 
+           			getBrController().setCurrentNode2(problemNode);
+           }
+
+           ProblemNode currentNode = getBrController().getSolutionState().getCurrentNode();
+          
+
+           // MTRete mtRete = getBrController().getModelTracer().getRete();
+           if (problemNode.getParents().isEmpty()) {    
+               // The problemNode is a Start State   
+        	   if(trace.getDebugCode("miss")) trace.out("miss", " Problem is a start state "); 
+               getBrController().goToStartStateForRuleTutors(problemNode.getName());	
            } else {
         	   if(trace.getDebugCode("miss")) trace.out("miss", " We are not in a start state .... "); 
                // Go to the given state and get the productions fire

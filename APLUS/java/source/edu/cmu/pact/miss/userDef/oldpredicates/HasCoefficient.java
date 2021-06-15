@@ -18,14 +18,15 @@ public class HasCoefficient extends EqFeaturePredicate {
      * Creates a new <code>HasCoefficient</code> instance.
      *
      */
-    public HasCoefficient() {
+	public HasCoefficient() {
 
-	setName( "has-coefficient" );
-	setArity( 1 );
-	setArgValueType(new int[]{TYPE_ARITH_EXP});
+		setName( "has-coefficient" );
+		setArity( 1 );
+		setArgValueType(new int[]{TYPE_ARITH_EXP});
     }
 
     public String apply( Vector /* String */ args ) {
-	return hasCoefficient( (String)args.get(0) );
+    	return hasCoefficient( (String)args.get(0) );
     }
+    
 }
