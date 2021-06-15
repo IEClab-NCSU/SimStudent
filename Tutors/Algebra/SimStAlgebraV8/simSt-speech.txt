@@ -312,3 +312,17 @@ Oh, the problem is not done yet!
 I see there is still work to be done for this problem. Let me think!
 Hm... so problem is not done. Lets see!
 
+ASKING_IF_TUTOR_KNOWS_STEP
+I think I do not know what to do here. Do you know the next step?
+I am not sure about my next step. Do you know what step should be performed now?
+
+BRAINSTORMING_QUESTION
+I could perform <i> if I had <problem> because <logic>. Do you have any idea on how to reach to that point from this current situation?
+
+BRAINSTORMING_QUESTION_WHEN_NO_FEATURE_FOUND
+This situation is also entirely new for me. Would you like to ask Mr. Williams to see if he can help us?
+I searched through my already learned knowledge but could not find anything to help us out. May be Mr. Williams or the resources (unit overview or examples tab) can help you. Would you like to review them?
+This situation is also entirely new for me. Would you like to ask Mr. Williams or review the resources (unit overview or examples tab) to find out how to proceed from here?
+
+ 
+
