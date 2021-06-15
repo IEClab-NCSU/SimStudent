@@ -11627,6 +11627,7 @@ public final class SimSt implements Serializable {
            {
 	            Instruction instruction = instructions.get(0);
 	            int arity = instruction.numFocusOfAttention() -1;
+	            String foilLogDir;
 	            
 	            if (isSsWebAuthoringMode()) {
 	            	foilLogDir = getUserBundleDirectory() + "/" + getFoilLogDir() + "/";
