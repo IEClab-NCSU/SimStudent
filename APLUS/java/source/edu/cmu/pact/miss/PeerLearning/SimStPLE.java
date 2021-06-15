@@ -539,6 +539,16 @@ public class SimStPLE {
 		this.sai = sai;
 	}
 	
+	ProblemNode currentNode;
+	
+	public ProblemNode getCurrentNode() {
+		return this.currentNode;
+	}
+	
+	public void setCurrentNode(ProblemNode currentNode) {
+		this.currentNode = currentNode;
+	}
+	
 	String query;
 	public String getQuery() {
 		return query;
@@ -2571,7 +2581,11 @@ public class SimStPLE {
 			simSt.signalInstructionAsNegativeExample(inst);
 
 			simSt.setIsInteractiveLearning(true);
-			getSsInteractiveLearning().runInteractiveLearning(edge.getSource(), false);
+			if (runType.equalsIgnoreCase("springboot")) {
+				this.setCurrentNode(edge.getSource());
+			} else {
+				getSsInteractiveLearning().runInteractiveLearning(edge.getSource(), false);				
+			}
 		}
 
 		/*

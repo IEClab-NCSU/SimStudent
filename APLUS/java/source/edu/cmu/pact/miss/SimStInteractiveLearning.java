@@ -2982,6 +2982,9 @@ public void fillInQuizProblem(String problemName) {
 	
 	
 	public ProblemNode askNodeSkillName(ProblemNode currentNode, String problemName, AskHint hintInfo) {
+		if (problemName == null && currentNode != null) {
+			problemName = currentNode.getProblemModel().getProblemName();
+		}
 		ProblemNode node = null;
 		boolean successful = false; 
 		boolean stillLearning = true;
