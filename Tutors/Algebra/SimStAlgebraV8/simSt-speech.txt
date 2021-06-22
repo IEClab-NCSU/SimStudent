@@ -316,8 +316,11 @@ ASKING_IF_TUTOR_KNOWS_STEP
 I think I do not know what to do here. Do you know the next step?
 I am not sure about my next step. Do you know what step should be performed now?
 
-BRAINSTORMING_QUESTION
+BRAINSTORMING_QUESTION_TRANFORMATION
 I could perform <i> if I had <problem> because <logic>. Do you have any idea on how to reach to that point from this current situation?
+
+BRAINSTORMING_QUESTION_TYPEIN
+<i> if I had <problem> because <logic>. Do you have any idea on how to reach to that point from this current situation?
 
 BRAINSTORMING_QUESTION_WHEN_NO_FEATURE_FOUND
 This situation is also entirely new for me. Would you like to ask Mr. Williams to see if he can help us?

@@ -3223,7 +3223,7 @@ public class BR_Controller extends TutorController implements PropertyChangeList
     /**
 	 * Does not set the text from the GUI element
 	 */
-    public void goToStartStateForRuleTutors(String text) {
+    public void goToStartStateForRuleTutors(String problemName, edu.cmu.pact.miss.HashMap similar_problem_wme_map) {
     	
     	if (trace.getDebugCode("br")) trace.out("br", "go to start state()");
 
@@ -3252,31 +3252,55 @@ public class BR_Controller extends TutorController implements PropertyChangeList
         	if (trace.getDebugCode("br")) 
         		trace.out("br", "getProblemModel().getStartNode().getNodeView() ");
         	NodeView startVertex = getProblemModel().getStartNode().getNodeView();
-        	newMessage.setProperty("ProblemName", text);
+        	newMessage.setProperty("ProblemName", problemName);
         }
 		
         utp.sendProperty(newMessage);
-			
-			
-        //Gustavo 2Dec2006: for each message in startNodeMessageVector, send it.
         Iterator<MessageObject> it = getProblemModel().startNodeMessagesIterator();        
         for (int i = 0; it.hasNext(); i++) {
         	MessageObject msg = it.next();
+        	msg =  modifiedMsgWithNSPG(msg, problemName, similar_problem_wme_map);
             trace.out("mt", "Sending start Comm Message " + (i+1) +" to LISP: " + msg);
             trace.out("ss", "Sending start Comm Message " + (i+1) +" to LISP: " + msg);
         	utp.sendProperty(msg);          
         }
 
         // send Start state Comm MSGs to UniversalToolProxy
-        sendCommMsgs(getProblemModel().getStartNode(), getProblemModel()
-                .getStartNode());
+        /*sendCommMsgs(getProblemModel().getStartNode(), getProblemModel()
+                .getStartNode());*/
 
-        // fix the bug #1112
+        
         Cursor normalCursor = new Cursor(Cursor.DEFAULT_CURSOR);
         //brPanel.setCursor(normalCursor);
         if (!Utils.isRuntime())
         	getJGraphWindow().getJGraph().repaint();
         return;
+    }
+    
+    public MessageObject modifiedMsgWithNSPG(MessageObject msg, String problemName, edu.cmu.pact.miss.HashMap similar_problem_wme_map) {
+    	if(msg.isMessageType("StartProblem")) {
+	    	String problem = (String) msg.getProperty("ProblemName");
+	    	if(problem!=null) {
+	    		msg.setProperty("ProblemName", problemName);
+	    	}
+    	}
+    	else if(msg.isMessageType("InterfaceAction")) {
+    		Vector<String> selection = msg.getSelection();
+    		Vector<String> input = msg.getInput();
+    		for(int i=0; i<selection.size(); i++) {
+    			String val = (String) similar_problem_wme_map.get(selection.get(i));
+    			msg.setInput(val);
+    		}
+	    	/*if(selection.size() == 1) {
+	    		//selection.get(0).equals("dorminTable1_C1R1")
+	    		String input = msg.getInput();
+	    		if(!similar_problem_wme_map.get(selection.get(0)).equals(input))
+	    		//if(val!=)
+	    		msg.setInput("3x");
+	    	}*/
+    	} 
+    	
+    	return msg;
     }
 
     /**

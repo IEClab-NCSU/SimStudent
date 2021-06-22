@@ -2864,8 +2864,10 @@ public final class SimSt implements Serializable {
    // Domain dependent ad-hoc method to identify skill name
    public /*private*/ boolean isSkillNameGetterDefined() { return skillNameGetterClassDefined; }
    public /*private*/ boolean isNearSimilarProblemsGetterDefined() { return nearSimilarProblemsGetterClassDefined; }
+   public /*private*/ boolean isNearSimilarProblemsWmeGetterDefined() { return nearSimilarProblemsWmeGetterClassDefined; }
    private boolean skillNameGetterClassDefined = false;
    private boolean nearSimilarProblemsGetterClassDefined = false;
+   private boolean nearSimilarProblemsWmeGetterClassDefined = false;
    //private boolean skillNameGetterClassDefined = true;
    public void setSkillNameGetterClassDefined(boolean flag) {
    	skillNameGetterClassDefined = flag;
@@ -2873,8 +2875,12 @@ public final class SimSt implements Serializable {
    public void setNearSimilarProblemsGetterClassDefined(boolean flag) {
 	   nearSimilarProblemsGetterClassDefined = flag;
    }
+   public void setNearSimilarProblemsWmeGetterClassDefined(boolean flag) {
+	   nearSimilarProblemsWmeGetterClassDefined = flag;
+   }
    private transient SkillNameGetter skillNameGetter = null;
    private transient  NearSimilarProblemsGetter nearSimilarProblemsGetter = null;
+   private transient NearSimilarProblemsWmeGetter nearSimilarProblemsWmeGetter = null;
    public void setSsSkillNameGetter(String skillNameGetterClassName) {
    	try {
    		if(trace.getDebugCode("miss"))trace.out("miss","DEBUG: "+skillNameGetterClassName);
@@ -2896,7 +2902,18 @@ public final class SimSt implements Serializable {
 	   		e.printStackTrace();
 	           logger.simStLogException(e);
 	   	}
-	   }
+   }
+   
+   public void setSsNearSimilarProblemsWmeGetter(String nearSimilarProblemsWmeGetterClassName) {
+	   	try {
+	   		Class nearSimilarProblemsWmeGetterClass = Class.forName(nearSimilarProblemsWmeGetterClassName);
+	   		this.nearSimilarProblemsWmeGetter = (NearSimilarProblemsWmeGetter)nearSimilarProblemsWmeGetterClass.newInstance();
+	   		setNearSimilarProblemsWmeGetterClassDefined(true);
+	   	} catch (Exception e) {
+	   		e.printStackTrace();
+	           logger.simStLogException(e);
+	   	}
+  }
 
 
    public /*private*/ boolean isPathOrdererDefined() { return pathOrderingClassDefined; }
@@ -2976,6 +2993,9 @@ public final class SimSt implements Serializable {
    public NearSimilarProblemsGetter getNearSimilarProblemsGetter() {
    	return this.nearSimilarProblemsGetter;
    }
+   public NearSimilarProblemsWmeGetter getNearSimilarProblemsWmeGetter() {
+	   	return this.nearSimilarProblemsWmeGetter;
+	   }
    /**
     * Inner class representing a WME inside the focus of attention
     */
@@ -9256,7 +9276,7 @@ public final class SimSt implements Serializable {
     * @param problemNode
     * @return Vector<RuleActivationNode>
     */
-   public Vector /* RuleActivationNode */<RuleActivationNode> gatherActivationList(ProblemNode problemNode, boolean isNearSimilar) {
+   public Vector /* RuleActivationNode */<RuleActivationNode> gatherActivationList(ProblemNode problemNode, boolean isNearSimilar, edu.cmu.pact.miss.HashMap similar_problem_wme_map) {
 
        Vector /* RuleActivationNode */<RuleActivationNode> activationList = new Vector<RuleActivationNode>();
        
@@ -9282,7 +9302,8 @@ public final class SimSt implements Serializable {
            if (problemNode.getParents().isEmpty()) {    
                // The problemNode is a Start State   
         	   if(trace.getDebugCode("miss")) trace.out("miss", " Problem is a start state "); 
-               getBrController().goToStartStateForRuleTutors(problemNode.getName());	
+               //getBrController().goToStartStateForRuleTutors(problemNode.getName(), similar_problem_wme_map);	
+        	   getBrController().goToStartStateForRuleTutors(problemNode.getName(), similar_problem_wme_map);
            } else {
         	   if(trace.getDebugCode("miss")) trace.out("miss", " We are not in a start state .... "); 
                // Go to the given state and get the productions fire

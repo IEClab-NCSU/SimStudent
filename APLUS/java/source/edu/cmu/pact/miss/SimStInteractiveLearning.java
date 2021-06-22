@@ -37,6 +37,7 @@ import pact.CommWidgets.JCommTable.TableExpressionCell;
 import pact.CommWidgets.JCommWidget;
 import edu.cmu.pact.BehaviorRecorder.Controller.BR_Controller;
 import edu.cmu.pact.BehaviorRecorder.Dialogs.LoadFileDialog;
+import edu.cmu.pact.BehaviorRecorder.ProblemModel.ProblemModel;
 import edu.cmu.pact.BehaviorRecorder.ProblemModel.ProblemModelException;
 import edu.cmu.pact.BehaviorRecorder.ProblemModel.Graph.EdgeData;
 import edu.cmu.pact.BehaviorRecorder.ProblemModel.Graph.ExampleTracerGraph;
@@ -1443,14 +1444,14 @@ public void fillInQuizProblem(String problemName) {
 		return activList;
 	}
 	
-	public Collection<RuleActivationNode> getActivations(ProblemNode currentNode, boolean isNearSimilar){
+	public Collection<RuleActivationNode> getActivations(ProblemNode currentNode, boolean isNearSimilar, HashMap similar_problem_wme_map){
 		
 		if (currentNode==null){
 			currentNode=this.currentNode;
 		}
 		
 		
-		Vector activationList = simSt.gatherActivationList(currentNode, isNearSimilar);	
+		Vector activationList = simSt.gatherActivationList(currentNode, isNearSimilar, similar_problem_wme_map);	
 		Collection<RuleActivationNode> activList = simSt.createOrderedActivationList(activationList);
 			 
 		return activList;
@@ -1612,6 +1613,7 @@ public void fillInQuizProblem(String problemName) {
 		ProblemAssessor assessor = new AlgebraProblemAssessor();
 	    currentType=assessor.classifyProblem(problem);
 	    setAskedExplanation(false);
+	    ProblemModel pm = getBrController(getSimSt()).getProblemModel();
 		
 		// when running not from a BRD, it never gets "done" - reaching a done
 		// state breaks out of loop
@@ -1765,13 +1767,15 @@ public void fillInQuizProblem(String problemName) {
 					else {
 						// Tutor is  confused and don't know what to do next.
 						// Ask the initial tutee inquiry when tutor does not know what to do next.
-						if(getSimSt().isNearSimilarProblemsGetterDefined()) {
+						if(getSimSt().isNearSimilarProblemsGetterDefined() && getSimSt().isNearSimilarProblemsWmeGetterDefined()) {
 							 NearSimilarProblemsGetter nspg = getSimSt().getNearSimilarProblemsGetter();
 							 ArrayList<String> similar_problems = nspg.nearSimilarProblemsGetter(currentNode);       
 							 for(int i=0; i<similar_problems.size(); i++) {
 									ProblemNode similarNode = currentNode;
 									similarNode.setName(similar_problems.get(i));
-									Collection<RuleActivationNode> activList_2=getActivations(similarNode, true);
+									NearSimilarProblemsWmeGetter nspg_wme = getSimSt().getNearSimilarProblemsWmeGetter();
+									HashMap similar_problem_wme_map = nspg_wme.nearSimilarProblemsWmeGetter(similar_problems.get(i), pm);
+									Collection<RuleActivationNode> activList_2=getActivations(similarNode, true, similar_problem_wme_map);
 									if(activList_2 != null) {
 										for (RuleActivationNode ran : activList_2) {
 											String logic = ruleApplicationLogic(similarNode,ran); // need to make this domain independent by using getter
@@ -1783,7 +1787,7 @@ public void fillInQuizProblem(String problemName) {
 												// we would need the explanation to check for transformation for further followup
 												Sai s_a_i = getSai(ran); // dorminTable3_C1R1, UpdateTable, divide 3
 												String problem_name = similarNode.getName().replace("_", "=");
-												String msg = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_QUESTION_TOPIC,s_a_i.getI(),problem_name,logic);
+												String msg = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_QUESTION_TRANFORMATION_TOPIC,s_a_i.getI(),problem_name,logic);
 												String explanation = askBrainstormingQuestion(msg, true);
 											}
 											// Need to implement listener for nextNode just like askWhatToDoNext. 
