@@ -931,6 +931,7 @@ public class SimStRete extends MTRete implements Serializable, JessParser {
 
 
 		boolean[] results = null;
+		
 		if(!getController().getMissController().getSimSt().isSsWebAuthoringMode()){
 			for (int i = 0; i < filenames.length; ++i) {
 				filenames[i] = getDirectory(filenames[i]) + filenames[i]; // trailing "/" separator
@@ -987,7 +988,17 @@ public class SimStRete extends MTRete implements Serializable, JessParser {
 		
 		/* If initialization wme files not in cog. model dir, try project dir */
 		File f = null;
-		String dirname = getProblemDirectory();
+		
+		String userBundleDir = this.controller.getMissController().getSimSt().getUserBundleDirectory();
+		if (userBundleDir != null && !userBundleDir.endsWith("/"))
+			userBundleDir += "/";
+		
+		String dirname;
+		
+		if (userBundleDir != null && origFilename == WMEEditor.rulesFileName)
+			dirname = userBundleDir;
+		else
+			dirname = getProblemDirectory();
 		//trace.out("miss","---> getProblemDirectory="+getProblemDirectory());
 		
 		boolean validFilename = checkFilenameValid(dirname + origFilename);

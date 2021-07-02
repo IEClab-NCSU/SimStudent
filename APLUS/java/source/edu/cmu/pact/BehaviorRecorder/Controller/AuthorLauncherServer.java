@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -21,15 +22,12 @@ import java.util.Map;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import pact.CommWidgets.RemoteToolProxy;
-import pact.CommWidgets.UniversalToolProxy;
 import edu.cmu.hcii.ctat.ExitableServer;
 import edu.cmu.pact.BehaviorRecorder.Tab.CTATTabManager;
 import edu.cmu.pact.SocketProxy.SocketProxy;
 import edu.cmu.pact.TutoringService.Collaborators;
 import edu.cmu.pact.TutoringService.LauncherServer;
 import edu.cmu.pact.TutoringService.TSLauncherServer;
-import edu.cmu.pact.TutoringService.TSLogInfo;
 import edu.cmu.pact.TutoringService.TransactionInfo.Single;
 import edu.cmu.pact.Utilities.Logger;
 import edu.cmu.pact.Utilities.NtpClient;
@@ -37,6 +35,8 @@ import edu.cmu.pact.Utilities.SocketReader;
 import edu.cmu.pact.Utilities.trace;
 import edu.cmu.pact.ctat.MessageObject;
 import edu.cmu.pact.ctat.MsgType;
+import pact.CommWidgets.RemoteToolProxy;
+import pact.CommWidgets.UniversalToolProxy;
 
 /**
  * @author sewall
@@ -62,7 +62,7 @@ public class AuthorLauncherServer extends TSLauncherServer {
 	 * @param cmdLineArgs command-line arguments, needed for initializing {@link SocketReader}
 	 */
 	public AuthorLauncherServer(int tcpPort, CTATTabManager tabManager, String[] cmdLineArgs) {
-		super();
+		super(cmdLineArgs);
 		this.tabManager = tabManager;		
 
 		socketArgs = createSocketArgsList(cmdLineArgs == null ? new String[0] : cmdLineArgs);

@@ -864,7 +864,7 @@ public final class SimSt implements Serializable {
    private String userBundleDirectory = null;
    
    public String getUserBundleDirectory() {
-	   if (userBundleDirectory == null) {
+	   if (userBundleDirectory == null && runType.equalsIgnoreCase("springboot")) {
 		   trace.err("Missing path for user bundle directory");
 	   }
 	   return userBundleDirectory;
@@ -11320,14 +11320,20 @@ public final class SimSt implements Serializable {
        // Output to a regular productionRules.pr file
    	File prFile = null;
    	
-   	prFile = new File(getProjectDir(), getPrFileName());
+   	String userBundleDir = this.getUserBundleDirectory();
+   	
+   	if (userBundleDir != null) {
+   		prFile = new File(userBundleDir, getPrFileName());   		
+   	}
+   	else
+   		prFile = new File(getProjectDir(), getPrFileName());
    	
    	// Check if the application is running locally or via webstart
    	if(isWebStartMode()) {
    		prFile = new File(WebStartFileDownloader.SimStWebStartDir + getPrFileName() );
        }
 
-  	if (isSsWebAuthoringMode()){
+  	if (isSsWebAuthoringMode() && !runType.equalsIgnoreCase("springboot")){
    		prFile = new File(getProjectDirectory()+"/"+ getPrFileName() );
    	}
     

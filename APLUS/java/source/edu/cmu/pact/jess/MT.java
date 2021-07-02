@@ -1653,12 +1653,17 @@ public class MT {
 						};             // below
 		
 		boolean[] results = null;
-
+		
+		String userBundleDir = this.controller.getMissController().getSimSt().getUserBundleDirectory();
+		if (userBundleDir != null && !userBundleDir.endsWith("/"))
+			userBundleDir += "/";
+		
 		String cmDir=findCognitiveModelDirectory();  // returns directory name with trailing "/"
 		for (int i = 0; i < filenames.length; ++i)
 		{
-			
-			if (cmDir!=null)
+			if (userBundleDir != null && filenames[i] == WMEEditor.rulesFileName)
+				filenames[i] = userBundleDir + filenames[i];
+			else if (cmDir!=null)
 				filenames[i] = cmDir + filenames[i];   // assume dir already has trailing "/" separator
 			else filenames[i]=null;
 					
