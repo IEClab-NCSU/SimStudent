@@ -482,7 +482,7 @@ public class UniversalToolProxy implements CommMessageReceiver, CommMessageHandl
 			}
 		}
 	}
-
+	
 	public void setTutorName(String _tutorName) {
 		tutorName = new String(_tutorName);
         if (getController() != null)

@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Vector;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -51,8 +52,12 @@ import edu.cmu.pact.Utilities.trace;
 import edu.cmu.pact.ctat.MessageObject;
 import edu.cmu.pact.ctat.MsgType;
 import edu.cmu.pact.ctat.model.CtatModeModel;
+import edu.cmu.pact.jess.JessModelTracing;
 import edu.cmu.pact.jess.MTRete;
 import edu.cmu.pact.jess.RuleActivationNode;
+import edu.cmu.pact.jess.RuleActivationTree;
+import edu.cmu.pact.jess.SimStRete;
+import edu.cmu.pact.jess.RuleActivationTree.TreeTableModel;
 import edu.cmu.pact.miss.SimSt.FoA;
 import edu.cmu.pact.miss.PeerLearning.AplusPlatform;
 import edu.cmu.pact.miss.PeerLearning.AplusSpotlight;
@@ -1444,15 +1449,23 @@ public void fillInQuizProblem(String problemName) {
 		return activList;
 	}
 	
-	public Collection<RuleActivationNode> getActivations(ProblemNode currentNode, boolean isNearSimilar, HashMap similar_problem_wme_map){
+	public Collection<RuleActivationNode> getActivations(ProblemNode currentNode, boolean isNearSimilar){
 		
 		if (currentNode==null){
 			currentNode=this.currentNode;
 		}
 		
 		
-		Vector activationList = simSt.gatherActivationList(currentNode, isNearSimilar, similar_problem_wme_map);	
-		Collection<RuleActivationNode> activList = simSt.createOrderedActivationList(activationList);
+		Vector activationList;
+		Collection<RuleActivationNode> activList = null;
+		try {
+			activationList = simSt.gatherActivationList(currentNode, isNearSimilar);
+			activList = simSt.createOrderedActivationList(activationList);
+		} catch (JessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+		//Collection<RuleActivationNode> activList = simSt.createOrderedActivationList(activationList);
 			 
 		return activList;
 	}
@@ -1657,7 +1670,11 @@ public void fillInQuizProblem(String problemName) {
 				Vector activationList = simSt.gatherActivationList(currentNode);
 				// activationList outputs [MAIN::subtract] or [MAIN::divide] and so on
 				//Collection<RuleActivationNode> activList = simSt.createOrderedActivationList(activationList);
-
+				// Tasmia: Adding nearSimilarFlag to handleComm message created buggy activations and even though I suppressed the
+				// changed msg to be updated in the interfaceElements, the interface content is still getting changed inside getActivations function.
+				// I need to understand why. As long as the interface elements are updated, the bug will remain,
+				// If I can make sure correct production rule without the interface elements changing,
+				// code will run okay.
 				Collection<RuleActivationNode> activList=getActivations(currentNode);
 				
 				/*
@@ -1767,24 +1784,42 @@ public void fillInQuizProblem(String problemName) {
 					else {
 						// Tutor is  confused and don't know what to do next.
 						// Ask the initial tutee inquiry when tutor does not know what to do next.
-						if(getSimSt().isNearSimilarProblemsGetterDefined() && getSimSt().isNearSimilarProblemsWmeGetterDefined()) {
+						// Set SimStudent to thinking
+						
+						if(!runType.equals("springBoot")) {
+							if (getBrController(getSimSt()).getMissController().isPLEon() && !isTakingQuiz())
+								getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarThinking();
+						}
+						
+						// Adding few moments of brainstorming to make it look more naturalistic
+						String brainstorming_thinking = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_THINKING_TOPIC);
+						askBrainstormingQuestion(brainstorming_thinking, false);
+						try {
+							TimeUnit.SECONDS.sleep(1);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						if(getSimSt().isNearSimilarProblemsGetterDefined()) {
 							 NearSimilarProblemsGetter nspg = getSimSt().getNearSimilarProblemsGetter();
+							 // I need to make sure I get the next state equation here, because currently it says state2 not 3x = 6
 							 ArrayList<String> similar_problems = nspg.nearSimilarProblemsGetter(currentNode);       
+							 int has_asked_bq = 0;
 							 for(int i=0; i<similar_problems.size(); i++) {
 									ProblemNode similarNode = currentNode;
 									similarNode.setName(similar_problems.get(i));
-									NearSimilarProblemsWmeGetter nspg_wme = getSimSt().getNearSimilarProblemsWmeGetter();
-									HashMap similar_problem_wme_map = nspg_wme.nearSimilarProblemsWmeGetter(similar_problems.get(i), pm);
-									Collection<RuleActivationNode> activList_2=getActivations(similarNode, true, similar_problem_wme_map);
+									Collection<RuleActivationNode> activList_2=getActivations(similarNode, true);
 									if(activList_2 != null) {
 										for (RuleActivationNode ran : activList_2) {
 											String logic = ruleApplicationLogic(similarNode,ran); // need to make this domain independent by using getter
 											if(logic == "") {
 												logic = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_QUESTION_WHEN_NO_FEATURE_FOUND_TOPIC);
+												has_asked_bq = 1;
 												askBrainstormingQuestion(logic, false);
 											}
 											else {
 												// we would need the explanation to check for transformation for further followup
+												has_asked_bq = 1;
 												Sai s_a_i = getSai(ran); // dorminTable3_C1R1, UpdateTable, divide 3
 												String problem_name = similarNode.getName().replace("_", "=");
 												String msg = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_QUESTION_TRANFORMATION_TOPIC,s_a_i.getI(),problem_name,logic);
@@ -1793,22 +1828,37 @@ public void fillInQuizProblem(String problemName) {
 											// Need to implement listener for nextNode just like askWhatToDoNext. 
 											currentNode.setName(problem);
 											//nextCurrentNode = brainstormWhatToDoNext(currentNode);
+											getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
 											nextCurrentNode = askWhatToDoNext(currentNode);
 											hintReceived = true;
 											if (trace.getDebugCode("ss"))
 												trace.out("ss", "CallingbrainstormWhatToDoNext  "
 														+ "currentNode: " + currentNode
 														+ " nextCurrentNode: " + nextCurrentNode);
+											if(has_asked_bq == 1) break;
 										}
 										break;
 									}
 									
 									
 								}
+							 
+							 if(has_asked_bq == 0) {
+								 String logic = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_QUESTION_WHEN_NO_FEATURE_FOUND_TOPIC);
+									askBrainstormingQuestion(logic, false);
+									getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
+									nextCurrentNode = askWhatToDoNext(currentNode);
+									hintReceived = true;
+									if (trace.getDebugCode("ss"))
+										trace.out("ss", "CallingbrainstormWhatToDoNext  "
+												+ "currentNode: " + currentNode
+												+ " nextCurrentNode: " + nextCurrentNode);
+							 }
 						 }
 						 else {
 							String logic = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_QUESTION_WHEN_NO_FEATURE_FOUND_TOPIC);
 							askBrainstormingQuestion(logic, false);
+							getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
 							nextCurrentNode = askWhatToDoNext(currentNode);
 							hintReceived = true;
 							if (trace.getDebugCode("ss"))
@@ -1987,6 +2037,11 @@ public void fillInQuizProblem(String problemName) {
 //		long stepStartTime = Calendar.getInstance().getTimeInMillis();
 		stepStartTime = Calendar.getInstance().getTimeInMillis();
 		setStepStartTime(stepStartTime);
+	}
+	
+	public String fetchQFromBothAgreeSpeech(RuleActivationNode ran) {
+		
+		return "";
 	}
 	
 	public void applyNodeInstructions(ProblemNode currentNode) {

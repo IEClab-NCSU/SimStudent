@@ -318,9 +318,14 @@ I am not sure about my next step. Do you know what step should be performed now?
 
 BRAINSTORMING_QUESTION_TRANFORMATION
 I could perform <i> if I had <problem> because <logic>. Do you have any idea on how to reach to that point from this current situation?
+I could perform <i> if I had <problem> because <logic>. Do you have any thoughts on how to reach to that point from this current situation?
 
-BRAINSTORMING_QUESTION_TYPEIN
-<i> if I had <problem> because <logic>. Do you have any idea on how to reach to that point from this current situation?
+BRAINSTORMING_THINKING
+I see. Let me think of a way out by going through what I have learnt so far.
+Oops! It seems like we both are stuck. Let's put our heads together to find a way out.
+I see. Let me analyze what I know so far to find a way out.
+Oops! It seems like we both are stuck. Let me share some ideas from what I have learnt.
+I see. Let me rack my brain to find a way out from what you have taught me already.
 
 BRAINSTORMING_QUESTION_WHEN_NO_FEATURE_FOUND
 This situation is also entirely new for me. Would you like to ask Mr. Williams to see if he can help us?

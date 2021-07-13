@@ -142,6 +142,18 @@ public class MT {
 	 */
 	private java.util.List<InterfaceAction> interfaceActionsList = null;
 	
+	public void printInterfaceActionsList() {
+		Iterator<InterfaceAction> interfaceIter=interfaceActionsList.iterator();
+    	while(interfaceIter.hasNext())
+    	{
+    		InterfaceAction ia=(InterfaceAction)interfaceIter.next();
+    		System.out.println(ia.toString());
+    	}
+	}
+	public void removeAdditionaInterfaceActions() {
+		interfaceActionsList.remove(interfaceActionsList.size()-1);
+	}
+	
 	/**
 	 * Map to {@link jess.Fact}s that represent student interface components
 	 * or widgets. Key is (String) name (as seen in selection field of student
@@ -232,6 +244,18 @@ public class MT {
 			selectionList = (selection == null ? new LinkedList() : selection);
 			actionList = (action == null ? new LinkedList() : action);
 			inputList = (input == null ? new LinkedList() : input);
+		}
+		
+		public String toString(){
+			//System.out.println(Arrays.toString(selectionList.toArray()));
+			String output = "selectionList "+ Arrays.toString(selectionList.toArray()) + " actionList "+ Arrays.toString(actionList.toArray())+" inputList "+ Arrays.toString(inputList.toArray());
+			return output;
+		}
+		
+		public void remove() {
+			selectionList.remove(selectionList.size() - 1);
+			actionList.remove(actionList.size() - 1);
+			inputList.remove(inputList.size() - 1);
 		}
 	}
 
@@ -641,18 +665,28 @@ public class MT {
 
     	return Utils.appendSlash(result);
     }
+    // Tasmia: Test run for creating a new rete object
+    public void handleNearSimilarProblem(MessageObject mo) {
+    	Vector<String> selection = null;
+        Vector<String> action = null;
+        Vector<String> input = null;
+    	selection = mo.getSelection();
+        input = mo.getInput();
+        action = mo.getAction();
+        InterfaceAction ia = new InterfaceAction(selection,
+                action, input);
+        interfaceActionsList.add(ia);
+    }
     
     /**
      * Process a comm message extract the values and update the facts
      * 
      * @param mo      The Comm Object
      */
-
+    
     public MessageObject handleCommMessage (final MessageObject mo) {
         //int lispCheckResult;
         String checkResult = NOTAPPLICABLE;
-
-        
         if (trace.getDebugCode("mt")) trace.out("mt", "message received: " + mo);
 
        // trace.out("miss", "@@@@@ handleCommMessage: globalContext = " + getRete().getGlobalContext());
@@ -1040,7 +1074,8 @@ public class MT {
 
         } else if (messageType.equalsIgnoreCase("InterfaceAction")) {
             if (trace.getDebugCode("mt")) trace.out("mt", "InterfaceAction");
-            
+            //if(isNearSimilarProblem) return null;
+            // If I do not add the SAI in the interfaceActionList then the activation rule gets messed up.
             selection = mo.getSelection();
             input = mo.getInput();
             action = mo.getAction();
@@ -1079,7 +1114,7 @@ public class MT {
 				wmeEditor.getPanel().refresh();
 //        	System.gc();           
         }else if(messageType.equalsIgnoreCase("RestorInitialWMState")){
-        	// need to be mrege with  RestorJessInitialWMState later   
+        	// need to merge with  RestorJessInitialWMState later   
         }
         else{
             trace.err("MT.handleCommMessage(): Unknown msg type: " +

@@ -521,7 +521,6 @@ public class Instruction implements Serializable{
                     v.add(theSeeds[i]);
                 }
                 setFocusOfAttention(v);
-
                 if (rhsState.hasValidOperations(this)) {
                     mapFocusOfAttention = true;
                     break;

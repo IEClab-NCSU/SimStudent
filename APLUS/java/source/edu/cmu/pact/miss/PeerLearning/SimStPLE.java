@@ -158,6 +158,7 @@ public class SimStPLE {
 	private static final String SECTIONS_HEADER = "sections";
 	public static final String PROBLEM_DELIMITER_HEADER = "problemDelimiter";
 	private static final String VALID_SELECTIONS_FOR_SE = "validSelectionsForSelfExplanation";
+	private static final String VALID_SELECTIONS_FOR_BQ = "validSelectionsForBrainstormingQuestions";
 
 	private final String USER_ID_REQUEST_TITLE = "User ID";
 	private final String USER_ID_REQUEST_MSG = "Please enter your User ID:";
@@ -1078,6 +1079,7 @@ public class SimStPLE {
 		hintExplanations = new Hashtable<String, LinkedList<Explanation>>();
 		readConfigFile();
 		conversation = new SimStConversation(brController, "simSt-speech.txt");
+		conversation.processBothAgreeSpeechFile("simSt-both-agree-speech.txt");
 	}
 
 	// Reads the configuration file and applies the items in it to their categories

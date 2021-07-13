@@ -81,9 +81,8 @@ public class SimStConversation {
 	public static final String BRAINSTORMING_QUESTION_TRANFORMATION_TOPIC = "BRAINSTORMING_QUESTION_TRANFORMATION";
 	public static final String BRAINSTORMING_QUESTION_TYPEIN_TOPIC = "BRAINSTORMING_QUESTION_TYPEIN";
 	public static final String BRAINSTORMING_QUESTION_WHEN_NO_FEATURE_FOUND_TOPIC = "BRAINSTORMING_QUESTION_WHEN_NO_FEATURE_FOUND";
-
-	
-	
+	public static final String BRAINSTORMING_THINKING_TOPIC = "BRAINSTORMING_THINKING";
+	public boolean is_both_agree_speech_sound = false;
 	
 	public static final int ERROR_THRESHOLD = 4;
 	
@@ -128,6 +127,78 @@ public class SimStConversation {
 		}
 		if(brController.getMissController().getSimSt().isSsMetaTutorMode() && !brController.getMissController().getSimSt().getSsMetaTutorModeLevel().equals("Cognitive"))
 			metatutored = true;
+	}
+	
+	public void processBothAgreeSpeechFile(String filename) {
+		// Checking for the file soundness;
+		is_both_agree_speech_sound = true;
+		BufferedReader reader=null;
+		String runType = System.getProperty("appRunType");
+		String file = null;
+		InputStreamReader isr = null;
+		file = WebStartFileDownloader.SimStAlgebraPackage + "/"+filename;
+		ClassLoader cl = this.getClass().getClassLoader();
+		InputStream is = cl.getResourceAsStream(file);
+		isr = new InputStreamReader(is);
+		/*if(runType.equals("springBoot")) {
+			file = brController.getMissController().getSimSt().getProjectDir() + "/"+filename;
+		} else {
+			file = WebStartFileDownloader.SimStAlgebraPackage+"/"+filename;
+			ClassLoader cl = this.getClass().getClassLoader();
+			InputStream is = cl.getResourceAsStream(file);
+			isr = new InputStreamReader(is);
+		}*/	
+	    	
+	    	try
+	    	{
+	    		reader=new BufferedReader(isr);
+	    		/*if(runType.equalsIgnoreCase("springBoot")) {
+	    			reader=new BufferedReader(new FileReader(file));
+	    		} else {
+	    			reader = new BufferedReader(isr);
+	    		}*/
+	    		
+	    		String contentLine = reader.readLine();
+	    		ArrayList<String> classnames = new ArrayList<String>();
+	    		boolean is_classname = false;
+	    		boolean is_code = false;
+	    		while (contentLine != null) {
+	    		      System.out.println(contentLine);
+	    		      contentLine = reader.readLine();
+	    		      if(contentLine.contains(";;"))continue;
+	    		      if(contentLine.contains("<classname>")) {
+	    		    	  is_classname = true;
+	    		    	  continue;
+	    		      }
+	    		      if(contentLine.contains("</classname>")) {
+	    		    	  is_classname = false;
+	    		    	  continue;
+	    		      }
+	    		      if(contentLine.contains("<code>")) {
+	    		    	  is_code = true;
+	    		    	  continue;
+	    		      }
+	    		      if(contentLine.contains("</code>")) {
+	    		    	  is_code = false;
+	    		    	  continue;
+	    		      }
+	    		      if(is_code) {
+	    		    	  
+	    		      }
+	    		      if(is_classname) {
+	    		    	  classnames.add(contentLine);
+	    		      }
+	    		      
+	    		 }
+
+	    	}catch(Exception e)
+	    	{
+	    		if(trace.getDebugCode("miss"))trace.out("miss", "Unable to read config file: "+e.getMessage());
+	    		e.printStackTrace();
+	    	}finally 
+	    	{
+	    		try{reader.close();}catch(Exception e){	}
+	    	}
 	}
 		
 	private void readTopics(String filename)

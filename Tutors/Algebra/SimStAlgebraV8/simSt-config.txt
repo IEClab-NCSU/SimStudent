@@ -217,3 +217,13 @@ dorminTable3_C1R4
 dorminTable3_C1R5
 dorminTable3_C1R6
 
+validSelectionsForBrainstormingQuestions
+dorminTable3_C1R1
+dorminTable3_C1R2
+dorminTable3_C1R3
+dorminTable3_C1R4
+dorminTable3_C1R5
+dorminTable3_C1R6
+
+
+

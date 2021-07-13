@@ -2852,7 +2852,7 @@ public class MTRete extends Rete implements Serializable, JessParser,
 	/**
 	 * @param mt The MT to set.
 	 */
-	void setMT(MT mt) {
+	public void setMT(MT mt) {
 		this.mt = mt;
 	}    
     
