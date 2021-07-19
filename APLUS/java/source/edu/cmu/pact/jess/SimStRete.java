@@ -1099,6 +1099,13 @@ public class SimStRete extends MTRete implements Serializable, JessParser {
 	throws JessException {
 		initFactsName=templatesName.replace("wmeTypes.clp", "init.wme");
 		
+		String userBundleDir = this.controller.getMissController().getSimSt().getUserBundleDirectory();
+		if (userBundleDir != null && !userBundleDir.endsWith("/"))
+			userBundleDir += "/";
+		
+		if (userBundleDir != null)
+			rulesName = userBundleDir + rulesName;
+		
 	    String[] filenames = {bloadName, templatesName,	rulesName, initFactsName, problemFactsName};
 	  
 	    
@@ -1288,7 +1295,7 @@ public class SimStRete extends MTRete implements Serializable, JessParser {
 				System.out.println(" Directory : "+getController().getMissController().getSimSt().getProjectDirectory());
 				if(this.getController().getMissController().getSimSt().isSsWebAuthoringMode()) {
 					if(this.getController().getRunType().equals("springBoot")) {
-						String tempFileName = (filenames[i].contains("/"))? filenames[i].split("/")[1] : filenames[i];
+						String tempFileName = (filenames[i]!=null && filenames[i].contains("/"))? filenames[i].split("/")[1] : filenames[i];
 						results[i] = new File(this.getController().getMissController().getSimSt().getProjectDirectory()+"/"+tempFileName);
 					} else {
 						results[i] = new File(this.getController().getMissController().getSimSt().getProjectDirectory()+"/"+filenames[i]);
