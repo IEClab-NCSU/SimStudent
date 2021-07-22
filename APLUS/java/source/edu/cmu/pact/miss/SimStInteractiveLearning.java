@@ -1811,31 +1811,33 @@ public void fillInQuizProblem(String problemName) {
 									Collection<RuleActivationNode> activList_2=getActivations(similarNode, true);
 									if(activList_2 != null) {
 										for (RuleActivationNode ran : activList_2) {
-											String logic = ruleApplicationLogic(similarNode,ran); // need to make this domain independent by using getter
-											if(logic == "") {
-												logic = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_QUESTION_WHEN_NO_FEATURE_FOUND_TOPIC);
-												has_asked_bq = 1;
-												askBrainstormingQuestion(logic, false);
+											Sai s_a_i = getSai(ran); // dorminTable3_C1R1, UpdateTable, divide 3
+											if(isSelectionValidForBrainstormingQuestions(s_a_i.getS())) {
+												String logic = ruleApplicationLogic(similarNode,ran); // need to make this domain independent by using getter
+												if(logic == "") {
+													logic = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_QUESTION_WHEN_NO_FEATURE_FOUND_TOPIC);
+													has_asked_bq = 1;
+													askBrainstormingQuestion(logic, false);
+												}
+												else {
+													// we would need the explanation to check for transformation for further followup
+													has_asked_bq = 1;
+													String problem_name = similarNode.getName().replace("_", "=");
+													String msg = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_QUESTION_TRANFORMATION_TOPIC,s_a_i.getI(),problem_name,logic);
+													String explanation = askBrainstormingQuestion(msg, true);
+												}
+												// Need to implement listener for nextNode just like askWhatToDoNext. 
+												currentNode.setName(problem);
+												//nextCurrentNode = brainstormWhatToDoNext(currentNode);
+												getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
+												nextCurrentNode = askWhatToDoNext(currentNode);
+												hintReceived = true;
+												if (trace.getDebugCode("ss"))
+													trace.out("ss", "CallingbrainstormWhatToDoNext  "
+															+ "currentNode: " + currentNode
+															+ " nextCurrentNode: " + nextCurrentNode);
+												if(has_asked_bq == 1) break;
 											}
-											else {
-												// we would need the explanation to check for transformation for further followup
-												has_asked_bq = 1;
-												Sai s_a_i = getSai(ran); // dorminTable3_C1R1, UpdateTable, divide 3
-												String problem_name = similarNode.getName().replace("_", "=");
-												String msg = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_QUESTION_TRANFORMATION_TOPIC,s_a_i.getI(),problem_name,logic);
-												String explanation = askBrainstormingQuestion(msg, true);
-											}
-											// Need to implement listener for nextNode just like askWhatToDoNext. 
-											currentNode.setName(problem);
-											//nextCurrentNode = brainstormWhatToDoNext(currentNode);
-											getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
-											nextCurrentNode = askWhatToDoNext(currentNode);
-											hintReceived = true;
-											if (trace.getDebugCode("ss"))
-												trace.out("ss", "CallingbrainstormWhatToDoNext  "
-														+ "currentNode: " + currentNode
-														+ " nextCurrentNode: " + nextCurrentNode);
-											if(has_asked_bq == 1) break;
 										}
 										break;
 									}
@@ -2574,6 +2576,13 @@ public void fillInQuizProblem(String problemName) {
 	private boolean isSelectionValidForSelfExplanation(String selection){	
 		return simSt.getBrController().getMissController().getSimStPLE().getValidSelections()!=null && simSt.getBrController().getMissController().getSimStPLE().getValidSelections().contains(selection);
 	}
+	
+	private boolean isSelectionValidForBrainstormingQuestions(String selection){	
+		return simSt.getBrController().getMissController().getSimStPLE().getValidSelectionsBQ()!=null && simSt.getBrController().getMissController().getSimStPLE().getValidSelectionsBQ().contains(selection);
+	}
+	private boolean isSelectionValidForBothAgreeQuestions(String selection){	
+		return simSt.getBrController().getMissController().getSimStPLE().getValidSelectionsBAQ()!=null && simSt.getBrController().getMissController().getSimStPLE().getValidSelectionsBAQ().contains(selection);
+	}
 		
 	public void explainWhyRight(ProblemNode node) {
 		
@@ -2720,6 +2729,31 @@ public void fillInQuizProblem(String problemName) {
 
 	public String askBrainstormingQuestion(String question, boolean requireResponse) {
 		
+		String explanation = "";
+		if (getBrController(getSimSt()).getMissController().getSimSt().isSsMetaTutorMode())
+				getBrController(getSimSt()).getAmt().handleInterfaceAction("selfExp", "implicit", "-1");
+			 
+		long explainRequestTime = Calendar.getInstance().getTimeInMillis();
+		if (getBrController(getSimSt()).getMissController().getSimStPLE() == null) {
+				explanation = JOptionPane.showInputDialog(null, question,
+						"Please Provide an Explanation",
+						JOptionPane.PLAIN_MESSAGE);
+		} else {
+				SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();
+				if(requireResponse == false) {
+					ple.giveMessage(question);
+				}
+				else {
+					explanation = ple.giveMessageFreeTextResponse(question);
+				}
+		}
+
+		int explainDuration = (int) (Calendar.getInstance()
+					.getTimeInMillis() - explainRequestTime);
+		return explanation;
+	}
+	
+	public String askMoreExampleQuestion(String question, boolean requireResponse) {
 		String explanation = "";
 		if (getBrController(getSimSt()).getMissController().getSimSt().isSsMetaTutorMode())
 				getBrController(getSimSt()).getAmt().handleInterfaceAction("selfExp", "implicit", "-1");
@@ -3063,6 +3097,23 @@ public void fillInQuizProblem(String problemName) {
 			// Ask if the rule is correct
 			String inquiryResult = simSt.inquiryRuleActivation(problemName,
 					currentNode, ran);
+			
+			// Tasmia: if tutor's feedback is "yes", then tutor and tutee both agree on a solution step.
+			// initial tutee inquiry for both agree speech began here.
+			if(inquiryResult.equals(EdgeData.CORRECT_ACTION)) {
+				// ask question and after tutor's response move to the later part unless 
+				// follow-up tutee inquiry is on
+				// I need to check if the selection interface element is in the permissible region to ask 
+				// these questions using config.txt;
+				if(getSimSt().isbothAgreeSpeechGetterClassDefined() && isSelectionValidForBothAgreeQuestions(sai.getS())) {
+					SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();
+					SimStConversation conv = ple.getConversation();
+					BothAgreeSpeechGetter basg = getSimSt().getBothAgreeSpeechGetter();
+					String agree_question = basg.agreeSpeechGetter(ran, sai, conv);
+					askMoreExampleQuestion(agree_question, true);
+				}
+				
+			}
 			if (!inquiryResult.equals(EdgeData.CORRECT_ACTION) && getBrController(getSimSt()).getMissController().isPLEon()){			
 				SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();			
 				//brController.getMissController().getSimSt().displayMessage("",ple.getConversation().getMessage(SimStConversation.THINK_TOPIC));			

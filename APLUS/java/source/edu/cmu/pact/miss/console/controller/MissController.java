@@ -663,6 +663,9 @@ public class MissController implements MissControllerExternal {
     public void setSsNearSimilarProblemsGetterClass(String nearSimilarProblemsGetter) {
     	getSimSt().setSsNearSimilarProblemsGetter(nearSimilarProblemsGetter);
     }
+    public void setSsBothAgreeSpeechGetterClass(String bothAgreeSpeechGetterClass) {
+    	getSimSt().setSsBothAgreeSpeechGetter(bothAgreeSpeechGetterClass);
+    }
     public void setSsPathOrderingClass(String className) {
         getSimSt().setSsPathOrderer(className);
     }    
@@ -1925,7 +1928,11 @@ public class MissController implements MissControllerExternal {
                      * */
                     else if (keyStem.equalsIgnoreCase("ssNearSimilarProblemsGetterClass")) {
                     	setSsNearSimilarProblemsGetterClass(parameter[0]);
-                    } else if (keyStem.equalsIgnoreCase("ssFoaSearch")) {
+                    }
+                    else if (keyStem.equalsIgnoreCase("ssBothAgreeSpeechGetterClass")) {
+                    	setSsBothAgreeSpeechGetterClass(parameter[0]);
+                    }
+                    else if (keyStem.equalsIgnoreCase("ssFoaSearch")) {
                         setSsFoaSearch(true);
                         
                     } else if (keyStem.equalsIgnoreCase("ssPathOrderingClass")) {

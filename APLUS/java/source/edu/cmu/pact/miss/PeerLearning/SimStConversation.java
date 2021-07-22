@@ -5,12 +5,14 @@ import java.io.FileReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.Hashtable;
 
 import javax.swing.JOptionPane;
 
 import edu.cmu.pact.BehaviorRecorder.Controller.BR_Controller;
 import edu.cmu.pact.Utilities.trace;
+import edu.cmu.pact.miss.Sai;
 import edu.cmu.pact.miss.WebStartFileDownloader;
 import edu.cmu.pact.miss.jess.ModelTracer;
 import edu.cmu.pact.miss.jess.ModelTraceWorkingMemory;
@@ -82,7 +84,22 @@ public class SimStConversation {
 	public static final String BRAINSTORMING_QUESTION_TYPEIN_TOPIC = "BRAINSTORMING_QUESTION_TYPEIN";
 	public static final String BRAINSTORMING_QUESTION_WHEN_NO_FEATURE_FOUND_TOPIC = "BRAINSTORMING_QUESTION_WHEN_NO_FEATURE_FOUND";
 	public static final String BRAINSTORMING_THINKING_TOPIC = "BRAINSTORMING_THINKING";
-	public boolean is_both_agree_speech_sound = false;
+	// Added by Tasmia: Topics for both agree speech
+	public static final String AGREE_ANY = "ANY";
+	public static final String AGREE_DIVIDE = "DIVIDE";
+	public static final String AGREE_DIVIDE_POSITIVE_OPERATOR = "DIVIDE_POSITIVE_OPERATOR";
+	public static final String AGREE_MULTIPLY = "MULTIPLY";
+	public static final String AGREE_DONE = "DONE";
+	public static final String AGREE_SUBTRACT_POSITIVE_OPERATOR = "SUBTRACT_POSITIVE_OPERATOR";
+	public static final String AGREE_DIVIDE_WHOLE_NUMBER_OPERATOR = "DIVIDE_WHOLE_NUMBER_OPERATOR";
+	public static final String AGREE_ADD_WHOLE_NUMBER_OPERATOR = "ADD_WHOLE_NUMBER_OPERATOR";
+	public static final String AGREE_MULTIPLY_WHOLE_NUMBER_OPERATOR = "MULTIPLY_WHOLE_NUMBER_OPERATOR";
+	public static final String AGREE_MULTIPLY_POSITIVE_OPERATOR = "MULTIPLY_POSITIVE_OPERATOR";
+	public static final String AGREE_SUBTRACT_WHOLE_NUMBER_OPERATOR = "SUBTRACT_WHOLE_NUMBER_OPERATOR";
+	public static final String AGREE_ADD_OR_SUBTRACT_VARIABLE_TERM_OPERATOR = "ADD_OR_SUBTRACT_VARIABLE_TERM_OPERATOR";
+	public static final String AGREE_ADD = "ADD";
+	public static final String AGREE_SUBTRACT = "SUBTRACT";
+	public static final String AGREE_ADD_POSITIVE_OPERATOR = "ADD_POSITIVE_OPERATOR";
 	
 	public static final int ERROR_THRESHOLD = 4;
 	
@@ -93,7 +110,10 @@ public class SimStConversation {
 	private ModelTraceWorkingMemory mtwm;
 	private ModelTracer apmt;
 	
+	private ArrayList<String> classnames = new ArrayList<String>();
+	
 	private Hashtable<String, ArrayList<String>> topics;
+	private Hashtable<String, ArrayList<String>> both_agree_topics;
 	
 	//flag to indicate that different behaviour between quiz and tutoring was detected, so 
 	//appropriate message (indicated by <FQ> in simSt-speech.txt) must be displayed.
@@ -117,7 +137,8 @@ public class SimStConversation {
 	{
 		this.brController = brController;
 		topics = new Hashtable<String, ArrayList<String>>();
-		readTopics(filename);
+		both_agree_topics = new Hashtable<String, ArrayList<String>>();
+		readTopics(filename, topics);
 		
 		if(brController.getAmt() != null  && brController.getMissController().getSimSt().getModelTraceWM() != null)
 		{
@@ -130,78 +151,11 @@ public class SimStConversation {
 	}
 	
 	public void processBothAgreeSpeechFile(String filename) {
-		// Checking for the file soundness;
-		is_both_agree_speech_sound = true;
-		BufferedReader reader=null;
-		String runType = System.getProperty("appRunType");
-		String file = null;
-		InputStreamReader isr = null;
-		file = WebStartFileDownloader.SimStAlgebraPackage + "/"+filename;
-		ClassLoader cl = this.getClass().getClassLoader();
-		InputStream is = cl.getResourceAsStream(file);
-		isr = new InputStreamReader(is);
-		/*if(runType.equals("springBoot")) {
-			file = brController.getMissController().getSimSt().getProjectDir() + "/"+filename;
-		} else {
-			file = WebStartFileDownloader.SimStAlgebraPackage+"/"+filename;
-			ClassLoader cl = this.getClass().getClassLoader();
-			InputStream is = cl.getResourceAsStream(file);
-			isr = new InputStreamReader(is);
-		}*/	
-	    	
-	    	try
-	    	{
-	    		reader=new BufferedReader(isr);
-	    		/*if(runType.equalsIgnoreCase("springBoot")) {
-	    			reader=new BufferedReader(new FileReader(file));
-	    		} else {
-	    			reader = new BufferedReader(isr);
-	    		}*/
-	    		
-	    		String contentLine = reader.readLine();
-	    		ArrayList<String> classnames = new ArrayList<String>();
-	    		boolean is_classname = false;
-	    		boolean is_code = false;
-	    		while (contentLine != null) {
-	    		      System.out.println(contentLine);
-	    		      contentLine = reader.readLine();
-	    		      if(contentLine.contains(";;"))continue;
-	    		      if(contentLine.contains("<classname>")) {
-	    		    	  is_classname = true;
-	    		    	  continue;
-	    		      }
-	    		      if(contentLine.contains("</classname>")) {
-	    		    	  is_classname = false;
-	    		    	  continue;
-	    		      }
-	    		      if(contentLine.contains("<code>")) {
-	    		    	  is_code = true;
-	    		    	  continue;
-	    		      }
-	    		      if(contentLine.contains("</code>")) {
-	    		    	  is_code = false;
-	    		    	  continue;
-	    		      }
-	    		      if(is_code) {
-	    		    	  
-	    		      }
-	    		      if(is_classname) {
-	    		    	  classnames.add(contentLine);
-	    		      }
-	    		      
-	    		 }
-
-	    	}catch(Exception e)
-	    	{
-	    		if(trace.getDebugCode("miss"))trace.out("miss", "Unable to read config file: "+e.getMessage());
-	    		e.printStackTrace();
-	    	}finally 
-	    	{
-	    		try{reader.close();}catch(Exception e){	}
-	    	}
+		both_agree_topics = new Hashtable<String, ArrayList<String>>();
+		readTopics(filename, both_agree_topics);
 	}
 		
-	private void readTopics(String filename)
+	private void readTopics(String filename, Hashtable<String, ArrayList<String>> topics)
 	{
 		
 			// worked like that
@@ -230,6 +184,9 @@ public class SimStConversation {
 	    		}
 	    		
 	    		String line = reader.readLine();
+	    		while(line.contains(";;") || line == null || line.isEmpty()) {
+	    			line = reader.readLine();
+	    		}
 	    		
 	    		while(line != null)
 	    		{
@@ -251,6 +208,7 @@ public class SimStConversation {
 	    			}
 	    			if(line != null)
 	    				line = reader.readLine();
+	    				
 	    		}
 	    		
 
@@ -269,6 +227,18 @@ public class SimStConversation {
 	public String getMessage(String topic)
 	{
 		return getMessage(topic, null, null, null, null, -1);
+	}
+	
+	public String getMessage(String topic, Sai s, boolean isBothAgreeSpeech)
+	{
+		ArrayList<String> messages = both_agree_topics.get(topic);   
+	
+		String message = messages.get((int)(Math.random()*messages.size()));
+		/*if(!messageWorks(message, selection, input)) {
+			message = getFilteredMessage(messages, selection, input, operation, activationNum);
+
+		}*/		
+		return replaceVariables(message, s.getS(), s.getA(), s.getI(), "");
 	}
 	
 	public String getSimStMessage1(String topic, String selection, String input)
@@ -464,31 +434,11 @@ public class SimStConversation {
 			if(message.contains(MODEL_TRACE_ERROR))
 				return false;
 		}
-		/*if(selection == null)
-		{
-			if(message.contains(SELECTION))
-				return false;
-		}*/
 		if(input == null)
 		{
 			if(message.contains(INPUT))
 				return false;
 		}
-		/*if(activationNum == -1)
-		{
-			if(message.contains(NO_ACTIVATIONS) || message.contains(NOT_FIRST_ACTIVATION))
-				return false;
-		}
-		if(activationNum < 1)
-		{
-			if(message.contains(NOT_FIRST_ACTIVATION))
-				return false;
-		}
-		if(activationNum > 0)
-		{
-			if(message.contains(NO_ACTIVATIONS))
-				return false;
-		}*/
 		if(input == null)
 		{
 			if(message.contains(PROBLEM))

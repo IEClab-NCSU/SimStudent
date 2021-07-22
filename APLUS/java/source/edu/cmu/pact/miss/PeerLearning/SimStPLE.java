@@ -158,7 +158,10 @@ public class SimStPLE {
 	private static final String SECTIONS_HEADER = "sections";
 	public static final String PROBLEM_DELIMITER_HEADER = "problemDelimiter";
 	private static final String VALID_SELECTIONS_FOR_SE = "validSelectionsForSelfExplanation";
+	// Added by Tasmia
 	private static final String VALID_SELECTIONS_FOR_BQ = "validSelectionsForBrainstormingQuestions";
+	private static final String VALID_SELECTIONS_FOR_BAQ = "validSelectionsForBothAgreeQuestions";
+	
 
 	private final String USER_ID_REQUEST_TITLE = "User ID";
 	private final String USER_ID_REQUEST_MSG = "Please enter your User ID:";
@@ -411,6 +414,8 @@ public class SimStPLE {
 	private Hashtable<String, LinkedList<Explanation>> problemChoiceExplanations;
 	private Hashtable<String, LinkedList<Explanation>> hintExplanations;
 	private HashSet<String> validSelections;
+	private HashSet<String> validSelections_bq;
+	private HashSet<String> validSelections_baq;
 	private boolean modelTracer = true;
 
 	public ArrayList<String> getSections() {
@@ -437,6 +442,12 @@ public class SimStPLE {
 	 */
 	public HashSet<String> getValidSelections() {
 		return validSelections;
+	}
+	public HashSet<String> getValidSelectionsBQ() {
+		return validSelections_bq;
+	}
+	public HashSet<String> getValidSelectionsBAQ() {
+		return validSelections_baq;
 	}
 
 	private boolean startStatus = false;
@@ -1138,8 +1149,19 @@ public class SimStPLE {
 				} else if (line.equals(HINT_EXPLANATION_HEADER)) {
 					configHintExplanations(reader);
 				} else if (line.equals(VALID_SELECTIONS_FOR_SE)) {
-					configValidSelections(reader);
-				} else if (line.equals(SECTIONS_HEADER)) {
+					validSelections = new HashSet<String>();
+					configValidSelections(reader, validSelections);
+				} 
+				// Added by Tasmia: Updating the permissible selections from config.txt for asking brainstorming questions and both agree questions.
+				else if (line.equals(VALID_SELECTIONS_FOR_BQ)) {
+					validSelections_bq = new HashSet<String>();
+					configValidSelections(reader, validSelections_bq);
+				} else if (line.equals(VALID_SELECTIONS_FOR_BAQ)) {
+					validSelections_baq = new HashSet<String>();
+					configValidSelections(reader, validSelections_baq);
+				}
+				// ended edits by Tasmia
+				else if (line.equals(SECTIONS_HEADER)) {
 					configSections(reader);
 				} else if (line.equals(PROBLEM_DELIMITER_HEADER)) {
 
@@ -1440,12 +1462,14 @@ public class SimStPLE {
 	 * Method for reading from the config file the valid selections for self
 	 * explanation (selections which SimStudent is allowed to ask self-explanation
 	 * questions).
+	 * Also adding the valid selections for brainstorming questions when both tutor tutee are stuck
+	 * and for both agree questions when they both agree.
 	 * 
 	 * @param reader
 	 */
-	public void configValidSelections(BufferedReader reader) {
+	public void configValidSelections(BufferedReader reader, HashSet<String> validSelections) {
 		try {
-			validSelections = new HashSet<String>();
+			//validSelections = new HashSet<String>();
 
 			String line = reader.readLine();
 			while (line != null && line.length() > 0) // Blank line starts next section

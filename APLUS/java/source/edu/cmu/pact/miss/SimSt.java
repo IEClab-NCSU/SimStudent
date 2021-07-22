@@ -2865,16 +2865,22 @@ public final class SimSt implements Serializable {
    // Domain dependent ad-hoc method to identify skill name
    public /*private*/ boolean isSkillNameGetterDefined() { return skillNameGetterClassDefined; }
    public /*private*/ boolean isNearSimilarProblemsGetterDefined() { return nearSimilarProblemsGetterClassDefined; }
+   public /*private*/ boolean isbothAgreeSpeechGetterClassDefined() { return bothAgreeSpeechGetterClassDefined; }
    private boolean skillNameGetterClassDefined = false;
    private boolean nearSimilarProblemsGetterClassDefined = false;
+   private boolean bothAgreeSpeechGetterClassDefined = false;
    public void setSkillNameGetterClassDefined(boolean flag) {
    	skillNameGetterClassDefined = flag;
    }
    public void setNearSimilarProblemsGetterClassDefined(boolean flag) {
 	   nearSimilarProblemsGetterClassDefined = flag;
    }
+   public void setBothAgreeSpeechGetterClassDefined(boolean flag) {
+	   bothAgreeSpeechGetterClassDefined = flag;
+   }
    private transient SkillNameGetter skillNameGetter = null;
    private transient  NearSimilarProblemsGetter nearSimilarProblemsGetter = null;
+   private transient BothAgreeSpeechGetter bothAgreeSpeechGetter = null;
    public void setSsSkillNameGetter(String skillNameGetterClassName) {
    	try {
    		if(trace.getDebugCode("miss"))trace.out("miss","DEBUG: "+skillNameGetterClassName);
@@ -2892,6 +2898,16 @@ public final class SimSt implements Serializable {
 	   		Class nearSimilarProblemsGetterClass = Class.forName(nearSimilarProblemsGetterClassName);
 	   		this.nearSimilarProblemsGetter = (NearSimilarProblemsGetter)nearSimilarProblemsGetterClass.newInstance();
 	   		setNearSimilarProblemsGetterClassDefined(true);
+	   	} catch (Exception e) {
+	   		e.printStackTrace();
+	           logger.simStLogException(e);
+	   	}
+   }
+   public void setSsBothAgreeSpeechGetter(String bothAgreeSpeechGetterClassName) {
+	   	try {
+	   		Class bothAgreeSpeechGetterClass = Class.forName(bothAgreeSpeechGetterClassName);
+	   		this.bothAgreeSpeechGetter = (BothAgreeSpeechGetter)bothAgreeSpeechGetterClass.newInstance();
+	   		setBothAgreeSpeechGetterClassDefined(true);
 	   	} catch (Exception e) {
 	   		e.printStackTrace();
 	           logger.simStLogException(e);
@@ -2973,6 +2989,9 @@ public final class SimSt implements Serializable {
    /* @author Tasmia */
    public NearSimilarProblemsGetter getNearSimilarProblemsGetter() {
    	return this.nearSimilarProblemsGetter;
+   }
+   public BothAgreeSpeechGetter getBothAgreeSpeechGetter() {
+	   	return this.bothAgreeSpeechGetter;
    }
    /**
     * Inner class representing a WME inside the focus of attention
