@@ -1,0 +1,75 @@
+;; Wed Jun 30
+;; 
+;; A rule based speech when both tutor and tutee agrees with each other.
+;; The if-else conditions must grab the correct topic sentences inside the customized java file that extends "BothAgreeSpeechGetter.java" when satisfied.
+;; The speech would only be generated from this text file once a if or else condition satisfies. 
+;; Make sure to write the headers in capital letters
+
+ADD_OR_SUBTRACT_VARIABLE_TERM_OPERATOR
+"Why cannot we get rid of the constant term first? Can you provide an example where I could get rid of the constant term first?"
+"Does it matter which sides' variable term are we getting rid of first?"
+"How do you select which side to start cancelling out the variable terms?"
+
+ADD_POSITIVE_OPERATOR
+"Tutor, we cancel out a negative number by adding a positive number. Can you state an equation where I might have to add a negative number?" 
+"Tutor, by adding, we are giving a number back to this equation. What would happen if I take away the extra number beside the variable term by performing subtract operation? Can you explain the outcome with proper example?" 
+"Tutor, I was wondering why didn’t we simply take away the negative number by performing subtract operation? Can you explain with an appropriate example?" 
+"Do we only add a positive number? Can you tell me an example where I might have to add a negative number?"
+
+ADD_WHOLE_NUMBER_OPERATOR
+"Can we only add a whole number to the equation? Can you state an equation where I might have to add a fraction?"
+
+ADD	
+"I noticed that we are always performing the opposite operation. for example: if I have a number subtracted then we add the same number to make it 0. What would happen if I subtracted the opposite number? Would it give me the same result? Can you explain with examples?"
+"I know I can apply add here. Is there any other transformation that may give the same outcome?"
+
+SUBTRACT_POSITIVE_OPERATOR
+"Tutor, I can see that you are taking away positive number by performing subtract. Can you state an equation where I might have to take away a negative number? meaning, I might have to perform "subtract negative number"?" 
+"Do we only subtract a positive number? Can you tell me an example equation where I might have to subtract a negative number?"
+
+SUBTRACT_WHOLE_NUMBER_OPERATOR
+"Can we only subtract a whole number from the equation? Can you tell me an equation where I might have to subtract a fraction?"
+
+SUBTRACT
+"I noticed that we are always performing the opposite operation. for example: if I have a number added then we subtract to make it 0. What would happen if I added the opposite number? Would it give me the same result? Can you explain with examples?"
+"I know I can apply subtract here. Is there any other transformation that may give the same outcome?"
+"Is subtracting a number the only right action that can be taken at this state of equation?"
+
+DIVIDE_POSITIVE_OPERATOR
+"Do we only divide by a positive number? Can you give me an example where I might have to divide by a negative number?"
+
+DIVIDE_WHOLE_NUMBER_OPERATOR
+"I have noticed that the coefficient is a whole number but not a fraction. Does the coefficient can only be a whole number?"
+"Tutor, I am dividing here because I have a number multiplied with variable. Is it possible that sometimes the number is not multiplied with variable? How to deal with those situations?"
+
+DIVIDE
+"So far, I have always used divide operation to eliminate the coefficient. Do we have any alternative to divide operation in order to eliminate the coefficient term?"
+"I noticed that we are always performing the opposite operation. for example: if I have a number multiplied then we divide to cancel that out. What would happen if I multiplied by the inverse number? Would it give me the same result? Can you explain with examples?"
+"I know I can apply divide here. Is there any other transformation that may give the same outcome?"
+"Is divide by a number the only right action that can be taken at this state of equation?"
+
+MULTIPLY_POSITIVE_OPERATOR
+"Can you explain what are the things that I may need to be careful about when I multiply by a negative number? Please explain with proper examples for my better understanding"
+
+MULTIPLY_WHOLE_NUMBER_OPERATOR
+"Tutor, I know how to multiply by a whole number. Can you show me how to multiply by a fraction in an equation and an example equation of where I may need to use that?"
+
+MULTIPLY
+"Tutor, could we have somehow applied divide to achieve the same outcome as multiply?"
+"I noticed that we are always performing the opposite operation. for example: if I have a number divided then we multiply to cancel that out. What would happen if I divided by the inverse number instead? Would it give me the same result? Can you explain with examples?"
+"I know I can apply multiply here. Is there any other transformation that may give the same outcome?"
+"Is multiply by a number the only right action that can be taken at this state of equation?"
+
+DONE
+"How do we know for sure that the equation is solved?"
+"How can we always make sure that our solution is correct?"
+"Is there any way to ensure that we did not do any mistake in solving this equation?"
+
+ANY
+"Is <i> the only right action that can be taken at this state of equation?"
+"Tutor, is <i> the only correct transformation to be applied in the equation?"
+"Can you present some other examples for which <i> can be applied?"
+"Can you provide some other example of equations where I can apply <i>?"
+"Please tell me some other example of equations where I can apply <i>?"
+"Can you state some example equations where I can safely apply <i>?"
+"Can you state another equation for which I could have applied <i>?"
