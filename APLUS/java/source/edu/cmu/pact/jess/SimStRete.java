@@ -1103,7 +1103,8 @@ public class SimStRete extends MTRete implements Serializable, JessParser {
 		if (userBundleDir != null && !userBundleDir.endsWith("/"))
 			userBundleDir += "/";
 		
-		if (userBundleDir != null)
+		File f = new File(rulesName);
+		if (userBundleDir != null && !f.isAbsolute())
 			rulesName = userBundleDir + rulesName;
 		
 	    String[] filenames = {bloadName, templatesName,	rulesName, initFactsName, problemFactsName};
