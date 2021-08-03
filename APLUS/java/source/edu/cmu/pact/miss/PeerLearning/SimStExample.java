@@ -150,6 +150,17 @@ public class SimStExample implements Serializable {
 		this.status = status;
 	}
 	
+	public Queue<String> getStepOrder() {
+		return this.stepOrder;
+	}
+	
+	public Hashtable<String, StringPair> getSteps() {
+		return this.steps;
+	};
+	
+	public Hashtable<String, StringPair> getSteps_hover() {
+		return this.steps_hover;
+	};
 
 	public void addStartStateFromProblemName(String problemName,ArrayList<String> startStateElements){
 		String[] sp = problemName.split("=");
@@ -382,6 +393,18 @@ public class SimStExample implements Serializable {
 		{
 			return value+" - "+extended;
 		}
+	}
+	
+	public String getStringPairValue (StringPair sp) {
+		return sp.value;
+	}
+	
+	public String getStringPairExtended (StringPair sp) {
+		return sp.extended;
+	}
+	
+	public Color getStringPairColor (StringPair sp) {
+		return sp.color;
 	}
 	
 	@Override
