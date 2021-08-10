@@ -25,6 +25,8 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
+import org.apache.commons.lang.StringUtils;
+
 import jess.Activation;
 import jess.Defrule;
 import jess.Fact;
@@ -1802,60 +1804,68 @@ public void fillInQuizProblem(String problemName) {
 						}
 						if(getSimSt().isNearSimilarProblemsGetterDefined()) {
 							 NearSimilarProblemsGetter nspg = getSimSt().getNearSimilarProblemsGetter();
-							 // I need to make sure I get the next state equation here, because currently it says state2 not 3x = 6
 							 ArrayList<String> similar_problems = nspg.nearSimilarProblemsGetter(currentNode);       
 							 int has_asked_bq = 0;
 							 for(int i=0; i<similar_problems.size(); i++) {
-									ProblemNode similarNode = currentNode;
-									similarNode.setName(similar_problems.get(i));
-									Collection<RuleActivationNode> activList_2=getActivations(similarNode, true);
-									if(activList_2 != null) {
-										for (RuleActivationNode ran : activList_2) {
-											Sai s_a_i = getSai(ran); // dorminTable3_C1R1, UpdateTable, divide 3
-											if(isSelectionValidForBrainstormingQuestions(s_a_i.getS())) {
-												String logic = ruleApplicationLogic(similarNode,ran); // need to make this domain independent by using getter
-												if(logic == "") {
+								String problemName = similar_problems.get(i);
+								ProblemNode similarNode = new ProblemNode();
+								similarNode.setName(problemName);
+								Collection<RuleActivationNode> activList_2=getActivations(similarNode, true);
+								if(activList_2 != null) {
+									int j=-1;
+									for (RuleActivationNode ran : activList_2) {
+										j++;
+										Sai s_a_i = getSai(ran); // dorminTable3_C1R1, UpdateTable, divide 3
+										if(isSelectionValidForBrainstormingQuestions(s_a_i.getS())) {
+											String logic = ruleApplicationLogic(similarNode,ran); // need to make this domain independent by using getter
+											if(logic == "") {
+												if(j!=activList_2.size()-1) {
+													continue;
+												}
+												else {
 													logic = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_QUESTION_WHEN_NO_FEATURE_FOUND_TOPIC);
 													has_asked_bq = 1;
 													askBrainstormingQuestion(logic, false);
 												}
-												else {
-													// we would need the explanation to check for transformation for further followup
-													has_asked_bq = 1;
-													String problem_name = similarNode.getName().replace("_", "=");
-													String msg = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_QUESTION_TRANFORMATION_TOPIC,s_a_i.getI(),problem_name,logic);
-													String explanation = askBrainstormingQuestion(msg, true);
-												}
-												// Need to implement listener for nextNode just like askWhatToDoNext. 
-												currentNode.setName(problem);
-												//nextCurrentNode = brainstormWhatToDoNext(currentNode);
-												getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
-												nextCurrentNode = askWhatToDoNext(currentNode);
-												hintReceived = true;
-												if (trace.getDebugCode("ss"))
-													trace.out("ss", "CallingbrainstormWhatToDoNext  "
-															+ "currentNode: " + currentNode
-															+ " nextCurrentNode: " + nextCurrentNode);
-												if(has_asked_bq == 1) break;
 											}
+											else {
+												// we would need the explanation to check for transformation for further followup
+												has_asked_bq = 1;
+												String problem_name = similarNode.getName().replace("_", "=");
+												String msg = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_QUESTION_TRANFORMATION_TOPIC,s_a_i.getI(),problem_name,logic);
+												String explanation = askBrainstormingQuestion(msg, true);
+											}
+											// Need to implement listener for nextNode just like askWhatToDoNext. 
+											
+											//nextCurrentNode = brainstormWhatToDoNext(currentNode);
+											getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
+											nextCurrentNode = askWhatToDoNext(currentNode);
+											hintReceived = true;
+											if (trace.getDebugCode("ss"))
+												trace.out("ss", "CallingbrainstormWhatToDoNext  "
+														+ "currentNode: " + currentNode
+														+ " nextCurrentNode: " + nextCurrentNode);
+											if(has_asked_bq == 1) break;
 										}
-										break;
 									}
-									
-									
+									break;
 								}
-							 
-							 if(has_asked_bq == 0) {
-								 String logic = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_QUESTION_WHEN_NO_FEATURE_FOUND_TOPIC);
-									askBrainstormingQuestion(logic, false);
-									getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
-									nextCurrentNode = askWhatToDoNext(currentNode);
-									hintReceived = true;
-									if (trace.getDebugCode("ss"))
-										trace.out("ss", "CallingbrainstormWhatToDoNext  "
-												+ "currentNode: " + currentNode
-												+ " nextCurrentNode: " + nextCurrentNode);
-							 }
+								
+								
+							}
+						 
+							if(has_asked_bq == 0) {
+								String logic = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_QUESTION_WHEN_NO_FEATURE_FOUND_TOPIC);
+								askBrainstormingQuestion(logic, false);
+								getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
+								nextCurrentNode = askWhatToDoNext(currentNode);
+								hintReceived = true;
+								if (trace.getDebugCode("ss")) {
+									trace.out("ss", "CallingbrainstormWhatToDoNext  "
+											+ "currentNode: " + currentNode
+											+ " nextCurrentNode: " + nextCurrentNode);
+								}
+						    }
 						 }
 						 else {
 							String logic = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_QUESTION_WHEN_NO_FEATURE_FOUND_TOPIC);

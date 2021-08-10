@@ -3,7 +3,10 @@ package SimStAlgebraV8;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import org.apache.commons.lang3.StringUtils;
+
 import edu.cmu.pact.BehaviorRecorder.ProblemModel.Graph.ProblemNode;
+import edu.cmu.pact.miss.AlgebraProblemAssessor;
 import edu.cmu.pact.miss.NearSimilarProblemsGetter;
 import edu.cmu.pact.miss.StringLengthListSort;
 
@@ -12,7 +15,9 @@ public class NearSimilarEquationFinder extends NearSimilarProblemsGetter{
 	public ArrayList<String> nearSimilarProblemsGetter(ProblemNode currentProblem)
     {
 		ArrayList<String> similar_problems = new ArrayList<String>();
-		similar_problems = dropTermsAndChangeSign(currentProblem.getName(), similar_problems);
+		AlgebraProblemAssessor apa = new AlgebraProblemAssessor();
+		String problemString = apa.findLastStep(currentProblem.getProblemModel().getStartNode(), currentProblem);
+		similar_problems = dropTermsAndChangeSign(problemString.replace('=', '_'), similar_problems);
 		
 		StringLengthListSort ss = new StringLengthListSort();
 		Collections.sort(similar_problems, ss);
@@ -54,8 +59,8 @@ public class NearSimilarEquationFinder extends NearSimilarProblemsGetter{
 			}
 			i++;
 			if(i<parsed_equation.size() && parsed_equation.get(i).contains("_")) {
-				new_equation_1+=parsed_equation.get(i);
-				new_equation_2+=parsed_equation.get(i);
+//				new_equation_1+=parsed_equation.get(i);
+//				new_equation_2+=parsed_equation.get(i);
 				i++;
 			}
 		}
@@ -102,27 +107,31 @@ public class NearSimilarEquationFinder extends NearSimilarProblemsGetter{
 	}
 	/*
 	 * Checks if the string of equation is valid or not
-	 */
+	 */	
 	public static boolean isValidEquation(String problemName){
 		String temp = problemName;
 		temp = temp.replace("+", "");
 		temp = temp.replace("-", "");
+		
+		if(StringUtils.isEmpty(temp) || temp.charAt(0)=='_' || temp.charAt(temp.length()-1)=='_') {
+			return false;
+		}
+		
 		String[] sides = temp.split("_");
 		if(sides.length < 2) return false;
-		boolean lhs=true, rhs=true;
+		boolean lhsNumeric=true, rhsNumeric=true;
 		try {
             Double num = Double.parseDouble(sides[0]);
         } catch (NumberFormatException e) {
-            lhs = false;
+        	lhsNumeric = false;
         }
         try {
             Double num = Double.parseDouble(sides[1]);
         } catch (NumberFormatException e) {
-            rhs = false;
+        	rhsNumeric = false;
         }
-		
-		if(lhs == true && rhs == true) return false;
-		return true;
+        
+        return !lhsNumeric || !rhsNumeric;
 	}
 	
 	public static String replaceFirstPositiveSign(String equation) {
