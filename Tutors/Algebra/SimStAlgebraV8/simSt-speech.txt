@@ -143,7 +143,7 @@ Finished that one!  I think I'm ready to take the quiz now.  What do you think?
 Great, finished!  I think I'm ready to take the quiz now.  What do you think?
 Cool!  We completed the problem!   I think I'm ready to take the quiz now.  What do you think?
 Okay, done!   I think I'm ready to take the quiz now.  What do you think?
-Great! The problem is solved!!  I think I’m ready to take the quiz now.  What do you think?
+Great! The problem is solved!!  I think Iï¿½m ready to take the quiz now.  What do you think?
 ...and done!  Should I take a quiz now?
 Finished that one!  Should I take a quiz now?
 Great, finished!  Should I take a quiz now?
@@ -317,8 +317,8 @@ I think I do not know what to do here. Do you know the next step?
 I am not sure about my next step. Do you know what step should be performed now?
 
 BRAINSTORMING_QUESTION_TRANFORMATION
-I could perform <i> if I had <problem> because <logic>. Do you have any idea on how to reach to that point from this current situation?
-I could perform <i> if I had <problem> because <logic>. Do you have any thoughts on how to reach to that point from this current situation?
+I could perform <i> if I had <problem> because <logic>. Can you demonstrate the steps that would lead me to that point from the current situation?
+I could perform <i> if I had <problem> because <logic>. Can you show me how to get to that point from the current situation?
 
 BRAINSTORMING_THINKING
 I see. Let me think of a way out by going through what I have learnt so far.
