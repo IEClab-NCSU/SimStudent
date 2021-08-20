@@ -25,13 +25,18 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import edu.cmu.cs.lti.tutalk.script.Concept;
-import edu.cmu.cs.lti.tutalk.script.Response;
+// Tutalk imports from jar file
 import edu.cmu.cs.lti.tutalk.script.Scenario;
+import edu.cmu.cs.lti.tutalk.script.Concept;
+// My added import by Tasmia
+import edu.cmu.cs.lti.tutalk.slim.EvaluatedConcept;
 import edu.cmu.cs.lti.tutalk.slim.FuzzyTurnEvaluator;
 import edu.cmu.cs.lti.tutalk.slim.TuTalkAutomata;
+import edu.cmu.cs.lti.tutalk.script.Response;
+
 import edu.cmu.pact.Utilities.trace;
 import edu.cmu.pact.miss.PeerLearning.SimStLogger;
+
 
 public class SimStTutalk {
 
@@ -39,15 +44,15 @@ public class SimStTutalk {
     public static final int TUTALK_STATE_EXCEPTION = -1;
     public static final int TUTALK_STATE_DIALOG = 1;
     public static final int TUTALK_STATE_DONE = 4;
-    
+
     public static final String FINAL_OKAY = "Okay.";
-    
+
     public boolean connect(String pScenario, SimStTutalkContextVariables contextVariables, String type) {
-	
+
 		int i, j;
 		tutalkState = TUTALK_STATE_DIALOG;
 		String scFilename = pScenario + ".xml";
-		
+
 		File scFile=new File(scFilename);
 		boolean scExists = scFile.exists();
 		if (!scExists) {
@@ -55,83 +60,124 @@ public class SimStTutalk {
 		    tutalkState = TUTALK_STATE_DONE;
 		    return false;
 		}
-	
+		//System.out.println("The file loaded"+scFilename);
+		// scFilename contains the xml file that will be loaded as scenario.
+		// scfilename = pScenario + ".xml" -> scFilename = "why_right_dialog" + ".xml"
+		// The file is searched inside ⁨GitHub⁩ ▸ ⁨SimStudent⁩ ▸ ⁨Tutors⁩ ▸ ⁨Algebra⁩ ▸ ⁨SimStAlgebraV8⁩
+		// for the current settings
 		sc = Scenario.loadScenario(scFilename);
-		
-	        ttClient = new TuTalkAutomata("SimStudent", "InteractiveLearning");
-	        ttClient.setScenario(sc);
-	        ttClient.setEvaluator(new FuzzyTurnEvaluator());
-	
+
+	    ttClient = new TuTalkAutomata("SimStudent", "InteractiveLearning");
+	    ttClient.setScenario(sc);
+	    ttClient.setEvaluator(new FuzzyTurnEvaluator());
+
 		for(i=0;i<contextVariables.size();i++) {
 			ttClient.addReplacementVariable(contextVariables.getNthVarName(i), contextVariables.getNthVarValue(i));
 		}
-	        
-	        List<String> turns = ttClient.start();
-	        
-	        while (true) {
-		    String finalQuestion = "";
-		    
+
+	    List<String> turns = ttClient.start();
+
+	    while (true) {
+		        String finalQuestion = "";
+
 	            for (i = 0; i < turns.size(); i++) {
-			if(trace.getDebugCode("sstt"))trace.out("sstt", "\tResponse: " + turns.get(i));
-			// Do not add a new line for the first question.
-	                finalQuestion = ((i==0) ? "" : finalQuestion + "\n") + turns.get(i);
+	            	if(trace.getDebugCode("sstt"))trace.out("sstt", "\tResponse: " + turns.get(i));
+	            		// Do not add a new line for the first question.
+	                	finalQuestion = ((i==0) ? "" : finalQuestion + "\n") + turns.get(i);
+	                	System.out.println("printing final q "+finalQuestion);
 	            }
-	            trace.out("sstt", "Current Concept: "+ttClient.getLastConcept().getLabel());
-	            if(confusionStates.contains(ttClient.getLastConcept().getLabel()))
+	            //trace.out("sstt", "Current Concept: "+ttClient.getLastConcept().getLabel());
+
+	            // Instead of these lines I added the next block -> by Tasmia;
+	            /*if(confusionStates.contains(ttClient.getLastConcept().getLabel()))
 	            {
-	            	if(interactiveActivity.getSimSt().getMissController().getSimStPLE() != null ) 
+	            	if(interactiveActivity.getSimSt().getMissController().getSimStPLE() != null )
 	            	{
 	            		interactiveActivity.getSimSt().getMissController().getSimStPLE().setAvatarConfused(true);
 	            	}
+	            }*/
+	            // Added blocks -> by Tasmia;
+	            List<Response> latest_expected = ttClient.getState().getExpected();
+	            if(latest_expected.size() > 0) {
+	            	Response response = latest_expected.get(latest_expected.size() - 1);
+	            	if(confusionStates.contains(response.getConcept().getLabel()))
+		            {
+		            	if(interactiveActivity.getSimSt().getMissController().getSimStPLE() != null )
+		            	{
+		            		interactiveActivity.getSimSt().getMissController().getSimStPLE().setAvatarConfused(true);
+		            	}
+		            }
+
 	            }
+	            // block ends here.
 	            List<Response> expected = ttClient.getState().getExpected();
+	            //System.out.println("The expected size is "+ expected.size());
 	            if (expected.size() == 0) {
-			if(trace.getDebugCode("sstt"))trace.out("sstt", "\tExpectedSize = 0; gonna break out!");
+	            	if(trace.getDebugCode("sstt"))trace.out("sstt", "\tExpectedSize = 0; gonna break out!");
 					// Need to display the "bye, thank you" message.
 					interactiveActivity.getSimSt().displayMessage("",finalQuestion);
 	                break;
 	            }
-	            
+
 	            if(finalQuestion.length() == 0)
 	            {
+	            	System.out.println("final question is 0");
 	            	if(trace.getDebugCode("sstt"))trace.out("sstt", "\tQuestion length = 0; gonna break out!");
 					// Need to display the "bye, thank you" message.
 					interactiveActivity.getSimSt().displayMessage("",FINAL_OKAY);
 	                break;
 	            }
-	
+
 	            /*for (i = 0; i < expected.size(); i++) {
 	                List<String> phrases = expected.get(i).getConcept().getPhrases();
 	                for (j = 0; j < phrases.size(); j++) {
 			    if(trace.getDebugCode("sstt"))trace.out("sstt", "\t\tValid answer: " + phrases.get(j));
 	                }
 	            }*/
-	            
-	            List<Concept> matchingConcepts = new ArrayList<Concept>();
+
+	            // changed the following line -> List<Concept> matchingConcepts = new ArrayList<Concept>(); -> to the line below -> by Tasmia;
+	            //List<Concept> matchingConcepts = new ArrayList<Concept>();
+	            List<EvaluatedConcept> matchingConcepts = new ArrayList<EvaluatedConcept>();
 	            String input = "";
 	            while (matchingConcepts.size() == 0) {
 	                //Get Input
 	                input = getAnswer(finalQuestion, type);
-	                
+
 		            if(interactiveActivity.getSimSt().getMissController().isPLEon())
 		            {
 		            	interactiveActivity.getSimSt().getMissController().getSimStPLE().setAvatarThinking();
 		            }
-		            
+
 	                //System.out.println("Evaluating: " + input.trim());
 	                matchingConcepts = ttClient.evaluateTuteeTurn(input);
 	            }
-	            	            
+
 	            //System.out.println("Matched Concept " + matchingConcepts.get(0).getLabel());
-	            turns = ttClient.progress(matchingConcepts.get(0));
-                
-				interactiveActivity.getLogger().simStLog( SimStLogger.SIM_STUDENT_EXPLANATION, SimStLogger.EXPLANATION_CATEGORIZE_ACTION,
-						problemName, ttClient.getLastConcept().getLabel(), finalQuestion, 0, input);
-	            
+
+	            // changed the following line -> turns = ttClient.progress(matchingConcepts.get(0)) -> to the next two lines below -> by Tasmia;
+	            //turns = ttClient.progress(matchingConcepts.get(0));
+
+	            Concept m_concept = matchingConcepts.get(0).concept;
+	            turns = ttClient.progress(m_concept);
+
+	            // Instead of the following block I added the next block
+				/*interactiveActivity.getLogger().simStLog( SimStLogger.SIM_STUDENT_EXPLANATION, SimStLogger.EXPLANATION_CATEGORIZE_ACTION,
+				 		problemName, ttClient.getLastConcept().getLabel(), finalQuestion, 0, input);*/
+
+	            // Added block -> by Tasmia;
+	            latest_expected = ttClient.getState().getExpected();
+	            if(latest_expected.size() > 0) {
+	            	Response response = latest_expected.get(latest_expected.size() - 1);
+	            	interactiveActivity.getLogger().simStLog( SimStLogger.SIM_STUDENT_EXPLANATION, SimStLogger.EXPLANATION_CATEGORIZE_ACTION,
+							problemName, response.getConcept().getLabel(), finalQuestion, 0, input);
+
+
+	            }
+	            // block ends here.
 				if(!type.endsWith(SimStLogger.FOLLOW_UP_EXPLAIN_SUFFIX))
 					type += SimStLogger.FOLLOW_UP_EXPLAIN_SUFFIX;
 	        }
-	
+
 	        // Need to check if we need to see if we need to ask about other concepts as well
 		while (!queuedConcepts.isEmpty()) {
 		    SimStTutalkContextVariables localContextVariables = new SimStTutalkContextVariables();
@@ -139,9 +185,9 @@ public class SimStTutalk {
 		    localContextVariables.addVariable("%concept%", theConcept);
 		    connect("what_concept", localContextVariables, "concept");
 		}
-	
+
 		tutalkState = TUTALK_STATE_DONE;
-		
+
 		return true;
     }
 
@@ -153,7 +199,7 @@ public class SimStTutalk {
 		try {
 			docBuilder = docFactory.newDocumentBuilder();
 			Document doc = docBuilder.parse(filepath);
-			
+
 			Node company = doc.getFirstChild();
 			Node configuration = doc.getElementsByTagName("configuration").item(0);
 			if(configuration != null) {
@@ -180,7 +226,7 @@ public class SimStTutalk {
 					}
 				}
 			}
-			
+
 			TransformerFactory transformerFactory = TransformerFactory.newInstance();
 			Transformer transformer = transformerFactory.newTransformer();
 			DOMSource source = new DOMSource(doc);
@@ -215,7 +261,7 @@ public class SimStTutalk {
     public void initialize() {
 	// Get the interactive learning instance's descriptions
 		describableFeatures = (interactiveActivity.getSimSt()).getAllFeatureDescriptions();
-	
+
 		// Debug code
 		for(int i=0;i<describableFeatures.size();i++) {
 	            System.out.println("sstt: Description #"+i+": "+(describableFeatures.get(i)).getFeatureName() + " -> " + (describableFeatures.get(i)).getDescriptions());
@@ -239,11 +285,11 @@ public class SimStTutalk {
     /* Poses a freeform question. Students are free to enter any answer. */
     public String getAnswer(String question, String type) {
 		if(trace.getDebugCode("sstt"))trace.out("sstt", "Got question: " + question);
-		
+
 		String explanation = "";
 		//Explanation duration includes time from prompt to explanation received
 		long explainRequestTime = Calendar.getInstance().getTimeInMillis();
-	
+
 		if(interactiveActivity.getSimSt().getMissController().getSimStPLE() == null ) {
 		    //If no PLE, support selfExplanation through JOptionPanes
 		    explanation = JOptionPane.showInputDialog(null,
@@ -253,16 +299,16 @@ public class SimStTutalk {
 		} else {
 			explanation = interactiveActivity.getSimSt().getMissController().getSimStPLE().giveMessageFreeTextResponse(question);
 		}
-	
-		int explainDuration = (int) ((Calendar.getInstance().getTimeInMillis() - explainRequestTime)/1000);
-	
+
+		int explainDuration = (int) (Calendar.getInstance().getTimeInMillis() - explainRequestTime);
+
 		if(trace.getDebugCode("sstt"))trace.out("sstt", "Got answer, submitting: " + explanation);
-	
+
 		if(explanation != null && explanation.length() > 0) {
 			//Log non-empty explanation
 			interactiveActivity.getLogger().simStLog( SimStLogger.SIM_STUDENT_EXPLANATION, type,
 					problemName, explanation, question,explainDuration,question);
-	
+
 			// See if it matches anything we want to know about.
 			for(int i=0;i<curriculumConcepts.size();i++) {
 			    if (explanation.indexOf(curriculumConcepts.get(i)) > -1) {
@@ -278,7 +324,7 @@ public class SimStTutalk {
 					problemName, SimStLogger.NO_EXPLAIN_ACTION, question, explainDuration,question);
 			explanation = "No answer given";
 		}
-	
+
 		return explanation;
     }
 
@@ -295,9 +341,9 @@ public class SimStTutalk {
     private TuTalkAutomata ttClient;
 
     private SimStInteractiveLearning interactiveActivity;
-    
+
     private List<String> confusionStates;
-    
+
     // Storage to hold all describable Features;
     private Vector<Describable> describableFeatures;
 
@@ -306,13 +352,14 @@ public class SimStTutalk {
     // Storage to hold the concepts that SimSt is curious about
     // Will be asked eventually
     private Vector<String> queuedConcepts = new Vector();
-    
+
     private Vector<String> curriculumConcepts;
 
 
-    
+
 
     // ------------------------------------------------------------------------
     // End TuTalk Integration
     // ------------------------------------------------------------------------
 }
+ 

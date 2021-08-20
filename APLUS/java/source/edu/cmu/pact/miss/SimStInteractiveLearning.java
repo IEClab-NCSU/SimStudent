@@ -1810,6 +1810,7 @@ public void fillInQuizProblem(String problemName) {
 								String problemName = similar_problems.get(i);
 								ProblemNode similarNode = new ProblemNode();
 								similarNode.setName(problemName);
+								followupWhenStuck(currentNode);
 								Collection<RuleActivationNode> activList_2=getActivations(similarNode, true);
 								if(activList_2 != null) {
 									int j=-1;
@@ -2049,11 +2050,6 @@ public void fillInQuizProblem(String problemName) {
 //		long stepStartTime = Calendar.getInstance().getTimeInMillis();
 		stepStartTime = Calendar.getInstance().getTimeInMillis();
 		setStepStartTime(stepStartTime);
-	}
-	
-	public String fetchQFromBothAgreeSpeech(RuleActivationNode ran) {
-		
-		return "";
 	}
 	
 	public void applyNodeInstructions(ProblemNode currentNode) {
@@ -2592,6 +2588,24 @@ public void fillInQuizProblem(String problemName) {
 	}
 	private boolean isSelectionValidForBothAgreeQuestions(String selection){	
 		return simSt.getBrController().getMissController().getSimStPLE().getValidSelectionsBAQ()!=null && simSt.getBrController().getMissController().getSimStPLE().getValidSelectionsBAQ().contains(selection);
+	}
+	
+	public void followupWhenStuck(ProblemNode node) {
+		tutalkBridge.setProblemName(getBrController(getSimSt()).getMissController()
+				.getSimSt().getProblemStepString());
+		contextVariables.clear();
+		//contextVariables.addVariable("%sai_i%", sai.getI());
+		tutalkBridge.connect("both_stuck_contradiction",
+				contextVariables,
+				SimStLogger.INPUT_WRONG_EXPLAIN_ACTION);
+		while (tutalkBridge.getState() != SimStTutalk.TUTALK_STATE_DONE) {
+			try {
+				Thread.sleep(250);
+			} catch (java.lang.InterruptedException e) {
+				// Nothing we can do here.
+			}
+		}
+		return;
 	}
 		
 	public void explainWhyRight(ProblemNode node) {

@@ -36,7 +36,7 @@
 (bind ?var31 (assert(MAIN::button (name done))))
 (bind ?var32 (assert(MAIN::label (name dorminLabel1))))
 (bind ?var33 (assert(MAIN::problem (name init))))
-
+3
 ;;;; Slot assignments
 
 ; MAIN::cell

@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scenario version="$Revision: 1.2 $" default-language="en">
+
+  <configuration>
+    <module kind="model" name="coded" classname="basilica2.side.listeners.LightSideMessageAnnotator">
+      <param key="modelPath" value="/Users/tasmiashahriar/Documents/GitHub/SimStudent/bazaar/lightside/saved/unfamiliar_problem.model.xml" />
+      <param key="nickName" value="unfamiliar_problem-model" />
+      <param key="prediction" value="predicted" />
+      <param key="currentAnnotation" value="Category" />
+      <param key="pathToModel" value="⁨Users⁩/tasmiashahriar/Documents/GitHub/SimStudent⁩/⁨bazaar/lightside/models/unfamiliar_problem.model.xml"/>
+      <param key="modelName" value= "unfamiliar_problem.model.xml"/>
+      <param key="modelNickname" value= "unfamiliar_problem-model"/>
+      <param key="predictionCommand" value= "⁨Users⁩/tasmiashahriar/Documents/GitHub/SimStudent/⁨bazaar/lightside/scripts/prediction_server.sh"/>
+      <param key="classificationString" value= "UP1,70,UP2,70,UP3,70,UP4,70,ELSE,70,AGREED,70,DISAGREED,70"/>
+    </module>
+  </configuration>
+
+  <concepts>
+
+    <!-- This happens when tutor has said something inappropriate (not english, unrelated to tutee question) -->
+    <concept label="ELSE" model="coded" />
+    <concept label="unanticipated-response">
+     <phrase> I do not follow you. Please answer my question to help me learn more. </phrase>
+     <phrase> I still do not know the answer to my question. Would you please explain to make me understand? </phrase>
+     <phrase> That did not answer my question. Would you please explain to make me understand? </phrase>
+    </concept>
+
+    <!-- This happens when tutor has answered intelligently to tutee's query -->
+    <concept label="final-thanks">
+     <phrase> Awesome! It all makes sense. Let's go to the next step. </phrase>
+     <phrase> You are a great teacher! I am excited to learn more. Let's get to the next step. </phrase>
+     <phrase> Perfect! Let's get to the next step. </phrase>
+     <phrase> I got you! Let's get to the next step. </phrase>
+    </concept>
+
+    <!-- This happens when tutee has given up -->
+    <concept label="move-on">
+     <phrase>Okay!Let's move on for now. We will discuss more about it later.</phrase>
+    </concept>
+
+    <!-- Tutee wants to know the type of the equation -->
+    <concept label="AGREED" model="coded" />
+    <concept label="first-question">
+      <phrase> I have never solved such equations before. What type of equation is "%equation%"? </phrase>
+      <phrase> This is new to me. What do I need to know about this equation before I start solving this? </phrase>
+      <phrase> I have never solved this type of equation before. What category of equation is this? </phrase>
+      <phrase> Would you help me visualize what type of equation is this?</phrase>
+    </concept>
+
+    <!-- Tutee wants to know why the equation is of one step/two step/ equation with variable on both sides -->
+    <concept label="UP2" model="coded" />
+    <concept label="UP2-response-simst">
+      <phrase> Why do you say that "%equation%" is "%type%"? </phrase>
+      <phrase> How can I say that an equation is "%type%" by looking at it? </phrase>
+      <phrase> Can you explain the basic characteristics of "%type%"? </phrase>
+      <phrase> Do I need to solve the equation first to know what type of equation is this?
+      Is there any way to say that an equation is "%type%" by just looking at it? </phrase>
+      <phrase> What you said only relates to "%equation%".
+      Can you tell me how to recognize if it is a "%type%" by looking at any equation?</phrase>
+    </concept>
+
+    <!-- Tutee wants to know the plan to solve such equation assuming it knows how to solve some equations from prior knowledge
+    (either ones that tutor has taught earlier or from quiz). The aim of this concept is not to know the actions/transformations
+    but to get a big picture of what we need to do.-->
+    <concept label="UP1" model="coded" />
+    <concept label="UP1-response-simst">
+      <phrase> In my textbook, for equations like "%prior solved equation%", the aim is to get rid of "%numbers%" in order to get a value of "%variable%".
+      Similarly, what are the aims we need to achieve in order to solve "%equation%"?</phrase>
+      <phrase> In my quiz, I had an equation like "%equation from quiz%" where I get rid of "%number%" in order to get a value of "%variable%".
+      Now for "%equation%", what do we need to get rid of in order to get a value of "%variable%"?
+      </phrase>
+      <phrase> Earlier during solving "%prior solved equation%", the aim was "%tutor stated plan%" in order to get value of "%variable%".
+      Now for "%equation%", what would be our aim in order to get a value of "%variable%" </phrase>
+    </concept>
+
+    <!-- Tutee is pumping tutor to know the big picture of what we need to do.-->
+    <concept label="UP2-response-simst-follow-up">
+      <phrase> Tutor, you are telling me the steps to solve it. But I don't understand the goal that we want to achieve by performing these steps? </phrase>
+      <phrase> Tutor, why do we need to perform these steps. How will it help us solve the equation? </phrase>
+      <phrase> Tutor, please help me understand the reasons behind the steps that we need to perform? </phrase>
+    </concept>
+
+    <!-- Summarization of type of equation with justification and its plan -->
+    <concept label="UP3" model="coded" />
+    <concept label="UP3-response-simst">
+      <phrase> Okay. So "%equation%" is a "%type%" because "justification" and our aim is to "%plan%" in order to solve the equation. Did I get that right? </phrase>
+    </concept>
+
+    <!-- tutee looks for a complete summarization with this concept -->
+    <concept label="DISAGREED" model="coded" />
+    <concept label="DISAGREED-response-simst">
+      <phrase> Oops!! I think I have missed something. Can you correct me? </phrase>
+    </concept>
+
+    <!-- tutor recognizes a mistake -->
+    <concept label="UP4" model="coded" />
+    <concept label="UP4-response-simst">
+      <phrase> I understand that you have made a mistake. It is okay. Can you answer my question correctly now? </phrase>
+      <phrase> I understand that you have made a mistake. It is totally fine. Can you answer my question correctly now? </phrase>
+    </concept>
+
+  </concepts>
+
+  <script>
+   <goal name="start">
+    <step><subgoal>first-question-action</subgoal></step>
+   </goal>
+
+   <goal name="first-question-action">
+    <step>
+     <initiation>first-question</initiation>
+     <response push="UP2-response-action">UP2</response>
+     <response push="UP1-response-action">UP1</response>
+     <response push="UP4-response-action">UP4</response>
+     <response say="unanticipated-response">ELSE</response>
+    </step>
+   </goal>
+
+   <goal name="UP2-response-action">
+     <step>
+      <initiation>UP2-response-simst</initiation>
+      <response push="UP2-response-action">UP2</response>
+      <response push="UP1-response-action">UP1</response>
+      <response push="UP4-response-action">UP4</response>
+      <response say="unanticipated-response">ELSE</response>
+     </step>
+   </goal>
+
+   <goal name="UP1-response-action">
+     <step>
+      <initiation>UP1-response-simst</initiation>
+      <response push="UP3-response-action">UP3</response>
+      <response push="UP2-response-action-follow-up">UP2</response>
+      <response push="UP4-response-action">UP4</response>
+      <response say="unanticipated-response">ELSE</response>
+     </step>
+   </goal>
+
+   <goal name="UP2-response-action-follow-up">
+     <step>
+      <initiation>UP2-response-simst-follow-up</initiation>
+      <response push="UP3-response-action">UP3</response>
+      <response push="UP2-response-action-follow-up">UP2</response>
+      <response push="UP4-response-action">UP4</response>
+      <response say="unanticipated-response">ELSE</response>
+     </step>
+   </goal>
+
+   <goal name="UP3-response-action">
+     <step>
+      <initiation>UP3-response-simst</initiation>
+      <response say="final-thanks">AGREED</response>
+      <response push="DISAGREED-response-action">DISAGREED</response>
+      <response push="UP4-response-action">UP4</response>
+      <response say="unanticipated-response">ELSE</response>
+     </step>
+   </goal>
+
+   <goal name="UP4-response-action">
+     <!-- incomplete -->
+     <step>
+      <initiation>UP4-response-simst</initiation>
+      <response say="final-thanks"></response>
+     </step>
+   </goal>
+
+   <goal name="DISAGREED-response-action">
+     <step>
+      <initiation>DISAGREED-response-simst</initiation>
+      <response push="UP3-response-action">UP3</response>
+      <response push="UP4-response-action">UP4</response>
+      <response say="unanticipated-response">ELSE</response>
+     </step>
+   </goal>
+
+  </script>
+<!--
+<script>
+Start say <<first-question>> and push <<flow-first-question>>
+
+ "flow-first-question”
+    if <<response>> is classified as “type of equation only” and tutee's knowledge base does not contradict, say <<why-type>> and push <<flow-why-type>>
+    else if <<response>> contains “type of equation only” and tutee's knowledge base contradicts, invoke scenario <<contradiction.xml>>
+    else if <<response>> contains "type of equation with justification" and tutee's knowledge base does not contradict, say <<what-plan>> and push <<flow-what-plan>>
+    else if <<response>> contains "type of equation with justification" and tutee's knowledge base contradicts, invoke scenario <<contradiction.xml>>
+    else if <<response>> contains "anything else" say <<unanticipated-response>>
+    else if <<response>> contains "anything else" for three times say <<move-on>>
+
+ "flow-why-type"
+    if <<response>> contains "justification" and tutee's knowledge base does not contradict, say <<what-plan>> and push <<flow-what-plan>>
+    else if <<response>> contains "justification" and tutee's knowledge base contradicts, invoke scenario <<contradiction.xml>>
+    else if <<response>> contains "anything else" say <<unanticipated-response>>
+    else if <<response>> contains "anything else" for three times say <<move-on>>
+
+ "flow-what-plan"
+    if <<response>> contains "plan" and tutee's knowledge base does not contradict, say <<summarization>> and push <<flow-summarization>>
+    else if <<response>> contains "plan" and tutee's knowledge base contradicts, invoke scenario <<contradiction.xml>>
+    else if <<response>> contains "anything else" say <<unanticipated-response>>
+    else if <<response>> contains "anything else" for three times say <<move-on>>
+
+"flow-summarization"
+    if <<response>> contains "agreed", say <<final-thanks>>
+    else if <<response>> contains "disagreed", say <<correct-me>> push <<flow-correct-me>>
+    else if <<response>> contains "anything else" say <<unanticipated-response>>
+    else if <<response>> contains "anything else" for three times say <<move-on>>
+
+"flow-correct-me"
+    if <<response>> contains "corrected version of summarization" or "rephrased version of summarization",
+    update "%type%", "justification" and "%plan%" accordingly and say<<summarization>> and push <<flow-summarization>>
+    else if <<response>> contains "anything else" say <<unanticipated-response>>
+    else if <<response>> contains "anything else" for three times say <<move-on>>
+
+
+</script>-->
+
+</scenario>

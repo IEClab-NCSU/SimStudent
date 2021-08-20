@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scenario version="$Revision: 1.2 $" default-language="en">
+
+<configuration>
+	<module kind="model" name="coded" classname="basilica2.side.listeners.LightSideMessageAnnotator">
+		<param key="modelPath" value="/Users/tasmiashahriar/Documents/GitHub/SimStudent/bazaar/lightside/saved/both_stuck_model_logreg.model.xml" />
+		<param key="nickName" value="both_stuck_contradiction_f" />
+		<param key="prediction" value="predicted" />
+		<param key="currentAnnotation" value="Category" />
+		<param key="pathToModel" value="⁨Users⁩/tasmiashahriar/Documents/GitHub/SimStudent⁩/⁨bazaar/lightside/models/both_stuck_model_logreg.model.xml"/>
+		<param key="modelName" value= "both_stuck_model_logreg.model.xml"/>
+		<param key="modelNickname" value= "both_stuck_contradiction_f"/>
+		<param key="predictionCommand" value= "⁨Users⁩/tasmiashahriar/Documents/GitHub/SimStudent/⁨bazaar/lightside/scripts/prediction_server.sh"/>
+		<param key="classificationString" value= "R0,70,R1,70,R2,70"/>
+	</module>
+</configuration>
+
+
+<concepts>
+  <concept label="first-question">
+   <phrase>I thought I could not apply "%i%" in this situation because "%logic%". Why do you think "%i%" would be the correct step here?</phrase>
+	 <phrase>I am confused because "%i%" cannot be applied in this situation due to the fact that "%logic%". Why do you think "%i%" would be the correct step here?</phrase>
+	 <phrase>I thought "%i%" cannot be applied in this situation because "%logic%". Why do you think "%i%" would be the correct step here?</phrase>
+	 <phrase>I thought "%i%" cannot be applied in this situation because "%logic%". Can you clarify what am I missing here?</phrase>
+	 <phrase>From my past knowledges, I thought "%i%" cannot be applied in this situation because "%logic%". What makes you think that "%i%" would be the correct step?</phrase>
+	 <phrase>How can I apply "%i%" here because from my understanding I could not because "%logic%". Can you resolve my confusion please?</phrase>
+	</concept>
+	<concept label="R2" model="coded" />
+	<concept label="R2-response-simst">
+   <phrase>I see. I think that clarifies my confusion. Thanks!</phrase>
+	 <phrase>That makes sense to me. Thanks!</phrase>
+	 <phrase>That makes sense. Thanks!</phrase>
+	 <phrase>That makes perfect sense to me.</phrase>
+	 <phrase>I think I got your point.</phrase>
+  </concept>
+	<concept label="R1" model="coded" />
+	<concept label="R1-response-simst">
+   <phrase>My bad! Can you demonstrate the correct step for me please?</phrase>
+	 <phrase>No problem at all! Can you demonstrate the correct step for me please?</phrase>
+	 <phrase>I understand there was a mistake somewhere! Can you demonstrate the correct step for me please?</phrase>
+  </concept>
+	<concept label="R0" model="coded" />
+	<concept label="R0-response-simst">
+   <phrase>That did not address my confusion-could you please try answering my question please?</phrase>
+	 <phrase>I understand it may be tiring to answer all my questions, but that would help me learn better. Can you please try one more time?</phrase>
+	 <phrase>I think you might have missed my earlier question. Can I please get an answer to that?</phrase>
+	 <phrase>I think you've missed my earlier question. Can I please get an answer to that?</phrase>
+  </concept>
+	<concept label="courtesy-moveon">
+   <phrase>Sure!</phrase>
+	 <phrase>Sure! May be moving onto next step will help me figure out the answer by myself.</phrase>
+  </concept>
+	<concept label="move-on">
+   <phrase>Hmm..although I did not fully understand your statement but let me move on anyway.</phrase>
+	 <phrase>Umm..sure thing..let me move on!</phrase>
+	 <phrase>Thanks! Let me move on!</phrase>
+	 <phrase>Okay! Let me move on!</phrase>
+  </concept>
+	<concept label="unanticipated-response">
+   <phrase>anything else</phrase>
+  </concept>
+</concepts>
+
+<script>
+ <goal name="start">
+  <step><subgoal>reasons</subgoal></step>
+ </goal>
+ <goal name="reasons">
+  <step>
+   <initiation>first-question</initiation>
+   <response push="R0-response-action">R0</response>
+   <response say="R1-response-simst">R1</response>
+	 <response say="R2-response-simst">R2</response>
+	 <response say="move-on">unanticipated-response</response>
+  </step>
+ </goal>
+ <goal name="R0-response-action">
+  <step>
+   <initiation>R0-response-simst</initiation>
+   <response say="courtesy-moveon">R0</response>
+	 <response say="R1-response-simst">R1</response>
+	 <response say="R2-response-simst">R2</response>
+	 <response say="move-on">unanticipated-response</response>
+  </step>
+ </goal>
+</script>
+</scenario>
