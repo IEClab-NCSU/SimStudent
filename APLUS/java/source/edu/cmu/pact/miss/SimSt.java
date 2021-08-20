@@ -839,7 +839,7 @@ public final class SimSt implements Serializable {
    // 2/03/2006 16:36:00
    // Due to a complication in intialization, it's decided to be static 
    private static String projectDir = null;
-   public String getProjectDir() {
+   public static String getProjectDir() {
        if ( projectDir == null ) {
            projectDir = new File(".").getPath();
        }

@@ -2,8 +2,7 @@ package edu.cmu.pact.miss.PeerLearning;
 
 import java.awt.Color;
 import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.FileReader;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -16,7 +15,6 @@ import java.util.Queue;
 
 import edu.cmu.pact.miss.Sai;
 import edu.cmu.pact.miss.SimSt;
-import edu.cmu.pact.miss.WebStartFileDownloader;
 
 public class SimStExample implements Serializable {
 
@@ -258,11 +256,12 @@ public class SimStExample implements Serializable {
 	    {
 		 
 		 
-		 String file = WebStartFileDownloader.SimStAlgebraPackage+"/"+SimStPLE.CONFIG_FILE;
+//		 String file = WebStartFileDownloader.SimStAlgebraPackage+"/"+SimStPLE.CONFIG_FILE;
+		 String file = SimSt.getProjectDir() + "/" + SimStPLE.CONFIG_FILE;
 	    	
-	    	ClassLoader cl = this.getClass().getClassLoader();
-	    	InputStream is = cl.getResourceAsStream(file);
-	    	InputStreamReader isr = new InputStreamReader(is);	
+//	    	ClassLoader cl = this.getClass().getClassLoader();
+//	    	InputStream is = cl.getResourceAsStream(file);
+//	    	InputStreamReader isr = new InputStreamReader(is);	
 	    	BufferedReader reader=null;
 	    
 	    		
@@ -276,7 +275,8 @@ public class SimStExample implements Serializable {
 	    	try
 	    	{
 	    		//reader = new BufferedReader(new FileReader(CONFIG_FILE));
-	        	reader = new BufferedReader(isr);
+//	        	reader = new BufferedReader(isr);
+	    		reader = new BufferedReader(new FileReader(file));
 	    		String line = reader.readLine();
 	    		
 	    		while(line != null)
