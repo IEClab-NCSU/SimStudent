@@ -9273,7 +9273,7 @@ public final class SimSt implements Serializable {
  * @throws JessException 
     */
    public Vector /* RuleActivationNode */<RuleActivationNode> gatherActivationList(ProblemNode problemNode, boolean isNearSimilar) throws JessException {
-	   Vector<RuleActivationNode> activationList = new Vector<RuleActivationNode>();
+	    Vector<RuleActivationNode> activationList = new Vector<RuleActivationNode>();
 	   	SimStRete ssRete = new SimStRete(getBrController());
 	   	ssRete.reset();
 		ssRete.restoreInitialWMState(problemNode, true);
@@ -11077,49 +11077,59 @@ public final class SimSt implements Serializable {
    
    /**
     * Asks for hint from the designated oracle. The designated hint oracle is specified in the
-    * command line argument when the SimStudent is launched
+    * command line argument when the SimStudent is launched. This version accepts a custom message to be displayed on the console window
     * @return hint
     */
-   public AskHint askForHint(BR_Controller controller, ProblemNode currentNode) {
+   public AskHint askForHint(BR_Controller controller, ProblemNode currentNode, String customMessage) {
    	
    	//if(getBrController().getMissController().getSimStPLE() != null)
    		//getBrController().getMissController().getSimStPLE().setFocusTab(SimStPLE.SIM_ST_TAB);
    	
-   	AskHint hint = null;
-   	String hintMethodName = getHintMethod();
-
-   	if(hintMethodName.equalsIgnoreCase(AskHint.HINT_METHOD_BRD))
-   		hint = new AskHintBrd(controller, currentNode);
-   	else if(hintMethodName.equalsIgnoreCase(AskHint.HINT_METHOD_HD))
-   		hint = new AskHintHumanOracle(controller, currentNode);
-   	else if(hintMethodName.equalsIgnoreCase(AskHint.HINT_METHOD_FTS))
-   		hint = new AskHintTutoringServiceFake(controller, currentNode);
-   	else if(hintMethodName.equalsIgnoreCase(AskHint.HINT_METHOD_CL))
-   		hint = new AskHintClAlgebraTutor(controller, currentNode);
-   	else if(hintMethodName.equalsIgnoreCase(AskHint.HINT_METHOD_FAKE_CLT))
-   		hint = new AskHintFakeClAlgebraTutor(controller, currentNode);
-   	else if(hintMethodName.equalsIgnoreCase(AskHint.HINT_METHOD_SOLVER_TUTOR))
-   		hint = new AskHintInBuiltClAlgebraTutor(controller, currentNode);
-  	else if(hintMethodName.equalsIgnoreCase(AskHint.HINT_METHOD_JESS_ORACLE))
-   		//hint = new AskHintJessOracle(controller,currentNode, controller.getProblemName().replace("_", "="));
-   		hint = new AskHintJessOracle(controller,currentNode);
-  	else if(hintMethodName.equalsIgnoreCase(AskHint.HINT_METHOD_WEBAUTHORING))
-   		hint = new AskHintWebAuthoring(controller, currentNode);
-  		//hint=this.getWebAuthoringBackend().askForHintWebAuthoring(controller,currentNode);
-   	else 
-   		new Exception("No valid hint method was specified!").printStackTrace();
-   	
-   	
-   	if(trace.getDebugCode("nbarbaBrd")) trace.out("nbarbaBrd","### SimStudent is stuck, hint from " + hintMethodName + " is " + hint.getSai());
-   	
-   	
-   	return hint;
+		AskHint hint = null;
+		String hintMethodName = getHintMethod();
+		
+		if(hintMethodName.equalsIgnoreCase(AskHint.HINT_METHOD_BRD))
+			hint = new AskHintBrd(controller, currentNode);
+		else if(hintMethodName.equalsIgnoreCase(AskHint.HINT_METHOD_HD))
+			hint = new AskHintHumanOracle(controller, currentNode, customMessage);
+		else if(hintMethodName.equalsIgnoreCase(AskHint.HINT_METHOD_FTS))
+			hint = new AskHintTutoringServiceFake(controller, currentNode);
+		else if(hintMethodName.equalsIgnoreCase(AskHint.HINT_METHOD_CL))
+			hint = new AskHintClAlgebraTutor(controller, currentNode);
+		else if(hintMethodName.equalsIgnoreCase(AskHint.HINT_METHOD_FAKE_CLT))
+			hint = new AskHintFakeClAlgebraTutor(controller, currentNode);
+		else if(hintMethodName.equalsIgnoreCase(AskHint.HINT_METHOD_SOLVER_TUTOR))
+			hint = new AskHintInBuiltClAlgebraTutor(controller, currentNode);
+		else if(hintMethodName.equalsIgnoreCase(AskHint.HINT_METHOD_JESS_ORACLE))
+			//hint = new AskHintJessOracle(controller,currentNode, controller.getProblemName().replace("_", "="));
+			hint = new AskHintJessOracle(controller,currentNode);
+		else if(hintMethodName.equalsIgnoreCase(AskHint.HINT_METHOD_WEBAUTHORING))
+			hint = new AskHintWebAuthoring(controller, currentNode);
+			//hint=this.getWebAuthoringBackend().askForHintWebAuthoring(controller,currentNode);
+		else 
+			new Exception("No valid hint method was specified!").printStackTrace();
+		
+		
+		if(trace.getDebugCode("nbarbaBrd")) trace.out("nbarbaBrd","### SimStudent is stuck, hint from " + hintMethodName + " is " + hint.getSai());
+		
+		
+		return hint;
+   }
+   
+   /**
+    * Asks for hint from the designated oracle. The designated hint oracle is specified in the
+    * command line argument when the SimStudent is launched
+    * @return hint
+    */
+   public AskHint askForHint(BR_Controller controller, ProblemNode currentNode) {
+	   	
+	   return askForHint(controller, currentNode, null);
    }
 
    transient Sai saiCache=null;
-   public void setSaiCache(Sai sai){	   
+   public void setSaiCache(Sai sai) {	   
 	   this.saiCache=sai; 
-	   }
+   }
    public Sai getSaiCache() { return saiCache;}
    
    transient public String storageClientURL="";
@@ -11157,7 +11167,7 @@ public final class SimSt implements Serializable {
 	   		new Exception("No valid hint method was specified!").printStackTrace();
 	   	
 	   	return hint;
-	   }
+   }
    
    
    /**
