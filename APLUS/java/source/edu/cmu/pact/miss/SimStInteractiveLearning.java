@@ -1774,6 +1774,7 @@ public void fillInQuizProblem(String problemName) {
 					String title = SimStConversation.ASKING_IF_TUTOR_KNOWS_STEP_TOPIC;
 					//String message = "I am stuck. Do you know what step to perform next?";
 					SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();
+					
 					String message = ple.getConversation().getMessage(SimStConversation.ASKING_IF_TUTOR_KNOWS_STEP_TOPIC);
 					int oracle = getSimSt().displayConfirmMessage(title,message);
 					// setting avatar to normal mode.
@@ -1804,7 +1805,8 @@ public void fillInQuizProblem(String problemName) {
 						}
 						if(getSimSt().isNearSimilarProblemsGetterDefined()) {
 							 NearSimilarProblemsGetter nspg = getSimSt().getNearSimilarProblemsGetter();
-							 ArrayList<String> similar_problems = nspg.nearSimilarProblemsGetter(currentNode);       
+							 ArrayList<String> similar_problems = nspg.nearSimilarProblemsGetter(currentNode);   
+							 
 							 int has_asked_bq = 0;
 							 for(int i=0; i<similar_problems.size(); i++) {
 								String problemName = similar_problems.get(i);
@@ -1818,29 +1820,32 @@ public void fillInQuizProblem(String problemName) {
 										Sai s_a_i = getSai(ran); // dorminTable3_C1R1, UpdateTable, divide 3
 										if(isSelectionValidForBrainstormingQuestions(s_a_i.getS())) {
 											String logic = ruleApplicationLogic(similarNode,ran); // need to make this domain independent by using getter
-											if(logic == "") {
+											String msg = "";
+											if(StringUtils.EMPTY.equals(logic)) {
 												if(j!=activList_2.size()-1) {
 													continue;
 												}
 												else {
-													logic = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_QUESTION_WHEN_NO_FEATURE_FOUND_TOPIC);
+													msg = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_QUESTION_WHEN_NO_FEATURE_FOUND_TOPIC);
 													has_asked_bq = 1;
-													askBrainstormingQuestion(logic, false);
+//													askBrainstormingQuestion(logic, false);
 												}
 											}
 											else {
 												// we would need the explanation to check for transformation for further followup
 												has_asked_bq = 1;
 												String problem_name = similarNode.getName().replace("_", "=");
-												String msg = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_QUESTION_TRANFORMATION_TOPIC,s_a_i.getI(),problem_name,logic);
-												String explanation = askBrainstormingQuestion(msg, true);
+												msg = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_QUESTION_TRANFORMATION_TOPIC,s_a_i.getI(),problem_name,logic);
+//												String explanation = askBrainstormingQuestion(msg, true);
+												
 											}
 											// Need to implement listener for nextNode just like askWhatToDoNext. 
 											
 											//nextCurrentNode = brainstormWhatToDoNext(currentNode);
 											getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
-											nextCurrentNode = askWhatToDoNext(currentNode);
+											nextCurrentNode = askWhatToDoNext(currentNode, msg);
 											hintReceived = true;
+											
 											if (trace.getDebugCode("ss"))
 												trace.out("ss", "CallingbrainstormWhatToDoNext  "
 														+ "currentNode: " + currentNode
@@ -2735,7 +2740,32 @@ public void fillInQuizProblem(String problemName) {
 			}
 		}
 	}
+	
+	public String askBrainstormingQuestionV2(String question, boolean requireResponse) {
+		
+		String explanation = "";
+		if (getBrController(getSimSt()).getMissController().getSimSt().isSsMetaTutorMode())
+				getBrController(getSimSt()).getAmt().handleInterfaceAction("selfExp", "implicit", "-1");
+			 
+		long explainRequestTime = Calendar.getInstance().getTimeInMillis();
+		if (getBrController(getSimSt()).getMissController().getSimStPLE() == null) {
+				explanation = JOptionPane.showInputDialog(null, question,
+						"Please Provide an Explanation",
+						JOptionPane.PLAIN_MESSAGE);
+		} else {
+				SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();
+				if(requireResponse == false) {
+					ple.giveMessage(question);
+				}
+				else {
+					explanation = ple.giveMessageFreeTextResponse(question);
+				}
+		}
 
+		int explainDuration = (int) (Calendar.getInstance()
+					.getTimeInMillis() - explainRequestTime);
+		return explanation;
+	}
 
 	public String askBrainstormingQuestion(String question, boolean requireResponse) {
 		
@@ -3267,6 +3297,10 @@ public void fillInQuizProblem(String problemName) {
 
 	// get hint from designated hint oracle
 	public ProblemNode askWhatToDoNext(ProblemNode currentNode) {
+		return askWhatToDoNext(currentNode, null);
+	}
+	
+	public ProblemNode askWhatToDoNext(ProblemNode currentNode, String customMessage) {
 		String problemName = currentNode.getProblemModel().getProblemName();
 //		boolean successful = false; // To signify that learning has been
 									// successful or not
@@ -3277,7 +3311,7 @@ public void fillInQuizProblem(String problemName) {
 				+ currentNode);
 		// hint = askHint(brController, currentNode);
 		
-		hint = simSt.askForHint(getBrController(getSimSt()), currentNode);
+		hint = simSt.askForHint(getBrController(getSimSt()), currentNode, customMessage);
 		
 		trace.out("miss","hint returned is " + hint);
 		simSt.createNewNodeAndEdgeForHintReceived(hint, currentNode);
