@@ -256,7 +256,12 @@ public class MissController implements MissControllerExternal {
         int buttonPressed;
 
         String prFileName = getSimSt().getPrFileName();
-        File prFile = new File(getSimSt().getProjectDir(), prFileName); //always needs to be created anyway
+        String userBundleDir = getSimSt().getUserBundleDirectory();
+        File prFile;
+        if (userBundleDir != null)
+        	prFile = new File(userBundleDir, prFileName);
+        else
+        	prFile = new File(getSimSt().getProjectDir(), prFileName); //always needs to be created anyway
         
         //Gustavo 8 Nov 2007: we only do something if a PR file already exists
         if (prFile.exists()) {
@@ -2224,6 +2229,10 @@ public class MissController implements MissControllerExternal {
 	
 	private void setSsUserBundleDir (String userBundleDir) {
 		trace.out("miss", "Setting the user bundle directory :  " + userBundleDir);
+		File directory = new File(userBundleDir);
+		if (!directory.exists()) {
+			directory.mkdir();
+		}
 		this.getSimSt().setUserBundleDirectory(userBundleDir);
 	}
 

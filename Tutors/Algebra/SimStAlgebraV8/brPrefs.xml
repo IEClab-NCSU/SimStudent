@@ -18,7 +18,7 @@
   <preference>
     <name>frame0 Location Y</name>
     <class>java.lang.Integer</class>
-    <value>26</value>
+    <value>31</value>
   </preference>
   <preference>
     <name>Show Action Labels</name>
@@ -28,7 +28,7 @@
   <preference>
     <name>Show Rule Labels</name>
     <class>java.lang.Boolean</class>
-    <value>true</value>
+    <value>false</value>
   </preference>
   <preference>
     <name>Allow Tool-Performed Actions</name>
@@ -43,12 +43,12 @@
   <preference>
     <name>Docked Window Location X</name>
     <class>java.lang.Integer</class>
-    <value>157</value>
+    <value>1622</value>
   </preference>
   <preference>
     <name>Docked Window Location Y</name>
     <class>java.lang.Integer</class>
-    <value>32</value>
+    <value>516</value>
   </preference>
   <preference>
     <name>Docked Window Width</name>
@@ -58,17 +58,17 @@
   <preference>
     <name>Docked Window Height</name>
     <class>java.lang.Integer</class>
-    <value>734</value>
+    <value>777</value>
   </preference>
   <preference>
     <name>Student Interface Location X</name>
     <class>java.lang.Integer</class>
-    <value>308</value>
+    <value>191</value>
   </preference>
   <preference>
     <name>Student Interface Location Y</name>
     <class>java.lang.Integer</class>
-    <value>96</value>
+    <value>79</value>
   </preference>
   <preference>
     <name>Use OLI Logging</name>
@@ -88,17 +88,17 @@
   <preference>
     <name>Disk Logging Directory</name>
     <class>java.lang.String</class>
-    <value>log</value>
+    <value>log/APLUS</value>
   </preference>
   <preference>
     <name>Student Interface Width</name>
     <class>java.lang.Integer</class>
-    <value>854</value>
+    <value>1030</value>
   </preference>
   <preference>
     <name>Student Interface Height</name>
     <class>java.lang.Integer</class>
-    <value>734</value>
+    <value>726</value>
   </preference>
   <preference>
     <name>Problem Directory</name>
@@ -113,12 +113,12 @@
   <preference>
     <name>Tutor Wrapper Vertical Divider Location</name>
     <class>java.lang.Integer</class>
-    <value>305</value>
+    <value>300</value>
   </preference>
   <preference>
     <name>Tutor Wrapper Horizontal Divider Location</name>
     <class>java.lang.Integer</class>
-    <value>577</value>
+    <value>500</value>
   </preference>
   <preference>
     <name>EditSkillNameDialogLocationX</name>
@@ -138,12 +138,17 @@
   <preference>
     <name>Miss FileChooser Path</name>
     <class>java.lang.String</class>
-    <value>/Users/simstudent/Desktop</value>
+    <value>/Users/simstudent/CMU/Tomodachi8-1-6-macfriendly/SimStAlgebraV8</value>
   </preference>
   <preference>
     <name>RecentFiles</name>
     <class>java.lang.String</class>
     <value>/Users/simstudent/CMU/Tomodachi8-1-7-macfriendly/SimStAlgebraV8/Probs/|038_3a_1_5.brd</value>
+  </preference>
+  <preference>
+    <name>Restore workspace</name>
+    <class>java.lang.Boolean</class>
+    <value>true</value>
   </preference>
 </preferences>
 

@@ -589,6 +589,10 @@ public class BR_Controller extends TutorController implements PropertyChangeList
 	public void addCelltoWidgetTable(String selection, String input) {
     	widgetTable.put(selection, input);
     }
+	
+	public void clearWidgetTable() {
+		widgetTable.clear();
+	}
     
     public String getWidgetTable(String selection) {
 		if(widgetTable.containsKey(selection)) {

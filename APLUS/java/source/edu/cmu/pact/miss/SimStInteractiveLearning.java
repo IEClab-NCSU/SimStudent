@@ -1240,9 +1240,10 @@ public void fillInQuizProblem(String problemName) {
 			//simulate first rule in activation list and get next node (this call adds node to the quizGraph).
 
 			try{
-			nextCurrentNode = inspectRuleActivations(currentNode, activList, hm);
+				nextCurrentNode = inspectRuleActivations(currentNode, activList, hm);
 			}
 			catch(Exception ex){
+				ex.printStackTrace();
 				return;
 			}
 			

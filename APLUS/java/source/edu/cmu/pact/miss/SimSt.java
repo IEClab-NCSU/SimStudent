@@ -12,13 +12,11 @@ package edu.cmu.pact.miss;
 
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -28,11 +26,12 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.Serializable;
 import java.io.StringReader;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -40,7 +39,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
-import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -50,7 +48,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
-import java.util.Scanner;
 import java.util.Set;
 import java.util.Stack;
 import java.util.StringTokenizer;
@@ -71,19 +68,6 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-import jess.Activation;
-import jess.Defrule;
-import jess.Fact;
-import jess.Funcall;
-import jess.HasLHS;
-import jess.JessException;
-import jess.Value;
-import mylib.Combinations;
-import pact.CommWidgets.JCommComboBox;
-import pact.CommWidgets.JCommTable;
-import pact.CommWidgets.JCommTable.TableExpressionCell;
-import pact.CommWidgets.JCommTextField;
-import pact.CommWidgets.StudentInterfaceWrapper;
 import aima.search.framework.Node;
 import aima.search.framework.Problem;
 import aima.search.framework.Search;
@@ -109,7 +93,6 @@ import edu.cmu.pact.Utilities.Utils;
 import edu.cmu.pact.Utilities.trace;
 import edu.cmu.pact.ctat.MessageObject;
 import edu.cmu.pact.ctat.model.CtatModeModel;
-import edu.cmu.pact.ctat.model.Skill;
 import edu.cmu.pact.jess.JessConsole;
 import edu.cmu.pact.jess.JessModelTracing;
 import edu.cmu.pact.jess.JessOracleRete;
@@ -121,7 +104,6 @@ import edu.cmu.pact.jess.RuleActivationTree.TreeTableModel;
 import edu.cmu.pact.jess.SimStRete;
 import edu.cmu.pact.miss.InquiryClAlgebraTutor.TutorServerTimeoutException;
 import edu.cmu.pact.miss.MetaTutor.APlusQuizProblemAbstractor;
-import edu.cmu.pact.miss.MetaTutor.MetaTutorAvatarComponent;
 import edu.cmu.pact.miss.MetaTutor.XMLReader;
 import edu.cmu.pact.miss.PeerLearning.SimStConversation;
 import edu.cmu.pact.miss.PeerLearning.SimStExample;
@@ -129,9 +111,7 @@ import edu.cmu.pact.miss.PeerLearning.SimStLogger;
 import edu.cmu.pact.miss.PeerLearning.SimStPLE;
 import edu.cmu.pact.miss.PeerLearning.SimStSolver;
 import edu.cmu.pact.miss.PeerLearning.SimStTimeoutDlg;
-import edu.cmu.pact.miss.PeerLearning.SimStudentLMS;
 import edu.cmu.pact.miss.PeerLearning.GameShow.ContestServer;
-import edu.cmu.pact.miss.PeerLearning.SimStSolver.SuccessRatioConflictResolutiionStrategy;
 import edu.cmu.pact.miss.ProblemModel.Graph.SimStBrdGraphReader;
 import edu.cmu.pact.miss.ProblemModel.Graph.SimStEdge;
 import edu.cmu.pact.miss.ProblemModel.Graph.SimStEdgeData;
@@ -146,6 +126,18 @@ import edu.cmu.pact.miss.jess.WorkingMemoryConstants;
 import edu.cmu.pact.miss.storage.FileZipper;
 import edu.cmu.pact.miss.userDef.algebra.EqFeaturePredicate;
 //import interaction.InquiryWebAuthoring;
+import jess.Activation;
+import jess.Defrule;
+import jess.Fact;
+import jess.HasLHS;
+import jess.JessException;
+import jess.Value;
+import mylib.Combinations;
+import pact.CommWidgets.JCommComboBox;
+import pact.CommWidgets.JCommTable;
+import pact.CommWidgets.JCommTable.TableExpressionCell;
+import pact.CommWidgets.JCommTextField;
+import pact.CommWidgets.StudentInterfaceWrapper;
 
 public final class SimSt implements Serializable {
 
@@ -857,7 +849,7 @@ public final class SimSt implements Serializable {
    // 2/03/2006 16:36:00
    // Due to a complication in intialization, it's decided to be static 
    private static String projectDir = null;
-   public String getProjectDir() {
+   public static String getProjectDir() {
        if ( projectDir == null ) {
            projectDir = new File(".").getPath();
        }
@@ -874,7 +866,7 @@ public final class SimSt implements Serializable {
    private String userBundleDirectory = null;
    
    public String getUserBundleDirectory() {
-	   if (userBundleDirectory == null) {
+	   if (userBundleDirectory == null && runType.equalsIgnoreCase("springboot")) {
 		   trace.err("Missing path for user bundle directory");
 	   }
 	   return userBundleDirectory;
@@ -3776,7 +3768,12 @@ public final class SimSt implements Serializable {
 	    		}
 	    		else if(!isWebStartMode()) {
 		    		foilData.setFoilDir();
-		    		String foilLogDir = getProjectDir() + "/" + getLogDirectory() +  "/" + getUserID() + "-" + getFoilLogDir() +  "/";
+		    		String foilLogDir;
+		    		Path logDirPath = Paths.get(getLogDirectory());
+		    		if(logDirPath.isAbsolute())
+		    			foilLogDir = getLogDirectory() +  "/" + getUserID() + "-" + getFoilLogDir() +  "/";
+		    		else
+		    			foilLogDir = getProjectDir() + "/" + getLogDirectory() +  "/" + getUserID() + "-" + getFoilLogDir() +  "/";
 		    		foilData.setFoilLogDir(foilLogDir);
 	    		} else {
 	    			foilData.setFoilLogDir(WebStartFileDownloader.SimStWebStartDir+FOIL_LOG + "_" + getUserID() + 
@@ -11461,14 +11458,20 @@ public final class SimSt implements Serializable {
        // Output to a regular productionRules.pr file
    	File prFile = null;
    	
-   	prFile = new File(getProjectDir(), getPrFileName());
+   	String userBundleDir = this.getUserBundleDirectory();
+   	
+   	if (userBundleDir != null) {
+   		prFile = new File(userBundleDir, getPrFileName());   		
+   	}
+   	else
+   		prFile = new File(getProjectDir(), getPrFileName());
    	
    	// Check if the application is running locally or via webstart
    	if(isWebStartMode()) {
    		prFile = new File(WebStartFileDownloader.SimStWebStartDir + getPrFileName() );
        }
 
-  	if (isSsWebAuthoringMode()){
+  	if (isSsWebAuthoringMode() && !runType.equalsIgnoreCase("springboot")){
    		prFile = new File(getProjectDirectory()+"/"+ getPrFileName() );
    	}
     

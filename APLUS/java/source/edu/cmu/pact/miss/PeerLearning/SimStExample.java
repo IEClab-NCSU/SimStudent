@@ -2,8 +2,7 @@ package edu.cmu.pact.miss.PeerLearning;
 
 import java.awt.Color;
 import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.FileReader;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -16,7 +15,6 @@ import java.util.Queue;
 
 import edu.cmu.pact.miss.Sai;
 import edu.cmu.pact.miss.SimSt;
-import edu.cmu.pact.miss.WebStartFileDownloader;
 
 public class SimStExample implements Serializable {
 
@@ -150,6 +148,17 @@ public class SimStExample implements Serializable {
 		this.status = status;
 	}
 	
+	public Queue<String> getStepOrder() {
+		return this.stepOrder;
+	}
+	
+	public Hashtable<String, StringPair> getSteps() {
+		return this.steps;
+	};
+	
+	public Hashtable<String, StringPair> getSteps_hover() {
+		return this.steps_hover;
+	};
 
 	public void addStartStateFromProblemName(String problemName,ArrayList<String> startStateElements){
 		String[] sp = problemName.split("=");
@@ -247,11 +256,12 @@ public class SimStExample implements Serializable {
 	    {
 		 
 		 
-		 String file = WebStartFileDownloader.SimStAlgebraPackage+"/"+SimStPLE.CONFIG_FILE;
+//		 String file = WebStartFileDownloader.SimStAlgebraPackage+"/"+SimStPLE.CONFIG_FILE;
+		 String file = SimSt.getProjectDir() + "/" + SimStPLE.CONFIG_FILE;
 	    	
-	    	ClassLoader cl = this.getClass().getClassLoader();
-	    	InputStream is = cl.getResourceAsStream(file);
-	    	InputStreamReader isr = new InputStreamReader(is);	
+//	    	ClassLoader cl = this.getClass().getClassLoader();
+//	    	InputStream is = cl.getResourceAsStream(file);
+//	    	InputStreamReader isr = new InputStreamReader(is);	
 	    	BufferedReader reader=null;
 	    
 	    		
@@ -265,7 +275,8 @@ public class SimStExample implements Serializable {
 	    	try
 	    	{
 	    		//reader = new BufferedReader(new FileReader(CONFIG_FILE));
-	        	reader = new BufferedReader(isr);
+//	        	reader = new BufferedReader(isr);
+	    		reader = new BufferedReader(new FileReader(file));
 	    		String line = reader.readLine();
 	    		
 	    		while(line != null)
@@ -382,6 +393,18 @@ public class SimStExample implements Serializable {
 		{
 			return value+" - "+extended;
 		}
+	}
+	
+	public String getStringPairValue (StringPair sp) {
+		return sp.value;
+	}
+	
+	public String getStringPairExtended (StringPair sp) {
+		return sp.extended;
+	}
+	
+	public Color getStringPairColor (StringPair sp) {
+		return sp.color;
 	}
 	
 	@Override
