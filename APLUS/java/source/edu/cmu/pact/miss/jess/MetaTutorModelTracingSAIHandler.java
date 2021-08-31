@@ -44,9 +44,7 @@ public class MetaTutorModelTracingSAIHandler extends SAIHandler {
 		 */
 		void execute(){
 			//if (trace.getDebugCode("rr")) trace.out("rr","Enter in execute");
-			MetaTutorModelTracingSAIHandler handler = null;
-			handler = new MetaTutorModelTracingSAIHandler(selection, action, input, amt, controller);
-			handler.processSAI();
+			new MetaTutorModelTracingSAIHandler(selection, action, input, amt, controller).processSAI();
 			//if (trace.getDebugCode("rr")) trace.out("rr","Exit from execute");
 		}
 	}
@@ -133,7 +131,6 @@ public class MetaTutorModelTracingSAIHandler extends SAIHandler {
 				result = amt.runModelTrace(true, false, selection, "", "", messages);
 
 		    } else if(action.equalsIgnoreCase("MetaTutorClicked") && (selection.equalsIgnoreCase("CLHint"))) {
-		
 				result = amt.runModelTrace(false, true, selection, "", "", messages);
 		    }
 			/*trigger event to send results to the listeners */
