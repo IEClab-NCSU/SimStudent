@@ -855,6 +855,11 @@ public class MissController implements MissControllerExternal {
     {
     	getSimSt().setUseTutalk(param);
     }
+    /* @author: Tasmia */
+    public void setSsUseCTIBothStuckWithTutalk(String param)
+    {
+    	getSimSt().setUseCTIBothStuckWithTutalk(param);
+    }
     
     public void setSsIntroVideo(String name){
     	SimStPLE.setVideoIntroductionName(name);
@@ -1651,7 +1656,6 @@ public class MissController implements MissControllerExternal {
     public void pleUndoSimSt() {
     	getSimStPLE().undo();
     }
-    
     public void pleRestartProblemSimSt() {
     	getSimStPLE().restartProblem();
     }
@@ -2173,6 +2177,11 @@ public class MissController implements MissControllerExternal {
                     	// This flag enables Tutalk dialog mode and sets server parameters
                     	// Param: flag := experimenter@server[:[opt1,opt2,...,optn]]
                     	setSsTutalkParams(parameter[0]);
+                    } else if(keyStem.equalsIgnoreCase("ssCTIBothStuckParams")) {
+                    	// @author Huan Truong
+                    	// This flag enables Tutalk dialog mode and sets server parameters
+                    	// Param: flag := experimenter@server[:[opt1,opt2,...,optn]]
+                    	setCTIBothStuckParams(parameter[0]);
                     } else if(keyStem.equalsIgnoreCase("ssGeneralWMEPaths")){
                     	// @author samanz  
                     	// This flag will switch simstudent to not learn any specific wmepaths
@@ -2627,6 +2636,10 @@ public class MissController implements MissControllerExternal {
     /* @author: Huan Truong */
     private void setSsTutalkParams (String flag) {
     	setSsUseTutalk(flag);
+    }
+    
+    private void setCTIBothStuckParams(String flag) {
+    	setSsUseCTIBothStuckWithTutalk(flag);
     }
     
     public void setSsGeneralWmePaths() {

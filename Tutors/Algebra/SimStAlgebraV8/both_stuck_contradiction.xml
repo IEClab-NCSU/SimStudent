@@ -47,8 +47,9 @@
 	 <phrase>I think you've missed my earlier question. Can I please get an answer to that?</phrase>
   </concept>
 	<concept label="courtesy-moveon">
-   <phrase>Sure!</phrase>
-	 <phrase>Sure! May be moving onto next step will help me figure out the answer by myself.</phrase>
+   <phrase>Alright! Can you then demonstrate an alternative step since the one that you have already suggested contradict with what I have learnt so far?</phrase>
+	 <phrase>Fair enough! Can you then demonstrate an alternative step since the one that you have already suggested contradict with what I have learnt so far?</phrase>
+	 <phrase>Fair enough! May be moving on will help me figure out the answer by myself. Can you then demonstrate an alternative step since the one that you have already suggested contradict with what I have learnt so far?</phrase>
   </concept>
 	<concept label="move-on">
    <phrase>Hmm..although I did not fully understand your statement but let me move on anyway.</phrase>

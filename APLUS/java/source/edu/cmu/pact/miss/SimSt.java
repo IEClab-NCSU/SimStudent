@@ -2498,10 +2498,19 @@ public final class SimSt implements Serializable {
    /* @author Huan Truong */
    private boolean tutalkEnabled = false;
    private String tutalkParam;
+   /* @author Tasmia Shahriar */
+   // Adding extra flag so that existing tutalk code is not hampered.
+   private boolean CTIBothStuckWithtutalkEnabled = false;
+   private String CTIBothStuckWithtutalkParam;
    public void setUseTutalk(String param) {
 	if(trace.getDebugCode("sstt"))trace.out("sstt", "SimStudent Tutalk is ENABLED");
 	tutalkEnabled = true;
 	tutalkParam = param;
+   }
+   public void setUseCTIBothStuckWithTutalk(String param) {
+		if(trace.getDebugCode("sstt"))trace.out("sstt", "SimStudent Tutalk is ENABLED");
+		CTIBothStuckWithtutalkEnabled = true;
+		CTIBothStuckWithtutalkParam = param;
    }
 
    public boolean getTutalkEnabled() {
@@ -2510,6 +2519,14 @@ public final class SimSt implements Serializable {
 
    public String getTutalkParam() {
 	return tutalkParam;
+   }
+   
+   public boolean getCTIBothStuckTutalkEnabled() {
+	return CTIBothStuckWithtutalkEnabled;
+   }
+
+   public String getCTIBothStuckTutalkParam() {
+		return CTIBothStuckWithtutalkParam;
    }
    // Forget about the recent focus of attention
    public void clearCurrentFoA() {

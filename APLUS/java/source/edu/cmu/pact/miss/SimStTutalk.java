@@ -44,6 +44,9 @@ public class SimStTutalk {
     public static final int TUTALK_STATE_EXCEPTION = -1;
     public static final int TUTALK_STATE_DIALOG = 1;
     public static final int TUTALK_STATE_DONE = 4;
+    private Concept last_response_label;
+    
+    //public int TUTALK_STATE_DONE_AFTER_CLASSIFIER = 
 
     public static final String FINAL_OKAY = "Okay.";
 
@@ -83,8 +86,19 @@ public class SimStTutalk {
 	            for (i = 0; i < turns.size(); i++) {
 	            	if(trace.getDebugCode("sstt"))trace.out("sstt", "\tResponse: " + turns.get(i));
 	            		// Do not add a new line for the first question.
+	            	else if (turns.get(i).trim().length()<1) {
+	            		finalQuestion = "";
+	            	}
+	            	else if(finalQuestion == "") {
+	            		finalQuestion = turns.get(i); 
+	            	}
+	            	else {
+	            		finalQuestion = finalQuestion + "\n" + turns.get(i);
+	            	}
+	            	/*if(turns.get(i).trim().length()>=1) {
 	                	finalQuestion = ((i==0) ? "" : finalQuestion + "\n") + turns.get(i);
-	                	System.out.println("printing final q "+finalQuestion);
+	            	}*/
+	            	System.out.println("printing final q "+finalQuestion);
 	            }
 	            //trace.out("sstt", "Current Concept: "+ttClient.getLastConcept().getLabel());
 
@@ -158,6 +172,7 @@ public class SimStTutalk {
 	            //turns = ttClient.progress(matchingConcepts.get(0));
 
 	            Concept m_concept = matchingConcepts.get(0).concept;
+	            last_response_label = m_concept;
 	            turns = ttClient.progress(m_concept);
 
 	            // Instead of the following block I added the next block
@@ -187,8 +202,11 @@ public class SimStTutalk {
 		}
 
 		tutalkState = TUTALK_STATE_DONE;
-
 		return true;
+    }
+    
+    public Concept getLastStatementLabel() {
+    	return last_response_label;
     }
 
     private void updatePathValue(String filepath) {

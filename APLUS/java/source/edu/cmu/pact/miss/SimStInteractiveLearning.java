@@ -38,6 +38,7 @@ import pact.CommWidgets.JCommTable;
 import pact.CommWidgets.JCommTable.TableCell;
 import pact.CommWidgets.JCommTable.TableExpressionCell;
 import pact.CommWidgets.JCommWidget;
+import edu.cmu.cs.lti.tutalk.script.Concept;
 import edu.cmu.pact.BehaviorRecorder.Controller.BR_Controller;
 import edu.cmu.pact.BehaviorRecorder.Dialogs.LoadFileDialog;
 import edu.cmu.pact.BehaviorRecorder.ProblemModel.ProblemModel;
@@ -302,9 +303,14 @@ public class SimStInteractiveLearning implements Runnable {
 		setLogger(new SimStLogger(brController));
 
 		// If Tutalk is enabled, then get its parameters from SimStudent.
-		if (simSt.getTutalkEnabled()) {
+		if (simSt.getTutalkEnabled() || simSt.getCTIBothStuckTutalkEnabled()) {
 			// Currently I haven't planned anything for the params
-			String[] tutalkParam = simSt.getTutalkParam().split(",");
+			
+			String[] tutalkParam;
+			if(simSt.getTutalkEnabled()) 
+				tutalkParam = simSt.getTutalkParam().split(",");
+			else
+				tutalkParam = simSt.getCTIBothStuckTutalkParam().split(",");
 			String tutalkUid = simSt.getUserID();
 			tutalkBridge = new SimStTutalk(tutalkUid, this);
 			tutalkBridge.initialize();
@@ -1670,13 +1676,7 @@ public void fillInQuizProblem(String problemName) {
 
 				/*kept ony for miss output*/
 				Vector activationList = simSt.gatherActivationList(currentNode);
-				// activationList outputs [MAIN::subtract] or [MAIN::divide] and so on
-				//Collection<RuleActivationNode> activList = simSt.createOrderedActivationList(activationList);
-				// Tasmia: Adding nearSimilarFlag to handleComm message created buggy activations and even though I suppressed the
-				// changed msg to be updated in the interfaceElements, the interface content is still getting changed inside getActivations function.
-				// I need to understand why. As long as the interface elements are updated, the bug will remain,
-				// If I can make sure correct production rule without the interface elements changing,
-				// code will run okay.
+				
 				Collection<RuleActivationNode> activList=getActivations(currentNode);
 				
 				/*
@@ -1812,7 +1812,6 @@ public void fillInQuizProblem(String problemName) {
 								String problemName = similar_problems.get(i);
 								ProblemNode similarNode = new ProblemNode();
 								similarNode.setName(problemName);
-								followupWhenStuck(currentNode);
 								Collection<RuleActivationNode> activList_2=getActivations(similarNode, true);
 								if(activList_2 != null) {
 									int j=-1;
@@ -1845,6 +1844,7 @@ public void fillInQuizProblem(String problemName) {
 											//nextCurrentNode = brainstormWhatToDoNext(currentNode);
 											getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
 											nextCurrentNode = askWhatToDoNext(currentNode, msg);
+											followupWhenStuck(currentNode);
 											hintReceived = true;
 											
 											if (trace.getDebugCode("ss"))
@@ -1888,7 +1888,6 @@ public void fillInQuizProblem(String problemName) {
 						
 					}
 				}
-				
 				
 				/*// Previous code intact start
 				nextCurrentNode = askWhatToDoNext(currentNode);
@@ -2549,7 +2548,8 @@ public void fillInQuizProblem(String problemName) {
 	 * 2. ask after the 2nd time student says no (question will be about 1st rule)
 	 * @param agendaSize the size of the agenda. Necessary, because we want SELF_EXPL_STRATEGY_AFTER_SECOND_NO to be activated
 	 * 		  only if there is more than one rule in the agenda
-	 * @return
+	 * @returnw
+	 * 
 	 */
 	public int firstStrategyToAskSelfExplQ(int agendaSize){
 		int returnValue=ASK_UNINITIALIZED;
@@ -2595,9 +2595,10 @@ public void fillInQuizProblem(String problemName) {
 		return simSt.getBrController().getMissController().getSimStPLE().getValidSelectionsBAQ()!=null && simSt.getBrController().getMissController().getSimStPLE().getValidSelectionsBAQ().contains(selection);
 	}
 	
-	public void followupWhenStuck(ProblemNode node) {
-		tutalkBridge.setProblemName(getBrController(getSimSt()).getMissController()
-				.getSimSt().getProblemStepString());
+	public void followupWhenStuck(ProblemNode currentNode) {
+		String problemStepString = getBrController(getSimSt()).getMissController()
+				.getSimSt().getProblemStepString();
+		tutalkBridge.setProblemName(problemStepString);
 		contextVariables.clear();
 		//contextVariables.addVariable("%sai_i%", sai.getI());
 		tutalkBridge.connect("both_stuck_contradiction",
@@ -2609,6 +2610,20 @@ public void fillInQuizProblem(String problemName) {
 			} catch (java.lang.InterruptedException e) {
 				// Nothing we can do here.
 			}
+		}
+		Concept c = tutalkBridge.getLastStatementLabel();
+		if(getSimSt().getMissController().isPLEon() && c.getLabel().equals("R2"))
+        {
+        	getSimSt().getMissController().getSimStPLE().setAvatarNormal();
+        }
+		else {
+			getSimSt().getMissController().getSimStPLE().setAvatarAsking();
+			Collection<RuleActivationNode> activList=getActivations(currentNode);
+			RuleActivationNode ran = activList.stream().findFirst().get();
+			signalInstructionAsNegativeExample(ran, currentNode, getSai(ran));
+			getBrController(getSimSt()).setCurrentNode2(getBrController(getSimSt()).getProblemModel()
+					.getStartNode());
+			getBrController(getSimSt()).setCurrentNode2(currentNode);
 		}
 		return;
 	}
