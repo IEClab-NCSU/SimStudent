@@ -284,6 +284,16 @@ public class SimStPLE {
 	public static Object quizLock = new Object();
 
 	private List<String> components = new ArrayList<String>();
+	
+	private String avatarExpressions = NORMAL_EXPRESSION;
+	
+	public String getAvatarExpressions() {
+		return this.avatarExpressions;	
+	}
+	
+	public void setAvatarExpressions(String exp) {
+		this.avatarExpressions = exp;
+	}
 
 	public List<String> getComponents() {
 		return components;
@@ -3372,9 +3382,7 @@ public class SimStPLE {
 		// nextProblemButton.setText(getProblemEnteredButtonString());
 		// nextProblemButton.setEnabled(false);
 		getBrController().startNewProblem();
-		if(runType == null || !runType.equals("springBoot")) {
-			setAvatarStart();
-		}
+		setAvatarStart();
 		this.getConversation().setBehaviourDiscrepencyBroughtUp(false);
 	}
 
@@ -3869,6 +3877,15 @@ public class SimStPLE {
 	}
 
 	public void setAvatarStart() {
+		
+		if (runType.equalsIgnoreCase("springBoot")) {
+			status = NORMAL_STATUS;
+			if (isAplusStartUp)
+				setAplusStartUp(false);
+			startStatus = true;
+			this.avatarExpressions = "NORMAL_EXPRESSION";
+			return;
+		}
 
 		status = NORMAL_STATUS;
 		// Remove any other border and replace it with an empty border taking the same
@@ -4002,6 +4019,12 @@ public class SimStPLE {
 	}
 
 	public void setAvatarQuiz() {
+		if (runType.equalsIgnoreCase("springBoot")) {
+			startStatus = false;
+			status = QUIZ_STATUS;
+			this.avatarExpressions = "NORMAL_EXPRESSION";
+			return;
+		}
 		startStatus = false;
 		status = QUIZ_STATUS;
 		// getSimStPeerTutoringPlatform().getSimStAvatarLayerIcon().setBorder(BorderFactory.createLineBorder(Color.blue,
@@ -4043,6 +4066,8 @@ public class SimStPLE {
 			getSimStPeerTutoringPlatform().setUndoButtonEnabled(true);
 			getSimStPeerTutoringPlatform().setRestartButtonEnabled(true);
 			getSimStPeerTutoringPlatform().setWait(false);
+		} else {
+			this.avatarExpressions = "SUCCESS_EXPRESSION";
 		}
 		if (brController != null && brController.getMissController().getSimSt().isSsMetaTutorMode()) {
 			// keep the previous problem just in case student clicks restart
@@ -4072,6 +4097,8 @@ public class SimStPLE {
 			getSimStPeerTutoringPlatform().setUndoButtonEnabled(true);
 			getSimStPeerTutoringPlatform().setRestartButtonEnabled(true);
 			getSimStPeerTutoringPlatform().setWait(false);
+		} else {
+			this.avatarExpressions = "CONFUSE_EXPRESSION";
 		}
 		// if (brController!=null &&
 		// brController.getMissController().getSimSt().isSsMetaTutorMode() )
@@ -4094,11 +4121,15 @@ public class SimStPLE {
 		startStatus = false;
 		// getSimStPeerTutoringPlatform().setImage(STUDENT_THINK_IMAGE);
 		// getSimStPeerTutoringPlatform().setExpression(THINK_EXPRESSION_EX);
-		getSimStPeerTutoringPlatform().setExpression(THINK_EXPRESSION_EX);
-		getSimStPeerTutoringPlatform().setUndoButtonEnabled(false);
-		getSimStPeerTutoringPlatform().setRestartButtonEnabled(true);
-		getSimStPeerTutoringPlatform().setWait(true);
-		scheduleSimStAvatarTimer();
+		if(!runType.equals("springBoot")) {
+			getSimStPeerTutoringPlatform().setExpression(THINK_EXPRESSION_EX);
+			getSimStPeerTutoringPlatform().setUndoButtonEnabled(false);
+			getSimStPeerTutoringPlatform().setRestartButtonEnabled(true);
+			getSimStPeerTutoringPlatform().setWait(true);
+			scheduleSimStAvatarTimer();
+		} else {
+			this.avatarExpressions = "THINK_EXPRESSION_EX";
+		}
 		currentThinkingImage = THINK_EXPRESSION_EX;
 		// currentThinkingImage=THINK_EXPRESSION_EX;
 
@@ -4106,6 +4137,12 @@ public class SimStPLE {
 
 	// Displays that the avatar is done thinking
 	public void setAvatarNormal() {
+		if (runType.equalsIgnoreCase("springBoot")) {
+			status = NORMAL_STATUS;
+			startStatus = false;
+			this.avatarExpressions = isConfused() ? "CONFUSE_EXPRESSION" : "NORMAL_EXPRESSION";
+			return;
+		}
 		status = NORMAL_STATUS;
 		// Remove yellow thinking border and replace it with an empty border taking the
 		// same space
@@ -4130,6 +4167,12 @@ public class SimStPLE {
 
 	// Displays that the avatar is thinking
 	public void setAvatarAsking() {
+		if (runType.equalsIgnoreCase("springBoot")) {
+			status = ASK_STATUS;
+			startStatus = false;
+			this.avatarExpressions = "ASK_EXPRESSION";
+			return;
+		}
 		status = ASK_STATUS;
 		// Add a yellow border while avatar is thinking
 		// getSimStPeerTutoringPlatform().getSimStAvatarLayerIcon().setBorder(BorderFactory.createLineBorder(Color.yellow,
@@ -4148,6 +4191,10 @@ public class SimStPLE {
 	public void setAvatarConfused(boolean confusion) {
 		// TODO Elaborate!
 		confused = confusion;
+		if (runType.equalsIgnoreCase("springBoot")) {
+			this.avatarExpressions = confusion ? "CONFUSE_EXPRESSION" : "NORMAL_EXPRESSION";
+			return;
+		}
 		if (confusion) {
 			getSimStPeerTutoringPlatform().setExpression(CONFUSE_EXPRESSION);
 			giveMessage(CONFUSE_MESSAGE);
@@ -5917,9 +5964,7 @@ public class SimStPLE {
 			getSimSt().setRuleActivationTestMethod(getSimSt().getQuizGradingMethod());
 			// getSimSt().setRuleActivationTestMethod(SimSt.RA_TEST_METHOD_TUTOR_SOLVERV2);
 
-			if (!runType.equalsIgnoreCase("springboot")) {
-				setAvatarQuiz();				
-			}
+			setAvatarQuiz();				
 			getSsInteractiveLearning().setTakingQuiz(true); // w
 
 			Vector<SimStExample> results = startQuizProblems(); // Start solving the problems // w - return results
