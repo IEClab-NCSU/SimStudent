@@ -42,10 +42,7 @@ public class FoilData implements Serializable{
     // private final String FOIL_EXE = "f:/Project/CTAT/ML/FOIL/foil6.exe";
 	private static final long serialVersionUID = 2893338886802027987L;
     
-    private static String foilName = "foil6" +
-	( System.getProperty("os.name").toUpperCase().startsWith("WINDOWS")
-	  ? ".exe"
-	  : "" );
+    private static String foilName = getFoilNameForOS();
     
     public static String foilBase = null;
     public static void setFoilBase( String foilBase ) {
@@ -66,6 +63,53 @@ public class FoilData implements Serializable{
     private static String FOIL_EXE;
     private static String FOIL_JARDIR = SimSt.getHomeDir()+"/bin";
     public String getFoilExe() { return FOIL_EXE; }
+    
+    private static String getFoilNameForOS() {
+    	String os = System.getProperty("os.name").toLowerCase();
+    	if(os.indexOf("win") >= 0) {
+			return "foil6.exe";
+		} else if(os.indexOf("mac") >= 0) {
+			ProcessBuilder processBuilder = new ProcessBuilder();
+			processBuilder.command("bash", "-c", "sysctl -a | grep machdep.cpu.brand_string");
+			try {
+				Process process = processBuilder.start();
+				StringBuilder output = new StringBuilder();
+
+		        BufferedReader reader = new BufferedReader(
+		                new InputStreamReader(process.getInputStream()));
+
+		        String line;
+		        while ((line = reader.readLine()) != null) {
+		            output.append(line + "\n");
+		        }
+
+		        int exitVal = process.waitFor();
+		        reader.close();
+		        if (exitVal == 0) {
+		            if (output.toString().toLowerCase().contains("intel")) {
+		            	return "foil6_mac_intel";
+		            }
+		            else {
+		            	return "foil6_mac_m1";
+		            }
+		        } else {
+		        	trace.err("Your OS is not supported for the foil. You need to compile foil for your OS.");
+		        	return "foil6";
+		        }
+			} catch (IOException e) {
+		        e.printStackTrace();
+		    } catch (InterruptedException e) {
+		        e.printStackTrace();
+		    }
+			return "foil6";
+		} else if(os.indexOf("nix") >= 0 || os.indexOf("nux") >= 0) {
+			return "foil6_nix";
+		} else {
+			trace.err("Your OS is not supported for the foil. You need to compile foil for your OS.");
+			return "foil6";
+		}
+    }
+    
     public void setFoilDir() {    
 
     	

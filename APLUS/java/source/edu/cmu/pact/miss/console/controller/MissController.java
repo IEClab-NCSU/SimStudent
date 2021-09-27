@@ -256,7 +256,12 @@ public class MissController implements MissControllerExternal {
         int buttonPressed;
 
         String prFileName = getSimSt().getPrFileName();
-        File prFile = new File(getSimSt().getProjectDir(), prFileName); //always needs to be created anyway
+        String userBundleDir = getSimSt().getUserBundleDirectory();
+        File prFile;
+        if (userBundleDir != null)
+        	prFile = new File(userBundleDir, prFileName);
+        else
+        	prFile = new File(getSimSt().getProjectDir(), prFileName); //always needs to be created anyway
         
         //Gustavo 8 Nov 2007: we only do something if a PR file already exists
         if (prFile.exists()) {
@@ -1070,9 +1075,8 @@ public class MissController implements MissControllerExternal {
     public void autoSaveInstructions() {
     	String msg="";
         String fileName = "instructions.txt";
-        if(getSimSt() != null && getSimSt().getUserID() != null)
+        if(getSimSt() != null && getSimSt().getUserID() != null && !getSimSt().isSsWebAuthoringMode())
         	fileName = "instructions-"+getSimSt().getUserID()+".txt";
-//        	fileName = getSimSt().getUserID()+"_instructions.txt";
         msg += "done\nSaved work to " + fileName + "...";
     	getMissConsole().message (msg);
 
@@ -1082,9 +1086,11 @@ public class MissController implements MissControllerExternal {
         wmeTypeFile = new File(new File(".").getAbsolutePath(), SimSt.WME_TYPE_FILE);
         
         if(wmeTypeFile != null && wmeTypeFile.isAbsolute() && wmeTypeFile.exists()) {
-        	
-//        	instructionsFile = new File(fileName); 
-        	instructionsFile = new File(getSimSt().getLogDirectory(), fileName); 
+        	if(getSimSt().isSsWebAuthoringMode()) {
+        		instructionsFile = new File(getSimSt().getUserBundleDirectory(), fileName);
+        	} else {
+        		instructionsFile = new File(getSimSt().getLogDirectory(), fileName); 
+        	}
         	getSimSt().saveInstructions(instructionsFile);
         } else if(getSimSt().isWebStartMode()) { // For webstart
     		
@@ -1095,14 +1101,13 @@ public class MissController implements MissControllerExternal {
     		} catch (IOException e) {
     			e.printStackTrace();
     		}
-         }else if(getSimSt().isSsWebAuthoringMode()){
-        	   instructionsFile = new File(getSimSt().getProjectDirectory()+"/"+fileName);
-        	// instructionsFile = new File(getSimSt().getPackageName()+"/"+ fileName);
- 			 getSimSt().saveInstructions(instructionsFile);
+         } else if (getSimSt().isSsWebAuthoringMode()) {
+        	 instructionsFile = new File(getSimSt().getUserBundleDirectory(), fileName);
+        	 getSimSt().saveInstructions(instructionsFile);
          }
-    		msg += "done";
-    		getMissConsole().message(msg);
-         }
+        msg += "done";
+        getMissConsole().message(msg);
+    }
     
     public void loadInstructions() {
     	String msg = "Select file to load previously demonstrated steps...";
@@ -1136,11 +1141,11 @@ public class MissController implements MissControllerExternal {
     public void autoLoadInstructions() {
     	
     	String fileName = "instructions.txt";
-        if(getSimSt() != null && getSimSt().getUserID() != null)
+    	if(getSimSt() != null && getSimSt().getUserID() != null && !getSimSt().isSsWebAuthoringMode())
         	fileName = "instructions-"+getSimSt().getUserID()+".txt";
         File file = null;
         if(getSimSt().isSsWebAuthoringMode())
-        	file = new File(getSimSt().getProjectDirectory()+"/"+fileName);
+        	file = new File(getSimSt().getUserBundleDirectory(), fileName);
         else 
         	file = new File(fileName);
 
@@ -1243,9 +1248,18 @@ public class MissController implements MissControllerExternal {
     	trace.err("Loading InstnDeSerialize");
     	if(trace.getDebugCode("miss"))trace.out("miss", "Inside loadInstnDeSerialize");
     	String fileName = "SimStDefault.ser";
-    	if(getSimSt() != null && getSimSt().getUserID() != null)
+    	if(getSimSt() != null && getSimSt().getUserID() != null) {
     		fileName = "simst-"+getSimSt().getUserID()+".ser";
-    	File serFile = new File(getSimSt().getLogDirectory(), fileName); 
+    		if (runType.equalsIgnoreCase("springBoot")) {
+    			fileName = "simSt.ser";
+    		}
+    	}
+    	File serFile;
+    	if (runType.equalsIgnoreCase("springBoot")) {
+    		serFile = new File(getSimSt().getUserBundleDirectory(), fileName);
+    	} else {
+    		serFile = new File(getSimSt().getLogDirectory(), fileName);		
+    	}
     	// Check if the application is running locally or using Webstart
     	if(!getSimSt().isWebStartMode()) { // Running locally
     		trace.err("Simstudent running locally...");
@@ -1258,7 +1272,7 @@ public class MissController implements MissControllerExternal {
     		} else if(serFile == null || !serFile.exists() || getSimSt() != null) { // Else load the simst.ser file if it exists
     			
     			fileName = "SimStDefault.ser";
-    			serFile = new File(fileName);
+    			serFile = new File(getSimSt().getProjectDir(), fileName);
     			
     			if(serFile != null && serFile.exists()) {
 
@@ -2034,8 +2048,12 @@ public class MissController implements MissControllerExternal {
 
                     } else if (keyStem.equalsIgnoreCase("ssProjectDirectory")) {
                         setSsProjectDir(parameter[0]);
-
                     } 
+                    else if(keyStem.equalsIgnoreCase("ssUserBundleDir")) {
+                    	// @author raj
+                    	// this flag will allow us to set the user bundle space
+                    	setSsUserBundleDir(parameter[0]);
+                    }
                     else if (keyStem.equalsIgnoreCase("ssPackageName")) {
                     	setSsPackageName(parameter[0]);
                     } 
@@ -2222,6 +2240,15 @@ public class MissController implements MissControllerExternal {
 
     	PreferencesModel pm = getBrController().getPreferencesModel();
     	pm.setStringValue(BR_Controller.DISK_LOGGING_DIR, logFolder);
+	}
+	
+	private void setSsUserBundleDir (String userBundleDir) {
+		trace.out("miss", "Setting the user bundle directory :  " + userBundleDir);
+		File directory = new File(userBundleDir);
+		if (!directory.exists()) {
+			directory.mkdir();
+		}
+		this.getSimSt().setUserBundleDirectory(userBundleDir);
 	}
 
 	// Thu Oct 27 15:20:09 2005:: Noboru

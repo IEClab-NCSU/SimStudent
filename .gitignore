@@ -16,5 +16,7 @@ APLUS/java/*.log
 Tutors/Algebra/SimStAlgebraV8/*.bload
 Tutors/Algebra/SimStAlgebraV8/*.class
 APLUS/java/bin/edu/cmu/pact/Log/*
+APLUS/java/reports/ctat/*
+Tutors/Algebra/SimStAlgebraV8/*
 
 StudyManagementSystem/Deploy/data

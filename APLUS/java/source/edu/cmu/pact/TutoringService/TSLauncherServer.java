@@ -5,19 +5,18 @@
 package edu.cmu.pact.TutoringService;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.Socket;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Random;
 
-import cl.launcher.Session;
-
 import edu.cmu.pact.BehaviorRecorder.Controller.BR_Controller;
 import edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Properties;
 import edu.cmu.pact.BehaviorRecorder.Controller.SingleSessionLauncher;
-import edu.cmu.pact.BehaviorRecorder.ProblemModel.RuleProduction;
 import edu.cmu.pact.Preferences.PreferencesModel;
 import edu.cmu.pact.SocketProxy.LogServlet;
 import edu.cmu.pact.SocketProxy.SocketProxy;
@@ -28,15 +27,9 @@ import edu.cmu.pact.Utilities.LoggingSupport;
 import edu.cmu.pact.Utilities.NtpClient;
 import edu.cmu.pact.Utilities.SocketReader;
 import edu.cmu.pact.Utilities.Utils;
-import edu.cmu.pact.Utilities.VersionInformation;
 import edu.cmu.pact.Utilities.trace;
-import edu.cmu.pact.ctat.CtatLMSClient;
 import edu.cmu.pact.ctat.MessageObject;
 import edu.cmu.pact.ctat.MsgType;
-import edu.cmu.pact.ctatview.CtatFrameController;
-import edu.cmu.pact.miss.MissControllerExternal;
-import edu.cmu.pact.miss.MissControllerStub;
-import edu.cmu.pact.miss.console.controller.MissController;
 import edu.cmu.pslc.logging.LogContext;
 
 /**
@@ -78,6 +71,10 @@ public abstract class TSLauncherServer {
         }
         return preferencesModel;
     }
+	
+	public void setPreferencesModel(PreferencesModel pm) {
+		this.preferencesModel = pm;
+	}
 	
 	public void setLogger(LogContext lc){
 		this.logger = lc;
@@ -726,8 +723,32 @@ public abstract class TSLauncherServer {
 		initLogging();
 		
 		//added from LauncherServer
-		PreferencesModel prefs = new PreferencesModel();
+		PreferencesModel prefs = this.getPreferencesModel();
 		prefs.setPreventSaves(true);
+		logServlet = new LogServlet(prefs, true);      // single servlet for HTTP logging
+		httpLogInfo = logInfo.create();
+		logServlet.setLogInfo(httpLogInfo);
+		
+		if (trace.getDebugCode("ls")) trace.out("ls", "TS LS constructor completed");
+	}
+	
+	public TSLauncherServer(String[] cmdLineArgs) {
+		//this part is copied from the above constructor
+		//Subclasses now all call super();
+		properties = new CTAT_Properties(this);
+		//added from LauncherServer
+		PreferencesModel prefs = this.getPreferencesModel();
+		prefs.setPreventSaves(true);
+		if (Arrays.asList(cmdLineArgs).contains("-sslogFolder")) {
+			String logDir = cmdLineArgs[Arrays.asList(cmdLineArgs).indexOf("-sslogFolder")+1];
+			File directory = new File(logDir);
+			if (! directory.exists()){
+				directory.mkdir();
+			}
+			prefs.setStringValue(BR_Controller.DISK_LOGGING_DIR, logDir);
+		}
+		initLogging();
+		
 		logServlet = new LogServlet(prefs, true);      // single servlet for HTTP logging
 		httpLogInfo = logInfo.create();
 		logServlet.setLogInfo(httpLogInfo);

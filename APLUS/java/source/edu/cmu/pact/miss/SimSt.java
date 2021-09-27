@@ -12,13 +12,11 @@ package edu.cmu.pact.miss;
 
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -28,11 +26,12 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.Serializable;
 import java.io.StringReader;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -49,7 +48,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
-import java.util.Scanner;
 import java.util.Set;
 import java.util.Stack;
 import java.util.StringTokenizer;
@@ -109,7 +107,6 @@ import edu.cmu.pact.Utilities.Utils;
 import edu.cmu.pact.Utilities.trace;
 import edu.cmu.pact.ctat.MessageObject;
 import edu.cmu.pact.ctat.model.CtatModeModel;
-import edu.cmu.pact.ctat.model.Skill;
 import edu.cmu.pact.jess.JessConsole;
 import edu.cmu.pact.jess.JessModelTracing;
 import edu.cmu.pact.jess.JessOracleRete;
@@ -121,7 +118,6 @@ import edu.cmu.pact.jess.RuleActivationTree.TreeTableModel;
 import edu.cmu.pact.jess.SimStRete;
 import edu.cmu.pact.miss.InquiryClAlgebraTutor.TutorServerTimeoutException;
 import edu.cmu.pact.miss.MetaTutor.APlusQuizProblemAbstractor;
-import edu.cmu.pact.miss.MetaTutor.MetaTutorAvatarComponent;
 import edu.cmu.pact.miss.MetaTutor.XMLReader;
 import edu.cmu.pact.miss.PeerLearning.SimStConversation;
 import edu.cmu.pact.miss.PeerLearning.SimStExample;
@@ -129,9 +125,7 @@ import edu.cmu.pact.miss.PeerLearning.SimStLogger;
 import edu.cmu.pact.miss.PeerLearning.SimStPLE;
 import edu.cmu.pact.miss.PeerLearning.SimStSolver;
 import edu.cmu.pact.miss.PeerLearning.SimStTimeoutDlg;
-import edu.cmu.pact.miss.PeerLearning.SimStudentLMS;
 import edu.cmu.pact.miss.PeerLearning.GameShow.ContestServer;
-import edu.cmu.pact.miss.PeerLearning.SimStSolver.SuccessRatioConflictResolutiionStrategy;
 import edu.cmu.pact.miss.ProblemModel.Graph.SimStBrdGraphReader;
 import edu.cmu.pact.miss.ProblemModel.Graph.SimStEdge;
 import edu.cmu.pact.miss.ProblemModel.Graph.SimStEdgeData;
@@ -146,12 +140,24 @@ import edu.cmu.pact.miss.jess.WorkingMemoryConstants;
 import edu.cmu.pact.miss.storage.FileZipper;
 import edu.cmu.pact.miss.userDef.algebra.EqFeaturePredicate;
 //import interaction.InquiryWebAuthoring;
+import jess.Activation;
+import jess.Defrule;
+import jess.Fact;
+import jess.HasLHS;
+import jess.JessException;
+import jess.Value;
+import mylib.Combinations;
+import pact.CommWidgets.JCommComboBox;
+import pact.CommWidgets.JCommTable;
+import pact.CommWidgets.JCommTable.TableExpressionCell;
+import pact.CommWidgets.JCommTextField;
+import pact.CommWidgets.StudentInterfaceWrapper;
 
 public final class SimSt implements Serializable {
 
 	/*
 	 * To make the SimSt object serializable only the relevant fields required
-	 * would be serialized while other fields would be marked as transient 
+	 * would be serialized while other fields would be marked as transient
 	 * (ignore the final and static fields of SimSt)
 	 */
 	private static final long serialVersionUID =   -422675056102164532L;
@@ -159,11 +165,11 @@ public final class SimSt implements Serializable {
    // - Fields - - - - - - - - - - - - - - - - - - - - - - - - - - -
    // -
 
-   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
+   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
    // Version
    //
    public final static String VERSION = "8.7";
-   /* 
+   /*
       Mon Feb 21 22:38:50 2005: 1.00 YAMATO
       + The first "bare-bone" version
 
@@ -174,7 +180,7 @@ public final class SimSt implements Serializable {
       + Steps demonstrated get model traced and flagged in the BR
 
       Thu May  4 14:05:37 2006: 1.20 MIYAKO
-      + Focus of attention unordered 
+      + Focus of attention unordered
       + Domain specific focus of attention getter available
     */
 
@@ -201,18 +207,18 @@ public final class SimSt implements Serializable {
 	   logDirectory = pm.getStringValue(BR_Controller.DISK_LOGGING_DIR);
 	   return logDirectory;// = System.getProperty("logDirectory");
    }
-   
+
    public static void setActivationListType(String type)
    {
    	activationListType = type;
    }
 
-   // - 
+   // -
    // - command line VM option - - - - - - - - - - - - - - - - - - -
    // -
    /**
     * ssLearnNoLabel  Set if you wish SimSt to learn rules without skill names
-    * 
+    *
     **/
    private boolean ssLearnNoLabel = false;
    public boolean isSsLearnNoLabel() {
@@ -226,7 +232,7 @@ public final class SimSt implements Serializable {
 	public static Object simStLock = new Object();
 
 	private static final int MAX_THREAD_COUNT = 1;
-	
+
 	/**	Thread pool with MAX_THREAD_COUNT available threads at any point of time. */
 	private static ExecutorService simStSaveStateThreadPool = Executors.newFixedThreadPool(MAX_THREAD_COUNT);
 
@@ -281,9 +287,9 @@ public final class SimSt implements Serializable {
    	this.userID = userID;
    }
 
-   
+
    private String problemCheckerOracle = "";
-   
+
    public String getProblemCheckerOracle() {
 	return problemCheckerOracle;
    }
@@ -292,8 +298,8 @@ public final class SimSt implements Serializable {
    }
 
 
-  
-   
+
+
    // Name of SimStudent that the student named
    public static String SimStName = "";
    static String teacherName = "Mr. Williams";
@@ -372,23 +378,23 @@ public final class SimSt implements Serializable {
    {
    	return problemAssessor;
    }
-   
-  
+
+
    public void setProblemAssessor(String paClassName)
    {
-	   
+
 	   try {
            Class paClass = Class.forName(paClassName);
            this.problemAssessor = (AlgebraProblemAssessor) paClass.newInstance();
-          
+
        } catch (Exception e) {
            e.printStackTrace();
            logger.simStLogException(e);
        }
 
    }
-   
-   
+
+
    public static String convertToSafeProblemName(String name)
    {
 	    //Replace symbols unallowed in problem names with stand-in character
@@ -398,22 +404,22 @@ public final class SimSt implements Serializable {
 	    name = name.replaceAll("\\(", SimSt.OPEN_PAREN);
 	    name = name.replaceAll("\\)", SimSt.CLOSE_PAREN);
 	    name = name.replaceAll("\\.", SimSt.DECIMAL);
-	    
-	    
+
+
 	    return name;
    }
 
    public static String problemDelimiter="=";
-  
+
    public void setProblemDelimiter(String problemDelimiter){
 	  this.problemDelimiter=problemDelimiter;
    }
-   
+
    public String getProblemDelimiter(){
-	   return this.problemDelimiter; 
+	   return this.problemDelimiter;
    }
-   
-   
+
+
    public static String convertFromSafeProblemName(String name)
    {
 
@@ -423,7 +429,7 @@ public final class SimSt implements Serializable {
 		 name = name.replaceAll(SimSt.OPEN_PAREN, "(");
 		 name = name.replaceAll(SimSt.CLOSE_PAREN, ")");
 		 name = name.replaceAll(SimSt.DECIMAL, ".");
-		 
+
 		 return name;
    }
 
@@ -434,7 +440,7 @@ public final class SimSt implements Serializable {
    public void setLearnGeneralWmePaths() {
    	generalWmePaths = true;
    }
-   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
+   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
    // Constants
    //
 
@@ -453,7 +459,7 @@ public final class SimSt implements Serializable {
    private int numBadInputRetries = 0;
 
    private transient SimStLogger logger;
-   
+
    public SimStLogger getSimStLogger(){return this.logger;}
 
    private int problemsPerQuiz = 0;
@@ -479,12 +485,12 @@ public final class SimSt implements Serializable {
    }
 
    private InquiryWebAuthoring inquiryWebAuthoring;
-   
-   
+
+
 
    // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
    // Obsolete fields... used when Sim Students were still toddlers...
-   // 
+   //
    // Question - is this actually obsolete? seems to be used in initbackgroundknowledge.
 
    /** cygwin1.dll required for running foil executable on windows.  */
@@ -495,7 +501,7 @@ public final class SimSt implements Serializable {
    public static final String MAC_FOIL = "foil6_mac";
    /** foil executable for nix */
    public static final String NIX_FOIL = "foil6_nix";
-   	
+
    private final String INSTRUCTION_FILE = "step-performed.txt";
    private String FEATURE_PREDICATES_FILE = "feature-predicates.txt";
    private String RHS_OP_FILE = "operators.txt";
@@ -506,7 +512,7 @@ public final class SimSt implements Serializable {
     */
    private String DECOMPOSER_FILE="decomposers.txt";
    /**
-    * file where a list of (fully qualified) class names for WMEConstraintPredicates is stored 
+    * file where a list of (fully qualified) class names for WMEConstraintPredicates is stored
     */
    private String CONSTRAINT_FILE="constraints.txt";
    // private final String WME_TYPE_FILE = "EqTutor-wmeType.clp";
@@ -520,7 +526,7 @@ public final class SimSt implements Serializable {
    private String wmeStructureFile=DEFAULT_STUCTURE_FILE;
 
    /**
-    * 
+    *
     * @return the path to the WMEStructureFile
     */
    public String getWmeStructureFile() {
@@ -530,7 +536,7 @@ public final class SimSt implements Serializable {
     * set the path to the WMEStructureFile
     * @param wmeStructureFile
     */
-   public void setWmeStructureFile(String wmeStructureFile) 
+   public void setWmeStructureFile(String wmeStructureFile)
    {
        this.wmeStructureFile = wmeStructureFile;
        getRete().loadWMEStructureFromFile(wmeStructureFile);
@@ -547,9 +553,9 @@ public final class SimSt implements Serializable {
     * Set the file from which the feature predicates are taken for background knownledge and read the file in
     * @param featurePredicatesFile
     */
-   public void setFeaturePredicateFile(String featurePredicatesFile) 
+   public void setFeaturePredicateFile(String featurePredicatesFile)
    {
-       clearFeaturePredicates();    
+       clearFeaturePredicates();
        FEATURE_PREDICATES_FILE = featurePredicatesFile;
        readFeaturePredicates(FEATURE_PREDICATES_FILE);
    }
@@ -602,12 +608,12 @@ public final class SimSt implements Serializable {
    // flag to indicate whether CTAT is running in a batch mode.
    private boolean isBatchMode = false;
 
-   
+
    //
-   
-   
+
+
 	/**
-    * bit to keep track of whether the decomposeInput flag has already been processed 
+    * bit to keep track of whether the decomposeInput flag has already been processed
     */
    private boolean decomposeInputFlagSet=false;
    private void setIsBatchMode(boolean flag) { isBatchMode = flag; }
@@ -695,7 +701,7 @@ public final class SimSt implements Serializable {
 
    /**
     * Signal Negative Example when SimSt makes a wrong step during Interactive Learning
-    * 
+    *
     */
 
    private boolean ilSignalNegative = true;
@@ -715,7 +721,7 @@ public final class SimSt implements Serializable {
    }
 
    /**
-    * flag to indicate whether SimSt should attempt 
+    * flag to indicate whether SimSt should attempt
     * to verify the consistency of number of FoA
     */
    private boolean verifyNumFoA = false;
@@ -724,15 +730,15 @@ public final class SimSt implements Serializable {
 
    public /*private*/ boolean decomposeInput;
    /**
-    * 
-    * @return true if SimSt is using decomposed 
+    *
+    * @return true if SimSt is using decomposed
     */
    public boolean getDecomposeInput()
    {
        return decomposeInput;
    }
    /**
-    * set the flag as to whether SimSt should decompose input, 
+    * set the flag as to whether SimSt should decompose input,
     * if true, initialize decomposers, if false set decomposer list to null
     * @param decompose true if SimSt should decompose input false otherwise
     */
@@ -784,9 +790,9 @@ public final class SimSt implements Serializable {
    public SimStBackendExternal webAuthoringBackend=null;
    public void setWebAuthoringBackend(SimStBackendExternal webAuthBackend){ webAuthoringBackend = webAuthBackend;}
    public SimStBackendExternal getWebAuthoringBackend(){ return this.webAuthoringBackend;}
-   
+
    /**
-    * if true, SimSt will attempt to automagically reorder the focus of attention in a consistent fashion 
+    * if true, SimSt will attempt to automagically reorder the focus of attention in a consistent fashion
     */
    private static boolean autoOrderFOA=true;
 
@@ -797,7 +803,7 @@ public final class SimSt implements Serializable {
    /**
     * set whether SimSt should automatically try and order focus of attention based on the VALUES
     * note that this ignores topological location of the foa
-    * @param doAutoOrderFOA 
+    * @param doAutoOrderFOA
     */
    public void setAutoOrderFOA(boolean doAutoOrderFOA)
    {
@@ -819,7 +825,7 @@ public final class SimSt implements Serializable {
    // rule file
    private String userDefSymbols = null;
    public void setUserDefSymbols(String userDefSymbols) {
-       this.userDefSymbols = userDefSymbols; 
+       this.userDefSymbols = userDefSymbols;
    }
    public String getUserDefSymbols() {
        return this.userDefSymbols;
@@ -827,7 +833,7 @@ public final class SimSt implements Serializable {
 
    /*    private static String domainName = "algebra"; //default is "algebra"
    public void setDomainName(String dn) {
-       domainName = dn; 
+       domainName = dn;
    }
    public static String getDomainName() {
        return domainName;
@@ -835,7 +841,7 @@ public final class SimSt implements Serializable {
     */
    private static String predictObservableActionName = "predict-algebra-input";
    public static void setPredictObservableActionName(String name) {
-       predictObservableActionName = name; 
+       predictObservableActionName = name;
    }
    public static String getPredictObservableActionName() {
        return predictObservableActionName;
@@ -855,21 +861,36 @@ public final class SimSt implements Serializable {
    // Behavior Recorder
    //
    // 2/03/2006 16:36:00
-   // Due to a complication in intialization, it's decided to be static 
+   // Due to a complication in intialization, it's decided to be static
    private static String projectDir = null;
-   public String getProjectDir() {
+   public static String getProjectDir() {
        if ( projectDir == null ) {
            projectDir = new File(".").getPath();
        }
-       return projectDir; 
+       return projectDir;
    }
    public static void setProjectDir( String pDir ) {
    	if(trace.getDebugCode("miss"))trace.out("miss", "ProjectDir set to " + pDir );
        projectDir = pDir;
    }
-   
+
+   /**
+    * This variable is used to set user bundle directory in webaplus and watson
+    */
+   private String userBundleDirectory = null;
+
+   public String getUserBundleDirectory() {
+	   if (userBundleDirectory == null && runType.equalsIgnoreCase("springboot")) {
+		   trace.err("Missing path for user bundle directory");
+	   }
+	   return userBundleDirectory;
+   }
+   public void setUserBundleDirectory(String directory) {
+	   userBundleDirectory = directory;
+   }
+
    /***
-    *  This variable is meant for setting the project directory in the servlet 
+    *  This variable is meant for setting the project directory in the servlet
     */
    private String projectDirectory = null;
 
@@ -882,8 +903,8 @@ public final class SimSt implements Serializable {
 	     projectDirectory = directory;
    }
 
-   
-  
+
+
    // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
    // Student Interface class name
    // Mon Apr 24 22:27:31 2006
@@ -925,7 +946,7 @@ public final class SimSt implements Serializable {
    // Sim. St.related functions are turned on), you may still want
    // Sim. St. not to learn anything (most likely due to a debugging
    // purpose)
-   // 
+   //
    private boolean missHibernating = false;
    public void setMissHibernating( boolean status ) {
        this.missHibernating = status;
@@ -936,15 +957,15 @@ public final class SimSt implements Serializable {
    /**
     * (@link WMEChunkLoader) function used to load  decomposed chunks into working memory
     */
-   public /*private*/ transient WMEChunkLoader chunkLoadingModelTracingFunction; 
+   public /*private*/ transient WMEChunkLoader chunkLoadingModelTracingFunction;
    /**
     * A vector of decomposers to be applied to inputs
     */
-   private transient Vector /*of Decomposer*/<Decomposer> decomposers; 
+   private transient Vector /*of Decomposer*/<Decomposer> decomposers;
 
    // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
    // WME definitions
-   // 
+   //
 
    // Name of the file where WME types are defined
    private String wmeTypeFile = null;
@@ -969,9 +990,9 @@ public final class SimSt implements Serializable {
        }
    }
 
-   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
+   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
    // A list of predicates
-   // 
+   //
    private  transient Vector /* String */<String> predicates = new Vector<String>();
    /**
     * a list of predicates(FeaturePredicate objects) that need to be pattern matched as WME fact rather than test patterns
@@ -980,13 +1001,13 @@ public final class SimSt implements Serializable {
 
    /**
     * a list of fully qualified predicate names used by WMEConstraints
-    * 
+    *
     */
    private Vector /*of String*/<String> constraintPredicateNames=new Vector<String>();
    private void addFeaturePredicate( String fp ) {
 	String className = fp.substring( 0, fp.indexOf("(") );
 	FeaturePredicate predicate=FeaturePredicate.getPredicateByClassName(className);
-	
+
        if(chunkLoadingModelTracingFunction!=null&& decomposeInput)
        {
            if(trace.getDebugCode("miss"))trace.out("miss", "predicate: " + predicate.toString() + "predicate.doTestAsWME: " + predicate.doTestAsWME());
@@ -1000,7 +1021,7 @@ public final class SimSt implements Serializable {
 
 	// If this Feature has a description, then read it and add to the KB
 	// We always wanted to get the description, so let's not put it in the if
-	
+
 	if(predicate.getFeatureDescription().isDescribable()) {
 	    // Add the description of the feature to our KB - Huan Truong
 	    if(trace.getDebugCode("sstt"))trace.out("sstt", "Got a describable predicate: " + (predicate.getFeatureDescription()).getFeatureName());
@@ -1050,7 +1071,7 @@ public final class SimSt implements Serializable {
 
    // Sat Nov  4 16:31:41 EST 2006 :: Noboru
    // For a study with large data set, the cache capacity for FeaturePredicate must
-   // be limited to avoid a memory error. 
+   // be limited to avoid a memory error.
    public static int FP_CACHE_CAPACITY = 50;
    public void setFpCacheCapacty(int n) { FP_CACHE_CAPACITY = n; }
 
@@ -1066,7 +1087,7 @@ public final class SimSt implements Serializable {
 
    // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
    // A list of operator symbols
-   // 
+   //
    private final String VOID_OP_CLASS = "edu.cmu.pact.miss.VoidOp";
 
    private final String[] defaultRhsOperators = {
@@ -1129,7 +1150,7 @@ public final class SimSt implements Serializable {
    	if(trace.getDebugCode("miss"))trace.out("miss", "------------------------------");
    	Set set = OpFreqCountHashMap.entrySet();
    	Iterator i = set.iterator();
-   	
+
    	while(i.hasNext()) {
    		Map.Entry me = (Map.Entry)i.next();
    		if(trace.getDebugCode("miss"))trace.out("miss", me.getKey() + "        " + me.getValue());
@@ -1168,11 +1189,11 @@ public final class SimSt implements Serializable {
    }
 
    void printJessToOperatorName() {
-   	
+
    	if(trace.getDebugCode("miss"))trace.out("miss", "------------------------------");
    	Set set = JessToOperatorName.entrySet();
    	Iterator i = set.iterator();
-   	
+
    	while(i.hasNext()) {
    		Map.Entry me = (Map.Entry)i.next();
    		if(trace.getDebugCode("miss"))trace.out("miss", me.getKey() + "        " + me.getValue());
@@ -1213,19 +1234,19 @@ public final class SimSt implements Serializable {
        return inputMatcherInstance;
    }
 
-   
-   
-   
+
+
+
    // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
    // Domain dependent matching function for arguments (input & output)
    // for the operators
    //
-   /*Domain dependent type matcher, set by command line argument -ssTypeChecker.*/ 
+   /*Domain dependent type matcher, set by command line argument -ssTypeChecker.*/
    private static String typeMatcher = "edu.cmu.pact.miss.FeaturePredicate.isCompatibleType";
    public static String getTypeMatcher() {    return typeMatcher; }
    public void setTypeMatcher(String typeMatcher) {  SimSt.typeMatcher = typeMatcher; }
-   
-   /*Domain dependent type checker, set by command line argument -ssTypeChecker.*/ 
+
+   /*Domain dependent type checker, set by command line argument -ssTypeChecker.*/
    private static String typeChecker = "edu.cmu.pact.miss.FeaturePredicate.valueTypeForAlgebra";
    public static String getTypeChecker() {
 	   return typeChecker;
@@ -1233,9 +1254,9 @@ public final class SimSt implements Serializable {
    public static void setTypeChecker(String typeMatcher) {
        SimSt.typeChecker = typeMatcher;
    }
-   
-   
-   
+
+
+
    //domain dependent method that checks if a skill is valid or not.
    private static String skillChecker = "edu.cmu.pact.miss.userDef.algebra.EqFeaturePredicate.isValidSimpleSkill";
    public static String getSsValidSkillChecker() {
@@ -1244,8 +1265,8 @@ public final class SimSt implements Serializable {
    public void setSsValidSkillChecker(String skillChecker) {
        SimSt.skillChecker = skillChecker;
    }
-   
-   
+
+
    // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
    // A number of problems demonstrated
    //
@@ -1265,10 +1286,10 @@ public final class SimSt implements Serializable {
    // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
    // Timing to relearn production rules
    //
-   // By default, the SimStudent relearn production rules only when they 
-   // are incorrect.  Setting forceToUpdateModel to be true breaks this 
+   // By default, the SimStudent relearn production rules only when they
+   // are incorrect.  Setting forceToUpdateModel to be true breaks this
    // constraint.
-   // 
+   //
    private boolean forceToUpdateModel = false;
    private boolean isForceToUpdateModel() { return forceToUpdateModel; }
    public void setForceToUpdateModel( boolean flag ) {
@@ -1284,11 +1305,11 @@ public final class SimSt implements Serializable {
    private boolean showBottomOutHint=true;
    public boolean getShowBottomOutHint(){return this.showBottomOutHint;}
    public void setShowBottomOutHint(boolean flag){this.showBottomOutHint=flag;}
-   
+
    // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
    // Fri Jun 16 22:29:27 2006 Noboru
    // Flag telling if the rule is just learned or not
-   // 
+   //
    // Useful only for the validation test in a batch mode.  Needed to
    // implement to plot a learning curve only with the data points
    // for newly learned rules (otherwize, the same rule would be plotted
@@ -1304,16 +1325,16 @@ public final class SimSt implements Serializable {
        return (String)ruleLearned.get(ruleName);
    }
    private boolean isRuleLearned( String ruleName ) {
-       String ruleLearned = getRuleLearned(ruleName); 
+       String ruleLearned = getRuleLearned(ruleName);
        return ruleLearned != null && ruleLearned.equals(RULE_LEARNED);
-   }    
+   }
    private void resetRuleLearned() {
        ruleLearned = new edu.cmu.pact.miss.HashMap();
    }
-  
+
    // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-   // Memory Window 
-   // 
+   // Memory Window
+   //
    // By default, consider all instructions demonstrated
    private int memoryWindowSize = Integer.MAX_VALUE;
    int getMemoryWindowSize() { return memoryWindowSize; }
@@ -1365,39 +1386,39 @@ public final class SimSt implements Serializable {
 	public static String COGNITIVE_AND_METACOGNITIVE="MetacognitiveAndCognitive";
 	public static String METACOGNITIVE="MetaCognitive";
 	public static String COGNITIVE="Cognitive";
-	
+
 	 /** Boolean flag to indicate if the meta tutor is enabled or not.*/
 	private transient String ssMetaTutorModeLevel = COGNITIVE_AND_METACOGNITIVE;
 
 	public String getSsMetaTutorModeLevel() {
-		
+
 			return ssMetaTutorModeLevel;
 	}
 	public void setSsMetaTutorModeLevel(String ssMetaTutorMode) {
-		this.ssMetaTutorModeLevel = ssMetaTutorMode;//COGNITIVE_AND_METACOGNITIVE;	
+		this.ssMetaTutorModeLevel = ssMetaTutorMode;//COGNITIVE_AND_METACOGNITIVE;
 	}
-		
-		
+
+
 	 /** Boolean flag to indicate if the meta tutor is enabled or not.*/
 	   private transient boolean ssWebAuthoringMode = false;
        public static boolean WEBAUTHORINGMODE = false;
 	   public boolean isSsWebAuthoringMode() {
 			return ssWebAuthoringMode;
 		}
-	   
+
 	   public void setSsWebAuthoringMode(boolean ssWebAuthorMode) {
 			FoilData.WEBAUTHORINGMODE = ssWebAuthorMode;
 			this.ssWebAuthoringMode = ssWebAuthorMode;
 			WEBAUTHORINGMODE = ssWebAuthorMode;
 		}
-		
+
 	   /*Boolean indicating if we are in CogTutor mode*/
-	   private transient boolean ssCogTutorMode=false; 
+	   private transient boolean ssCogTutorMode=false;
 	   public boolean isSsCogTutorMode(){return this.ssCogTutorMode;}
 	   public void setSsCogTutorMode(boolean flag){this.ssCogTutorMode=flag;}
-	   
+
 	   /*Boolean indicating if we are in AplusControl mode. This is a special version
-	    * of CogTutor mode: Its a cog tutor that is closer to APLUS.*/	   
+	    * of CogTutor mode: Its a cog tutor that is closer to APLUS.*/
 	   private transient boolean ssAplusCtrlCogTutorMode=false;
 	   public boolean isSsAplusCtrlCogTutorMode(){return this.ssAplusCtrlCogTutorMode;}
 	   public void setSsAplusCtrlCogTutorMode(boolean flag){
@@ -1405,9 +1426,9 @@ public final class SimSt implements Serializable {
 		   this.ssAplusCtrlCogTutorMode=flag;
 		   SimStPLE.isAplusControlMode=flag;
 	   }
-	   	   
-	
-	 /** Boolean flag to indicate if the adhoc for fraction addition should 
+
+
+	 /** Boolean flag to indicate if the adhoc for fraction addition should
 	  * be enabled or not.
 	  * */
 	   private transient boolean ss2014FractionAdditionAdhoc = false;
@@ -1417,12 +1438,12 @@ public final class SimSt implements Serializable {
 		}
 		public void setSs2014FractionAdditionAdhoc(boolean flag) {
 			this.ss2014FractionAdditionAdhoc = flag;
-			
+
 		}
-		
-		
-		
-	/**	Keeps track of the correct and incorrect quiz items when SimStudent takes a 
+
+
+
+	/**	Keeps track of the correct and incorrect quiz items when SimStudent takes a
 	 * quiz. Is enabled only when the MetaTutor is enabled for SimStudent. */
 	private transient APlusQuizProblemAbstractor quizProblemAbstractor = null;
 
@@ -1447,10 +1468,10 @@ public final class SimSt implements Serializable {
 		}
 	}
 
-	// if set to be true, memory window is defined for each individual rules.  
-   // Thus, for example, having memory window of "2" means that for all 
-   // rule applications, the SimulatedStudent has an aceess fot the last two 
-   // instances of the rule application. 
+	// if set to be true, memory window is defined for each individual rules.
+   // Thus, for example, having memory window of "2" means that for all
+   // rule applications, the SimulatedStudent has an aceess fot the last two
+   // instances of the rule application.
    private boolean memoryWindowOverIndividualRules = false;
    private boolean isMemoryWindowOverIndividualRules() {
        return memoryWindowOverIndividualRules;
@@ -1459,9 +1480,9 @@ public final class SimSt implements Serializable {
        memoryWindowOverIndividualRules = flag;
    }
 
-   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
+   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
    // A list of demonstrated steps
-   // 
+   //
 
    // A hash table storing instructions where the key is the name of
    // each instruction and the value is a vector of instructions with
@@ -1474,16 +1495,16 @@ public final class SimSt implements Serializable {
    public List<Instruction> getNegativeExamples()
    {
 		if(trace.getDebugCode("nbarbaDebug"))trace.out("nbarbaDebug", "retreiving negative examples, which are: " + negativeExamples);
-		
+
    	return negativeExamples;
    }
    public void addNegativeExample(Instruction example)
    {
-	
+
 	   if(trace.getDebugCode("nbarbaDebug"))trace.out("nbarbaDebug", "Marking negative example: " + example);
-	   
+
    	negativeExamples.add(example);
-   	
+
    	String name = example.getName();
 
        Vector /* Instruction */<Instruction> instructions = this.negativeInstructions.get( name );
@@ -1502,9 +1523,9 @@ public final class SimSt implements Serializable {
    // Tue Jun 6 14:40:00 Noboru
    // Need to aggregate all instructions to make it possible to deal with the
    // memory window issue (have SimSt limited access to the past instructions)
-   // The basic idea is to write a filter that works along with the old 
-   // code (e.g., getInstructionsFor) to filter out the instructions that do not 
-   // fall into the memory window. 
+   // The basic idea is to write a filter that works along with the old
+   // code (e.g., getInstructionsFor) to filter out the instructions that do not
+   // fall into the memory window.
    private Vector /* Instruction */<Instruction> allInstructions = new Vector<Instruction>();
    public Vector<Instruction> getAllInstructions() { return allInstructions; }
    private void resetAllInstructions() {
@@ -1520,8 +1541,8 @@ public final class SimSt implements Serializable {
        return prettyNumAllInstructions.substring( numLen < 6 ? numLen -3 : 3);
    }
 
-   
-   
+
+
    // Returns a number of instructions only within the memory window
    private int numInstructions = 0;
    private int getNumInstructions() { return this.numInstructions; }
@@ -1529,22 +1550,22 @@ public final class SimSt implements Serializable {
    public Instruction getInstructionByID(String id){
 	   Instruction ret=null;
 	   Vector<Instruction> allInst=getAllInstructions();
-	   
+
 	   for (Instruction inst:allInst){
 		   if (inst.getInstructionID()!=null && inst.getInstructionID().equals(id)){
 			   ret=inst;
 			   break;
 		   }
-			   
+
 	   }
 	   return ret;
    }
-   
-   
-   
+
+
+
    // adds newInstruction to the list of instructions with that name.
    public void addInstruction( Instruction newInstruction ) {
-	   
+
        String name = newInstruction.getName();
 
        Vector /* Instruction */<Instruction> instructions =
@@ -1613,7 +1634,7 @@ public final class SimSt implements Serializable {
    // Called when the skill name of the specified instruction has
    // been changed
    public /*private*/ void sortInstruction( Instruction instruction ) {
-       // Delete an "old" instruction once that has been renamed (hence 
+       // Delete an "old" instruction once that has been renamed (hence
        // placed in an inapproprite place
        removeInstruction( instruction );
        // Then add the instruction again to the appropriate place
@@ -1676,12 +1697,12 @@ public final class SimSt implements Serializable {
     * < MAIN::cell|commTable2_C1R2|b
     *   MAIN::cell|commTable2_C1R1|b-1
     *   MAIN::cell|commTable1_C1R1|5 >
-    *   
+    *
     * The first element is "input"
     */
    private Vector /* String */ getFocusOfAttention(String name) {
 
-       Vector /* String */ foa = null; 
+       Vector /* String */ foa = null;
 
        if(trace.getDebugCode("miss"))trace.out("miss", "getFocusOfAttention");
        Vector /* Instruction */<Instruction> instructions = getInstructionsFor(name);
@@ -1696,7 +1717,7 @@ public final class SimSt implements Serializable {
    //24 April 2007
    //
    public /*private*/ Vector /* Instruction */<Instruction> getInstructionsFor( String name ) {
-	   
+
    	Vector /* Instruction */ tmpInstructions = this.instructions.get( name );
 
        // 8 September 2007: tmpInstructions can get null because:
@@ -1707,7 +1728,7 @@ public final class SimSt implements Serializable {
 
        if (isMemoryWindowOverIndividualRules()) {
 
-           // Memory window works on individual rules separately, i.e., the SimStudent 
+           // Memory window works on individual rules separately, i.e., the SimStudent
            // has an access to the last N rule applications for all rules
            for (int i = 0; i < getMemoryWindowSize() && i < tmpInstructions.size(); i++) {
                instructions.add((Instruction)tmpInstructions.get(i));
@@ -1720,19 +1741,19 @@ public final class SimSt implements Serializable {
            for (int i = 0; i < tmpInstructions.size(); i++) {
                Instruction instruction = (Instruction)tmpInstructions.get(i);
               // trace.out("miss", "Instruction: " + instruction);
-               int age = getAllInstructions().size() - getAllInstructions().indexOf(instruction) -1; 
+               int age = getAllInstructions().size() - getAllInstructions().indexOf(instruction) -1;
                if (age < getMemoryWindowSize()) {
                    instructions.add(instruction);
                  //  trace.out("miss", "IN.....");
                }
            }
        }
-       
+
        //20Dec2006: Now that we are skipping steps with different foaSizes, this code is probably unnecessary
        //11Dec2006:   <unnecessary-code>
        if (verifyNumFoA()){
            Instruction firstInst = instructions.get(0);
-           Instruction currInst = instructions.get(1);	    
+           Instruction currInst = instructions.get(1);
            int firstInstFoaSize = firstInst.getFocusOfAttention().size();
            int currInstFoaSize = currInst.getFocusOfAttention().size();
 
@@ -1744,7 +1765,7 @@ public final class SimSt implements Serializable {
            }
        }
        // </unnecessary-code>
-       //trace.out("returning instructions " + instructions); 
+       //trace.out("returning instructions " + instructions);
        return instructions;
    }
 
@@ -1811,11 +1832,11 @@ public final class SimSt implements Serializable {
    /**
     * Called when [Load Instructions] menu item is selected from Miss Console.
     * Implemented 6/8/06 - Reid Van Lehn <rvanlehn@mit.edu>
-    * Regenerates previously saved instructions based on saved FoA results. 
-    * Replaces any instructions currently in memory, so prompt user. 
-    * 
+    * Regenerates previously saved instructions based on saved FoA results.
+    * Replaces any instructions currently in memory, so prompt user.
+    *
     * Bugfix: Reads instructions in backwards from file to ensure they are in
-    * correct chronological order. 
+    * correct chronological order.
     */
    public void loadInstructions(File input) throws Exception {
 
@@ -1825,9 +1846,9 @@ public final class SimSt implements Serializable {
        		   loading instructions. */
        FileInputStream fis = new FileInputStream(input);
        fis.read(fileInput); //reads data into byte array
-       fis.close(); 
-     
-       
+       fis.close();
+
+
        String inputString = new String(fileInput);
        // Now split into individual instructions
        String[] instrStrings = inputString.split("\\s~~~\\s");
@@ -1844,7 +1865,7 @@ public final class SimSt implements Serializable {
        		double percentProgress = (double)(instrStrings.length-i)/instrStrings.length;
        		getMissController().getSimStPLE().getSimStPeerTutoringPlatform().setWaitProgress(percentProgress);
        	}
-       	
+
            tokenizer = new StringTokenizer(instrStrings[i], "\n");
            foa = new Vector<String>();
            //Name is first token
@@ -1859,10 +1880,10 @@ public final class SimSt implements Serializable {
                    foa.addElement(curToken);
                }
                else if (curToken.startsWith("PreviousId")){
-            	   
+
                }
                else if (curToken.startsWith("Id")){
-            	   
+
                }
                else if (curToken.length() > 1) {
                    //not foa and not whitespace, so action
@@ -1876,7 +1897,7 @@ public final class SimSt implements Serializable {
 	            Instruction newInstr = new Instruction(instrName, foa);
 	            newInstr.setAction(action);
 	            addInstruction(newInstr);
-	            
+
 	            //If the instruction's name ends with -#, it is a disjunct
 	            if(instrName.matches(".*-\\d*$"))
 	            {
@@ -1910,17 +1931,17 @@ public final class SimSt implements Serializable {
    }
 
    public void loadInstnDeSerialize(File inputFile) {
-     	 
-     	 
+
+
    	// file name in which the object is serialized
    	File filename = inputFile;
    	SimSt simStObj = null;
-   	
+
 
    	try {
    		FileInputStream fis = new FileInputStream(filename);
    		ObjectInputStream ois = new ObjectInputStream(fis);
-   		
+
    		simStObj = (SimSt) ois.readObject();
    		ois.close();
    		fis.close();
@@ -1928,9 +1949,9 @@ public final class SimSt implements Serializable {
    	} catch(IOException e) {
    		e.printStackTrace();
    	} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-				
+		e.printStackTrace();
+	}
+
    	// Restore the current simStudent to the same state
    	this.instructions = simStObj.instructions;
    	this.numInstructions = simStObj.numInstructions;
@@ -1941,25 +1962,25 @@ public final class SimSt implements Serializable {
    	this.negativeExamples = simStObj.negativeExamples;
    	this.solvedQuizProblem = simStObj.solvedQuizProblem;
    	this.skillSliderNameValuePair = simStObj.skillSliderNameValuePair;
-   
-   	
+
+
    	generateDisjunctiveSkillNames();
    	setRuleCount();
-   		
+
    	// Write the productionRules to the file
    	saveProductionRules(SAVE_PR_STEP_BASE);
    	if(trace.getDebugCode("miss"))trace.out("miss", "Deserialization done with inputFile");
-   	
-   	
-  
-   	
-   	
+
+
+
+
+
    }
 
    public void loadInstnDeSerialize(SimSt ssObj) {
 
    	setUpFoilDir(ssObj);
-   	
+
    	// Restore the current simStudent to the same state
    	this.instructions = ssObj.instructions;
    	this.numInstructions = ssObj.numInstructions;
@@ -1970,10 +1991,10 @@ public final class SimSt implements Serializable {
    	this.negativeExamples = ssObj.negativeExamples;
    	this.solvedQuizProblem = ssObj.solvedQuizProblem;
    	this.skillSliderNameValuePair = ssObj.skillSliderNameValuePair;
-   	
+
    	generateDisjunctiveSkillNames();
    	setRuleCount();
-   	
+
    	// Write the productionRules to the file
    	saveProductionRules(SAVE_PR_STEP_BASE);
    	if(trace.getDebugCode("miss"))trace.out("miss", "Deserialization done with ssObj");
@@ -1988,7 +2009,7 @@ public final class SimSt implements Serializable {
    			highestRule = ((Rule) o).identity;
    	}
    	Rule.count = highestRule;
-   	
+
    }
 
    public void signalInstructionAsNegativeExample(Instruction instruction) {
@@ -2001,7 +2022,7 @@ public final class SimSt implements Serializable {
        if(foilData != null)
        {
 	        foilData.signalTargetExplicitNegative(instruction); //call this only when instArity >= foilData.arity
-	        
+
 	        Vector <Instruction> instructions = negativeInstructions.get(skillName);
 	        if (instructions != null && !instructions.isEmpty()) {
 	        	for (int i = 0; i < instructions.size(); i++) { //for each instruction
@@ -2010,12 +2031,12 @@ public final class SimSt implements Serializable {
 	                foilData.addNegativeInstruction( inst );
 	        	}
 	        }
-	        
+
 	        //this saves the foilData into the FOIL input file.
 	        charmFoil(foilData);
 	        saveProductionRules(SimSt.SAVE_PR_STEP_BASE);
-	        
-	        
+
+
        }
        else
        {
@@ -2064,10 +2085,10 @@ public final class SimSt implements Serializable {
    public int negateBadNegativeExample(Instruction instruction)
    {
    	Vector<Instruction> negativeExamples = negativeInstructions.get(instruction.getName());
-   	
+
    	if(negativeExamples == null)
    		return 0;
-   	
+
        Vector<Instruction> negate = new Vector<Instruction>();
        for(Instruction inst:negativeExamples)
        {
@@ -2084,7 +2105,7 @@ public final class SimSt implements Serializable {
        		negativeExamples.remove(inst);
        	}
        	negativeInstructions.put(instruction.getName(), negativeExamples);
-       	
+
 
         List<Instruction> negExamples = getNegativeExamples();
            for(Instruction inst:negate)
@@ -2097,7 +2118,7 @@ public final class SimSt implements Serializable {
        {
        	//JOptionPane.showMessageDialog(null, "No negative example negated by\n"+instruction+" in \n"+negativeExamples);
        }
-        
+
        return negate.size();
 
    }
@@ -2113,18 +2134,22 @@ public final class SimSt implements Serializable {
    	String filename = "simst.ser";
    	File serFileUser = null;
    	FileOutputStream serFileUserStream = null;
-   	if(getUserID() != null) {
+   	if(getUserID() != null && !runType.equalsIgnoreCase("springBoot")) {
    		filename = "simst-"+getUserID()+".ser";
-//   		filename = getUserID()+"_simst.ser";
    	}
-   	serFileUser = new File(getLogDirectory(), filename);
-   	
+
+   	if (runType.equalsIgnoreCase("springBoot")) {
+   		serFileUser = new File(getUserBundleDirectory(), filename);
+   	} else {
+   		serFileUser = new File(getLogDirectory(), filename);
+   	}
+
    	final SimSt simStObj = this;
    	FileOutputStream fos = null;
    	ObjectOutputStream oos = null;
-   	
+
    	if(!isWebStartMode()) {
-   		
+
    		try {
 //				fos = new FileOutputStream(filename);
    				fos = new FileOutputStream(serFileUser);
@@ -2141,7 +2166,7 @@ public final class SimSt implements Serializable {
 				e.printStackTrace();
 			}
    	} else {
-   		
+
    		try {
 				fos = new FileOutputStream(WebStartFileDownloader.SimStWebStartDir+filename);
 		    	oos = new ObjectOutputStream(fos);
@@ -2178,13 +2203,13 @@ public final class SimSt implements Serializable {
    }
 
    public void archiveAndSaveFilesOnLogout() {
-   	
+
    	if(!isWebStartMode())
    		return;
-   	
+
    	try {
    		synchronized(simStLock) {
-   			
+
 				FileZipper.archiveFiles(getUserID());
 				getMissController().getStorageClient().storeZIPFile("simst-" + userID +"_" + FileZipper.formattedDate()+".zip",
 					WebStartFileDownloader.SimStWebStartDir + userID + "_" + FileZipper.formattedDate()+".zip");
@@ -2196,25 +2221,25 @@ public final class SimSt implements Serializable {
    	}
    }
 
-   
+
    /**
     * Method to solve a problem using the solver
     * @param problem
     * @return
     */
 	public SimStSolver createSimStSolver(String problem){
-		String jessFilesDirectory= getBrController().getPreferencesModel().getStringValue(CTAT_Controller.PROBLEM_DIRECTORY);	
+		String jessFilesDirectory= getBrController().getPreferencesModel().getStringValue(CTAT_Controller.PROBLEM_DIRECTORY);
 		String productionRulesFile=jessFilesDirectory+ SimSt.PRODUCTION_RULE_FILE;
-		String wmeTypesFile=jessFilesDirectory+ SimSt.WME_TYPE_FILE;  
-		String initialFactsFile=jessFilesDirectory+  SimSt.INIT_STATE_FILE; 
+		String wmeTypesFile=jessFilesDirectory+ SimSt.WME_TYPE_FILE;
+		String initialFactsFile=jessFilesDirectory+  SimSt.INIT_STATE_FILE;
 		String pleConfig=getProjectDirectory()+"/"+SimStPLE.CONFIG_FILE;
-		
+
 		SimStSolver solver=new SimStSolver(SimSt.convertFromSafeProblemName(problem),productionRulesFile,wmeTypesFile, initialFactsFile, pleConfig, this ,getBrController().getModelTracer().getRete());
-		
+
 		return solver;
 	}
-	
-	
+
+
    // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
    // Frequency of learning for each rule
    //
@@ -2235,7 +2260,7 @@ public final class SimSt implements Serializable {
    }
 
    // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-   // Logging rule activation 
+   // Logging rule activation
    //
 
    private boolean learningRuleFiringLogged = false;
@@ -2253,7 +2278,7 @@ public final class SimSt implements Serializable {
    public void setLogAgendaRuleFiring(boolean flag) { logAgendaRuleFiring = flag; }
 
    // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-   // Run validation either on the problem basis 
+   // Run validation either on the problem basis
    // or the demonstration basis
    //
    private boolean testOnProblemBasis = true;
@@ -2277,7 +2302,7 @@ public final class SimSt implements Serializable {
 
    // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
    // Statistics of the model tracing attempts
-   // 
+   //
 
    // Number of attempt to model trace
    private  transient HashMap numAttempt = new edu.cmu.pact.miss.HashMap();
@@ -2320,9 +2345,9 @@ public final class SimSt implements Serializable {
        numSuccess = new edu.cmu.pact.miss.HashMap();
    }
 
-   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
+   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
    // Test rule activation
-   // 
+   //
 
    /*
    private boolean useExternalRuleActivationTest = false;
@@ -2345,13 +2370,13 @@ public final class SimSt implements Serializable {
    public final static String RA_TEST_METHOD_TUTOR_SOLVERV2 = "builtInClSolverTutor";
    public final static String RA_TEST_METHOD_JESS_ORACLE = "JessOracle";
    public final static String RA_TEST_METHOD_WEBAUTHORING = "WebAuthoring";
-   
+
 
    // To use another rule-activation test method listed above,
    // you must explicitly specify it in the command line arguments
    // Use "-ssRuleActivationTestMethod" option.
    private String ruleActivationTestMethod = RA_TEST_METHOD_HO;
-   
+
    public String getRuleActivationTestMethod() {
        return this.ruleActivationTestMethod;
    }
@@ -2359,13 +2384,13 @@ public final class SimSt implements Serializable {
    public void setRuleActivationTestMethod(String ruleActivationTestMethod) {
        this.ruleActivationTestMethod  = ruleActivationTestMethod;
    }
-   
-   
+
+
    // To use another quiz grading method listed above,
    // you must explicitly specify it in the command line arguments
    // Use "-ssQuizGradingMethod" option.
    private String quizGradingMethod = RA_TEST_METHOD_TUTOR_SOLVERV2;
-   
+
    public String getQuizGradingMethod() {
        return this.quizGradingMethod;
    }
@@ -2373,63 +2398,63 @@ public final class SimSt implements Serializable {
    public void setQuizGradingMethod(String quizGradingMethod) {
        this.quizGradingMethod  = quizGradingMethod;
    }
-   
+
 
    /*nbarba 06/06/14: package name was hard-coded to SimStAlgebraV8, now its defined by command line argument.
     * */
    private String packageName="SimStAlgebraV8";
   // private String packageName="SimStFractionAdditionV1";
-   
+
    public  void setPackageName(String packageName){
 		   this.packageName=packageName;
    }
-   
+
    public String getPackageName(){
 	   return this.packageName;
    }
-   
-   
+
+
    /*production rule file for jess oracle was hardcoded, not it can be set by command line argument*/
    private String jessOracleProductionFile="productionRulesJessOracle.pr";
-   
+
     public  void setSsJessOracleProductionFile(String oracleFile){
  		   this.jessOracleProductionFile=oracleFile;
     }
-    
+
     public String getSsJessOracleProductionFile(){
  	   return this.jessOracleProductionFile;
     }
-    
-    
-    
-   
+
+
+
+
    /*nbarba 06/19/2014: new pr validation method can be defined to be either "cogfi" (i.e. cognitive fidelity), or "modeltracing"
     * for "quiz" mode, use a problems.txt file.
     * */
    private String prValidationMethod="modeltracing";  //if no arqument is defined, modeltracing validation is defined.
-   
+
    public  void setPrValidationMethod(String prValidationMethod){
 		   this.prValidationMethod=prValidationMethod;
    }
-   
+
    public String getPrValidationMethod(){
 	   return this.prValidationMethod;
    }
-   
-   
+
+
    private String modelTracingValidationOutcomeMethod= MODELTRACING_VALIDATION_METHOD_STRICT;  //if no arqument is defined, modeltracing validation outcome is strict (i.e. T/F C/B/E).
-   
+
    public  void setModelTracingValidationOutcomeMethod(String modelTracingValidationOutcomeMethod){
 		   this.modelTracingValidationOutcomeMethod=modelTracingValidationOutcomeMethod;
    }
-   
+
    public String getModelTracingValidationOutcomeMethod(){
 	   return this.modelTracingValidationOutcomeMethod;
    }
-   
 
-   
-   
+
+
+
    private String hintMethod = AskHint.HINT_METHOD_HD;
 
    public void setHintMethod(String hintMethod) {
@@ -2450,9 +2475,9 @@ public final class SimSt implements Serializable {
    	return this.numBadInputRetries;
    }
 
-   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
+   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
    // Focus of attention:
-   // 
+   //
 
    // A list of focus of attention specified for currently
    // demonstrated step.
@@ -2469,11 +2494,11 @@ public final class SimSt implements Serializable {
 
    public int numCurrentFoA() { return this.currentFoA.size(); }
 
-   public void addFoaString(String name){   
+   public void addFoaString(String name){
 	  this.currentFoA.add(new FoA(name));
    }
-   
-   
+
+
    // A flag showing if Focus Of Attention is specified for the
    // current step.  Reset when a step is demonstrated.
    // private boolean focusOfAttentionSpecified = false;
@@ -2520,7 +2545,7 @@ public final class SimSt implements Serializable {
    public String getTutalkParam() {
 	return tutalkParam;
    }
-   
+
    public boolean getCTIBothStuckTutalkEnabled() {
 	return CTIBothStuckWithtutalkEnabled;
    }
@@ -2537,8 +2562,8 @@ public final class SimSt implements Serializable {
 			   FoA foa = getCurrentFoA().get(i);
            	   foa.resetHighlightWidget();
             }
-	   }    
-       // Empty the FoA list 
+	   }
+       // Empty the FoA list
        currentFoA.clear();
    }
 
@@ -2563,13 +2588,13 @@ public final class SimSt implements Serializable {
        this.getMTRete().getFacts();
    }
 
-   // Rete network 
-   // 
+   // Rete network
+   //
    private transient AmlRete rete = new AmlRete();
-   AmlRete getRete() { 
+   AmlRete getRete() {
        return rete;
    }
-   
+
    private void initRete( String wmeTypeFile, String initalWmeFile ) {
 	   trace.out(" Initializing Rete ");
        try {
@@ -2582,9 +2607,9 @@ public final class SimSt implements Serializable {
        }
    }
 
-  
-  
-   
+
+
+
    MTRete getMTRete() {
        return getBrController().getModelTracer().getModelTracing().getRete();
    }
@@ -2609,10 +2634,10 @@ public final class SimSt implements Serializable {
            logger.simStLogException(e);
        }
    }
-   
-   
-   
-   
+
+
+
+
 
    /* resource getter
    public boolean isResourceGetterDefined() { return foaGetterClassDefined; }
@@ -2633,10 +2658,10 @@ public final class SimSt implements Serializable {
        }
    }
    */
-   
-   
-   
-   
+
+
+
+
    /*
     * Added by Rohan. Implements an Iterative Deepening Search algorithm
     * based upon a heuristic (count of the number of times an operator has
@@ -2679,7 +2704,7 @@ public final class SimSt implements Serializable {
 	public Class getInterfaceElementGetterClass() {
 		return this.interfaceElementGetterClass;
 	}
-	
+
 	private transient InterfaceElementGetter interfaceElementGetter = null;
 	public InterfaceElementGetter getInterfaceElementGetter() {
 		return interfaceElementGetter;
@@ -2698,7 +2723,7 @@ public final class SimSt implements Serializable {
 		}
 	}
 
-	/* 
+	/*
     * This is done to decouple the interface dependent code
     * from the existing code base. The sai can vary depending upon if the
     * interface is a 1 table multiple column format or 3 table single column
@@ -2720,11 +2745,11 @@ public final class SimSt implements Serializable {
 	}
 
 	private transient SAIConverter saiConverter = null;
-	
+
 	public SAIConverter getSAIConverter(){
 		return this.saiConverter;
 	}
-	
+
    public void setSsSaiConverter(String saiConverterClassName) {
 
 		try {
@@ -2766,8 +2791,8 @@ public final class SimSt implements Serializable {
    private transient InputChecker inputChecker = null;
 
    public void setSsInputChecker(String inputCheckerClassName) {
-	   
-	  
+
+
        try {
            Class inputCheckerClass = Class.forName(inputCheckerClassName);
            this.inputChecker = (InputChecker)inputCheckerClass.newInstance();
@@ -2785,7 +2810,7 @@ public final class SimSt implements Serializable {
 	   startStateCheckerClassDefined = flag;
    }
    private transient StartStateChecker startStateChecker = null;
-   public void setStartStateChecker(String startStateCheckerClassName) {  
+   public void setStartStateChecker(String startStateCheckerClassName) {
        try {
            Class inputCheckerClass = Class.forName(startStateCheckerClassName);
            this.startStateChecker  = (StartStateChecker) inputCheckerClass.newInstance();
@@ -2798,25 +2823,25 @@ public final class SimSt implements Serializable {
    public StartStateChecker getStartStateChecker() {
 	   	return this.startStateChecker;
 	}
-   
+
   /* public boolean isSolvable(String oracleClass,String problemName,BR_Controller brController){
 		boolean answer = true;
-		
-		
+
+
 		SimStProblemGraph brGraph = new SimStProblemGraph();
 	    SimStNode problemNode = new SimStNode(SimSt.convertToSafeProblemName(problemName),brGraph);
 		brGraph.addSSNode(problemNode);
 		brController.getProblemModel().setStartNode(problemNode);
-		
-		
-		
-		
+
+
+
+
 		Class[] parameters = new Class[3];
 		parameters[0] = String.class;
 		parameters[1] = ProblemNode.class;
 		parameters[2] = BR_Controller.class;
-		
-		
+
+
 		try {
 			Class oracle = Class.forName("edu.cmu.pact.miss."+oracleClass);
 			Object oracleObj = oracle.newInstance();
@@ -2833,18 +2858,18 @@ public final class SimSt implements Serializable {
 				else if(nextStep.getI().equalsIgnoreCase("done") || nextStep.getS().equalsIgnoreCase("done"))
 					break;
 				else{
-					SimStNode nextNode = new SimStGraphNavigator().simulatePerformingStep(problemNode,nextStep);	
+					SimStNode nextNode = new SimStGraphNavigator().simulatePerformingStep(problemNode,nextStep);
 					problemNode = nextNode;
 					//System.out.println(" Next Node : "+nextStep.toString());
 				}
-								
+
 			}
 			//System.out.println(" After the while loop ");
 			brGraph.clear();
 			brController.createStartState(problemName);
 			//SimStNode previous = new SimStNode(SimSt.convertToSafeProblemName(problemName),brGraph);
 			//brController.getProblemModel().setStartNode(previous);
-			
+
 		} catch (NoSuchMethodException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -2872,12 +2897,12 @@ public final class SimSt implements Serializable {
 		}finally{
 			brGraph.clear();
 		}
-		 
-		
+
+
 		return answer;
 	}*/
-   
-   
+
+
    /* @author jinyul */
    // Domain dependent ad-hoc method to identify skill name
    public /*private*/ boolean isSkillNameGetterDefined() { return skillNameGetterClassDefined; }
@@ -2909,7 +2934,7 @@ public final class SimSt implements Serializable {
            logger.simStLogException(e);
    	}
    }
-   
+
    public void setSsNearSimilarProblemsGetter(String nearSimilarProblemsGetterClassName) {
 	   	try {
 	   		Class nearSimilarProblemsGetterClass = Class.forName(nearSimilarProblemsGetterClassName);
@@ -2953,7 +2978,7 @@ public final class SimSt implements Serializable {
 
 
 
-   
+
    public InputChecker getInputChecker() {
    	return this.inputChecker;
    }
@@ -2972,7 +2997,7 @@ public final class SimSt implements Serializable {
 					getMissController().getSimStPLE().giveDialogMessage(message);
 				else
 					displayMessage("",message);
-	    	} 
+	    	}
 			else
 			{
 				message = BAD_INPUT_MESSAGE;
@@ -2981,16 +3006,16 @@ public final class SimSt implements Serializable {
 				else
 					displayMessage("",message);
 			}
-	    	
-	    	
 
-	    	
+
+
+
 	    	//if(getMissController().getSimStPLE() != null && !getBrController().isAcceptingStartStateMessages())
 	    		//getMissController().getSimStPLE().unblockOnly(selection);
-	    	
-	    	
-	    	
-	    	
+
+
+
+
    	}
        //if(isSsMetaTutorMode()) {
        //	getModelTraceWM().getEventHistory().add(0, getModelTraceWM().new Event(SimStLogger.BAD_INPUT_RECEIVED));
@@ -3002,7 +3027,7 @@ public final class SimSt implements Serializable {
    public SkillNameGetter getSkillNameGetter() {
    	return this.skillNameGetter;
    }
-   
+
    /* @author Tasmia */
    public NearSimilarProblemsGetter getNearSimilarProblemsGetter() {
    	return this.nearSimilarProblemsGetter;
@@ -3037,35 +3062,34 @@ public final class SimSt implements Serializable {
        // -
        FoA(Object widget) {
            this.widget = widget;
-           if(trace.getDebugCode("foagetter"))trace.out("foagetter", "FoA constructor: className = " + getWidgetClass().toString());           
+           if(trace.getDebugCode("foagetter"))trace.out("foagetter", "FoA constructor: className = " + getWidgetClass().toString());
            Class[] argTypes = null;
            Object[] args = null;
            Method getCommNameMethod = null;
            try {
-        	   if(!runType.equals("springBoot")) {
+        	   if(runType.equals("springBoot")) {
+        		   this.commName = (String) widget;
+        	   } else {
         		   getCommNameMethod = getWidgetClass().getMethod( "getCommName", argTypes );
                    this.commName = (String)getCommNameMethod.invoke( getWidget(), args );
-        	   } else {
-        		   this.commName = (String) widget;
         	   }
-               
            } catch (Exception e) {
                e.printStackTrace();
                logger.simStLogException(e);
            }
-                   
+
        }
 
 
-       
+
        /**/
        FoA(String name){
     	   this.commName=name;
 
        }
-       
-       
-       
+
+
+
        // - FoA
        // - Methods - - - - - - - - - - - - - - - - - - - - - -
        // -
@@ -3073,16 +3097,16 @@ public final class SimSt implements Serializable {
        // Returns a value of the comm widget
        String getValue() {
          //  return isSsFoaElement() ? getValueSsFoaElement() : getValueCommWidget();
-   
+
     	   if (this.widget==null) return getValueCommWidget();
     	   if(runType.equals("springBoot")) {
     		   String value = getBrController().getWidgetTable(this.widget.toString());
     		   return value;
     	   }
-    	   
+
     	   return this.widget==null? getValueCommWidget() : (isSsFoaElement() ? getValueSsFoaElement() : getValueCommWidget() );
-    	   
-    	   
+
+
        }
 
        boolean isSsFoaElement(){
@@ -3098,11 +3122,11 @@ public final class SimSt implements Serializable {
 
            SsFoaElement ssFoaElement = (SsFoaElement)getWidget();
            return ssFoaElement.getValue();
-           
+
        }
 
        /**
-        * Read the "value" off a JCommWidget object. 
+        * Read the "value" off a JCommWidget object.
         */
        private String getValueCommWidget() {
 
@@ -3144,7 +3168,7 @@ public final class SimSt implements Serializable {
        // but since the WME-type is unknown at this point, it is
        // specified as "*"
        public String foaString() {
-           // getRete(), which returns AmlRete, is used only to get 
+           // getRete(), which returns AmlRete, is used only to get
            // the WmeType.  The actual value of the Wme is read from
            // a genuine WME, which is maintained by the MTRete
 
@@ -3175,7 +3199,7 @@ public final class SimSt implements Serializable {
    }
     */
 
-   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
+   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
    // FOIL Data:: A data collection to compile an input data file for
    // FOIL to run on a particular predicate
    //
@@ -3188,8 +3212,8 @@ public final class SimSt implements Serializable {
 
    private Hashtable<String, FoilData> foilDataHash = new Hashtable<String, FoilData>();
 
-   
-   //08/05/2014 nbarba:  To setup foil max tuples using command line argument ssFoilMaxTuples. 
+
+   //08/05/2014 nbarba:  To setup foil max tuples using command line argument ssFoilMaxTuples.
    // Default value uses the default hardcoded value in foil source code
    public static String USE_DEFAULT_TUPLES="Use default foil tuples";
    private String foilMaxTuples = USE_DEFAULT_TUPLES;
@@ -3228,7 +3252,7 @@ public final class SimSt implements Serializable {
 
    private Enumeration<FoilData> getAllFoilData() { return foilDataHash.elements(); }
 
-   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
+   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
    // Rules:
    //
    private HashMap /* Rule */ rules = new edu.cmu.pact.miss.HashMap();
@@ -3244,7 +3268,7 @@ public final class SimSt implements Serializable {
    // Returns a number of Production Rules generated so farr (stored in the rule hash table)
    private int numRules() { return this.rules.size(); }
    // Returns a number of rules as a three digits number
-   private String prettyNumRules() { 
+   private String prettyNumRules() {
        String prettyNumRules = "000";
        prettyNumRules += numRules();
        int numLen = prettyNumRules.length();
@@ -3262,19 +3286,19 @@ public final class SimSt implements Serializable {
    	Vector<Instruction> instList = instructions.get(ruleName);
    	rules.remove(ruleName);
    	instructions.remove(ruleName);
-   	
+
    	 RuleActivationTree tree = getBrController().getRuleActivationTree();
         TreeTableModel ttm = tree.getActivationModel();
         RuleActivationNode root = (RuleActivationNode) ttm.getRoot();
-            	
+
    	MTRete mtRete = getBrController().getModelTracer().getRete();
-   	    	
+
        try {
 			mtRete.unDefrule("MAIN::"+ruleName);
 		} catch (JessException e) {
 			e.printStackTrace();
 		}
-		
+
 		root.saveState(mtRete);
 		trace.out("ss", "Removing "+rule.getName()+" "+rule.getAcceptedRatio()+" ("+instList.size()+" instructions)");
    }
@@ -3288,8 +3312,8 @@ public final class SimSt implements Serializable {
    private static MissController missController = null;
    public /*private*/ MissController getMissController() {
 	   return SimSt.missController /*= SimSt.missControllerTable.get(this);
-	   return SimSt.missControllerTable.get(this)*/; 
-	   
+	   return SimSt.missControllerTable.get(this)*/;
+
    }
    private void setMissController( MissController missController ) {
 	  // SimSt.missControllerTable.put(this,missController);
@@ -3302,10 +3326,10 @@ public final class SimSt implements Serializable {
    public BR_Controller getBrController() {
        return getMissController().getBrController();
    };
-   
-   
+
+
   /* public static Hashtable<SimSt,MissController> missControllerTable= new Hashtable<SimSt,MissController>();
-   
+
    public static void setMissController(SimSt simst){
 	   if(simst != null)
 		   SimSt.missController= SimSt.missControllerTable.get(simst);
@@ -3319,8 +3343,8 @@ public final class SimSt implements Serializable {
 	public SimStRete getSsRete() {
 		return ssRete;
 	}
-	
-	
+
+
    private transient JessOracleRete oracleRete = null;
 
    private void setJessOracleRete(JessOracleRete oracleRete) {
@@ -3329,8 +3353,8 @@ public final class SimSt implements Serializable {
 	public JessOracleRete JessOracleRete() {
 		return oracleRete;
 	}
-	
-	
+
+
 	private transient SimStProblemGraph validationGraph = null;
 	private void setValidationGraph(SimStProblemGraph graph)
 	{
@@ -3341,7 +3365,7 @@ public final class SimSt implements Serializable {
 		return validationGraph;
 	}
 
-	
+
 	private transient SimStProblemGraph quizGraph = null;
 	public void setQuizGraph(SimStProblemGraph graph)
 	{
@@ -3351,8 +3375,8 @@ public final class SimSt implements Serializable {
 	{
 		return quizGraph;
 	}
-	
-	
+
+
 	private transient ModelTraceWorkingMemory modelTraceWM = null;
 
 	public ModelTraceWorkingMemory getModelTraceWM() {
@@ -3415,7 +3439,7 @@ public final class SimSt implements Serializable {
 		WebStartMode = webStartMode;
 		WEBSTARTENABLED = webStartMode;
 		FoilData.WEBSTARTMODE = webStartMode;
-		if(trace.getDebugCode("miss"))trace.out("miss", "WebStartMode set to: " + webStartMode + "   WEBSTARTENABLED: " + webStartMode + 
+		if(trace.getDebugCode("miss"))trace.out("miss", "WebStartMode set to: " + webStartMode + "   WEBSTARTENABLED: " + webStartMode +
 				" FoilData.WEBSTARTMODE: " + webStartMode);
 	}
 
@@ -3443,7 +3467,7 @@ public final class SimSt implements Serializable {
 
    // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
    // Timer to terminate SimSt batch run when it took too long
-   // 
+   //
    private static boolean isTimed = false;
    private void setIsTimed( boolean flag ) { SimSt.isTimed = flag; }
    public /*private*/ static boolean isTimed() {
@@ -3452,18 +3476,18 @@ public final class SimSt implements Serializable {
 
    // Duration to time out (in millisecond)
    // Set by SingleSessionLauncher "-ssSetTimeout" option
-   // 
+   //
    private static long timeoutDuration=60000;
    public void setTimeoutDuration( long timeoutDuration ) {
    	if(trace.getDebugCode("miss"))trace.out("miss", "setTimeoutDuration(" + timeoutDuration + ")");
        setIsTimed(true);
        SimSt.timeoutDuration = timeoutDuration;
    }
-   private static long getTimeoutDuration() { return timeoutDuration; }  
-   
+   private static long getTimeoutDuration() { return timeoutDuration; }
+
    // Duration to time out (in millisecond)
    // If -1, no timeout
-   // 
+   //
    private static long serverTimeoutDuration = -1;
    public void setServerTimeoutDuration( long timeoutDuration ) {
        SimSt.serverTimeoutDuration = timeoutDuration;
@@ -3482,7 +3506,7 @@ public final class SimSt implements Serializable {
        boolean isTimeOut = false;
 
        if (isTimed()) {
-           long duration = System.currentTimeMillis() - getSimStTimer(); 
+           long duration = System.currentTimeMillis() - getSimStTimer();
            isTimeOut = (duration > getTimeoutDuration());
            if (isTimeOut) {
            	if(trace.getDebugCode("miss"))trace.out("miss", id + " search has gotten time out...");
@@ -3501,28 +3525,28 @@ public final class SimSt implements Serializable {
        SimSt.isSearchTimeOut = isSearchTimeOut;
    }
 
- 
-   /*  Duration (in millisecond) that APLUS is allowed to be inactive 
+
+   /*  Duration (in millisecond) that APLUS is allowed to be inactive
     *  Set by SingleSessionLauncher "-ssSetInactiveInterfaceTimeout" option. Default value is 5 minutes.
-    */ 
+    */
     private static long inactiveInterfaceTimeoutDuration=300000;
     public void setInactiveInterfaceTimeoutDuration( long inactiveInterfaceTimeoutDuration ) {
     	setIsInterfaceTimed(true);
         SimSt.inactiveInterfaceTimeoutDuration = inactiveInterfaceTimeoutDuration;
     }
     private long getInactiveInterfaceTimeoutDuration() { return inactiveInterfaceTimeoutDuration; }
-    
-    /* Boolean indicating if inactiveInterfaceTimeoutDuration is defined from command line argument. 
+
+    /* Boolean indicating if inactiveInterfaceTimeoutDuration is defined from command line argument.
      */
     private static boolean isInterfaceTimed = false;
     private void setIsInterfaceTimed( boolean flag ) { SimSt.isInterfaceTimed = flag; }
     public static boolean isInterfaceTimed() {
         return isInterfaceTimed;
     }
-    
-    
+
+
     /*Timer to block New Problem button for 1 second after restart*/
- 
+
     private static long newProblemButtonTimer=1000;
     public boolean newProblemButtonLockFlag=true;
     /**
@@ -3531,69 +3555,69 @@ public final class SimSt implements Serializable {
      */
     public void scheduleNewProblemTimer(){
     	Timer timer=new Timer();
-    	timer.schedule( new NewProblemTimer(this.getBrController()),newProblemButtonTimer);    	
+    	timer.schedule( new NewProblemTimer(this.getBrController()),newProblemButtonTimer);
     }
-    
+
    class NewProblemTimer extends TimerTask{
 	   BR_Controller controller;
      public NewProblemTimer(BR_Controller brController){
     	 this.controller=brController;
      }
-	   
+
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
 		controller.getMissController().getSimSt().newProblemButtonLockFlag=true;
-		
+
 	}
-	   
+
    }
-    
-    
-    
+
+
+
     /* Timer to keep track how much time has passed since last time an action was taken on APLUS
-     */  
+     */
     private static long simStInactiveInterfaceTimer=5000;
     private static long getSimStInactiveInterfaceTimer() { return simStInactiveInterfaceTimer; }
     public void resetSimStInactiveInterfaceTimer() {
         SimSt.simStInactiveInterfaceTimer = System.currentTimeMillis();
     }
 
-     
+
     /**
-     * Boolean method comparing current time and the simStInactiveInterface timer 
+     * Boolean method comparing current time and the simStInactiveInterface timer
      * @return true if APLUS inactive for "inactiveInterfaceTimeoutDuration" miliseconds
      */
     public  boolean isInterfaceInactiveForTooLong() {
         boolean isTimeOut = false;
-        long duration = System.currentTimeMillis() - getSimStInactiveInterfaceTimer(); 
-        isTimeOut = (duration > getInactiveInterfaceTimeoutDuration());     
+        long duration = System.currentTimeMillis() - getSimStInactiveInterfaceTimer();
+        isTimeOut = (duration > getInactiveInterfaceTimeoutDuration());
         if (!isTimeOut){
         	  //if no timeout occured, invoke timer again so we can check again
         	   this.scheduleInterfaceInactivenessTimer();
         }
-        
+
        return isTimeOut;
     }
 
-   
+
     /**
-     * Actual method that called when APLUS is inactive for too long. 
-     * @todo 
+     * Actual method that called when APLUS is inactive for too long.
+     * @todo
      */
-    private void inactivationAction(){   	
+    private void inactivationAction(){
     	//JOptionPane.showMessageDialog(null,this.getBrController().getMissController().getSimStPLE().getSimStPeerTutoringPlatform().getYesResponseButton().isVisible());
-    	
+
     	String requestType=this.getModelTraceWM().getRequestType();
-    	
-		
-    	if (getBrController().getCurrentNode()==null){	
+
+
+    	if (getBrController().getCurrentNode()==null){
     		//JOptionPane.showMessageDialog(null,"no tutoring");
     		logger.simStLog(SimStLogger.SIM_STUDENT_PLE, SimStLogger.APLUS_INACTIVE_WINDOW_START, SimStLogger.APLUS_INACTIVE_WINDOW_NO_TUTORING);
     		SimStTimeoutDlg dlg=new SimStTimeoutDlg(getBrController());
     	}
     	else{
-    		
+
     		AskHint hint=this.askForHintQuizGradingOracle(getBrController(), getBrController().getCurrentNode());
     		String typeOfStep= getFoaGetter().getTypeOfStep(hint.getSelection(),getBrController());
     		if (requestType!=null && requestType.contains("feedback")){
@@ -3609,51 +3633,51 @@ public final class SimSt implements Serializable {
         		logger.simStLog(SimStLogger.SIM_STUDENT_PLE, SimStLogger.APLUS_INACTIVE_WINDOW_START, SimStLogger.APLUS_INACTIVE_WINDOW_HINT_TYPEIN);
         		SimStTimeoutDlg dlg=new SimStTimeoutDlg(getBrController(),true,true,"how to " + skill);
         	}
-    		
-    		
-    		
-    		
+
+
+
+
     	/*	AskHint hint=this.askForHintQuizGradingOracle(getBrController(), getBrController().getCurrentNode());
     		String message=getFoaGetter().formulateBasedOnTypeOfString(hint.getSelection(),getBrController(),SimStTimeoutDlg.reasoningForTransformation);
         		String skill=getFoaGetter().getStepSkill(hint.getSelection(),getBrController());
         		logger.simStLog(SimStLogger.SIM_STUDENT_PLE, SimStLogger.APLUS_INACTIVE_WINDOW_START, SimStLogger.APLUS_INACTIVE_WINDOW_HINT_TYPEIN);
         		SimStTimeoutDlg dlg=new SimStTimeoutDlg(getBrController(),true,true,message);
         */
-    		
-    		
-    		
-    		
+
+
+
+
     	}
-    	
-    	this.scheduleInterfaceInactivenessTimer();  	
+
+    	this.scheduleInterfaceInactivenessTimer();
     }
-    
-    
+
+
     /**
      * Method that schedules a new timer to performa a task after "x". Interval of "x" seconds
      * is defined by "-ssSetInactiveInterfaceTimeout" option.
      */
     public void scheduleInterfaceInactivenessTimer(){
     	Timer timer=new Timer();
-    	timer.schedule( new SimStudentTimerTask(this.getBrController()), this.getBrController().getMissController().getSimSt().getInactiveInterfaceTimeoutDuration());    	
+    	timer.schedule( new SimStudentTimerTask(this.getBrController()), this.getBrController().getMissController().getSimSt().getInactiveInterfaceTimeoutDuration());
     }
-       
+
     /**
-     * Method invoked by the TimerTask (i.e. task that will be performed when timer reaches time interval). 
+     * Method invoked by the TimerTask (i.e. task that will be performed when timer reaches time interval).
      */
     private void handleInterfaceInactiveness(){
     	if (isInterfaceInactiveForTooLong())
     			inactivationAction();
     }
-  
-    
-    
+
+
+
 
 
     /**
-     * Inner class extending the TimerTask, so we can pass the SimStudent object to the 
+     * Inner class extending the TimerTask, so we can pass the SimStudent object to the
      * default run function (which is executed when timer interval arrives).
-     *     
+     *
      * @author nbarba
      *
      */
@@ -3667,21 +3691,21 @@ public final class SimSt implements Serializable {
     	}
 
     	@Override
-    	public void run() {       	
+    	public void run() {
     		getBrController().getMissController().getSimSt().handleInterfaceInactiveness();
     	}
 
-    }       
-    
+    }
+
    // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-   // Name of the text file that defines a list of comm widgets.  
+   // Name of the text file that defines a list of comm widgets.
    // Used for SimSt running in batch mode without a tutor interface
-   // 
+   //
    private static String PSEUDO_WIDGET_FILE = "widgets.txt";
 
    // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
    // Number of training problems
-   // 
+   //
    private int MAX_NUM_TRAINING = Integer.MAX_VALUE;
    public void setMaxNumTraining(int maxNumTraining) { MAX_NUM_TRAINING = maxNumTraining; }
    private int numTrained = 1;
@@ -3703,11 +3727,11 @@ public final class SimSt implements Serializable {
    public /*private*/ void incNumTested() { numTested++; }
    public /*private*/ int getNumTested() { return numTested; }
 
-   
+
 
    // -
    // - Constructor - - - - - - - - - - - - - - - - - - - - - - - -
-   // - 
+   // -
 
 
    public SimSt(){}
@@ -3730,11 +3754,11 @@ public final class SimSt implements Serializable {
 
        // Set Miss Controller
        setMissController( missController );
-       setSsRete(new SimStRete(getBrController()));   
-       getBrController().getModelTracer().setExternalRete(this.ssRete); 
+       setSsRete(new SimStRete(getBrController()));
+       getBrController().getModelTracer().setExternalRete(this.ssRete);
        setJessOracleRete(new JessOracleRete(getBrController()));
        logger = new SimStLogger(missController.getBrController());
-        
+
        // Set "Home" dir
        URL codeBase = Utils.getCodeBaseURL( getClass() );
        trace.out ("codebase = " + codeBase);
@@ -3759,9 +3783,9 @@ public final class SimSt implements Serializable {
            codeDir = codeDir.replaceFirst("file:","");
        }
 
-       
-    
-      
+
+
+
        //5 June 2007: needed because there are spaces inside "Program Files/Cognitive Tu.../"
        setHomeDir( codeDir ); //strip out the url protocol
        trace.out("HomeDir = " + getHomeDir() );
@@ -3774,33 +3798,39 @@ public final class SimSt implements Serializable {
    }
 
    public void setUpFoilDir(SimSt ss) {
-   	
+
    	if(ss != null) {
 	    	Hashtable<String, FoilData> foilHash = ss.foilDataHash;
 	    	Collection c = foilHash.values();
 	    	Iterator itr = c.iterator();
-	    	
-	    	while(itr.hasNext()) { 
+
+	    	while(itr.hasNext()) {
 	    		FoilData foilData = (FoilData)itr.next();
 	    		// Set up the foil-log and foil6.exe location
 	    		if(isSsWebAuthoringMode()){
 	    			foilData.setFoilDir();
-		    		foilData.setFoilLogDir(getProjectDirectory() + WebStartFileDownloader.separator + getFoilLogDir() + WebStartFileDownloader.separator);
+	    			String foilLogDir = getUserBundleDirectory() + "/" + getFoilLogDir() +  "/";
+		    		foilData.setFoilLogDir(foilLogDir);
 	    		}
 	    		else if(!isWebStartMode()) {
 		    		foilData.setFoilDir();
-		    		String foilLogDir = getProjectDir() + WebStartFileDownloader.separator + getLogDirectory() +  WebStartFileDownloader.separator + getUserID() + "-" + getFoilLogDir() +  WebStartFileDownloader.separator;
+		    		String foilLogDir;
+		    		Path logDirPath = Paths.get(getLogDirectory());
+		    		if(logDirPath.isAbsolute())
+		    			foilLogDir = getLogDirectory() +  "/" + getUserID() + "-" + getFoilLogDir() +  "/";
+		    		else
+		    			foilLogDir = getProjectDir() + "/" + getLogDirectory() +  "/" + getUserID() + "-" + getFoilLogDir() +  "/";
 		    		foilData.setFoilLogDir(foilLogDir);
 	    		} else {
-	    			foilData.setFoilLogDir(WebStartFileDownloader.SimStWebStartDir+FOIL_LOG + "_" + getUserID() + 
+	    			foilData.setFoilLogDir(WebStartFileDownloader.SimStWebStartDir+FOIL_LOG + "_" + getUserID() +
 	    					"_" + FileZipper.formattedDate()+System.getProperty("file.separator"));
 	    		}
 	    	}
    	}
    }
 
-   
-   
+
+
    public void checkWebStartMode(String codeDir) {
 
    	if(codeDir.contains("http:"))
@@ -3809,39 +3839,39 @@ public final class SimSt implements Serializable {
 
    // Extracts the necessary files from the jar
 	public void extractFilesFromJar() {
-		
+
 		WebStartFileDownloader fileFinder = null;
 		boolean permissionGranted = false, success = false;
 		String fileName = "", newFileName = "";
 		File f;
-		
+
 		if (isWebStartMode()) {
-			
+
 			fileFinder = new WebStartFileDownloader();
 			fileFinder.findFile(WME_TYPE_FILE);
 			fileFinder.findFile(INIT_STATE_FILE);
 			fileFinder.findFile(SimStPLE.PROBLEM_STAT_FILE);
 			fileFinder.findFile("bkt_params.txt");
 			fileFinder.findFile("question_bank.txt");
-			fileFinder.findFile("wmeStructure.txt");	
-			fileFinder.findFile("productionRulesJessOracle.pr");	
-			fileFinder.findFile(XMLReader.PR_MESSAGESCOG_FILE);	
-			fileFinder.findFile(XMLReader.PR_MESSAGESMETACOG_FILE);	
-			fileFinder.findFile(XMLReader.PR_MESSAGESAPLUSCTRL_FILE);	
-			fileFinder.findFile(ModelTracer.PRODUCTION_RULES_MT_COG_FILE);	
-			fileFinder.findFile(ModelTracer.PRODUCTION_RULES_MT_METACOG_FILE);	
-			fileFinder.findFile(ModelTracer.PRODUCTION_RULES_MT_APLUS_CTRL_FILE);	
-			
-			
-			
+			fileFinder.findFile("wmeStructure.txt");
+			fileFinder.findFile("productionRulesJessOracle.pr");
+			fileFinder.findFile(XMLReader.PR_MESSAGESCOG_FILE);
+			fileFinder.findFile(XMLReader.PR_MESSAGESMETACOG_FILE);
+			fileFinder.findFile(XMLReader.PR_MESSAGESAPLUSCTRL_FILE);
+			fileFinder.findFile(ModelTracer.PRODUCTION_RULES_MT_COG_FILE);
+			fileFinder.findFile(ModelTracer.PRODUCTION_RULES_MT_METACOG_FILE);
+			fileFinder.findFile(ModelTracer.PRODUCTION_RULES_MT_APLUS_CTRL_FILE);
+
+
+
 			String os = System.getProperty("os.name").toLowerCase();
 			if(os.indexOf("win") >= 0) {
 
 				fileFinder.findFile(CYGWIN_DLL);
 				fileFinder.findFile(WIN_FOIL);
-			
+
 			} else if(os.indexOf("mac") >= 0) {
-				
+
 				fileName = fileFinder.findFile(MAC_FOIL);
 				if(fileName != null) {
 					f = new File(fileName);
@@ -3854,9 +3884,9 @@ public final class SimSt implements Serializable {
 						}
 					}
 				}
-			
+
 			} else if(os.indexOf("nix") >= 0 || os.indexOf("nux") >= 0) {
-				
+
 				fileName = fileFinder.findFile(NIX_FOIL);
 				if(fileName != null) {
 					f = new File(fileName);
@@ -3866,23 +3896,23 @@ public final class SimSt implements Serializable {
 						permissionGranted = new File(newFileName).setExecutable(true, false);
 						if(!permissionGranted) {
 							trace.err("-------------FOIL EXECUTABLE PERMISSION DENIED----------");
-						}						
+						}
 					}
 				}
-			
+
 			} else {
-				
+
 				trace.err("Your OS is not supported for the foil. You need to compile foil for your OS.");
 			}
 		}
 	}
-	
+
    /**
-    * Given a set of decomposers, and a set inital Values, run the  all decomposers on the initial values 
-    * and then feed all subsequent output into all other decomposers (repeat until there is no valid decomposition) 
-    * @param initValues a Vector of strings representing the inital foa values 
+    * Given a set of decomposers, and a set inital Values, run the  all decomposers on the initial values
+    * and then feed all subsequent output into all other decomposers (repeat until there is no valid decomposition)
+    * @param initValues a Vector of strings representing the inital foa values
     * @param decomposers a Vector of decomposers which we be applied all all values
-    * @return a Vector containing the combined output (no duplicates) 
+    * @return a Vector containing the combined output (no duplicates)
     *of all decomposers applied to the inital values and all subsequent output
     */
    public static Vector /* String */<String> chainDecomposedValues(Vector /* String */ initValues, Vector /* Decomposer*/ decomposers)
@@ -3932,22 +3962,22 @@ public final class SimSt implements Serializable {
    private void addDecomposer(String className)
    {
        Decomposer decomposer=null;
-       try 
+       try
        {
 
            Class classDef = Class.forName( className );
            decomposer = (Decomposer)classDef.newInstance();
-       } 
-       catch (InstantiationException e) 
+       }
+       catch (InstantiationException e)
        {
            e.printStackTrace();
            logger.simStLogException(e);
-       } 
+       }
        catch (ClassNotFoundException e) {
            e.printStackTrace();
            logger.simStLogException(e);
-       } 
-       catch (IllegalAccessException e) 
+       }
+       catch (IllegalAccessException e)
        {
            e.printStackTrace();
            logger.simStLogException(e);
@@ -3961,22 +3991,22 @@ public final class SimSt implements Serializable {
    public void initBackgroundKnowledge() {
 
 	trace.out("miss","****** Attempting to initialize SimSt background knowledge from directory " + getProjectDirectory());
-	 	 
+
 	trace.out("miss"," working folder is " + System.getProperty("user.dir"));
-	   
+
        // Read the feature-predicates from the file, if any,
        // otherwise, read them from a default list
 //   	String runType = System.getProperty("appRunType");
-   	
+
 
     try{
     		 if(runType.equalsIgnoreCase("webstart")){
     		   		if(trace.getDebugCode("miss"))trace.out("miss", "readFeaturePredicates WebStart");
     		       	readFeaturePredicates(WebStartFileDownloader.SimStAlgebraPackage+"/"+FEATURE_PREDICATES_FILE);
     		       	if(trace.getDebugCode("miss"))trace.out("miss", "readRhsOpList WebStart");
-    		       	readRhsOpList(WebStartFileDownloader.SimStAlgebraPackage+"/"+RHS_OP_FILE); 
+    		       	readRhsOpList(WebStartFileDownloader.SimStAlgebraPackage+"/"+RHS_OP_FILE);
     		    	if(trace.getDebugCode("miss"))trace.out("miss", "readConstraintPredicates WebStart");
-    		       	readConstraintPredicates(WebStartFileDownloader.SimStAlgebraPackage+"/"+CONSTRAINT_FILE); 
+    		       	readConstraintPredicates(WebStartFileDownloader.SimStAlgebraPackage+"/"+CONSTRAINT_FILE);
     		   	}
     		   	else if(runType.equalsIgnoreCase("servlet")){
     		   		if(trace.getDebugCode("miss"))trace.out("miss", "readFeaturePredicates Servlet");
@@ -3984,7 +4014,7 @@ public final class SimSt implements Serializable {
     		       	if(trace.getDebugCode("miss"))trace.out("miss", "readRhsOpList WebAuthoring");
     		   		readRhsOpList(System.getProperty("projectDir")+"/"+ RHS_OP_FILE);
     		    	if(trace.getDebugCode("miss"))trace.out("miss", "readConstraintPredicates WebAuthoring");
-    		       	readConstraintPredicates(System.getProperty("projectDir")+"/"+CONSTRAINT_FILE);    		        	
+    		       	readConstraintPredicates(System.getProperty("projectDir")+"/"+CONSTRAINT_FILE);
     		   	}
     		   	else if(runType.equalsIgnoreCase("shellscript")) {
     		   		if(trace.getDebugCode("miss"))trace.out("miss", "feature predicate file exists");
@@ -3992,11 +4022,11 @@ public final class SimSt implements Serializable {
     		   	    	File operatorFile = new File(getProjectDir(), RHS_OP_FILE);
     		   	        File constraintFile = new File( getProjectDir(), CONSTRAINT_FILE );
     		           if(featurePredicatesFile != null && featurePredicatesFile.exists())
-    		           readFeaturePredicates( featurePredicatesFile.getAbsolutePath() );  
+    		           readFeaturePredicates( featurePredicatesFile.getAbsolutePath() );
     		           if(operatorFile != null && operatorFile.exists())
     		           readRhsOpList( operatorFile.getAbsolutePath() );
     		           if(constraintFile != null  && constraintFile.exists())
-    		           readConstraintPredicates(constraintFile.getAbsolutePath());   
+    		           readConstraintPredicates(constraintFile.getAbsolutePath());
     		   	} else if(runType.equalsIgnoreCase("springBoot")) {
     		   		if(trace.getDebugCode("miss"))trace.out("miss", "read feature predicate springboot");
     		   		readFeaturePredicates(System.getProperty("projectDir")+"/"+FEATURE_PREDICATES_FILE);
@@ -4005,40 +4035,40 @@ public final class SimSt implements Serializable {
     		    	if(trace.getDebugCode("miss"))trace.out("miss", "readConstraintPredicates springboot");
     		       	readConstraintPredicates(System.getProperty("projectDir")+"/"+CONSTRAINT_FILE);
     		   	}
-    	
+
     }
     catch(NullPointerException e){
     	 trace.err(" Unknown application runtype");
     }
-   
-   	
+
+
    	// Reading the RHS operator symbols...
    /*	File operatorFile = null;
    	operatorFile = new File(getProjectDir(), RHS_OP_FILE);
-   	
+
 	if (operatorFile==null)
    		trace.out("miss","****** File " + RHS_OP_FILE + " not found in " + getProjectDir());
-	
-   
+
+
    	if(operatorFile != null && operatorFile.exists() && runType.equalsIgnoreCase("shellscript") ) {
            readRhsOpList( operatorFile.getAbsolutePath() );
    	} else if(runType.equalsIgnoreCase("webstart")){ // For webstart
    		if(trace.getDebugCode("miss"))trace.out("miss", "readRhsOpList WebStart");
-       	readRhsOpList(RHS_OP_FILE);    		
+       	readRhsOpList(RHS_OP_FILE);
    	} else if(runType.equalsIgnoreCase("servlet")){
    		if(trace.getDebugCode("miss"))trace.out("miss", "readRhsOpList WebAuthoring");
    		readRhsOpList(System.getProperty("packageName")+"/"+ RHS_OP_FILE);
    	}else{
-   		
+
    	}
 
    	File constraintFile = null;
        constraintFile = new File( getProjectDir(), CONSTRAINT_FILE );
        if (constraintFile != null && constraintFile.exists() && runType.equalsIgnoreCase("shellscript")) {
-           readConstraintPredicates(constraintFile.getAbsolutePath());   
+           readConstraintPredicates(constraintFile.getAbsolutePath());
        } else if(isWebStartMode()){ // For webstart
        	if(trace.getDebugCode("miss"))trace.out("miss", "readConstraintPredicates WebStart");
-       	readConstraintPredicates(CONSTRAINT_FILE);    		        	
+       	readConstraintPredicates(CONSTRAINT_FILE);
        }*/
    }
 
@@ -4062,7 +4092,7 @@ public final class SimSt implements Serializable {
        // Reset Num steps in MissConsole
        getMissController().setNumStepDemonstrated(0);
 
-       // 
+       //
        resetFeaturePredicateCache();
 
 
@@ -4073,11 +4103,11 @@ public final class SimSt implements Serializable {
        File initWmeFile = null;
        initWmeFile = new File(getProjectDir(), INIT_STATE_FILE);
 
-       //if(initWmeFile != null && initWmeFile.isAbsolute() && initWmeFile.exists() 
+       //if(initWmeFile != null && initWmeFile.isAbsolute() && initWmeFile.exists()
        //		&& wmeTypeFile != null && wmeTypeFile.isAbsolute() && wmeTypeFile.exists()) {
-       	
+
        String runType = System.getProperty("projectDir");
-       
+
        if(runType.equals("shellscript")) {
        	initRete( getWmeTypeFile(), getInitStateFile() );
        } else {
@@ -4089,13 +4119,13 @@ public final class SimSt implements Serializable {
 			}
 	        if(isWebStartMode()){
 	        	parse(WebStartFileDownloader.SimStAlgebraPackage+"/"+WME_TYPE_FILE);
-				parse(WebStartFileDownloader.SimStAlgebraPackage+"/"+INIT_STATE_FILE); 
+				parse(WebStartFileDownloader.SimStAlgebraPackage+"/"+INIT_STATE_FILE);
 	        }
 	        else{
 	        	parse(getProjectDirectory()+"/"+WME_TYPE_FILE);
 	        	parse(getProjectDirectory()+"/"+INIT_STATE_FILE);
 	        }
-	        
+
 		}
 
        // FOIL data
@@ -4119,12 +4149,12 @@ public final class SimSt implements Serializable {
        resetNumTrained();
        resetNumTested();
 
-       // InputMatcher cache for validation 
+       // InputMatcher cache for validation
        // compairInputCache = new edu.cmu.pact.miss.HashMap();
    }
 
    public void parse(String fileName) {
-   	
+
        ClassLoader cl = this.getClass().getClassLoader();
        InputStream is = cl.getResourceAsStream(fileName);
        InputStreamReader isr = new InputStreamReader(is);
@@ -4146,11 +4176,11 @@ public final class SimSt implements Serializable {
 		getRete().loadWMEStructureFromReader(br);
    }
 
-   /** 
+   /**
     * Called by MissController.  Initialize background knowldege
     * (i.e., initial working memory and WMW types) when Miss Console
     * is up
-    * @throws IOException 
+    * @throws IOException
     *
     **/
    public void initBKwithMissConsole() {
@@ -4201,13 +4231,13 @@ public final class SimSt implements Serializable {
            initWmeFile = new File(System.getProperty("projectDir"), INIT_STATE_FILE);
        else if(runType.equals("springBoot"))
            initWmeFile = new File(System.getProperty("projectDir"), INIT_STATE_FILE);
-       
+
        if(!isWebStartMode() && initWmeFile.exists()) {
            //the result of this should be getProjectDir/init.wme, trivially
            setInitStateFile( initWmeFile.getAbsolutePath() );
            getMissController().setConsoleInitWmeFileLabel( getInitStateFile() );
-       } else if(isWebStartMode()){ //Added for webstart 
-    	   parse(WebStartFileDownloader.SimStAlgebraPackage+"/"+INIT_STATE_FILE);         	
+       } else if(isWebStartMode()){ //Added for webstart
+    	   parse(WebStartFileDownloader.SimStAlgebraPackage+"/"+INIT_STATE_FILE);
        }/*else
     	   parse(getPackageName()+"/"+INIT_STATE_FILE);*/
 
@@ -4230,12 +4260,12 @@ public final class SimSt implements Serializable {
    }
 
    /**
-    * Called when "New Graph" in BR is selected. 
+    * Called when "New Graph" in BR is selected.
     *
     */
    public void startNewProblem() {
 
-   		
+
        killInteractiveLearningThreadIfAny();
 
        File wmeTypeFile = null;
@@ -4244,9 +4274,9 @@ public final class SimSt implements Serializable {
        initWmeFile = new File(getProjectDir(), INIT_STATE_FILE);
 
        // Reset Rete
-       
+
        String runType = System.getProperty("appRunType");
-       
+
        if(runType.equals("shellscript") || runType.equals("servlet") || runType.equals("springBoot")) {
        	initRete( getWmeTypeFile(), getInitStateFile() );
        } else if(isWebStartMode()) { // For webstart
@@ -4298,7 +4328,7 @@ public final class SimSt implements Serializable {
 
            /*
            while (!AskHintHumanOracle.isWaitingForSkillName){ //wait until someone is asking for skillname
-               try{ Thread.sleep(100);  }  catch(Exception e){ e.printStackTrace();}             
+               try{ Thread.sleep(100);  }  catch(Exception e){ e.printStackTrace();}
            }
            AskHintHumanOracle.hereIsTheSkillName(KILL_INTERACTIVE_LEARNING);
            */
@@ -4351,10 +4381,10 @@ public final class SimSt implements Serializable {
    }
 
    /**
-    * Given an SAI and a foaGetterClass (a user-defined method to identify focus-of-attention, 
-    * which is defined elsewhere), returns a list of GUI elements (i.e., JCommWidget) 
-    * that are the corresponding focus of attention for the given "Selection" 
-    * 
+    * Given an SAI and a foaGetterClass (a user-defined method to identify focus-of-attention,
+    * which is defined elsewhere), returns a list of GUI elements (i.e., JCommWidget)
+    * that are the corresponding focus of attention for the given "Selection"
+    *
     * @param instruction
     * @param selection
     * @param action
@@ -4399,7 +4429,7 @@ public final class SimSt implements Serializable {
 
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    // Run demonstration and validation in batch mode
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
    //  30March2007: run SimSt in interactive learning mode, i.e.
    //  the tutor only enters:
@@ -4411,16 +4441,16 @@ public final class SimSt implements Serializable {
    //14 February 2008
    //This is only for interactive mode.
    public void runSimStInteractiveLearning() {
-       // turn on "IL mode" 
+       // turn on "IL mode"
    	// it will be turned off when "new graph", or mode changed away from SimStudent
-       setIsInteractiveLearning(true); 
+       setIsInteractiveLearning(true);
        setSsInteractiveLearning(new SimStInteractiveLearning(this));
        new Thread(getSsInteractiveLearning()).start();
    }
 
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    // Run demonstration and validation in batch mode
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
    void clearJessConsole() {
        BR_Controller brController = getBrController();
@@ -4534,10 +4564,10 @@ public final class SimSt implements Serializable {
            Vector /* Integer */<Integer> tmpOrder = new Vector<Integer>();
            for ( int i = 0; i < n; i++ ) {
 
-               Integer k; 
+               Integer k;
                do {
                    k = new Integer( randomGenerator.nextInt(n) );
-               } while ( tmpOrder.contains(k) ); 
+               } while ( tmpOrder.contains(k) );
 
                tmpOrder.add(k);
            }
@@ -4563,12 +4593,12 @@ public final class SimSt implements Serializable {
 
    /**
     * For a study to apply SimSt to model real students' performances on the log data
-    * collected from the Wilkinsburg study.  This method crawls a directory where 
-    * log data for a student are located.  Within a given directory, 
-    * take the last numTest problems as the test problems. 
+    * collected from the Wilkinsburg study.  This method crawls a directory where
+    * log data for a student are located.  Within a given directory,
+    * take the last numTest problems as the test problems.
     * Randomly take numTraining problems from the rest of the problems as training
-    * problems.  Call ssRunInBatchMode with those training and test problems. 
-    * 
+    * problems.  Call ssRunInBatchMode with those training and test problems.
+    *
     * @param BRDdir
     * @param output
     */
@@ -4610,12 +4640,12 @@ public final class SimSt implements Serializable {
            }
        }
        if(trace.getDebugCode("miss"))trace.out("miss", "pickTestSet exiting with numTest = " + numTest);
-       // numTest must be zero, otherwise something wrong should have 
+       // numTest must be zero, otherwise something wrong should have
        // been happned in the above for loop
        return numTest == 0 ? testSet : null;
    }
 
-   // Return a list of 
+   // Return a list of
    private String[] pickTrainingSet(File brdDir, int numTraining, String[] testSet) {
 
        String[] trainingSet = new String[numTraining];
@@ -4691,10 +4721,19 @@ public final class SimSt implements Serializable {
 	    //contest.contest(currentNode);
    }
 
+   public boolean getNodeDoneState() {
+       ProblemNode parentNode = getBrController().getParentNodeInfo();
+       return parentNode.getDoneState();
+   }
+
+   public void setNodeDoneState(boolean nodeState) {
+       ProblemNode parentNode = getBrController().getParentNodeInfo();//getBrController().getSolutionState().getCurrentNode();
+       parentNode.setDoneState(nodeState);
+   }
 
    public void ssLogStudentsLearning( String training, String output ) {
 
-       File trainingFile = new File(training); 
+       File trainingFile = new File(training);
        if (trainingFile.isDirectory()) {
            setSsCondition(new File(training).getName());
            String brdFiles[] = trainingFile.list();
@@ -4731,7 +4770,7 @@ public final class SimSt implements Serializable {
        // set true to batch mode flag
        setIsBatchMode(true);
 
-       // Load WME values elements 
+       // Load WME values elements
        // Switch to SimStudent Mode
        switchToSimStMode();
 
@@ -4756,7 +4795,7 @@ public final class SimSt implements Serializable {
                EdgeData edgeData = edge.getEdgeData();
                if(trace.getDebugCode("miss"))trace.out("miss", "edge action type = " + edgeData.getActionType());
 
-               // The skill names in an edgeData looks like 
+               // The skill names in an edgeData looks like
                // "hoge boo" where boo is a name of the production set
                Vector skillNames = edgeData.getSkills();
                String modelSkillName = ((String)skillNames.get(0)).split(" ")[0];
@@ -4765,7 +4804,7 @@ public final class SimSt implements Serializable {
                // Record rule fireing during learning
                String condition = getSsCondition();
                // String modelStatus = edge.getSource().cltLogStatus();
-               logRuleActivationToFile( LOG_PRTEST_TRAINING, training, targetNode.getName(), 
+               logRuleActivationToFile( LOG_PRTEST_TRAINING, training, targetNode.getName(),
                        modelStatus, modelSkillName, null, null, condition, output);
 
                incRuleFreq(modelSkillName);
@@ -4774,7 +4813,7 @@ public final class SimSt implements Serializable {
    }
 
    /**
-    * 
+    *
     * @param trainingFile File containing training problems. Can be either text file, brd file, directory
     * containing a list of brdFiles.
     * @param testSetFile
@@ -4783,14 +4822,14 @@ public final class SimSt implements Serializable {
     * @param NonILFlag
     */
    private void ssRunInBatchMode(String trainingFile, String[] testSetFile, String outputFile, boolean ILFlag, boolean NonILFlag) {
-   	
+
    	// Check if the trainingFile is a textFile, brdFile or a directory
    	File f = new File(trainingFile);
    	if(f.isDirectory()) {
-   		
+
    		// If its a directory with a list of brd files then call the method recursively until you  have a file which is a brd itself
-   	
-   		
+
+
    		String brdFiles[] = f.list();
    		for (int i = 0; i < brdFiles.length; i++) {
    			if (brdFiles[i].matches(".*brd$")) {
@@ -4801,42 +4840,42 @@ public final class SimSt implements Serializable {
    			}
    		}
    		return;
-   		
-   		
-   		
+
+
+
    	} else if(f.isFile()) {
-   		
+
    		// Check if it's a brd file or a text file. It its a brd file then do the IL/ NonIL
    		// using the brd file
- 			
+
    		if(trainingFile.matches(".*brd$")) {
-   			
+
    				//trace.out("******** Trying to process file : " + trainingFile);
    				//this.ssRunDemonstrationInBatchMode(trainingFile, outputFile);
    				this.ssRunInBatchMode(trainingFile, testSetFile, outputFile);
-   				
-   			// If its a text file with a list of problems then do the IL / NonIL using the text file	
+
+   			// If its a text file with a list of problems then do the IL / NonIL using the text file
    		}else if(trainingFile.matches(".*txt$")) {
-   			
+
    			List<String> problemNames = loadProblemNamesFile(trainingFile);
    			trace.out("miss","Start training on " + problemNames.size() + " problems, ILFlag is " + ILFlag);
-   			
-   			for(String problem : problemNames) {		
+
+   			for(String problem : problemNames) {
    				// If it's interactive learning
    				if(ILFlag) {
    	        		getBrController().startNewProblem(false);
    	                setSsInteractiveLearning(new SimStInteractiveLearning(this));
    					if(trace.getDebugCode("rr"))
-   						trace.out("rr", "Running interactive learning on problem: " + problem 
+   						trace.out("rr", "Running interactive learning on problem: " + problem
    								+ " IL Status: " + isInteractiveLearning() + " ILFlag Status: " + isInteractiveLearningFlag());
    					setIsInteractiveLearning(isInteractiveLearningFlag());
    	                getSsInteractiveLearning().ssInteractiveLearningOnProblem(problem);
    	                if(trace.getDebugCode("rr"))
    	                	trace.out("rr", "Done IL Status: " + isInteractiveLearning() + " ILFlag Status: " + isInteractiveLearningFlag());
 
-   	            // If it's non interactive learning    
+   	            // If it's non interactive learning
    				} else if(NonILFlag) {
-   					
+
    					getBrController().startNewProblem(false);
    					if(trace.getDebugCode("rr"))
    						trace.out("rr", "Running non-interactive learning on problem: " + problem
@@ -4846,7 +4885,7 @@ public final class SimSt implements Serializable {
    					if(trace.getDebugCode("rr"))
    						trace.out("rr", "Done NIL Status: " + isNonInteractiveLearning() + " NILFlag Status: " + isNonInteractiveLearningFlag());
    				}
-   				
+
    				// Run the validation after the training has been completed (Test the current prodution rules
    				// by model tracing each of the problems in the testSet.
                    if (isTestOnProblemBasis() && testSetFile != null) {
@@ -4864,16 +4903,16 @@ public final class SimSt implements Serializable {
    }
 
    int trainingCycle=0;
-   
-   
+
+
    private void ssRunInBatchMode( String training, String[] testSet, String output ) {
        if (getNumTrained() > MAX_NUM_TRAINING) {
            if(trace.getDebugCode("miss"))trace.out("miss", "MAX_NUM_TRAINING exceeded @@@@@@@@@@@@@@@@@@@@@@@@@");
            return;
        }
-       
-       
-       
+
+
+
        if (isSwitchLearningStrategy() && getNumTrained() > getSwitchLearningStrategyAfter()) {
            setIsInteractiveLearning(true);
            // TODO: the hint method should be read from an appropriate field
@@ -4881,13 +4920,13 @@ public final class SimSt implements Serializable {
            // reset force learning
        }
 
-       
+
 
        File trainingFile = new File(training);
 
        //In case 'training' is a directory, not a file
        if (trainingFile.isDirectory()) {
-    	   
+
            String brdFiles[] = trainingFile.list();
            for (int i = 0; i < brdFiles.length; i++) {
                if (brdFiles[i].matches(".*brd$")) {
@@ -4898,7 +4937,7 @@ public final class SimSt implements Serializable {
                }
            }
            return;
-       } 
+       }
        else if(!training.matches(".*brd$") && (isInteractiveLearning() || isNonInteractiveLearning()) ) {
        	//Non-brd file should be list of problem name files, only valid for interactive learning
        	List<String> problems = loadProblemNamesFile(training);
@@ -4910,7 +4949,7 @@ public final class SimSt implements Serializable {
 					continue;
 				else if (index > 0)
 					problem = problem.substring(0, index);
-				
+
        		if (isInteractiveLearningFlag()) {
        			if(trace.getDebugCode("miss"))trace.out("miss", "Learning Strategy >> Interactive Learning...");
        			setIsInteractiveLearning(true);
@@ -4957,19 +4996,19 @@ public final class SimSt implements Serializable {
            testProductionModelOn( training, LOG_PRTEST_TRAINING, "", output );
        }
 
-  
+
        trainingCycle++;
-       this.setIsInteractiveLearning(true);      
-       if (isInteractiveLearning() || isNonInteractiveLearning()){ 
+       this.setIsInteractiveLearning(true);
+       if (isInteractiveLearning() || isNonInteractiveLearning()){
            // IL batch mode
            if(trace.getDebugCode("miss"))trace.out("miss", "Learning Strategy >> Interactive Learning...");
-         
+
            this.getBrController().startNewProblem(null);
            setSsInteractiveLearning(new SimStInteractiveLearning(this));
            setIsInteractiveLearning(isInteractiveLearningFlag());
-           if(trace.getDebugCode("nbarbaBrd")) trace.out("nbarbaBrd","Going with BRD interactive learning.... interactive learnig is now " + this.isInteractiveLearning); 
+           if(trace.getDebugCode("nbarbaBrd")) trace.out("nbarbaBrd","Going with BRD interactive learning.... interactive learnig is now " + this.isInteractiveLearning);
            getSsInteractiveLearning().ssInteractiveLearningWithBRD(training);
-       } else { 
+       } else {
            // normal batch mode
            if(trace.getDebugCode("miss"))trace.out("miss", "Learning Strategy >> Traditional Learning...");
            ssRunDemonstrationInBatchMode( training, output );
@@ -5015,7 +5054,7 @@ public final class SimSt implements Serializable {
        		problemNames.add(input);
        		input = reader.readLine();
        	}
-       	
+
        } catch (Exception e) {
            e.printStackTrace();
            String message = "<html>The file "+filename+" could not be found or the format of the file is not recognized. <br>"
@@ -5033,7 +5072,7 @@ public final class SimSt implements Serializable {
    private String wilkinsBadBrdFilesDir = "Problems/DataShopExport-NG-files";
 
    public String isBadWilkinsburgBrdFile(String training) {
-       String isBadBrdFile = null; 
+       String isBadBrdFile = null;
        // training = "132_m32x-4"
        String brdName = new File(training).getName().substring(4);
 
@@ -5123,20 +5162,20 @@ public final class SimSt implements Serializable {
     * @param outputFile
     */
    public void ssRunDemonstrationInBatchModeNoBRD( String problem, String outputFile) {
-   	
+
    	if(trace.getDebugCode("rr"))
    		trace.out("rr", "ssRunDemonstrationInBatchModeNoBRD on problem: " + problem);
-   	
+
    	BR_Controller brController = getBrController();
    	boolean killMessageReceived = false;
-   	
+
    	// Create a start state for the problem
    	if(brController.getProblemModel().getStartNode() == null) {
 
    		if(isInterfaceElementGetterClassDefined()) {
    			getInterfaceElementGetter().simulateStartStateElementEntry(brController, problem);
    		}
-   			
+
    		// Tell the brController to create the start state
    		String normalProblemName = convertToSafeProblemName(problem);
    		try {
@@ -5145,13 +5184,13 @@ public final class SimSt implements Serializable {
    			e.printStackTrace();
    		}
    	}
-   	
+
    	// Keep looping till the done state is reached
    	while(!killMessageReceived) {
-	    	
+
    		ProblemNode currentNode = brController.getCurrentNode();
    		ProblemNode nextCurrentNode = null;
-   		
+
    		// Ask the designated oracle for the demonstration or hint
 	    	AskHint hint =  null;
 	    	hint = askForHint(brController, currentNode);
@@ -5160,7 +5199,7 @@ public final class SimSt implements Serializable {
 	    	Vector<String> selection = new Vector<String>();
 	    	Vector<String> action = new Vector<String>();
 	    	Vector<String> input = new Vector<String>();
-	    	
+
 	    	String modelSelection = hint.getSelection();
 	    	String modelAction = hint.getAction();
 	    	String modelInput = hint.getInput();
@@ -5169,28 +5208,28 @@ public final class SimSt implements Serializable {
 	    		hint.setSkillName("done");
 	    	}
 	    	String modelSkillName = hint.getSkillName();
-	    	
+
 	    	selection.add(modelSelection);
 	    	action.add(modelAction);
 	    	input.add(modelInput);
-	    	
+
 	    	// Create a new node and edge
 	    	SimStNodeEdge ssNodeEdge = makeNewNodeAndEdge(hint.getSai(), currentNode);
 	    	hint.setNode(ssNodeEdge.node);
 	    	hint.setEdge(ssNodeEdge.edge);
-	    	
+
 	    	// Instruction would be created and added
 	    	stepDemonstrated(hint.node, hint.getSai(), hint.getEdge(), null);
-	    	
+
 	    	if(trace.getDebugCode("rr"))
 	    		trace.out("rr", "sel: " + modelSelection + " act: " + modelAction + " inp: " + modelInput + " skillName: " + modelSkillName);
-	    	
+
 	    	// See if there is a production rule that explains the demonstrated step i.e. the one oracle suggested
 	    	String ruleFired = null;
 	    	ruleFired = tryModelTraceSAI(currentNode, selection, action, input);
 
 	        if(trace.getDebugCode("miss"))trace.out("miss", "askHint returning " + hint);
-	    	
+
 	    	// None of the activations can generate the model sel, act and input so learn the step
 	    	if(ruleFired == null) {
 	    		boolean successful = changeInstructionName(hint.skillName, hint.node);
@@ -5201,21 +5240,21 @@ public final class SimSt implements Serializable {
 	    			break;
 	    		}
 	    	}
-	    	
+
 	    	// Advance the current node to the oracle demonstrated node
    		nextCurrentNode = hint.node;
 	    	getBrController().setCurrentNode2(nextCurrentNode);
 	    	getBrController().getGoToWMStateResponse(nextCurrentNode.getName());
 	    	currentNode = nextCurrentNode;
-	    	
+
 	    	if(!(currentNode.isDoneState())) {
-	    		
+
 	    		if(trace.getDebugCode("rr"))
 	    			trace.out("rr", "Updating the current node");
 	    		currentNode = nextCurrentNode;
-	    	
-	    	} else if(currentNode.isDoneState()){ // Do not go beyond the done state  
-	    		
+
+	    	} else if(currentNode.isDoneState()){ // Do not go beyond the done state
+
 	    		killMessageReceived = true;
 	    		if(trace.getDebugCode("rr"))
 	    			trace.out("rr", "killMessageReceived");
@@ -5225,23 +5264,23 @@ public final class SimSt implements Serializable {
 
    public /*private*/ void ssRunDemonstrationInBatchMode( String training, String output ) {
 
-       // SimStTimerException would be thrown by changeInstructionName() to prevent SimSt 
+       // SimStTimerException would be thrown by changeInstructionName() to prevent SimSt
        // spend hours to learn a rule
-	
-	   
+
+
        if(trace.getDebugCode("miss"))trace.out( "miss", "ssRunDemonstrationInBatchMode on " + training );
        trace.err("ssRunDemonstrationInBatchMode on " + training);
        Thread.dumpStack();
        BR_Controller brController = getBrController();
-       brController.startNewProblem(null);  
-       
-       
+       brController.startNewProblem(null);
+
+
        //Old deprecated method
       //  LoadFileDialog.doLoadBRDFile( brController, training, "", true);
        LoadFileDialog.doLoadBRDFile(brController.getServer(), training, "", true);
-       
-       
-       
+
+
+
        // *** Uncomment this when you hit a heap memory problem
        // resetFeaturePredicateCache();
        incNumTrained();
@@ -5260,18 +5299,18 @@ public final class SimSt implements Serializable {
        	getSkillNameGetter().init(getBrController());
        }
 
-       // Load WME values - - - - - - - - - - - - - - - - - - - - - - 
-       // 
+       // Load WME values - - - - - - - - - - - - - - - - - - - - - -
+       //
        // Make sure it's the SimStudent Mode
        switchToSimStMode();
 
-       // For some unknown reason, these steps must be performed to 
+       // For some unknown reason, these steps must be performed to
        // get the model trace done correctly in the stepDemonstrated()
-       // 
+       //
        ProblemNode startNode = brController.getProblemModel().getStartNode();
        ProblemNode doneNode = startNode.getDeadEnd();
-      
-       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
        int numStepDemonstrated = 0;
        Vector /* String[] */<String[]> foaV = null;
        if (!isFoaGetterDefined()) {
@@ -5293,7 +5332,7 @@ public final class SimSt implements Serializable {
 
        List<ProblemEdge> wmeFactsToClear = new Vector<ProblemEdge>();
 
-       // Iterate demonstrations through all alternative solutions 
+       // Iterate demonstrations through all alternative solutions
        for (int path_i=0; path_i<allPaths.size(); path_i++){
 
            Vector path = (Vector) allPaths.get(path_i);
@@ -5307,7 +5346,7 @@ public final class SimSt implements Serializable {
            // Iterate steps in the path
            path = reorderPath(path);  //efficiency improvement: call pathOrderer.pathOrdering
 
-           for (int edge_i=0; edge_i<path.size(); edge_i++) { //this loop is 'stepsIterated'                
+           for (int edge_i=0; edge_i<path.size(); edge_i++) { //this loop is 'stepsIterated'
 
                //ProblemEdge edge = (ProblemEdge) edgeStack.pop();
                ProblemEdge edge = (ProblemEdge) path.get(edge_i);
@@ -5326,11 +5365,11 @@ public final class SimSt implements Serializable {
                    edgeCache.add(edge);
                }
 
-               parentNode = edge.source;		
+               parentNode = edge.source;
                ProblemNode targetNode = edge.dest;
 
                //find parent in edge Path (//except for first edge)
-               int index = indexOfLastEdgeInPathContainingNode(parentNode, edgePath);  
+               int index = indexOfLastEdgeInPathContainingNode(parentNode, edgePath);
                if (index!=-1) //-1 means that there is no edge with parentNode as source.
                    removeEdgesAfterInclusive(index, edgePath); //remove that edge and everything after it.
                edgePath.add(edge);
@@ -5368,7 +5407,7 @@ public final class SimSt implements Serializable {
                    // Instruction would be created and added
                    stepDemonstrated( targetNode, selection, action, input, edge, edgePath );
 
-                   // The skill names in an edgeData looks like 
+                   // The skill names in an edgeData looks like
                    // "hoge boo" where boo is a name of the production set
                    Vector skillNames = edgeData.getSkills();
                    String modelSkillName = ((String)skillNames.get(0)).split(" ")[0];
@@ -5398,13 +5437,13 @@ public final class SimSt implements Serializable {
                    }
 
                    getBrController().setCurrentNode2(targetNode);
-                   if (trace.getDebugCode("mt")) trace.out("mt", "Called from ssRunDemonstrationInBatchMode");                    
+                   if (trace.getDebugCode("mt")) trace.out("mt", "Called from ssRunDemonstrationInBatchMode");
                    getBrController().getGoToWMStateResponse(targetNode.getName());
 
 
                    // simulate to add a skill name
                    // Wed Jun 14 00:10:03 LDT 2006  Noboru
-                   // change skill name (hence update the mode) only when 
+                   // change skill name (hence update the mode) only when
                    // the model trace failed
                    if ((isForceToUpdateModel() || ruleFired == null)){// && modelSkillName.equals("subtract")) { /////CLEAN THIS UP     isForceToUpdateModel() => ruleFired==null?
                        if(trace.getDebugCode("miss"))trace.out("miss", "ssRunDemonstrationInBatchMode: learning a rule " + modelSkillName);
@@ -5500,9 +5539,9 @@ public final class SimSt implements Serializable {
 //                factName = fact.getSlotValue("name").toString();
 //            }
 //            catch(Exception e){}
-//            
+//
 //            ProblemEdge edge = getEdgeFromEdgePath(factName,edgePath);
-//            
+//
 //            String correctValue = (edge==null) ? //if not in the edgePath, correct value is "nil"
 //                    "nil" : (String) edge.getEdgeData().getInput().get(0);
 //
@@ -5511,21 +5550,21 @@ public final class SimSt implements Serializable {
 //                factValue = fact.getSlotValue("value").toString();
 //            }
 //            catch(Exception e){}
-//            
+//
 //            if (!correctValue.equals(factValue)){ //if incorrect, update
 //                getRete().modify(fact, "value", new Value(correctValue));
 //            }
-//            
+//
 //        }
-//        
+//
 //    }
-//    
+//
 
    public void showJessFacts() {
 //      String commName = "Numerator0Value";
        JessModelTracing jmt = getBrController().getModelTracer().getModelTracing();
 
-       MTRete rete = jmt.getRete(); 
+       MTRete rete = jmt.getRete();
        List facts = rete.getFacts();
 
        int hashC = rete.hashCode();
@@ -5542,7 +5581,7 @@ public final class SimSt implements Serializable {
        for (int i=0; i<edgePath.size(); i++){
            ProblemEdge edge = (ProblemEdge)edgePath.get(i);
            String selection = (String) edge.getEdgeData().getSelection().get(0);
-           if (selection.equals(commName)){                
+           if (selection.equals(commName)){
                result = edge;
                break;
            }
@@ -5589,8 +5628,8 @@ public final class SimSt implements Serializable {
        ProblemNode parentNode, lastParent, targetNode;
 
        // push all the children of <root> onto <edgeStack>
-       // The third argument specifies if ignore edges not to be learned. Thus, if we only need 
-       // correct solutions, we must get all the edges so that we can determine 
+       // The third argument specifies if ignore edges not to be learned. Thus, if we only need
+       // correct solutions, we must get all the edges so that we can determine
        // if the path contains incorrect edges or not
        pushChildEdges(root, edgeStack, !correctPathOnly);
 
@@ -5601,7 +5640,7 @@ public final class SimSt implements Serializable {
            targetNode = edge.dest;
 
            //find parent in edge Path (//except for first edge)
-           int index = indexOfLastEdgeInPathContainingNode(parentNode, edgePath);  
+           int index = indexOfLastEdgeInPathContainingNode(parentNode, edgePath);
            if (index!=-1) //-1 means that there is no edge with parentNode as source.
                removeEdgesAfterInclusive(index, edgePath); //remove that edge and everything after it.
            edgePath.add(edge); //add as the last in the path
@@ -5612,7 +5651,7 @@ public final class SimSt implements Serializable {
            else
                lastParent = parentNode;
 
-           pushChildEdges(edge, edgeStack, !correctPathOnly); 
+           pushChildEdges(edge, edgeStack, !correctPathOnly);
        }
 
        return paths;
@@ -5623,8 +5662,8 @@ public final class SimSt implements Serializable {
        //last element has index edgePath.size - 1
        //let's do some algebra:
        // removalSize = lastIndex - index + 1 =
-       //     (edgePath.size - 1) - index + 1 = edgePath.size - index 
-       int removalSize = edgePath.size() - index; //size 1, index 0, we remove 1, etc. 
+       //     (edgePath.size - 1) - index + 1 = edgePath.size - index
+       int removalSize = edgePath.size() - index; //size 1, index 0, we remove 1, etc.
 
        for (int i=0; i<removalSize; i++) //do the following 'removalSize' times:
            edgePath.remove(edgePath.size()-1); //remove last
@@ -5639,7 +5678,7 @@ public final class SimSt implements Serializable {
            edge = edgePath.get(index);
            if (edge.source.equals(parentNode))
                return index;
-       }   	
+       }
        return -1;
    }
 
@@ -5701,7 +5740,7 @@ public final class SimSt implements Serializable {
 
    // API for the SAI object
    public void stepDemonstrated(ProblemNode problemNode, Sai sai, ProblemEdge problemEdge,
-                                Vector<ProblemEdge> edgePath) 
+                                Vector<ProblemEdge> edgePath)
    {
        Vector /* String */ selectionV = sai.selectionV;
        Vector /* String */ actionV = sai.actionV;
@@ -5709,12 +5748,12 @@ public final class SimSt implements Serializable {
        stepDemonstrated(problemNode, selectionV, actionV, inputV, problemEdge, edgePath);
    }
 
-   
-   
-   
+
+
+
    public String instructionIdentifierStem=null;
-   
-   
+
+
    public String getInstructionIdentifierStem() {
 	   return instructionIdentifierStem;
    }
@@ -5751,34 +5790,34 @@ public final class SimSt implements Serializable {
        String action = (String)actionV.get(0);
        String input = (String)inputV.get(0);
 
-     
-     
+
+
        // The first "Focus of Attention," which corresponds to
        // selection-action-input.
        String wmeType = getRete().wmeType( selection );
-           
+
        String sai = wmeType + "|" + selection + "|" + input;
-       
-       String instructionID= instructionIdentifierStem + "_" + problemNode.getName();	
+
+       String instructionID= instructionIdentifierStem + "_" + problemNode.getName();
        Instruction instruction;
-       
+
        if (this.isSsBatchMode() || !this.getBrController().getMissController().isPLEon() )
     	   instruction  = new Instruction( problemNode, sai);
        else
     	   instruction  = new Instruction( problemNode, sai, instructionID, this.getSsInteractiveLearning().previousPositiveInstructionID);
-       
+
        if (!this.isSsBatchMode() && this.getBrController().getMissController().isPLEon() )
     	   this.getSsInteractiveLearning().previousPositiveInstructionID=instruction.getInstructionID();
-   	
-        
+
+
        instruction.setAction( action );
        instruction.setRecent(true);
 
        // Add Focus of Attention, which is either specified by the author
        // or identified by a tutor specific FoA getter
        Vector<FoA> v = getCurrentFoA();
-       
-       
+
+
        addInstructionFoA(instruction, selection, action, input, edgePath);
        //if(!getBrController().getMissController().getSimSt().getSsInteractiveLearning().isTypeInStepWithNewFoA())
        //	addInstructionFoA(instruction, selection, action, input, edgePath);
@@ -5787,10 +5826,10 @@ public final class SimSt implements Serializable {
        // add instruction (which inturn updates Console display)
        addInstruction( instruction );
 
-   
-       
+
+
        // If the [Done] button is pressed, then assign the name
-       // "done" to this step 
+       // "done" to this step
        if ( Rule.isDoneAction( selection, action, input ) ) {
            instruction.setName( Rule.DONE_NAME );
            updateConsoleSkillName();
@@ -5814,13 +5853,13 @@ public final class SimSt implements Serializable {
    //16 April 2008
    //Assuming that a focus of attention is either given or gettable from the FOA getter, add it
    //to the instruction object.
-   private void addInstructionFoA(Instruction instruction, String selection, String action, String input, 
+   private void addInstructionFoA(Instruction instruction, String selection, String action, String input,
            Vector<ProblemEdge> edgePath) {
-	
-	  
-	   
+
+
+
    		List /*of String*/<String> foaStrs = new Vector<String>();
-       // If a user defined method to identify focus of attention, 
+       // If a user defined method to identify focus of attention,
        // then call that method
        if ( isFoaGetterDefined() ) {
            //if the author, by mistake, specifies FOA manually, then the FoaGetter code would
@@ -5829,8 +5868,8 @@ public final class SimSt implements Serializable {
            clearCurrentFoA();
 
            Vector /* Object */ vFoa = applyFoaGetter( selection, action, input, edgePath );
-                      
-           // If one of the focus of attention is not specified then we need to tell the student 
+
+           // If one of the focus of attention is not specified then we need to tell the student
            // that they have made an error of skipping a step. Check here if the foa specified have
            // some text input into it
            if (vFoa!=null){
@@ -5845,11 +5884,11 @@ public final class SimSt implements Serializable {
        //regardless of how the FOA was gotten, we now populate foaStrs
        for (int i = 0; i < numCurrentFoA(); i++) {
            String foaStr = getCurrentFoA().get(i).foaString();
-          
-           foaStrs.add(getCurrentFoA().get(i).foaString());
+
+           foaStrs.add(foaStr);//getCurrentFoA().get(i).foaString());
        }
-       
-       
+
+
        updateInstructionFoa(instruction, foaStrs);
    }
 
@@ -5870,7 +5909,7 @@ public final class SimSt implements Serializable {
                System.exit(-1);
            }
        }
-     
+
    }
 
    /**
@@ -5880,13 +5919,13 @@ public final class SimSt implements Serializable {
     * @param currentNode
     */
    public void createNewNodeAndEdgeForHintReceived(AskHint hint, ProblemNode currentNode) {
-   	
+
    	String hintMethodName = getHintMethod();
 		ProblemNode childNode = null;
 		ProblemEdge childEdge = null;
-	
+
    	if(hintMethodName.equalsIgnoreCase(AskHint.HINT_METHOD_BRD)) {
-   		
+
    		// Get the children of the currentNode in the BRD
    		for(Iterator<ProblemNode> itr = currentNode.getChildren().iterator(); itr.hasNext();) {
    			childNode = itr.next();
@@ -5894,11 +5933,11 @@ public final class SimSt implements Serializable {
    			if(childEdge.isCorrect())
    				break;
    		}
-   		
+
    	} else if(hintMethodName.equalsIgnoreCase(AskHint.HINT_METHOD_CL)) {
-   		
+
    		trace.err("You need to implement new node and edge creation for oracle: " + hintMethodName);
-   		
+
    	} else if(hintMethodName.equalsIgnoreCase(AskHint.HINT_METHOD_FAKE_CLT)) {
 
    		SimStNodeEdge ssNodeEdge = makeNewNodeAndEdge(hint.getSai(), currentNode);
@@ -5906,18 +5945,18 @@ public final class SimSt implements Serializable {
    		childEdge = ssNodeEdge.edge;
 
    	} else if(hintMethodName.equalsIgnoreCase(AskHint.HINT_METHOD_FTS)) {
-   		
+
    		if(getSsInteractiveLearning() != null) {
    			childNode = getSsInteractiveLearning().simulatePerformingStep(getBrController().getCurrentNode(), hint.getSai());
    			childEdge = lookupProblemEdge(getBrController().getCurrentNode(), childNode);
    		}
 
-   	} else if(hintMethodName.equalsIgnoreCase(AskHint.HINT_METHOD_HD)) {  		
+   	} else if(hintMethodName.equalsIgnoreCase(AskHint.HINT_METHOD_HD)) {
    		// For the human demonstration the currentNode is actually the parentNode
    		ProblemNode parentNode = currentNode;
    		childNode = getBrController().getCurrentNode();
    		childEdge = getBrController().getProblemModel().returnsEdge(parentNode, childNode);
-   			
+
    		/*Update the brd graph with the skill name */
    	//	if (getBrController().getMissController().isSimStPleOn() ){
    		//  this is related to item 177
@@ -5925,23 +5964,23 @@ public final class SimSt implements Serializable {
    	//		childEdge.getEdgeData().replaceRuleName("", hint.skillName);
    	//		getBrController().getJGraphWindow().getJGraph().repaint();
    	//	}
-   		
-   			
-   	}else if(hintMethodName.equalsIgnoreCase(AskHint.HINT_METHOD_WEBAUTHORING)) {  		
+
+
+   	}else if(hintMethodName.equalsIgnoreCase(AskHint.HINT_METHOD_WEBAUTHORING)) {
    		//ProblemNode parentNode = currentNode;
    		//childNode = getBrController().getCurrentNode();
    		//childEdge = getBrController().getProblemModel().returnsEdge(parentNode, childNode);
-   		
+
    		SimStNodeEdge ssNodeEdge = makeNewNodeAndEdge(hint.getSai(), currentNode);
    		childNode = ssNodeEdge.node;
    		childEdge = ssNodeEdge.edge;
-   		
-   		
-   		
-   		
+
+
+
+
    	} else if(hintMethodName.equalsIgnoreCase(AskHint.HINT_METHOD_SOLVER_TUTOR)) {
-   		
-   		if(!getBrController().getMissController().getSimSt().isValidationMode() && 
+
+   		if(!getBrController().getMissController().getSimSt().isValidationMode() &&
    			(getBrController().getMissController().getSimSt().getSsInteractiveLearning().isRunningFromBrd() ||
    			getBrController().getMissController().getSimSt().getHintMethod().equals(AskHint.HINT_METHOD_SOLVER_TUTOR))) {
 
@@ -5952,32 +5991,32 @@ public final class SimSt implements Serializable {
 
    	} else
    		new Exception("No valid oracle specified.");
-   	
+
 		hint.setNode(childNode);
 		hint.setEdge(childEdge);
    }
 
-   
+
    //19 April 2007
    //given an SAI and current node, this constructs a new node and a new edge, as a child of currentNode.
    public SimStNodeEdge makeNewNodeAndEdge(Sai sai, ProblemNode currentNode) {
-	  
+
        BR_Controller brController = getBrController();
-      
-       
+
+
        //first click on current node
        brController.setCurrentNode2(currentNode);
-     
-      
-       
+
+
+
        //code inspired by doOneMatchedNode()
 
-       ProblemNode newNode = 
-           brController.addNewState(brController.getSolutionState().getCurrentNode(), 
+       ProblemNode newNode =
+           brController.addNewState(brController.getSolutionState().getCurrentNode(),
                                     sai.selectionV, sai.actionV, sai.inputV,
                                     null, EdgeData.CORRECT_ACTION); //null messageObject, since we don't care
- 
-       ProblemEdge newEdge = brController.getProblemModel().returnsEdge(currentNode,newNode); 
+
+       ProblemEdge newEdge = brController.getProblemModel().returnsEdge(currentNode,newNode);
 
        return new SimStNodeEdge(newNode, newEdge);
    }
@@ -6008,7 +6047,7 @@ public final class SimSt implements Serializable {
 //        CheckLinksList clList = CheckLinksList.getCheckedLinksList(response);
 //        int targetID = clList.size() -1;
 //
-//        // Check the result 
+//        // Check the result
 //        String mtStatus = clList.getCheckResult(targetID);
 //
 //        // if SUCCESS
@@ -6016,7 +6055,7 @@ public final class SimSt implements Serializable {
 //            List skillNameList = clList.getRuleSeq(targetID);
 //            if ( !skillNameList.isEmpty() ) {
 //                ruleFired = (String)skillNameList.get(0);
-//                // strip off "MAIN::" from the skillName, if any 
+//                // strip off "MAIN::" from the skillName, if any
 //                int n = ruleFired.indexOf("::");
 //                if ( n > 0 ) {
 //                    ruleFired= ruleFired.substring(n +2);
@@ -6039,10 +6078,10 @@ public final class SimSt implements Serializable {
 //        /*
 //         * I have "fixed" NullPointerException that happens further down checkAddRuleName(),
 //         * but, when NOT commented-out, simStSmokeTest.sh fails  (May 13, 2006) Noboru
-//         * 
-//         * Sung-Joo: I changed to enable this feature when CTAT is not running in the 
+//         *
+//         * Sung-Joo: I changed to enable this feature when CTAT is not running in the
 //         * batch mode. If user demonstrates, it should change the skill name automatically.
-//         */ 
+//         */
 //        if (( ruleFired != null ) && !isBatchMode) {
 //            //Change the skill name to the fired rule name if there is a match.
 //            BR_Controller controller = getBrController();
@@ -6059,7 +6098,7 @@ public final class SimSt implements Serializable {
 //    }
 
    public /*private*/ ProblemEdge lookupProblemEdge(ProblemNode parentNode, ProblemNode targetNode) {
-       ProblemGraph pg = getBrController().getProblemModel().getProblemGraph(); 
+       ProblemGraph pg = getBrController().getProblemModel().getProblemGraph();
        return pg.lookupProblemEdge(parentNode, targetNode);
    }
 
@@ -6090,11 +6129,11 @@ public final class SimSt implements Serializable {
    }
 
    private void debugPringSAI(Vector selection, Vector action, Vector input) {
-       trace.out("miss", 
+       trace.out("miss",
                "  selection: " + (selection == null || selection.isEmpty() ? "" : selection.get(0)) );
-       trace.out("miss", 
+       trace.out("miss",
                "     action: " + (action == null || action.isEmpty() ? "" : action.get(0)));
-       trace.out("miss", 
+       trace.out("miss",
                "      input: " + (input == null || input.isEmpty() ? "" : input.get(0)) );
    }
 
@@ -6277,7 +6316,7 @@ public final class SimSt implements Serializable {
    }
 
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-   // Validation test for the production rules 
+   // Validation test for the production rules
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
    /**
@@ -6353,7 +6392,7 @@ public final class SimSt implements Serializable {
    public void testProductionModelOn( String problemName, String logMode, String directory, String output ) {
 
        // Sun Nov 12 02:47:26 EST 2006 :: Noboru
-       // for debugging a memory problem 
+       // for debugging a memory problem
        if (testProductionModelNoTest) return;
 
        // Number of test cut-off due to an out-of-memory problem
@@ -6362,23 +6401,23 @@ public final class SimSt implements Serializable {
            return;
        }
 
-       
+
        // Recursively call testProductionModelOn when the target problem file is a directory
-       File problemFile = new File(problemName); 
-       
+       File problemFile = new File(problemName);
+
        if (problemFile.isDirectory()) {
            String brdFiles[] = problemFile.list();
-                     
+
            for (int i = 0; i < brdFiles.length; i++) {
                File childFile = new File(problemFile, brdFiles[i]);
                String childFileName = new File(problemFile, brdFiles[i]).getAbsolutePath();
                if (childFileName.matches(".*brd$") || childFile.isDirectory()
                		|| childFileName.matches(".*txt$")) {
-            	   
+
             	   /*save in directory the right above folder of the brd*/
             	   if (!childFileName.contains(".brd"))
             		   directory=brdFiles[i];
-                   
+
             	   testProductionModelOn(childFileName, logMode, directory, output );
                }
            }
@@ -6386,9 +6425,9 @@ public final class SimSt implements Serializable {
        }
        else if(problemName.matches(".*txt$")  )
        {
-    	 
+
        	setIsValidationMode(true);
-       	
+
        	//Txt file should be list of problem name files
        	List<String> problems = loadProblemNamesFile(problemName);
        	for(String problem:problems)
@@ -6403,7 +6442,7 @@ public final class SimSt implements Serializable {
 				problem = problem.trim();
 				if(problem.length() == 0)
 					continue;
-				
+
 		        try
 		        {
 		        	validateProblem(problem, output);
@@ -6413,18 +6452,18 @@ public final class SimSt implements Serializable {
 		        	e.printStackTrace();
 		        }
        	}
-       	
+
        	setIsValidationMode(false);
        	return;
-       } 
+       }
        else {
     	   	setIsValidationMode(true);
-       	
-     
-       	
+
+
+
        		problemName=problemName.replace(" ", "");
        		problemName=problemName.replace("=", "_");
-       	
+
            ssTestProductionModelOnBRD(problemName, logMode, directory, output);
 
            setIsValidationMode(false);
@@ -6436,7 +6475,7 @@ public final class SimSt implements Serializable {
    private void validateProblem(String problem, String output)
    {
    	incNumTested();
-   	
+
    	String safeProblemName = SimSt.convertToSafeProblemName(problem);
    	setValidationGraph(new SimStProblemGraph());
    	SimStNode startNode = new SimStNode(safeProblemName, getValidationGraph());
@@ -6445,29 +6484,29 @@ public final class SimSt implements Serializable {
    	String[] startState = readStartStateElements();
    	//String[] startState = {"dorminTable1_C1R1","dorminTable1_C2R1"};
    	//getSsRete().setStartStateElements(startState);
-   	
+
    	SimStNode currentNode = null, nextCurrentNode = null;
    	HashMap hm = new HashMap(); // Mapping between the RAN and the SimStNode
-   	
+
 		boolean killMessageReceived = false;
 		currentNode = startNode;
-		
+
 		while (!killMessageReceived ) {
 
 			if(trace.getDebugCode("rr"))
 				trace.out("rr", "currentNode: " + currentNode);
 			long activationListStartTime = Calendar.getInstance().getTimeInMillis();
 			Vector activationList = gatherActivationList(currentNode, hm);
-				
+
 			Collection<RuleActivationNode> activList = createOrderedActivationList(activationList);
 			int activationListDuration = (int) ((Calendar.getInstance().getTimeInMillis() - activationListStartTime)/1000);
-			
-			
+
+
 			//trace.err("Activation list is " + activationList);
 			SimStNode toVisit = validateActivations(currentNode, activList, hm, output);
 			if(trace.getDebugCode("rr"))
 				trace.out("rr", "toVisitNode: " + toVisit);
-			
+
 			if (toVisit != null) {
 				currentNode = toVisit;
 			} else {
@@ -6482,44 +6521,44 @@ public final class SimSt implements Serializable {
 
 
 
-   private SimStNode validateActivations(SimStNode currentNode, Collection<RuleActivationNode> activationList, HashMap hm, String output) 
+   private SimStNode validateActivations(SimStNode currentNode, Collection<RuleActivationNode> activationList, HashMap hm, String output)
 	{
    	String listAssessment = "";
    	SimStNode nextCurrentNode = null, successiveNode = null;
    	RuleActivationNode backUpRAN = null;
-   	
+
    	SimStNode startNode = getValidationGraph().getStartNode();
    	String problemName = startNode.getName();
-   	
+
    	SimStNode hintNode = null;
    		//	AskHint hint = new AskHintInBuiltClAlgebraTutor(getBrController(), currentNode);
    		//CL oracle must not be hardcoded! Whichever oracle grades the quiz should provide this hint
 		AskHint hint = askForHintQuizGradingOracle(getBrController(),currentNode);
-   	
+
    	if(trace.getDebugCode("rr"))
    		trace.out("rr", "hint: " + hint);
-   	
+
    	setProblemStepString(getProblemAssessor().calcProblemStepString(startNode, currentNode, null));
-   	        
+
    	RuleActivationNode randomRan = null;
-   	for(RuleActivationNode ran: activationList) 
+   	for(RuleActivationNode ran: activationList)
    	{
            trace.out("ss", "Checking RAN: "+ran);
 
    		if(ran.getActualInput().equalsIgnoreCase("FALSE"))
    			continue;
-   		
+
 
    		successiveNode = inspectActivation(currentNode, ran, output);
    		if(trace.getDebugCode("miss"))trace.out("miss", "successiveNode: " + successiveNode);
-   		
-   		if(successiveNode != null) 
-   		{   
+
+   		if(successiveNode != null)
+   		{
    			hm.put(ran, successiveNode);
    		}
    		randomRan = ran;
    	}
-   	    	
+
        String step = startNode.getName();
        if(getProblemAssessor() != null)
        {
@@ -6527,7 +6566,7 @@ public final class SimSt implements Serializable {
        	setLastSkillOperand(getProblemAssessor().findLastOperand(startNode, currentNode));
        }
        setProblemStep(step);
-       
+
        RuleActivationNode correctRan = null;
        RuleActivationNode inspectedRan = null;
        int correct = -1;
@@ -6535,23 +6574,23 @@ public final class SimSt implements Serializable {
        	if(!dontShowAllRA() || correct == -1)
        	{
 	        	inspectedRan = ran;
-	            if (!ran.getActualInput().equalsIgnoreCase("FALSE")) 
+	            if (!ran.getActualInput().equalsIgnoreCase("FALSE"))
 	            {
-	            	
+
 	            	int result = logRuleActivationOracled(LOG_PRTEST_AGENDA,problemName, ran, currentNode, output, hint);
 	            	correct = result;
-	            	if (result==1){ 
-	            	
+	            	if (result==1){
+
 	            		correctRan=ran;
-	            	
+
 	            	}
 	            }
        	}
         }
-       
+
        if (correctRan==null)
     	   correctRan=inspectedRan;
-       
+
        //log the test
        logRuleActivationOracled(LOG_PRTEST_TEST,problemName, correctRan, currentNode, output, hint);
 
@@ -6563,20 +6602,20 @@ public final class SimSt implements Serializable {
 
        if(trace.getDebugCode("rr"))
        	trace.out("rr", "hint: " + hint.getSai());
-       
+
       // hintNode = new SimStGraphNavigator().simulatePerformingStep(currentNode, hint.getSai());
-       
+
       // trace.err("CurrentNode is " + currentNode.getName());
       // trace.err("correct rAn is " + correctRan);
-       
+
        if (correctRan!=null)
     	   hintNode = new SimStGraphNavigator().simulatePerformingStep(currentNode,new Sai(correctRan.getActualSelection(),correctRan.getActualAction(),correctRan.getActualInput()));
-       
+
        return hintNode;
    }
 
 	private SimStNode inspectActivation(SimStNode currentNode, RuleActivationNode ran,String output) {
-	
+
 
 		if(trace.getDebugCode("miss"))trace.out("miss", "Enter inspectActivation");
 		SimStNode nextCurrentNode = null;
@@ -6600,7 +6639,7 @@ public final class SimSt implements Serializable {
            {
            	skill = getSkillNameGetter().skillNameGetter(getBrController(), sai.getS(), sai.getA(), sai.getI());
            }
-           else 
+           else
            {
            	skill = ran.getName();
            }
@@ -6613,14 +6652,14 @@ public final class SimSt implements Serializable {
            //Mark as not correct
            if (!inquiryResult.equals(EdgeData.CORRECT_ACTION)){
                edge.getEdgeData().setActionType(EdgeData.CLT_ERROR_ACTION);
-           }  
+           }
 
            // Update a state (or proceed a step, if you will)
           	nextCurrentNode = successiveNode;
        }
        return nextCurrentNode;
 	}
-		
+
    //Reads the configuration file and look for the section with the start state elements
 	//@return the list of start state elements
    public String[] readStartStateElements()
@@ -6636,7 +6675,7 @@ public final class SimSt implements Serializable {
    		//reader = new BufferedReader(new FileReader(CONFIG_FILE));
        	reader = new BufferedReader(isr);
    		String line = reader.readLine();
-   		
+
    		while(line != null)
    		{
    			if(line.equals(SimStPLE.START_STATE_ELEMENTS_HEADER))
@@ -6659,7 +6698,7 @@ public final class SimSt implements Serializable {
    		if(trace.getDebugCode("miss"))trace.out("miss", "Unable to read config file: "+e.getMessage());
    		e.printStackTrace();
    		logger.simStLogException(e,"Unable to read config file: "+e.getMessage());
-   	}finally 
+   	}finally
    	{
    		try{reader.close();}catch(Exception e){
        		logger.simStLogException(e);
@@ -6676,20 +6715,20 @@ public final class SimSt implements Serializable {
    	incNumTested();
    	SsProblem problem = new SsProblem(this, problemName);
    	SsProblemNode startNode = problem.getStartNode();
-   	
+
    	Vector<SsProblemEdge> edgeVisited = new Vector<SsProblemEdge>();
    	LinkedList<SsProblemEdge> edgeToVisit = new LinkedList<SsProblemEdge>(startNode.getOutGoingEdges());
 
    	resetLastSkillOperand();
-   	
+
    	// TODO uncommnet this...
    	/*
    	while (!edgeToVisit.isEmpty()) {
-   		
+
    		SsProblemEdge edge = (SsProblemEdge)edgeToVisit.poll();
-   		
+
    		if (isSubjectToTest(edge) && !edgeVisited.contains(edge)) {
-   			
+
    			SsProblemNode node = edge.getSource();
    			setProblemStep(findLastEquation(startNode, node));
 
@@ -6697,9 +6736,9 @@ public final class SimSt implements Serializable {
    			boolean isCorrectRa = false;
    			RuleActivationNode tmpRa, actualRa, lastRan = null;
    			String flagPrediction, stepPrediction = null;
-   			
+
    			Vector<RuleActivationNode> activationList = problem.gatherActivationList(node);
-   			
+
    			for (RuleActivationNode ran: activationList) {
    				if (!ran.getActualInput().equalsIgnoreCase("FALSE")) {
    					int result = logRuleActivation(problemName, ran, node, edge, output);
@@ -6717,7 +6756,7 @@ public final class SimSt implements Serializable {
    			// There should have been no correct rule activations found, or
    			// the step isn't model traced
    			if (actualRa == null) actualRa = lastRan;
-   			
+
    			String actualStatus = isCorrectRa ? EdgeData.CORRECT_ACTION : EdgeData.CLT_ERROR_ACTION;
                if (isCorrectEdge) {
                    flagPrediction = isCorrectRa ? TRUE_POSITIVE : FALSE_NEGATIVE;
@@ -6732,7 +6771,7 @@ public final class SimSt implements Serializable {
                }
 
                // Record if the step is model traced or not.
-               logModelTraceStatus(problemName, node, edge, 
+               logModelTraceStatus(problemName, node, edge,
                		actualRa, actualStatus, flagPrediction, stepPrediction, output);
 
                edgeVisited.add(edge);
@@ -6767,7 +6806,7 @@ public final class SimSt implements Serializable {
 
        // Add a tolly for the # test problems
        incNumTested();
-       // Initialize variables and reset some Jess related stuff 
+       // Initialize variables and reset some Jess related stuff
        testProductionModelOnBRD_init();
        // Load the BRD
        testProductionModelOnBRD_loadBRD(problemName, directory);
@@ -6803,27 +6842,27 @@ public final class SimSt implements Serializable {
 
        // Add a tolly for the # test problems
        incNumTested();
-       // Initialize variables and reset some Jess related stuff 
+       // Initialize variables and reset some Jess related stuff
        testProductionModelOnBRD_init();
        // Load the BRD
-        SimStBrdGraphReader reader = new SimStBrdGraphReader();  
-   	    reader.openBRDFile(problemName);  	    
+        SimStBrdGraphReader reader = new SimStBrdGraphReader();
+   	    reader.openBRDFile(problemName);
    	    setValidationGraph(reader.getProblemGraph());
-   	
+
    	 if(trace.getDebugCode("nbarbaBrd"))trace.out("nbarbaBrd","Validation method is " + this.getPrValidationMethod());
        // Now, get the steps in the BRD tested...
        long sTime = (new Date()).getTime();
-       
+
        if (this.getPrValidationMethod().equals("modeltracing")){
-    	   
+
     	   ssTestProductionModelOnBRD_testStepsModelTracing(logMode, output, problemName,directory);
        }
        else{
     	   ssTestProductionModelOnBRD_testStepsCognitiveFidelity(logMode, output, problemName);
-    	   
+
        }
        //ssTestProductionModelOnBRD_testSteps(logMode, output, problemName);
-       
+
        long eTime = (new Date()).getTime();
        if(trace.getDebugCode("miss"))trace.out("miss", "testProductionModelOnBRD done in " + (eTime - sTime) + "ms.");
 
@@ -6851,16 +6890,16 @@ public final class SimSt implements Serializable {
        long sTime = (new Date()).getTime();
        clearJessConsole();
        resetMT();
-       // Sun Sep 17 00:41:28 LDT 2006 :: Noboru 
+       // Sun Sep 17 00:41:28 LDT 2006 :: Noboru
        // Communicator has a static Hashtable!!
        Communicator.reset();
        long eTime = (new Date()).getTime();
        if(trace.getDebugCode("miss"))trace.out("miss", "testProductionModelOnBRD initialization done in " + (eTime - sTime) + "ms.");
    }
 
-   // Used for logRuleActivationToFile() to record a problem state for Algebra I Tutor data, 
-   // which has a step to enter a skill-operand (e.g., "add -1"). 
-   // 
+   // Used for logRuleActivationToFile() to record a problem state for Algebra I Tutor data,
+   // which has a step to enter a skill-operand (e.g., "add -1").
+   //
    private String lastSkillOperand = null;
    public String getLastSkillOperand() { return lastSkillOperand; }
    public void setLastSkillOperand(String lastSkillOperand) {
@@ -6896,7 +6935,7 @@ public final class SimSt implements Serializable {
        resetLastSkillOperand();
 
        // Traverse the graph
-       while (!edgeToVisit.isEmpty()) { 
+       while (!edgeToVisit.isEmpty()) {
 
            ProblemEdge problemEdge = edgeToVisit.poll();
            ProblemNode problemNode = problemEdge.getSource();
@@ -6941,7 +6980,7 @@ public final class SimSt implements Serializable {
                            }
                        }
                    }
-                   // There should have been no correct rule activation found nor the 
+                   // There should have been no correct rule activation found nor the
                    // step isn't model traced...
                    if (actualRa == null) actualRa = ran;
                }
@@ -6959,7 +6998,7 @@ public final class SimSt implements Serializable {
                }
 
                // Record if the step is model traced or not.
-               logModelTraceStatus(problemName, problemNode, problemEdge, 
+               logModelTraceStatus(problemName, problemNode, problemEdge,
                        actualRa, actualStatus, flagPrediction, stepPrediction, output);
 
                edgeVisited.add(problemEdge);
@@ -6976,10 +7015,10 @@ public final class SimSt implements Serializable {
        }
    }
 
-   
+
 
    /* nbarba: new production rule validation (cognitive fidelity), as described on google drive
-    * In short, this method 
+    * In short, this method
     * 1. Takes everystate in the BRD. state has outgoing edges (human suggestions for that state - agendaBRD)
     * 2. Gives state to SimStudent. Simstudent has some possible suggestions (activationList) and Oracle grades these suggestions as correct / incorrect
     * 3. Compare these suggestions with outgoing edges of the steate (human student suggestions) and estimate T/F P/N.
@@ -6989,156 +7028,156 @@ public final class SimSt implements Serializable {
     *    False Negative: suggestion in SimStudent agenda is Incorrect (by Oracle) and this suggestion is not in the agendaBRD
  	*    (First letter : if its in agendaBRD or not, Second letter: what oracle said about this suggestion)
     * 5. Proceed to the next state
-    * This method examines all rule activations so number of output lines should be equal to number of rule activations. 
+    * This method examines all rule activations so number of output lines should be equal to number of rule activations.
     *
     * */
-   private void ssTestProductionModelOnBRD_testStepsCognitiveFidelity(String logMode, String output, String problemName) 
+   private void ssTestProductionModelOnBRD_testStepsCognitiveFidelity(String logMode, String output, String problemName)
    {
       	String[] startState = readStartStateElements();
- 
+
 
       	if(trace.getDebugCode("nbarbaBrd")) trace.out("nbarbaBrd", "********* COGNITIVE FIDELITY ***** ");
-      	 
+
         problemName=problemName.replace(" ", "");
         problemName=problemName.replace("=", "_");
-     
-        
-       SimStNode startNode = getValidationGraph().getStartNode();     
+
+
+       SimStNode startNode = getValidationGraph().getStartNode();
        Vector <SimStEdge> edgeVisited = new Vector<SimStEdge>();
        LinkedList <SimStEdge> edgeToVisit = new LinkedList<SimStEdge>();
-      
+
        List edges = startNode.getOutgoingEdges();
        for (int i = 0; i < edges.size(); i++) {
            edgeToVisit.add((SimStEdge)edges.get(i));
        }
 
-       
-       
+
+
        resetLastSkillOperand();
        HashMap hm = new HashMap(); // Mapping between the RAN and the SimStNode
-       
+
              String currentStepName="";
-             
-             
+
+
              boolean checkingSameNode=false;
-             
-             
+
+
        String cognitiveFidelityOutcome="";
        SimStNode previousNode=null;
-       
-       
 
-       
-       // Traverse the graph 
-       while (!edgeToVisit.isEmpty()) { 
+
+
+
+       // Traverse the graph
+       while (!edgeToVisit.isEmpty()) {
 
            SimStEdge problemEdge = edgeToVisit.poll();
            SimStNode problemNode = problemEdge.getSource();
            SimStEdgeData edgeData = problemEdge.getEdgeData();
-          
+
            boolean noRuleFired=false;
-           
+
            if(trace.getDebugCode("nbarbaBrd")) trace.out("nbarbaBrd", "####################################### ");
-           
+
            if (isSubjectToTest(edgeData.getRuleNames().get(0)) && !edgeVisited.contains(problemEdge)) {
-       
+
                boolean isCorrectEdge = edgeData.getActionType().equals(EdgeData.CORRECT_ACTION);
                noRuleFired=false;
-               
+
                currentStepName=problemNode.getName();
-               
+
             //   if(trace.getDebugCode("nbarbaBrd")) trace.out("nbarbaBrd", "At Step "+ problemNode.getName() );
-               
+
                String step = startNode.getName();
                if(getProblemAssessor() != null)
                {
                	step = getProblemAssessor().findLastStep(startNode, problemNode);
                	setLastSkillOperand(getProblemAssessor().findLastOperand(startNode, problemNode));
                }
-               
+
                String tmp=problemNode.getName();
                tmp=tmp.replace(" ","");
                tmp=tmp.replace("=","_");
                problemNode.setName(tmp);
-             
-             
-               
+
+
+
                setProblemStep(step);
-               
+
                step=step.replace(" ","");
                step=step.replace("=","_");
-               
+
 
              //  if(trace.getDebugCode("nbarbaBrd")) trace.out("nbarbaBrd", " Now we are at state   "+ step  + edgeToVisit);
                 if(trace.getDebugCode("nbarbaBrd")) trace.out("nbarbaBrd", "At Step "+currentStepName+" BRD has " + problemNode.getOutgoingEdges().size() + " suggestions");
-               
-               
+
+
                 boolean isInBRDAgenda=false;
-  
+
                 Vector <RuleActivationNode> activationList = gatherActivationList(problemNode, hm);
             	if(trace.getDebugCode("nbarbaBrd")) trace.out("nbarbaBrd", "	Simst agenda is "+activationList);
 
-                SimStEdge brdEdgeThatMatches=null;  //variable to hold the outgoing brd edge to be logged in the "agenda". 
+                SimStEdge brdEdgeThatMatches=null;  //variable to hold the outgoing brd edge to be logged in the "agenda".
                 SimStEdge runningBrdEdge=null;
-                  
+
                 RuleActivationNode actualRa=null;
-               
+
                if (!problemNode.equals(previousNode)){
-                	
-                	
+
+
                if (!activationList.isEmpty()) {
                		RuleActivationNode ran = null;
-               		    		
-                   	for (int i = 0; i < activationList.size(); i++) {     	
-                   		ran = activationList.get(i);     
+
+                   	for (int i = 0; i < activationList.size(); i++) {
+                   		ran = activationList.get(i);
                    	 if (!ran.getActualInput().equalsIgnoreCase("FALSE")) {
                    		boolean oracleValidation=false; //what the oracle things about this activation (sai)
-                   		
-                   		
+
+
                    		String status = inquiryRuleActivation(problemName, problemNode, ran);
-                   		
+
                    		int result = EdgeData.CORRECT_ACTION.equals(status) ? 1 : -1;
                    			if (result>0){
-                   					oracleValidation=true;	
+                   					oracleValidation=true;
                    				}
-                       	
-                   			
+
+
                        	if(trace.getDebugCode("nbarbaBrd")) trace.out("nbarbaBrd", "		Simst suggested "+ ran.getActualAction() + " "+ ran.getActualInput() + " and ORACLE said " + oracleValidation);
-                   			
+
                    				List currentStateBRDSuggestions= problemNode.getOutgoingEdges();
-                   				
+
                    				if(trace.getDebugCode("nbarbaBrd")) trace.out("nbarbaBrd", "		Number of Human BRD suggestions : "+ currentStateBRDSuggestions.size());
-                           		                		
+
                    					for (int k=0;k<currentStateBRDSuggestions.size();k++){
                    						SimStEdge tmpEdge=(SimStEdge) currentStateBRDSuggestions.get(k);
                    						runningBrdEdge=tmpEdge;
-                   						
+
                    						isInBRDAgenda=isStepModelTraced((SimStEdge) tmpEdge, ran);
-                   						
+
                    						/*Option 1: modelBRD in log be the edge that was correctly modeltraced, or last examined
-                   						if (isInBRDAgenda){                  							
+                   						if (isInBRDAgenda){
                    							if (brdEdgeThatMatches==null)		//store the brd edge that was correctly modeltraced
-                   								brdEdgeThatMatches=tmpEdge;                						
+                   								brdEdgeThatMatches=tmpEdge;
                    						}
                    						//tmpEdge.getActionType();
                    						*/
-                   						
+
                    						/*Option2: modelBRD in log be the first correct edge examined */
                    						if (brdEdgeThatMatches==null)		{
                    							if (runningBrdEdge.getEdgeData().getActionType().equals(EdgeData.CORRECT_ACTION))
                    								brdEdgeThatMatches=tmpEdge;
-               								
-                   						}                   						
-                   						
+
+                   						}
+
                    						if(trace.getDebugCode("nbarbaBrd")) trace.out("nbarbaBrd", "				comparing with BRD suggestion "+ tmpEdge.getAction() + " " + tmpEdge.getInput() + " ---> " + isInBRDAgenda);
-                               		
+
                    						if (isInBRDAgenda)	/*if SimStudent suggestion found in BRD agenda there is no reason to keep looking*/
                    							break;
-                   						
+
                    				}
-                   				                				
+
                    				/*Cognitive Fidelity*/
-               				    if (oracleValidation && isInBRDAgenda)	
+               				    if (oracleValidation && isInBRDAgenda)
                				    	cognitiveFidelityOutcome=TRUE_POSITIVE;
                	                else if (oracleValidation && !isInBRDAgenda)
                	                	cognitiveFidelityOutcome=FALSE_POSITIVE;
@@ -7146,70 +7185,70 @@ public final class SimSt implements Serializable {
                	                	cognitiveFidelityOutcome=TRUE_NEGATIVE;
                	                else if (!oracleValidation && !isInBRDAgenda)
                	                	cognitiveFidelityOutcome=FALSE_NEGATIVE;
-               				    
+
                				    if (brdEdgeThatMatches==null)
                				    	brdEdgeThatMatches=runningBrdEdge;
-               				    
+
                				    int res=logRuleActivationNew(problemName, ran, problemNode, brdEdgeThatMatches, output,cognitiveFidelityOutcome, oracleValidation ? "Correct Action" : "Untraceble Error");
-                     	       
-               				    if (result > 0) {             				    	
+
+               				    if (result > 0) {
                				    	// Keep the first correct rule activation
                				    	if (actualRa == null) actualRa = ran;
                				    }
-               		       
-               				    
-               				 
-               				 
+
+
+
+
                				    if(trace.getDebugCode("nbarbaBrd")) trace.out("nbarbaBrd", " 	Oracle said  "+ oracleValidation +" and isInBRDAgenda is " +isInBRDAgenda + " --> OUTCOME =" + cognitiveFidelityOutcome);
-              	              
-                   				
-                   				
+
+
+
                    	} //end if actualInput false;
-                   	
+
                    	else{
                    		if(trace.getDebugCode("nbarbaBrd")) trace.out("nbarbaBrd", "		SimStudent has a suggestion but the input is FALSE... :(");
                    	}
-                    
+
                 }
-                   	
+
                   if (actualRa == null) actualRa = ran;
-                  if (brdEdgeThatMatches==null) brdEdgeThatMatches=runningBrdEdge;		
-                 
-                    
-                    
+                  if (brdEdgeThatMatches==null) brdEdgeThatMatches=runningBrdEdge;
+
+
+
                }
                	else{
-               			
+
                		if(trace.getDebugCode("nbarbaBrd")) trace.out("nbarbaBrd", "		All outgoing edges of this step have been examined.");
-               	   
+
                		noRuleFired=true;
-               	
+
                }
-   
+
                previousNode=problemNode;
-                   	 
-               
+
+
                }
                else{
             	   checkingSameNode=true;
             	   if(trace.getDebugCode("nbarbaBrd")) trace.out("nbarbaBrd", "		Opps, checking the same node. Moving on to the next one...");
                }
-                  
-                  if (brdEdgeThatMatches==null) brdEdgeThatMatches=problemEdge;		//this is executed only if no production rule was fired           
-                  
-              
-               
-                  
+
+                  if (brdEdgeThatMatches==null) brdEdgeThatMatches=problemEdge;		//this is executed only if no production rule was fired
+
+
+
+
               if (noRuleFired)
                 	  logRuleActivationNew(problemName, null, problemNode, brdEdgeThatMatches, output,"", "");
-                  
+
                   //a.k.a. "test"
                   if (!checkingSameNode)
                 	  logStepSummary(problemName, problemNode, brdEdgeThatMatches, "", actualRa, output," ");
-                 
-                  
-                  
-                  
+
+
+
+
                   checkingSameNode=false;
                   /*end of if(!activationList.isEmpty()) */
                   edgeVisited.add(problemEdge);
@@ -7225,44 +7264,44 @@ public final class SimSt implements Serializable {
           }
           }
       }
-   
-   
+
+
    /* New production rule validation (model tracing), as described on google drive
-    * In short, this method 
+    * In short, this method
     * 1. For every state in the brd
     * 2. For each one of the outgoing edges of that state
-    * 3. Take Simstudent suggestions for that state. (activationList). 
+    * 3. Take Simstudent suggestions for that state. (activationList).
     * 4. Examine outgoing BRD edge, compared to SimStudent suggestions, and and estimate T/F C/E.
     * 	True Correct: ss production rules said correct (i.e. there was a rule that fired that model traced action) and this is correct (brd says this is correct action).
     * 	True Error: ss production rules said said error (i.e. no rule fired or no rule model traced action) and this is error (brd says this is error action).
     *   False Correct: ss production rules said correct (i.e. there was a rule that fired that model traced action) and this is wrong (brd says this is error action).
     *   False Error: ss production rules said said error (i.e. no rule fired or no rule model traced action) and this is error (brd says this is correct action).
-    *   In short, 
+    *   In short,
     *     SIMSTUDENT SAYS ERROR --> has no rule activations OR no rule activation that model traces action
     *     SIMSTUDENT SAYS BUGGY --> Has a buggy rule that model traces action
     *     SIMSTUDANT SAYS CORRECT --> Has a correct rule that model traces action.
-    *        
+    *
     *      first letter: what oracle says, second letter : if what oracle says is correct.
     * 5. Proceed to the next state
     * Note: this code operates on whatever name the JessOracle expects it to operate.
-    * This method examines all states of BRD so number of output lines should be equal to number of BRD states. 
+    * This method examines all states of BRD so number of output lines should be equal to number of BRD states.
     * */
-   private void ssTestProductionModelOnBRD_testStepsModelTracing(String logMode, String output, String problemName, String userID) 
-   {      
-	   
+   private void ssTestProductionModelOnBRD_testStepsModelTracing(String logMode, String output, String problemName, String userID)
+   {
+
 	   /*first of all, copy the production rules to whatever name the JessOracle expects its production rules to be*/
-	 	   
+
        String[] startState = readStartStateElements();
-      	
+
        SimStNode startNode = getValidationGraph().getStartNode();
-       
+
 	     //logRuleActivationComposeHeader(output);
-       
+
        problemName=problemName.replace(" ", "");
        problemName=problemName.replace("=", "_");
        String problemNameShort="-1";
-       
-       
+
+
        Vector <SimStEdge> edgeVisited = new Vector<SimStEdge>();
        LinkedList <SimStEdge> edgeToVisit = new LinkedList<SimStEdge>();
        List edges = startNode.getOutgoingEdges();
@@ -7272,101 +7311,101 @@ public final class SimSt implements Serializable {
 
        resetLastSkillOperand();
        HashMap hm = new HashMap(); // Mapping between the RAN and the SimStNode
-              
+
        String currentStepName="";
        String modelTracingValidationOutcome="Uninitialized";
 
-       // Traverse the graph       
-       while (!edgeToVisit.isEmpty()) { 
+       // Traverse the graph
+       while (!edgeToVisit.isEmpty()) {
 
            SimStEdge problemEdge = edgeToVisit.poll();
            SimStNode problemNode = problemEdge.getSource();
            SimStEdgeData edgeData = problemEdge.getEdgeData();
-          
-           if(trace.getDebugCode("nbarbaBrd")) trace.out("nbarbaBrd", "####################################### " + output);          
-           
+
+           if(trace.getDebugCode("nbarbaBrd")) trace.out("nbarbaBrd", "####################################### " + output);
+
            if (isSubjectToTest(edgeData.getRuleNames().get(0)) && !edgeVisited.contains(problemEdge)) {
 
-               
+
                boolean isCorrectEdge = edgeData.getActionType().equals(EdgeData.CORRECT_ACTION);
                boolean isBuggyEdge = edgeData.getActionType().equals(EdgeData.BUGGY_ACTION);
                boolean isErrorEdge = edgeData.getActionType().equals(EdgeData.UNTRACEABLE_ERROR);
-               
-               
+
+
                String step = startNode.getName();
-                      
+
                step=step.replace(" ","");
                step=step.replace("=","_");
-               
+
                currentStepName=problemNode.getName();
-               
-               
-               if(getProblemAssessor() != null){   
-            	   step = getProblemAssessor().findLastStep(startNode, problemNode);                
+
+
+               if(getProblemAssessor() != null){
+            	   step = getProblemAssessor().findLastStep(startNode, problemNode);
             	   setLastSkillOperand(getProblemAssessor().findLastOperand(startNode, problemNode));
                }
-                         
+
                String tmp=problemNode.getName();
                tmp=tmp.replace(" ","");
                tmp=tmp.replace("=","_");
 
                problemNode.setName(tmp);
-             
-             
+
+
                if (problemNameShort.equals("-1")){
             		   problemNameShort=currentStepName;
             		   problemNameShort=problemNameShort.replace(" ", "");
                }
-              
-           
-               
+
+
+
                if(trace.getDebugCode("nbarbaBrd")) trace.out("nbarbaBrd", "At Step "+currentStepName+" BRD said " +  problemEdge.getSelection() + problemEdge.getAction() + " "+ problemEdge.getInput() + "with rule " +  (String)edgeData.getSkills().get(0));
-     
+
                setProblemStep(step);
-       
-               RuleActivationNode actualRa = null; 		// variable to hold the rule activations that model traces the brd sai. 
-        
-            
-               
+
+               RuleActivationNode actualRa = null; 		// variable to hold the rule activations that model traces the brd sai.
+
+
+
                // Ask Jess Oracle if BRD selection action input is correct. Oracle outcome can either be Correct, Error or Buggy.
       	    	String oracleOutcome=inquiryJessOracle(problemEdge.getSelection(), problemEdge.getAction(), problemEdge.getInput(), problemNode, problemNameShort);
-      	    	     	    		
+
       	    	//log the "agenda" line of logs
       	    	actualRa=getJessOracleSuggestion( problemNode,  hm,  problemNameShort ,  problemEdge,  output, oracleOutcome, problemName);
       	    	//AskHint hint=askForHint(this.getBrController(), problemNode);
-      	    	
-      	    	
-      	    	
+
+
+
       	       if(trace.getDebugCode("nbarbaBrd")) trace.out("nbarbaBrd", "Jess Oracle said that BRD action is " + oracleOutcome);
-          
+
                if (this.getModelTracingValidationOutcomeMethod().equals(MODELTRACING_VALIDATION_METHOD_STRICT)){
-            	   	if (isCorrectEdge &&  oracleOutcome.equals(EdgeData.CORRECT_ACTION) )											
+            	   	if (isCorrectEdge &&  oracleOutcome.equals(EdgeData.CORRECT_ACTION) )
             	   		modelTracingValidationOutcome=TRUE_CORRECT;
-            	   	else if (isBuggyEdge &&  oracleOutcome.equals(EdgeData.BUGGY_ACTION) )		   				   					
+            	   	else if (isBuggyEdge &&  oracleOutcome.equals(EdgeData.BUGGY_ACTION) )
             	   		modelTracingValidationOutcome=TRUE_BUGGY;
-            	   	else if (isErrorEdge && oracleOutcome.equals(EdgeData.UNTRACEABLE_ERROR))												
+            	   	else if (isErrorEdge && oracleOutcome.equals(EdgeData.UNTRACEABLE_ERROR))
             	   		modelTracingValidationOutcome=TRUE_ERROR;
-            	   	else if ((isBuggyEdge || isErrorEdge) && oracleOutcome.equals(EdgeData.CORRECT_ACTION))       
+            	   	else if ((isBuggyEdge || isErrorEdge) && oracleOutcome.equals(EdgeData.CORRECT_ACTION))
             	   		modelTracingValidationOutcome=FALSE_CORRECT;
-            	   	else if ((isCorrectEdge || isErrorEdge) && oracleOutcome.equals(EdgeData.BUGGY_ACTION))		
-            	   		modelTracingValidationOutcome=FALSE_BUGGY;							
-            	   	else if ((isCorrectEdge || isBuggyEdge) && oracleOutcome.equals(EdgeData.UNTRACEABLE_ERROR))									   
+            	   	else if ((isCorrectEdge || isErrorEdge) && oracleOutcome.equals(EdgeData.BUGGY_ACTION))
+            	   		modelTracingValidationOutcome=FALSE_BUGGY;
+            	   	else if ((isCorrectEdge || isBuggyEdge) && oracleOutcome.equals(EdgeData.UNTRACEABLE_ERROR))
             	   		modelTracingValidationOutcome=FALSE_ERROR;
                }
-               else{         	   
-            	   	  if (isCorrectEdge && oracleOutcome.equals(EdgeData.CORRECT_ACTION))										
-                      	modelTracingValidationOutcome=TRUE_POSITIVE;																		
-                      else if ((isBuggyEdge || isErrorEdge) && (oracleOutcome.equals(EdgeData.UNTRACEABLE_ERROR) || oracleOutcome.equals(EdgeData.BUGGY_ACTION)))	
+               else{
+            	   	  if (isCorrectEdge && oracleOutcome.equals(EdgeData.CORRECT_ACTION))
+                      	modelTracingValidationOutcome=TRUE_POSITIVE;
+                      else if ((isBuggyEdge || isErrorEdge) && (oracleOutcome.equals(EdgeData.UNTRACEABLE_ERROR) || oracleOutcome.equals(EdgeData.BUGGY_ACTION)))
                       	modelTracingValidationOutcome=TRUE_NEGATIVE;
-                      else if (isCorrectEdge && (oracleOutcome.equals(EdgeData.UNTRACEABLE_ERROR) || oracleOutcome.equals(EdgeData.BUGGY_ACTION)))				
+                      else if (isCorrectEdge && (oracleOutcome.equals(EdgeData.UNTRACEABLE_ERROR) || oracleOutcome.equals(EdgeData.BUGGY_ACTION)))
                       	modelTracingValidationOutcome=FALSE_NEGATIVE;
-                      else if ((isBuggyEdge || isErrorEdge) && oracleOutcome.equals(EdgeData.CORRECT_ACTION))					
-                      	modelTracingValidationOutcome=FALSE_POSITIVE;	  	   
+                      else if ((isBuggyEdge || isErrorEdge) && oracleOutcome.equals(EdgeData.CORRECT_ACTION))
+                      	modelTracingValidationOutcome=FALSE_POSITIVE;
                }
-               
-                      
+
+
                if(trace.getDebugCode("nbarbaBrd")) trace.out("nbarbaBrd", "Step: "+currentStepName+ " in BRD is "+ edgeData.getActionType() +" and Jess Oracle said  " + oracleOutcome + " --> OUTCOME =" + modelTracingValidationOutcome);
-               
+
                String oracleS="";
                String oracleA="";
                String oracleI="";
@@ -7376,15 +7415,15 @@ public final class SimSt implements Serializable {
                else if (actualRa!=null && oracleOutcome.equals(EdgeData.UNTRACEABLE_ERROR)){
             	   		oracleS=actualRa.getActualSelection();
             	   		oracleA=actualRa.getActualAction();
-            	   		oracleI=actualRa.getActualInput();              	   
+            	   		oracleI=actualRa.getActualInput();
                }
-               
-               
-               
+
+
+
                //log the "test" line of logs
               // logStepSummary(problemName, problemNode, problemEdge, modelTracingValidationOutcome, actualRa, output,oracleOutcome);
                logModelTracingValidationStepSummary(problemName, problemNode, problemEdge, modelTracingValidationOutcome,output,oracleOutcome,oracleS,oracleA,oracleI,userID);
-               
+
                edgeVisited.add(problemEdge);
                edges = problemEdge.getDest().getOutgoingEdges();
                for (int i = 0; i < edges.size(); i++) {
@@ -7398,72 +7437,72 @@ public final class SimSt implements Serializable {
            }
        }
    }
-   
+
    /*Returns the actual rule activation that model traced the action, or any rule activation if action was not model traced*/
    private RuleActivationNode getJessOracleSuggestion(SimStNode problemNode, HashMap hm, String problemName, SimStEdge problemEdge, String output, String oracleOutcome, String problemNameFull){
 	   boolean isBrdActionModelTraced=false;
 	   RuleActivationNode actualRa=null;
 	   RuleActivationNode runningActualRa=null;
 	   //Get jess oracle suggestions
-       Vector <RuleActivationNode> activationList = gatherJessOracleAgenda(problemNode, problemName);	          
-       
-       
+       Vector <RuleActivationNode> activationList = gatherJessOracleAgenda(problemNode, problemName);
+
+
        if(trace.getDebugCode("nbarbaBrd")) trace.out("nbarbaBrd", "Activation List:  " +  activationList);
-       
+
        if (!activationList.isEmpty()) {
-	   
-       		RuleActivationNode ran = null;           		
-           	for (int i = 0; i < activationList.size(); i++) {     	
-           		ran = activationList.get(i);    
+
+       		RuleActivationNode ran = null;
+           	for (int i = 0; i < activationList.size(); i++) {
+           		ran = activationList.get(i);
            	    if (!ran.getActualInput().equalsIgnoreCase("FALSE")) {
            	    	runningActualRa=ran; //just keep it, if no ran model traces we will use it to log and see how far is simst suggestion from human suggestion.
-           	    	               	    	
+
            	       // int result = logRuleActivationNew(problemNameFull, ran, problemNode, problemEdge, output,"", oracleOutcome);
-           	        
+
            	    		if(trace.getDebugCode("nbarbaBrd")) trace.out("nbarbaBrd", "Simst suggested "+ ran.getActualAction() + " "+ ran.getActualInput() + " with rule " + ran.getName());
-           	    		
-           	    		if (isBrdActionModelTraced==false){  //once we find a ran that model traces the action, there is no need to further update "isInAgendaSS". Without this if, isInAgenda will be updated by every production rule which is wrong.                    	    		
-               	    		
-               	    		isBrdActionModelTraced=isStepModelTraced(problemEdge, ran);   
-                   		
+
+           	    		if (isBrdActionModelTraced==false){  //once we find a ran that model traces the action, there is no need to further update "isInAgendaSS". Without this if, isInAgenda will be updated by every production rule which is wrong.
+
+               	    		isBrdActionModelTraced=isStepModelTraced(problemEdge, ran);
+
                    			if (isBrdActionModelTraced) {
-                   				if(trace.getDebugCode("nbarbaBrd")) trace.out("nbarbaBrd", "		!Simst was able to modeltrace Human Student action!");	
+                   				if(trace.getDebugCode("nbarbaBrd")) trace.out("nbarbaBrd", "		!Simst was able to modeltrace Human Student action!");
                    				if (actualRa == null) actualRa=ran;
-                   						//break;   //for logging purposes we check all other solutions            		
+                   						//break;   //for logging purposes we check all other solutions
                    			}
                	    	}
-           	    
-           	    } 
-           	       		                   
+
+           	    }
+
            	}
-            
+
        }
-	   
+
        /*If no rule was able to model trace the action, log the last rule that was activated */
 	      if (actualRa==null)
 	      actualRa=runningActualRa;
-        
-       
+
+
        return actualRa;
    }
-   
+
    /* ModelTracing Validation without using the Jess Oracle, but by asking simstudent directly
-   private void ssTestProductionModelOnBRD_testStepsModelTracing(String logMode, String output, String problemName) 
-   {      
-	   
-	   
-	   
+   private void ssTestProductionModelOnBRD_testStepsModelTracing(String logMode, String output, String problemName)
+   {
+
+
+
       	String[] startState = readStartStateElements();
       	//getSsRete().setStartStateElements(startState);
-   	 
-		
+
+
        SimStNode startNode = getValidationGraph().getStartNode();
-       
-       
+
+
        problemName=problemName.replace(" ", "");
        problemName=problemName.replace("=", "_");
-       
-       
+
+
        Vector <SimStEdge> edgeVisited = new Vector<SimStEdge>();
        LinkedList <SimStEdge> edgeToVisit = new LinkedList<SimStEdge>();
        List edges = startNode.getOutgoingEdges();
@@ -7473,136 +7512,136 @@ public final class SimSt implements Serializable {
 
        resetLastSkillOperand();
        HashMap hm = new HashMap(); // Mapping between the RAN and the SimStNode
-              
+
        String currentStepName="";
        String modelTracingValidationOutcome="Uninitialized";
 
-       // Traverse the graph       
-       while (!edgeToVisit.isEmpty()) { 
+       // Traverse the graph
+       while (!edgeToVisit.isEmpty()) {
 
            SimStEdge problemEdge = edgeToVisit.poll();
            SimStNode problemNode = problemEdge.getSource();
            SimStEdgeData edgeData = problemEdge.getEdgeData();
-          
+
            if(trace.getDebugCode("nbarbaBrd")) trace.out("nbarbaBrd", "####################################### " + output);
            //if(trace.getDebugCode("nbarbaBrd")) trace.out("nbarbaBrd", "Examining edge:" + problemEdge);
-            
-           
+
+
            if (isSubjectToTest(edgeData.getRuleNames().get(0)) && !edgeVisited.contains(problemEdge)) {
 
-               
+
                boolean isCorrectEdge = edgeData.getActionType().equals(EdgeData.CORRECT_ACTION);
                boolean isBuggyEdge = edgeData.getActionType().equals(EdgeData.BUGGY_ACTION);
                boolean isErrorEdge = edgeData.getActionType().equals(EdgeData.UNTRACEABLE_ERROR);
-               
-               
+
+
                String step = startNode.getName();
-                      
+
                step=step.replace(" ","");
                step=step.replace("=","_");
-               
+
                currentStepName=problemNode.getName();
-               
-               
-               if(getProblemAssessor() != null){   
-            	   step = getProblemAssessor().findLastStep(startNode, problemNode);                
+
+
+               if(getProblemAssessor() != null){
+            	   step = getProblemAssessor().findLastStep(startNode, problemNode);
             	   setLastSkillOperand(getProblemAssessor().findLastOperand(startNode, problemNode));
                }
-                         
+
                String tmp=problemNode.getName();
                tmp=tmp.replace(" ","");
                tmp=tmp.replace("=","_");
                problemNode.setName(tmp);
-             
-             
-               
-               
+
+
+
+
                if(trace.getDebugCode("nbarbaBrd")) trace.out("nbarbaBrd", "At Step "+currentStepName+" BRD said " +  problemEdge.getSelection() + problemEdge.getAction() + " "+ problemEdge.getInput() + "with rule " +  (String)edgeData.getSkills().get(0));
-               
-               
+
+
                setProblemStep(step);
-             
-              
+
+
                boolean isBrdActionModelTraced=false;
-               RuleActivationNode actualRa = null; 		// variable to hold the rule activations that model traces the brd sai. 
+               RuleActivationNode actualRa = null; 		// variable to hold the rule activations that model traces the brd sai.
                RuleActivationNode runningActualRa=null;  // varible to hold the current rule activation. Usefull for logging when no rule activation modeltraces the brd sai ("test" log entry)
-            
+
                boolean isModelTracedRuleBuggy=false;	//keeps track if the rule that replicates action is buggy.
                boolean noRulesFired=true;			//keeps track if there are any rules fired.
-               
-               
-               
-              
-               Vector <RuleActivationNode> activationList = gatherActivationList(problemNode, hm);	          
-    
+
+
+
+
+               Vector <RuleActivationNode> activationList = gatherActivationList(problemNode, hm);
+
                if(trace.getDebugCode("nbarbaBrd")) trace.out("nbarbaBrd", "Activation List:  " +  activationList);
-               
+
                if (!activationList.isEmpty()) {
             	   noRulesFired=false;
-            	   
-               		RuleActivationNode ran = null;           		
-                   	for (int i = 0; i < activationList.size(); i++) {     	
-                   		ran = activationList.get(i);    
+
+               		RuleActivationNode ran = null;
+                   	for (int i = 0; i < activationList.size(); i++) {
+                   		ran = activationList.get(i);
                    	    if (!ran.getActualInput().equalsIgnoreCase("FALSE")) {
                    	    	runningActualRa=ran; //just keep it, if no ran model traces we will use it to log and see how far is simst suggestion from human suggestion.
-                   	    	               	    	
+
                    	        int result = logRuleActivationNew(problemName, ran, problemNode, problemEdge, output,"");
-                   	        
+
                    	    	if(trace.getDebugCode("nbarbaBrd")) trace.out("nbarbaBrd", "		Simst suggested "+ ran.getActualAction() + " "+ ran.getActualInput() + " with rule " + ran.getName());
-                       			
-                   	    	if (isBrdActionModelTraced==false){  //once we find a ran that model traces the action, there is no need to further update "isInAgendaSS". Without this if, isInAgenda will be updated by every production rule which is wrong.                    	    		
-                   	    		
-                   	    		isBrdActionModelTraced=isStepModelTraced(problemEdge, ran);   
-                       		
+
+                   	    	if (isBrdActionModelTraced==false){  //once we find a ran that model traces the action, there is no need to further update "isInAgendaSS". Without this if, isInAgenda will be updated by every production rule which is wrong.
+
+                   	    		isBrdActionModelTraced=isStepModelTraced(problemEdge, ran);
+
                        			if (isBrdActionModelTraced) {
-                       				if(trace.getDebugCode("nbarbaBrd")) trace.out("nbarbaBrd", "		!Simst was able to modeltrace Human Student action!");	
+                       				if(trace.getDebugCode("nbarbaBrd")) trace.out("nbarbaBrd", "		!Simst was able to modeltrace Human Student action!");
                        				if (actualRa == null) actualRa=ran;
-                       						//break;   //for logging purposes we check all other solutions            		
+                       						//break;   //for logging purposes we check all other solutions
                        			}
                    	    	}
-                   	    } 
+                   	    }
                    	    else{
                    	    	if(trace.getDebugCode("nbarbaBrd")) trace.out("nbarbaBrd", "		SimStudent has no PROPER (i.e. not FALSE)");
-                   
+
                    	    }
-                   		
-                   		                   
+
+
                    	}
-                    
+
                }
                else{
-            	   
-            	   	if(trace.getDebugCode("nbarbaBrd")) trace.out("nbarbaBrd", "		SimStudent has no suggestions for this step.");              	
-  
+
+            	   	if(trace.getDebugCode("nbarbaBrd")) trace.out("nbarbaBrd", "		SimStudent has no suggestions for this step.");
+
                }
-               
-               
-               
-               
-               
-               //If no rule was able to model trace the action, log the last rule that was activated 
+
+
+
+
+
+               //If no rule was able to model trace the action, log the last rule that was activated
                if (actualRa==null)
             	   	actualRa=runningActualRa;
-               
-             
-              
-               
-               
-          
-               
-              //Estimate model tracing outcome (no buggy rules considered)            
-              // if (isCorrectEdge && isInAgendaSS)	
+
+
+
+
+
+
+
+              //Estimate model tracing outcome (no buggy rules considered)
+              // if (isCorrectEdge && isInAgendaSS)
               // 	modelTracingValidationOutcome=TRUE_CORRECT;
               // else if (!isCorrectEdge && !isInAgendaSS)
               // 	modelTracingValidationOutcome=TRUE_ERROR;
               // else if (isCorrectEdge && !isInAgendaSS)
               // 	modelTracingValidationOutcome=FALSE_ERROR;
               // else if (!isCorrectEdge && isInAgendaSS)
-              // 	modelTracingValidationOutcome=FALSE_CORRECT;  
-               
-               
+              // 	modelTracingValidationOutcome=FALSE_CORRECT;
+
+
               // Estimate model tracing outcome (buggy rule considered)		OLD
-              // 	  if (isCorrectEdge && isInAgendaSS)	
+              // 	  if (isCorrectEdge && isInAgendaSS)
               //    	modelTracingValidationOutcome=TRUE_CORRECT;
               // 	  else if (isBuggyEdge && isInAgendaSS)
               // 		  modelTracingValidationOutcome=TRUE_BUGGY;
@@ -7614,46 +7653,46 @@ public final class SimSt implements Serializable {
               //    	modelTracingValidationOutcome=FALSE_BUGGY;
               //    else if ((isCorrectEdge || isBuggyEdge) && !isInAgendaSS)
               //    	modelTracingValidationOutcome=FALSE_ERROR;
-   
-   
-   
+
+
+
                //SIMSTUDENT SAYS ERROR --> has no rule activations OR no rule activation that model traces action
                //SIMSTUDENT SAYS BUGGY --> Has a buggy rule that model traces action
                //SIMSTUDANT SAYS CORRECT --> Has a correct rule that model traces action.
-            
-             
+
+
                if (  this.getModelTracingValidationOutcomeMethod().equals(MODELTRACING_VALIDATION_METHOD_STRICT)){
-            	   	if (isCorrectEdge && isBrdActionModelTraced && !isModelTracedRuleBuggy)								//BRD says correct, simstudent has a correct rule in agenda that model traced brd action				
+            	   	if (isCorrectEdge && isBrdActionModelTraced && !isModelTracedRuleBuggy)								//BRD says correct, simstudent has a correct rule in agenda that model traced brd action
             	   		modelTracingValidationOutcome=TRUE_CORRECT;
-            	   	else if (isBuggyEdge && isBrdActionModelTraced && isModelTracedRuleBuggy)		   				    //brd says buggy, simstudent has a buggy rule in agenda that model traced brd action					
+            	   	else if (isBuggyEdge && isBrdActionModelTraced && isModelTracedRuleBuggy)		   				    //brd says buggy, simstudent has a buggy rule in agenda that model traced brd action
             	   		modelTracingValidationOutcome=TRUE_BUGGY;
-            	   	else if (isErrorEdge && (!isBrdActionModelTraced || noRulesFired))									//brd says error, simstudent either a) has no suggestions or b) did not modeltrace the action.						
+            	   	else if (isErrorEdge && (!isBrdActionModelTraced || noRulesFired))									//brd says error, simstudent either a) has no suggestions or b) did not modeltrace the action.
             	   		modelTracingValidationOutcome=TRUE_ERROR;
             	   	else if (isCorrectEdge && (!isBrdActionModelTraced || isModelTracedRuleBuggy || noRulesFired))       //brd says correct, simstudent either a)has no activations, b) not modeltraced, b) modeltraced by buggy
             	   		modelTracingValidationOutcome=FALSE_CORRECT;
             	   	else if (isBuggyEdge && (!isBrdActionModelTraced || !isModelTracedRuleBuggy || noRulesFired))		//brd says buggy, simstudent a) fired correct rule or b) no rules fired at all, c) not modeltraced
-            	   		modelTracingValidationOutcome=FALSE_BUGGY;							
+            	   		modelTracingValidationOutcome=FALSE_BUGGY;
             	   	else if (isErrorEdge && !noRulesFired && isBrdActionModelTraced)									     //brd says error, simstudent fired at least one rule (either buggy or correct, we don't care) that modeltrace the action
             	   		modelTracingValidationOutcome=FALSE_ERROR;
                }
-               else{         	   
+               else{
             	   	  if (isCorrectEdge && (isBrdActionModelTraced && !isModelTracedRuleBuggy))										//BRD correct, simstudent has a correct rule activation that modeltraces brd action
-                      	modelTracingValidationOutcome=TRUE_CORRECT;																		
+                      	modelTracingValidationOutcome=TRUE_CORRECT;
                       else if ((isBuggyEdge || isErrorEdge) && (!isBrdActionModelTraced || isModelTracedRuleBuggy || noRulesFired))	// BRD "not correct", simstudent a) no rule activation / no modeltrace, b) buggy rule activation that modeltraces brd action
                       	modelTracingValidationOutcome=TRUE_INCORRECT;
                       else if (isCorrectEdge && (!isBrdActionModelTraced || isModelTracedRuleBuggy || noRulesFired))				//BRD correct, simstudent a) no rule activation / no modeltrace, b) buggy rule activation that modeltraces brd action
                       	modelTracingValidationOutcome=FALSE_CORRECT;
                       else if ((isBuggyEdge || isErrorEdge) && (isBrdActionModelTraced && !isModelTracedRuleBuggy))					// BRD "not correct", simstudent has a correct rule activation that model traces brd action
-                      	modelTracingValidationOutcome=FALSE_INCORRECT;	  	   
+                      	modelTracingValidationOutcome=FALSE_INCORRECT;
                }
-               
-                      
+
+
                if(trace.getDebugCode("nbarbaBrd")) trace.out("nbarbaBrd", "Step: "+currentStepName+ " in BRD is "+ edgeData.getActionType() +" and isBrdActionModeltraced is " +isBrdActionModelTraced + " --> OUTCOME =" + modelTracingValidationOutcome);
-               
+
                //a.k.a. "test"
                logStepSummary(problemName, problemNode, problemEdge, modelTracingValidationOutcome, actualRa, output);
-           	   	
-               
+
+
                edgeVisited.add(problemEdge);
                edges = problemEdge.getDest().getOutgoingEdges();
                for (int i = 0; i < edges.size(); i++) {
@@ -7668,20 +7707,20 @@ public final class SimSt implements Serializable {
        }
    }
    */
-    
-  
-   
+
+
+
 	// Returns 1 when a given rule activation node is correct, -1 otherwise
    private int logRuleActivationNew(String problemName, RuleActivationNode ruleActivated, ProblemNode problemNode, ProblemEdge problemEdge, String output,String cognitiveFidelityOutcome, String actualStatus) {
-	   
+
        String nameRuleActivated = "N/A";
        String actualSelection = "null";
        String actualAction = "null";
        String actualInput = "null";
 
        // ruleActivated is null when there was no rule activated
-       if (ruleActivated != null) {       	
-           // Get the rule name, but strip off the "MAIN::" part 
+       if (ruleActivated != null) {
+           // Get the rule name, but strip off the "MAIN::" part
            nameRuleActivated = ruleActivated.getName();
            nameRuleActivated = nameRuleActivated.replaceAll( "MAIN::", "" );
 
@@ -7690,7 +7729,7 @@ public final class SimSt implements Serializable {
            actualAction = ruleActivated.getActualAction();
            actualInput = ruleActivated.getActualInput();
        }
-       
+
        String modelSelection ="";
        String modelAction = "";
        String modelInput = "";
@@ -7698,51 +7737,51 @@ public final class SimSt implements Serializable {
        Vector edgeSkillNames=null;
        String modelSkillName="";
        if (problemEdge!=null){
-    	   
+
     	   EdgeData edgeData = problemEdge.getEdgeData();
            modelSelection = (String)edgeData.getSelection().get(0);
            modelAction = (String)edgeData.getAction().get(0);
            modelInput = (String)edgeData.getInput().get(0);
            modelStatus = edgeData.getActionType();
-           
+
            edgeSkillNames = edgeData.getSkills();
            modelSkillName = (String)edgeSkillNames.get(0);
-    	   
+
        }
-    
+
        if(modelSkillName.indexOf(' ') >= 0)
        	modelSkillName = modelSkillName.substring( 0, modelSkillName.indexOf(' ') );
        // trim the "MAIN::" part
        modelSkillName = modelSkillName.substring(modelSkillName.lastIndexOf(':') +1);
-       
+
      //  String actualStatus = inquiryRuleActivation(problemName, problemNode, ruleActivated);
-       
+
        // Keep the record
-      // logRuleActivationToFile(LOG_PRTEST_AGENDA, problemName, problemNode.getName(), modelStatus, modelSkillName, nameRuleActivated, actualStatus, getSsCondition(), output, modelSelection, modelAction, modelInput,  actualSelection, actualAction, actualInput);          
+      // logRuleActivationToFile(LOG_PRTEST_AGENDA, problemName, problemNode.getName(), modelStatus, modelSkillName, nameRuleActivated, actualStatus, getSsCondition(), output, modelSelection, modelAction, modelInput,  actualSelection, actualAction, actualInput);
        logRuleActivationToFileNew(LOG_PRTEST_AGENDA, problemName, problemNode.getName(), modelStatus, modelSkillName, nameRuleActivated, actualStatus, cognitiveFidelityOutcome , output, modelSelection , modelAction, modelInput, actualSelection, actualAction, actualInput);
-       
-       
-       
+
+
+
        return EdgeData.CORRECT_ACTION.equals(actualStatus) ? 1 : -1;
    }
-   
-   
+
+
    /*
-    * 
-    *      
-    * */   
+    *
+    *
+    * */
    private void logStepSummary(String problemName, SimStNode problemNode, ProblemEdge problemEdge, String modelTracingValidationOutcome,RuleActivationNode actualRa, String output, String oracleOutcome){
-	   
+
 	   if (actualRa!=null){
 		   if (actualRa.getActualInput().equals("FALSE"))
 			   actualRa=null;
 	   }
-	   
-	   
+
+
 	   String modelStatus = problemEdge.getEdgeData().getActionType();
-      
+
 	   Vector skills = problemEdge.getSkills();
-       
+
 	   String modelSkillName = "";
        EdgeData edgeData = problemEdge.getEdgeData();
        Vector edgeSkillNames = edgeData.getSkills();
@@ -7751,13 +7790,13 @@ public final class SimSt implements Serializable {
        	modelSkillName = modelSkillName.substring( 0, modelSkillName.indexOf(' ') );
        // trim the "MAIN::" part
        modelSkillName = modelSkillName.substring(modelSkillName.lastIndexOf(':') +1);
-            
-      
+
+
         String modelSelection = problemEdge.getSelection();
         String modelAction = problemEdge.getAction();
         String modelInput = problemEdge.getInput();
-        
-        
+
+
         String actualSkillName = "N/A";
 		String actualSelection = "null";
 		String actualAction = "null";
@@ -7770,26 +7809,26 @@ public final class SimSt implements Serializable {
 				//actualStatus = inquiryRuleActivation(problemName, problemNode, actualRa);
 				actualSelection=actualRa.getActualSelection();
 		        actualAction=actualRa.getActualAction();
-		        actualInput=actualRa.getActualInput();	
+		        actualInput=actualRa.getActualInput();
 		        actualSkillName = actualRa.getName();
 				actualSkillName = actualSkillName.replaceAll( "MAIN::", "" );
 		}
-       
-       
-        
+
+
+
 	   logRuleActivationToFileNew(LOG_PRTEST_TEST, problemName, problemNode.getName(), modelStatus, modelSkillName, actualSkillName, actualStatus, modelTracingValidationOutcome , output, modelSelection , modelAction, modelInput, actualSelection, actualAction, actualInput);
-       
-	   
-	   
+
+
+
    }
-   
-   
+
+
  private void logModelTracingValidationStepSummary(String problemName, SimStNode problemNode, ProblemEdge problemEdge, String modelTracingValidationOutcome, String output, String oracleOutcome, String oracleS, String oracleA, String oracleI, String userID){
-	   
+
 	   String modelStatus = problemEdge.getEdgeData().getActionType();
-      
+
 	   Vector skills = problemEdge.getSkills();
-       
+
 	   String modelSkillName = "";
        EdgeData edgeData = problemEdge.getEdgeData();
        Vector edgeSkillNames = edgeData.getSkills();
@@ -7798,34 +7837,34 @@ public final class SimSt implements Serializable {
        	modelSkillName = modelSkillName.substring( 0, modelSkillName.indexOf(' ') );
        // trim the "MAIN::" part
        modelSkillName = modelSkillName.substring(modelSkillName.lastIndexOf(':') +1);
-            
-      
+
+
         String modelSelection = problemEdge.getSelection();
         String modelAction = problemEdge.getAction();
         String modelInput = problemEdge.getInput();
 		String actualStatus=oracleOutcome;
-	
-        
+
+
 	 //  logRuleActivationToFileNew(LOG_PRTEST_TEST, problemName, problemNode.getName(), modelStatus, modelSkillName, actualSkillName, actualStatus, modelTracingValidationOutcome , output, modelSelection , modelAction, modelInput, actualSelection, actualAction, actualInput);
-       
-		
+
+
 		logRuleActivationToFile_ForModelTracingStepSummary(LOG_PRTEST_TEST, problemName, problemNode.getName(), modelStatus, modelSkillName, actualStatus, modelTracingValidationOutcome , output, modelSelection , modelAction, modelInput, oracleS, oracleA, oracleI, userID);
-	       
+
    }
-   
-   /* nbabra 06/17/2014: This is the old code for production rule validation using a brd. This is something in between 
+
+   /* nbabra 06/17/2014: This is the old code for production rule validation using a brd. This is something in between
     * model tracing validation and cognitive fidelity. What it does is it takes the brd, and for every edge it logs to a file
     * if there is a correct activation (correctness is assigned by the oracle).
-    * 
+    *
     * */
-   private void ssTestProductionModelOnBRD_testSteps(String logMode, String output, String problemName) 
+   private void ssTestProductionModelOnBRD_testSteps(String logMode, String output, String problemName)
    {
-	   
-	   
+
+
 	   trace.err("********* TEST STEPS ***** ");
       	String[] startState = readStartStateElements();
    	//getSsRete().setStartStateElements(startState);
-   	    	
+
        SimStNode startNode = getValidationGraph().getStartNode();
 
        Vector <SimStEdge> edgeVisited = new Vector<SimStEdge>();
@@ -7839,7 +7878,7 @@ public final class SimSt implements Serializable {
        HashMap hm = new HashMap(); // Mapping between the RAN and the SimStNode
 
        // Traverse the graph
-       while (!edgeToVisit.isEmpty()) { 
+       while (!edgeToVisit.isEmpty()) {
 
            SimStEdge problemEdge = edgeToVisit.poll();
            SimStNode problemNode = problemEdge.getSource();
@@ -7890,7 +7929,7 @@ public final class SimSt implements Serializable {
                            }
                        }
                    }
-                   // There should have been no correct rule activation found nor the 
+                   // There should have been no correct rule activation found nor the
                    // step isn't model traced...
                    if (actualRa == null) actualRa = ran;
                }
@@ -7908,7 +7947,7 @@ public final class SimSt implements Serializable {
                }
 
                // Record if the step is model traced or not.
-               logModelTraceStatus(problemName, problemNode, problemEdge, 
+               logModelTraceStatus(problemName, problemNode, problemEdge,
                        actualRa, actualStatus, flagPrediction, stepPrediction, output);
 
                edgeVisited.add(problemEdge);
@@ -7925,18 +7964,18 @@ public final class SimSt implements Serializable {
        }
    }
 
-   
+
    public boolean headerPrinted=false;
-   
-   // 
-   // 
-   private void logRuleActivationToFileNew(String phase, String problemName, String stateName, 
-   		String modelStatus, String modelSkillName, 
+
+   //
+   //
+   private void logRuleActivationToFileNew(String phase, String problemName, String stateName,
+   		String modelStatus, String modelSkillName,
    		String actualSkillName, String actualStatus,
-   		String prediction, String output, 
-   		String modelSelection, String modelAction, String modelInput, 
+   		String prediction, String output,
+   		String modelSelection, String modelAction, String modelInput,
    		String actualSelection, String actualAction, String actualInput) {
-   	
+
    	String format = "MM.dd.yyyy-kk.mm.ss";
    	SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.US);
        String dateTime = dateFormat.format( new Date() );
@@ -7951,21 +7990,21 @@ public final class SimSt implements Serializable {
            if (!file.exists()) {
            	logRuleActivationComposeHeader(file);
            }
-         
+
            // Open a log file as an append mode
            FileOutputStream fOut = new FileOutputStream( file, true );
            PrintWriter log = new PrintWriter( fOut );
 
-           
+
           	   if (headerPrinted==false){
           			log.println(this.logHeader);
           			headerPrinted=true;
           	   }
-          		   
-          	   
-             
-           
-           
+
+
+
+
+
            // String skillName = (String)skillNames.get(0);
            int numProblem = getNumTrained();
            int freq = getRuleFreq( modelSkillName );
@@ -7984,52 +8023,52 @@ public final class SimSt implements Serializable {
 
            String studentID=this.getUserID();
            String cond=getSsCondition();
-     
-           
+
+
            String logStr = trainingCycle+ "\t" + studentID + "\t" + cond + "\t"+ dateTime + "\t" +
            problemID + "\t" +
            "\"" + stateName + "\"\t" +
            phase + "\t" +
-           "\"" + step + "\"\t" + 
-           actualSkillName + "\t" + 
-           actualSelection + "\t" + 
-           actualAction + "\t" + 
-           "\"" + actualInput + "\"\t" + 
+           "\"" + step + "\"\t" +
+           actualSkillName + "\t" +
+           actualSelection + "\t" +
+           actualAction + "\t" +
+           "\"" + actualInput + "\"\t" +
            actualStatus + "\t" +
-          modelSkillName + "\t" + 
-          modelSelection + "\t" + 
-           modelAction + "\t" + 
+          modelSkillName + "\t" +
+          modelSelection + "\t" +
+           modelAction + "\t" +
           "\"" + modelInput + "\"\t" +
-           modelStatus + "\t" + 
+           modelStatus + "\t" +
            "\"" + prediction  + "\"";
 
-           
+
 
         /*   String logStr = dateTime + "\t" +
            problemID + "\t" +
            "\"" + stateName + "\"\t" +
            phase + "\t" +
-           "\"" + step + "\"\t" + 
-           modelSelection + "\t" + 
-           modelAction + "\t" + 
-           "\"" + modelInput + "\"\t" + 
-         //  modelSkillName + "\t" + 
+           "\"" + step + "\"\t" +
+           modelSelection + "\t" +
+           modelAction + "\t" +
+           "\"" + modelInput + "\"\t" +
+         //  modelSkillName + "\t" +
            modelStatus + "\t" +
-         //  actualSkillName + "\t" + 
-          actualSelection + "\t" + 
-           actualAction + "\t" + 
+         //  actualSkillName + "\t" +
+          actualSelection + "\t" +
+           actualAction + "\t" +
           "\"" + actualInput + "\"\t" +
-           actualStatus + "\t" + 
+           actualStatus + "\t" +
            "\"" + prediction  + "\"";
-          */ 
-           
-           
+          */
+
+
            log.println( logStr );
            log.close();
            fOut.close();
-           
-             
-           
+
+
+
 
        } catch (Exception e) {
            e.printStackTrace();
@@ -8037,18 +8076,18 @@ public final class SimSt implements Serializable {
        }
    }
 
-   
-   private String logHeader = 
+
+   private String logHeader =
 		   	"TrainingCycle\t"+"StudentID\t"+"Condition\t"+"Date\t" +
 		   	//"Condition\t" +
 		   	"TestName\t" +
 		   	"StateName\t" +
-		   	//"NumTraining\t" + 
+		   	//"NumTraining\t" +
 		   	//"Freq\t" +
 		   	//"NumRule\t" +
 		   	//"NumSteps\t" +
 		   	"Phase\t" +
-		   	"Step\t" + 
+		   	"Step\t" +
 			"ActualRule\t" +
 			"ActualSelection\t" +
 		   	"ActualAction\t" +
@@ -8063,40 +8102,40 @@ public final class SimSt implements Serializable {
 		   	//"StepPrediction\t" +
 		   	"Outcome";
 
-   
-   
-   
-   private void logRuleActivationToFile_ForModelTracingStepSummary(String phase, String problemName, String stateName, 
+
+
+
+   private void logRuleActivationToFile_ForModelTracingStepSummary(String phase, String problemName, String stateName,
 	   		String modelStatus, String modelSkillName, String actualStatus,
-	   		String prediction, String output, 
+	   		String prediction, String output,
 	   		String modelSelection, String modelAction, String modelInput, String oracleS, String oracleA, String oracleI, String userID) {
-	   	
+
 	   	String format = "MM.dd.yyyy-kk.mm.ss";
 	   	SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.US);
 	       String dateTime = dateFormat.format( new Date() );
 
-	    
+
 
 	       try {
 	           File file = new File( output );
 	           if (!file.exists()) {
 	           	logRuleActivationComposeHeader(file);
 	           }
-	         
+
 	           // Open a log file as an append mode
 	           FileOutputStream fOut = new FileOutputStream( file, true );
 	           PrintWriter log = new PrintWriter( fOut );
 
-	           
+
 	          	   if (headerPrinted==false){
 	          			log.println(this.logHeaderMTValidation);
 	          			headerPrinted=true;
 	          	   }
-	          		   
-	          	   
-	             
-	           
-	           
+
+
+
+
+
 	           // String skillName = (String)skillNames.get(0);
 	           int numProblem = getNumTrained();
 	           int freq = getRuleFreq( modelSkillName );
@@ -8113,50 +8152,50 @@ public final class SimSt implements Serializable {
 	           	step += " (" + getLastSkillOperand() + ")";
 	           }
 
-	         
+
 
 	           String logStr = dateTime + "\t" +
 	           userID + "\t" +
 	           problemID + "\t" +
 	           "\"" + stateName + "\"\t" +
 	       //    phase + "\t" +
-	           "\"" + step + "\"\t" + 
+	           "\"" + step + "\"\t" +
 	          // modelSkillName + "\t" +
-	           modelSelection + "\t" + 
-	           modelAction + "\t" + 
-	           modelInput +  "\t" + 
+	           modelSelection + "\t" +
+	           modelAction + "\t" +
+	           modelInput +  "\t" +
 	           modelStatus + "\t" +
 	           actualStatus + "\t" +
 	           prediction + "\t"+
 	           oracleS + " \t"+
 	           oracleA + " \t"+
 	           oracleI + " \t";
-	           
+
 	           log.println( logStr );
 	           log.close();
 	           fOut.close();
-	           
-	             
+
+
 	       } catch (Exception e) {
 	           e.printStackTrace();
 	           logger.simStLogException(e);
 	       }
 	   }
-   
-   
-   
-   private String logHeaderMTValidation = 
+
+
+
+   private String logHeaderMTValidation =
 		   	"Date\t" +
 		   	//"Condition\t" +
 		   	"User ID\t" +
 		   	"TestName\t" +
 		   	"StateName\t" +
-		   	//"NumTraining\t" + 
+		   	//"NumTraining\t" +
 		   	//"Freq\t" +
 		   	//"NumRule\t" +
 		   	//"NumSteps\t" +
 		  // 	"Phase\t" +
-		   	"Step\t" + 
+		   	"Step\t" +
 		   //	"BRDRule\t" +
 		   	"BRDSelection\t" +
 		   	"BRDAction\t" +
@@ -8165,24 +8204,24 @@ public final class SimSt implements Serializable {
 		   	"OracleOutcome\t" +
 		   	//"FlagPrediction\t" +
 		   	//"StepPrediction\t" +
-		   	
-		   	"ModelTracing Outcome\t" + 
+
+		   	"ModelTracing Outcome\t" +
 		   	"OracleSelection\t" +
 		   	"OracleAction\t" +
 		   	"OracleInput\t" ;
-   
-   
-	private String logHeaderNew = 
+
+
+	private String logHeaderNew =
    	"Date\t" +
    	//"Condition\t" +
    	"TestName\t" +
    	"StateName\t" +
-   	//"NumTraining\t" + 
+   	//"NumTraining\t" +
    	//"Freq\t" +
    	//"NumRule\t" +
    	//"NumSteps\t" +
    	"Phase\t" +
-   	"Step\t" + 
+   	"Step\t" +
    	"ModelRule\t" +
    	//"ModelStatus\t" +
    	"ActualRule\t" +
@@ -8196,18 +8235,18 @@ public final class SimSt implements Serializable {
    	"ActualAction\t" +
    	"ActualInput";
 
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
    private boolean isSubjectToTest(SsProblemEdge edge) {
    	String skillName = edge.getSkillName();
 		return isSubjectToTest(skillName);
 	}
 
-   // This is rather ad-hoc to Algebra I 
+   // This is rather ad-hoc to Algebra I
    private boolean isSubjectToTest(ProblemEdge problemEdge) {
        String skillName = (String)problemEdge.getSkills().get(0);
        return isSubjectToTest(skillName);
@@ -8226,10 +8265,10 @@ public final class SimSt implements Serializable {
 
 
 
-   private void logModelTraceStatus(String problemName, ProblemNode problemNode, 
+   private void logModelTraceStatus(String problemName, ProblemNode problemNode,
                                     ProblemEdge problemEdge, RuleActivationNode actualRa,
                                     String actualStatus, String flagPrediction, String stepPrediction,
-                                    String output) 
+                                    String output)
    {
 
        String modelStatus = problemEdge.getEdgeData().getActionType();
@@ -8254,7 +8293,7 @@ public final class SimSt implements Serializable {
        String actualInput = "";
 
        if (actualRa != null) {
-           // Get the rule name, but strip off the "MAIN::" part 
+           // Get the rule name, but strip off the "MAIN::" part
            actualSkillName = actualRa.getName();
            actualSkillName = actualSkillName.replaceAll( "MAIN::", "" );
            actualSelection = actualRa.getActualSelection();
@@ -8262,27 +8301,27 @@ public final class SimSt implements Serializable {
            actualInput = actualRa.getActualInput();
        }
 
-       logRuleActivationToFile(LOG_PRTEST_TEST, problemName, problemNode.getName(), 
-       		modelStatus, modelSkillName, 
-       		actualSkillName, actualStatus, 
+       logRuleActivationToFile(LOG_PRTEST_TEST, problemName, problemNode.getName(),
+       		modelStatus, modelSkillName,
+       		actualSkillName, actualStatus,
        		flagPrediction, stepPrediction,
        		getSsCondition(), output,
-               modelSelection, modelAction, modelInput, 
+               modelSelection, modelAction, modelInput,
                actualSelection, actualAction, actualInput);
    }
 
-   private void logModelTraceStatus(String problemName, ProblemNode problemNode, 
+   private void logModelTraceStatus(String problemName, ProblemNode problemNode,
            RuleActivationNode actualRa,
            String actualStatus, String flagPrediction, String stepPrediction,
-           String output, AskHint correctAction) 
+           String output, AskHint correctAction)
 	{
 			String modelStatus = EdgeData.CORRECT_ACTION;
-			
+
 			String modelSkillName = correctAction.getSkillName();
-			
+
 			// trim the "MAIN::" part
 			modelSkillName = modelSkillName.substring(modelSkillName.lastIndexOf(':') +1);
-			
+
 			String modelSelection = correctAction.getSelection();
 			String modelAction = correctAction.getAction();
 			String modelInput = correctAction.getInput();
@@ -8290,27 +8329,27 @@ public final class SimSt implements Serializable {
 			String actualSelection = "";
 			String actualAction = "";
 			String actualInput = "";
-			
+
 			if (actualRa != null) {
-			// Get the rule name, but strip off the "MAIN::" part 
+			// Get the rule name, but strip off the "MAIN::" part
 				actualSkillName = actualRa.getName();
 				actualSkillName = actualSkillName.replaceAll( "MAIN::", "" );
 				actualSelection = actualRa.getActualSelection();
 				actualAction = actualRa.getActualAction();
 				actualInput = actualRa.getActualInput();
 			}
-			
-			logRuleActivationToFile(LOG_PRTEST_TEST, problemName, problemNode.getName(), 
-			modelStatus, modelSkillName, 
-			actualSkillName, actualStatus, 
+
+			logRuleActivationToFile(LOG_PRTEST_TEST, problemName, problemNode.getName(),
+			modelStatus, modelSkillName,
+			actualSkillName, actualStatus,
 			flagPrediction, stepPrediction,
 			getSsCondition(), output,
-			modelSelection, modelAction, modelInput, 
+			modelSelection, modelAction, modelInput,
 			actualSelection, actualAction, actualInput);
 }
 
 // Returns 1 when a given rule activation node is correct, -1 otherwise
-   private int logRuleActivationOracled(String phase, String problemName, RuleActivationNode ruleActivated, ProblemNode sourceNode, 
+   private int logRuleActivationOracled(String phase, String problemName, RuleActivationNode ruleActivated, ProblemNode sourceNode,
                                       String output, AskHint hint) {
 
        String nameRuleActivated = NOT_AVAILABLE;
@@ -8321,8 +8360,8 @@ public final class SimSt implements Serializable {
 
        // ruleActivated is null when there was no rule activated
        if (ruleActivated != null) {
-       	
-           // Get the rule name, but strip off the "MAIN::" part 
+
+           // Get the rule name, but strip off the "MAIN::" part
            nameRuleActivated = ruleActivated.getName();
            nameRuleActivated = nameRuleActivated.replaceAll( "MAIN::", "" );
 
@@ -8330,9 +8369,9 @@ public final class SimSt implements Serializable {
            actualSelection = ruleActivated.getActualSelection();
            actualAction = ruleActivated.getActualAction();
            actualInput = ruleActivated.getActualInput();
-           
+
        }
-       
+
 
        //AskHint hint = new AskHintInBuiltClAlgebraTutor(getBrController(), sourceNode);
        String modelSelection = hint.getSelection();
@@ -8349,10 +8388,10 @@ public final class SimSt implements Serializable {
 
        // Keep the record
        if(phase.equals(LOG_PRTEST_AGENDA)) {
-       	logRuleActivationToFile(LOG_PRTEST_AGENDA, problemName, sourceNode.getName(), 
-       			modelStatus, modelSkillName, 
+       	logRuleActivationToFile(LOG_PRTEST_AGENDA, problemName, sourceNode.getName(),
+       			modelStatus, modelSkillName,
        			nameRuleActivated, actualStatus, getSsCondition(), output,
-       			modelSelection, modelAction, modelInput, 
+       			modelSelection, modelAction, modelInput,
        			actualSelection, actualAction, actualInput);
        } else {
        	logRuleActivationToFile(LOG_PRTEST_TEST, problemName, sourceNode.getName(),
@@ -8367,7 +8406,7 @@ public final class SimSt implements Serializable {
 
 
 	// Returns 1 when a given rule activation node is correct, -1 otherwise
-   private int logRuleActivation(String problemName, RuleActivationNode ruleActivated, ProblemNode sourceNode, 
+   private int logRuleActivation(String problemName, RuleActivationNode ruleActivated, ProblemNode sourceNode,
                                      ProblemEdge problemEdge, String output) {
 
        String nameRuleActivated = "N/A";
@@ -8377,8 +8416,8 @@ public final class SimSt implements Serializable {
 
        // ruleActivated is null when there was no rule activated
        if (ruleActivated != null) {
-       	
-           // Get the rule name, but strip off the "MAIN::" part 
+
+           // Get the rule name, but strip off the "MAIN::" part
            nameRuleActivated = ruleActivated.getName();
            nameRuleActivated = nameRuleActivated.replaceAll( "MAIN::", "" );
 
@@ -8404,16 +8443,16 @@ public final class SimSt implements Serializable {
        String actualStatus = inquiryRuleActivation(problemName, sourceNode, ruleActivated);
 
        // Keep the record
-       logRuleActivationToFile(LOG_PRTEST_AGENDA, problemName, sourceNode.getName(), 
-       		modelStatus, modelSkillName, 
+       logRuleActivationToFile(LOG_PRTEST_AGENDA, problemName, sourceNode.getName(),
+       		modelStatus, modelSkillName,
        		nameRuleActivated, actualStatus, getSsCondition(), output,
-               modelSelection, modelAction, modelInput, 
+               modelSelection, modelAction, modelInput,
                actualSelection, actualAction, actualInput);
 
        return EdgeData.CORRECT_ACTION.equals(actualStatus) ? 1 : -1;
    }
 
-   public boolean isStepModelTraced(String edgeSkillName, String modelSelection, String modelAction, String modelInput, 
+   public boolean isStepModelTraced(String edgeSkillName, String modelSelection, String modelAction, String modelInput,
            String nameRuleActivated, String actualSelection, String actualAction, String actualInput) {
 
        return (
@@ -8429,11 +8468,11 @@ public final class SimSt implements Serializable {
 		String actualSelection = ran.getActualSelection();
 		String actualAction = ran.getActualAction();
 		String actualInput = ran.getActualInput();
-		boolean isStepModelTraced = 
+		boolean isStepModelTraced =
 			isStepModelTraced(modelSelection, modelAction, modelInput, actualSelection, actualAction, actualInput);
 		return isStepModelTraced;
 	}
-	
+
 	private boolean isStepModelTraced(SimStEdge edge, RuleActivationNode ran) {
 		String modelSelection = edge.getSelection();
 		String modelAction = edge.getAction();
@@ -8441,16 +8480,16 @@ public final class SimSt implements Serializable {
 		String actualSelection = ran.getActualSelection();
 		String actualAction = ran.getActualAction();
 		String actualInput = ran.getActualInput();
-		
-		
-		
-		boolean isStepModelTraced = 
+
+
+
+		boolean isStepModelTraced =
 			isStepModelTraced(modelSelection, modelAction, modelInput, actualSelection, actualAction, actualInput);
 		return isStepModelTraced;
 	}
 
-   public boolean isStepModelTraced(String modelSelection, String modelAction, String modelInput, 
-                                    String actualSelection, String actualAction, String actualInput) 
+   public boolean isStepModelTraced(String modelSelection, String modelAction, String modelInput,
+                                    String actualSelection, String actualAction, String actualInput)
    {
        return (
                modelSelection.equalsIgnoreCase(actualSelection) &&
@@ -8486,7 +8525,7 @@ public final class SimSt implements Serializable {
                }
            }
        }
-       
+
        return isValid;
    }
 
@@ -8497,7 +8536,7 @@ public final class SimSt implements Serializable {
 
        String cachedCompairInput = null;
 
-       edu.cmu.pact.miss.HashMap inputCache = 
+       edu.cmu.pact.miss.HashMap inputCache =
            (edu.cmu.pact.miss.HashMap)compairInputCache.get(modelInput);
        // HashMap inputCache = (HashMap)compairInputCache.get(lastVar);
 
@@ -8510,7 +8549,7 @@ public final class SimSt implements Serializable {
 
    private void putCachedCompairInput(String modelInput, String actualInput, String result) {
 
-       edu.cmu.pact.miss.HashMap inputCache = 
+       edu.cmu.pact.miss.HashMap inputCache =
            (edu.cmu.pact.miss.HashMap)compairInputCache.get(modelInput);
        // HashMap inputCache = (HashMap)compairInputCache.get(lastVar);
 
@@ -8524,7 +8563,7 @@ public final class SimSt implements Serializable {
 
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    // Validate BRDs
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 	private boolean validateStepsInBRD = false;
    public boolean isValidateStepsInBRD() {	return validateStepsInBRD; }
@@ -8535,15 +8574,15 @@ public final class SimSt implements Serializable {
 
    	setValidateStepsInBRD(true);
    	// Current oracle schema needs to know FoA for a rule activation, which
-   	// is not available for BRD validation. Besides, BRD validation validate steps 
+   	// is not available for BRD validation. Besides, BRD validation validate steps
    	// only once, hence oracle cache does not work well.
    	// setSsCacheOracleInquiry(false);
-   	
+
    	setRuleActivationTestMethod(RA_TEST_METHOD_TUTOR_SOLVER);
        // setRuleActivationTestMethod(RA_TEST_METHOD_VOID);
 
        // Recursively call testProductionModelOn when the target problem file is a directory
-       File brdFile = new File(brdPath); 
+       File brdFile = new File(brdPath);
 
        if (brdFile.isDirectory()) {
 
@@ -8598,7 +8637,7 @@ public final class SimSt implements Serializable {
        Vector /* ProblemEdge */<ProblemEdge> edgeVisited = new Vector<ProblemEdge>();
 
        // Traverse the graph
-       while (!edgeToVisit.isEmpty()) { 
+       while (!edgeToVisit.isEmpty()) {
 
            ProblemEdge edge = edgeToVisit.poll();
            ProblemNode node = edge.getSource();
@@ -8625,7 +8664,7 @@ public final class SimSt implements Serializable {
                    resetLastSkillOperand();
                }
 
-               // The correctness of the rule activation 
+               // The correctness of the rule activation
                String raActionType = inquiryRuleActivation(brdID, node, selection, action, input);
 
                String step = getProblemStep();
@@ -8634,10 +8673,10 @@ public final class SimSt implements Serializable {
                }
 
                if (raActionType == null) {
-                   logBrdValidation(logPrintWriter, brdID, studentID, node.getName(), step, "Broken-BRD", 
+                   logBrdValidation(logPrintWriter, brdID, studentID, node.getName(), step, "Broken-BRD",
                            null, skillName, selection, input, action);
                    break;
-               } 
+               }
 
                boolean isRaCorrect = raActionType.equals(EdgeData.CORRECT_ACTION);
                boolean isBrdCorrect = brdActionType.equals(EdgeData.CORRECT_ACTION);
@@ -8679,8 +8718,8 @@ public final class SimSt implements Serializable {
    		String studentID, String stateName, String step, String actionType,
    		String correctness, String skillName, String selection, String input, String action) {
 
-   	String log = 
-   		studentID + "\t" + brdID + "\t" + stateName + "\t" + step  + "\t" + skillName + "\t" + 
+   	String log =
+   		studentID + "\t" + brdID + "\t" + stateName + "\t" + step  + "\t" + skillName + "\t" +
    		actionType + "\t" + correctness + "\t" + selection + "\t" + action + "\t" + input;
    	logPrintWriter.println(log);
    }
@@ -8688,10 +8727,10 @@ public final class SimSt implements Serializable {
    /**
     * Returns either TRUE_POSITIVE or FALSE_POSITIVE for a given rule activation at a given
     * problemNode
-    * 
-    * inquirySolverTutor() returns EdgeData.CORRECT_ACTION or CLT_ERROR_ACTION, though. 
+    *
+    * inquirySolverTutor() returns EdgeData.CORRECT_ACTION or CLT_ERROR_ACTION, though.
     * This must be adjusted.
-    * 
+    *
     * @param problemName
     * @param problemNode
     * @param ruleActivated
@@ -8703,8 +8742,8 @@ public final class SimSt implements Serializable {
        String action = ruleActivated.getActualAction();
        String input = ruleActivated.getActualInput();
        String ruleName = ruleActivated.getName();
-       
-     
+
+
        String result = inquiryRuleActivation(problemName, problemNode, ruleName, selection, action, input, ruleActivated);
        return result;
    }
@@ -8715,16 +8754,16 @@ public final class SimSt implements Serializable {
        return inquiryRuleActivation(problemName, problemNode, "", selection, action, input, null);
    }
 
-   public String inquiryRuleActivation(String problemName, ProblemNode problemNode, String ruleName,  
+   public String inquiryRuleActivation(String problemName, ProblemNode problemNode, String ruleName,
            String selection, String action, String input, RuleActivationNode ran){
-   	
+
    	//TODO THIS is the ugliest method I have ever seen. Please clean it up. -Maclellan
-		
+
    	ProblemNode startNode = null;
    	String lastEquation = null;
-   	
-  
-   	
+
+
+
    	if(isValidationMode)
    	{
    		startNode = getValidationGraph().getStartNode();
@@ -8739,9 +8778,9 @@ public final class SimSt implements Serializable {
    	}
 
    	if (this.isSsAplusCtrlCogTutorMode() && this.getBrController().getMissController().getSimStPLE().getSsCognitiveTutor().getQuizSolving()){
-   		startNode = getQuizGraph().getStartNode();  		
+   		startNode = getQuizGraph().getStartNode();
    	}
-   	
+
        if(trace.getDebugCode("miss"))trace.out("miss", "inquiryRuleActivation: ============== ");
        if(trace.getDebugCode("miss"))trace.out("miss", "        problem: " + problemName);
        if(trace.getDebugCode("miss"))trace.out("miss", "           node: " + problemNode + "(" + lastEquation + ")");
@@ -8750,23 +8789,23 @@ public final class SimSt implements Serializable {
        if(trace.getDebugCode("miss"))trace.out("miss", "   actualAction: " + action);
        if(trace.getDebugCode("miss"))trace.out("miss", "    actualInput: " + input);
        if(trace.getDebugCode("miss"))trace.out("miss", "    asking oracle: " + getRuleActivationTestMethod() /*getRuleActivationTestMethod()*/);
-       
+
        String mtStatus = null;
        if (this.isUseCacheOracleInquiry()){
-    	 
+
                mtStatus = lookupRuleActivationStatus(problemName, lastEquation, "", selection, action, input);
        }
 
        if (mtStatus == null) {
                // if there is no FALSE/FELAS  *or*  !isIlFromBrd, ask the respective oracle
                if (input.toUpperCase().indexOf("FALSE") == -1 && input.toUpperCase().indexOf("FELAS") == -1) {
-               		
+
                    if (getRuleActivationTestMethod().equalsIgnoreCase(RA_TEST_METHOD_TS)) {
                        mtStatus = inquiryRaTutoringService(selection, action, input, problemNode, problemName + ".brd") ;
-                   } 
+                   }
                    else if (getRuleActivationTestMethod().equalsIgnoreCase(RA_TEST_METHOD_HO)) {
                        // ruleActivated.getName()
-                       mtStatus = inquiryRuleActivationOracle(selection, action, input, problemNode, problemName, ruleName, ran);
+                       mtStatus = inquiryRuleActivationOracle(selection, action, input, problemNode, problemName, ruleName, ran, null);
                    }
                    else if (getRuleActivationTestMethod().equalsIgnoreCase(RA_TEST_METHOD_CL)) {
                        String problem = startNode.getName();
@@ -8777,83 +8816,83 @@ public final class SimSt implements Serializable {
                        // but in batch interactive learning, we want to pass whatever BRD is used at the time
                        mtStatus = inquiryRuleActivationBRD(selection, action, input, problemNode.getName(), currentBrdPath);
                    }
-                   //nbarba 06/01/14: elseif condition to redirect to the Jess oracly inquiry function 
+                   //nbarba 06/01/14: elseif condition to redirect to the Jess oracly inquiry function
                    else if (getRuleActivationTestMethod().equalsIgnoreCase(RA_TEST_METHOD_JESS_ORACLE)){
                 	   mtStatus=inquiryJessOracle(selection, action, input, problemNode, problemName);
                    }
                    else if (getRuleActivationTestMethod().equalsIgnoreCase(RA_TEST_METHOD_VOID)){
                        mtStatus = "VOID";
                    }
-                   //nbarba 06/01/14: elseif condition to redirect to the Jess oracly inquiry function 
+                   //nbarba 06/01/14: elseif condition to redirect to the Jess oracly inquiry function
                    else if (getRuleActivationTestMethod().equalsIgnoreCase(RA_TEST_METHOD_WEBAUTHORING)){
-                	   
+
                 	   mtStatus=this.inquireRAWebAuthoring(selection, input, action, problemNode, problemName);
                 	   if (mtStatus.equals(EdgeData.CORRECT_ACTION)){
-                		   
+
                 			MessageObject mo = MessageObject.create("InterfaceAction");
                 		    mo.setVerb("NotePropertySet");
                 		    mo.setSelection(selection);
                 		    mo.setAction(action);
-                		    mo.setInput(input);    
+                		    mo.setInput(input);
                 		    mo.setTransactionId(mo.makeTransactionId());
-                		    
+
                 			this.getBrController().getUniversalToolProxy().sendMessage(mo);
                 			getSsRete().setSAIDirectly(selection,action,input);
                 	   }
-                	   
+
                    }
                    else if (getRuleActivationTestMethod().equalsIgnoreCase(RA_TEST_METHOD_TUTOR_SOLVER)) {
                        //String problem = getBrController().getProblemModel().getStartNode().getName();
                        mtStatus = inquirySolverTutor(selection, action, input, problemNode, problemName);
                    }
                    else if (getRuleActivationTestMethod().equalsIgnoreCase(RA_TEST_METHOD_TUTOR_SOLVERV2)) {
-                	   
+
                 	   		/* when in aplus cog tutor, temporarily switch to taking quiz. this is so the CL oracle can find id solution is correct
                 	   		   we switch back again */
                 	   		if (this.isSsAplusCtrlCogTutorMode() && this.getBrController().getMissController().getSimStPLE().getSsCognitiveTutor().getQuizSolving()){
                 	   			this.getBrController().getMissController().getSimStPLE().getSsInteractiveLearning().setTakingQuiz(true);
                 	   		}
-                	   
-                	   
+
+
                            String problem = "";
                            if(getSsInteractiveLearning()== null || !getSsInteractiveLearning().isTakingQuiz())
                                    problem = startNode.getName();
-                           else 
+                           else
                                    problem = problemName; // When taking quiz use the problemName as we donot have reference to the BR_Controller
 
-                          
-                          
+
+
                            mtStatus = builtInInquiryClTutor(selection, action, input, problemNode, problem);
-                     
-                         
+
+
                        /*
                            if (this.isSsCogTutorMode() && !this.isSsAplusCtrlCogTutorMode()){
-                    	   
+
                         	   AskHint hint = getCorrectSAI(getBrController(), problemNode);
                         	   JOptionPane.showMessageDialog(null, "faskelo: skill is " + hint.skillName);
-                    	   
-                    	   
+
+
                            }
-                    	 */  
-                    	   
-                    	   
-                       
+                    	 */
+
+
+
                        if (getSsInteractiveLearning() != null && getSsInteractiveLearning().isTakingQuiz()){
 
-                    	   
+
                     	   String loggedAction=SimStLogger.CONFIRMATION_REQUEST_CL_ACTION;
-                    	   
+
                     	   if (this.isSsCogTutorMode())
                     		   loggedAction=SimStLogger.CONFIRMATION_REQUEST_CL_ACTION_HUMAN;
-                    	   
+
                            // If what the SimStudent did at this step is wrong ask from Oracle what would have been the right step
                            if(mtStatus.equals(EdgeData.CLT_ERROR_ACTION)){
-                        	 
-                               AskHint hint = getCorrectSAI(getBrController(), problemNode);
-                                         
 
-                            
-                               
+                               AskHint hint = getCorrectSAI(getBrController(), problemNode);
+
+
+
+
                                logger.simStLog(SimStLogger.SIM_STUDENT_QUIZ,loggedAction/*SimStLogger.CONFIRMATION_REQUEST_CL_ACTION*/,
                                        getProblemStepString(), mtStatus, "", new Sai(selection, action, input), mtStatus.equals(EdgeData.CORRECT_ACTION),
                                        hint.getSelection(), hint.getAction(), hint.getInput());
@@ -8862,18 +8901,18 @@ public final class SimSt implements Serializable {
                                        getProblemStepString(), mtStatus, "", new Sai(selection, action, input), mtStatus.equals(EdgeData.CORRECT_ACTION),
                                        "","","");
                            }
-                          
+
                        }
-                       
+
                        /*switch back*/
                    	   if (this.isSsAplusCtrlCogTutorMode() && this.getBrController().getMissController().getSimStPLE().getSsCognitiveTutor().getQuizSolving()){
                    				this.getBrController().getMissController().getSimStPLE().getSsInteractiveLearning().setTakingQuiz(false);
                    	   }
-                       
+
                    }
                    // Sun Aug 20 16:26:02 LDT 2006 :: Noboru
                    // Keep record of the oracles for rule activation status for the future use
- 
+
                    if (mtStatus != null && this.isUseCacheOracleInquiry()) {
                        addRuleActivationStatus(problemName, lastEquation, "", selection, action, input, mtStatus);
                        saveRuleActivationStatus();
@@ -8882,10 +8921,10 @@ public final class SimSt implements Serializable {
                    mtStatus = EdgeData.CLT_ERROR_ACTION;
                }
        }
-       
+
  //      trace.out("### SimStudent for problem " + problemName + " asked " + getRuleActivationTestMethod() + " and result is " + mtStatus);
        if(trace.getDebugCode("miss"))trace.out("miss", "inquiryRuleActivation: >>>>> result: " + mtStatus);
-        
+
        return mtStatus;
 }
 
@@ -8907,7 +8946,7 @@ public final class SimSt implements Serializable {
        if(currentNode == null)
        	return "";
    	String lastEquation = findLastEquation(getBrController().getProblemModel().getStartNode(), currentNode);
-   	    	    	
+
        if(lastEquation == null)
        	lastEquation = getBrController().getProblemModel().getProblemName();
 
@@ -8928,7 +8967,7 @@ public final class SimSt implements Serializable {
        		useOperand = true;
        	}
        }
-   	if (useOperand && getLastSkillOperand() != null) 
+   	if (useOperand && getLastSkillOperand() != null)
        {
            lastEquation += "[" + getLastSkillOperand() + "]";
        }
@@ -8937,67 +8976,67 @@ public final class SimSt implements Serializable {
    }*/
 
    public transient Vector<RuleActivationNode> altSug=null;
-   
+
    public String verifyStep(String problemName, ProblemNode problemNode,
                                        String selection, String action, String input)
    {
    	String mtStatus = "";
-   	
+
    	if(problemName == null || problemNode == null || selection == null || action == null || input == null)
    		return EdgeData.UNKNOWN_ACTION;
-   	
+
    	//if(getBrController().getMissController().isPLEon())
    		//getBrController().getMissController().getSimStPLE().setAvatarThinking();
-	
+
 //   		if (getInquiryJessOracle()==null)
    			mtStatus = builtInInquiryClTutor(selection, action, input, problemNode, problemName);
 //		  else{
 						/*System.out.println("@*@*@*@*@*@*@*@*@*@*@*@*@*@*@*@*@*@*@*@*");
 						System.out.println("@*@*@*@*@* checking for status.... for " + problemNode.getName());
-			
-						
+
+
 						mtStatus=inquiryJessOracle(selection, action, input, problemNode, problemName);
 						if (mtStatus.contains("Error")){
 						System.out.println("@*@*@*@*@* calling again...");
-			
+
 							mtStatus=inquiryJessOracle(selection, action, input, problemNode, problemName);
 						}
-					
+
 						System.out.println("&&&& mtstatus = " + mtStatus);*/
 
 				//trace.out("*@*@*@ ta sugs einai: " + altSug);
-			
+
 				//InquiryJessOracle iJessOracle = getInquiryJessOracle();
-//			   InquiryJessOracle iJessOracle =  new InquiryJessOracle(getBrController().getMissController().getSimSt(),getBrController()); 
-			     
-	
+//			   InquiryJessOracle iJessOracle =  new InquiryJessOracle(getBrController().getMissController().getSimSt(),getBrController());
+
+
 //		       iJessOracle.init(this.getBrController().getProblemName());
-		       
+
 //		       ProblemNode currentNode = getBrController().getCurrentNode();
-						       
+
 //			   ProblemNode prevNode = problemNode;
-								
+
 //			   iJessOracle.goToState(this.getBrController() , prevNode);
-		   	
+
 //		       try {
 //		    	   mtStatus = iJessOracle.isCorrectStep(selection, action, input) ? EdgeData.CORRECT_ACTION : EdgeData.CLT_ERROR_ACTION;
-//		    	   trace.out("*@*@*@ Student entered " + selection + action + input  + " and MTSTATUS einai: " + mtStatus);	
+//		    	   trace.out("*@*@*@ Student entered " + selection + action + input  + " and MTSTATUS einai: " + mtStatus);
 //		          } catch (Exception e) {
 //		              e.printStackTrace();
 //		        }
-		        
-	
+
+
 //			*/
-			
+
 //		}
-			
-   		
-   		
-   		
+
+
+
+
    	// Added by Rohan.
        // To be removed.
    //	if(trace.getDebugCode("ss"))trace.out("ss", "In verifyStep and called builtInInquiryClTutor() with mtStatus as" + mtStatus);
-   	
+
    	//if(getBrController().getMissController().isPLEon())
    	//	getBrController().getMissController().getSimStPLE().endAvatarThinking();
 
@@ -9005,8 +9044,8 @@ public final class SimSt implements Serializable {
        return mtStatus;
    }
 
-   // problemStep is updated promptly by ruleActivationInquiry oracles. 
-   // 
+   // problemStep is updated promptly by ruleActivationInquiry oracles.
+   //
      String problemStep = null;
      String lastProblemStep = null;
    public String getProblemStep() { return problemStep; }
@@ -9022,13 +9061,13 @@ public final class SimSt implements Serializable {
 		}
 		return isProblemStepUpdated;
 	}
-	
+
 	/**
     * See if the skill name model traced by MT matches with the one specified by the model
-    * (usually they are specified in the BRD). 
-    * 
+    * (usually they are specified in the BRD).
+    *
     * @param modelSkill A target skill name to be fired
-    * @param tracedSkill A skill name that has been actually fired. 
+    * @param tracedSkill A skill name that has been actually fired.
     * @return
     */
    public /*private*/ boolean skillNameMatched(String modelSkill, String tracedSkill) {
@@ -9039,7 +9078,7 @@ public final class SimSt implements Serializable {
        boolean skillNameMatched = false;
 
        if (modelSkill.equals(tracedSkill)) {
-           // Two skill names match when they are identical 
+           // Two skill names match when they are identical
            skillNameMatched = true;
        } else {
            // tracedSkill maatches with the modelSkill when it is a jisjunctive version of
@@ -9063,8 +9102,8 @@ public final class SimSt implements Serializable {
    }
 
    /**
-    * Record rule firing during training.  Log rules 
-    * 
+    * Record rule firing during training.  Log rules
+    *
     * @param trainingProblem
     * @param stateName
     * @param modelSkillName
@@ -9081,7 +9120,7 @@ public final class SimSt implements Serializable {
        String logFile = getLearningLogFile();
        while (activations.hasNext()) {
            Activation activation = (Activation)activations.next();
-           Defrule defrule = activation.getRule(); 
+           Defrule defrule = activation.getRule();
            String actualSkillName = defrule.getName();
            // ruleFired looks like "MAIN::foobar"
            int idx = actualSkillName.lastIndexOf(':');
@@ -9092,55 +9131,55 @@ public final class SimSt implements Serializable {
            String msg = trainingProblem + "/" + modelSkill + "/" + ruleFired + "/";
            msg += status + "/" + condition + "/";
             */
-           logRuleActivationToFile(LOG_PRTEST_TRAINING, trainingProblem, stateName, 
-           		modelStatus, modelSkillName, actualSkillName, actualStatus, 
+           logRuleActivationToFile(LOG_PRTEST_TRAINING, trainingProblem, stateName,
+           		modelStatus, modelSkillName, actualSkillName, actualStatus,
            		condition, logFile);
        }
    }
 
- 
+
    /**
     * Finds the activations that are fired at this input node.
     * @param ssNode {@link SimStNode} for which to find activations
     * @param hm
-    * @return Vector<RuleActivationNode> 
+    * @return Vector<RuleActivationNode>
     */
    public Vector<RuleActivationNode> gatherActivationList(SimStNode ssNode, HashMap hm) {
-	
+
    	Vector<RuleActivationNode> activationList = new Vector<RuleActivationNode>();
    	if(ssNode == null)
-   		return null;  	
+   		return null;
    	try {
-   		
+
    		if(ssNode.getParents().isEmpty()) {			/*for start node , reset rete and restore initial wm state*/
    			ssRete.reset();
-   			ssRete.restoreInitialWMState(ssNode, true);	
+   			ssRete.restoreInitialWMState(ssNode, true);
    		} else {									/*for subsequent nodes, get edges from start to current node and go to wm state. (note: go to wm state calles restoreInitialWMState which clears rete...) */
    			SimStNode startNode = ssNode.getProblemGraph().getStartNode();
    			Vector<SimStEdge> vec = ssNode.findPathToNode(ssNode);
-   			//ssRete.reset();	
+   			//ssRete.reset();
    			//ssRete.goToWMState(startNode ,vec, false);
    			ssRete.goToWMState(startNode ,vec, true);
 
    		}
-   		   	 		
+
    			//MTRete mtRete = getBrController().getModelTracer().getRete();
 
 	    	SimStRete ssRete = getSsRete();
-	    	
+
 	    	//ssRete.updateWorkingMemory(ssNode, hm);
 	        RuleActivationTree tree = getBrController().getRuleActivationTree();
 	        TreeTableModel ttm = tree.getActivationModel();
 	        RuleActivationNode root = (RuleActivationNode) ttm.getRoot();
 
 	    	root.saveState(ssRete);
-		   
+
 	    	List wholeAgenda = ssRete.getAgendaAsList(null);
-		   
+
 	    	  if(trace.getDebugCode("miss"))trace.out("miss", "Gathering activation list... Agenda is : " + wholeAgenda);
 	            if(trace.getDebugCode("miss"))trace.out("miss", "mtRete facts are " + ssRete.getFacts());
-	            
-	            
+
+
 	    	root.createChildren(wholeAgenda, false);
 	    	List children = root.getChildren();
 	    	JessModelTracing jmt = ssRete.getJmt();
@@ -9154,21 +9193,21 @@ public final class SimSt implements Serializable {
 				jmt.setNodeNowFiring(null);
 	    		activationList.add(child);
 	    	}
-	     
-	    	
-	    	
-	    	
-	    	
-	    	
-	    	
+
+
+
+
+
+
+
    	} catch(Exception e) {
    		e.printStackTrace();
    	}
-   	
-   	
-   	
-   	
-   
+
+
+
+
+
        activationList = removeDuplicateActivations(activationList);
    	return activationList;
    }
@@ -9181,57 +9220,57 @@ public final class SimSt implements Serializable {
    public Vector /* RuleActivationNode */<RuleActivationNode> gatherActivationList(ProblemNode problemNode) {
 
        Vector /* RuleActivationNode */<RuleActivationNode> activationList = new Vector<RuleActivationNode>();
-       
+
        //showActivationList();
        try{
-    	   if(trace.getDebugCode("miss")) trace.out("miss", "gatherActivationList: currentNode ==>> " + problemNode); 
+    	   if(trace.getDebugCode("miss")) trace.out("miss", "gatherActivationList: currentNode ==>> " + problemNode);
     	   trace.out("webAuth","******* Hm... current facts are : " + getSsRete().getFacts());
-    	   Set<String> nameSet=getRuleNames();     	
+    	   Set<String> nameSet=getRuleNames();
 	   	   	for (String skillName : nameSet) {
 	   	   		trace.out("webAuth","******* found a skill named: " + skillName);
 	   	   	}
-    	   
-    	   
-           if (problemNode != getBrController().getSolutionState().getCurrentNode()) {    
-        	   if(trace.getDebugCode("miss")) trace.out("miss", "problem node != solution state "); 
+
+
+           if (problemNode != getBrController().getSolutionState().getCurrentNode()) {
+        	   if(trace.getDebugCode("miss")) trace.out("miss", "problem node != solution state ");
            			getBrController().setCurrentNode2(problemNode);
            			// I do not understand this logic just yet may be because I do not understand how
            			// the currentNode of brController is being set.
            }
 
            ProblemNode currentNode = getBrController().getSolutionState().getCurrentNode();
-          
+
 
            // MTRete mtRete = getBrController().getModelTracer().getRete();
-           if (problemNode.getParents().isEmpty()) {    
-               // The problemNode is a Start State   
-        	   if(trace.getDebugCode("miss")) trace.out("miss", " Problem is a start state "); 
-               getBrController().goToStartStateForRuleTutors();	
+           if (problemNode.getParents().isEmpty()) {
+               // The problemNode is a Start State
+        	   if(trace.getDebugCode("miss")) trace.out("miss", " Problem is a start state ");
+               getBrController().goToStartStateForRuleTutors();
            } else {
-        	   if(trace.getDebugCode("miss")) trace.out("miss", " We are not in a start state .... "); 
+        	   if(trace.getDebugCode("miss")) trace.out("miss", " We are not in a start state .... ");
                // Go to the given state and get the productions fire
                boolean useInterfaceTemplate = MTRete.getUseInterfaceTemplates();
                MTRete.setUseInterfaceTemplates(false);
                boolean loadJessFilesSucceeded = false;
-              
+
                while (!loadJessFilesSucceeded) {
                    // Why does this line change the state?
-            	  
+
             	   getBrController().checkProductionRulesChainNew(currentNode);
-            	  
+
                    if (!MTRete.loadInterfacetemplatesFailed()) {
                        loadJessFilesSucceeded = true;
                    } else {
                    		if(trace.getDebugCode("miss"))trace.out("miss", "gatherActivationList: RETRYING checkProductionRulesChainNew...");
                    }
-                   
+
                }
                MTRete.setUseInterfaceTemplates(useInterfaceTemplate);
 
            }
 
-   		
-       	
+
+
        // showActivationList();
 
            // Get a root rule-activation node
@@ -9241,21 +9280,21 @@ public final class SimSt implements Serializable {
 	            MTRete mtRete = getBrController().getModelTracer().getRete();
 	            //MTRete mtRete= this.getSsRete();
 	            root.saveState(mtRete);
-	            //mtRete.setResolutionStrategy(new SimStSolver.SuccessRatioConflictResolutiionStrategy(this));	            
-	            	            
+	            //mtRete.setResolutionStrategy(new SimStSolver.SuccessRatioConflictResolutiionStrategy(this));
+
 	            //showActivationList();
-	            
+
 	            // Wed Oct  3 16:55:15 EDT 2007 :: Noboru
-	            // There may be inactive activations in wholeAgenda, but they are 
+	            // There may be inactive activations in wholeAgenda, but they are
 	            // excluded in the RuleActivationTree created by createChildren() below
-	            List /* Activation */ wholeAgenda = mtRete.getAgendaAsList(null); 
-	            
+	            List /* Activation */ wholeAgenda = mtRete.getAgendaAsList(null);
+
 	            if(trace.getDebugCode("miss"))trace.out("miss", "Gathering activation list... Agenda is : " + wholeAgenda);
 	            if(trace.getDebugCode("miss"))trace.out("miss", "mtRete facts are " + mtRete.getFacts());
 	        //    if(trace.getDebugCode("miss"))trace.out("miss", "ssRete facts are " + this.getSsRete().getFacts());
-	            
+
 	           // printInactiveActivations(wholeAgenda);
-	                        
+
 	            boolean omitBuggyRules = false;
 	            root.createChildren(wholeAgenda, omitBuggyRules);
 	            List children = root.getChildren();
@@ -9265,21 +9304,21 @@ public final class SimSt implements Serializable {
 	                // mtRete.dumpAgenda("gatherActivationList: before setUpState[" + i + "]");
 	                root.setUpState(mtRete, i);
 	                // mtRete.dumpAgenda("gatherActivationList:  after setUpState[" + i + "]");
-	                
+
 	                jmt.fireNode(child);                //child.fire(mtRete);
 	                activationList.add(child);
 	            }
-	          
+
        }
        catch(Exception e){
        	e.printStackTrace();
            logger.simStLogException(e);
-       } 
+       }
 
 
-       
+
        activationList = removeDuplicateActivations(activationList);
-       
+
 
        return activationList;
    }
@@ -9287,7 +9326,7 @@ public final class SimSt implements Serializable {
     * Finds the activations that are fired at a given problemNode
     * @param problemNode
     * @return Vector<RuleActivationNode>
- * @throws JessException 
+ * @throws JessException
     */
    public Vector /* RuleActivationNode */<RuleActivationNode> gatherActivationList(ProblemNode problemNode, boolean isNearSimilar) throws JessException {
 	    Vector<RuleActivationNode> activationList = new Vector<RuleActivationNode>();
@@ -9299,7 +9338,7 @@ public final class SimSt implements Serializable {
 		RuleActivationNode root = (RuleActivationNode) ttm.getRoot();
 
 		root.saveState(ssRete);
-			   
+
 		List wholeAgenda = ssRete.getAgendaAsList(null);
 		root.createChildren(wholeAgenda, false);
 		List children = root.getChildren();
@@ -9319,16 +9358,16 @@ public final class SimSt implements Serializable {
 			jmt.setNodeNowFiring(null);
 		    activationList.add(child);
 		 }
-		     
-		
+
+
 	    activationList = removeDuplicateActivations(activationList);
 	   	return activationList;
    }
 
-   /* Hash to hold the type of hint for each production rule, so we don't 
+   /* Hash to hold the type of hint for each production rule, so we don't
     * need to re-read the XML file every time. */
-   transient HashMap hintTypeHash=null;  
-   
+   transient HashMap hintTypeHash=null;
+
   /**
    * Method that returns the type of a currnt hint.
    * @param ruleName
@@ -9339,7 +9378,7 @@ public final class SimSt implements Serializable {
 		   hintTypeHash = new HashMap();
 	   }
 
-	   
+
 	   if (hintTypeHash.containsKey(ruleName)){
 		   hintType=(String) hintTypeHash.get(ruleName);
 	   }
@@ -9355,10 +9394,10 @@ public final class SimSt implements Serializable {
 
 	  return hintType;
    }
-   
-   
-   
-   
+
+
+
+
    SimStNode currentSsNode;
    public void setCurrentSsNode(SimStNode ssNode){
    	this.currentSsNode=ssNode;
@@ -9381,12 +9420,12 @@ public final class SimSt implements Serializable {
    	Vector<RuleActivationNode> goodActivationList = new Vector<RuleActivationNode>();
    	for(Object o:activationList)
    	{
-   		
-   		
+
+
    		RuleActivationNode ran = (RuleActivationNode) o;
    		trace.out("miss","checking for "+ ran.getName() + " : " + ran.getActualSelection() +" "+ ran.getActualAction() + " "+ran.getActualInput());
    		Sai sai = new Sai(ran.getActualSelection(), ran.getActualAction(),ran.getActualInput());
-   		
+
    		if(!goodSais.contains(sai))
    		{
    			trace.out("miss","adding to goodSAI");
@@ -9410,16 +9449,16 @@ public final class SimSt implements Serializable {
        }
    }
 
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    // Communicating with the Carnegie Learning Algebra I tutor
-   // 
+   //
 
    private static final String PTS_SERVER_HOST_PROPERY = "ptsServerHost";
 
    // private String clAlgebraTutoringServiceHost = "matsuda-pro.pc.cs.cmu.edu";
    private static String clAlgebraTutoringServiceHost = "localhost";
    public static String getClAlgebraTutoringServiceHost() {
-       return System.getProperty(PTS_SERVER_HOST_PROPERY) == null ? 
+       return System.getProperty(PTS_SERVER_HOST_PROPERY) == null ?
                clAlgebraTutoringServiceHost :
                    System.getProperty(PTS_SERVER_HOST_PROPERY);
    }
@@ -9451,11 +9490,11 @@ public final class SimSt implements Serializable {
    public String inquiryClAlgebraTutor(String selection, String action, String input, ProblemNode sourceNode, String problem) {
 
    	String result = null;
-   	
+
    	if(selection.equalsIgnoreCase(Rule.DONE_NAME))
    		return UNKNOWN;
    	InquiryClAlgebraTutor icat = getInquiryClAlgebraTutor();
-   	
+
    	int numPrevSteps = -1;
    	while (numPrevSteps < 0) {
    		// clAlgebraTutorGotoOneStateBefore returns -1 when it failed to get
@@ -9479,9 +9518,9 @@ public final class SimSt implements Serializable {
    			logger.simStLogException(e);
    			result = immatureSkillOperand(selection, input);
    		}
-   		
+
    	} else {
-   		
+
    		if(trace.getDebugCode("miss"))trace.out("miss", "inquiryClAlgebraTutor: =^=^=^=^=^=^=^ ");
    		if(trace.getDebugCode("miss"))trace.out("miss", "            selection: " + selection);
    		if(trace.getDebugCode("miss"))trace.out("miss", "                input: " + input);
@@ -9490,7 +9529,7 @@ public final class SimSt implements Serializable {
    		result = FALSE_POSITIVE;
    	}
    	icat.shutdown();
-   	
+
    	return result;
    }
 
@@ -9502,14 +9541,14 @@ public final class SimSt implements Serializable {
        }
    }
 
-   // ad-hoc 
+   // ad-hoc
    // skill-operand can be entered only when numPrevSteps is 0
    // Thus, the following step to enter a skill-operand is automatically wrong
-   // 
+   //
    // e.d.  2x + 3     = 5      sub 3
    //       2x + 3 - 3 = _____  add 3
-   // 
-   // this is necessary, because the Carnegie Learning Algebra Tutor is buggy 
+   //
+   // this is necessary, because the Carnegie Learning Algebra Tutor is buggy
    // with those stpes
    public static boolean validSelection(String selection, int numPrevSteps) {
 
@@ -9541,10 +9580,10 @@ public final class SimSt implements Serializable {
 
    public static final String COMM_STEM = "dorminTable";
 
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    // Invoking CL SolverTutor
    // Fri Dec  5 21:52:29 LMT 2008 :: Noboru
-   // 
+   //
 
    static String clSolverTutorHost = "localhost";
    public static String getClSolverTutorHost() { return clSolverTutorHost; }
@@ -9595,8 +9634,8 @@ public final class SimSt implements Serializable {
    	if (validSelection(selection, numPrevSteps)) {
    		try
    		{
-	    		result = 
-	    			iClSolverTutor.isCorrectStep(selection, action, input) ? 
+	    		result =
+	    			iClSolverTutor.isCorrectStep(selection, action, input) ?
 	    					EdgeData.CORRECT_ACTION :
 	    						EdgeData.CLT_ERROR_ACTION;
    		}
@@ -9608,43 +9647,43 @@ public final class SimSt implements Serializable {
    		// addRuleActivationStatus(problem, currentNode, "", selection, action, input, result);
 
    	} else {
-   		
+
    		result = immatureSkillOperand(selection, input);
    	}
 
-   	return result; 
+   	return result;
    }
 
    private  transient InquiryJessOracle iJessOracle = null;
-   
+
    public InquiryJessOracle getInquiryJessOracle(){
 	   	if(iJessOracle == null) {
 	   		iJessOracle = new InquiryJessOracle(this,this.getBrController());
 	   	}
 	   	return iJessOracle;
 	   }
-   
-  
+
+
    /* Wrapper function that calls the Jess Oracle to ask if sai is correct or not.*/
    public synchronized String inquiryJessOracle(String selection, String action, String input, ProblemNode currentNode, String problem) {
        String result = null;
        	InquiryJessOracle iJessOracle = getInquiryJessOracle();
        //InquiryJessOracle iJessOracle = new InquiryJessOracle(this, this.getBrController());
-       
+
 
        iJessOracle.init(problem);
-       
 
-      
+
+
        if(selection.equalsIgnoreCase("NotSpecified"))
        {
            return EdgeData.CLT_ERROR_ACTION;
        }
-     
+
 
        iJessOracle.goToState(getBrController(), currentNode);
 
-   
+
        try {
 
       		if(trace.getDebugCode("nbarbaBrd"))  trace.out("nbarba", "Calling isCorrectStep sel: " + selection + " act: " + action + " inp: " + input);
@@ -9655,33 +9694,33 @@ public final class SimSt implements Serializable {
               e.printStackTrace();
         }
 
-  
+
        return result;
    }
-   
+
    /* Wrapper function that calls the Jess Oracle and returns the agenda. Used by model tracing validation, just for logging purposes*/
    public synchronized Vector<RuleActivationNode> gatherJessOracleAgenda(ProblemNode currentNode, String problem) {
 
 	   Vector <RuleActivationNode> activationList = new Vector<RuleActivationNode>();
-	   
+
 	   InquiryJessOracle iJessOracle = getInquiryJessOracle();
        iJessOracle.init(problem);
-       
-          
-     
+
+
+
        iJessOracle.goToState(getBrController(), currentNode);
-   	
-   	
+
+
        try {
       		if(trace.getDebugCode("nbarba"))  trace.out("nbarba", "Calling gatherJessOracleAgenda for problem :" + problem);
-      		
+
       		activationList=iJessOracle.getJessOracleAgenda();
 
           } catch (Exception e) {
               e.printStackTrace();
         }
-       
-  
+
+
        return activationList;
    }
 
@@ -9690,7 +9729,7 @@ public final class SimSt implements Serializable {
 
        String result = null;
        InquiryClSolverTutor bist = getBuiltInClSolverTutor();
-       
+
        if(isSaiConverterDefined()){
            bist.setSAIConverter(saiConverter);
        }
@@ -9699,7 +9738,7 @@ public final class SimSt implements Serializable {
            return EdgeData.CLT_ERROR_ACTION;
        }
        if (selection.equalsIgnoreCase(Rule.DONE_NAME)){
-    	   
+
            String nextStep = null;
            bist.goToState(getBrController(), currentNode);
            nextStep = bist.askNextStep();
@@ -9710,21 +9749,21 @@ public final class SimSt implements Serializable {
            else
                return EdgeData.CLT_ERROR_ACTION;
        }
-     
+
        int numPrevSteps = bist.goToState(getBrController(),currentNode);
-       
+
     //   trace.err("** goint to state for currentNode with " + numPrevSteps + " steps!");
        if (isSaiConverterDefined() && saiConverter.validSelection(selection, numPrevSteps)) {
            try {
            		if(trace.getDebugCode("rr"))
            			trace.out("rr", "Calling isCorrectStep sel: " + selection + " act: " + action + " inp: " + input);
-           			
-           	 
+
+
                    result = bist.isCorrectStep(selection, action, input) ? EdgeData.CORRECT_ACTION : EdgeData.CLT_ERROR_ACTION;
 //                   trace.err("Calling isCorrectStep sel: " + selection + " act: " + action + " inp: " + input + " and result is " + result);
                    if(result.equals(EdgeData.CLT_ERROR_ACTION)) {
                        result = validateCLResponse(selection, action, input, bist);
-                   }   
+                   }
 
                } catch (Exception e) {
                    // TODO Figure out what is causing this error
@@ -9798,25 +9837,25 @@ public final class SimSt implements Serializable {
        }
        return result;
    }
-	
+
 	public AskHint getCorrectSAI(BR_Controller brController, ProblemNode currentNode){
-		
+
 		AskHint hint = null;
-		
+
       	//hint = new AskHintInBuiltClAlgebraTutor(brController, currentNode);
 		//CL oracle must not be hardcoded! Whichever oracle grades the quiz should provide this hint
 		String simstudentHintMethod=getHintMethod();
-		setHintMethod(getQuizGradingMethod());	
-	
+		setHintMethod(getQuizGradingMethod());
+
 		hint = askForHint(brController,currentNode);
 
 		setHintMethod(simstudentHintMethod);
-		
+
       	//		hint.getAction() + hint.getInput());
       	return hint;
 	}
-	
-	
+
+
    // Ask CL SolverTutor the correctness of the step
    //Special method for 3 table format, instead of 3 columns
    public String inquirySolverTutorV2(String selection, String action, String input,
@@ -9839,12 +9878,12 @@ public final class SimSt implements Serializable {
    	if (validSelection(selection, numPrevSteps)) {
    		try
    		{
-   			result = 
-   				iClSolverTutor.isCorrectStep(selection, action, input) ? 
+   			result =
+   				iClSolverTutor.isCorrectStep(selection, action, input) ?
    						EdgeData.CORRECT_ACTION :
    							EdgeData.CLT_ERROR_ACTION;
    			if(isInteractiveLearning && getSsInteractiveLearning().isTakingQuiz())
-   				logger.simStLog(SimStLogger.SIM_STUDENT_QUIZ, SimStLogger.CONFIRMATION_REQUEST_CL_ACTION, 
+   				logger.simStLog(SimStLogger.SIM_STUDENT_QUIZ, SimStLogger.CONFIRMATION_REQUEST_CL_ACTION,
    					getProblemStepString(), result, "", new Sai(selection,action,input), result.equals(EdgeData.CORRECT_ACTION),"","","");
    		}
    		catch(TutorServerTimeoutException e)
@@ -9856,15 +9895,15 @@ public final class SimSt implements Serializable {
    		// addRuleActivationStatus(problem, currentNode, "", selection, action, input, result);
 
    	} else {
-   		
+
    		result = immatureSkillOperand(selection, input);
    	}
 
-   	return result; 
+   	return result;
    }
 
    private String immatureSkillOperand(String selection, String input) {
-	
+
    	if(trace.getDebugCode("miss"))trace.out("miss", "inquiryClAlgebraTutor: =^=^=^=^=^=^=^ ");
    	if(trace.getDebugCode("miss"))trace.out("miss", "            selection: " + selection);
    	if(trace.getDebugCode("miss"))trace.out("miss", "                input: " + input);
@@ -9873,17 +9912,17 @@ public final class SimSt implements Serializable {
 		return isValidateStepsInBRD() ? null : EdgeData.CLT_ERROR_ACTION;
 	}
 
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    // Communicating with a Tutor via Tutoring Service
-   // 
+   //
 
    /**
-    * 
+    *
     * @param ruleActivated
     * @param problemName
     * @return
     */
-   public String inquiryRaTutoringService(String selection, String action, String input, 
+   public String inquiryRaTutoringService(String selection, String action, String input,
                                           ProblemNode sourceNode, String problemName) {
 
        InquiryRaTutoringService irs = getIraTutoringService(problemName);
@@ -9915,145 +9954,154 @@ public final class SimSt implements Serializable {
        return iraTutoringService;
    }
 
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    // Reading BRD
-   // 
+   //
 
    private String currentBrdPath = null;
    public void setCurrentBrdPath(String s){
        currentBrdPath = s;
    }
-  
+
 
    //also returns a ProblemNode (possible by setting a field)
-   public String inquiryRuleActivationBRD(String selection, String action, String input, 
+   public String inquiryRuleActivationBRD(String selection, String action, String input,
                                           String parentName, String problemFileName) {
 
       // return InquiryRuleActivationBRD.isValidSAI(selection, action, input, parentName, problemFileName) ?  TRUE_POSITIVE : FALSE_POSITIVE;
 	   return InquiryRuleActivationBRD.isValidSAI(selection, action, input, parentName, problemFileName) ?  EdgeData.CORRECT_ACTION : EdgeData.CLT_ERROR_ACTION ;//TRUE_POSITIVE : FALSE_POSITIVE;
-	  
+
    }
 
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
    // Asking to a human oracle
-   // 
-   public String inquiryRuleActivationOracle(String actualSelection, String actualAction, String actualInput, 
+   //
+   public String inquiryRuleActivationOracle(String actualSelection, String actualAction, String actualInput,
                                              ProblemNode node, String problemName, String ruleName,
-                                             RuleActivationNode ran) {
+                                             RuleActivationNode ran, Boolean isInquiryCorrect) {
 
-	   
-		String step = getProblemStepString();
-       // See if there has been an oracle for the inquired rule activation 
-       String status = EdgeData.CLT_ERROR_ACTION;
 
-       if (!actualSelection.equals(MTRete.NOT_SPECIFIED) &&
-       		(actualInput.toUpperCase().indexOf("FALSE") == -1) ) {
-       	
-       	String title = "Applying the rule " + ruleName.replaceAll("MAIN::", "");
-       	String message[] = generateQueryMessage(actualSelection, actualAction, actualInput, ran);
-       	
-       	JFrame frame = getBrController().getActiveWindow();
-       	
-       	if(getMissController().getSimStPLE() != null)
-       		getMissController().getSimStPLE().setFocusTab(SimStPLE.SIM_ST_TAB);
-       	
+       // See if there has been an oracle for the inquired rule activation
+	   String status = EdgeData.CLT_ERROR_ACTION;
 
-       	
-       	String msg = "";
-       	for(int i=0;i<message.length;i++)
-       		msg += message[i]+" ";
-       	Sai sai = new Sai(actualSelection, actualAction, actualInput);
-       	AskHint hint = null;
-       	
-    
-       	long verifyRequestTime = Calendar.getInstance().getTimeInMillis();
-       	
-       	// Should update the working memory for model-tracing i.e. actor and stepCorrectness from here
-       	if(isSsMetaTutorMode()){	
-       		//String result = builtInInquiryClTutor(actualSelection, actualAction, actualInput, node, problemName);
-     		  	long start = Calendar.getInstance().getTimeInMillis();
-     		  	//getBrController().getAmt().handleInterfaceAction("ssfeedback","implicit", "-1");
-     		  	getBrController().getMissController().getSimSt().getModelTraceWM().setRequestType("feedback-request"); 	
-     		  	long end = Calendar.getInstance().getTimeInMillis();
-       	} 
+       String msg = getInquiry(actualSelection, actualAction, actualInput, ran);
 
-      
+       if (msg != EdgeData.CLT_ERROR_ACTION) {
+    	   	Sai sai = new Sai(actualSelection, actualAction, actualInput);
+          	AskHint hint = null;
+          	String title = "Applying the rule " + ruleName.replaceAll("MAIN::", "");
+          	String step = getProblemStepString();
 
-    	
-       	try{
-       		if(logger.getLoggingEnabled()){
-	
-    			//hint = new AskHintInBuiltClAlgebraTutor(getBrController(), node);
-       			//CL oracle should not be hardcoded. Whichever oracle grades the quiz should be provide hint for logging
-       			hint = askForHintQuizGradingOracle(getBrController(),node);
-       			
-       		}
-       	}
-       	catch(Exception ex){
-       				ex.printStackTrace(); logger.simStLogException(ex);
-       	}
-       	
-       	if(logger.getLoggingEnabled())
-       	{
-       	logger.simStLog(SimStLogger.SIM_STUDENT_INFO_RECEIVED, SimStLogger.CONFIRMATION_REQUEST_ACTION, step, 
-    			"", title+":"+msg, sai,node, hint.getSelection(), hint.getAction(), hint.getInput(),0,msg);		
-	        		
-       	}
+          	long verifyRequestTime = Calendar.getInstance().getTimeInMillis();
 
-       	int oracle = displayConfirmMessage(title,message);
-       	if (oracle == JOptionPane.YES_OPTION) {
-       		status = EdgeData.CORRECT_ACTION;
-       		if(isSkillNameGetterDefined()) {
-       			getSkillNameGetter().skillNameGetter(getBrController(), actualSelection, actualAction, actualInput);
-       		}
-       	}
-       	
-       	// TODO: Need to figure out a unified way to handle all the interface actions at one place
-       	// Model-tracing the student interface action (clicking either the Yes or No button) in response to the 
-       	// SimStudent feedback request
-       	if(isSsMetaTutorMode()) {
-  
-	      		if(getBrController() != null && getBrController().getAmt() != null) {
-	      			//System.out.println("Yes or No or Done button clicked ");
-	      			if(oracle == JOptionPane.YES_OPTION) {
-	      				
-	      				// If the feedback is for done then run the model-tracer for done, ButtonPressed, -1
-	      				if(ruleName.replaceAll("MAIN::", "").contains(WorkingMemoryConstants.DONE_BUTTON_SELECTION)) {
-	      					getBrController().getAmt().handleInterfaceAction(WorkingMemoryConstants.DONE_BUTTON_SELECTION,
-	      							WorkingMemoryConstants.BUTTON_ACTION, WorkingMemoryConstants.BUTTON_INPUT);
-	      				} else {
-	      					getBrController().getAmt().handleInterfaceAction(WorkingMemoryConstants.YES_BUTTON_SELECTION,
-	      							WorkingMemoryConstants.BUTTON_ACTION, WorkingMemoryConstants.BUTTON_INPUT);
-	      				}
-	      			} else if(oracle == JOptionPane.NO_OPTION) {
-	      				
-	      				getBrController().getAmt().handleInterfaceAction(WorkingMemoryConstants.NO_BUTTON_SELECTION,
-	      						WorkingMemoryConstants.BUTTON_ACTION, WorkingMemoryConstants.BUTTON_INPUT);	      				
-	      			}
-	      		}
-       	}
-       	
-       	if(getSsInteractiveLearning() != null)
-       	{
-       		//if(isSsMetaTutorMode()) {
-       		//	getModelTraceWM().getEventHistory().add(0, getModelTraceWM().new Event(SimStLogger.INPUT_VERIFY_ACTION));
-       		//}
-       		if(logger.getLoggingEnabled())
-       		{
-       			int verifyDuration = (int) ((Calendar.getInstance().getTimeInMillis() - verifyRequestTime)/1000);
-	        		logger.simStLog(SimStLogger.SIM_STUDENT_INFO_RECEIVED, SimStLogger.INPUT_VERIFY_ACTION, step, 
-	        				status, title+":"+msg, sai,node,hint.getSelection(), hint.getAction(), hint.getInput(), verifyDuration,msg);
-       		}
-       		
-       	}
+          	try{
+           		if(logger.getLoggingEnabled()){
+        			//hint = new AskHintInBuiltClAlgebraTutor(getBrController(), node);
+           			//CL oracle should not be hardcoded. Whichever oracle grades the quiz should be provide hint for logging
+           			hint = askForHintQuizGradingOracle(getBrController(),node);
+
+           		}
+           	}
+           	catch(Exception ex){
+           				ex.printStackTrace(); logger.simStLogException(ex);
+           	}
+
+           	if(logger.getLoggingEnabled())
+           	{
+           		logger.simStLog(SimStLogger.SIM_STUDENT_INFO_RECEIVED, SimStLogger.CONFIRMATION_REQUEST_ACTION, step,
+        			"", title+":"+msg, sai,node, hint.getSelection(), hint.getAction(), hint.getInput(),0,msg);
+
+           	}
+
+          	int oracle = 0;
+	       	oracle = askInquiry(ruleName, msg);
+	       	status = getStatusByInquiryResponseAndUpdateSkill(ran, oracle == JOptionPane.YES_OPTION);
+
+	       	if(getSsInteractiveLearning() != null)
+	       	{
+	       		if(logger.getLoggingEnabled())
+	       		{
+	       			int verifyDuration = (int) ((Calendar.getInstance().getTimeInMillis() - verifyRequestTime)/1000);
+		        		logger.simStLog(SimStLogger.SIM_STUDENT_INFO_RECEIVED, SimStLogger.INPUT_VERIFY_ACTION, step,
+		        				status, title+":"+msg, sai,node,hint.getSelection(), hint.getAction(), hint.getInput(), verifyDuration,msg);
+	       		}
+
+	       	}
        }
 
        if(trace.getDebugCode("miss"))trace.out("miss", "Oracle status ==> " + status );
+
        return status;
    }
 
+   public String getInquiry(String actualSelection, String actualAction, String actualInput,
+           RuleActivationNode ran) {
+       if (!actualSelection.equals(MTRete.NOT_SPECIFIED) &&
+       		(actualInput.toUpperCase().indexOf("FALSE") == -1) ) {
+	       	String message[] = generateQueryMessage(actualSelection, actualAction, actualInput, ran);
+	       	String msg = "";
+	       	for(int i=0;i<message.length;i++)
+	       		msg += message[i]+" ";
+	       	return msg;
+       } else {
+    	   return EdgeData.CLT_ERROR_ACTION;
+       }
+   }
+
+   public int askInquiry(String ruleName, String message) {
+	   performModelTracingForInquiry();
+	   String title = "Applying the rule " + ruleName.replaceAll("MAIN::", "");
+	   if(getMissController().getSimStPLE() != null)
+		   getMissController().getSimStPLE().setFocusTab(SimStPLE.SIM_ST_TAB);
+	   return displayConfirmMessage(title,message);
+   }
+
+   public void updateSkillName(String actualSelection, String actualAction, String actualInput) {
+      	if(isSkillNameGetterDefined()) {
+      		getSkillNameGetter().skillNameGetter(getBrController(), actualSelection, actualAction, actualInput);
+      	}
+   }
+
+   public String getStatusByInquiryResponseAndUpdateSkill(RuleActivationNode ran, Boolean isInquiryCorrect) {
+	   if(runType.equalsIgnoreCase("springboot"))
+		   performModelTracingForInquiry();
+	   int oracle = isInquiryCorrect ? JOptionPane.YES_OPTION : JOptionPane.NO_OPTION;
+	   if (isInquiryCorrect)
+		   updateSkillName(ran.getActualSelection(), ran.getActualAction(), ran.getActualInput());
+	   performModelTracingForInquiryResponse(oracle, ran.getName());
+	   return isInquiryCorrect ? EdgeData.CORRECT_ACTION : EdgeData.CLT_ERROR_ACTION;
+   }
+
+   // Should update the working memory for model-tracing i.e. actor and stepCorrectness from here
+   public void performModelTracingForInquiry() {
+	   if(isSsMetaTutorMode()){
+		   long start = Calendar.getInstance().getTimeInMillis();
+		   getBrController().getMissController().getSimSt().getModelTraceWM().setRequestType("feedback-request");
+		   long end = Calendar.getInstance().getTimeInMillis();
+	   }
+   }
+
+   public void performModelTracingForInquiryResponse(int oracle, String ruleName) {
+	   if(isSsMetaTutorMode() && getBrController() != null && getBrController().getAmt() != null) {
+ 			//System.out.println("Yes or No or Done button clicked ");
+ 			if(oracle == JOptionPane.YES_OPTION) {
+ 				// If the feedback is for done then run the model-tracer for done, ButtonPressed, -1
+ 				if(ruleName.replaceAll("MAIN::", "").contains(WorkingMemoryConstants.DONE_BUTTON_SELECTION)) {
+ 					getBrController().getAmt().handleInterfaceAction(WorkingMemoryConstants.DONE_BUTTON_SELECTION,
+ 							WorkingMemoryConstants.BUTTON_ACTION, WorkingMemoryConstants.BUTTON_INPUT);
+ 				} else {
+ 					getBrController().getAmt().handleInterfaceAction(WorkingMemoryConstants.YES_BUTTON_SELECTION,
+ 							WorkingMemoryConstants.BUTTON_ACTION, WorkingMemoryConstants.BUTTON_INPUT);
+ 				}
+ 			} else if(oracle == JOptionPane.NO_OPTION) {
+ 				getBrController().getAmt().handleInterfaceAction(WorkingMemoryConstants.NO_BUTTON_SELECTION,
+ 						WorkingMemoryConstants.BUTTON_ACTION, WorkingMemoryConstants.BUTTON_INPUT);
+ 			}
+ 		}
+   }
+
    	boolean hintRequest=false;
-   
+
    private int valueInstruction(Instruction inst, String input,Vector<String> foas)
    {
    	int value = Math.abs(input.length() - inst.getInput().length());
@@ -10082,7 +10130,7 @@ public final class SimSt implements Serializable {
    			puncInst++;
    	}
    	value += 5*Math.abs(symInput -symInst)+Math.abs(digInput -digInst)+3*Math.abs(puncInput -puncInst);
-   	
+
    	String instFoas="";
    	String actualFoas="";
    	for(int i=1;i<inst.getFocusOfAttention().size();i++)
@@ -10091,7 +10139,7 @@ public final class SimSt implements Serializable {
    			actualFoas+= foas.get(i-1);
    		instFoas += inst.getFocusOfAttention().get(i);
    	}
-   	
+
    	int symAFoa = 0;
    	int puncAFoa = 0;
    	int digAFoa = 0;
@@ -10117,7 +10165,7 @@ public final class SimSt implements Serializable {
    			puncIFoa++;
    	}
    	value += 5*Math.abs(symAFoa -symIFoa)+Math.abs(digAFoa -digIFoa)+3*Math.abs(puncAFoa -puncIFoa);
-   	
+
    	return value;
    }
 
@@ -10125,9 +10173,9 @@ public final class SimSt implements Serializable {
    {
    	if(foas == null || sai == null)
    		return null;
-   	
+
    	String[] parts = new String[2];
-   	
+
    	Vector<String> foaContents = new Vector<String>();
    	for(int i=0;i<foas.size();i++)
    	{
@@ -10137,7 +10185,7 @@ public final class SimSt implements Serializable {
    			foaContents.add(cell.getText());
    		}
    	}
-   	
+
    	if(ruleName.contains("&"))
    		ruleName = ruleName.substring(0, ruleName.indexOf("&"));
    	Vector<Instruction> insts = instructions.get(ruleName);
@@ -10148,14 +10196,14 @@ public final class SimSt implements Serializable {
    		return parts;
    	}
  		Instruction inst = insts.get(0);
-   	int compare = valueInstruction(inst, sai.getI(),foaContents); 
+   	int compare = valueInstruction(inst, sai.getI(),foaContents);
 
  		//Go through the instructions to find the one which is most similar, at a quick size-glance
  		for(int i=1;i<instructions.get(ruleName).size();i++)
  		{
  			Instruction tempInst = (Instruction) instructions.get(ruleName).get(i);
  			int value = valueInstruction(tempInst, sai.getI(),foaContents);
- 	    	
+
  			if(value <= compare)
  			{
  				compare = value;
@@ -10172,20 +10220,20 @@ public final class SimSt implements Serializable {
    	{
    		foaDesc = inst.getFocusOfAttention().toString();
    	}
-   	
+
    	parts[0] = inst.getInput();
    	parts[1] = foaDesc;
-   	
+
    	return parts;
    }
 
    public String instructionDesc(String ruleName, Sai sai, Vector foas)
    {
-	   
+
 	setWhyNotInstruction(null);
    	if(foas == null || sai == null)
    		return null;
-   	
+
    	Vector<String> foaContents = new Vector<String>();
    	for(int i=0;i<foas.size();i++)
    	{
@@ -10195,9 +10243,9 @@ public final class SimSt implements Serializable {
    			foaContents.add(cell.getText());
    		}
    	}
-   	
+
  		Instruction inst = (Instruction) instructions.get(ruleName).get(0);
- 		int compare = valueInstruction(inst, sai.getI(),foaContents); 
+ 		int compare = valueInstruction(inst, sai.getI(),foaContents);
  		//Go through the instructions to find the one which is most similar, at a quick size-glance
  		for(int i=1;i<instructions.get(ruleName).size();i++)
  		{
@@ -10205,10 +10253,10 @@ public final class SimSt implements Serializable {
  			if(!tempInst.isRecent())
  				continue;
  			int value = valueInstruction(tempInst, sai.getI(),foaContents);
- 	    	
+
  			if(value <= compare)
  			{
- 
+
  				compare = value;
  				inst = tempInst;
  			}
@@ -10216,7 +10264,7 @@ public final class SimSt implements Serializable {
 
  		if(!inst.isRecent())
  			return null;
- 		
+
  		String foaDesc = "";
    	if(foaGetter != null)
    	{
@@ -10230,7 +10278,7 @@ public final class SimSt implements Serializable {
    	if(Math.random() > .5)
    	{
 	  		question = "But I put "+foaDesc+".  Why doesn't "+sai.getI()+" work now?";
-	
+
 	  		if(sai.getS().equalsIgnoreCase(Rule.DONE_NAME))
 	  		{
 	  			question = "But I put "+foaDesc+".  Why isn't the problem done now?";
@@ -10239,36 +10287,36 @@ public final class SimSt implements Serializable {
    	else
    	{
 	  		question = "But before I did "+foaDesc+".  I thought that would be the same with "+sai.getI()+" here.  Why is this different?";
-	
+
 	  		if(sai.getS().equalsIgnoreCase(Rule.DONE_NAME))
 	  		{
 	  			question = "But before I was "+foaDesc+", so I thought it would be the same here. How is this problem different?";
 	  		}
    	}
    	return question;*/
-   	
+
    	setWhyNotInstruction(inst);
-   	
+
    	return foaDesc;
    }
-   
-   
+
+
    public String currentStepDescription(String ruleName, Sai sai)
    {
-	   
-   
-   	
+
+
+
    	Vector foas=getBrController().getMissController().getSimSt().getFoaGetter().foaGetter(getBrController(), sai.getS(), sai.getA(), sai.getI(), null);
-   	
+
 	if(foas == null || sai == null)
    		return null;
-   	
+
    	String foaDesc="";
-   		
+
 	for (int i=0;i<foas.size();i++){
 		String foaInput="";
 		String foaName="";
-					
+
 		if (foas.elementAt(i) instanceof JCommComboBox ){
 			foaInput = (String) ((JCommComboBox)foas.elementAt(i)).getValue();
 			foaName = (String) ((JCommComboBox)foas.elementAt(i)).getCommName();
@@ -10284,29 +10332,29 @@ public final class SimSt implements Serializable {
 
 		foaDesc = foaDesc + " <font color=red>" + foaInput + "</font> and";
 	}
-  
+
 
 	if (foaDesc.length()>3)
 		foaDesc=foaDesc.substring(0, foaDesc.length()-3);
-   
-      	
+
+
   	return foaDesc;
    }
-   
-   
-   
-   
-   
+
+
+
+
+
    public transient Instruction whyNotInstruction=null;
    public void setWhyNotInstruction(Instruction inst){this.whyNotInstruction=inst;}
    public Instruction getWhyNotInstruction(){return whyNotInstruction;}
-   
+
    public String relevantFoaString(String input, Vector foas)
    {
 
    	if(!isFoaGetterDefined())
    		return foas.get(0).toString();
-   	
+
    	Vector<String> foaContents = new Vector<String>();
    	for(int i=0;i<foas.size();i++)
    	{
@@ -10316,7 +10364,7 @@ public final class SimSt implements Serializable {
    			foaContents.add(cell.getText());
    		}
    	}
-   	
+
    	return foaGetter.relevantFoaString(input, foaContents);
    }
 
@@ -10327,7 +10375,7 @@ public final class SimSt implements Serializable {
    public String[] generateQueryMessage(String selection, String action, String input, RuleActivationNode ran)
    {
    	String message[] = new String[2];
-   	
+
    	if(getMissController().isPLEon())
    	{
    		SimStPLE ple = getMissController().getSimStPLE();
@@ -10378,17 +10426,17 @@ public final class SimSt implements Serializable {
 	    	}
 	    	else if(getMissController().isPLEon() && getMissController().getSimStPLE().getComponentName(selection) != null)
 	    	{
-	    		message[0] = "I entered \"" + input +"\" in "+getMissController().getSimStPLE().getComponentName(selection)+"."; 
+	    		message[0] = "I entered \"" + input +"\" in "+getMissController().getSimStPLE().getComponentName(selection)+".";
 	    	}
 	    	else
 	    	{
 	    		message[0] = "I entered \"" + input + "\" into " + selection +".";
 	    	}
-	    	
+
 	    	message[1] = "Do you think that would be a good move?";
    	}
-   	
-   	
+
+
    	return message;
    }
 
@@ -10408,15 +10456,15 @@ public final class SimSt implements Serializable {
 
        return sai;
    }
- 
-   
-   private String lookupRuleActivationStatus(String problemName, 
+
+
+   private String lookupRuleActivationStatus(String problemName,
            String state, String ruleName,
            String selection, String action, String input) {
 
        Hashtable<String, String> activationStatusHash = ensureGetActivationStatusHash();
 
-       String activationTemplate = 
+       String activationTemplate =
            genActivationTemplate(problemName, state, ruleName, selection, action, input);
 
        String status = activationStatusHash.get(activationTemplate);
@@ -10431,7 +10479,7 @@ public final class SimSt implements Serializable {
        return status;
    }
 
-   private void addRuleActivationStatus(String problemName, 
+   private void addRuleActivationStatus(String problemName,
            String state, String ruleName,
            String selection, String action, String input,
            String status) {
@@ -10449,7 +10497,7 @@ public final class SimSt implements Serializable {
        return hintTemplate;
    }
 
-   private String genActivationTemplate(String problemName, String nodeName, String ruleName, 
+   private String genActivationTemplate(String problemName, String nodeName, String ruleName,
            String selection, String action, String input) {
 
        String activationTemplate = problemName + "$" + nodeName + "$" + ruleName;
@@ -10477,7 +10525,7 @@ public final class SimSt implements Serializable {
    private static final String MODELTRACING_VALIDATION_METHOD_STRICT="Strict";
    private static final String MODELTRACING_VALIDATION_METHOD_RELAXED="Relaxed";
 
-   
+
    transient Hashtable<String, String> hintHash = null;
 
    public Hashtable<String, String> getHintHash() {
@@ -10486,11 +10534,11 @@ public final class SimSt implements Serializable {
    void setHintHash(Hashtable<String, String> hintHash) {
        this.hintHash = hintHash;
    }
-   
-   
+
+
    // Hashtable for Activation Status
    // The key consists of "<problemName>$<stateName>$<ruleName>"
-   // The value is rule firing status, which might be 
+   // The value is rule firing status, which might be
    // either "FalsePositive" or "TuePositive"
    transient Hashtable<String, String> activationStatusHash = null;
 
@@ -10503,7 +10551,7 @@ public final class SimSt implements Serializable {
 
    private boolean ruleActivationHashExpanded = false;
    boolean ruleActivationHashExpanded() {
-       return ruleActivationHashExpanded; 
+       return ruleActivationHashExpanded;
    }
    void resetRuleActivatedHashExpanded() {
        ruleActivationHashExpanded(false);
@@ -10523,7 +10571,7 @@ public final class SimSt implements Serializable {
        if (file.exists()) {
            try {
                fileReader = new FileReader(file);
-               bufferedReader = new BufferedReader(fileReader); 
+               bufferedReader = new BufferedReader(fileReader);
 
                String line = null;
                while ((line = bufferedReader.readLine()) != null) {
@@ -10556,7 +10604,7 @@ public final class SimSt implements Serializable {
        if (file.exists()) {
            try {
                fileReader = new FileReader(file);
-               bufferedReader = new BufferedReader(fileReader); 
+               bufferedReader = new BufferedReader(fileReader);
 
                String line = null;
                while ((line = bufferedReader.readLine()) != null) {
@@ -10629,7 +10677,7 @@ public final class SimSt implements Serializable {
    private final String NOT_AVAILABLE = "N/A";
 
    /**
-    * @param phase Either "training" or "test" The log can be made for rule firing both during training and testing 
+    * @param phase Either "training" or "test" The log can be made for rule firing both during training and testing
     * @param problemName Name of the test problem
     * @param stateName Name of the state the rule is to be applied (starting from the "start state")
     * @param modelSkillName Name of the rule in the model
@@ -10639,27 +10687,27 @@ public final class SimSt implements Serializable {
     * @param output File to be written
     */
    private void logRuleActivationToFile( String phase, String problemName, String stateName,
-           String modelStatus, String modelSkillName, 
-           String actualSkillName, String actualStatus, 
+           String modelStatus, String modelSkillName,
+           String actualSkillName, String actualStatus,
            String condition, String output ) {
 
-       logRuleActivationToFile(phase, problemName, stateName, 
-       		modelStatus, modelSkillName, actualSkillName, actualStatus, 
+       logRuleActivationToFile(phase, problemName, stateName,
+       		modelStatus, modelSkillName, actualSkillName, actualStatus,
        		condition, output, "", "", "", "", "", "" );
    }
 
-   // phase: all "agenda" rule activations or "test" 
-   // 
+   // phase: all "agenda" rule activations or "test"
+   //
    private void logRuleActivationToFile(String phase, String problemName, String stateName,
-           String modelStatus, String modelSkillName, 
-           String actualSkillName, String actualStatus, 
-           String condition, String output, 
-           String modelSelection, String modelAction, String modelInput, 
+           String modelStatus, String modelSkillName,
+           String actualSkillName, String actualStatus,
+           String condition, String output,
+           String modelSelection, String modelAction, String modelInput,
            String actualSelection, String actualAction, String actualInput) {
 
        String flagPrediction = null;
        String stepPrediction = null;
-       boolean isModelTraced= 
+       boolean isModelTraced=
        	isStepModelTraced(modelSelection, modelAction, modelInput, actualSelection, actualAction, actualInput);
        if (EdgeData.CORRECT_ACTION.equals(modelStatus)) {
        	if (EdgeData.CORRECT_ACTION.equals(actualStatus)) {
@@ -10680,23 +10728,23 @@ public final class SimSt implements Serializable {
        }
 
        logRuleActivationToFile(phase, problemName, stateName, modelStatus, modelSkillName,
-       		actualSkillName, actualStatus, flagPrediction, stepPrediction, 
-       		condition, output, 
+       		actualSkillName, actualStatus, flagPrediction, stepPrediction,
+       		condition, output,
        		modelSelection, modelAction, modelInput, actualSelection, actualAction, actualInput);
    }
 
    // flagPrediction only cares if the step was performed correctly / incorrectly
    // stepPrediction also cares how the step was performed.  Thus, when a step was perforemed
    // correctly but in a different way, it gets "FalsePositive"
-   // 
-   private void logRuleActivationToFile(String phase, String problemName, String stateName, 
-   		String modelStatus, String modelSkillName, 
+   //
+   private void logRuleActivationToFile(String phase, String problemName, String stateName,
+   		String modelStatus, String modelSkillName,
    		String actualSkillName, String actualStatus,
-   		String flagPrediction, String stepPrediction, 
-   		String condition, String output, 
-   		String modelSelection, String modelAction, String modelInput, 
+   		String flagPrediction, String stepPrediction,
+   		String condition, String output,
+   		String modelSelection, String modelAction, String modelInput,
    		String actualSelection, String actualAction, String actualInput) {
-   	
+
    	String format = "MM.dd.yyyy-kk.mm.ss";
    	SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.US);
        String dateTime = dateFormat.format( new Date() );
@@ -10739,47 +10787,47 @@ public final class SimSt implements Serializable {
            // String ruleLearned = getRuleLearned(edgeSkillName);
 
            /*
-           String model = modelStatus.equals(EdgeData.SUCCESS) ? 
-                   EdgeData.SUCCESS : 
+           String model = modelStatus.equals(EdgeData.SUCCESS) ?
+                   EdgeData.SUCCESS :
                        (modelStatus.equals("N/A") ? "N/A" : "ERROR");
             */
 
-           
+
            String studentID=this.getUserID();
            String cond=getSsCondition();
-     
-           
-           String logStr = trainingCycle+ "\t" + studentID + "\t" + cond + "\t"+ dateTime + "\t" +	   
+
+
+           String logStr = trainingCycle+ "\t" + studentID + "\t" + cond + "\t"+ dateTime + "\t" +
           // String logStr = dateTime + "\t" +
            problemID + "\t" +
            "\"" + stateName + "\"\t" +
            phase + "\t" +
-           "\"" + step + "\"\t" + 
-           modelSkillName + "\t" + 
-           actualSkillName + "\t" + 
+           "\"" + step + "\"\t" +
+           modelSkillName + "\t" +
+           actualSkillName + "\t" +
            actualStatus + "\t" +
-           modelSelection + "\t" + 
-           modelAction + "\t" + 
-           "\"" + modelInput + "\"\t" + 
-           actualSelection + "\t" + 
-           actualAction + "\t" + 
+           modelSelection + "\t" +
+           modelAction + "\t" +
+           "\"" + modelInput + "\"\t" +
+           actualSelection + "\t" +
+           actualAction + "\t" +
            "\"" + actualInput + "\"";
 
            log.println( logStr );
            log.close();
            fOut.close();
 
-           
-			
-           
-           
+
+
+
+
        } catch (Exception e) {
            e.printStackTrace();
            logger.simStLogException(e);
        }
    }
 
-	
+
    private void logRuleActivationComposeHeader(File file) {
    	try {
 			FileOutputStream fOut = new FileOutputStream(file);
@@ -10807,18 +10855,18 @@ public final class SimSt implements Serializable {
    public boolean changeInstructionName( String name, ProblemNode node ) {
 
 	  // Thread.dumpStack();
-	   
-	   
+
+
        // Tue Oct 31 14:02:14 LMT 2006 :: Noboru
        // A mindless patch to improve a speed in Wilkinsburg study
        // We don't need to model <skill>-auto-typein
-       // 
+       //
        // Implement a command-line argument "ssSkipAutoTypein"
        //
        // if (name.indexOf("auto-typein") > 0) return;
 
        // Sat May 10 10:52:00 2008 :: Noboru
-       // Ad-hoc, but for Algebra I Wilkinsburg study.  
+       // Ad-hoc, but for Algebra I Wilkinsburg study.
        // We need to normalize "*-auto-typein" to "*-typein"
        name = name.replaceAll("-auto-", "-");
 
@@ -10829,7 +10877,7 @@ public final class SimSt implements Serializable {
        String oldSkillName = (String)skillNames.get(0);
 
        Instruction instruction = lookupInstructionWithNode( node );
-    
+
        //11Oct2007: since stepDemonstrated() didn't prepare the focusOfAttention
        //and possibleFoas for this instruction, we need to do that here.
        if (isFoaSearch()){
@@ -10840,42 +10888,42 @@ public final class SimSt implements Serializable {
    }
 
    String reasonOfDisjunct="";
-   
+
    public boolean regenerateRules( String name, String oldSkillName, ProblemNode node, Instruction instruction ) {
        // Regenerate rules
-       // 
+       //
        // Fri Oct  6 10:58:29 LDT 2006 :: Noboru
        // The search might be failed because the skill name specified is not appropriate
-       // (Happened in Algebra I study).  It might be wise to set a limitation on time and 
-       // if the search gotten timed out, then suggest the author to rename 
-       // (or generate an alternative name when running in batch mode).  
+       // (Happened in Algebra I study).  It might be wise to set a limitation on time and
+       // if the search gotten timed out, then suggest the author to rename
+       // (or generate an alternative name when running in batch mode).
        // This can be considered as learning "disjunctive" rules, because what demonstrated
        // is indeed a disjunctive skill
        //
-	   
+
 	   if (this.isSsMetaTutorMode())
 		   getModelTraceWM().setSimStudentThinking(WorkingMemoryConstants.TRUE);
-   		
+
 	   long ruleStartTime = Calendar.getInstance().getTimeInMillis();
-   	
+
        // First attempt with the name originally specified
        boolean ruleLearned = changeInstructionNameFor(name, oldSkillName, node, instruction);
-       
+
        boolean timeOutOnFirstAttempt=isSearchTimeOut();	//boolean to hold if during first attemt a timeout occured (or search space was exhausted)
-       
+
        if(trace.getDebugCode("miss"))trace.out("miss", "changeInstructionName: first attempt on " + name + " -> " + ruleLearned);
 
        // Second attempt with the previously renamed disjuncts
        if (!ruleLearned) {
-    	 
+
            Vector /* String */<String> disjuncts = getDisjunctiveSkillNamesFor(name);
 
            if (disjuncts != null) {
                int numDisjuncts = disjuncts.size();
                long disjunctStartTime = Calendar.getInstance().getTimeInMillis();
-              	
+
                for (int i = 0; !ruleLearned && i < numDisjuncts; i++) {
-               	
+
                    String disjunctiveName = disjuncts.get(i);
 
                    if(trace.getDebugCode("miss"))trace.out("miss", "regenrateRules");
@@ -10888,7 +10936,7 @@ public final class SimSt implements Serializable {
 
                    Instruction prevInst = instructions.get(numInst-1); //last in instructions
                    int currFoaSize = instruction.getFocusOfAttention().size();
-                   int prevFoaSize = prevInst.getFocusOfAttention().size();                    
+                   int prevFoaSize = prevInst.getFocusOfAttention().size();
 
                    if (currFoaSize==prevFoaSize){
                    	if(trace.getDebugCode("miss"))trace.out("miss", "Attempting to fit existing disjuncts for " + name);
@@ -10902,42 +10950,42 @@ public final class SimSt implements Serializable {
                 	   int timeToLearnDisjunct = (int) ((Calendar.getInstance().getTimeInMillis() - disjunctStartTime)/1000);
                 	   String reasonForCreatingDisjunct=timeOutOnFirstAttempt? SimStLogger.ACCEPTABLE_DISJUNCT : SimStLogger.NORMAL_DISJUNCT;
                 	   logger.simStLog(SimStLogger.SIM_STUDENT_LEARNING, SimStLogger.DISJUNCT_LEARNING, getProblemStepString(), reasonForCreatingDisjunct,"", null, timeToLearnDisjunct);
-                	  
-                	   
+
+
                        addDisjunctiveSkillName(name, disjunctiveName);
-                   	
+
                    }
                }
            }
            if(trace.getDebugCode("miss"))trace.out("miss", "changeInstructionName: second attempt on " + name + " -> " + ruleLearned);
        }
 
-       
-       boolean timeOutOnSecondAttempt=isSearchTimeOut();	//boolean to hold if during second attemt a timeout occured (or search space was exhausted) 
-       
+
+       boolean timeOutOnSecondAttempt=isSearchTimeOut();	//boolean to hold if during second attemt a timeout occured (or search space was exhausted)
+
        // Third attempt with a new name specified by the author
-       if (!ruleLearned) {	
+       if (!ruleLearned) {
        	if(trace.getDebugCode("miss"))trace.out("miss", "Must invent a new disjunct for " + name);
- 	  
+
            String disjunctiveName = inquiryDisjunctiveSkillName(name);
 
            long disjunctStartTime = Calendar.getInstance().getTimeInMillis();
-           
+
            if(trace.getDebugCode("miss"))trace.out("miss", "Attempting to name a new disjunct...");
-           
+
            ruleLearned = changeInstructionNameFor(disjunctiveName, name, node, instruction);
            if (ruleLearned) {
         	   //code added to store when a disjucnt is learned and if disjunct learning was acceptable or normal
         	   int timeToLearnDisjunct = (int) ((Calendar.getInstance().getTimeInMillis() - disjunctStartTime)/1000);
         	   String reasonForCreatingDisjunct=timeOutOnFirstAttempt? SimStLogger.ACCEPTABLE_DISJUNCT : SimStLogger.NORMAL_DISJUNCT;
         	   logger.simStLog(SimStLogger.SIM_STUDENT_LEARNING, SimStLogger.DISJUNCT_LEARNING, getProblemStepString(), reasonForCreatingDisjunct,"", null, timeToLearnDisjunct);
-        	   
+
                addDisjunctiveSkillName(name, disjunctiveName);
            }
            else
            {
            	//No rule was found for the instruction - file it away with suffix -norule
-           	// Rename the skill name 
+           	// Rename the skill name
                instruction.setName( name+"-norule" );
                // Relocate the instruction for now it has different name
                sortInstruction( instruction );
@@ -10955,11 +11003,11 @@ public final class SimSt implements Serializable {
            if(trace.getDebugCode("miss"))trace.out( "miss", name + " has been learned " + getRuleFreq( name ) + " times" );
 
            int ruleLearnDuration = (int) ((Calendar.getInstance().getTimeInMillis() - ruleStartTime)/1000);
-	        
+
            //if(isSsMetaTutorMode()){
            //	getModelTraceWM().getEventHistory().add(0, getModelTraceWM().new Event(SimStLogger.RULE_LEARN_PERFORMANCE_ACTION));
            //}
-           logger.simStLog(SimStLogger.SIM_STUDENT_LEARNING, SimStLogger.RULE_LEARN_PERFORMANCE_ACTION, getProblemStepString(), 
+           logger.simStLog(SimStLogger.SIM_STUDENT_LEARNING, SimStLogger.RULE_LEARN_PERFORMANCE_ACTION, getProblemStepString(),
            		name + " has been learned " + getRuleFreq( name ) + " times", "", ruleLearnDuration);
            if (SimStInteractiveLearning.isWaitingForRuleLearned){
                SimStInteractiveLearning.hereIsTheRule("signal: a rule has been learned!");
@@ -10971,11 +11019,11 @@ public final class SimSt implements Serializable {
        }
 
        clearCurrentFoA();
-       
+
        if (this.isSsMetaTutorMode())
 		   getModelTraceWM().setSimStudentThinking(WorkingMemoryConstants.FALSE);
-       
-       
+
+
        return ruleLearned;
 
    }
@@ -11016,21 +11064,21 @@ public final class SimSt implements Serializable {
    }
 
    public void updateSimStWorkingMemoryDirectly(String selection, String action, String input){
-	   this.getSsRete().setSAIDirectly(selection, action, input);  
+	   this.getSsRete().setSAIDirectly(selection, action, input);
    }
-   
-   
-   
+
+
+
    /**
     * converts an Enumeration of arrays into a list of lists
     * @param en
-    * @param instruction 
+    * @param instruction
     * @return
     */
    private List<Vector<Object>> makePossibleFoasList(Enumeration en, Instruction instruction) {
        List<Vector<Object>> l = new Vector<Vector<Object>>();
        while(en.hasMoreElements()){ //for each possible FOA
-           Object[] wmeArray = (Object[])en.nextElement();            
+           Object[] wmeArray = (Object[])en.nextElement();
            Vector<Object> wmeV = arrayToVector( wmeArray );
 
            clearCurrentFoA();
@@ -11078,7 +11126,7 @@ public final class SimSt implements Serializable {
    }
 
    /** 16 Oct 2007. This was copied from RhsSearchSuccessorFn.
-    * 
+    *
     * @param array
     * @return
     */
@@ -11091,20 +11139,20 @@ public final class SimSt implements Serializable {
        return v;
    }
 
-   
+
    /**
     * Asks for hint from the designated oracle. The designated hint oracle is specified in the
     * command line argument when the SimStudent is launched. This version accepts a custom message to be displayed on the console window
     * @return hint
     */
    public AskHint askForHint(BR_Controller controller, ProblemNode currentNode, String customMessage) {
-   	
+
    	//if(getBrController().getMissController().getSimStPLE() != null)
    		//getBrController().getMissController().getSimStPLE().setFocusTab(SimStPLE.SIM_ST_TAB);
-   	
+
 		AskHint hint = null;
 		String hintMethodName = getHintMethod();
-		
+
 		if(hintMethodName.equalsIgnoreCase(AskHint.HINT_METHOD_BRD))
 			hint = new AskHintBrd(controller, currentNode);
 		else if(hintMethodName.equalsIgnoreCase(AskHint.HINT_METHOD_HD))
@@ -11123,48 +11171,48 @@ public final class SimSt implements Serializable {
 		else if(hintMethodName.equalsIgnoreCase(AskHint.HINT_METHOD_WEBAUTHORING))
 			hint = new AskHintWebAuthoring(controller, currentNode);
 			//hint=this.getWebAuthoringBackend().askForHintWebAuthoring(controller,currentNode);
-		else 
+		else
 			new Exception("No valid hint method was specified!").printStackTrace();
-		
-		
+
+
 		if(trace.getDebugCode("nbarbaBrd")) trace.out("nbarbaBrd","### SimStudent is stuck, hint from " + hintMethodName + " is " + hint.getSai());
-		
-		
+
+
 		return hint;
    }
-   
+
    /**
     * Asks for hint from the designated oracle. The designated hint oracle is specified in the
     * command line argument when the SimStudent is launched
     * @return hint
     */
    public AskHint askForHint(BR_Controller controller, ProblemNode currentNode) {
-	   	
+
 	   return askForHint(controller, currentNode, null);
    }
 
    transient Sai saiCache=null;
-   public void setSaiCache(Sai sai) {	   
-	   this.saiCache=sai; 
+   public void setSaiCache(Sai sai) {
+	   this.saiCache=sai;
    }
    public Sai getSaiCache() { return saiCache;}
-   
+
    transient public String storageClientURL="";
    public String getStorageClientURL(){return this.storageClientURL;}
    public void setStorageClientURL(String url){this.storageClientURL=url;}
-   
+
    /**
     * Asks for hint from the designated Quiz oracle, which is specified by command line arqument -ssQuizGradingMethod.
     * The designated hint oracle is specified in the
     * @return hint
   */
    public AskHint askForHintQuizGradingOracle(BR_Controller controller, ProblemNode currentNode) {
-	   	
-	   
+
+
 
 	   	AskHint hint = null;
 	   	String hintMethodName = getQuizGradingMethod();
-	   	
+
 	   	if(hintMethodName.equalsIgnoreCase(AskHint.HINT_METHOD_BRD))
 	   		hint = new AskHintBrd(controller, currentNode);
 	   	else if(hintMethodName.equalsIgnoreCase(AskHint.HINT_METHOD_HD))
@@ -11180,13 +11228,13 @@ public final class SimSt implements Serializable {
 	   	else if(hintMethodName.equalsIgnoreCase(AskHint.HINT_METHOD_JESS_ORACLE))
 	   		//hint = new AskHintJessOracle(controller,currentNode, controller.getProblemName().replace("_", "="));
 	   		hint = new AskHintJessOracle(controller,currentNode);
-	   	else 
+	   	else
 	   		new Exception("No valid hint method was specified!").printStackTrace();
-	   	
+
 	   	return hint;
    }
-   
-   
+
+
    /**
     * called when the first instruction for a given skill is demonstrated
     * count the number of non-empty WMEs and subtract 1
@@ -11232,10 +11280,10 @@ public final class SimSt implements Serializable {
 
    public /*private*/ String inquiryDisjunctiveSkillName(String name) {
        // Fri Oct  6 12:46:25 LDT 2006 :: Noboru
-       // Must prompt the author to enter a new name when running in interactive mode 
+       // Must prompt the author to enter a new name when running in interactive mode
        Vector<String> disjuncts = getDisjunctiveSkillNamesFor(name);
-       int id = (disjuncts == null) ? 1 : disjuncts.size()+1; 
-       return name + "-" + id; 
+       int id = (disjuncts == null) ? 1 : disjuncts.size()+1;
+       return name + "-" + id;
    }
 
    public /*private*/ void addDisjunctiveSkillName(String name, String disjunctiveName) {
@@ -11247,8 +11295,8 @@ public final class SimSt implements Serializable {
        disjuncts.add(disjunctiveName);
    }
 
-   // Contains a vector of String listing disjunctive skill names for a skill name 
-   // specified by a key 
+   // Contains a vector of String listing disjunctive skill names for a skill name
+   // specified by a key
    private edu.cmu.pact.miss.HashMap disjunctiveSkillNames = new edu.cmu.pact.miss.HashMap();
    public /*private*/ Vector<String> getDisjunctiveSkillNamesFor(String name) {
    	if(disjunctiveSkillNames == null)
@@ -11258,30 +11306,30 @@ public final class SimSt implements Serializable {
    private void setDisjunctiveSkillNamesFor(String name, Vector<String> disjuncts) {
        disjunctiveSkillNames.put(name, disjuncts);
    }
-   
+
    /**
-    * Method to calculate disjunctiveSkillNames from the ruleNames. 
+    * Method to calculate disjunctiveSkillNames from the ruleNames.
     */
    public void generateDisjunctiveSkillNames(){
-   	Set<String> nameSet=getRuleNames();    //get the rule names and find out if we have disjunctive rules	    	
+   	Set<String> nameSet=getRuleNames();    //get the rule names and find out if we have disjunctive rules
    	for (String skillName : nameSet) {
    		if(skillName.matches(".*-\\d*$")){
            	String baseName = skillName.substring(0, skillName.lastIndexOf("-"));
            	addDisjunctiveSkillName(baseName, skillName);
            }
    	}
-   	 
+
    }
-   
-   public /*private*/ boolean changeInstructionNameFor(String name, String oldSkillName, 
+
+   public /*private*/ boolean changeInstructionNameFor(String name, String oldSkillName,
            ProblemNode node, Instruction instruction) {
 
-	   
+
        if(trace.getDebugCode("rr"))
            trace.out("rr", "Changing instruction name from " + oldSkillName + " to " + name);
 
-     
-       
+
+
        // Rename the skill name
        instruction.setName( name );
        // Relocate the instruction for now it has different name
@@ -11289,7 +11337,7 @@ public final class SimSt implements Serializable {
        // Attempt to learn the rule
        resetSimStTimer();
 
-  	 
+
        boolean ruleLearned = generateUpdateProductionRules( name );
 
        return ruleLearned;
@@ -11312,18 +11360,18 @@ public final class SimSt implements Serializable {
 
    // ----------------------------------------------------------------------
    // Generate rules
-   // 
+   //
 
    // private int oldNumRules = 0;
    // private int oldNumSteps = 0;
 
    /**
-    * set whether SimStudent should actually create a production rule file, 
+    * set whether SimStudent should actually create a production rule file,
     * if not, FOIL and the searches are still run.
     * Setting this to false is only useful for testing purpose
-    * @param flag 
+    * @param flag
     */
-   private boolean archivingProductionRules = true; 
+   private boolean archivingProductionRules = true;
    public /*private*/ boolean isArchivingProductionRules() { return archivingProductionRules; }
    public void setArchivingProductionRules(boolean flag) { archivingProductionRules=flag; }
 
@@ -11338,16 +11386,16 @@ public final class SimSt implements Serializable {
    private static final int SAVE_PR_PROBLEM_BASE = 1;
    static final int SAVE_PR_STEP_BASE = 2;
 
-   // Generate(or update) production rules not only for the give skillName, but 
+   // Generate(or update) production rules not only for the give skillName, but
    // also update all other skills learned so far.  This is so because
    // the instance of demonstration for skillName serves as a negative
-   // example for all other skills.  
+   // example for all other skills.
    // Filly, save production rules into a file so that the changes in production rules
    // take effect for the following problem solving steps
    private boolean generateUpdateProductionRules( String skillName ) {
 
    	if(trace.getDebugCode("miss"))trace.out("miss", "Inside generateProductionRules: " + skillName);
-   	
+
        boolean ruleLearned;
 
        // display a number of rules generated
@@ -11355,23 +11403,23 @@ public final class SimSt implements Serializable {
            getMissController().consoleSetNumProductionRules( numRules() );
        }
 
-       // Keep the current production rules with 
+       // Keep the current production rules with
        // information on # rules and steps demonstrated
-       // Thu Jun 15 17:30:28 2006 Noboru - saveProductionRules() does this automatically 
+       // Thu Jun 15 17:30:28 2006 Noboru - saveProductionRules() does this automatically
        // archiveProductionRules();
 
        // Generate rules
        //
        // Fri Mar 31 17:38:07 2006: This method assumes that Focus of Attention
        // is given in ordered.  We no longer hold this constraint
-       // 
+       //
        // generateRules( skillName );
-       // 
-       // Improved version of rule generation / refinement method. 
-       // Implicit mapping among unordered focus of attention is 
+       //
+       // Improved version of rule generation / refinement method.
+       // Implicit mapping among unordered focus of attention is
        // subject to search
-       
-      
+
+
        ruleLearned = generateRulesWithUnorderdFoA( skillName );
 
 
@@ -11388,8 +11436,8 @@ public final class SimSt implements Serializable {
        return ruleLearned;
    }
 
-  
-   
+
+
    // saveMode tells is this archiving is for a training problem basis or a step basis
    // Traininig basis: save rules after trained on a whole single problem
    // Step basis: save rules after learing a skill on a step
@@ -11397,18 +11445,24 @@ public final class SimSt implements Serializable {
 
        // Output to a regular productionRules.pr file
    	File prFile = null;
-   	
-   	prFile = new File(getProjectDir(), getPrFileName());
-   	
+
+   	String userBundleDir = this.getUserBundleDirectory();
+
+   	if (userBundleDir != null) {
+   		prFile = new File(userBundleDir, getPrFileName());
+   	}
+   	else
+   		prFile = new File(getProjectDir(), getPrFileName());
+
    	// Check if the application is running locally or via webstart
    	if(isWebStartMode()) {
    		prFile = new File(WebStartFileDownloader.SimStWebStartDir + getPrFileName() );
        }
 
-  	if (isSsWebAuthoringMode()){
+  	if (isSsWebAuthoringMode() && !runType.equalsIgnoreCase("springboot")){
    		prFile = new File(getProjectDirectory()+"/"+ getPrFileName() );
    	}
-    
+
    	  //File prFile = new File( getProjectDir(), getPrFileName() );
        FileOutputStream prFileOutputStream = null;
 
@@ -11427,24 +11481,18 @@ public final class SimSt implements Serializable {
        String numS = prettyNumAllInstructions();
        ageFileName += "R" + numR + "S" + numS;
        String fullAgePath = getLogDirectory() + WebStartFileDownloader.separator + getUserID() + "-" + getPrAgeDir();
-       
-       
+
+
        File ageFile = new File( fullAgePath, ageFileName ).getAbsoluteFile();
        if(isWebStartMode()) {
        	fullAgePath = WebStartFileDownloader.SimStWebStartDir + getPrAgeDir() + "_" + getUserID() + "_" + FileZipper.formattedDate();
        	ageFile = new File(fullAgePath + WebStartFileDownloader.separator + ageFileName);
        }
-       
+
       if (isSsWebAuthoringMode()){
-//    	    fullAgePath = getProjectDirectory() +"/" + getPrAgeDir();
-    	  	fullAgePath = getLogDirectory() + "/" + getPrAgeDir();
-           	ageFile = new File(getProjectDirectory()+ WebStartFileDownloader.separator +getPrAgeDir()+WebStartFileDownloader.separator+ ageFileName);
+    	    fullAgePath = getUserBundleDirectory() +"/" + getPrAgeDir();
+           	ageFile = new File(fullAgePath + "/" + ageFileName);
       	}
-      
-      if(runType.equalsIgnoreCase("springBoot")) {
-    	  fullAgePath = getProjectDir() + "/" + getPrAgeDir();
-    	  ageFile = new File(fullAgePath + WebStartFileDownloader.separator + ageFileName);
-      }
 
        boolean userFile = false;
        String userProdRuleFile = "";
@@ -11466,9 +11514,9 @@ public final class SimSt implements Serializable {
            }
        }
 
-    
-       
-		FileOutputStream ageFileOutputStream = null; 
+
+
+		FileOutputStream ageFileOutputStream = null;
 
        File fullAgePathFile = new File( fullAgePath ).getAbsoluteFile();
        if ( !fullAgePathFile.exists() ) {
@@ -11493,16 +11541,16 @@ public final class SimSt implements Serializable {
        PrintStream prUserPrintStream = null;
        if(userFile) prUserPrintStream = new PrintStream(prFileUserStream);
 
-      
-		
+
+
        printRules( prPrintStream );
        printRules( agePrintStream );
        if(userFile) printRules(prUserPrintStream);
 
 
-		
-		
-       /** Save the files on the server as well. Key to store prodRules is productionRules-userID.pr */ 
+
+
+       /** Save the files on the server as well. Key to store prodRules is productionRules-userID.pr */
        if(SimSt.WEBSTARTENABLED) {
        	try {
 				getMissController().getStorageClient().storeFile("productionRules-"+getUserID()+".pr", prFileUser.getCanonicalPath());
@@ -11515,8 +11563,8 @@ public final class SimSt implements Serializable {
        prPrintStream.close();
        agePrintStream.close();
        if(userFile) prUserPrintStream.close();
-       
-       
+
+
        try {
            prFileOutputStream.close();
            ageFileOutputStream.close();
@@ -11526,13 +11574,13 @@ public final class SimSt implements Serializable {
            logger.simStLogException(e);
        }
 
-		
-		
+
+
    }
 
    /**
     * Given a newly demonstrated skillName, refine (or geneate) production rules
-    * 
+    *
     * @param skillName
     */
    public boolean generateRulesWithUnorderdFoA(String skillName) {
@@ -11548,7 +11596,7 @@ public final class SimSt implements Serializable {
        else {
            // Generate / update a rule for the step just demonstrated
            ruleLearned = generateRuleFor(skillName);
-	        
+
            // Update LHS conditionals (FOIL part) across all productions
            if (ruleLearned) {
                updateLhsConditions(skillName);
@@ -11560,7 +11608,7 @@ public final class SimSt implements Serializable {
    /**
     * Update input file for FOIL given a demonstration on a specific step, and
     * run FOIL across all rules accumulated so far.
-    * 
+    *
     * @param skillName
     */
    public /*private*/ void updateLhsConditions(String skillName) {
@@ -11571,9 +11619,9 @@ public final class SimSt implements Serializable {
 
        // Propagate negative examples AND
        // Invoke FOIL for the LHS feature extraction
-       // 
+       //
        // Sat Jun 17 16:04:47 2006 Noboru
-       // When Memory Window is set, we need to iterate all skills demonstrated so far, 
+       // When Memory Window is set, we need to iterate all skills demonstrated so far,
        // because each time a rule is learned (initializeFoilData() is called), the FOIL data gets reset
        if (isMemoryWindowSizeSet()) {
            arrangeFoilData();
@@ -11612,7 +11660,7 @@ public final class SimSt implements Serializable {
    // extracts the rule name from 'instructions'. (there is one FoilData for each skillname, see the hashtable)
    // 'foilData' <- getFoilData(skillname), i.e. the FoilData for this skillname
    // for each instruction, we add it to 'foilData' and for all other FoilData's (i.e. other skillnames).
-   // for each FoilData 'recipient' that is not the same as 'foilData' (i.e. the FoilDatas for other skillnames), 
+   // for each FoilData 'recipient' that is not the same as 'foilData' (i.e. the FoilDatas for other skillnames),
    //                   call signalTargetNegative()
    //
    private void arrangeFoilData( Vector /* Instruction */<Instruction> instructions ) {
@@ -11621,7 +11669,7 @@ public final class SimSt implements Serializable {
        String name = instruction.getName();
        int arity = instruction.numFocusOfAttention() -1;
        FoilData foilData = initializeFoilDataFor( name );
-       
+
        for (int i = 0; i < instructions.size(); i++) { //for each instruction
 
            instruction = instructions.get(i);
@@ -11632,8 +11680,8 @@ public final class SimSt implements Serializable {
            while ( allFoilData.hasMoreElements() ) {
 
                FoilData recipient = allFoilData.nextElement();
-               if ( recipient != foilData && instruction.getFoilArity() == recipient.getFoilArity()) { 
-                   recipient.signalTargetNegative( instruction ); 
+               if ( recipient != foilData && instruction.getFoilArity() == recipient.getFoilArity()) {
+                   recipient.signalTargetNegative( instruction );
                }
            }
        }
@@ -11653,7 +11701,7 @@ public final class SimSt implements Serializable {
 
    /**
     * @param foilData
-    * 
+    *
     * searches foilData for features, saves the FOIL input file,
     * and updates the rule with them.
     */
@@ -11661,7 +11709,7 @@ public final class SimSt implements Serializable {
 
        String name = foilData.getTargetName();
        //11 May 2007 : otherwise rule gets null, when this method is called from interactive learning
-       //name = name.replaceAll("MAIN::", ""); 
+       //name = name.replaceAll("MAIN::", "");
        Rule rule = getRule( name );
 
        // If the remaining part of the rule has been generated, then ...
@@ -11677,7 +11725,7 @@ public final class SimSt implements Serializable {
            //long endTime = (new Date()).getTime();
            //String msg = "FOIL for " + name + " done in " + (endTime - startTime) + "ms.";
 
-           // If the search was successful, then assert the feature 
+           // If the search was successful, then assert the feature
            if ( features != null) {
                rule.setFeatures( features );
            }
@@ -11691,7 +11739,7 @@ public final class SimSt implements Serializable {
 
        // When a memory window is set, then delete a cached FoilData
        if (isMemoryWindowSizeSet()) {
-       	
+
            foilDataHash.remove(name);
        }
        // Create a new foilData for the specified skill when it's not there yet
@@ -11711,12 +11759,19 @@ public final class SimSt implements Serializable {
            {
 	            Instruction instruction = instructions.get(0);
 	            int arity = instruction.numFocusOfAttention() -1;
-	            
-	            foilData = new FoilData( name, arity, 
+	            String foilLogDir;
+
+	            if (isSsWebAuthoringMode()) {
+	            	foilLogDir = getUserBundleDirectory() + "/" + getFoilLogDir() + "/";
+	            } else {
+	            	foilLogDir = getProjectDirectory() + "/" + getLogDirectory() + "/" + getUserID() + "-" + getFoilLogDir() + "/";
+	            }
+
+	            foilData = new FoilData( name, arity,
 	                    getPredicates(),
 	                    getFocusOfAttention(name),
 	                    getFeaturePredicateCache(),
-	                    /*getProjectDir() + "\\" + getFoilLogDir() + "\\"*/ getProjectDirectory() + WebStartFileDownloader.separator + getFoilLogDir() + WebStartFileDownloader.separator, getFoilMaxTuples());
+	                    foilLogDir , getFoilMaxTuples());
 	            foilData.setDecomposers(decomposers);
 	            foilDataHash.put( name, foilData );
 	            // getFoilData(instruction.getName(),instruction.numFocusOfAttention() -1);
@@ -11733,45 +11788,45 @@ public final class SimSt implements Serializable {
        return foilData;
    }
 
-   
-   /* 06/30/2014 nbarba: The lhsPath has always teh values of elements as null (i.e. nil), even if the WME Editor in ctat has the correct values. 
-    * This is a fix that takes a wme path entry (note that wme path is a vector of strings), locates the element name, queries SimStRete for the actual value 
+
+   /* 06/30/2014 nbarba: The lhsPath has always teh values of elements as null (i.e. nil), even if the WME Editor in ctat has the correct values.
+    * This is a fix that takes a wme path entry (note that wme path is a vector of strings), locates the element name, queries SimStRete for the actual value
     * of that element, corrects the path entry and returns it.
     * */
- 
+
  public  String fixWmePathValues(String path){
-   	
+
    	Pattern  p=Pattern.compile("\\(name .*?\\)",Pattern.DOTALL);
    	Matcher m = p.matcher(path);
-   	
+
    	String foaPattern="";
-   	while (m.find()){   		
+   	while (m.find()){
    		foaPattern=m.group(0);
-   		
+
    	}
     String foaName=foaPattern;
-   	
+
     foaName=foaName.replace("name","");
     foaName=foaName.replace("(","");
 	foaName=foaName.replace(")","");
-	
+
    	String actualValue= getSsRete().getFactActualValue(foaName);
-   
+
    	String tmp=foaPattern+" (value nil)";
    	String tmp1=foaPattern+" (value "+actualValue+")";
- 
+
    	String newPath=path.replace(tmp, tmp1);
-   	
+
 
 
    	return newPath;
 }
 
- 
- 
+
+
    /**
     * Generate / update a single rule with the given skill name.
-    * 
+    *
     * @param skillName
     */
    private boolean generateRuleFor(String skillName) {
@@ -11779,17 +11834,17 @@ public final class SimSt implements Serializable {
     	if(trace.getDebugCode("miss"))trace.out("miss", "generateRuleFor: skillName = " + skillName);
        Vector /* Instruction */<Instruction> instructions = getInstructionsFor(skillName);
 
-       
+
        trace.out("miss","Learning rule for skill " + skillName + " based on instruction " + instructions);
-  
+
        trace.out("miss","Trying to learn a rule, and SsRete facts are " + this.getSsRete().getFacts());
-       
-       
+
+
        	if (skillName.contains("unnamed")){
       		trace.err("UNNAMED!!!! ******** ");
       		return false;
       	}
-      
+
        long startTime, endTime, duration;
        int numOp = 0;
        Vector /* String */ rhsOps = null;
@@ -11800,14 +11855,14 @@ public final class SimSt implements Serializable {
        //Don't do a RHS for a 'Done' instruction
        boolean isDone = skillName.equalsIgnoreCase(Rule.DONE_NAME);
        if (!isDone) {
-           // Searching for RHS operators 
+           // Searching for RHS operators
            startTime = (new Date()).getTime();
            if(trace.getDebugCode("miss"))trace.out("miss", "Searching RHS Ops for " + skillName+ "..." );
 
            // sort the RhsOpList before starting the search for the instruction
            if(isHeuristicBasedIDS())
            	sortHashMapByValuesD(OpFreqCountHashMap);
-           
+
            rhsOps = isFoaSearch() ?
                    searchRhsOpsFor_FoaSearch(instructions) :
                        searchRhsOpsFor(instructions);
@@ -11832,41 +11887,41 @@ public final class SimSt implements Serializable {
 
 
            //22Sep2007:
-           //if (ssFoaSearch), we try every possibility            
+           //if (ssFoaSearch), we try every possibility
            //     Vector /* String */ lhsPath = searchLhsPathsFoaSearch(instructions);
            //
            // for (foasChoice : ) {
-           // 
+           //
            //               and instructions
            //}
            //==
 
            if(trace.getDebugCode("miss"))trace.out("miss", "Searching WME-paths for " + skillName + "...");
-           
+
            Vector /* String */<String> lhsPath = searchLhsPaths(instructions);
-           
-          
-           
-           
+
+
+
+
           if (lhsPath.size()==0){
         	  	trace.err("lhsPath for instruction is empty when searching wme paths for " + skillName + " with instructions " + instructions);
       			new Exception().printStackTrace();
         	  return false;
           }
          //  if(trace.getDebugCode("nbarbaDebug"))trace.out("nbarbaDebug", "LHSPath for "+ skillName + " : " + lhsPath);
-           
-           
-           
+
+
+
            /* the lhsPath returned from searchLhsPaths(instructions) has all the values nill.
             * The following for loop iterates the lhsPath and fixes that problem for each lhsPath entry.
-            */           
-         //  for (int i=0;i<lhsPath.size(); i++){		    
-         //		String tmp=lhsPath.get(i); 	
-         //		lhsPath.set(i,fixWmePathValues(tmp));		   
+            */
+         //  for (int i=0;i<lhsPath.size(); i++){
+         //		String tmp=lhsPath.get(i);
+         //		lhsPath.set(i,fixWmePathValues(tmp));
           // }
 
-            
-            
+
+
            endTime = (new Date()).getTime();
            duration = (endTime - startTime)/1000;
            int numPath = lhsPath.size();
@@ -11875,20 +11930,20 @@ public final class SimSt implements Serializable {
            logger.simStLog(SimStLogger.SIM_STUDENT_LEARNING, SimStLogger.WME_PATH_SEARCH_PERFORMANCE_ACTION, getProblemStepString(),
            		"WME paths Search for " + skillName+ " found " + numPath + " paths","", (int) duration);
 
-           // Make a rule, except feature predicates (FOIL would run later), and 
+           // Make a rule, except feature predicates (FOIL would run later), and
            // add it to the rulebase
            if ( lhsPath != null && (rhsOps != null || isDone)) {
                String action = instructions.get(0).getAction();
                Vector /* FeaturePredicates */<FeaturePredicate> predicateTestAsFact = (Vector<FeaturePredicate>)predicatesToTestAsFacts.clone();
-           
-               
+
+
                Rule rule = new Rule( skillName, lhsPath, null, predicateTestAsFact, rhsOps, action );
-       
+
                int numFoa=getInstructionsFor(skillName).get(0).numSeeds();
                rule.setNumFoA(numFoa);
-       
 
-       
+
+
                addRule( rule );
                Vector fullFoas = instructions.get(0).getFocusOfAttention();
                Vector foas = new Vector<String>();
@@ -11914,19 +11969,19 @@ public final class SimSt implements Serializable {
                ruleLearned = true;
 
                endTime = (new Date()).getTime();
-               duration = endTime-startTime; 
-               if(trace.getDebugCode("miss"))trace.out("miss", "Time to learn rule: " + duration + "ms"); 
+               duration = endTime-startTime;
+               if(trace.getDebugCode("miss"))trace.out("miss", "Time to learn rule: " + duration + "ms");
                } else {
                ruleLearned = false;
            }
        }
        if(trace.getDebugCode("miss"))trace.out("miss", "Rule Learned: "+ruleLearned );
-       
+
        return ruleLearned;
    }
 
    private void incrementOperatorFrequency(List rhsOp) {
-   	
+
        for(int i=0; i< rhsOp.size(); i++) {
        	if(trace.getDebugCode("miss"))trace.out("miss","rule.getRhsOp: " +  rhsOp.get(i));
        	int index1 = rhsOp.get(i).toString().indexOf('(');
@@ -11935,7 +11990,7 @@ public final class SimSt implements Serializable {
        	int index3 = temp.lastIndexOf('?');
        	String jessName = temp.substring(index2+1, index3-1);
        	if(jessName.indexOf('?') != -1) {
-       		jessName = jessName.substring(0, jessName.indexOf('?')-1); 
+       		jessName = jessName.substring(0, jessName.indexOf('?')-1);
        	}
        	if(trace.getDebugCode("miss"))trace.out("miss", jessName);
        	String absoluteOperatorName = (String) JessToOperatorName.get(jessName);
@@ -11995,33 +12050,33 @@ public final class SimSt implements Serializable {
 
    /*
    private void sortRhsOpList() {
-   	
+
    	Vector<FeaturePredicate> fpVector = new Vector<FeaturePredicate>();
    	HashMap hm = new HashMap();
    	FeaturePredicate fp;
    	int index = 0;
-   	
+
    	Iterator rhsOpIterator = getRhsOpList().iterator();
    	while(rhsOpIterator.hasNext()) {
-   		
+
    		fp = getRhsOp((String)rhsOpIterator.next());
    		hm.put(fp, getRhsOpList().elementAt(index));
    		fpVector.add(fp);
    		++index;
    	}
-   	
+
    	// Added by Rohan.
    	// Sort the RHS Operator list on the basis of frequencyCount.
    	if(isHeuristicBasedIDS()){
    		Collections.sort(fpVector, new RhsOperatorComparator());
    	}
-   	
+
 
    	rhsOpList.removeAllElements();
    	for(int i=0; i< fpVector.size(); i++) {
    		addRhsOpList(hm.get(fpVector.elementAt(i)).toString());
    	}
-   	
+
    }
    */
 
@@ -12034,19 +12089,19 @@ public final class SimSt implements Serializable {
 			// TODO Auto-generated method stub
 			int h1 = ((FeaturePredicate)arg0).freqCount;
 			int h2 = ((FeaturePredicate)arg1).freqCount;
-			
+
 			if(h1 == h2)
 				return 0;
 			else if(h1 < h2)
 				return -1;
-			else 
+			else
 				return +1;
 		}
    }*/
 
-///////////////////////////////////////////////////////////////////////    
+///////////////////////////////////////////////////////////////////////
 ////////////////////// new FoA-search code ////////////////////////////
-///////////////////////////////////////////////////////////////////////    
+///////////////////////////////////////////////////////////////////////
 
 //  when ssFoaSearch is on, this is what gets called instead of searchRhsOpsFor().
 
@@ -12115,7 +12170,7 @@ public final class SimSt implements Serializable {
        else { //(numInst > 1)
 
 //            RhsState lastRhsState = primaryInstruction.getLastRhsState();
-           boolean finalFailure = false;            
+           boolean finalFailure = false;
 
            while (!mapFound && !finalFailure) { //different FoA-set at each iteration
 
@@ -12157,7 +12212,7 @@ public final class SimSt implements Serializable {
                //in particular, if we back up to a list of length 1, the RHS-state to be restored is null, i.e. search starts from the beginning.
 
 
-               //remove the last instruction                
+               //remove the last instruction
                List<Instruction> previousInstructions = instructions.subList(0, numInst-2);
 
                //increment the FoA-set (otherwise, we get into an infinite loop)
@@ -12173,7 +12228,7 @@ public final class SimSt implements Serializable {
 //                    //We should just let the search agent be reinitialized, which
 //                    //should happen by itself.
 //                    if (numInst>2){
-//                        //the search state should be loaded appropriately.                
+//                        //the search state should be loaded appropriately.
 //                        Instruction newPrevInst = (Instruction) instructions.get(numInst-3);
 //                        int lastWorkingDepth = newPrevInst.getLastWorkingDepth();
 //                        AbstractQueue lastWorkingQueue = newPrevInst.getLastWorkingQueue();
@@ -12211,7 +12266,7 @@ public final class SimSt implements Serializable {
    }
 
    /**
-    * 
+    *
     * @param givenQueue
     * @return
     */
@@ -12276,7 +12331,7 @@ public final class SimSt implements Serializable {
        RhsState lastRhsState = null;
 
        ///// "restore the search state"
-       if (numInst>1){ 
+       if (numInst>1){
            //restore lhsRhsState
            //restore 'queue' and 'depth' too
            Instruction penultimateInstruction = instructions.get(numInst-2);
@@ -12300,12 +12355,12 @@ public final class SimSt implements Serializable {
 
            //tests current RHS; if this fails, it does red backup and tries all RHSs.
            for (int i=0; i<instructions.size(); i++) { //start from i=1? ... since mapFound is always true of the first one
-               Instruction instr = instructions.get(i); 
+               Instruction instr = instructions.get(i);
                if(trace.getDebugCode("foasearch"))trace.out("foasearch", "existsMapForCurrentFoas: i="+ i +", instr = " + instr);
 
                if(trace.getDebugCode("foasearch"))trace.out("foasearch", "existsMapForCurrentFoas: lastRhsState = " + lastRhsState);
 
-               if(lastRhsState==null) 
+               if(lastRhsState==null)
                    mapFound = false;
                else
                    mapFound = instr.mapFocusOfAttention(lastRhsState);
@@ -12336,7 +12391,7 @@ public final class SimSt implements Serializable {
     * Search for an operator sequence for a production rule with the given
     * skill name.  This is for unordered focus of attention.  4/01/2006
     * c.f. searchRhsOps( Vector )
-    * 
+    *
     * //6March2007: this method returns the operator sequence found.
     * @param skillName
     * @return
@@ -12345,19 +12400,19 @@ public final class SimSt implements Serializable {
 
        trace.out("miss", "searchRhsOpsFor: numInst = " + instructions.size());
        trace.out("miss", "searchRhsOpsFor: instructions = " + instructions);
-       
-       
-       // The first instruction is the one and only one that is used to 
-       // determine the operator sequence. Also, it holds 
-       // (for a back-up sake) a RhsState that has been reached 
-       // most recently 
+
+
+       // The first instruction is the one and only one that is used to
+       // determine the operator sequence. Also, it holds
+       // (for a back-up sake) a RhsState that has been reached
+       // most recently
        Instruction primaryInstruction = (Instruction) instructions.get(0);
-       // If the primaryInstruction has not been used to search for the operator 
-       // sequence, then initialize the search agent.  This is necessary 
+       // If the primaryInstruction has not been used to search for the operator
+       // sequence, then initialize the search agent.  This is necessary
        // because now the search is cached for backing-up
 
        //does this mean that future searches will start from the last successful RHS-state?
-       if (primaryInstruction.getGoalTest() == null || 
+       if (primaryInstruction.getGoalTest() == null ||
                primaryInstruction.getLastRhsState() == null) {
        	// Initialize the exhaustive IDS
            initRhsSearch(primaryInstruction);
@@ -12367,10 +12422,10 @@ public final class SimSt implements Serializable {
            primaryInstruction.searchRhsOpSeq();
        }
 
-       // If the vector of instructions contain more than one instructions, then 
-       // see if the rest of the instruction agree with the operator sequence 
+       // If the vector of instructions contain more than one instructions, then
+       // see if the rest of the instruction agree with the operator sequence
        // found against the primaryInstruction.  If not, then back-up and offer
-       // another operator sequence. 
+       // another operator sequence.
        int numInst = instructions.size();
 
        if (numInst > 1) {
@@ -12390,7 +12445,7 @@ public final class SimSt implements Serializable {
 
                //inner loop:
                //for each instruction, check if mapFound
-               //if not found, search RHS op-seq for primaryInstruction. 
+               //if not found, search RHS op-seq for primaryInstruction.
                for (int i = 1; i < numInst; i++) {
                    Instruction instruction = (Instruction) instructions.get(i);
                    mapFound = instruction.mapFocusOfAttention(lastRhsState);
@@ -12398,11 +12453,11 @@ public final class SimSt implements Serializable {
                    //if so, move to next 'instruction'.
                    //otherwise, get the next RHS state for the primary instruction.
                    if (!mapFound) {
-                       // find another operator sequence (backking-up), 
-                       // by invoking a search on the instruction, which 
+                       // find another operator sequence (backking-up),
+                       // by invoking a search on the instruction, which
                        // will set a new rhsState and rhsOpSeq
                        primaryInstruction.searchRhsOpSeq();
-                       // Inform the search agent the most recently reached state 
+                       // Inform the search agent the most recently reached state
                        lastRhsState = primaryInstruction.getLastRhsState();
                        break;
                    }
@@ -12412,30 +12467,30 @@ public final class SimSt implements Serializable {
 
        // The rhsOpSeq is set by Instruction.searchRhsOpSeq()
        return primaryInstruction.getRhsOpSeq();
-   	
+
        //TODO
    	//This is an alternative version of the entire method which includes some improvements
        //for the error analysis study.
        //However it results in an error where when input is not what is expected by the prodRules
        //the state reverts back to the previous state without failing.
-       //Ex: if 6x-9=4x+2 expects add 6 (which prior knowledge results in), and add 9 is entered, 
+       //Ex: if 6x-9=4x+2 expects add 6 (which prior knowledge results in), and add 9 is entered,
        //a new state1 will be created with the edge add 9, but the state will revert back to the
        //start state 6x-9_4x+2.  This is visible in the BR graph, but not in SimSt's messaging.
 
-      /* 
+      /*
 
-       // The first instruction is the one and only one that is used to 
-       // determine the operator sequence. Also, it holds 
-       // (for a back-up sake) a RhsState that has been reached 
-       // most recently 
+       // The first instruction is the one and only one that is used to
+       // determine the operator sequence. Also, it holds
+       // (for a back-up sake) a RhsState that has been reached
+       // most recently
        Instruction primaryInstruction = (Instruction)instructions.get(0);
 
-       // If the primaryInstruction has not been used to search for the operator 
-       // sequence, then initialize the search agent.  This is necessary 
+       // If the primaryInstruction has not been used to search for the operator
+       // sequence, then initialize the search agent.  This is necessary
        // because now the search is cached for backing-up
 
        //does this mean that future searches will start from the last successful RHS-state?
-       if (primaryInstruction.getGoalTest() == null || 
+       if (primaryInstruction.getGoalTest() == null ||
                primaryInstruction.getLastRhsState() == null) {
 
            // Initialize the exhaustive IDS
@@ -12446,10 +12501,10 @@ public final class SimSt implements Serializable {
        }
 
 
-       // If the vector of instructions contain more than one instructions, then 
-       // see if the rest of the instruction agree with the operator sequence 
+       // If the vector of instructions contain more than one instructions, then
+       // see if the rest of the instruction agree with the operator sequence
        // found against the primaryInstruction.  If not, then back-up and offer
-       // another operator sequence. 
+       // another operator sequence.
        int numInst = instructions.size();
 
        if (numInst > 1) {
@@ -12467,11 +12522,11 @@ public final class SimSt implements Serializable {
 
                //inner loop:
                //for each instruction, check if mapFound*
-               //if not found, search RHS op-seq for primaryInstruction. 
+               //if not found, search RHS op-seq for primaryInstruction.
                for (int i = 1; i < numInst; i++) {
                    Instruction instruction = (Instruction)instructions.get(i);
 
-                   // jinyul - reordering of backtracking and mapping FoA's. 
+                   // jinyul - reordering of backtracking and mapping FoA's.
                    // If no successful map found yet, and interactive learning is turned on, back up
                    // and initiate another search on the instruction.
 
@@ -12498,7 +12553,7 @@ public final class SimSt implements Serializable {
                    	}
                    }
 
-                   //else 
+                   //else
                    	//if(!mapFound) {
                    		//primaryInstruction.searchRhsOpSeq();
                    	//	lastRhsState = primaryInstruction.getLastRhsState();
@@ -12510,11 +12565,11 @@ public final class SimSt implements Serializable {
                    //if so, move to next 'instruction'.
                    //otherwise, get the next RHS state for the primary instruction.
                    //if (!mapFound) {
-                       // find another operator sequence (backking-up), 
-                       // by invoking a search on the instruction, which 
+                       // find another operator sequence (backking-up),
+                       // by invoking a search on the instruction, which
                        // will set a new rhsState and rhsOpSeq
                        //primaryInstruction.searchRhsOpSeq();
-                       // Inform the search agent the most recently reached state 
+                       // Inform the search agent the most recently reached state
                    	//lastRhsState = primaryInstruction.getLastRhsState();
                        //break;
                    //}
@@ -12528,10 +12583,10 @@ public final class SimSt implements Serializable {
        return primaryInstruction.getRhsOpSeq();*/
    }
 
-   // Initialize the search agent, and find a rhs operator sequence, which 
-   // in turn is stored into cache in the Instruction object 
+   // Initialize the search agent, and find a rhs operator sequence, which
+   // in turn is stored into cache in the Instruction object
    // read by getRhsOpSeq()
-   // Returns the most recently reached RhsState 
+   // Returns the most recently reached RhsState
    public /*private*/ void initRhsSearch(Instruction primaryInstruction) {
 
        boolean opCached = isOpCached();
@@ -12556,7 +12611,7 @@ public final class SimSt implements Serializable {
 
        boolean opCached = isOpCached();
        Vector<String> opList = getRhsOpList();
-       HashMap fpCache = getFeaturePredicateCache(); 
+       HashMap fpCache = getFeaturePredicateCache();
        File wmeTypeFileExists = null;
        String wmeTypeFile = null;
        wmeTypeFileExists = new File(getProjectDir(), WME_TYPE_FILE);
@@ -12602,9 +12657,9 @@ public final class SimSt implements Serializable {
        Problem problem = new Problem( initState, successorFn, goalTest );
 
        Search search = new DepthFirstSearch( new TreeSearch() );
-  
-       if(trace.getDebugCode("miss"))trace.out("miss", "LHS: Searching...");      
-       
+
+       if(trace.getDebugCode("miss"))trace.out("miss", "LHS: Searching...");
+
        try {
            lhsPaths = new SearchAgent( problem, search );
        } catch (Exception e) {
@@ -12612,7 +12667,7 @@ public final class SimSt implements Serializable {
            logger.simStLogException(e);
        }
 
-   	
+
        Properties searchProp = lhsPaths.getInstrumentation();
        if(trace.getDebugCode("miss"))trace.out("miss", "LHS: Properties...");
        Enumeration props = searchProp.propertyNames();
@@ -12624,19 +12679,19 @@ public final class SimSt implements Serializable {
 
        // Since the topological constraints were incrementally built
        // up, only the last action represents a complete set of
-       // constraints.  Thus, strip off other "incomplete" constraints.  
+       // constraints.  Thus, strip off other "incomplete" constraints.
        List /* String */ tmpActions = lhsPaths.getActions();
 
 
       	//if(trace.getDebugCode("nbarbaDebug"))trace.out("nbarbaDebug", "!!!!!!!!!!!!!!!!!!!!!!!! tmpActions after search agent " + tmpActions);
-      	
-      	
+
+
        Vector /* String */<String> actions = new Vector<String>();
-       
+
        for ( int i = 0; i < tmpActions.size(); i++ ) {
 
-           String action = (String)tmpActions.get(i);       
-           
+           String action = (String)tmpActions.get(i);
+
            if ( i != tmpActions.size() -1 ) {
 
                int index = action.indexOf('|');
@@ -12669,7 +12724,7 @@ public final class SimSt implements Serializable {
 
    // ----------------------------------------------------------------------
    // Read files
-   // 
+   //
 
    /**
     * Read operator symbols from a file
@@ -12685,7 +12740,7 @@ public final class SimSt implements Serializable {
    private void readRhsOpListAux( String fileName ) {
 
    	BufferedReader reader = null;
-   	
+
    	// Check if file is on the local disk or it is part of the jar
    	if(new File(fileName).exists() ) {
            try {
@@ -12693,14 +12748,14 @@ public final class SimSt implements Serializable {
            } catch (FileNotFoundException e) {
                e.printStackTrace();
                logger.simStLogException(e);
-           }    		
+           }
    	} else { // For webstart
 	    	ClassLoader cl = this.getClass().getClassLoader();
 	    	InputStream is = cl.getResourceAsStream(fileName);
 	    	if(is == null) //File does not exist in provided jars
 	    		return;
 	    	InputStreamReader isr = new InputStreamReader(is);
-	    	reader = new BufferedReader(isr);    		
+	    	reader = new BufferedReader(isr);
    	}
 
        try {
@@ -12787,7 +12842,7 @@ public final class SimSt implements Serializable {
    private void readFeaturePredicates( String fpFile ) {
 
    	BufferedReader reader = null;
-   	
+
    	// Check if file is on the local disk or it is part of the jar
    	if(new File(fpFile).exists() ) {
            try {
@@ -12795,16 +12850,16 @@ public final class SimSt implements Serializable {
            } catch (FileNotFoundException e) {
                e.printStackTrace();
                logger.simStLogException(e);
-           }    		
+           }
    	} else{ // For webstart
 	    	ClassLoader cl = this.getClass().getClassLoader();
 	    	InputStream is = cl.getResourceAsStream(fpFile);
 	    	if(is == null) //File does not exist in provided jars
 	    		return;
 	    	InputStreamReader isr = new InputStreamReader(is);
-	    	reader = new BufferedReader(isr);    		
-   	} 
-   	
+	    	reader = new BufferedReader(isr);
+   	}
+
 
        try {
            String featurePredicate = null;
@@ -12827,7 +12882,7 @@ public final class SimSt implements Serializable {
    private void readConstraintPredicates( String constraintFile ) {
 
    	BufferedReader reader = null;
-   	
+
    	// Check if file is on the local disk or it is part of the jar
    	if(new File(constraintFile).exists() ) {
            try {
@@ -12835,14 +12890,14 @@ public final class SimSt implements Serializable {
            } catch (FileNotFoundException e) {
                e.printStackTrace();
                logger.simStLogException(e);
-           }    		
+           }
    	} else { // For webstart
 	    	ClassLoader cl = this.getClass().getClassLoader();
 	    	InputStream is = cl.getResourceAsStream(constraintFile);
 	    	if(is == null)  //File does not exist in provided jars
 	    		return;
 	    	InputStreamReader isr = new InputStreamReader(is);
-	    	reader = new BufferedReader(isr);    		
+	    	reader = new BufferedReader(isr);
    	}
 
        try {
@@ -13042,34 +13097,34 @@ public final class SimSt implements Serializable {
 
        out.print( Rule.RULE_PREAMBLE_1 );
 
-       String uds = 
-           ( (getUserDefSymbols() != null) ? 
-                   getUserDefSymbols() : 
+       String uds =
+           ( (getUserDefSymbols() != null) ?
+                   getUserDefSymbols() :
                        (getStudentInterfaceClass() + ".UserDefSymbols") );
        out.print("(load-package " + uds + ")\n\n");
 
        out.print(";; ----------------\n;; Production rules\n;; ----------------\n\n");
        Iterator rules = getAllRules();
-       
-	
 
-   	
+
+
+
        while ( rules.hasNext() ) {
-    	  
-    	   	
-       	Rule rule = (Rule)rules.next();  
-       	
-       			
+
+
+       	Rule rule = (Rule)rules.next();
+
+
        	   Vector<Instruction> ruleInstructions= getInstructionsFor(rule.getName());
-       		      	 
+
            out.print(rule.toString(ruleInstructions, this.getSsRete()) + "\n");
 
-     
-           
-           out.print("\n");       
+
+
+           out.print("\n");
        }
-      
-    	/*if (isSs2014FractionAdditionAdhoc()){     		
+
+    	/*if (isSs2014FractionAdditionAdhoc()){
        		try {
 				String doneProduction = new Scanner(new File("doneProduction.txt")).useDelimiter("\\A").next();
 				   out.print(doneProduction + "\n");
@@ -13077,9 +13132,9 @@ public final class SimSt implements Serializable {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-       		
+
        	}*/
-       	
+
    }
 
    // ----------------------------------------------------------------------
@@ -13094,13 +13149,13 @@ public final class SimSt implements Serializable {
 
    // ----------------------------------------------------------------------
    // The MAIN invocation
-   // 
+   //
 
    /**
     * Run SimSt in a batch mode without having a tutor interface
     * Wed Dec 20 17:14:06 LMT 2006 :: Noboru
     * This is necessary to run Stoichiometry Tutor (for the Bootstrapping project),
-    * which does not have Java interface, but only BRDs 
+    * which does not have Java interface, but only BRDs
     *
     * @param args a <code>String[]</code> value
     */
@@ -13118,9 +13173,9 @@ public final class SimSt implements Serializable {
 			new pact.CommWidgets.JCommButton().setCommName("done", controller);
         */
 
-       
-      //nbarba: 01/16/2014: Now MissController has runSimStNoTutorInterface, not SingleSessionLaungher. 
-      //     Miss controller that parses the arquments so 
+
+      //nbarba: 01/16/2014: Now MissController has runSimStNoTutorInterface, not SingleSessionLaungher.
+      //     Miss controller that parses the arquments so
       //     ctatLauncher.runSimStNoTutorInterface();
        ctatLauncher.getController().getMissController().runSimStNoTutorInterface();
 
@@ -13146,7 +13201,7 @@ public final class SimSt implements Serializable {
                String[] widgetName = widgetDef.split("\\t+");
                Class widgetClass = Class.forName(widgetName[1]);
                Object widget = widgetClass.newInstance();
-               Class[] argTypes = new Class[] {String.class, BR_Controller.class};  
+               Class[] argTypes = new Class[] {String.class, BR_Controller.class};
                Method setCommName = widgetClass.getMethod("setCommName", argTypes);
                Object[] arguments = new Object[] {widgetName[0], controller};
                setCommName.invoke(widget, arguments);
@@ -13258,17 +13313,17 @@ public final class SimSt implements Serializable {
 	public int getInstructionCount() {
 		return instructions.size();
 	}
-	
+
 	//Gets a vector listing all of the foas used for an SAI
 	public Vector<String> listFoas(Sai sai) {
 		if(!isFoaGetterDefined())
 			return null;
 		return foaGetter.foaGetterStrings(getBrController(), sai.getS(), sai.getA(), sai.getI(), null);
 	}
-	
-	
+
+
 	public Collection<RuleActivationNode> createOrderedActivationList(	Vector baseList) {
-		
+
 		Collection<RuleActivationNode> activationList;
 	    if(activationListType.equals(ACCURACY_SORTED_ACTIVATION_LIST))
 	    {
@@ -13278,10 +13333,10 @@ public final class SimSt implements Serializable {
 	    {
 	    	activationList = baseList.subList(0, baseList.size());
 	    }
-				
+
 		return activationList;
 	}
-		
+
 
    /*
    public static void main(final String[] args) {
@@ -13332,20 +13387,20 @@ public final class SimSt implements Serializable {
 		  }
 
 	}
-	
+
 	public void saveMTWMState(){
 		try{
-		
+
 			File file = null;
 			//System.out.println(" Web start ? "+isWebStartMode());
 			if(!isWebStartMode())
 //				file = new File(getUserID()+"-wm.xml");
-				
+
 				file = new File(getLogDirectory(), getUserID()+"-wm.xml");
 			else
 				file = new File(WebStartFileDownloader.SimStWebStartDir+getUserID()+"-wm.xml");
 //				file = new File(WebStartFileDownloader.SimStWebStartDir+getUserID()+"_wm.xml");
-			
+
 			ModelTraceWorkingMemory mt = (ModelTraceWorkingMemory) getModelTraceWM().clone();
 			JAXBContext jaxbContext = JAXBContext.newInstance(ModelTraceWorkingMemory.class);
 			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
@@ -13357,8 +13412,8 @@ public final class SimSt implements Serializable {
 		 catch (JAXBException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
-		
+		}
+
 	}
 	public InquiryWebAuthoring getInquiryWebAuthoring() {
 		return inquiryWebAuthoring;
@@ -13366,8 +13421,8 @@ public final class SimSt implements Serializable {
 	public void setInquiryWebAuthoring(InquiryWebAuthoring inquiryWebAuthoring) {
 		this.inquiryWebAuthoring = inquiryWebAuthoring;
 	}
-	
-	
+
+
 }
 
 

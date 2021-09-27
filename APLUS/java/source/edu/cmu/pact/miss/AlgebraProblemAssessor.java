@@ -1,14 +1,13 @@
 package edu.cmu.pact.miss;
 
-import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
-import javax.swing.JOptionPane;
 
 import edu.cmu.pact.BehaviorRecorder.ProblemModel.Graph.EdgeData;
 import edu.cmu.pact.BehaviorRecorder.ProblemModel.Graph.ProblemEdge;
@@ -485,14 +484,26 @@ public class AlgebraProblemAssessor extends ProblemAssessor {
 	 * (non-Javadoc)
 	 * @see edu.cmu.pact.miss.ProblemAssessor#performInteractiveAnswerCheck(edu.cmu.pact.miss.PeerLearning.SimStPLE, java.lang.String, java.lang.String)
 	 */
-	public boolean performInteractiveAnswerCheck(SimStPLE ple, String problem, String solution) 
+	public boolean performInteractiveAnswerCheck(SimStPLE ple, String problem, String solution) {
+		List<String> messages = getInteractiveAnswerCheckMessages(ple, problem, solution);
+		boolean correctness = Boolean.valueOf(messages.get(0));
+		for (String msg: messages.subList(1, messages.size())) {
+			ple.giveMessage(msg);
+			pause();
+		}
+		return correctness;
+	}
+	
+	public List<String> getInteractiveAnswerCheckMessages(SimStPLE ple, String problem, String solution) 
 	{ 
+		List<String> messages = new ArrayList<String>();
+		messages.add("true");
 		DecimalFormat df = new DecimalFormat("#.#####");
 		if(ple == null)
-			return true;
+			return messages;
 		
 		if (solution.equals(NO_SOLUTION))
-			return true;
+			return messages;
 		
 		SimStConversation conversation = ple.getConversation();
 		String var = determineVariable(solution);
@@ -501,15 +512,11 @@ public class AlgebraProblemAssessor extends ProblemAssessor {
 		boolean correctness = false;
 		if(var.length() == 0 || value.length() == 0)
 		{
-			String message = conversation.getMessage(SimStConversation.NO_VAR_VALUE_CHECK_ANS);
-			ple.giveMessage(message);
-			pause();
+			messages.add(conversation.getMessage(SimStConversation.NO_VAR_VALUE_CHECK_ANS));
 		}
 		else
 		{
-			String message = conversation.getMessage(SimStConversation.CHECK_ANSWER, SimSt.convertFromSafeProblemName(problem), null, value, var, -1);
-			ple.giveMessage(message);
-			pause();
+			messages.add(conversation.getMessage(SimStConversation.CHECK_ANSWER, SimSt.convertFromSafeProblemName(problem), null, value, var, -1));
 			ArrayList<String> startStates = ple.getStartStateElements();
 			Double[] plugIns = new Double[2];
 			String[] plugStrs = new String[2];
@@ -534,26 +541,23 @@ public class AlgebraProblemAssessor extends ProblemAssessor {
 				trace.out("ss", "PlugStrs[i] "+plugStrs[i]);
 				trace.out("ss", "PlugExpr "+plugExpr);
 				if(problemParts[i].contains(var))
-					ple.giveMessage(conversation.getMessage(SimStConversation.PLUG_IN, selection, null, problemParts[i], plugExpr, i));
+					messages.add(conversation.getMessage(SimStConversation.PLUG_IN, selection, null, problemParts[i], plugExpr, i));
 				else
-					ple.giveMessage(conversation.getMessage(SimStConversation.NO_VAR_TO_PLUG, selection, null, problemParts[i], plugExpr, i));
-				pause();
-				
+					messages.add(conversation.getMessage(SimStConversation.NO_VAR_TO_PLUG, selection, null, problemParts[i], plugExpr, i));
 			}
 			correctness = (Math.abs(plugIns[0] - plugIns[1]) < .0001);
 			if(correctness)
 			{
-				ple.giveMessage(conversation.getMessage(SimStConversation.BALANCE_CHECK_ANSWER, "", null, plugStrs[0], ""+plugStrs[1], -1));
+				messages.add(conversation.getMessage(SimStConversation.BALANCE_CHECK_ANSWER, "", null, plugStrs[0], ""+plugStrs[1], -1));
 			}
 			else
 			{
-				ple.giveMessage(conversation.getMessage(SimStConversation.NO_BALANCE_CHECK_ANSWER, "", null, ""+plugStrs[0], ""+plugStrs[1], -1));
+				messages.set(0, "false");
+				messages.add(conversation.getMessage(SimStConversation.NO_BALANCE_CHECK_ANSWER, "", null, ""+plugStrs[0], ""+plugStrs[1], -1));
 			}
-			pause();
 			
 		}
-				
-		return correctness;
+		return messages;
 	}
 	
 	private void pause()

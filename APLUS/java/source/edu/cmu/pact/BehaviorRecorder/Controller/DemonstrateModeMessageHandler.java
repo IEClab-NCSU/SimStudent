@@ -392,6 +392,9 @@ public class DemonstrateModeMessageHandler {
                     //InteractiveLearning suppresses this call 
                     AskHintHumanOracle.getSaiDrop().put(new Sai(selection, action, input));
                 }
+                else if (controller.getRunType().equalsIgnoreCase("springboot")) {
+                	//do nothing
+                }
                 else if (controller.getMissController().getSimSt().isInteractiveLearning()) {
                     //do nothing
                     ;

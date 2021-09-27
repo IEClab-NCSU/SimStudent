@@ -409,6 +409,7 @@ public class SimStPLE {
 	private ArrayList<String> startStateElements;
 	private ArrayList<String> availableResources;
 	private ArrayList<SimStExample> examples;
+	private ArrayList<SimStExample> quizQuestions;
 	private Hashtable<String, String> exampleExplanations;
 	private Hashtable<String, LinkedList<Explanation>> mistakeExplanations;
 	private Hashtable<String, LinkedList<Explanation>> problemChoiceExplanations;
@@ -420,6 +421,14 @@ public class SimStPLE {
 
 	public ArrayList<String> getSections() {
 		return sections;
+	}
+	
+	public ArrayList<SimStExample> getQuizQuestions() {
+		return this.quizQuestions;
+	}
+	
+	public void setQuizQuestions(ArrayList<SimStExample> ques) {
+		this.quizQuestions = ques;
 	}
 
 	public ArrayList<String> getStartStateElements() {
@@ -532,12 +541,69 @@ public class SimStPLE {
 	public void resetRestartClickCount() {
 		restartClickCount = 0;
 	}
+	
+	ProblemEdge edge;
+	public ProblemEdge getEdge() {
+		return edge;
+	}
 
+	public void setEdge(ProblemEdge edge) {
+		this.edge = edge;
+	}
+	
+	Sai sai;
+	public Sai getSai() {
+		return sai;
+	}
+
+	public void setSai(Sai sai) {
+		this.sai = sai;
+	}
+	
+	ProblemNode currentNode;
+	
+	public ProblemNode getCurrentNode() {
+		return this.currentNode;
+	}
+	
+	public void setCurrentNode(ProblemNode currentNode) {
+		this.currentNode = currentNode;
+	}
+	
+	String query;
+	public String getQuery() {
+		return query;
+	}
+
+	public void setQuery(String query) {
+		this.query = query;
+	}
+	
+	String undoButtonTextInfo;
+	
+	public String getUndoButtonTextInfo() {
+		return undoButtonTextInfo;
+	}
+
+	public void setUndoButtonTextInfo(String undoButtonTextInfo) {
+		this.undoButtonTextInfo = undoButtonTextInfo;
+	}
+	
+	String undoMessage;
+	
+	public String getUndoMessage() {
+		return undoMessage;
+	}
+
+	public void setUndoMessage(String undoMessage) {
+		this.undoMessage = undoMessage;
+	}
+	
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 	// Constructor
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-	public SimStPLE(BR_Controller brController, SimStPeerTutoringPlatform simStPeerTutoringPlatform) {
+	public SimStPLE(BR_Controller brController, SimStPeerTutoringPlatform simStPeerTutoringPlatform, String problemCountString) {
 		setBrController(brController);
 		getBrController().activateMissController(false);
 
@@ -599,6 +665,13 @@ public class SimStPLE {
 		messageDialog.setLocationRelativeTo(getSimStPeerTutoringPlatform());
 
 		config();
+		
+//		if (runType.equalsIgnoreCase("springboot")) {
+			this.quizQuestions = new ArrayList<SimStExample>();
+//		}
+		
+		if (problemCountString != null)
+			setProblemCount(Integer.parseInt(problemCountString));
 
 		// Load the account information
 		if (getSimSt().isSsAplusCtrlCogTutorMode())
@@ -618,10 +691,8 @@ public class SimStPLE {
 			trace.out("miss", "Loading the instructions now");
 		long startTime = System.currentTimeMillis();
 		boolean loadingSucceeded = false;
-		if(!runType.equals("springBoot")) {
-			loadingSucceeded = getMissController().loadInstDeSerialize();
-		}
-
+		loadingSucceeded = getMissController().loadInstDeSerialize();
+		
 		if (!loadingSucceeded) {
 			if (getSimStPeerTutoringPlatform() != null)
 				getSimStPeerTutoringPlatform().showWaitMessage(true);
@@ -643,6 +714,10 @@ public class SimStPLE {
 		if (trace.getDebugCode("miss"))
 			trace.out("miss", "Restore Model Tracer Working Memory");
 		brController.getMissController().getSimSt().restoreMTWMState();
+	}
+	
+	public SimStPLE(BR_Controller brController, SimStPeerTutoringPlatform simStPeerTutoringPlatform) {
+		this(brController, simStPeerTutoringPlatform, null);
 	}
 
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -886,110 +961,7 @@ public class SimStPLE {
 
 //    	if(accountFile != null && accountFile.exists()) {
 		if (accountInformationExists) {
-			setFirstTimeAPLUS(false);
-//    		try {
-			// initialize the quiz level to zero (just in case)
-			quizLevel = 0;
-
-//    			BufferedReader read = new BufferedReader(new FileReader(accountFile));
-//
-//    			String charName = read.readLine();
-//    			SimSt.setSimStName(charName);
-//
-//    			String imgName = read.readLine();
-//    			getSimSt().setSimStImage(imgName);
-//    			STUDENT_IMAGE = imgName;
-//
-//    			String tmp = read.readLine();
-			if (tmp != null && tmp.length() > 0) {
-				// figure out which quiz it belongs to
-				currentOverallProblem = Integer.parseInt(tmp);
-				currentProblem = currentOverallProblem;
-
-				trace.out("ss", "Overall: " + currentOverallProblem);
-
-				int totalNumberOfProblems = 0;
-				for (int j = 0; j < allQuizProblems.size(); j++)
-					totalNumberOfProblems = totalNumberOfProblems + allQuizProblems.get(j).size();
-
-				// System.out.println(allQuizProblems);
-				int numberOfProblemsInFinalChallenge = allQuizProblems.get(1).size();
-
-				if (currentProblem >= totalNumberOfProblems) { // if we must add a new final challenge section
-
-					int howMany2Add = 1 + (currentProblem - totalNumberOfProblems) / numberOfProblemsInFinalChallenge;
-					int start = allQuizSections.get(allQuizSections.size() - 1).get(0) + 1;
-
-					for (int k = 0; k < howMany2Add; k++) {
-						allQuizProblems.add(allQuizProblems.get(1));
-						ArrayList<Integer> tmpQuizSectionNumber = new ArrayList<Integer>();
-
-						for (int i = 0; i < numberOfProblemsInFinalChallenge; i++)
-							tmpQuizSectionNumber.add(start);
-
-						// add the new quiz section
-						allQuizSections.add(tmpQuizSectionNumber);
-						start++;
-
-					}
-				}
-
-				while (quizLevel < allQuizProblems.size() && currentProblem >= allQuizProblems.get(quizLevel).size()) {
-					// Is not on the correct quiz Level yet
-					currentProblem -= allQuizProblems.get(quizLevel).size();
-					quizLevel++;
-					getSimStPeerTutoringPlatform().addTrophy(false);
-
-				}
-
-				// We don't want to restart, now we have multiple final challenges...
-				// if(quizLevel >= allQuizProblems.size())
-				// quizLevel = 0;
-				quizProblems = allQuizProblems.get(quizLevel);
-				quizSections = allQuizSections.get(quizLevel);
-				// System.out.println(" Quiz Sections completed : "+quizSections +" "+" Quiz
-				// Level "+quizLevel);
-				currentQuizSection = new ArrayList<String>();
-				currentQuizSectionNumber = quizSections.get(currentProblem);
-
-				// if(trace.getDebugCode("miss"))trace.out("miss", "Quiz level passed: " +
-				// currentQuizSectionNumber);
-
-				// brController.getMissController().getSimSt().getModelTraceWM().setQuizLevelPassed(currentQuizSectionNumber);
-
-				// JOptionPane.showMessageDialog(null, "faskelo2 quiz level " +
-				// currentQuizSectionNumber);
-				if (getSimSt().isSsCogTutorMode())
-					this.getSsCognitiveTutor().getSimStLMS().setCurrentSection(currentQuizSectionNumber);
-
-				for (int i = 0; i < quizProblems.size(); i++) {
-					if (quizSections.get(i) == currentQuizSectionNumber) {
-						// always generate new problems after final challenge.
-						// currentQuizSection.add(quizProblems.get(i));
-						currentQuizSection.add(GameShowUtilities.generate(quizProblems.get(i)));
-					}
-				}
-
-				int addedSectionCnt = 2; // this means that first added final challenge will be final challenge 2
-				// newSectionTitleBase=sections.get(sections.size()-1);
-				newSectionTitleBase = sections.get(3);
-				if (newSectionTitleBase.startsWith("-"))
-					newSectionTitleBase = newSectionTitleBase.substring(1);
-
-				while (currentQuizSectionNumber >= sections.size()) {
-					// String newSectionTitle=newSectionTitleBase +" " +addedSectionCnt;
-					String newSectionTitle = "Final Challenge" + " " + addedSectionCnt;
-					sections.add(newSectionTitle);
-					addedSectionCnt++;
-					setHasPassedFinalChallenge(true);
-				}
-
-				// add appropriate section medals
-				// divide by getProblemsPerQuiz to give 1 medal/section
-				if (getSimStPeerTutoringPlatform() != null)
-					getSimStPeerTutoringPlatform().augmentMedals(currentProblem, false);
-
-			}
+			initQuizInfo(tmp);
 
 //    			read.close();
 
@@ -1017,6 +989,114 @@ public class SimStPLE {
 					SimSt.setSimStName("Practice");
 					SimStPLE.saveAccountFile(simSt.getUserID() + ".account");				}
 			}
+		}
+	}
+	
+	public void initQuizInfo(String currentOverallProblemString) {
+		setFirstTimeAPLUS(false);
+//		try {
+		// initialize the quiz level to zero (just in case)
+		quizLevel = 0;
+
+//			BufferedReader read = new BufferedReader(new FileReader(accountFile));
+//
+//			String charName = read.readLine();
+//			SimSt.setSimStName(charName);
+//
+//			String imgName = read.readLine();
+//			getSimSt().setSimStImage(imgName);
+//			STUDENT_IMAGE = imgName;
+//
+//			String tmp = read.readLine();
+		if (currentOverallProblemString != null && currentOverallProblemString.length() > 0) {
+			// figure out which quiz it belongs to
+			currentOverallProblem = Integer.parseInt(currentOverallProblemString);
+			currentProblem = currentOverallProblem;
+
+			trace.out("ss", "Overall: " + currentOverallProblem);
+
+			int totalNumberOfProblems = 0;
+			for (int j = 0; j < allQuizProblems.size(); j++)
+				totalNumberOfProblems = totalNumberOfProblems + allQuizProblems.get(j).size();
+
+			// System.out.println(allQuizProblems);
+			int numberOfProblemsInFinalChallenge = allQuizProblems.get(1).size();
+
+			if (currentProblem >= totalNumberOfProblems) { // if we must add a new final challenge section
+
+				int howMany2Add = 1 + (currentProblem - totalNumberOfProblems) / numberOfProblemsInFinalChallenge;
+				int start = allQuizSections.get(allQuizSections.size() - 1).get(0) + 1;
+
+				for (int k = 0; k < howMany2Add; k++) {
+					allQuizProblems.add(allQuizProblems.get(1));
+					ArrayList<Integer> tmpQuizSectionNumber = new ArrayList<Integer>();
+
+					for (int i = 0; i < numberOfProblemsInFinalChallenge; i++)
+						tmpQuizSectionNumber.add(start);
+
+					// add the new quiz section
+					allQuizSections.add(tmpQuizSectionNumber);
+					start++;
+
+				}
+			}
+
+			while (quizLevel < allQuizProblems.size() && currentProblem >= allQuizProblems.get(quizLevel).size()) {
+				// Is not on the correct quiz Level yet
+				currentProblem -= allQuizProblems.get(quizLevel).size();
+				quizLevel++;
+				if (!runType.equals("springBoot"))
+					getSimStPeerTutoringPlatform().addTrophy(false);
+
+			}
+
+			// We don't want to restart, now we have multiple final challenges...
+			// if(quizLevel >= allQuizProblems.size())
+			// quizLevel = 0;
+			quizProblems = allQuizProblems.get(quizLevel);
+			quizSections = allQuizSections.get(quizLevel);
+			// System.out.println(" Quiz Sections completed : "+quizSections +" "+" Quiz
+			// Level "+quizLevel);
+			currentQuizSection = new ArrayList<String>();
+			currentQuizSectionNumber = quizSections.get(currentProblem);
+
+			// if(trace.getDebugCode("miss"))trace.out("miss", "Quiz level passed: " +
+			// currentQuizSectionNumber);
+
+			// brController.getMissController().getSimSt().getModelTraceWM().setQuizLevelPassed(currentQuizSectionNumber);
+
+			// JOptionPane.showMessageDialog(null, "faskelo2 quiz level " +
+			// currentQuizSectionNumber);
+			if (getSimSt().isSsCogTutorMode())
+				this.getSsCognitiveTutor().getSimStLMS().setCurrentSection(currentQuizSectionNumber);
+
+			for (int i = 0; i < quizProblems.size(); i++) {
+				if (quizSections.get(i) == currentQuizSectionNumber) {
+					// always generate new problems after final challenge.
+					// currentQuizSection.add(quizProblems.get(i));
+					currentQuizSection.add(GameShowUtilities.generate(quizProblems.get(i)));
+				}
+			}
+
+			int addedSectionCnt = 2; // this means that first added final challenge will be final challenge 2
+			// newSectionTitleBase=sections.get(sections.size()-1);
+			newSectionTitleBase = sections.get(3);
+			if (newSectionTitleBase.startsWith("-"))
+				newSectionTitleBase = newSectionTitleBase.substring(1);
+
+			while (currentQuizSectionNumber >= sections.size()) {
+				// String newSectionTitle=newSectionTitleBase +" " +addedSectionCnt;
+				String newSectionTitle = "Final Challenge" + " " + addedSectionCnt;
+				sections.add(newSectionTitle);
+				addedSectionCnt++;
+				setHasPassedFinalChallenge(true);
+			}
+
+			// add appropriate section medals
+			// divide by getProblemsPerQuiz to give 1 medal/section
+			if (getSimStPeerTutoringPlatform() != null)
+				getSimStPeerTutoringPlatform().augmentMedals(currentProblem, false);
+
 		}
 	}
 
@@ -1869,10 +1949,12 @@ public class SimStPLE {
 			unsolvedProblemsQueue = new LinkedList();
 		}
 
-		if (!flag)
-			getSimStPeerTutoringPlatform().clearQuizzes();
-		else
-			getSimStPeerTutoringPlatform().clearQuizzesFinalChallenge();
+		if (getSimStPeerTutoringPlatform() != null) {
+			if (!flag)
+				getSimStPeerTutoringPlatform().clearQuizzes();
+			else
+				getSimStPeerTutoringPlatform().clearQuizzesFinalChallenge();			
+		}
 
 		/* this is to ensure that only one unlocked section exists in APLUS CogTutor */
 		boolean unlockedSectionShown = false;
@@ -1984,12 +2066,12 @@ public class SimStPLE {
 				quizProblem.setSection(quizSections.get(i));
 			}
 
-			if (this.getSimSt().isSsAplusCtrlCogTutorMode()) {
+			if (this.getSimSt().isSsAplusCtrlCogTutorMode() && getSimStPeerTutoringPlatform() != null) {
 				((AplusPlatform) getSimStPeerTutoringPlatform()).addQuizLabelIcon(quizProblem, false);
 				// JOptionPane.showMessageDialog(null, "quizProblem " + quizProblem.getTitle());
-			} else
+			} else if (getSimStPeerTutoringPlatform() != null)
 				getSimStPeerTutoringPlatform().addQuiz(quizProblem);
-
+			this.quizQuestions.add(quizProblem);
 		}
 	}
 
@@ -2185,7 +2267,9 @@ public class SimStPLE {
 	}
 
 	public void undo() {
-		setFocusTab(SIM_ST_TAB);
+		if(!runType.equals("springBoot")) {
+			setFocusTab(SIM_ST_TAB);
+		}
 		new Thread(new UndoThread()).start();
 	}
 
@@ -2194,7 +2278,7 @@ public class SimStPLE {
 	private String wasNormal = "Was Normal HintRequest";
 	private String wasVerify = "Was Verifying Production";
 
-	class UndoThread implements Runnable {
+	public class UndoThread implements Runnable {
 		private String undoThroughSelection = "";
 
 		public UndoThread() {
@@ -2402,145 +2486,196 @@ public class SimStPLE {
 
 			// JOptionPane.showMessageDialog(null,
 			// ((ProblemEdge)brController.getCurrentNode().getIncomingEdges().get(0)).getSai());
-
-			blockInput(true);
+			if(!runType.equals("springBoot")) {
+				blockInput(true);
+			}
 
 			ProblemEdge edge = ((ProblemEdge) brController.getCurrentNode().getIncomingEdges().get(0));
 			Sai sai = edge.getSai();
+			
 
-			Object obj = brController.lookupWidgetByName(sai.getS());
-			if (obj != null && obj instanceof JCommTable.TableCell) {
-				((JCommTable.TableCell) obj).setBackground(Color.pink);
+			if(!runType.equals("springBoot")) {
+				Object obj = brController.lookupWidgetByName(sai.getS());
+				if (obj != null && obj instanceof JCommTable.TableCell) {
+					((JCommTable.TableCell) obj).setBackground(Color.pink);
+				}
 			}
 
 			String query = generateUndoQueryMessage(sai.getS(), sai.getA(), sai.getI());
-			int result = simSt.displayConfirmMessage("Undo?", query);
+			int result = 0;
+			setEdge(edge);
+			setSai(sai);
+			setQuery(query);
+			
+			if(!runType.equals("springBoot")) {
+				result = simSt.displayConfirmMessage("Undo?", query);
+				Object obj = brController.lookupWidgetByName(sai.getS());
 
-			if (obj != null && obj instanceof JCommTable.TableCell) {
-				((JCommTable.TableCell) obj).setBackground(Color.white);
-			}
-
-			if (result == JOptionPane.YES_OPTION) {
-
-				if (trace.getDebugCode("rr"))
-					trace.out("rr", "Modeltracing the student action: " + SimStPLE.UNDO + "  ButtonPressed" + "  -1");
-				if (simSt.isSsMetaTutorMode() && brController.getAmt() != null)
-					brController.getAmt().handleInterfaceAction(SimStPLE.UNDO, "ButtonPressed", "-1");
-
-				String currentStatus = wasNormal;
-				if (!simSt.isInteractiveLearning()) {
-					if (brController.getCurrentNode().getDoneState())
-						currentStatus = wasDone;
-					else
-						currentStatus = wasFailToLearn;
+				if (obj != null && obj instanceof JCommTable.TableCell) {
+					((JCommTable.TableCell) obj).setBackground(Color.white);
 				}
-
-				// AskHint hint = new AskHintInBuiltClAlgebraTutor(brController,
-				// edge.getSource());
-				// CL oracle must not be hardcoded! Whichever oracle grades the quiz should
-				// provide hint for logging
-				AskHint hint = simSt.askForHintQuizGradingOracle(brController, edge.getSource());
-
-				if (hint != null) {
-					/*
-					 * if(simSt.isSsMetaTutorMode()) { if(simSt.getModelTraceWM() != null) {
-					 * simSt.getModelTraceWM().setStepUndone(WorkingMemoryConstants.TRUE); } }
-					 */
-					// if(getSimSt().isSsMetaTutorMode()) {
-					// getSimSt().getModelTraceWM().getEventHistory().add(0,
-					// getSimSt().getModelTraceWM().new Event(SimStLogger.UNDO_ACTION));
-					// }
-
-					int problemDuration = (int) ((Calendar.getInstance().getTimeInMillis()
-							- getSsInteractiveLearning().getProblemRecentTime()) / 1000);
-					getSsInteractiveLearning().setProblemRecentTime(Calendar.getInstance().getTimeInMillis());
-
-					logger.simStLog(SimStLogger.SIM_STUDENT_STEP, SimStLogger.UNDO_ACTION, simSt.getProblemStepString(),
-							currentStatus, "", sai, edge.getSource(), hint.getSelection(), hint.getAction(),
-							hint.getInput(), problemDuration, query);
-
-				}
-
-				boolean traversed = false;
-				// undo!
-
-				if (edge.getSource().isStudentBeginsHereState()) {
-					brController.goToStartState();
-					traversed = true;
+				
+				if (result == JOptionPane.YES_OPTION) {
+					onUndoYes(edge, sai, query);
 				} else {
-					traversed = brController.goToState(edge.getSource());
-				}
-				// JOptionPane.showMessageDialog(null, "Done Node Style: "+traversed);
-
-				// Learning must be started again and let it handle it (but do stop it from
-				// coming up with activation lists again - after undo SimStudent expects
-				// Student to enter hint)
-
-				if (traversed) {
-					if (edge.getSource().getInDegree() > 0) {
-						ProblemEdge prev = (ProblemEdge) edge.getSource().getIncomingEdges().get(0);
-
-						getSimStPeerTutoringPlatform().setUndoButtonText(getUndoButtonTitleString(prev.getInput()));
-					} else {
-						getSimStPeerTutoringPlatform().setUndoButtonText(getUndoButtonTitleString());
-					}
-
-					if (currentStatus.equals(wasDone)) {
-						simSt.displayMessage("SimStudent says...", BACK_TO_WORK_MSG);
-					} else {
-						simSt.displayMessage("SimStudent asks...", SHOULD_DO_MSG.replace("$", sai.getI()));
-						if (simSt.getLastSkillOperand() == null) {
-							String NOTHING_DONE_YET = "I don't remember having done anything before that...";
-							simSt.displayMessage(null, NOTHING_DONE_YET);
-						} else if (!simSt.getLastSkillOperand().equals(sai.getI())) {
-							simSt.displayMessage("SimStudent says...",
-									"I remember I was trying to " + simSt.getLastSkillOperand() + ".");
-						} else {
-							String tmp = simSt.revertLastSkillOperand();
-						}
-					}
-
-					Instruction inst = simSt.lookupInstructionWithNode(edge.getDest());
-					simSt.negateBadPositiveExample(inst);
-					simSt.signalInstructionAsNegativeExample(inst);
-
-					simSt.setIsInteractiveLearning(true);
-					getSsInteractiveLearning().runInteractiveLearning(edge.getSource(), false);
-				}
-
-				/*
-				 * if(!simSt.isInteractiveLearning()) { //if(edge.getDest().getDoneState()) //{
-				 * if(edge.getSource().isStudentBeginsHereState()) {
-				 * brController.goToStartState(); traversed = true; } else { traversed =
-				 * brController.goToState(edge.getSource()); }
-				 * //JOptionPane.showMessageDialog(null, "Done Node Style: "+traversed);
-				 * 
-				 * //Learning must be started again when undoing a done state, so handle this
-				 * differently //with messaging - just restart the learning and let it handle it
-				 * (but do stop it from //coming up with activation lists again - after undo
-				 * SimStudent expects Student to enter hint)
-				 * 
-				 * if(traversed) { simSt.setIsInteractiveLearning(true);
-				 * getSsInteractiveLearning().runInteractiveLearning(edge.getSource(),false); }
-				 * return; //} } else if(edge.getSource().isStudentBeginsHereState()) {
-				 * brController.goToStartState(); traversed = true;
-				 * simSt.displayMessage("SimStudent asks...", SHOULD_DO_MSG); } else { traversed
-				 * = brController.goToState(edge.getSource()); if(traversed)
-				 * simSt.displayMessage("SimStudent asks...", SHOULD_DO_MSG); } if(!traversed) {
-				 * simSt.displayMessage("Error", UNDO_ERROR_MSG); return; } String newStep =
-				 * simSt.calcProblemStepString(); simSt.setProblemStepString(newStep);
-				 * logger.simStLog(SimStLogger.SIM_STUDENT_STEP,
-				 * SimStLogger.STEP_STARTED_ACTION, newStep,"",""); blockInput(false);
-				 */
-			} else {
-				if (!brController.getCurrentNode().getDoneState()) {
-					blockInput(false);
-					simSt.displayMessage("SimStudent asks...", RESUME_MSG);
+					onUndoNo();
 				}
 			}
+		}
+
+	}
+	
+	public void onUndoYes(ProblemEdge edge, Sai sai, String query) {
+		if (trace.getDebugCode("rr"))
+			trace.out("rr", "Modeltracing the student action: " + SimStPLE.UNDO + "  ButtonPressed" + "  -1");
+		if (simSt.isSsMetaTutorMode() && brController.getAmt() != null)
+			brController.getAmt().handleInterfaceAction(SimStPLE.UNDO, "ButtonPressed", "-1");
+
+		String currentStatus = wasNormal;
+		if (!simSt.isInteractiveLearning()) {
+			if (brController.getCurrentNode().getDoneState())
+				currentStatus = wasDone;
+			else
+				currentStatus = wasFailToLearn;
+		}
+
+		// AskHint hint = new AskHintInBuiltClAlgebraTutor(brController,
+		// edge.getSource());
+		// CL oracle must not be hardcoded! Whichever oracle grades the quiz should
+		// provide hint for logging
+		AskHint hint = simSt.askForHintQuizGradingOracle(brController, edge.getSource());
+
+		if (hint != null) {
+			/*
+			 * if(simSt.isSsMetaTutorMode()) { if(simSt.getModelTraceWM() != null) {
+			 * simSt.getModelTraceWM().setStepUndone(WorkingMemoryConstants.TRUE); } }
+			 */
+			// if(getSimSt().isSsMetaTutorMode()) {
+			// getSimSt().getModelTraceWM().getEventHistory().add(0,
+			// getSimSt().getModelTraceWM().new Event(SimStLogger.UNDO_ACTION));
+			// }
+
+			int problemDuration = (int) ((Calendar.getInstance().getTimeInMillis()
+					- getSsInteractiveLearning().getProblemRecentTime()) / 1000);
+			getSsInteractiveLearning().setProblemRecentTime(Calendar.getInstance().getTimeInMillis());
+
+			logger.simStLog(SimStLogger.SIM_STUDENT_STEP, SimStLogger.UNDO_ACTION, simSt.getProblemStepString(),
+					currentStatus, "", sai, edge.getSource(), hint.getSelection(), hint.getAction(),
+					hint.getInput(), problemDuration, query);
 
 		}
 
+		boolean traversed = false;
+		// undo!
+
+		if (edge.getSource().isStudentBeginsHereState()) {
+			brController.goToStartState();
+			traversed = true;
+		} else {
+			traversed = brController.goToState(edge.getSource());
+		}
+		// JOptionPane.showMessageDialog(null, "Done Node Style: "+traversed);
+
+		// Learning must be started again and let it handle it (but do stop it from
+		// coming up with activation lists again - after undo SimStudent expects
+		// Student to enter hint)
+
+		if (traversed) {
+			if (edge.getSource().getInDegree() > 0) {
+				ProblemEdge prev = (ProblemEdge) edge.getSource().getIncomingEdges().get(0);
+				if(runType.equals("springBoot")) {
+					setUndoButtonTextInfo(getUndoButtonTitleString(prev.getInput()));
+				} else {
+					getSimStPeerTutoringPlatform().setUndoButtonText(getUndoButtonTitleString(prev.getInput()));
+				}
+			} else {
+				if(runType.equals("springBoot")) {
+					setUndoButtonTextInfo(getUndoButtonTitleString());
+				} else {
+					getSimStPeerTutoringPlatform().setUndoButtonText(getUndoButtonTitleString());
+				}
+			}
+			
+			if(runType.equals("springBoot")) {
+				String undoMsg = "";
+				if (currentStatus.equals(wasDone)) {
+					undoMsg = BACK_TO_WORK_MSG;
+				} else {
+					undoMsg = SHOULD_DO_MSG.replace("$", sai.getI());
+					if (simSt.getLastSkillOperand() == null) {
+						String NOTHING_DONE_YET = "I don't remember having done anything before that...";
+						undoMsg += "\n"+ NOTHING_DONE_YET;
+					} else if (!simSt.getLastSkillOperand().equals(sai.getI())) {
+						undoMsg += "\n" +"I remember I was trying to " + simSt.getLastSkillOperand() + ".";
+					} else {
+						String tmp = simSt.revertLastSkillOperand();
+					}
+				}
+				setUndoMessage(undoMsg);
+			} else {
+				if (currentStatus.equals(wasDone)) {
+					simSt.displayMessage("SimStudent says...", BACK_TO_WORK_MSG);
+				} else {
+					simSt.displayMessage("SimStudent asks...", SHOULD_DO_MSG.replace("$", sai.getI()));
+					if (simSt.getLastSkillOperand() == null) {
+						String NOTHING_DONE_YET = "I don't remember having done anything before that...";
+						simSt.displayMessage(null, NOTHING_DONE_YET);
+					} else if (!simSt.getLastSkillOperand().equals(sai.getI())) {
+						simSt.displayMessage("SimStudent says...",
+							"I remember I was trying to " + simSt.getLastSkillOperand() + ".");
+					} else {
+						String tmp = simSt.revertLastSkillOperand();
+					}
+				}
+			}
+
+			Instruction inst = simSt.lookupInstructionWithNode(edge.getDest());
+			simSt.negateBadPositiveExample(inst);
+			simSt.signalInstructionAsNegativeExample(inst);
+
+			simSt.setIsInteractiveLearning(true);
+			if (runType.equalsIgnoreCase("springboot")) {
+				this.setCurrentNode(edge.getSource());
+			} else {
+				getSsInteractiveLearning().runInteractiveLearning(edge.getSource(), false);				
+			}
+		}
+
+		/*
+		 * if(!simSt.isInteractiveLearning()) { //if(edge.getDest().getDoneState()) //{
+		 * if(edge.getSource().isStudentBeginsHereState()) {
+		 * brController.goToStartState(); traversed = true; } else { traversed =
+		 * brController.goToState(edge.getSource()); }
+		 * //JOptionPane.showMessageDialog(null, "Done Node Style: "+traversed);
+		 * 
+		 * //Learning must be started again when undoing a done state, so handle this
+		 * differently //with messaging - just restart the learning and let it handle it
+		 * (but do stop it from //coming up with activation lists again - after undo
+		 * SimStudent expects Student to enter hint)
+		 * 
+		 * if(traversed) { simSt.setIsInteractiveLearning(true);
+		 * getSsInteractiveLearning().runInteractiveLearning(edge.getSource(),false); }
+		 * return; //} } else if(edge.getSource().isStudentBeginsHereState()) {
+		 * brController.goToStartState(); traversed = true;
+		 * simSt.displayMessage("SimStudent asks...", SHOULD_DO_MSG); } else { traversed
+		 * = brController.goToState(edge.getSource()); if(traversed)
+		 * simSt.displayMessage("SimStudent asks...", SHOULD_DO_MSG); } if(!traversed) {
+		 * simSt.displayMessage("Error", UNDO_ERROR_MSG); return; } String newStep =
+		 * simSt.calcProblemStepString(); simSt.setProblemStepString(newStep);
+		 * logger.simStLog(SimStLogger.SIM_STUDENT_STEP,
+		 * SimStLogger.STEP_STARTED_ACTION, newStep,"",""); blockInput(false);
+		 */
+	}
+	
+	public void onUndoNo() {
+		if (!brController.getCurrentNode().getDoneState()) {
+			if(runType.equals("springBoot")) {
+				setUndoMessage(RESUME_MSG);
+			} else {
+				blockInput(false);
+				simSt.displayMessage("SimStudent asks...", RESUME_MSG);
+			}
+		}
 	}
 
 	public String generateUndoQueryMessage(String selection, String action, String input) {
@@ -3917,7 +4052,8 @@ public class SimStPLE {
 		// getSimStPeerTutoringPlatform().getSimStAvatarLayerIcon().setBorder(BorderFactory.createLineBorder(Color.green,
 		// BORDER_WIDTH));
 		// Do not allow editing of values once avatar is done
-		blockInput(true);
+		if(!runType.equals("springBoot"))
+			blockInput(true);
 		// jinyul - Save instructions now that a particular problem has been finished.
 		if (trace.getDebugCode("miss"))
 			trace.out("miss", "Enter setAvatarFinished to call autoSaveInstructions()");
@@ -3928,11 +4064,12 @@ public class SimStPLE {
 		giveMessage(conversation.getMessage(SimStConversation.SOLVED_TOPIC));
 		startStatus = false;
 		// getSimStPeerTutoringPlatform().setImage(STUDENT_SUCCESS_IMAGE);
-		getSimStPeerTutoringPlatform().setExpression(SUCCESS_EXPRESSION);
-		getSimStPeerTutoringPlatform().setUndoButtonEnabled(true);
-		getSimStPeerTutoringPlatform().setRestartButtonEnabled(true);
-		getSimStPeerTutoringPlatform().setWait(false);
-
+		if(!runType.equals("springBoot")) {
+			getSimStPeerTutoringPlatform().setExpression(SUCCESS_EXPRESSION);
+			getSimStPeerTutoringPlatform().setUndoButtonEnabled(true);
+			getSimStPeerTutoringPlatform().setRestartButtonEnabled(true);
+			getSimStPeerTutoringPlatform().setWait(false);
+		}
 		if (brController != null && brController.getMissController().getSimSt().isSsMetaTutorMode()) {
 			// keep the previous problem just in case student clicks restart
 
@@ -3946,7 +4083,8 @@ public class SimStPLE {
 		// getSimStPeerTutoringPlatform().getSimStAvatarLayerIcon().setBorder(BorderFactory.createLineBorder(Color.green,
 		// BORDER_WIDTH));
 		// Do not allow editing of values once avatar is done
-		blockInput(true);
+		if(!runType.equals("springBoot"))
+			blockInput(true);
 		// jinyul - Save instructions now that a particular problem has been finished.
 		if (trace.getDebugCode("miss"))
 			trace.out("miss", "Enter setAvatarFinished to call autoSaveInstructions()");
@@ -3955,11 +4093,12 @@ public class SimStPLE {
 		getMissController().getSimSt().saveSimStState();
 		giveMessage(conversation.getMessage(SimStConversation.VERIFY_WRONG));
 		startStatus = false;
-		getSimStPeerTutoringPlatform().setExpression(CONFUSE_EXPRESSION);
-		getSimStPeerTutoringPlatform().setUndoButtonEnabled(true);
-		getSimStPeerTutoringPlatform().setRestartButtonEnabled(true);
-		getSimStPeerTutoringPlatform().setWait(false);
-
+		if(!runType.equals("springBoot")) {
+			getSimStPeerTutoringPlatform().setExpression(CONFUSE_EXPRESSION);
+			getSimStPeerTutoringPlatform().setUndoButtonEnabled(true);
+			getSimStPeerTutoringPlatform().setRestartButtonEnabled(true);
+			getSimStPeerTutoringPlatform().setWait(false);
+		}
 		// if (brController!=null &&
 		// brController.getMissController().getSimSt().isSsMetaTutorMode() )
 		// brController.getMissController().getSimSt().getModelTraceWM().setStudentEnteredProblem(null);
@@ -3974,7 +4113,8 @@ public class SimStPLE {
 		// BORDER_WIDTH));
 		// Do not allow editing of values while avatar is thinking - disable all cells
 		// of tables
-		blockInput(true);
+		if(!runType.equals("springBoot"))
+			blockInput(true);
 		// giveMessage(THINK_MESSAGE);
 		giveMessage(conversation.getMessage(SimStConversation.THINK_TOPIC));
 		startStatus = false;
@@ -4755,13 +4895,13 @@ public class SimStPLE {
 
 		boolean passed = false;
 		String problemName1 = "";
-		if (!runType.equals("springBoot")) {
+		if (runType.equals("springBoot")) { 
+			passed = getSimSt().getInputChecker().checkVariables(inputs.get(0), inputs.get(1));
+    		problemName1 = createComponentName(inputs);
+		} else {
 			passed = checkVariableUsedStartState();
 			problemName1 = simSt.getSsInteractiveLearning()
 					.createName(getSimStPeerTutoringPlatform().getStudentInterface().getComponents());
-		} else {
-			passed = getSimSt().getInputChecker().checkVariables(inputs.get(0), inputs.get(1));
-    		problemName1 = createComponentName(inputs);
 		}
 		String prob = SimSt.convertFromSafeProblemName(problemName1);
 
@@ -4783,11 +4923,11 @@ public class SimStPLE {
 		if (simSt.isStartStateCheckerDefined() && brController.getMissController().isSimStPleOn()
 				&& simSt.isSsMetaTutorMode()) {
 			String problemName = "";
-			if (!runType.equals("springBoot")) {
+			if (runType.equals("springBoot")) {
+				problemName = createComponentName(inputs);
+			} else {
 				problemName = simSt.getSsInteractiveLearning()
 						.createName(getSimStPeerTutoringPlatform().getStudentInterface().getComponents());
-			} else {
-				problemName = createComponentName(inputs);
 			}
 			
 			boolean isOKProblem = simSt.getStartStateChecker()
@@ -4804,11 +4944,11 @@ public class SimStPLE {
 		
 		if (simSt.isSsMetaTutorMode() || simSt.isSsAplusCtrlCogTutorMode()) {
 			String problemName = "";
-			if (!runType.equals("springBoot")) {
+			if (runType.equals("springBoot")) {
+				problemName = createComponentName(inputs);
+			} else {
 				problemName = simSt.getSsInteractiveLearning()
 						.createName(getSimStPeerTutoringPlatform().getStudentInterface().getComponents());
-			} else {
-				problemName = createComponentName(inputs);
 			}
 			boolean solveable = simSt.getSsInteractiveLearning().isSolvable(simSt.getProblemCheckerOracle(),
 					problemName, brController);
@@ -4822,10 +4962,10 @@ public class SimStPLE {
 		
 		if (!passed) {
 			String message = "";
-			if (!runType.equals("springBoot")) {
-				message = getSimSt().getInputChecker().invalidVariablesMessage(cellText1, cellText1);
-			} else {
+			if (runType.equals("springBoot")) {
 				message = getSimSt().getInputChecker().invalidVariablesMessage(inputs.get(0), inputs.get(1));
+			} else {
+				message = getSimSt().getInputChecker().invalidVariablesMessage(cellText1, cellText1);
 			}
 			quesMessage.add("false");
 			quesMessage.add(message);
@@ -4843,7 +4983,7 @@ public class SimStPLE {
 	public String createComponentName(List<String> inputs) {
 		String componentName = "";
 		for(int i = 0; i < inputs.size(); i++) {
-			if(componentName.length() > 1) {
+			if(componentName.length() > 0) {
 				componentName += "_"+ inputs.get(i);
 			} else {
 				componentName += inputs.get(i);
@@ -5474,12 +5614,22 @@ public class SimStPLE {
 		getSimStPeerTutoringPlatform().unlockQuiz(currentQuizSectionNumber);
 
 	}
+	
+	private String quizAssessment;
+	
+	public String getQuizAssessment() {
+		return this.quizAssessment;
+	}
+	
+	public void setQuizAssessment(String qa) {
+		this.quizAssessment = qa;
+	}
 
 	/**
 	 * Starts the quiz in a separate thread using our own graph-model. See
 	 * {@link SimStProblemGraph}.
 	 */
-	class SSQuizThread implements Runnable {
+	public class SSQuizThread implements Runnable {
 
 		public void run() {
 			// Adding the synchronized block on the whole quiz. If two threads come in only
@@ -5487,6 +5637,9 @@ public class SimStPLE {
 			// acquires the lock goes ahead while the other waits.
 
 			System.out.println(" This is the quiz !!! ");
+			if (runType.equalsIgnoreCase("springboot")) {
+				return;
+			}
 			synchronized (quizLock) {
 
 				if (currentQuizSectionNumber == sections.size())
@@ -5525,9 +5678,9 @@ public class SimStPLE {
 				// getSimSt().setRuleActivationTestMethod(SimSt.RA_TEST_METHOD_TUTOR_SOLVERV2);
 
 				setAvatarQuiz();
-				getSsInteractiveLearning().setTakingQuiz(true);
+				getSsInteractiveLearning().setTakingQuiz(true); // w
 
-				Vector<SimStExample> results = startQuizProblems(); // Start solving the problems
+				Vector<SimStExample> results = startQuizProblems(); // Start solving the problems // w - return results
 
 				for (int i = 0; i < results.size(); i++) {
 					getSimStPeerTutoringPlatform().addQuiz(results.get(i));
@@ -5544,9 +5697,9 @@ public class SimStPLE {
 					getSimStPeerTutoringPlatform().augmentMedals(
 							currentProblem + currentCorrect - getSimStPeerTutoringPlatform().getMedalCount(), true);
 
-				int percent = ((currentCorrect + currentProblem) * 100 / quizProblems.size());
+				int percent = ((currentCorrect + currentProblem) * 100 / quizProblems.size()); // w
 				if (percent >= 100) {
-					quizPassed = true;
+					quizPassed = true; // w
 				}
 
 				getSimStPeerTutoringPlatform().showQuizResultFrame(true);
@@ -5559,7 +5712,7 @@ public class SimStPLE {
 				String sectn = sections.get(currentQuizSectionNumber);
 				if (sectn.startsWith("-"))
 					sectn = sectn.substring(1);
-				String quizAssessment = "I've graded " + SimSt.getSimStName() + "'s quiz on " + sectn + ".\n\n";
+				String quizAssessment = "I've graded " + SimSt.getSimStName() + "'s quiz on " + sectn + ".\n\n"; // w
 
 				if (currentCorrect == currentQuizSection.size()) {
 
@@ -5611,7 +5764,7 @@ public class SimStPLE {
 				}
 
 				if (!quizPassed) {
-					giveDialogMessage(quizAssessment);
+					giveDialogMessage(quizAssessment); // w return this with results
 				}
 
 				getSimStPeerTutoringPlatform().setQuizButtonEnabled(true);
@@ -5772,6 +5925,153 @@ public class SimStPLE {
 
 			}
 		}
+	
+		public Vector<SimStExample> takeQuiz() {
+			return takeQuiz(null);
+		}
+		
+		public Vector<SimStExample> takeQuiz(MouseListener[] mListeners) {
+			boolean dontShowAllRA = getSimSt().dontShowAllRA();
+			getSimSt().setDontShowAllRA(true);
+			boolean ilSignalNegative = getSimSt().isILSignalNegative();
+			getSimSt().setIlSignalNegative(false);
+			boolean ilSignalPositive = getSimSt().isILSignalPositive();
+			getSimSt().setIlSignalPositive(false);
+			String raTestMethod = getSimSt().getRuleActivationTestMethod();
+
+			// now from command line we can define either jess oracle or CL oracle
+			getSimSt().setRuleActivationTestMethod(getSimSt().getQuizGradingMethod());
+			// getSimSt().setRuleActivationTestMethod(SimSt.RA_TEST_METHOD_TUTOR_SOLVERV2);
+
+			if (!runType.equalsIgnoreCase("springboot")) {
+				setAvatarQuiz();				
+			}
+			getSsInteractiveLearning().setTakingQuiz(true); // w
+
+			Vector<SimStExample> results = startQuizProblems(); // Start solving the problems // w - return results
+
+			if (!runType.equalsIgnoreCase("springboot")) {
+				for (int i = 0; i < results.size(); i++) {
+					getSimStPeerTutoringPlatform().addQuiz(results.get(i));
+					trace.out("ss",
+							"Problem: " + results.get(i).getTitle() + " Section: " + results.get(i).getSection());
+				}
+			}
+
+			trace.out("ss", "Taking the Quiz ()()()()())()()()()()()()()()()()()()())))()()");
+			trace.out("ss",
+					"Current Problem: " + currentProblem + " Current Quiz Section #: " + currentQuizSectionNumber);
+
+			// displayQuizResultsAlgebra(results);
+			
+			if (!runType.equalsIgnoreCase("springboot")) {
+				if (getSimStPeerTutoringPlatform().getMedalCount() < currentProblem + currentCorrect)
+					getSimStPeerTutoringPlatform().augmentMedals(
+							currentProblem + currentCorrect - getSimStPeerTutoringPlatform().getMedalCount(), true);
+			}
+				
+			int percent = ((currentCorrect + currentProblem) * 100 / quizProblems.size()); // w
+			if (percent >= 100) {
+				quizPassed = true; // w
+			}
+
+			if (!runType.equalsIgnoreCase("springboot")) {
+				getSimStPeerTutoringPlatform().showQuizResultFrame(true);
+			}
+
+			AplusPlatform aplus = (AplusPlatform) getSimStPeerTutoringPlatform();
+
+			// aplus.setQuizButtonImg("img/quiz_again.png");
+			// aplus.refresh();
+
+			String sectn = sections.get(currentQuizSectionNumber);
+			if (sectn.startsWith("-"))
+				sectn = sectn.substring(1);
+			String quizAssessment = "I've graded " + SimSt.getSimStName() + "'s quiz on " + sectn + ".\n\n"; // w
+
+			if (currentCorrect == currentQuizSection.size()) {
+
+				int passedQuizSectionSize = currentQuizSection.size();
+
+				trace.out("ss", "Updating ================================================");
+
+				currentProblem += currentQuizSection.size();
+				currentOverallProblem += currentQuizSection.size();
+				currentCorrect = 0;
+				/***
+				 * Update in the working memory
+				 */
+				brController.getMissController().getSimSt().getModelTraceWM()
+						.setQuizLevelPassed(currentQuizSectionNumber);
+				currentQuizSectionNumber++;
+				currentQuizSection.clear();
+				currentQuizSection = new ArrayList<String>();
+				for (int i = 0; i < quizProblems.size(); i++) {
+					if (quizSections.get(i) == currentQuizSectionNumber) {
+						currentQuizSection.add(quizProblems.get(i));
+						trace.out("ss", "Added " + quizProblems.get(i) + " to " + currentQuizSectionNumber);
+					}
+				}
+
+				if (!runType.equalsIgnoreCase("springboot")) {
+					getSimStPeerTutoringPlatform().unlockQuiz(currentQuizSectionNumber);
+				}
+
+				// sectionPassedUpdateQuizSectionPane();
+
+				if (passedQuizSectionSize == 1)
+					quizAssessment += "An excellent job!  The problem was completed correctly. Move on to the next quiz. Click then [Next Quiz] button.";
+				else
+					quizAssessment += "An excellent job!  All of the problems were completed correctly.Move on to the next quiz. Click then [Next Quiz] button.";
+
+				if (!runType.equalsIgnoreCase("springboot")) { 
+					aplus.setQuizButtonImage("img/quiz_next.png");
+					aplus.refreshQuizButtonImage();
+				}
+			} else if (currentCorrect > 0) {
+				quizAssessment += currentCorrect + " out of the " + currentQuizSection.size()
+						+ " problems were completed correctly.";
+				quizAssessment += "Click on " + getSimStName() + " tab to go back to tutoring";
+				if (!runType.equalsIgnoreCase("springboot")) {
+					aplus.setQuizButtonImage("img/quiz_again.png");
+					aplus.refreshQuizButtonImage();
+				}
+			} else {
+				quizAssessment += "None of the problems were right this time.";
+				quizAssessment += "Click on the [" + getSimStName() + "] tab to go back to tutoring";
+				if (!runType.equalsIgnoreCase("springboot")) {
+					aplus.setQuizButtonImage("img/quiz_again.png");
+					aplus.refreshQuizButtonImage();
+				}
+			}
+
+			if (!runType.equalsIgnoreCase("springboot")) {
+				if (!quizPassed) {
+					giveDialogMessage(quizAssessment); // w return this with results
+				}
+			}
+
+			if (!runType.equalsIgnoreCase("springboot")) {
+				getSimStPeerTutoringPlatform().setQuizButtonEnabled(true);
+				// getSimStPeerTutoringPlatform().getNextProblemButton().setEnabled(true);
+				getSimStPeerTutoringPlatform().setNextProblemButtonEnabled(true);
+				if (simSt != null && simSt.isSsMetaTutorMode()) {
+					getSimStPeerTutoringPlatform().setMetaTutorComponentEnabled(true, mListeners);
+				}
+			}
+			getSsInteractiveLearning().setTakingQuiz(false);
+
+			getSimSt().setDontShowAllRA(dontShowAllRA); // Restoring the previous configuration
+			getSimSt().setIlSignalNegative(ilSignalNegative);
+			getSimSt().setIlSignalPositive(ilSignalPositive);
+			getSimSt().setRuleActivationTestMethod(raTestMethod);
+
+			// makes more sense to save account before displaying the assessment message.
+			requestEnterNewProblem();
+			setQuizAssessment(quizAssessment);
+			setProblemCount(currentOverallProblem);
+			return results;
+		}
 	}
 
 	// nbarba: Added to keep track of the progress bars on tutoring tab
@@ -5901,9 +6201,13 @@ public class SimStPLE {
 
 		for (int i = 0; i < currentQuizSection.size(); i++) {
 
-			getSimStPeerTutoringPlatform().refresh();
+			if (!runType.equalsIgnoreCase("springboot")) {
+				getSimStPeerTutoringPlatform().refresh();				
+			}
 			String problem = getRandomizedQuizProblem(i);
-			getSimStPeerTutoringPlatform().refresh();
+			if (!runType.equalsIgnoreCase("springboot")) {				
+				getSimStPeerTutoringPlatform().refresh();
+			}
 
 			long startQuizQuestionTime = Calendar.getInstance().getTimeInMillis();
 
@@ -5915,7 +6219,9 @@ public class SimStPLE {
 			logger.simStLog(SimStLogger.SIM_STUDENT_QUIZ, SimStLogger.QUIZ_QUESTION_GIVEN_ACTION,
 					"Quiz" + (currentQuizSectionNumber + 1) + "." + (currentProblem + i + 1), problem, "");
 
-			getSimStPeerTutoringPlatform().setQuizMessage("Working on quiz problem #" + (currentProblem + i + 1) + ".");
+			if (!runType.equalsIgnoreCase("springboot")) {
+				getSimStPeerTutoringPlatform().setQuizMessage("Working on quiz problem #" + (currentProblem + i + 1) + ".");				
+			}
 
 			getSsInteractiveLearning().startQuizProblem();
 
@@ -5965,7 +6271,7 @@ public class SimStPLE {
 
 			// nbarba, added for the Quizmeter
 			currentQuizSectionCorrect = numCorrect;
-			if (quizProg.get(currentQuizSectionNumber) != null)
+			if (!runType.equalsIgnoreCase("springboot") && quizProg != null && quizProg.get(currentQuizSectionNumber) != null)
 				quizProg.get(currentQuizSectionNumber).setValue(currentQuizSectionCorrect);
 
 			/* update the quizAttemptHash */
@@ -6149,7 +6455,8 @@ public class SimStPLE {
 				"" + numCorrect + "/" + getQuizProblems().size(), quizDuration);
 		currentCorrect = numCorrect;
 
-		getSimStPeerTutoringPlatform().setQuizProgress(pctCorrect);
+		if (!runType.equalsIgnoreCase("springboot"))
+			getSimStPeerTutoringPlatform().setQuizProgress(pctCorrect);
 		getBrController().startNewProblem(); // To set the platform for starting a new problem
 		simSt.setProblemStepString(SimSt.START_STEP);
 

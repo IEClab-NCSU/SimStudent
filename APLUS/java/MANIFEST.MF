@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
-Ant-Version: Apache Ant 1.10.8
-Created-By: 1.8.0_201-b09 (Oracle Corporation)
+Ant-Version: Apache Ant 1.10.9
+Created-By: 1.8.0_275-b01 (AdoptOpenJDK)
 Main-Class: edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher
 Class-Path: HARTNetworking.jar TableLayout.jar TuTalkSlim.jar aima.jar
   cl.jar commons-lang-2.6.jar commons-lang3-3.0.1.jar ctat_old.jar cta

@@ -245,11 +245,16 @@ public class ConstructCLHintMessage implements Userfunction, Serializable {
 						getFoaGetter().foaGetter((BR_Controller)amt.getController(), hintMsg[0].trim(), hintMsg[1].trim(), hintMsg[2], null);
 				String side = "";
 				String message = "";
-				
+				String runType = ((BR_Controller)amt.getController()).getRunType();
 				if(hintMsg[0].contains("dorminTable1")) {
 
 					if(focusOfAttn != null) {
-						message = "What do you get when you apply the transformation " + ((TableExpressionCell)focusOfAttn.elementAt(1)).getText() + " to " + ((TableExpressionCell)focusOfAttn.elementAt(0)).getText() + "?";
+						if(!runType.equals("springBoot")) {
+							message = "What do you get when you apply the transformation " + ((TableExpressionCell)focusOfAttn.elementAt(1)).getText() + " to " + ((TableExpressionCell)focusOfAttn.elementAt(0)).getText() + "?";
+						} else {
+							message = "What do you get when you apply the transformation " + focusOfAttn.elementAt(1).toString() + " to " + focusOfAttn.elementAt(0).toString() + "?";
+							
+						}
 						returnVV.add(message);
 					}
 					side = "left";
@@ -259,7 +264,11 @@ public class ConstructCLHintMessage implements Userfunction, Serializable {
 				} else if(hintMsg[0].contains("dorminTable2")) {
 
 					if(focusOfAttn != null) {
-						message = "What do you get when you apply the transformation " + ((TableExpressionCell)focusOfAttn.elementAt(1)).getText()+ " to " + ((TableExpressionCell)focusOfAttn.elementAt(0)).getText() + "?";
+						if(!runType.equals("springBoot")) {
+							message = "What do you get when you apply the transformation " + ((TableExpressionCell)focusOfAttn.elementAt(1)).getText()+ " to " + ((TableExpressionCell)focusOfAttn.elementAt(0)).getText() + "?";
+						} else {
+							message = "What do you get when you apply the transformation " + focusOfAttn.elementAt(1).toString()+ " to " + focusOfAttn.elementAt(0).toString() + "?";
+						}
 						returnVV.add(message);
 					}
 					side = "right";
@@ -267,7 +276,6 @@ public class ConstructCLHintMessage implements Userfunction, Serializable {
 					returnVV.add(message);
 
 				} else if(hintMsg[0].contains("done")) {
-
 					message = "There is no more work left on the problem. Click on the Problem is Solved button.";
 					returnVV.add(message);
 				}

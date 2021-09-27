@@ -349,8 +349,8 @@ public class AskHintHumanOracle extends AskHint {
             //this.edge = brController.getProblemModel().returnsEdge(parentNode,node);      
         }
 
-        //this.node = brController.getCurrentNode();
-        //this.edge = brController.getProblemModel().returnsEdge(parentNode,node); 
+        this.node = brController.getCurrentNode();
+        this.edge = brController.getProblemModel().returnsEdge(parentNode,node); 
         if(saiAndSkillName != null && edge != null)
         {
       	  edge.getEdgeData().addRuleName(saiAndSkillName.skillName);
