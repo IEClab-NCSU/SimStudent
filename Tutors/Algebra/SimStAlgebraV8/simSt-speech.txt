@@ -328,9 +328,6 @@ Oops! It seems like we both are stuck. Let me share some ideas from what I have 
 I see. Let me rack my brain to find a way out from what you have taught me already.
 
 BRAINSTORMING_QUESTION_WHEN_NO_FEATURE_FOUND
-This situation is also entirely new for me. Would you like to ask Mr. Williams to see if he can help us?
-I searched through my already learned knowledge but could not find anything to help us out. May be Mr. Williams or the resources (unit overview or examples tab) can help you. Would you like to review them?
-This situation is also entirely new for me. Would you like to ask Mr. Williams or review the resources (unit overview or examples tab) to find out how to proceed from here?
-
- 
-
+This situation is also entirely new for me. Would you like to ask Mr. Williams to see if he can help us and show me what to do here?	
+I searched through my already learned knowledge but could not find anything to help us out. May be Mr. Williams or the resources (unit overview or examples tab) can help you. Would you like to review them and show me what to do here?	
+This situation is also entirely new for me. Would you like to ask Mr. Williams or review the resources (unit overview or examples tab) to show me how to proceed from here?

@@ -1852,7 +1852,9 @@ public void fillInQuizProblem(String problemName) {
 											//nextCurrentNode = brainstormWhatToDoNext(currentNode);
 											getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
 											nextCurrentNode = askWhatToDoNext(currentNode, msg);
-											followupWhenStuck(currentNode);
+											//followupWhenStuck(currentNode);
+											String rule_not_applied_logic = ruleNotApplicationLogic(currentNode,ran, "add");
+											followupWhenStuck(currentNode, rule_not_applied_logic, "add");
 											hintReceived = true;
 
 											if (trace.getDebugCode("ss"))
@@ -1870,9 +1872,9 @@ public void fillInQuizProblem(String problemName) {
 
 							if(has_asked_bq == 0) {
 								String logic = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_QUESTION_WHEN_NO_FEATURE_FOUND_TOPIC);
-								askBrainstormingQuestion(logic, false);
+								//askBrainstormingQuestion(logic, false);
 								getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
-								nextCurrentNode = askWhatToDoNext(currentNode);
+								nextCurrentNode = askWhatToDoNext(currentNode, logic);
 								hintReceived = true;
 								if (trace.getDebugCode("ss")) {
 									trace.out("ss", "CallingbrainstormWhatToDoNext  "
@@ -1883,9 +1885,9 @@ public void fillInQuizProblem(String problemName) {
 						 }
 						 else {
 							String logic = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_QUESTION_WHEN_NO_FEATURE_FOUND_TOPIC);
-							askBrainstormingQuestion(logic, false);
+							//askBrainstormingQuestion(logic, false);
 							getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
-							nextCurrentNode = askWhatToDoNext(currentNode);
+							nextCurrentNode = askWhatToDoNext(currentNode, logic);
 							hintReceived = true;
 							if (trace.getDebugCode("ss"))
 								trace.out("ss", "CallingbrainstormWhatToDoNext  "
@@ -2600,12 +2602,14 @@ public void fillInQuizProblem(String problemName) {
 		return simSt.getBrController().getMissController().getSimStPLE().getValidSelectionsBAQ()!=null && simSt.getBrController().getMissController().getSimStPLE().getValidSelectionsBAQ().contains(selection);
 	}
 
-	public void followupWhenStuck(ProblemNode currentNode) {
+	public void followupWhenStuck(ProblemNode currentNode, String logic, String i) {
+		
 		String problemStepString = getBrController(getSimSt()).getMissController()
 				.getSimSt().getProblemStepString();
 		tutalkBridge.setProblemName(problemStepString);
 		contextVariables.clear();
-		//contextVariables.addVariable("%sai_i%", sai.getI());
+		contextVariables.addVariable("%logic%", logic);
+		contextVariables.addVariable("%i%", i);
 		tutalkBridge.connect("both_stuck_contradiction",
 				contextVariables,
 				SimStLogger.INPUT_WRONG_EXPLAIN_ACTION);
@@ -3055,79 +3059,260 @@ public void fillInQuizProblem(String problemName) {
 		}
 	}
 
-	// This function lets the tutee agent to speak out the rationale behind a production rule
-	// using the feature predicates
-	public String ruleApplicationLogic(ProblemNode currentNode,
-			RuleActivationNode ran) {
-		// I could have applied <transformation (rule.getName + number)> if I had <feature predicates>.
-		// Do you have any idea on how to reach to that point from this current equation?
-		String logic = "";
-		System.out.println(ran.getName()+" "+currentNode.getName());
-		Rule rule = getSimSt().getRule(ran.getName().replace("MAIN::", ""));
-		if (rule != null) {
-			/*if (rule.getName().contains("typein")) {
-				// Question will be different
-			}
-			else */
-			{
-				ArrayList feature_predicates = rule.getLhsFeatures();
-				ArrayList feature_path = rule.getLhsPath();
-				// if I know to which dormintable element predicate variable maps to,
-				// I can use this code to get LHS getMissController().getSimStPLE().getComponentName(selection)
-				if (feature_predicates.size()<1) return "";
-				Activation act = ran.getActivation();
-				Defrule d = act.getRule();
-				ArrayList<String> node_names = new ArrayList<String>();
-				HashMap predicate_args = new HashMap();
-				for (Iterator it1 = d.getNodes(); it1.hasNext();) {
-		        	String nodeName = it1.next().toString();
-		        	if(nodeName.contains("slot_value")) {
-		        		String[] token_predicate = nodeName.split("slot_value=");
-		        		node_names.add(convertjessPredicatesToJavaClass.getPredicatePart(token_predicate[1].split(";")[0], predicate_args));
-		        	}
-		        }
-				int flag = 0;
-				for(int l=0; l<feature_predicates.size(); l++) {
-
-					String[] arr_feature_predicates = (String[]) feature_predicates.get(l);
-
-					for(int m=0; m<arr_feature_predicates.length; m++) {
+	// This function lets the tutee agent to speak out the rationale behind a production rule was fired
+		// using the feature predicates
+		public String ruleApplicationLogic(ProblemNode currentNode,
+				RuleActivationNode ran) {
+			
+			String logic = "";
+			System.out.println(ran.getName()+" "+currentNode.getName());
+			
+			Rule rule = getSimSt().getRule(ran.getName().replace("MAIN::", ""));
+			
+			if (rule != null) {
+				/*if (rule.getName().contains("typein")) {
+					// Question will be different
+				}
+				else */
+				{
+					ArrayList feature_predicates = rule.getLhsFeatures();
+					HashMap variable_foa_map = new HashMap();
+					
+					String[] activeFeaturePredicates = getActiveFeaturePredicates(feature_predicates, rule, ran, variable_foa_map);
+					if(activeFeaturePredicates == null) return logic;
+					int flag = 0;
+					for(int m=0; m<activeFeaturePredicates.length; m++) {
 						if(flag != 0) logic+= "and";
 						else flag = 1;
-						System.out.println(arr_feature_predicates[m]);
-
-						if(arr_feature_predicates[m].contains("not")) continue;
-
-						String name = convertjessPredicatesToJavaClass.getPredicatePart(arr_feature_predicates[m]);
-
-						if(!node_names.contains(name)) continue;
-						String cell_name = convertjessPredicatesToJavaClass.constructWmeElement((String) predicate_args.get(name), feature_path).trim();
 						String wme_content = getBrController(getSimSt()).getMissController()
-								.getSimStPLE().getComponentName(cell_name);
+								.getSimStPLE().getComponentName((String)variable_foa_map.get(activeFeaturePredicates[m]));
 						//if(flag == 0) logic = "I could have applied "+ rule.getName()+" number for the equation "+currentNode.getName()+" because the lhs ";
 						//flag = 1;
+						String name = convertjessPredicatesToJavaClass.getPredicatePart(activeFeaturePredicates[m]);
 						String feature_end_classname = convertjessPredicatesToJavaClass.upperCaseFirstLetterOmmittingDelimeter(name, "-");
 						String feature_full_classname = "edu.cmu.pact.miss.userDef.algebra."+ feature_end_classname;
-						/*for (Object value : all_predicates_map.keySet()) {
-							String s = value.toString();
-						    if(s.contains(feature_end_classname)){
-						    	feature_full_classname = s;
-						        break;
-						    }
-						}*/
 						FeaturePredicate predicate=FeaturePredicate.getPredicateByClassName(feature_full_classname);
 						logic += wme_content+" "+predicate.getFeatureDescription().getDescriptions();
-						//System.out.println(predicate.getFeatureDescription().getDescriptions());
+					}
+					
+					/*Activation act = ran.getActivation();
+					Defrule d = act.getRule();
+					ArrayList<String> node_names = new ArrayList<String>();
+					HashMap predicate_args = new HashMap();
+					for (Iterator it1 = d.getNodes(); it1.hasNext();) {
+			        	String nodeName = it1.next().toString();
+			        	if(nodeName.contains("slot_value")) {
+			        		String[] token_predicate = nodeName.split("slot_value=");
+			        		node_names.add(convertjessPredicatesToJavaClass.getPredicatePart(token_predicate[1].split(";")[0], predicate_args));
+			        	}
+			        }
+					int flag = 0;
+					for(int l=0; l<feature_predicates.size(); l++) {
+						// feature_predicates is 2D array with all features arranged as "Or"
+						// feature_predicates[m] is a 1D array with all and features
+						String[] arr_feature_predicates = (String[]) feature_predicates.get(l);
 
+						for(int m=0; m<arr_feature_predicates.length; m++) {
+							if(flag != 0) logic+= "and";
+							else flag = 1;
+							System.out.println(arr_feature_predicates[m]);
+
+							if(arr_feature_predicates[m].contains("not")) continue;
+
+							String name = convertjessPredicatesToJavaClass.getPredicatePart(arr_feature_predicates[m]);
+
+							if(!node_names.contains(name)) continue;
+							String cell_name = convertjessPredicatesToJavaClass.constructWmeElement((String) predicate_args.get(name), feature_path).trim();
+							String wme_content = getBrController(getSimSt()).getMissController()
+									.getSimStPLE().getComponentName(cell_name);
+							//if(flag == 0) logic = "I could have applied "+ rule.getName()+" number for the equation "+currentNode.getName()+" because the lhs ";
+							//flag = 1;
+							String feature_end_classname = convertjessPredicatesToJavaClass.upperCaseFirstLetterOmmittingDelimeter(name, "-");
+							String feature_full_classname = "edu.cmu.pact.miss.userDef.algebra."+ feature_end_classname;
+							FeaturePredicate predicate=FeaturePredicate.getPredicateByClassName(feature_full_classname);
+							logic += wme_content+" "+predicate.getFeatureDescription().getDescriptions();
+							//System.out.println(predicate.getFeatureDescription().getDescriptions());
+
+						}
+					}*/
+				}
+			}
+
+			return logic;
+
+		}
+		
+		public String[] getActiveFeaturePredicates(ArrayList feature_predicates, Rule rule, RuleActivationNode ran, HashMap variable_foa_map) {
+			
+			//ArrayList feature_predicates = rule.getLhsFeatures();
+			ArrayList feature_path = rule.getLhsPath();
+			Vector foas = ran.getRuleFoas();
+			String[] activeFeaturePredicates = null;
+			
+			if (feature_predicates.size()<1) return activeFeaturePredicates;
+			
+			for(int l=0; l<feature_predicates.size(); l++) {
+				// feature_predicates is 2D array with all features arranged as "Or"
+				// feature_predicates[m] is a 1D array with all and features
+				String[] arr_feature_predicates = (String[]) feature_predicates.get(l);
+				String[] replaced_var_feature_predicates = new String[arr_feature_predicates.length];
+				int count = 0;
+				boolean are_all_true = true;
+				for(int m=0; m<arr_feature_predicates.length; m++) {
+					String feature_name = replaceConditionVar(arr_feature_predicates[m], rule.getNumFoA());
+					replaced_var_feature_predicates[count++] = feature_name;
+					String variable =  convertjessPredicatesToJavaClass.getVariablePart(feature_name);
+							//"?val0"; // feature_name = (has-coefficient ?val0 )
+					//feature_name.rep
+					for(int n=0; n<feature_path.size(); n++) {
+						String path = (String) feature_path.get(n);
+						String interface_element = "";
+						if(path.contains(variable)) {
+							interface_element = foas.get(n).toString();
+							variable_foa_map.put(feature_name, interface_element);
+							Fact fact = getSimSt().getbrainStormRete().getFactByName((interface_element));
+					        try {
+					            String value = fact.getSlotValue("value").toString();
+					            feature_name = feature_name.replace(variable, value);
+					            Value truth_value = getSimSt().getbrainStormRete().eval(feature_name);
+					            if (!truth_value.toString().contains("T")) {
+					            	// feature_predicate does not exist
+					            	are_all_true = false;
+					            }
+					            
+					        } catch (JessException e) {
+					           e.printStackTrace();
+					           logger.simStLogException(e);
+					        }
+					        break;
+						}
+					}
+				}
+				if(are_all_true == true) {
+					activeFeaturePredicates = replaced_var_feature_predicates;
+					break;
+				}
+			}
+			return activeFeaturePredicates;
+		}
+		
+		// This function lets the tutee agent to speak out the rationale behind why a production rule was not fired
+		// using the feature predicates
+		public String ruleNotApplicationLogic(ProblemNode currentNode,
+					RuleActivationNode ran, String rulename) {
+				
+				String logic = "";
+				Rule rule = getSimSt().getRule(rulename);
+				
+				if (rule != null) {
+					
+					{
+						ArrayList feature_predicates = rule.getLhsFeatures();
+						HashMap variable_foa_map = new HashMap();
+						
+						ArrayList<String> nonActiveFeaturePredicates = getNonActiveFeaturePredicates(feature_predicates, rule, ran, variable_foa_map);
+						if(nonActiveFeaturePredicates == null) return logic;
+						int flag = 0;
+						for(int m=0; m<nonActiveFeaturePredicates.size(); m++) {
+							if(flag != 0) logic+= "and";
+							else flag = 1;
+							String wme_content = getBrController(getSimSt()).getMissController()
+									.getSimStPLE().getComponentName((String)variable_foa_map.get(nonActiveFeaturePredicates.get(m)));
+							//if(flag == 0) logic = "I could have applied "+ rule.getName()+" number for the equation "+currentNode.getName()+" because the lhs ";
+							//flag = 1;
+							String name = convertjessPredicatesToJavaClass.getPredicatePart(nonActiveFeaturePredicates.get(m));
+							String feature_end_classname = convertjessPredicatesToJavaClass.upperCaseFirstLetterOmmittingDelimeter(name, "-");
+							String feature_full_classname = "edu.cmu.pact.miss.userDef.algebra."+ feature_end_classname;
+							FeaturePredicate predicate=FeaturePredicate.getPredicateByClassName(feature_full_classname);
+							logic += wme_content+" does not "+predicate.getFeatureDescription().getDescriptions();
+						}
+					}
+				}
+
+				return logic;
+
+			}
+			
+
+		public ArrayList<String> getNonActiveFeaturePredicates(ArrayList feature_predicates, Rule rule, RuleActivationNode ran, HashMap variable_foa_map) {
+			
+			//ArrayList feature_predicates = rule.getLhsFeatures();
+			ArrayList feature_path = rule.getLhsPath();
+			Vector foas = ran.getRuleFoas();
+			ArrayList<String> nonActiveFeaturePredicates = new ArrayList<String>();
+			
+			if (feature_predicates.size()<1) return nonActiveFeaturePredicates;
+			
+			for(int l=0; l<feature_predicates.size(); l++) {
+				// feature_predicates is 2D array with all features arranged as "Or"
+				// feature_predicates[m] is a 1D array with all and features
+				String[] arr_feature_predicates = (String[]) feature_predicates.get(l);
+				if(arr_feature_predicates.length > 0) {
+					String[] replaced_var_feature_predicates = new String[arr_feature_predicates.length];
+					int count = 0;
+					//boolean are_all_true = true;
+					for(int m=0; m<arr_feature_predicates.length; m++) {
+						String feature_name = replaceConditionVar(arr_feature_predicates[m], rule.getNumFoA());
+						replaced_var_feature_predicates[count++] = feature_name;
+						String variable =  convertjessPredicatesToJavaClass.getVariablePart(feature_name);
+						
+						for(int n=0; n<feature_path.size(); n++) {
+							String path = (String) feature_path.get(n);
+							String interface_element = "";
+							if(path.contains(variable)) {
+								interface_element = foas.get(n).toString();
+								variable_foa_map.put(feature_name, interface_element);
+								Fact fact = getSimSt().getMTRete().getFactByName((interface_element));
+						        try {
+						            String value = fact.getSlotValue("value").toString();
+						            feature_name = feature_name.replace(variable, value);
+						            Value truth_value = getSimSt().getMTRete().eval(feature_name);
+						            if (!truth_value.toString().contains("T")) {
+						            	// feature_predicate does not exist
+						            	//are_all_true = false;
+						            	nonActiveFeaturePredicates.add(replaced_var_feature_predicates[count-1]);
+						            }
+						            
+						        } catch (JessException e) {
+						           e.printStackTrace();
+						           logger.simStLogException(e);
+						        }
+						        break;
+							}
+						}
 					}
 				}
 			}
+			return nonActiveFeaturePredicates;
 		}
+		
+		public String replaceConditionVar( String condition, int numFoA ) {
+			String newCond = "";
+			String[] terms = condition.split( " " );
+			for (int i = 0; i < terms.length; i++) {
 
-		return logic;
+				int outputCount=0;//number of output variables bound
+			    if ( terms[i].startsWith("?") ) {
+				int valN = terms[i].charAt(1) - 'A';
+				if ( valN < numFoA)   
+				{
+				    terms[i] = "?val" + valN;
+				}
+				else
+				{
+					if(valN>=numFoA+outputCount)
+						outputCount++;
+					terms[i]="?output"+(valN-numFoA);
+				}
+				
+				}
+			    newCond += terms[i] + " ";
+			}
 
-	}
-
+			return newCond;
+		 }
+	
+	
 	// Examine an activation rule to see if it is valid. If OKed, return the new
 	// node in the BR graph
 	// If not OK, return null

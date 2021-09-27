@@ -28,13 +28,29 @@ public class convertjessPredicatesToJavaClass {
 	
 	public static String getPredicatePart(String givenString) {
 		String feature_name = "";
-		if(givenString.contains("?"))
-			feature_name = givenString.substring(0, givenString.indexOf("?"));
-		if(feature_name.contains("("))
-			feature_name = feature_name.replace("(", "");
-		
-		feature_name = feature_name.replace(" ", "");
+		if(!givenString.contains("not")) {
+			if(givenString.contains("?"))
+				feature_name = givenString.substring(0, givenString.indexOf("?"));
+			if(feature_name.contains("("))
+				feature_name = feature_name.replace("(", "");
+			
+			feature_name = feature_name.replace(" ", "");
+		}
+		else {
+			givenString = givenString.replace("(", "");
+			givenString = givenString.replace(")", "");
+			givenString = givenString.trim();
+			feature_name = givenString.split(" ")[1];
+		}
 		return feature_name;
+	}
+	
+	public static String getVariablePart(String givenString) {
+		String variable_name = "";
+		if(givenString.contains("?"))
+			variable_name = givenString.substring(givenString.indexOf("?"), givenString.indexOf(")"));
+		
+		return variable_name.trim();
 	}
 	
 	public static String getPredicatePart(String givenString, HashMap predicate_args) {
