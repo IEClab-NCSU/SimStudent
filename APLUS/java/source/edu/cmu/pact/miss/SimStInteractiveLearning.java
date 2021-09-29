@@ -1419,7 +1419,11 @@ public void fillInQuizProblem(String problemName) {
 
 		simSt.setLastSkillOperand(null);
 		ProblemNode currentNode = getBrController(getSimSt()).getProblemModel().getStartNode();
-		runInteractiveLearning(currentNode, true);
+		if (!runType.equalsIgnoreCase("springboot")) {
+			runInteractiveLearning(currentNode, true);
+		} else {
+			setCurrentNode(currentNode);
+		}
 	}
 
 	

@@ -421,7 +421,9 @@ public class SimStPLE {
 	private Hashtable<String, LinkedList<Explanation>> problemChoiceExplanations;
 	private Hashtable<String, LinkedList<Explanation>> hintExplanations;
 	private HashSet<String> validSelections;
+	private Map<String, String> startState;
 	private boolean modelTracer = true;
+	private String invalidProblemMsg = "";
 
 	public ArrayList<String> getSections() {
 		return sections;
@@ -2762,32 +2764,97 @@ public class SimStPLE {
 	 * problemMap.put(wm.getSuggestedProblem(),
 	 * WorkingMemoryConstants.PROBLEM_USED_FOR_TUTORING); } } } }
 	 */
+	
+	public String onRestartClicked() {
+    	brController.getMissController().getSimSt().newProblemButtonLockFlag=false;
+    	brController.getMissController().getSimSt().scheduleNewProblemTimer();
+    	brController.getMissController().getSimStPLE().setIsRestartClicked(true);
+    	getMissController().getSimStPLE().incRestartClickCount();
+    	
+    	if (brController.getMissController().getSimSt().isSsMetaTutorMode()){
+    		brController.getMissController().getSimSt().getModelTraceWM().setNextSelection("nil");
+    		brController.getMissController().getSimSt().getModelTraceWM().setNextAction("nil");
+    		brController.getMissController().getSimSt().getModelTraceWM().setNextInput("nil");
+    		brController.getMissController().getSimSt().getModelTraceWM().setSolutionGiven("false");
+    		
+    		/*update the restart count in working memory*/
+    		int count=this.getMissController().getSimStPLE().getRestartClickCount();		
+    		brController.getMissController().getSimSt().getModelTraceWM().setRestartCount(count); 
+    		brController.getMissController().getSimSt().getModelTraceWM().setStudentEnteredProblem(this.getMissController().getSimStPLE().getSsInteractiveLearning().getPreviousTutoredProblem());			
+    	}
+    	
+    	if (brController.getMissController().getSimSt().isSsMetaTutorMode())
+    		this.brController.getMissController().getSimSt().getModelTraceWM().setSolutionCheckError("false");
+    	String problem=null;
+    	if (brController.getMissController().getSimSt().isSsMetaTutorMode())
+    		this.brController.getMissController().getSimSt().getModelTraceWM().getStudentEnteredProblem();
+    	
+    	if (brController.getMissController().getSimSt().isSsCogTutorMode()){
+			getBrController().getMissController().getSimSt().getModelTraceWM().setRequestType("hint-request");
+		}
+    	
+    	logger.simStLog(SimStLogger.SIM_STUDENT_ACTION_LISTENER, SimStLogger.RESTART_BUTTON_ACTION, "");
+    	
+    	if (brController.getMissController().getSimSt().isSsCogTutorMode() && brController.getMissController().getSimSt().isSsAplusCtrlCogTutorMode() && getBrController().getMissController().getSimStPLE().getSsCognitiveTutor().getQuizSolving()){
+    		getBrController().getMissController().getSimStPLE().getSsCognitiveTutor().initQuizSolutionHash();    
+    		getBrController().getMissController().getSimStPLE().getSsCognitiveTutor().initFailedQuizSolutionHash();  
+    		getBrController().getMissController().getSimStPLE().getSsCognitiveTutor().enterFirstUnsolvedQuizProblemToInterface(true);
+    		getBrController().getMissController().getSimStPLE().unBlockQuiz(true);
+    		return "";
+    	}
+    	
+    	//restart the problem
+    	if (brController.getMissController().getSimSt().isSsCogTutorMode()){
+    		controllerActionsOnRestart();
+    	}
+    	else 
+    		return getMissController().pleRestartProblemSimSt();
+    	return "";
+    }
+	
+	public void controllerActionsOnRestart() {
+    	getBrController().getMissController().getSimStPLE().nextProblem(false);
+		
+		if (!brController.getMissController().getSimSt().isSsAplusCtrlCogTutorMode()){
+			getBrController().getMissController().getSimStPLE().getSsCognitiveTutor().giveNextProblem(false);
+		}
+		else if (getBrController().getMissController().getSimStPLE().getSsCognitiveTutor().getQuizSolving()){
+			getBrController().getMissController().getSimStPLE().unBlockQuiz(true);
+		}
+		else{
+			getBrController().getMissController().getSimStPLE().getSsCognitiveTutor().giveProblem(getBrController().getMissController().getSimStPLE().getSsCognitiveTutor().getLastGivenProblem());
+		}     
+    }
 
-	public void restartProblem() {
-
-		setFocusTab(SIM_ST_TAB);
-
+	public String restartProblem() {
+		if (!runType.equalsIgnoreCase("springboot"))
+			uiActionsOnRestart();
+		return commonActionsOnRestart();
+	}
+	
+	public String commonActionsOnRestart() {
 		String step = simSt.getProblemStepString();
-
 		simSt.killInteractiveLearningThreadIfAny();
-
 		brController.goToStartState();
-
-		if (!simSt.isSsCogTutorMode())
-			simSt.displayMessage("Problem Restart", RESTART_MSG);
-
 		int problemDuration = (int) ((Calendar.getInstance().getTimeInMillis()
 				- getSsInteractiveLearning().getProblemRecentTime()) / 1000);
 		getSsInteractiveLearning().setProblemRecentTime(Calendar.getInstance().getTimeInMillis());
-
 		logger.simStLog(SimStLogger.SIM_STUDENT_PROBLEM, SimStLogger.PROBLEM_RESTART_ACTION, step, "", "",
 				problemDuration);
-
 		if (!simSt.isSsCogTutorMode())
 			startProblem(true);
-
+		if (invalidProblemMsg != null && !invalidProblemMsg.isEmpty())
+			return invalidProblemMsg;
+		else
+			return RESTART_MSG;
 	}
-
+	
+	public void uiActionsOnRestart() {
+		setFocusTab(SIM_ST_TAB);
+		if (!simSt.isSsCogTutorMode())
+			simSt.displayMessage("Problem Restart", RESTART_MSG);
+	}
+	
 	class QuizThread implements Runnable {
 		public void run() {
 			getSimStPeerTutoringPlatform().showQuizResultFrame(false);
@@ -3401,7 +3468,10 @@ public class SimStPLE {
 		}
 
 		getSimSt().setIsInteractiveLearning(true);
-		new Thread(new ProblemStartThread(restart)).start();
+		if (!runType.equalsIgnoreCase("springboot"))
+			new Thread(new ProblemStartThread(restart)).start();
+		else
+			getSsInteractiveLearning().runInteractiveLearning();
 	}
 
 	class ProblemStartThread implements Runnable {
@@ -3443,23 +3513,41 @@ public class SimStPLE {
 	}
 
 	public boolean checkValidProblemEntered() {
-		for (int i = 0; i < startStateElements.size(); i++) {
-			String element = startStateElements.get(i);
-			Object widget = brController.lookupWidgetByName(element);
-			if (widget != null && widget instanceof TableExpressionCell) {
-				TableExpressionCell cell = (TableExpressionCell) widget;
-				String input = cell.getText();
+		if (!runType.equalsIgnoreCase("springboot")) {
+//			return validateQuestion();
+			for (int i = 0; i < startStateElements.size(); i++) {
+				String element = startStateElements.get(i);
+				Object widget = brController.lookupWidgetByName(element);
+				if (widget != null && widget instanceof TableExpressionCell) {
+					TableExpressionCell cell = (TableExpressionCell) widget;
+					String input = cell.getText();
+					if (input.length() < 1) {
+						giveMessage(ENTER_FULL_PROBLEM);
+						return false;
+					}
+					if (getSimSt().isInputCheckerDefined()
+							&& !getSimSt().getInputChecker().checkInput(element, input, null, this.getBrController())) {
+						giveMessage(getSimSt().getInputChecker().invalidInputMessage(element, input, null));
+						return false;
+					}
+				}
+			}
+		} else {
+			for (Map.Entry<String, String> state: startState.entrySet()) {
+				String element = state.getKey();
+				String input = state.getValue();
 				if (input.length() < 1) {
-					giveMessage(ENTER_FULL_PROBLEM);
+					invalidProblemMsg = ENTER_FULL_PROBLEM;
 					return false;
 				}
 				if (getSimSt().isInputCheckerDefined()
-						&& !getSimSt().getInputChecker().checkInput(element, input, null, this.getBrController())) {
+					&& !getSimSt().getInputChecker().checkInput(element, input, null, this.getBrController())) {
 					giveMessage(getSimSt().getInputChecker().invalidInputMessage(element, input, null));
 					return false;
 				}
 			}
 		}
+		invalidProblemMsg = "";
 		return true;
 	}
 
@@ -4876,17 +4964,23 @@ public class SimStPLE {
 		List<String> elements = new ArrayList<String>();
 		List<String> inputs = new ArrayList<String>();
 		List<String> quesMessage = new ArrayList<String>();
-		String element = null;
-		String input = null;
-
-		for (int i = 0; i < startStateElements.size(); i++) {
-			element = startStateElements.get(i);
-			Object widget = brController.lookupWidgetByName(element);
-			if (widget != null && widget instanceof TableExpressionCell) {
-				elements.add(element);
-				TableExpressionCell cell = (TableExpressionCell) widget;
-				input = cell.getText().toLowerCase();
-				inputs.add(input);
+		if (!runType.equalsIgnoreCase("springboot")) {
+			String element = null;
+			String input = null;
+			for (int i = 0; i < startStateElements.size(); i++) {
+				element = startStateElements.get(i);
+				Object widget = brController.lookupWidgetByName(element);
+				if (widget != null && widget instanceof TableExpressionCell) {
+					elements.add(element);
+					TableExpressionCell cell = (TableExpressionCell) widget;
+					input = cell.getText().toLowerCase();
+					inputs.add(input);
+				}
+			}
+		} else {
+			for (Map.Entry<String, String> state: startState.entrySet()) {
+				elements.add(state.getKey());
+				inputs.add(state.getValue());
 			}
 		}
 		quesMessage = checkQuestion(elements, inputs);
@@ -6678,6 +6772,14 @@ public class SimStPLE {
 
 	public void setModelTracer(boolean modelTracer) {
 		this.modelTracer = modelTracer;
+	}
+
+	public Map<String, String> getStartState() {
+		return startState;
+	}
+
+	public void setStartState(Map<String, String> startState) {
+		this.startState = startState;
 	}
 
 }
