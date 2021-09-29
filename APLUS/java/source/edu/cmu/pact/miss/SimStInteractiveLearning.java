@@ -1861,8 +1861,8 @@ public void fillInQuizProblem(String problemName) {
 											getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
 											nextCurrentNode = askWhatToDoNext(currentNode, msg);
 											//followupWhenStuck(currentNode);
-											//String rule_not_applied_logic = ruleNotApplicationLogic(currentNode,ran, "subtract");
-											//followupWhenStuck(currentNode, rule_not_applied_logic, "subtract");
+											String rule_not_applied_logic = ruleNotApplicationLogic(currentNode,ran, "add");
+											followupWhenStuck(currentNode, rule_not_applied_logic, "add");
 											hintReceived = true;
 
 											if (trace.getDebugCode("ss"))
