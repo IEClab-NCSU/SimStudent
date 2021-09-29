@@ -2780,7 +2780,7 @@ public class SimStPLE {
 	 */
 
 	public void restartProblem() {
-
+		
 		setFocusTab(SIM_ST_TAB);
 
 		String step = simSt.getProblemStepString();
@@ -4106,7 +4106,7 @@ public class SimStPLE {
 	}
 
 	// Displays that the avatar is thinking
-	public void setAvatarThinking() {
+	public void setAvatarThinking(String customMsg) {
 		status = THINK_STATUS;
 		// Add a yellow border while avatar is thinking
 		// getSimStPeerTutoringPlatform().getSimStAvatarLayerIcon().setBorder(BorderFactory.createLineBorder(Color.yellow,
@@ -4116,7 +4116,10 @@ public class SimStPLE {
 		if(!runType.equals("springBoot"))
 			blockInput(true);
 		// giveMessage(THINK_MESSAGE);
-		giveMessage(conversation.getMessage(SimStConversation.THINK_TOPIC));
+		if(customMsg == null)
+			giveMessage(conversation.getMessage(SimStConversation.THINK_TOPIC));
+		else
+			giveMessage(customMsg);
 		startStatus = false;
 		// getSimStPeerTutoringPlatform().setImage(STUDENT_THINK_IMAGE);
 		// getSimStPeerTutoringPlatform().setExpression(THINK_EXPRESSION_EX);
@@ -4128,6 +4131,10 @@ public class SimStPLE {
 		currentThinkingImage = THINK_EXPRESSION_EX;
 		// currentThinkingImage=THINK_EXPRESSION_EX;
 
+	}
+	
+	public void setAvatarThinking() {
+		setAvatarThinking(null);
 	}
 
 	// Displays that the avatar is done thinking

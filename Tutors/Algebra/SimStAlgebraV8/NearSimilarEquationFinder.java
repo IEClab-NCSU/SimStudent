@@ -43,11 +43,11 @@ public class NearSimilarEquationFinder extends NearSimilarProblemsGetter{
 			}
 		}
 		else if(type.contains("2")) {
+			dropConstant(problemString_, parsed_equation, type, similar_problems);
 			new_problems = dropCoefficient(problemString_, parsed_equation, type, var_term_pos.get(0));
 			if(isValidEquation(new_problems)) {
 				similar_problems.add(new_problems);
 			}
-			dropConstant(problemString_, parsed_equation, type, similar_problems);
 		}
 		else if(type.contains("3")) {
 			dropConstant(problemString_, parsed_equation, type, similar_problems);

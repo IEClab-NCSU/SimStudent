@@ -1646,6 +1646,9 @@ public void fillInQuizProblem(String problemName) {
 
 		// when running not from a BRD, it never gets "done" - reaching a done
 		// state breaks out of loop
+	    
+	    
+	    //this.killMessageReceived = false;
 		while ((!isRunningFromBrd() || this.numStepsPerformed != numStepsBrd || getBrController(getSimSt()).getMissController().isBatchModeOn()) && !this.killMessageReceived) {
 
 			if (getBrController(getSimSt()).getMissController().isPLEon())
@@ -1780,31 +1783,33 @@ public void fillInQuizProblem(String problemName) {
 					// Ask if tutor knows what to do next so that there opens an opportunity
 					// for the tutee to ask initial tutee inquiry when tutor is also stuck.
 					String title = SimStConversation.ASKING_IF_TUTOR_KNOWS_STEP_TOPIC;
-					//String message = "I am stuck. Do you know what step to perform next?";
 					SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();
-
 					String message = ple.getConversation().getMessage(SimStConversation.ASKING_IF_TUTOR_KNOWS_STEP_TOPIC);
 					int oracle = getSimSt().displayConfirmMessage(title,message);
-					// setting avatar to normal mode.
-					getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
+					
+					//getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
+					// Set avatar asking
+					if(!runType.equals("springBoot")) {
+						if (getBrController(getSimSt()).getMissController().isPLEon() && !isTakingQuiz())
+							ple.setAvatarAsking();
+							//ple.setAvatarThinking();
+					}
+
 					if (oracle == JOptionPane.YES_OPTION) {
 						// ask for the demonstration of the step.
+						ple.blockInput(false);
 						nextCurrentNode = askWhatToDoNext(currentNode);
 						hintReceived = true;
 			       	}
 					else {
 						// Tutor is  confused and don't know what to do next.
-						// Ask the initial tutee inquiry when tutor does not know what to do next.
-						// Set SimStudent to thinking
-
+						// Set SimStudent to thinking brainstorming questions
+						String brainstorming_thinking = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_THINKING_TOPIC);
 						if(!runType.equals("springBoot")) {
 							if (getBrController(getSimSt()).getMissController().isPLEon() && !isTakingQuiz())
-								getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarThinking();
+								getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarThinking(brainstorming_thinking);
 						}
-
-						// Adding few moments of brainstorming to make it look more naturalistic
-						String brainstorming_thinking = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_THINKING_TOPIC);
-						askBrainstormingQuestion(brainstorming_thinking, false);
+						//askBrainstormingQuestion(brainstorming_thinking, false);
 						try {
 							TimeUnit.SECONDS.sleep(1);
 						} catch (InterruptedException e) {
@@ -1843,7 +1848,10 @@ public void fillInQuizProblem(String problemName) {
 												// we would need the explanation to check for transformation for further followup
 												has_asked_bq = 1;
 												String problem_name = similarNode.getName().replace("_", "=");
-												msg = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_QUESTION_TRANFORMATION_TOPIC,s_a_i.getI(),problem_name,logic);
+												if(s_a_i.getS().equals("done"))
+													msg = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_QUESTION_TRANFORMATION_TOPIC,"problem is solved",problem_name,logic);
+												else
+													msg = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_QUESTION_TRANFORMATION_TOPIC,s_a_i.getI(),problem_name,logic);
 //												String explanation = askBrainstormingQuestion(msg, true);
 
 											}
@@ -1853,8 +1861,8 @@ public void fillInQuizProblem(String problemName) {
 											getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
 											nextCurrentNode = askWhatToDoNext(currentNode, msg);
 											//followupWhenStuck(currentNode);
-											String rule_not_applied_logic = ruleNotApplicationLogic(currentNode,ran, "add");
-											followupWhenStuck(currentNode, rule_not_applied_logic, "add");
+											//String rule_not_applied_logic = ruleNotApplicationLogic(currentNode,ran, "subtract");
+											//followupWhenStuck(currentNode, rule_not_applied_logic, "subtract");
 											hintReceived = true;
 
 											if (trace.getDebugCode("ss"))
@@ -3082,7 +3090,7 @@ public void fillInQuizProblem(String problemName) {
 					if(activeFeaturePredicates == null) return logic;
 					int flag = 0;
 					for(int m=0; m<activeFeaturePredicates.length; m++) {
-						if(flag != 0) logic+= "and";
+						if(flag != 0) logic+= " and ";
 						else flag = 1;
 						String wme_content = getBrController(getSimSt()).getMissController()
 								.getSimStPLE().getComponentName((String)variable_foa_map.get(activeFeaturePredicates[m]));
@@ -3092,7 +3100,11 @@ public void fillInQuizProblem(String problemName) {
 						String feature_end_classname = convertjessPredicatesToJavaClass.upperCaseFirstLetterOmmittingDelimeter(name, "-");
 						String feature_full_classname = "edu.cmu.pact.miss.userDef.algebra."+ feature_end_classname;
 						FeaturePredicate predicate=FeaturePredicate.getPredicateByClassName(feature_full_classname);
-						logic += wme_content+" "+predicate.getFeatureDescription().getDescriptions();
+						if(activeFeaturePredicates[m].contains("not"))
+							logic += wme_content+" does not "+predicate.getFeatureDescription().getDescriptions();
+						else
+							logic += wme_content+" "+predicate.getFeatureDescription().getDescriptions();
+
 					}
 					
 					/*Activation act = ran.getActivation();
@@ -3361,7 +3373,7 @@ public void fillInQuizProblem(String problemName) {
 			}
 			// Tasmia: if tutor's feedback is "yes", then tutor and tutee both agree on a solution step.
 			// initial tutee inquiry for both agree speech began here.
-			if(inquiryResult.equals(EdgeData.CORRECT_ACTION)) {
+			/*if(inquiryResult.equals(EdgeData.CORRECT_ACTION)) {
 				// ask question and after tutor's response move to the later part unless
 				// follow-up tutee inquiry is on
 				// I need to check if the selection interface element is in the permissible region to ask
@@ -3373,7 +3385,7 @@ public void fillInQuizProblem(String problemName) {
 					String agree_question = basg.agreeSpeechGetter(ran, sai, conv);
 					askMoreExampleQuestion(agree_question, true);
 				}
-			}
+			}*/
 			if (!inquiryResult.equals(EdgeData.CORRECT_ACTION) && getBrController(getSimSt()).getMissController().isPLEon()){
 				SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();
 				//brController.getMissController().getSimSt().displayMessage("",ple.getConversation().getMessage(SimStConversation.THINK_TOPIC));

@@ -313,12 +313,14 @@ I see there is still work to be done for this problem. Let me think!
 Hm... so problem is not done. Lets see!
 
 ASKING_IF_TUTOR_KNOWS_STEP
-I think I do not know what to do here. Do you know the next step?
-I am not sure about my next step. Do you know what step should be performed now?
+Do you know the next step?
+Do you know what step should be performed now?
+Do you know what step need to be performed now?
 
 BRAINSTORMING_QUESTION_TRANFORMATION
-I could perform <i> if I had <problem> because <logic>. Can you demonstrate the steps that would lead me to that point from the current situation?
-I could perform <i> if I had <problem> because <logic>. Can you show me how to get to that point from the current situation?
+I could perform "<i>" if I had <problem> because <logic>. Can you demonstrate the step that would lead me to that point from the current situation?
+I could perform "<i>" if I had <problem> because <logic>. Can you show me how to get to that point from the current situation?
+I could perform "<i>" if I had <problem> because <logic>. Can you show me the step that would deal with the extra part of the current situation and help me reach to this point?
 
 BRAINSTORMING_THINKING
 I see. Let me think of a way out by going through what I have learnt so far.
@@ -326,6 +328,8 @@ Oops! It seems like we both are stuck. Let's put our heads together to find a wa
 I see. Let me analyze what I know so far to find a way out.
 Oops! It seems like we both are stuck. Let me share some ideas from what I have learnt.
 I see. Let me rack my brain to find a way out from what you have taught me already.
+Oops! Let me see if I can find a way out from what you have taught me already.
+
 
 BRAINSTORMING_QUESTION_WHEN_NO_FEATURE_FOUND
 This situation is also entirely new for me. Would you like to ask Mr. Williams to see if he can help us and show me what to do here?	
