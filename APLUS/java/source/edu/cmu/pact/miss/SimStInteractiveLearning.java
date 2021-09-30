@@ -1647,8 +1647,6 @@ public void fillInQuizProblem(String problemName) {
 		// when running not from a BRD, it never gets "done" - reaching a done
 		// state breaks out of loop
 	    
-	    
-	    //this.killMessageReceived = false;
 		while ((!isRunningFromBrd() || this.numStepsPerformed != numStepsBrd || getBrController(getSimSt()).getMissController().isBatchModeOn()) && !this.killMessageReceived) {
 
 			if (getBrController(getSimSt()).getMissController().isPLEon())
@@ -1778,7 +1776,6 @@ public void fillInQuizProblem(String problemName) {
 					getBrController(getSimSt()).getMissController().getSimStPLE().checkForQuizTutoringBehaviourDiscrepency(brController.getProblemName(),null);
 
 				// Tasmia added code starts here
-				//if(simSt.isCTIInitialInquiryMode())
 				{
 					// Ask if tutor knows what to do next so that there opens an opportunity
 					// for the tutee to ask initial tutee inquiry when tutor is also stuck.
@@ -1786,8 +1783,6 @@ public void fillInQuizProblem(String problemName) {
 					SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();
 					String message = ple.getConversation().getMessage(SimStConversation.ASKING_IF_TUTOR_KNOWS_STEP_TOPIC);
 					int oracle = getSimSt().displayConfirmMessage(title,message);
-					
-					//getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
 					// Set avatar asking
 					if(!runType.equals("springBoot")) {
 						if (getBrController(getSimSt()).getMissController().isPLEon() && !isTakingQuiz())
@@ -1803,106 +1798,96 @@ public void fillInQuizProblem(String problemName) {
 			       	}
 					else {
 						// Tutor is  confused and don't know what to do next.
-						// Set SimStudent to thinking brainstorming questions
-						String brainstorming_thinking = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_THINKING_TOPIC);
-						if(!runType.equals("springBoot")) {
-							if (getBrController(getSimSt()).getMissController().isPLEon() && !isTakingQuiz())
-								getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarThinking(brainstorming_thinking);
-						}
-						//askBrainstormingQuestion(brainstorming_thinking, false);
-						try {
-							TimeUnit.SECONDS.sleep(1);
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						if(getSimSt().isNearSimilarProblemsGetterDefined()) {
-							 NearSimilarProblemsGetter nspg = getSimSt().getNearSimilarProblemsGetter();
-							 ArrayList<String> similar_problems = nspg.nearSimilarProblemsGetter(currentNode);
+						if(simSt.isCTIFollowupInquiryMode()){
+							// Set SimStudent to thinking brainstorming questions
+							String brainstorming_thinking = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_THINKING_TOPIC);
+							if(!runType.equals("springBoot")) {
+								if (getBrController(getSimSt()).getMissController().isPLEon() && !isTakingQuiz())
+									getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarThinking(brainstorming_thinking);
+							}
+							//askBrainstormingQuestion(brainstorming_thinking, false);
+							try {
+								TimeUnit.SECONDS.sleep(1);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							if(getSimSt().isNearSimilarProblemsGetterDefined()) {
+								 NearSimilarProblemsGetter nspg = getSimSt().getNearSimilarProblemsGetter();
+								 ArrayList<String> similar_problems = nspg.nearSimilarProblemsGetter(currentNode);
 
-							 int has_asked_bq = 0;
-							 for(int i=0; i<similar_problems.size(); i++) {
-								String problemName = similar_problems.get(i);
-								ProblemNode similarNode = new ProblemNode();
-								similarNode.setName(problemName);
-								Collection<RuleActivationNode> activList_2=getActivations(similarNode, true);
-								if(activList_2 != null) {
-									int j=-1;
-									for (RuleActivationNode ran : activList_2) {
-										j++;
-										Sai s_a_i = getSai(ran); // dorminTable3_C1R1, UpdateTable, divide 3
-										if(isSelectionValidForBrainstormingQuestions(s_a_i.getS())) {
-											String logic = ruleApplicationLogic(similarNode,ran); // need to make this domain independent by using getter
-											String msg = "";
-											if(StringUtils.EMPTY.equals(logic)) {
-												if(j!=activList_2.size()-1) {
-													continue;
-												}
-												else {
-													msg = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_QUESTION_WHEN_NO_FEATURE_FOUND_TOPIC);
-													has_asked_bq = 1;
-//													askBrainstormingQuestion(logic, false);
-												}
-											}
-											else {
-												// we would need the explanation to check for transformation for further followup
-												has_asked_bq = 1;
+								 int has_asked_bq = 0;
+								 for(int i=0; i<similar_problems.size(); i++) {
+									String problemName = similar_problems.get(i);
+									ProblemNode similarNode = new ProblemNode();
+									similarNode.setName(problemName);
+									Collection<RuleActivationNode> activList_2=getActivations(similarNode, true);
+									if(activList_2 != null) {
+										int j=-1;
+										for (RuleActivationNode ran : activList_2) {
+											j++;
+											Sai s_a_i = getSai(ran); // dorminTable3_C1R1, UpdateTable, divide 3
+											if(isSelectionValidForBrainstormingQuestions(s_a_i.getS())) {
+												String logic = ruleApplicationLogic(similarNode,ran); // need to make this domain independent by using getter
+												String msg = "";
 												String problem_name = similarNode.getName().replace("_", "=");
+												if(StringUtils.EMPTY.equals(logic)) {
+													logic = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_LOGIC_WHEN_NO_FEATURE_FOUND_TOPIC);
+												}
 												if(s_a_i.getS().equals("done"))
 													msg = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_QUESTION_TRANFORMATION_TOPIC,"problem is solved",problem_name,logic);
 												else
 													msg = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_QUESTION_TRANFORMATION_TOPIC,s_a_i.getI(),problem_name,logic);
-//												String explanation = askBrainstormingQuestion(msg, true);
 
+												getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
+												nextCurrentNode = askWhatToDoNext(currentNode, msg);
+												String rule_not_applied_logic = ruleNotApplicationLogic(currentNode,ran, "add");
+												followupWhenStuck(currentNode, rule_not_applied_logic, "add");
+												hintReceived = true;
+												if (trace.getDebugCode("ss"))
+													trace.out("ss", "CallingbrainstormWhatToDoNext  "
+															+ "currentNode: " + currentNode
+															+ " nextCurrentNode: " + nextCurrentNode);
+												has_asked_bq = 1;
+												break;
 											}
-											// Need to implement listener for nextNode just like askWhatToDoNext.
-
-											//nextCurrentNode = brainstormWhatToDoNext(currentNode);
-											getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
-											nextCurrentNode = askWhatToDoNext(currentNode, msg);
-											//followupWhenStuck(currentNode);
-											String rule_not_applied_logic = ruleNotApplicationLogic(currentNode,ran, "add");
-											followupWhenStuck(currentNode, rule_not_applied_logic, "add");
-											hintReceived = true;
-
-											if (trace.getDebugCode("ss"))
-												trace.out("ss", "CallingbrainstormWhatToDoNext  "
-														+ "currentNode: " + currentNode
-														+ " nextCurrentNode: " + nextCurrentNode);
-											if(has_asked_bq == 1) break;
 										}
 									}
-									break;
+
 								}
 
-
-							}
-
-							if(has_asked_bq == 0) {
-								String logic = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_QUESTION_WHEN_NO_FEATURE_FOUND_TOPIC);
+								if(has_asked_bq == 0) {
+									// The code comes here if no active production rules were found for any of the similar problems.
+									String logic = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_QUESTION_WHEN_NO_RULE_FOUND_TOPIC);
+									//askBrainstormingQuestion(logic, false);
+									getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
+									nextCurrentNode = askWhatToDoNext(currentNode, logic);
+									hintReceived = true;
+									if (trace.getDebugCode("ss")) {
+										trace.out("ss", "CallingbrainstormWhatToDoNext  "
+												+ "currentNode: " + currentNode
+												+ " nextCurrentNode: " + nextCurrentNode);
+									}
+							    }
+							 }
+							 else {
+								String logic = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_QUESTION_WHEN_NO_RULE_FOUND_TOPIC);
 								//askBrainstormingQuestion(logic, false);
 								getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
 								nextCurrentNode = askWhatToDoNext(currentNode, logic);
 								hintReceived = true;
-								if (trace.getDebugCode("ss")) {
+								if (trace.getDebugCode("ss"))
 									trace.out("ss", "CallingbrainstormWhatToDoNext  "
 											+ "currentNode: " + currentNode
 											+ " nextCurrentNode: " + nextCurrentNode);
-								}
-						    }
-						 }
-						 else {
-							String logic = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_QUESTION_WHEN_NO_FEATURE_FOUND_TOPIC);
-							//askBrainstormingQuestion(logic, false);
-							getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
-							nextCurrentNode = askWhatToDoNext(currentNode, logic);
+							 }
+						}
+						else {
+							ple.blockInput(false);
+							String stuck_msg = ple.getConversation().getMessage(SimStConversation.BOTH_STUCK_TOPIC);
+							nextCurrentNode = askWhatToDoNext(currentNode, stuck_msg);
 							hintReceived = true;
-							if (trace.getDebugCode("ss"))
-								trace.out("ss", "CallingbrainstormWhatToDoNext  "
-										+ "currentNode: " + currentNode
-										+ " nextCurrentNode: " + nextCurrentNode);
-						 }
-
+						}
 
 					}
 				}
@@ -2138,6 +2123,10 @@ public void fillInQuizProblem(String problemName) {
 				}
 			}
 		}
+	}
+	
+	public void setkillMessageReceived(boolean b) {
+		this.killMessageReceived = b;
 	}
 
 	public void stopLearningProblem() {
@@ -3544,7 +3533,7 @@ public void fillInQuizProblem(String problemName) {
 		// hint = askHint(brController, currentNode);
 
 		hint = simSt.askForHint(getBrController(getSimSt()), currentNode, customMessage);
-
+		
 		trace.out("miss","hint returned is " + hint);
 		simSt.createNewNodeAndEdgeForHintReceived(hint, currentNode);
 		if (trace.getDebugCode("miss"))
@@ -3557,6 +3546,24 @@ public void fillInQuizProblem(String problemName) {
 		// used to calc time used in processing learning attempt
 		setGivenProblemName(problemName);
 		return askNodeSkillName(currentNode, problemName, null);
+	}
+	
+	public boolean hintHasContradiction(AskHint hint, ArrayList<String> already_suggested_skillname) {
+		String skillname = hint.skillName;
+		Rule rule = getSimSt().getRule(skillname);
+		if(rule != null) {
+			// rule already exist
+			// Need to check if SimSt already suggested that rule or not
+			if(already_suggested_skillname.contains(skillname))
+				return false;
+				
+			else
+				return true;
+			
+		}
+		else {
+			return false;
+		}
 	}
 
 	public ProblemNode askNodeSkillName(ProblemNode currentNode, String problemName, AskHint hintInfo) {

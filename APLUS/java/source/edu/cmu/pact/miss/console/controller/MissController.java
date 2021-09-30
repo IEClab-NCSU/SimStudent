@@ -2196,9 +2196,8 @@ public class MissController implements MissControllerExternal {
                     	// Param: flag := experimenter@server[:[opt1,opt2,...,optn]]
                     	setSsTutalkParams(parameter[0]);
                     } else if(keyStem.equalsIgnoreCase("ssCTIBothStuckParams")) {
-                    	// @author Huan Truong
+                    	// @author Tasmia Shahriar
                     	// This flag enables Tutalk dialog mode and sets server parameters
-                    	// Param: flag := experimenter@server[:[opt1,opt2,...,optn]]
                     	setCTIBothStuckParams(parameter[0]);
                     } else if(keyStem.equalsIgnoreCase("ssGeneralWMEPaths")){
                     	// @author samanz  

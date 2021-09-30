@@ -17,7 +17,7 @@ public class IsAVarTerm extends EqFeaturePredicate{
 			"variable", // the concept's name
 			"A variable is an element, feature, or factor that is liable to vary or change." // definition of the concept in case the tutor asks
 		    );
-		setFeatureDescription(getName(),"is an element, feature, or factor that is liable to vary or change.");
+		setFeatureDescription(getName(),"is a variable");
 		
     }
 

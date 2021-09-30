@@ -2782,7 +2782,7 @@ public class SimStPLE {
 	public void restartProblem() {
 		
 		setFocusTab(SIM_ST_TAB);
-
+		getSsInteractiveLearning().setkillMessageReceived(false);
 		String step = simSt.getProblemStepString();
 
 		simSt.killInteractiveLearningThreadIfAny();
@@ -3397,6 +3397,7 @@ public class SimStPLE {
 		// getSimStPeerTutoringPlatform().getNextProblemButton();
 		// nextProblemButton.setText(getProblemEnteredButtonString());
 		// nextProblemButton.setEnabled(false);
+		getSsInteractiveLearning().setkillMessageReceived(false);
 		getBrController().startNewProblem();
 		if(runType == null || !runType.equals("springBoot")) {
 			setAvatarStart();
