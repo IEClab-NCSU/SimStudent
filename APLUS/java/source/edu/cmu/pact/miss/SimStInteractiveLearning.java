@@ -1853,6 +1853,7 @@ public void fillInQuizProblem(String problemName) {
 											}
 										}
 									}
+									if(has_asked_bq == 1) break;
 
 								}
 
