@@ -27,10 +27,7 @@ public class NearSimilarEquationFinder extends NearSimilarProblemsGetter{
 		const_term_pos = new ArrayList<Integer>();
 		ArrayList<String> similar_problems = new ArrayList<String>();
 		AlgebraProblemAssessor apa = new AlgebraProblemAssessor();
-		String problemString = apa.findLastStep(currentProblem.getProblemModel().getStartNode(), currentProblem);
-		
-		//similar_problems = dropTermsAndChangeSign(problemString.replace('=', '_'), similar_problems);
-		
+		String problemString = apa.findLastStep(currentProblem.getProblemModel().getStartNode(), currentProblem);		
 		
 		String problemString_ = problemString.replace('=', '_');
 		String new_problems = "";
@@ -38,14 +35,20 @@ public class NearSimilarEquationFinder extends NearSimilarProblemsGetter{
 		String type = whichTypeEquation(parsed_equation.size(), pos_, problemString_);
 		if(type.contains("1")) {
 			new_problems = dropCoefficient(problemString_, parsed_equation, type, var_term_pos.get(0));
-			if(isValidEquation(new_problems)) {
-				similar_problems.add(new_problems);
+			if(new_problems.equals(problemString_)) {
+				// one step equation has no coefficient rather constant.
+				dropConstant(problemString_, parsed_equation, type, similar_problems);
+				
+			}else {
+				if(isValidEquation(new_problems) && !new_problems.equals(problemString_)) {
+					similar_problems.add(new_problems);
+				}
 			}
 		}
 		else if(type.contains("2")) {
 			dropConstant(problemString_, parsed_equation, type, similar_problems);
 			new_problems = dropCoefficient(problemString_, parsed_equation, type, var_term_pos.get(0));
-			if(isValidEquation(new_problems)) {
+			if(isValidEquation(new_problems) && !new_problems.equals(problemString_)) {
 				similar_problems.add(new_problems);
 			}
 		}
@@ -59,71 +62,25 @@ public class NearSimilarEquationFinder extends NearSimilarProblemsGetter{
 		return similar_problems;
     }
 	
-	public ArrayList<String> dropTermsAndChangeSign(String currentProblem, ArrayList<String> similar_problems){
-		ArrayList<String> parsed_equation = parseEquationToEditDistances(currentProblem);
-		
-		int i = 0;
-		//int start = 0;
-		while(i<parsed_equation.size()) {
-			String new_equation_1 = "";
-			//String new_equation_2 = "";
-			/*String temp_term = "";
-			if(parsed_equation.get(i).contains("+")) {					
-				temp_term = parsed_equation.get(i).replace("+", "-");
-			}
-			else if(parsed_equation.get(i).contains("-")) {
-				temp_term = parsed_equation.get(i).replace("-", "+");
-			}
-			else {
-				temp_term = "-"+parsed_equation.get(i);
-			}*/
-			for (int l = 0; l < parsed_equation.size(); l++) {
-				if(i!=l) {
-						
-						new_equation_1+=parsed_equation.get(l);
-						//new_equation_2+=parsed_equation.get(l);
-				}
-				/*else {
-					new_equation_2+=temp_term;
-				}*/
-			}
-			if(isValidEquation(new_equation_1)) {
-				similar_problems.add(replaceFirstPositiveSign(new_equation_1));
-			}
-			/*if(isValidEquation(new_equation_2)) {
-				similar_problems.add(replaceFirstPositiveSign(new_equation_2));
-			}*/
-			i++;
-			if(i<parsed_equation.size() && parsed_equation.get(i).contains("_")) {
-//				new_equation_1+=parsed_equation.get(i);
-//				new_equation_2+=parsed_equation.get(i);
-				i++;
-			}
-		}
-		
-		return similar_problems;
-		
-	}
 	
 	public void dropConstant(String currentProblem, ArrayList<String> parsed_equation, String type, ArrayList<String> similar_problems){
 		for(int i=0; i<const_term_pos.size(); i++) {
 			String new_problems = dropOneConstant(currentProblem, parsed_equation, type, const_term_pos.get(i));
 			new_problems = replaceFirstPositiveSign(new_problems);
-			if(isValidEquation(new_problems)) {
+			if(isValidEquation(new_problems)  && !new_problems.equals(currentProblem)) {
 				similar_problems.add(new_problems);
 			}
 		}
 	}
 	public void dropVarTerm(String currentProblem, ArrayList<String> parsed_equation, String type, ArrayList<String> similar_problems){
 		String droped_var_equation = "";
-		System.out.println("hi");
 		for(int i=0; i<var_term_pos.size(); i++) {
 			for(int j=0; j<parsed_equation.size(); j++) {
 				if(var_term_pos.get(i) == j) droped_var_equation+="";
 				else droped_var_equation+=parsed_equation.get(j);
 			}
 			droped_var_equation = replaceFirstPositiveSign(droped_var_equation);
-			if(isValidEquation(droped_var_equation)) {
+			if(isValidEquation(droped_var_equation) && !droped_var_equation.equals(currentProblem)) {
 				similar_problems.add(droped_var_equation);
 			}
 			droped_var_equation = "";

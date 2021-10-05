@@ -83,9 +83,14 @@ import edu.cmu.pact.miss.userDef.algebra.EqFeaturePredicate;
 public class SimStInteractiveLearning implements Runnable {
 
 	public final String UNLABELED_SKILLNAME = "unlabeled-interactive-learning";
-
+	private ArrayList<String> already_suggested_skillname = new ArrayList<String>();
+	private Vector current_foas;
+	private boolean bq_scope = false;
 	private SimSt simSt;
-
+	
+	public boolean getBqScope() {
+		return bq_scope;
+	}
 	public SimSt getSimSt() {
 		return simSt;
 	}
@@ -1649,6 +1654,8 @@ public void fillInQuizProblem(String problemName) {
 	    
 		while ((!isRunningFromBrd() || this.numStepsPerformed != numStepsBrd || getBrController(getSimSt()).getMissController().isBatchModeOn()) && !this.killMessageReceived) {
 
+			already_suggested_skillname = new ArrayList<String>();
+			bq_scope = false;
 			if (getBrController(getSimSt()).getMissController().isPLEon())
 				getBrController(getSimSt()).getMissController().getSimStPLE().getConversation().setBehaviourDiscrepency(false);
 
@@ -1709,6 +1716,8 @@ public void fillInQuizProblem(String problemName) {
 
 
 						for (RuleActivationNode ran : activList) {
+							already_suggested_skillname.add(ran.getName().replace("MAIN::", ""));
+							current_foas = ran.getRuleFoas();
 							trace.out(ran.getActualSelection()+" : "+ran.getActualAction()+" : "+ran.getActualInput());
 							// we got "dorminTable3_C1R1 : UpdateTable : divide 3" for 3x_6 problem name
 							Sai sai = new Sai(ran.getActualSelection(), ran.getActualAction(), ran.getActualInput());
@@ -1800,6 +1809,7 @@ public void fillInQuizProblem(String problemName) {
 						// Tutor is  confused and don't know what to do next.
 						if(simSt.isCTIFollowupInquiryMode()){
 							// Set SimStudent to thinking brainstorming questions
+							bq_scope = true;
 							String brainstorming_thinking = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_THINKING_TOPIC);
 							if(!runType.equals("springBoot")) {
 								if (getBrController(getSimSt()).getMissController().isPLEon() && !isTakingQuiz())
@@ -1815,8 +1825,14 @@ public void fillInQuizProblem(String problemName) {
 							if(getSimSt().isNearSimilarProblemsGetterDefined()) {
 								 NearSimilarProblemsGetter nspg = getSimSt().getNearSimilarProblemsGetter();
 								 ArrayList<String> similar_problems = nspg.nearSimilarProblemsGetter(currentNode);
-
-								 int has_asked_bq = 0;
+							     String step = brController.getMissController().getSimSt().getProblemStepString();
+								 if(step.contains("[")) {
+									 bq_scope = false;
+								 }
+								 else{
+									 bq_scope = true;
+								 }
+							     int has_asked_bq = 0;
 								 for(int i=0; i<similar_problems.size(); i++) {
 									String problemName = similar_problems.get(i);
 									ProblemNode similarNode = new ProblemNode();
@@ -1827,7 +1843,7 @@ public void fillInQuizProblem(String problemName) {
 										for (RuleActivationNode ran : activList_2) {
 											j++;
 											Sai s_a_i = getSai(ran); // dorminTable3_C1R1, UpdateTable, divide 3
-											if(isSelectionValidForBrainstormingQuestions(s_a_i.getS())) {
+											if(isSelectionValidForBrainstormingQuestions(s_a_i.getS()) && !step.contains("[") && !s_a_i.getI().equals("FALSE")) {
 												String logic = ruleApplicationLogic(similarNode,ran); // need to make this domain independent by using getter
 												String msg = "";
 												String problem_name = similarNode.getName().replace("_", "=");
@@ -1841,8 +1857,8 @@ public void fillInQuizProblem(String problemName) {
 
 												getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
 												nextCurrentNode = askWhatToDoNext(currentNode, msg);
-												String rule_not_applied_logic = ruleNotApplicationLogic(currentNode,ran, "add");
-												followupWhenStuck(currentNode, rule_not_applied_logic, "add");
+												//String rule_not_applied_logic = ruleNotApplicationLogic(currentNode,ran, "add");
+												//followupWhenStuck(currentNode, rule_not_applied_logic, "add");
 												hintReceived = true;
 												if (trace.getDebugCode("ss"))
 													trace.out("ss", "CallingbrainstormWhatToDoNext  "
@@ -2634,6 +2650,16 @@ public void fillInQuizProblem(String problemName) {
 		}
 		return;
 	}
+	
+	public String getSelectionFromCurProblem(ProblemNode node) {
+		ProblemEdge edge = null;
+		if (node.getInDegree() <= 0)
+			return "";
+		edge = (ProblemEdge) node.getIncomingEdges().get(0);
+		if (edge.getEdgeData().getRuleNames().size() <= 0)
+			return "";
+		return edge.getSelection();
+	}
 
 	public void explainWhyRight(ProblemNode node) {
 
@@ -2660,7 +2686,7 @@ public void fillInQuizProblem(String problemName) {
 
 		Random r = new Random();
 	    int probability = r.nextInt(100);
-
+	    System.out.println(edge.getSelection());
 		//if (simSt.isSelfExplainMode() && !skillName.contains("typein") && !skillName.contains("unnamed")) {
 		//10/06/2014: now selection is the one that defines if SimStudent should ask for self explanation
 		if (simSt.isSelfExplainMode() && isSelectionValidForSelfExplanation(edge.getSelection()) && !explainedWhyRightSkills.contains(skillName)
@@ -3200,8 +3226,7 @@ public void fillInQuizProblem(String problemName) {
 		
 		// This function lets the tutee agent to speak out the rationale behind why a production rule was not fired
 		// using the feature predicates
-		public String ruleNotApplicationLogic(ProblemNode currentNode,
-					RuleActivationNode ran, String rulename) {
+		public String ruleNotApplicationLogic(ProblemNode currentNode, String rulename) {
 				
 				String logic = "";
 				Rule rule = getSimSt().getRule(rulename);
@@ -3212,7 +3237,7 @@ public void fillInQuizProblem(String problemName) {
 						ArrayList feature_predicates = rule.getLhsFeatures();
 						HashMap variable_foa_map = new HashMap();
 						
-						ArrayList<String> nonActiveFeaturePredicates = getNonActiveFeaturePredicates(feature_predicates, rule, ran, variable_foa_map);
+						ArrayList<String> nonActiveFeaturePredicates = getNonActiveFeaturePredicates(feature_predicates, rule, variable_foa_map);
 						if(nonActiveFeaturePredicates == null) return logic;
 						int flag = 0;
 						for(int m=0; m<nonActiveFeaturePredicates.size(); m++) {
@@ -3220,13 +3245,15 @@ public void fillInQuizProblem(String problemName) {
 							else flag = 1;
 							String wme_content = getBrController(getSimSt()).getMissController()
 									.getSimStPLE().getComponentName((String)variable_foa_map.get(nonActiveFeaturePredicates.get(m)));
-							//if(flag == 0) logic = "I could have applied "+ rule.getName()+" number for the equation "+currentNode.getName()+" because the lhs ";
-							//flag = 1;
 							String name = convertjessPredicatesToJavaClass.getPredicatePart(nonActiveFeaturePredicates.get(m));
 							String feature_end_classname = convertjessPredicatesToJavaClass.upperCaseFirstLetterOmmittingDelimeter(name, "-");
 							String feature_full_classname = "edu.cmu.pact.miss.userDef.algebra."+ feature_end_classname;
 							FeaturePredicate predicate=FeaturePredicate.getPredicateByClassName(feature_full_classname);
-							logic += wme_content+" does not "+predicate.getFeatureDescription().getDescriptions();
+							if(nonActiveFeaturePredicates.get(m).contains("not"))
+								logic += wme_content+" "+predicate.getFeatureDescription().getDescriptions();
+
+							else
+								logic += wme_content+" does not "+predicate.getFeatureDescription().getDescriptions();
 						}
 					}
 				}
@@ -3236,11 +3263,11 @@ public void fillInQuizProblem(String problemName) {
 			}
 			
 
-		public ArrayList<String> getNonActiveFeaturePredicates(ArrayList feature_predicates, Rule rule, RuleActivationNode ran, HashMap variable_foa_map) {
+		public ArrayList<String> getNonActiveFeaturePredicates(ArrayList feature_predicates, Rule rule, HashMap variable_foa_map) {
 			
 			//ArrayList feature_predicates = rule.getLhsFeatures();
 			ArrayList feature_path = rule.getLhsPath();
-			Vector foas = ran.getRuleFoas();
+			Vector foas = current_foas;
 			ArrayList<String> nonActiveFeaturePredicates = new ArrayList<String>();
 			
 			if (feature_predicates.size()<1) return nonActiveFeaturePredicates;
@@ -3534,7 +3561,11 @@ public void fillInQuizProblem(String problemName) {
 		// hint = askHint(brController, currentNode);
 
 		hint = simSt.askForHint(getBrController(getSimSt()), currentNode, customMessage);
-		
+		if(bq_scope && hintHasContradiction(hint)) {
+			String rule_not_applied_logic = ruleNotApplicationLogic(currentNode,hint.skillName);
+			if(rule_not_applied_logic != "") 
+				followupWhenStuck(currentNode, rule_not_applied_logic, hint.skillName);
+		}
 		trace.out("miss","hint returned is " + hint);
 		simSt.createNewNodeAndEdgeForHintReceived(hint, currentNode);
 		if (trace.getDebugCode("miss"))
@@ -3549,11 +3580,11 @@ public void fillInQuizProblem(String problemName) {
 		return askNodeSkillName(currentNode, problemName, null);
 	}
 	
-	public boolean hintHasContradiction(AskHint hint, ArrayList<String> already_suggested_skillname) {
+	public boolean hintHasContradiction(AskHint hint) {
 		String skillname = hint.skillName;
 		Rule rule = getSimSt().getRule(skillname);
 		if(rule != null) {
-			// rule already exist
+			// Rule already exists
 			// Need to check if SimSt already suggested that rule or not
 			if(already_suggested_skillname.contains(skillname))
 				return false;
