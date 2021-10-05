@@ -2650,16 +2650,6 @@ public void fillInQuizProblem(String problemName) {
 		}
 		return;
 	}
-	
-	public String getSelectionFromCurProblem(ProblemNode node) {
-		ProblemEdge edge = null;
-		if (node.getInDegree() <= 0)
-			return "";
-		edge = (ProblemEdge) node.getIncomingEdges().get(0);
-		if (edge.getEdgeData().getRuleNames().size() <= 0)
-			return "";
-		return edge.getSelection();
-	}
 
 	public void explainWhyRight(ProblemNode node) {
 
