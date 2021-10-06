@@ -2663,6 +2663,8 @@ public void fillInQuizProblem(String problemName) {
 		}
 		return;
 	}
+	
+	
 
 	public void explainWhyRight(ProblemNode node) {
 
@@ -3116,9 +3118,8 @@ public void fillInQuizProblem(String problemName) {
 						//if(flag == 0) logic = "I could have applied "+ rule.getName()+" number for the equation "+currentNode.getName()+" because the lhs ";
 						//flag = 1;
 						String name = convertjessPredicatesToJavaClass.getPredicatePart(activeFeaturePredicates[m]);
-						String feature_end_classname = convertjessPredicatesToJavaClass.upperCaseFirstLetterOmmittingDelimeter(name, "-");
-						String feature_full_classname = "edu.cmu.pact.miss.userDef.algebra."+ feature_end_classname;
-						FeaturePredicate predicate=FeaturePredicate.getPredicateByClassName(feature_full_classname);
+						Class userFunction = getSimSt().getMTRete().findUserfunction(name).getClass();
+						FeaturePredicate predicate = FeaturePredicate.getPredicateByClassName(userFunction.getName());
 						if(activeFeaturePredicates[m].contains("not"))
 							logic += wme_content+" does not "+predicate.getFeatureDescription().getDescriptions();
 						else
@@ -3158,9 +3159,8 @@ public void fillInQuizProblem(String problemName) {
 									.getSimStPLE().getComponentName(cell_name);
 							//if(flag == 0) logic = "I could have applied "+ rule.getName()+" number for the equation "+currentNode.getName()+" because the lhs ";
 							//flag = 1;
-							String feature_end_classname = convertjessPredicatesToJavaClass.upperCaseFirstLetterOmmittingDelimeter(name, "-");
-							String feature_full_classname = "edu.cmu.pact.miss.userDef.algebra."+ feature_end_classname;
-							FeaturePredicate predicate=FeaturePredicate.getPredicateByClassName(feature_full_classname);
+							Class userFunction = getSimSt().getMTRete().findUserfunction(name).getClass();
+							FeaturePredicate predicate = FeaturePredicate.getPredicateByClassName(userFunction.getName());
 							logic += wme_content+" "+predicate.getFeatureDescription().getDescriptions();
 							//System.out.println(predicate.getFeatureDescription().getDescriptions());
 
@@ -3249,9 +3249,8 @@ public void fillInQuizProblem(String problemName) {
 							String wme_content = getBrController(getSimSt()).getMissController()
 									.getSimStPLE().getComponentName((String)variable_foa_map.get(nonActiveFeaturePredicates.get(m)));
 							String name = convertjessPredicatesToJavaClass.getPredicatePart(nonActiveFeaturePredicates.get(m));
-							String feature_end_classname = convertjessPredicatesToJavaClass.upperCaseFirstLetterOmmittingDelimeter(name, "-");
-							String feature_full_classname = "edu.cmu.pact.miss.userDef.algebra."+ feature_end_classname;
-							FeaturePredicate predicate=FeaturePredicate.getPredicateByClassName(feature_full_classname);
+							Class userFunction = getSimSt().getMTRete().findUserfunction(name).getClass();
+							FeaturePredicate predicate = FeaturePredicate.getPredicateByClassName(userFunction.getName());
 							if(nonActiveFeaturePredicates.get(m).contains("not"))
 								logic += wme_content+" "+predicate.getFeatureDescription().getDescriptions();
 
