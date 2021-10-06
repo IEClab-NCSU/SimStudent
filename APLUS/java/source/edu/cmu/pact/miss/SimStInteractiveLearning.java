@@ -43,6 +43,7 @@ import edu.cmu.pact.BehaviorRecorder.Controller.BR_Controller;
 import edu.cmu.pact.BehaviorRecorder.Dialogs.LoadFileDialog;
 import edu.cmu.pact.BehaviorRecorder.ProblemModel.ProblemModel;
 import edu.cmu.pact.BehaviorRecorder.ProblemModel.ProblemModelException;
+import edu.cmu.pact.BehaviorRecorder.ProblemModel.VariableTable;
 import edu.cmu.pact.BehaviorRecorder.ProblemModel.Graph.EdgeData;
 import edu.cmu.pact.BehaviorRecorder.ProblemModel.Graph.ExampleTracerGraph;
 import edu.cmu.pact.BehaviorRecorder.ProblemModel.Graph.ProblemEdge;
@@ -84,7 +85,7 @@ public class SimStInteractiveLearning implements Runnable {
 
 	public final String UNLABELED_SKILLNAME = "unlabeled-interactive-learning";
 	private ArrayList<String> already_suggested_skillname = new ArrayList<String>();
-	private Vector current_foas;
+	private Vector current_foas = new Vector();
 	private boolean bq_scope = false;
 	private SimSt simSt;
 	
@@ -1692,7 +1693,19 @@ public void fillInQuizProblem(String problemName) {
 
 				/*kept ony for miss output*/
 				Vector activationList = simSt.gatherActivationList(currentNode);
+				
+				VariableTable vt = currentNode.getProblemModel().getVariableTable();
+				String[] vtKeys = vt.keySet().toArray( new String[ vt.size() ] );
+				if(vtKeys.length >= 2) {
+					String cur_foa_1 = vtKeys[ vtKeys.length - 2 ];
+					String cur_foa_2 = vtKeys[ vtKeys.length - 1 ];
+					System.out.println(cur_foa_1+" "+cur_foa_2);
+					current_foas.clear();
+					current_foas.add(cur_foa_1);
+					current_foas.add(cur_foa_2);
 
+				}
+				
 				Collection<RuleActivationNode> activList=getActivations(currentNode);
 
 				/*
@@ -1717,7 +1730,7 @@ public void fillInQuizProblem(String problemName) {
 
 						for (RuleActivationNode ran : activList) {
 							already_suggested_skillname.add(ran.getName().replace("MAIN::", ""));
-							current_foas = ran.getRuleFoas();
+							//current_foas = ran.getRuleFoas();
 							trace.out(ran.getActualSelection()+" : "+ran.getActualAction()+" : "+ran.getActualInput());
 							// we got "dorminTable3_C1R1 : UpdateTable : divide 3" for 3x_6 problem name
 							Sai sai = new Sai(ran.getActualSelection(), ran.getActualAction(), ran.getActualInput());
@@ -3231,7 +3244,7 @@ public void fillInQuizProblem(String problemName) {
 						if(nonActiveFeaturePredicates == null) return logic;
 						int flag = 0;
 						for(int m=0; m<nonActiveFeaturePredicates.size(); m++) {
-							if(flag != 0) logic+= "and";
+							if(flag != 0) logic+= " and ";
 							else flag = 1;
 							String wme_content = getBrController(getSimSt()).getMissController()
 									.getSimStPLE().getComponentName((String)variable_foa_map.get(nonActiveFeaturePredicates.get(m)));
