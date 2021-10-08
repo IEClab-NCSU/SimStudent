@@ -1857,8 +1857,8 @@ public void fillInQuizProblem(String problemName) {
 
 												getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
 												nextCurrentNode = askWhatToDoNext(currentNode, msg);
-												//String rule_not_applied_logic = ruleNotApplicationLogic(currentNode,ran, "add");
-												//followupWhenStuck(currentNode, rule_not_applied_logic, "add");
+												String rule_not_applied_logic = ruleNotApplicationLogic(currentNode, "add");
+												followupWhenStuck(currentNode, rule_not_applied_logic, "add");
 												hintReceived = true;
 												if (trace.getDebugCode("ss"))
 													trace.out("ss", "CallingbrainstormWhatToDoNext  "
@@ -2635,8 +2635,10 @@ public void fillInQuizProblem(String problemName) {
 			}
 		}
 		Concept c = tutalkBridge.getLastStatementLabel();
-		if(getSimSt().getMissController().isPLEon() && c.getLabel().equals("R2"))
+		if(getSimSt().getMissController().isPLEon() && !c.getLabel().equals("R1"))
         {
+			this.askStudentToSummarize();
+			this.askedExplanation = true;
         	getSimSt().getMissController().getSimStPLE().setAvatarNormal();
         }
 		else {
@@ -2649,6 +2651,12 @@ public void fillInQuizProblem(String problemName) {
 			getBrController(getSimSt()).setCurrentNode2(currentNode);
 		}
 		return;
+	}
+	
+	public String askStudentToSummarize() {
+		String message = getSimSt().getMissController().getSimStPLE().getConversation().getMessage(SimStConversation.BRAINSTORMING_SUMMARIZE_CONVERSATION);
+		String summary = getSimSt().getMissController().getSimStPLE().giveMessageFreeTextResponse(message);
+		return summary;
 	}
 	
 	

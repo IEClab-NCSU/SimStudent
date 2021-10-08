@@ -341,6 +341,9 @@ I remember doing something like that in the past.
 it looks familiar to me.
 I did that in the past.
 
+BRAINSTORMING_SUMMARIZE
+I see. Could you summarize our conversation for me?
+
 BOTH_STUCK
 It looks like we are both stuck. Can you find out and show me what to do next?
 My brain is also jammed. Can you find out and show me what to do next? 
