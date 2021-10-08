@@ -1857,8 +1857,6 @@ public void fillInQuizProblem(String problemName) {
 
 												getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
 												nextCurrentNode = askWhatToDoNext(currentNode, msg);
-												String rule_not_applied_logic = ruleNotApplicationLogic(currentNode, "add");
-												followupWhenStuck(currentNode, rule_not_applied_logic, "add");
 												hintReceived = true;
 												if (trace.getDebugCode("ss"))
 													trace.out("ss", "CallingbrainstormWhatToDoNext  "
@@ -2616,7 +2614,7 @@ public void fillInQuizProblem(String problemName) {
 		return simSt.getBrController().getMissController().getSimStPLE().getValidSelectionsBAQ()!=null && simSt.getBrController().getMissController().getSimStPLE().getValidSelectionsBAQ().contains(selection);
 	}
 
-	public void followupWhenStuck(ProblemNode currentNode, String logic, String i) {
+	public boolean followupWhenStuck(ProblemNode currentNode, String logic, String i, boolean firstTry) {
 		
 		String problemStepString = getBrController(getSimSt()).getMissController()
 				.getSimSt().getProblemStepString();
@@ -2627,6 +2625,7 @@ public void fillInQuizProblem(String problemName) {
 		tutalkBridge.connect("both_stuck_contradiction",
 				contextVariables,
 				SimStLogger.INPUT_WRONG_EXPLAIN_ACTION);
+		boolean retry = false;
 		while (tutalkBridge.getState() != SimStTutalk.TUTALK_STATE_DONE) {
 			try {
 				Thread.sleep(250);
@@ -2643,14 +2642,16 @@ public void fillInQuizProblem(String problemName) {
         }
 		else {
 			getSimSt().getMissController().getSimStPLE().setAvatarAsking();
-			Collection<RuleActivationNode> activList=getActivations(currentNode);
-			RuleActivationNode ran = activList.stream().findFirst().get();
-			signalInstructionAsNegativeExample(ran, currentNode, getSai(ran));
-			getBrController(getSimSt()).setCurrentNode2(getBrController(getSimSt()).getProblemModel()
-					.getStartNode());
-			getBrController(getSimSt()).setCurrentNode2(currentNode);
+			if (firstTry)
+				retry = true;
+//			Collection<RuleActivationNode> activList=getActivations(currentNode);
+//			RuleActivationNode ran = activList.stream().findFirst().get();
+//			signalInstructionAsNegativeExample(ran, currentNode, getSai(ran));
+//			getBrController(getSimSt()).setCurrentNode2(getBrController(getSimSt()).getProblemModel()
+//					.getStartNode());
+//			getBrController(getSimSt()).setCurrentNode2(currentNode);
 		}
-		return;
+		return retry;
 	}
 	
 	public String askStudentToSummarize() {
@@ -3557,11 +3558,19 @@ public void fillInQuizProblem(String problemName) {
 				+ currentNode);
 		// hint = askHint(brController, currentNode);
 
-		hint = simSt.askForHint(getBrController(getSimSt()), currentNode, customMessage);
-		if(bq_scope && hintHasContradiction(hint)) {
-			String rule_not_applied_logic = ruleNotApplicationLogic(currentNode,hint.skillName);
-			if(rule_not_applied_logic != "") 
-				followupWhenStuck(currentNode, rule_not_applied_logic, hint.skillName);
+		boolean retry = false, firstTry = true;
+		while (retry || firstTry) {
+			retry = false;
+			hint = simSt.askForHint(getBrController(getSimSt()), currentNode, customMessage);
+			if(bq_scope && hintHasContradiction(hint)) {
+				String rule_not_applied_logic = ruleNotApplicationLogic(currentNode,hint.skillName);
+				if(rule_not_applied_logic != "") 
+					retry = followupWhenStuck(currentNode, rule_not_applied_logic, hint.skillName, firstTry);
+			}
+			if (retry) {
+				// clear transformation cell
+			}
+			firstTry = false;
 		}
 		trace.out("miss","hint returned is " + hint);
 		simSt.createNewNodeAndEdgeForHintReceived(hint, currentNode);

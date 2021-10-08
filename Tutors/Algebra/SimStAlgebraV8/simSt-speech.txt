@@ -342,7 +342,7 @@ it looks familiar to me.
 I did that in the past.
 
 BRAINSTORMING_SUMMARIZE
-I see. Could you summarize our conversation for me?
+I see. Could you summarize what you learned from our conversation?
 
 BOTH_STUCK
 It looks like we are both stuck. Can you find out and show me what to do next?
