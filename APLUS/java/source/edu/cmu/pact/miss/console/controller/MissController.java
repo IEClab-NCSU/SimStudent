@@ -1947,9 +1947,9 @@ public class MissController implements MissControllerExternal {
                     else if (keyStem.equalsIgnoreCase("ssNearSimilarProblemsGetterClass")) {
                     	setSsNearSimilarProblemsGetterClass(parameter[0]);
                     }
-                    else if (keyStem.equalsIgnoreCase("ssBothAgreeSpeechGetterClass")) {
+                    /*else if (keyStem.equalsIgnoreCase("ssBothAgreeSpeechGetterClass")) {
                     	setSsBothAgreeSpeechGetterClass(parameter[0]);
-                    }
+                    }*/
                     else if (keyStem.equalsIgnoreCase("ssFoaSearch")) {
                         setSsFoaSearch(true);
                         

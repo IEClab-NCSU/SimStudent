@@ -2648,7 +2648,7 @@ public void fillInQuizProblem(String problemName) {
 			}
 		}
 		Concept c = tutalkBridge.getLastStatementLabel();
-		if(getSimSt().getMissController().isPLEon() && c.getLabel().equals("R2"))
+		/*if(getSimSt().getMissController().isPLEon() && c.getLabel().equals("R2"))
         {
         	getSimSt().getMissController().getSimStPLE().setAvatarNormal();
         }
@@ -2660,7 +2660,7 @@ public void fillInQuizProblem(String problemName) {
 			getBrController(getSimSt()).setCurrentNode2(getBrController(getSimSt()).getProblemModel()
 					.getStartNode());
 			getBrController(getSimSt()).setCurrentNode2(currentNode);
-		}
+		}*/
 		return;
 	}
 	

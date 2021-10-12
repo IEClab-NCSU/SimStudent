@@ -11,7 +11,7 @@ public class IsLastConstTermNegative extends EqFeaturePredicate{
 		setArity(1);
 		setName("is-lastconstterm-negative");
 		setArgValueType(new int[]{TYPE_ARITH_EXP});
-		setFeatureDescription(getName(),"contain a negative constant term at the end");
+		setFeatureDescription(getName(),"contain a negative constant term at its end");
 	}
 
 	@SuppressWarnings("unchecked")

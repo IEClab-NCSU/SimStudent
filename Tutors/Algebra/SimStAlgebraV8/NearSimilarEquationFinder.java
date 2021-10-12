@@ -53,8 +53,22 @@ public class NearSimilarEquationFinder extends NearSimilarProblemsGetter{
 			}
 		}
 		else if(type.contains("3")) {
-			dropConstant(problemString_, parsed_equation, type, similar_problems);
-			dropVarTerm(problemString_, parsed_equation, type, similar_problems);
+			if(type.equals("3_B")) {
+				dropConstant(problemString_, parsed_equation, type, similar_problems);
+				for(int i=0; i<var_term_pos.size(); i++) {
+					dropVarTerm(problemString_, parsed_equation, type, similar_problems, var_term_pos.get(i));
+				}
+				//dropVarTerm(problemString_, parsed_equation, type, similar_problems);
+			}
+			else if (type.equals("3_L")) {
+				dropVarTerm(problemString_, parsed_equation, type, similar_problems, var_term_pos.get(0));
+			}
+			else if (type.equals("3_R")) {
+				dropVarTerm(problemString_, parsed_equation, type, similar_problems, var_term_pos.get(1));
+			}
+			else {
+				// here
+			}
 		}
 		
 		StringLengthListSort ss = new StringLengthListSort();
@@ -72,19 +86,16 @@ public class NearSimilarEquationFinder extends NearSimilarProblemsGetter{
 			}
 		}
 	}
-	public void dropVarTerm(String currentProblem, ArrayList<String> parsed_equation, String type, ArrayList<String> similar_problems){
+	public void dropVarTerm(String currentProblem, ArrayList<String> parsed_equation, String type, ArrayList<String> similar_problems, int var_term_pos_){
 		String droped_var_equation = "";
-		for(int i=0; i<var_term_pos.size(); i++) {
-			for(int j=0; j<parsed_equation.size(); j++) {
-				if(var_term_pos.get(i) == j) droped_var_equation+="";
-				else droped_var_equation+=parsed_equation.get(j);
-			}
-			droped_var_equation = replaceFirstPositiveSign(droped_var_equation);
-			if(isValidEquation(droped_var_equation) && !droped_var_equation.equals(currentProblem)) {
-				similar_problems.add(droped_var_equation);
-			}
-			droped_var_equation = "";
+		for(int j=0; j<parsed_equation.size(); j++) {
+			if(var_term_pos_ == j) droped_var_equation+="";
+			else droped_var_equation+=parsed_equation.get(j);
 		}
+		droped_var_equation = replaceFirstPositiveSign(droped_var_equation);
+		if(isValidEquation(droped_var_equation) && !droped_var_equation.equals(currentProblem)) {
+			similar_problems.add(droped_var_equation);
+		}		
 	}
 	
 	public String dropOneConstant(String currentProblem, ArrayList<String> parsed_equation, String type, int const_term_pos_){
@@ -211,12 +222,20 @@ public class NearSimilarEquationFinder extends NearSimilarProblemsGetter{
         return !lhsNumeric || !rhsNumeric;
 	}
 	
-	public static String whichTypeEquation(int total_tokens, int pos_, String equation) {
+	public String whichTypeEquation(int total_tokens, int pos_, String equation) {
 		// return value: 1_L: one step LHS var,  1_R: one step RHS var, 2_L: two-step LHS var,
-		// 2_R: two-step RHS var, 3_N: var on both sides
+		// 2_R: two-step RHS var, 3_B: var on both sides, 3_N: var on both sides with no const term
 		String LHS = equation.split("_")[0].trim();
 		String RHS = equation.split("_")[1].trim();
-		if(LHS.matches(".*[a-zA-Z]+.*") && RHS.matches(".*[a-zA-Z]+.*")) return "3_N";
+		if(LHS.matches(".*[a-zA-Z]+.*") && RHS.matches(".*[a-zA-Z]+.*")) {
+			if(const_term_pos.size() == 2)return "3_B";
+			else {
+				if(const_term_pos.size()>0 && const_term_pos.get(0) < pos_) return "3_L";
+				else if(const_term_pos.size()>0 && const_term_pos.get(0) > pos_) return "3_R";
+				else return "3_N";
+			}
+			
+		}
 		else if(LHS.matches(".*[a-zA-Z]+.*") && pos_ == 2) return "2_L";
 		else if(LHS.matches(".*[a-zA-Z]+.*") && pos_ == 1) return "1_L";
 		else if(RHS.matches(".*[a-zA-Z]+.*") && pos_ == 1 && total_tokens == 4) return "2_R";
