@@ -342,7 +342,13 @@ it looks familiar to me.
 I did that in the past.
 
 BRAINSTORMING_SUMMARIZE
-I see. Could you summarize what you learned from our conversation?
+Before I proceed further, can you please summarize the key points of our conversation?
+Could you please summarize our conversation in short to help me remember the key points before I proceed?
+
+BRAINSTORMING_FOLLOWUP_MISTAKE_REALIZATION
+Can you demonstrate the correct step for me please?
+Can you demonstrate the correct step then?
+Would you mind demonstrating the correct step then?
 
 BOTH_STUCK
 It looks like we are both stuck. Can you find out and show me what to do next?

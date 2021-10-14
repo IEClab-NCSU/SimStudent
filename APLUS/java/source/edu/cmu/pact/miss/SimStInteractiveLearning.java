@@ -2652,11 +2652,13 @@ public void fillInQuizProblem(String problemName) {
 			this.askStudentToSummarize();
 			this.askedExplanation = true;
         	getSimSt().getMissController().getSimStPLE().setAvatarNormal();
+        	return true;
         }
 		else {
 			getSimSt().getMissController().getSimStPLE().setAvatarAsking();
-			if (firstTry)
-				retry = true;
+			return false;
+			//if (firstTry)
+				//retry = true;
 //			Collection<RuleActivationNode> activList=getActivations(currentNode);
 //			RuleActivationNode ran = activList.stream().findFirst().get();
 //			signalInstructionAsNegativeExample(ran, currentNode, getSai(ran));
@@ -2664,7 +2666,7 @@ public void fillInQuizProblem(String problemName) {
 //					.getStartNode());
 //			getBrController(getSimSt()).setCurrentNode2(currentNode);
 		}
-		return retry;
+		//return retry;
 	}
 
 	public String askStudentToSummarize() {
@@ -3572,18 +3574,26 @@ public void fillInQuizProblem(String problemName) {
 		// hint = askHint(brController, currentNode);
 
 		boolean retry = false, firstTry = true;
-		while (retry || firstTry) {
-			retry = false;
+		//while (retry || firstTry) 
+		{
+			//retry = false;
 			hint = simSt.askForHint(getBrController(getSimSt()), currentNode, customMessage);
 			if(bq_scope && hintHasContradiction(hint)) {
 				String rule_not_applied_logic = ruleNotApplicationLogic(currentNode,hint.skillName);
-				if(rule_not_applied_logic != "")
+				if(rule_not_applied_logic != "") {
 					retry = followupWhenStuck(currentNode, rule_not_applied_logic, hint.skillName, firstTry);
+					if(retry == false) {
+						String msg = getBrController(getSimSt()).getMissController().getSimStPLE().getConversation().getMessage(SimStConversation.BRAINSTORMING_FOLLOWUP_MISTAKE_REALIZATION_TOPIC);
+						getBrController(getSimSt()).getMissController().getSimStPLE().blockInput(false);
+						// clear the cell 
+						hint = simSt.askForHint(getBrController(getSimSt()), currentNode, msg);
+					}
+				}
 			}
-			if (retry) {
+			/*if (retry) {
 				// clear transformation cell
 			}
-			firstTry = false;
+			firstTry = false;*/
 		}
 		trace.out("miss","hint returned is " + hint);
 		simSt.createNewNodeAndEdgeForHintReceived(hint, currentNode);

@@ -87,6 +87,7 @@ public class SimStConversation {
 	public static final String BRAINSTORMING_SUMMARIZE_CONVERSATION = "BRAINSTORMING_SUMMARIZE";
 	public static final String BRAINSTORMING_THINKING_TOPIC = "BRAINSTORMING_THINKING";
 	public static final String BOTH_STUCK_TOPIC = "BOTH_STUCK";
+	public static final String BRAINSTORMING_FOLLOWUP_MISTAKE_REALIZATION_TOPIC = "BRAINSTORMING_FOLLOWUP_MISTAKE_REALIZATION";
 	// Added by Tasmia: Topics for both agree speech
 	public static final String AGREE_ANY = "ANY";
 	public static final String AGREE_DIVIDE = "DIVIDE";

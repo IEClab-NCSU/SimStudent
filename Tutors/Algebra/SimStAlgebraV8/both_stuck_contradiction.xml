@@ -35,9 +35,9 @@
   </concept>
 	<concept label="R1" model="coded" />
 	<concept label="R1-response-simst">
-   <phrase>My bad! Can you demonstrate the correct step for me please?</phrase>
-	 <phrase>No problem at all! Can you demonstrate the correct step for me please?</phrase>
-	 <phrase>I understand there was a mistake somewhere! Can you demonstrate the correct step for me please?</phrase>
+   <phrase>My bad!</phrase>
+	 <phrase>No problem at all!</phrase>
+	 <phrase>I understand there was a mistake somewhere!</phrase>
   </concept>
 	<concept label="R0" model="coded" />
 	<concept label="R0-response-simst">
@@ -46,16 +46,16 @@
 	 <phrase>I think you might have missed my earlier question. Can I please get an answer to that?</phrase>
 	 <phrase>I think you've missed my earlier question. Can I please get an answer to that?</phrase>
   </concept>
-	<concept label="courtesy-moveon">
+	<!--<concept label="courtesy-moveon">
    <phrase>Alright! Can you then demonstrate an alternative step since the one that you have already suggested contradict with what I have learnt so far?</phrase>
 	 <phrase>Fair enough! Can you then demonstrate an alternative step since the one that you have already suggested contradict with what I have learnt so far?</phrase>
 	 <phrase>Fair enough! May be moving on will help me figure out the answer by myself. Can you then demonstrate an alternative step since the one that you have already suggested contradict with what I have learnt so far?</phrase>
-  </concept>
+ </concept>-->
 	<concept label="move-on">
    <phrase>Hmm..although I did not fully understand your statement but let me move on anyway.</phrase>
-	 <phrase>Umm..sure thing..let me move on!</phrase>
-	 <phrase>Thanks! Let me move on!</phrase>
-	 <phrase>Okay! Let me move on!</phrase>
+	 <phrase>Umm..although I am not entirely convinced but let me move on!</phrase>
+	 <phrase>Although I am not sure what you meant, let me move on anyway!</phrase>
+	 <phrase>Okay! Let me move on although I still have some confusions!</phrase>
   </concept>
 	<concept label="unanticipated-response">
    <phrase>anything else</phrase>
@@ -78,7 +78,7 @@
  <goal name="R0-response-action">
   <step>
    <initiation>R0-response-simst</initiation>
-   <response say="courtesy-moveon">R0</response>
+   <response say="move-on">R0</response>
 	 <response say="R1-response-simst">R1</response>
 	 <response say="R2-response-simst">R2</response>
 	 <response say="move-on">unanticipated-response</response>
