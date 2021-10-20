@@ -180,7 +180,7 @@ public class SimStPLE {
 	public static final String DO_PROBLEM_NO = "OK. Click \"Yes\" when you've entered a problem you like better.";
 	public static final String NO_UNDO_MSG = "But we haven't gotten through any work on this problem yet!";
 	public static final String UNDO_DONE_MSG = "Oh, is that not the answer to the problem?  Should I go back to working on it?";
-	public static final String SHOULD_DO_MSG = "Alright, I erased $.  Now let me think what I should do instead...";
+	public static final String SHOULD_DO_MSG = "Alright, I erased $.";
 	public static final String UNDO_ERROR_MSG = "I'm not quite sure how to undo that step.  Can we just restart the problem or go on to a different one?";
 	public static final String RESUME_MSG = "OK, I'm still not sure what I should do next though.  Can you please show me what to do?";
 	public static final String RESTART_MSG = "OK, I'm trying this problem again from the beginning.";
@@ -4119,7 +4119,7 @@ public class SimStPLE {
 		// giveMessage(THINK_MESSAGE);
 		if(customMsg == null)
 			giveMessage(conversation.getMessage(SimStConversation.THINK_TOPIC));
-		else
+		else if (!customMsg.isEmpty())
 			giveMessage(customMsg);
 		startStatus = false;
 		// getSimStPeerTutoringPlatform().setImage(STUDENT_THINK_IMAGE);

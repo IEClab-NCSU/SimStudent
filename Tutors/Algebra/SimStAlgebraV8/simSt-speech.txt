@@ -285,7 +285,7 @@ UNDO_RESUME
 Alright.  Back to working on the problem from here.  Let me think what I should do.
 
 UNDO_SHOULD_DO
-Alright.  I erased <o>.  Now let me think what I should do instead...
+Alright.  I erased <o>.
 
 UNDO_REMEMBER_PREVIOUS
 I remember I was trying to <o>.
@@ -346,9 +346,16 @@ Before I proceed further, can you please summarize the key points of our convers
 Could you please summarize our conversation in short to help me remember the key points before I proceed?
 
 BRAINSTORMING_FOLLOWUP_MISTAKE_REALIZATION
+You can go ahead and click on the Undo button.
+
+BRAINSTORMING_FOLLOWUP_MISTAKE_REALIZATION_OLD
 Can you demonstrate the correct step for me please?
 Can you demonstrate the correct step then?
 Would you mind demonstrating the correct step then?
+
+POST_UNDO
+Can you tell me what to do instead?
+Show me what to do next in that case.
 
 BOTH_STUCK
 It looks like we are both stuck. Can you find out and show me what to do next?

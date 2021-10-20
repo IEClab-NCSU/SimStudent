@@ -104,6 +104,7 @@ public class SimStConversation {
 	public static final String AGREE_ADD = "ADD";
 	public static final String AGREE_SUBTRACT = "SUBTRACT";
 	public static final String AGREE_ADD_POSITIVE_OPERATOR = "ADD_POSITIVE_OPERATOR";
+	public static final String POST_UNDO = "POST_UNDO";
 	
 	public static final int ERROR_THRESHOLD = 4;
 	

@@ -303,6 +303,8 @@ public class SimStInteractiveLearning implements Runnable {
 	public boolean explanationGiven=false;
 	public boolean getExplanationGiven(){return this.explanationGiven;}
 	public void setExplanationGiven(boolean flag){this.explanationGiven=flag;}
+	
+	private boolean askStudentToUndo;
 
 	//public static Hashtable<SimSt,BR_Controller> simstLookup = new Hashtable<SimSt,BR_Controller>();
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1633,8 +1635,7 @@ public void fillInQuizProblem(String problemName) {
 											// been requested on that step
 		String lastInputExplained = null;
 		String lastSkillExplained = null;
-
-
+		
 		initModelTracerForProblem();
 
 
@@ -1680,8 +1681,9 @@ public void fillInQuizProblem(String problemName) {
 			// Set SimStudent to thinking
 
 			if(!runType.equals("springBoot")) {
-				if (getBrController(getSimSt()).getMissController().isPLEon() && !isTakingQuiz())
+				if (getBrController(getSimSt()).getMissController().isPLEon() && !isTakingQuiz() && activations) {
 					getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarThinking();
+				}
 			}
 
 			ProblemNode nextCurrentNode = null;
@@ -1776,9 +1778,6 @@ public void fillInQuizProblem(String problemName) {
 				}
 			}
 
-			// only the first step of activations can be skipped
-			activations = true;
-
 			// Finish SimStudent thinking
 			if(!runType.equals("springBoot")) {
 				if (getBrController(getSimSt()).getMissController().isPLEon() && !isTakingQuiz())
@@ -1804,7 +1803,9 @@ public void fillInQuizProblem(String problemName) {
 					String title = SimStConversation.ASKING_IF_TUTOR_KNOWS_STEP_TOPIC;
 					SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();
 					String message = ple.getConversation().getMessage(SimStConversation.ASKING_IF_TUTOR_KNOWS_STEP_TOPIC);
-					int oracle = getSimSt().displayConfirmMessage(title,message);
+					int oracle = JOptionPane.YES_OPTION;
+					if (activations)
+						oracle = getSimSt().displayConfirmMessage(title,message);
 					// Set avatar asking
 					if(!runType.equals("springBoot")) {
 						if (getBrController(getSimSt()).getMissController().isPLEon() && !isTakingQuiz())
@@ -1815,7 +1816,8 @@ public void fillInQuizProblem(String problemName) {
 					if (oracle == JOptionPane.YES_OPTION) {
 						// ask for the demonstration of the step.
 						ple.blockInput(false);
-						nextCurrentNode = askWhatToDoNext(currentNode);
+						String custom_message = activations ? null : ple.getConversation().getMessage(SimStConversation.POST_UNDO);
+						nextCurrentNode = askWhatToDoNext(currentNode, custom_message);
 						hintReceived = true;
 			       	}
 					else {
@@ -1930,12 +1932,15 @@ public void fillInQuizProblem(String problemName) {
 				// Previous code ends */
 
 			}
+			
+			// only the first step of activations can be skipped
+			activations = true;
 
 			// Null nextCurrentNode after the Oracle inquiry means that the user
 			// initiated a new problem
 			if (nextCurrentNode != null) {
 
-				if (!askedExplanation && hintReceived)
+				if (!askedExplanation && hintReceived && !askStudentToUndo)
 					explainWhyRight(nextCurrentNode);
 
 				// update currentNode
@@ -1954,6 +1959,14 @@ public void fillInQuizProblem(String problemName) {
 //					SimStLogger.STEP_COMPLETED_ACTION, step, "", "",
 //					stepDuration);
 
+			if (askStudentToUndo) {
+				String undo_msg = getBrController(getSimSt()).getMissController().getSimStPLE().getConversation().getMessage(SimStConversation.BRAINSTORMING_FOLLOWUP_MISTAKE_REALIZATION_TOPIC);
+				getBrController(getSimSt()).getMissController().getSimStPLE().blockInput(true);
+				simSt.getMissController().getSimStPLE().getSimStPeerTutoringPlatform().setUndoButtonEnabled(true);
+				getSimSt().getMissController().getSimStPLE().giveMessage(undo_msg);
+				this.askStudentToUndo = false;
+				return;
+			}
 
 
 			// Do not continue after done state
@@ -2627,7 +2640,7 @@ public void fillInQuizProblem(String problemName) {
 		return simSt.getBrController().getMissController().getSimStPLE().getValidSelectionsBAQ()!=null && simSt.getBrController().getMissController().getSimStPLE().getValidSelectionsBAQ().contains(selection);
 	}
 
-	public boolean followupWhenStuck(ProblemNode currentNode, String logic, String i, boolean firstTry) {
+	public boolean followupWhenStuck(ProblemNode currentNode, String logic, String i) {
 
 		String problemStepString = getBrController(getSimSt()).getMissController()
 				.getSimSt().getProblemStepString();
@@ -2638,7 +2651,6 @@ public void fillInQuizProblem(String problemName) {
 		tutalkBridge.connect("both_stuck_contradiction",
 				contextVariables,
 				SimStLogger.INPUT_WRONG_EXPLAIN_ACTION);
-		boolean retry = false;
 		while (tutalkBridge.getState() != SimStTutalk.TUTALK_STATE_DONE) {
 			try {
 				Thread.sleep(250);
@@ -2652,21 +2664,12 @@ public void fillInQuizProblem(String problemName) {
 			this.askStudentToSummarize();
 			this.askedExplanation = true;
         	getSimSt().getMissController().getSimStPLE().setAvatarNormal();
-        	return true;
+        	return false;
         }
 		else {
-			getSimSt().getMissController().getSimStPLE().setAvatarAsking();
-			return false;
-			//if (firstTry)
-				//retry = true;
-//			Collection<RuleActivationNode> activList=getActivations(currentNode);
-//			RuleActivationNode ran = activList.stream().findFirst().get();
-//			signalInstructionAsNegativeExample(ran, currentNode, getSai(ran));
-//			getBrController(getSimSt()).setCurrentNode2(getBrController(getSimSt()).getProblemModel()
-//					.getStartNode());
-//			getBrController(getSimSt()).setCurrentNode2(currentNode);
+			getSimSt().getMissController().getSimStPLE().setAvatarNormal();
+			return true;
 		}
-		//return retry;
 	}
 
 	public String askStudentToSummarize() {
@@ -3573,27 +3576,12 @@ public void fillInQuizProblem(String problemName) {
 				+ currentNode);
 		// hint = askHint(brController, currentNode);
 
-		boolean retry = false, firstTry = true;
-		//while (retry || firstTry) 
-		{
-			//retry = false;
-			hint = simSt.askForHint(getBrController(getSimSt()), currentNode, customMessage);
-			if(bq_scope && hintHasContradiction(hint)) {
-				String rule_not_applied_logic = ruleNotApplicationLogic(currentNode,hint.skillName);
-				if(rule_not_applied_logic != "") {
-					retry = followupWhenStuck(currentNode, rule_not_applied_logic, hint.skillName, firstTry);
-					if(retry == false) {
-						String msg = getBrController(getSimSt()).getMissController().getSimStPLE().getConversation().getMessage(SimStConversation.BRAINSTORMING_FOLLOWUP_MISTAKE_REALIZATION_TOPIC);
-						getBrController(getSimSt()).getMissController().getSimStPLE().blockInput(false);
-						// clear the cell 
-						hint = simSt.askForHint(getBrController(getSimSt()), currentNode, msg);
-					}
-				}
+		hint = simSt.askForHint(getBrController(getSimSt()), currentNode, customMessage);
+		if(bq_scope && hintHasContradiction(hint)) {
+			String rule_not_applied_logic = ruleNotApplicationLogic(currentNode,hint.skillName);
+			if(rule_not_applied_logic != "") {
+				askStudentToUndo = followupWhenStuck(currentNode, rule_not_applied_logic, hint.skillName);
 			}
-			/*if (retry) {
-				// clear transformation cell
-			}
-			firstTry = false;*/
 		}
 		trace.out("miss","hint returned is " + hint);
 		simSt.createNewNodeAndEdgeForHintReceived(hint, currentNode);
