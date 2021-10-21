@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <scenario version="$Revision: 1.2 $" default-language="en">
 
-<configuration>
+<!--  <configuration>
 	<module kind="model" name="coded" classname="basilica2.side.listeners.LightSideMessageAnnotator">
 		<param key="modelPath" value="./bazaar/lightside/saved/both_stuck_model_logreg.model.xml" />
 		<param key="nickName" value="both_stuck_contradiction_f" />
@@ -10,6 +10,20 @@
 		<param key="pathToModel" value="⁨.⁩/⁨bazaar/lightside/models/both_stuck_model_logreg.model.xml"/>
 		<param key="modelName" value= "both_stuck_model_logreg.model.xml"/>
 		<param key="modelNickname" value= "both_stuck_contradiction_f"/>
+		<param key="predictionCommand" value= "⁨./⁨bazaar/lightside/scripts/prediction_server.sh"/>
+		<param key="classificationString" value= "R0,70,R1,70,R2,70"/>
+	</module>
+</configuration>-->
+
+<configuration>
+	<module kind="model" name="coded" classname="basilica2.side.listeners.LightSideMessageAnnotator">
+		<param key="modelPath" value="./bazaar/lightside/saved/both_stuck_model_svm_f.model.xml" />
+		<param key="nickName" value="both_stuck_model_f" />
+		<param key="prediction" value="predicted" />
+		<param key="currentAnnotation" value="Category" />
+		<param key="pathToModel" value="⁨.⁩/⁨bazaar/lightside/models/both_stuck_model_svm_f.model.xml"/>
+		<param key="modelName" value= "both_stuck_model_svm_f.model.xml"/>
+		<param key="modelNickname" value= "both_stuck_model_f"/>
 		<param key="predictionCommand" value= "⁨./⁨bazaar/lightside/scripts/prediction_server.sh"/>
 		<param key="classificationString" value= "R0,70,R1,70,R2,70"/>
 	</module>
