@@ -318,9 +318,10 @@ Do you know what step should be performed now?
 Do you know what step need to be performed now?
 
 BRAINSTORMING_QUESTION_TRANFORMATION
-I could perform "<i>" if I had <problem> because <logic>. Can you demonstrate the step that would lead me to that point from the current situation?
-I could perform "<i>" if I had <problem> because <logic>. Can you show me how to get to that point from the current situation?
-I could perform "<i>" if I had <problem> because <logic>. Can you show me the step that would deal with the extra part of the current situation and help me reach to this point?
+I could perform "<i>" if I had <problem> because <logic>. Can you demonstrate the step that would lead me to that point from the current situation? If you are still trying to figure out what to do, you may review the Example or Unit Overview tab at the top.
+I could perform "<i>" if I had <problem> because <logic>. Can you show me how to get to that point from the current situation? If you are still uncertain about what to do now, you may review the Example or Unit Overview tab at the top.
+I could perform "<i>" if I had <problem> because <logic>. Can you show me the step that would deal with the extra part of the current situation and help me reach to this point? If you are still not super sure, the Example or Unit Overview tab at the top might be helpful.
+I could perform "<i>" if I had <problem> because <logic>. Can you show me the step that would deal with the extra part of the current situation and help me reach to this point? If you are still not super sure, the Example or Unit Overview tab at the top may come in handy.
 
 BRAINSTORMING_THINKING
 I see. Let me think of a way out by going through what I have learnt so far.
