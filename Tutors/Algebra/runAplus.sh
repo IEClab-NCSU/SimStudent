@@ -33,7 +33,6 @@ case $1 in
 	"-mt") AddArgs="${AddArgs} -ssMetaTutorMode -ssProblemCheckerOracle ClOracle -ssRuleActivationTestMethod humanOracle -ssHintMethod humanDemonstration -ssIntroVideo metatutor.mov  -ssCondition MetaTutor";;
 	"-mtc") AddArgs="${AddArgs} -ssMetaTutorMode -ssProblemCheckerOracle ClOracle -ssMetaTutorModeLevel Cognitive -ssRuleActivationTestMethod humanOracle -ssHintMethod humanDemonstration -ssIntroVideo metatutorC.mov -ssCondition MetaTutorC";;
 	"-mtmc") AddArgs="${AddArgs} -ssMetaTutorMode -ssProblemCheckerOracle ClOracle -ssMetaTutorModeLevel MetaCognitive -ssRuleActivationTestMethod humanOracle -ssHintMethod humanDemonstration -ssIntroVideo metatutorMC.mp4 -ssCondition MetaTutorMC";;
-  "-cti") AddArgs="${AddArgs} -ssConstructiveTuteeInquiryFTIMode -ssMetaTutorMode -ssProblemCheckerOracle ClOracle -ssMetaTutorModeLevel MetaCognitive -ssRuleActivationTestMethod humanOracle -ssHintMethod humanDemonstration -ssIntroVideo metatutorMC.mp4 -ssCondition MetaTutorMC";;
   "-h"|"-help"|*) echo "Usage: $0"
 	echo " ./runAplus.sh <condition>[-mt | -mtc | -mtmc | -cta | -ct] <otheroptions>"
 	echo "	-datashopLogging <coursename> - turns logging to datashop on"
@@ -60,7 +59,8 @@ case $i in
 "-noPle") PLE="off";;
 "-noSe") SE="off";;
 "-tt") AddArgs="${AddArgs} -ssTutalkParams none";;
-"-cti") AddArgs="${AddArgs} -ssConstructiveTuteeInquiryFTIMode -ssCTIBothStuckParams none";;
+"-cti") CTI="on"
+AddArgs="${AddArgs} -ssConstructiveTuteeInquiryFTIMode -ssCTIBothStuckParams none";;
 "-br") br="on";;
 "-u"|"-user") AddArgs="${AddArgs} -ssUserID";;
 "-o"|"-output") redir="on";;
@@ -136,6 +136,14 @@ if [ -z ${SE} ];
 then
 	TutorArg="${TutorArg} -ssSelfExplainMode";
 fi
+if [ ${CTI} == "on" ];
+then
+  TutorArg="${TutorArg} -ssNearSimilarProblemsGetterClass SimStAlgebraV8.NearSimilarEquationFinder";
+fi
+#if [ -z ${CTI} ];
+#then
+#  TutorArg="${TutorArg} -ssNearSimilarProblemsGetterClass SimStAlgebraV8.NearSimilarEquationFinder";
+#fi
 
 
 
@@ -149,7 +157,7 @@ TutorArg="${TutorArg} -ssSearchTimeOutDuration 20000"
 TutorArg="${TutorArg} -ssTutorServerTimeOutDuration 100000"
 TutorArg="${TutorArg} -ssMaxSearchDepth 3"
 TutorArg="${TutorArg} -ssSkillNameGetterClass SimStAlgebraV8.AlgebraV8AdhocSkillNameGetter"
-TutorArg="${TutorArg} -ssSkillNameGetterClass SimStAlgebraV8.NearSimilarEquationFinder"
+#TutorArg="${TutorArg} -ssNearSimilarProblemsGetterClass SimStAlgebraV8.NearSimilarEquationFinder"
 TutorArg="${TutorArg} -ssSetInactiveInterfaceTimeout 5000000"
 TutorArg="${TutorArg} -ssInputCheckerClass SimStAlgebraV8.AlgebraV8InputChecker"
 TutorArg="${TutorArg} -ssStartStateCheckerClass SimStAlgebraV8.AlgebraV8StartStateChecker"
@@ -175,7 +183,6 @@ else
 	echo "${cmd}"
 	${cmd};
 fi
-
 #for bload in *.bload
 #do
 #    rm -f ./"$bload"

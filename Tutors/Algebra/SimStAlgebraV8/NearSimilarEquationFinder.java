@@ -28,7 +28,7 @@ public class NearSimilarEquationFinder extends NearSimilarProblemsGetter{
 		ArrayList<String> similar_problems = new ArrayList<String>();
 		AlgebraProblemAssessor apa = new AlgebraProblemAssessor();
 		String problemString = apa.findLastStep(currentProblem.getProblemModel().getStartNode(), currentProblem);		
-		
+		if(apa.classifyProblem(problemString).contains("Unknown") || apa.classifyProblem(problemString).contains("Simplify")) return similar_problems;
 		String problemString_ = problemString.replace('=', '_');
 		String new_problems = "";
 		ArrayList<String> parsed_equation = parseEquationToEditDistances(problemString_);

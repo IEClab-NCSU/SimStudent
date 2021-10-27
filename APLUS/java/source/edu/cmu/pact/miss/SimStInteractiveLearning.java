@@ -1623,7 +1623,8 @@ public void fillInQuizProblem(String problemName) {
 	public void runInteractiveLearning(ProblemNode currentNode,
 			boolean startWithActivations) {
 
-
+		//NearSimilarProblemsGetter nspg = getSimSt().getNearSimilarProblemsGetter();
+		 //ArrayList<String> similar_problems = nspg.nearSimilarProblemsGetter(currentNode);
 //		int numStepsPerformed = 0;
 		this.numStepsPerformed = 0;
 		int numStepsBrd = isRunningFromBrd() ? brdDepth() : -1;

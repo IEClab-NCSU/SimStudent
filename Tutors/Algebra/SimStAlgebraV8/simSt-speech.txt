@@ -338,9 +338,9 @@ I searched through my already learned knowledge but could not find anything to h
 This situation is also entirely new for me. Would you like to ask Mr. Williams or review the resources (unit overview or examples tab) to show me how to proceed from here?
 
 BRAINSTORMING_LOGIC_WHEN_NO_FEATURE_FOUND
-I remember doing something like that in the past.
-it looks familiar to me.
-I did that in the past.
+I remember being taught something like that in the past.
+It somehow seems correct to me.
+I recall doing that from my past knowledge.
 
 BRAINSTORMING_SUMMARIZE
 Before I proceed further, can you please summarize the key points of our conversation?
