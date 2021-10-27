@@ -14,7 +14,7 @@ then
 	fi
 	if [ "${OS}" != "Windows_NT" ]
 	then
-		CVSDIR="${HOME}/Desktop/SimStudentGithub/SimStudent-master"
+		CVSDIR="$(pwd)/../.."
 	fi
 fi
 
@@ -84,3 +84,11 @@ ${JAVAC} ${VmOption} SimStAlgebraV8/AlgebraV8AdhocInterfaceElementGetter.java -s
 echo compiling AlgebraV8AdhocQuizProblemAbstractor...
 echo ${JAVAC} ${VmOption} AlgebraV8AdhocQuizProblemAbstractor.java
 ${JAVAC} ${VmOption} SimStAlgebraV8/AlgebraV8AdhocQuizProblemAbstractor.java -source 1.8 -target 1.8
+
+echo compiling NearSimilarEquationFinder...
+echo ${JAVAC} ${VmOption} NearSimilarEquationFinder.java
+${JAVAC} ${VmOption} SimStAlgebraV8/NearSimilarEquationFinder.java -source 1.8 -target 1.8
+
+echo compiling SimStBothAgreeSpeech...
+echo ${JAVAC} ${VmOption} SimStBothAgreeSpeech.java
+${JAVAC} ${VmOption} SimStAlgebraV8/SimStBothAgreeSpeech.java -source 1.8 -target 1.8
