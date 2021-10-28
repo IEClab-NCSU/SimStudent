@@ -49,7 +49,8 @@
 		${lib}/aima.jar:
 		${lib}/xml-writer.jar:
 		${lib}/xercesImpl.jar:
-		${lib}/TuTalkSlim.jar:
+		${lib}/TutalkSlim.jar:
+		${lib}/bazaar.jar:
 		${eclipselib}/console.jar:
 		${eclipselib}/core.jar:
 		${eclipselib}/defaultAdaptor.jar:
@@ -363,7 +364,7 @@
 	
 	<!-- Compile Java sources in source2/ dir -->
 	<target name="compileSource2" depends="build" >
-		<javac sourcepath="" srcdir="source2" destdir="classes2" debug="${debug}" deprecation="false" optimize="${optimize}"  source="1.6" target="1.6">
+		<javac sourcepath="" srcdir="source2" destdir="classes2" debug="${debug}" deprecation="false" optimize="${optimize}"  source="1.8" target="1.8">
 			<include name="**/*.java" />
 			<classpath>
 				<pathelement path="${classpath}" />
@@ -376,7 +377,7 @@
 	
 	<!-- Compile java tutors in ${projectsParent}/Projects/ dir -->
 	<target name="compileProjects" >
-		<javac sourcepath="" srcdir="${projectsParent}/Projects" destdir="${projectsParent}/Projects" debug="${debug}" deprecation="false" optimize="${optimize}"  source="1.6" target="1.6">
+		<javac sourcepath="" srcdir="${projectsParent}/Projects" destdir="${projectsParent}/Projects" debug="${debug}" deprecation="false" optimize="${optimize}"  source="1.8" target="1.8">
 			<include name="**/*.java" />
 			<exclude name="**/TutorTemplate*.java" />
 			<exclude name="**/CLTemplate*.java" />
@@ -553,7 +554,7 @@
 	</target>
 
 	<target name="build" depends="init">
-		<javac fork="true" memoryinitialsize="128m" memorymaximumsize="200m" srcdir="${source}:${TSLT}" destdir="${classes}" excludes="**/CVS" debug="${debug}" deprecation="false" optimize="${optimize}" source="1.6" target="1.6">
+		<javac fork="true" memoryinitialsize="128m" memorymaximumsize="200m" srcdir="${source}:${TSLT}" destdir="${classes}" excludes="**/CVS" debug="${debug}" deprecation="false" optimize="${optimize}" source="1.8" target="1.8">
 			<classpath path="${classes}:${ctatClassPath}" />
 		</javac>
 	</target>
@@ -1019,7 +1020,7 @@
 
 	<target name="setVersionInfo" depends="init">
 		<delete file="${source}/${VersionInfo}.java" />
-		<javac fork="true" listfiles="yes" sourcepath="" srcdir="${source}" destdir="${classes}" debug="${debug}" source="1.6" target="1.6">
+		<javac fork="true" listfiles="yes" sourcepath="" srcdir="${source}" destdir="${classes}" debug="${debug}" source="1.8" target="1.8">
 			<include name="edu/cmu/pact/Utilities/VersionInfoGenerator.java" />
 		</javac>
 		<java fork="true" classname="edu.cmu.pact.Utilities.VersionInfoGenerator" classpath="${classes}" error="${classes}/VersionInfoGeneratorError.txt/" output="${source}/${VersionInfo}.java">
@@ -1120,7 +1121,7 @@
 	
 
 	<target name="buildTest" depends="buildWithVersionInfo,projects">
-		<javac srcdir="test" destdir="testclasses" debug="${debug}" deprecation="false" optimize="${optimize}" source="1.6" target="1.6">
+		<javac srcdir="test" destdir="testclasses" debug="${debug}" deprecation="false" optimize="${optimize}" source="1.8" target="1.8">
 			<classpath>
 				<path refid="test.classpath" />
 			</classpath>
@@ -1128,7 +1129,7 @@
 	</target>
 
 	<target name="buildTestAcademic" depends="buildWithAcademicVersionInfo,projects">
-		<javac srcdir="test" destdir="testclasses" debug="${debug}" deprecation="false" optimize="${optimize}" source="1.6" target="1.6">
+		<javac srcdir="test" destdir="testclasses" debug="${debug}" deprecation="false" optimize="${optimize}" source="1.8" target="1.8">
 			<exclude name="**/XMLConverterTest.java" />
 			<exclude name="**/SolverTutorTest.java" />
 			<classpath>
@@ -1138,7 +1139,7 @@
 	</target>
 
 	<target name="buildTestOnly">
-		<javac srcdir="test" destdir="testclasses" debug="${debug}" deprecation="false" optimize="${optimize}" source="1.6" target="1.6">
+		<javac srcdir="test" destdir="testclasses" debug="${debug}" deprecation="false" optimize="${optimize}" source="1.8" target="1.8">
 			<classpath>
 				<path refid="test.classpath" />
 			</classpath>
