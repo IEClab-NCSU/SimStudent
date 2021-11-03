@@ -12,6 +12,7 @@ public class Sai {
     Vector selectionV;
     Vector actionV;
     Vector inputV;
+    String ruleName;
 
     public Sai(Vector sV, Vector aV, Vector iV){
         selectionV = sV;
@@ -26,6 +27,16 @@ public class Sai {
         actionV.add(a);
         inputV = new Vector();
         inputV.add(i);
+    }
+    
+    public Sai(String s, String a, String i, String ruleName){
+        selectionV = new Vector();
+        selectionV.add(s);
+        actionV = new Vector();
+        actionV.add(a);
+        inputV = new Vector();
+        inputV.add(i);
+        this.ruleName = ruleName;
     }
 
     public Sai(String saiStr){
@@ -57,7 +68,10 @@ public class Sai {
         return getS() + ", " + getA() + ", " + getI();
     }
     
-    
+    public String getRuleName(){
+        return ruleName;
+    }
+   
     //copied from SimSt.isStepModelTraced()
     public boolean matches(Sai sai2, SimSt simSt){
         return  (getS().equals(sai2.getS()) &&

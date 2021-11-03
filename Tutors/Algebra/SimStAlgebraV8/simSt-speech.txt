@@ -317,46 +317,26 @@ Do you know the next step?
 Do you know what step should be performed now?
 Do you know what step need to be performed now?
 
-BRAINSTORMING_QUESTION_TRANFORMATION
-I could perform "<i>" if I had <problem> because <logic>. Can you demonstrate the step that would lead me to that point from the current situation? If you are still trying to figure out what to do, you may review the Example or Unit Overview tab at the top.
-I could perform "<i>" if I had <problem> because <logic>. Can you show me how to get to that point from the current situation? If you are still uncertain about what to do now, you may review the Example or Unit Overview tab at the top.
-I could perform "<i>" if I had <problem> because <logic>. Can you show me the step that would deal with the extra part of the current situation and help me reach to this point? If you are still not super sure, the Example or Unit Overview tab at the top might be helpful.
-I could perform "<i>" if I had <problem> because <logic>. Can you show me the step that would deal with the extra part of the current situation and help me reach to this point? If you are still not super sure, the Example or Unit Overview tab at the top may come in handy.
-
 BRAINSTORMING_THINKING
-I see. Let me think of a way out by going through what I have learnt so far.
-Oops! It seems like we both are stuck. Let's put our heads together to find a way out.
-I see. Let me analyze what I know so far to find a way out.
-Oops! It seems like we both are stuck. Let me share some ideas from what I have learnt.
-I see. Let me rack my brain to find a way out from what you have taught me already.
-Oops! Let me see if I can find a way out from what you have taught me already.
+I see. Let me ask Mr. Williams if he has some suggestions for us.
+Oops! It seems like we both are stuck. Let me ask Mr. Williams if he can help us find a way out.
+I see. Let me ask Mr. Williams if he has some suggestions for us.
+Oops! It seems like we both are stuck. Let me ask Mr. Williams for some suggestions.
+I see. Let me ask Mr. Williams if he can help us find a way out.
+Oops! Let me see if Mr. Williams can help us anyway with some suggestions.
 
+MR_WILLIAMS_SUGGESTION
+You should consider <ruleNickName> here. 
+I think you should consider <ruleNickName> here.
 
-BRAINSTORMING_QUESTION_WHEN_NO_RULE_FOUND
-This situation is also entirely new for me. Would you like to ask Mr. Williams to see if he can help us and show me what to do here?	
-I searched through my already learned knowledge but could not find anything to help us out. May be Mr. Williams or the resources (unit overview or examples tab) can help you. Would you like to review them and show me what to do here?	
-This situation is also entirely new for me. Would you like to ask Mr. Williams or review the resources (unit overview or examples tab) to show me how to proceed from here?
-
-BRAINSTORMING_LOGIC_WHEN_NO_FEATURE_FOUND
-I remember being taught something like that in the past.
-It somehow seems correct to me.
-I recall doing that from my past knowledge.
+STUCK_AFTER_MR_WILLIAMS_SUGGESTION
+Can you demonstrate the the correct step for me then by investigating Mr. Williams suggestion?
+Can you tell me what should I do by analyzing Mr. Williams suggestion?
+What do you think my next step should be examining Mr. Williams suggestion?
 
 BRAINSTORMING_SUMMARIZE
-Before I proceed further, can you please summarize the key points of our conversation?
-Could you please summarize our conversation in short to help me remember the key points before I proceed?
-
-BRAINSTORMING_FOLLOWUP_MISTAKE_REALIZATION
-You can go ahead and click on the Undo button.
-
-BRAINSTORMING_FOLLOWUP_MISTAKE_REALIZATION_OLD
-Can you demonstrate the correct step for me please?
-Can you demonstrate the correct step then?
-Would you mind demonstrating the correct step then?
-
-POST_UNDO
-Can you tell me what to do instead?
-Show me what to do next in that case.
+Before I proceed further, can you please summarize what did I learn from here?
+Could you please summarize what did I learn from here?
 
 BOTH_STUCK
 It looks like we are both stuck. Can you find out and show me what to do next?

@@ -158,9 +158,11 @@ public class SimStPLE {
 	private static final String SECTIONS_HEADER = "sections";
 	public static final String PROBLEM_DELIMITER_HEADER = "problemDelimiter";
 	private static final String VALID_SELECTIONS_FOR_SE = "validSelectionsForSelfExplanation";
+	
 	// Added by Tasmia
 	private static final String VALID_SELECTIONS_FOR_BQ = "validSelectionsForBrainstormingQuestions";
 	private static final String VALID_SELECTIONS_FOR_BAQ = "validSelectionsForBothAgreeQuestions";
+	private static final String SKILL_NICKNAMES = "skillNickName";
 	
 
 	private final String USER_ID_REQUEST_TITLE = "User ID";
@@ -417,6 +419,7 @@ public class SimStPLE {
 	private HashSet<String> validSelections;
 	private HashSet<String> validSelections_bq;
 	private HashSet<String> validSelections_baq;
+	private Hashtable<String, String> skillNickNames;
 	private boolean modelTracer = true;
 
 	public ArrayList<String> getSections() {
@@ -1165,6 +1168,7 @@ public class SimStPLE {
 		startStateElements = new ArrayList<String>();
 		examples = new ArrayList<SimStExample>();
 		exampleExplanations = new Hashtable<String, String>();
+		skillNickNames = new Hashtable<String, String>();
 		mistakeExplanations = new Hashtable<String, LinkedList<Explanation>>();
 		problemChoiceExplanations = new Hashtable<String, LinkedList<Explanation>>();
 		hintExplanations = new Hashtable<String, LinkedList<Explanation>>();
@@ -1240,6 +1244,9 @@ public class SimStPLE {
 					validSelections_baq = new HashSet<String>();
 					configValidSelections(reader, validSelections_baq);
 				}
+				else if (line.equals(SKILL_NICKNAMES)) {
+					configSkillNickNames(reader);
+				} 
 				// ended edits by Tasmia
 				else if (line.equals(SECTIONS_HEADER)) {
 					configSections(reader);
@@ -1327,6 +1334,25 @@ public class SimStPLE {
 				trace.out("miss", "Unable to read config file (comp names): " + e.getMessage());
 			e.printStackTrace();
 			logger.simStLogException(e, "Unable to read config file (comp names): " + e.getMessage());
+		}
+	}
+	
+	// Added by Tasmia
+	// Read the Jess Oracle production rule file's skills and their nicknames
+	public void configSkillNickNames(BufferedReader reader){
+		try {
+			String line = reader.readLine();
+			while (line != null && line.length() > 0) // Blank line starts next section
+			{
+				int index = line.indexOf(':');
+				String skill = line.substring(0, index);
+				String nickname = line.substring(index + 1);
+				skillNickNames.put(skill, nickname);
+				line = reader.readLine();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.simStLogException(e, "Unable to read config file (skill nicknames): " + e.getMessage());
 		}
 	}
 
@@ -2083,6 +2109,10 @@ public class SimStPLE {
 		else
 			return null;
 
+	}
+	
+	public String getSkillNickName(String ruleName) {
+		return skillNickNames.get(ruleName);
 	}
 
 	public String messageComposer(String template, String selection, String action, String input) {
@@ -4608,6 +4638,15 @@ public class SimStPLE {
 
 			// getSimStPeerTutoringPlatform().setSpeech(message);
 			getSimStPeerTutoringPlatform().appendSpeech(message, getSimStName());
+		}
+	}
+	
+	public void giveMessage(String message, boolean isMrWilliamsTrigger) {
+		if (getSimStPeerTutoringPlatform() != null) {
+			getSimStPeerTutoringPlatform().showButtons(false);
+
+			// getSimStPeerTutoringPlatform().setSpeech(message);
+			getSimStPeerTutoringPlatform().appendSpeech(message, "Mr. Williams");
 		}
 	}
 

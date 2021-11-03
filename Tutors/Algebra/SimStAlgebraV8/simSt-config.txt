@@ -234,4 +234,22 @@ dorminTable3_C1R4
 dorminTable3_C1R5
 dorminTable3_C1R6
 
-
+skillNickName
+combine: combine
+subtract: subtract
+subtract-1: subtract
+add:add  
+add-1: add
+add-2: add
+add-3: add
+divide: divide
+multiply: multiply
+Done: problem is solved
+subtract-typein: subtract operation
+subtract-typein-1: subtract operation
+add-typein: add operation
+divide-typein: divide operation
+multiply-typein: multiply operation
+multiply-typein-1: multiply operation
+combine-typein: combine operation
+combine-typein-1: combine operation

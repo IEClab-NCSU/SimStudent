@@ -665,18 +665,6 @@ public class MT {
 
     	return Utils.appendSlash(result);
     }
-    // Tasmia: Test run for creating a new rete object
-    public void handleNearSimilarProblem(MessageObject mo) {
-    	Vector<String> selection = null;
-        Vector<String> action = null;
-        Vector<String> input = null;
-    	selection = mo.getSelection();
-        input = mo.getInput();
-        action = mo.getAction();
-        InterfaceAction ia = new InterfaceAction(selection,
-                action, input);
-        interfaceActionsList.add(ia);
-    }
     
     /**
      * Process a comm message extract the values and update the facts

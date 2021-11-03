@@ -1141,10 +1141,7 @@ public void fillInQuizProblem(String problemName) {
 
 		return solution;
 	}
-
-
-
-
+	
 
 	/**
 	 * Method that grades if a solution for a quiz problem is correct.
@@ -1817,8 +1814,9 @@ public void fillInQuizProblem(String problemName) {
 					if (oracle == JOptionPane.YES_OPTION) {
 						// ask for the demonstration of the step.
 						ple.blockInput(false);
-						String custom_message = activations ? null : ple.getConversation().getMessage(SimStConversation.POST_UNDO);
-						nextCurrentNode = askWhatToDoNext(currentNode, custom_message);
+						// String custom_message = activations ? null : ple.getConversation().getMessage(SimStConversation.POST_UNDO);
+						// nextCurrentNode = askWhatToDoNext(currentNode, custom_message);
+						nextCurrentNode = askWhatToDoNext(currentNode);
 						hintReceived = true;
 			       	}
 					else {
@@ -1832,12 +1830,50 @@ public void fillInQuizProblem(String problemName) {
 									getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarThinking(brainstorming_thinking);
 							}
 							//askBrainstormingQuestion(brainstorming_thinking, false);
+							String ruleNickName = null, ruleName = null;
+							while(ruleNickName == null) {
+								AskHintJessOracle mr_w_hint = new AskHintJessOracle(brController,currentNode);
+								ruleName = mr_w_hint.getRuleName();
+								ruleNickName = ple.getSkillNickName(ruleName);
+								String mr_w_suggestion = ple.getConversation().getMessage(SimStConversation.MR_WILLIAMS_SUGGESTION_TOPIC);
+								mr_w_suggestion = mr_w_suggestion.replace("<ruleNickName>", ruleNickName);
+								simSt.displayMessage("Mr Williams suggestion when both tutor and tutee are stuck", mr_w_suggestion, true);
+							}
+							
+							// give the tutor time to analyze Mr. Williams trigger.
 							try {
-								TimeUnit.SECONDS.sleep(1);
+								TimeUnit.SECONDS.sleep(4);
 							} catch (InterruptedException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
+							
+							getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
+							
+							// Checking if rule contradicts or not.
+							if(hintHasContradiction(ruleName)) {
+								String rule_not_applied_logic = ruleNotApplicationLogic(currentNode,ruleName);
+								if(rule_not_applied_logic != "") {
+									followupAfterMrWTrigger(currentNode, rule_not_applied_logic, hint.skillName);
+									getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
+									String stuck_after_suggestion = ple.getConversation().getMessage(SimStConversation.STUCK_AFTER_MR_WILLIAMS_SUGGESTION_TOPIC);
+									nextCurrentNode = askWhatToDoNext(currentNode, stuck_after_suggestion);
+									hintReceived = true;
+								}
+							}
+							else {
+								getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
+								String stuck_after_suggestion = ple.getConversation().getMessage(SimStConversation.STUCK_AFTER_MR_WILLIAMS_SUGGESTION_TOPIC);
+								nextCurrentNode = askWhatToDoNext(currentNode, stuck_after_suggestion);
+								hintReceived = true;
+							}
+							this.askStudentToSummarize();
+							askedExplanation = true;
+				        	getSimSt().getMissController().getSimStPLE().setAvatarNormal();
+							
+							/*Collection<RuleActivationNode> activList_expert=getActivations(currentNode, true);
+							
+							
 							if(getSimSt().isNearSimilarProblemsGetterDefined()) {
 								 NearSimilarProblemsGetter nspg = getSimSt().getNearSimilarProblemsGetter();
 								 ArrayList<String> similar_problems = nspg.nearSimilarProblemsGetter(currentNode);
@@ -1911,7 +1947,7 @@ public void fillInQuizProblem(String problemName) {
 									trace.out("ss", "CallingbrainstormWhatToDoNext  "
 											+ "currentNode: " + currentNode
 											+ " nextCurrentNode: " + nextCurrentNode);
-							 }
+							 }*/
 						}
 						else {
 							ple.blockInput(false);
@@ -1960,14 +1996,15 @@ public void fillInQuizProblem(String problemName) {
 //					SimStLogger.STEP_COMPLETED_ACTION, step, "", "",
 //					stepDuration);
 
-			if (askStudentToUndo) {
+			// Undo after tutor expressed there was a mistake on their part. No longer required
+			/*if (askStudentToUndo) {
 				String undo_msg = getBrController(getSimSt()).getMissController().getSimStPLE().getConversation().getMessage(SimStConversation.BRAINSTORMING_FOLLOWUP_MISTAKE_REALIZATION_TOPIC);
 				getBrController(getSimSt()).getMissController().getSimStPLE().blockInput(true);
 				simSt.getMissController().getSimStPLE().getSimStPeerTutoringPlatform().setUndoButtonEnabled(true);
 				getSimSt().getMissController().getSimStPLE().giveMessage(undo_msg);
 				this.askStudentToUndo = false;
 				return;
-			}
+			}*/
 
 
 			// Do not continue after done state
@@ -2670,6 +2707,26 @@ public void fillInQuizProblem(String problemName) {
 		else {
 			getSimSt().getMissController().getSimStPLE().setAvatarNormal();
 			return true;
+		}
+	}
+	
+	public void followupAfterMrWTrigger(ProblemNode currentNode, String logic, String i) {
+
+		String problemStepString = getBrController(getSimSt()).getMissController()
+				.getSimSt().getProblemStepString();
+		tutalkBridge.setProblemName(problemStepString);
+		contextVariables.clear();
+		contextVariables.addVariable("%logic%", logic);
+		contextVariables.addVariable("%i%", i);
+		tutalkBridge.connect("both_stuck_contradiction",
+				contextVariables,
+				SimStLogger.INPUT_WRONG_EXPLAIN_ACTION);
+		while (tutalkBridge.getState() != SimStTutalk.TUTALK_STATE_DONE) {
+			try {
+				Thread.sleep(250);
+			} catch (java.lang.InterruptedException e) {
+				// Nothing we can do here.
+			}
 		}
 	}
 
@@ -3578,12 +3635,12 @@ public void fillInQuizProblem(String problemName) {
 		// hint = askHint(brController, currentNode);
 
 		hint = simSt.askForHint(getBrController(getSimSt()), currentNode, customMessage);
-		if(bq_scope && hintHasContradiction(hint)) {
+		/*if(bq_scope && hintHasContradiction(hint)) {
 			String rule_not_applied_logic = ruleNotApplicationLogic(currentNode,hint.skillName);
 			if(rule_not_applied_logic != "") {
 				askStudentToUndo = followupWhenStuck(currentNode, rule_not_applied_logic, hint.skillName);
 			}
-		}
+		}*/
 		trace.out("miss","hint returned is " + hint);
 		simSt.createNewNodeAndEdgeForHintReceived(hint, currentNode);
 		if (trace.getDebugCode("miss"))
@@ -3600,6 +3657,24 @@ public void fillInQuizProblem(String problemName) {
 
 	public boolean hintHasContradiction(AskHint hint) {
 		String skillname = hint.skillName;
+		Rule rule = getSimSt().getRule(skillname);
+		if(rule != null) {
+			// Rule already exists
+			// Need to check if SimSt already suggested that rule or not
+			if(already_suggested_skillname.contains(skillname))
+				return false;
+
+			else
+				return true;
+
+		}
+		else {
+			return false;
+		}
+	}
+	
+	public boolean hintHasContradiction(String skillname) {
+		//String skillname = hint.skillName;
 		Rule rule = getSimSt().getRule(skillname);
 		if(rule != null) {
 			// Rule already exists

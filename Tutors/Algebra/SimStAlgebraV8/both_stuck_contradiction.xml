@@ -32,11 +32,11 @@
 
 <concepts>
   <concept label="first-question">
-   <phrase>I thought I could not apply "%i%" in this situation because "%logic%". Why do you think "%i%" would be the correct step here?</phrase>
-	 <phrase>I am confused because "%i%" cannot be applied in this situation due to the fact that "%logic%". Why do you think "%i%" would be the correct step here?</phrase>
-	 <phrase>I thought "%i%" cannot be applied in this situation because "%logic%". Why do you think "%i%" would be the correct step here?</phrase>
+   <phrase>I thought I could not apply "%i%" in this situation because "%logic%". Why do you think Mr. Williams suggested "%i%" as the correct step here?</phrase>
+	 <phrase>I am confused because "%i%" cannot be applied in this situation due to the fact that "%logic%". Can you explain the reason why Mr. Williams suggested "%i%" as the way to go here?</phrase>
+	 <phrase>I thought "%i%" cannot be applied in this situation because "%logic%". Can you explain the reason behind Mr. Williams suggestion?</phrase>
 	 <phrase>I thought "%i%" cannot be applied in this situation because "%logic%". Can you clarify what am I missing here?</phrase>
-	 <phrase>From my past knowledges, I thought "%i%" cannot be applied in this situation because "%logic%". What makes you think that "%i%" would be the correct step?</phrase>
+	 <phrase>From my past knowledges, I thought "%i%" cannot be applied in this situation because "%logic%". Can you explain the reason behind Mr. Williams suggestion?</phrase>
 	 <phrase>How can I apply "%i%" here because from my understanding I could not because "%logic%". Can you resolve my confusion please?</phrase>
 	</concept>
 	<concept label="R2" model="coded" />

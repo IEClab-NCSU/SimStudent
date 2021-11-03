@@ -126,6 +126,7 @@ import edu.cmu.pact.miss.PeerLearning.SimStPLE;
 import edu.cmu.pact.miss.PeerLearning.SimStSolver;
 import edu.cmu.pact.miss.PeerLearning.SimStTimeoutDlg;
 import edu.cmu.pact.miss.PeerLearning.GameShow.ContestServer;
+import edu.cmu.pact.miss.PeerLearning.SimStSolver.SuccessRatioConflictResolutiionStrategy;
 import edu.cmu.pact.miss.ProblemModel.Graph.SimStBrdGraphReader;
 import edu.cmu.pact.miss.ProblemModel.Graph.SimStEdge;
 import edu.cmu.pact.miss.ProblemModel.Graph.SimStEdgeData;
@@ -282,7 +283,6 @@ public final class SimSt implements Serializable {
    {
    	localLoggingEnabled = logEnabled;
    }
-
 
    private transient String userID;
    public String getUserID()
@@ -600,6 +600,7 @@ public final class SimSt implements Serializable {
    // private final String PRODUCTION_RULE_FILE = "ss-productionRules.pr";
    public final static String PRODUCTION_RULE_FIL_ORACEE = "productionRulesJessOracle.pr";
    public final static String PRODUCTION_RULE_FILE = "productionRules.pr";
+   public final static String PRODUCTION_RULE_EXPERT = "productionRulesExpert.pr";
    private final String USER_PRODUCTION_RULE_FILE = "productionRules-$.pr";//"$_productionRules.pr";
    //Jinyu
    private final String INSTRUCTIONS_FILE = "instructions.txt";
@@ -9337,38 +9338,48 @@ public final class SimSt implements Serializable {
     */
    public Vector /* RuleActivationNode */<RuleActivationNode> gatherActivationList(ProblemNode problemNode, boolean isNearSimilar) throws JessException {
 	    Vector<RuleActivationNode> activationList = new Vector<RuleActivationNode>();
-	    brainStormRete = new SimStRete(getBrController());
-	    brainStormRete.reset();
-	    brainStormRete.restoreInitialWMState(problemNode, true);
-		RuleActivationTree tree = getBrController().getRuleActivationTree();
+	    
+	    
+	    RuleActivationTree tree = getBrController().getRuleActivationTree();
 		TreeTableModel ttm = tree.getActivationModel();
 		RuleActivationNode root = (RuleActivationNode) ttm.getRoot();
+		
+		if(isNearSimilar) {
+	    	brainStormRete = new SimStRete(getBrController());
+	    	brainStormRete.reset();
+	    	brainStormRete.restoreInitialWMState(problemNode, true);
+	    	
+	    	root.saveState(brainStormRete);
 
-		root.saveState(brainStormRete);
+			List wholeAgenda = brainStormRete.getAgendaAsList(null);
+			root.createChildren(wholeAgenda, false);
+			List children = root.getChildren();
+			JessModelTracing jmt = brainStormRete.getJmt();
 
-		List wholeAgenda = brainStormRete.getAgendaAsList(null);
-		root.createChildren(wholeAgenda, false);
-		List children = root.getChildren();
-		JessModelTracing jmt = brainStormRete.getJmt();
-
-		    	//fire each rule in agenda to get the sai for every rule.
-		for(int i=0; i< children.size(); i++) {
-		    RuleActivationNode child = (RuleActivationNode)children.get(i);
-			try {
-				root.setUpState(brainStormRete, i);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			jmt.setNodeNowFiring(child);
-		    child.fire(brainStormRete);
-			jmt.setNodeNowFiring(null);
-		    activationList.add(child);
-		 }
+			    	//fire each rule in agenda to get the sai for every rule.
+			for(int i=0; i< children.size(); i++) {
+			    RuleActivationNode child = (RuleActivationNode)children.get(i);
+				try {
+					root.setUpState(brainStormRete, i);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				jmt.setNodeNowFiring(child);
+			    child.fire(brainStormRete);
+				jmt.setNodeNowFiring(null);
+			    activationList.add(child);
+			 }
 
 
-	    activationList = removeDuplicateActivations(activationList);
-	   	return activationList;
+		    activationList = removeDuplicateActivations(activationList);
+		   	return activationList;
+	    }
+	    else {
+		   	return activationList;
+	    }
+
+		
    }
 
    /* Hash to hold the type of hint for each production rule, so we don't
@@ -11327,8 +11338,8 @@ public final class SimSt implements Serializable {
    public AskHint askForHintQuizGradingOracle(BR_Controller controller, ProblemNode currentNode) {
 
 
-
 	   	AskHint hint = null;
+	   	
 	   	String hintMethodName = getQuizGradingMethod();
 
 	   	if(hintMethodName.equalsIgnoreCase(AskHint.HINT_METHOD_BRD))
@@ -13363,6 +13374,18 @@ public final class SimSt implements Serializable {
    	if(getMissController().isPLEon())
    	{
    		getMissController().getSimStPLE().giveMessage(message);
+   	}
+   	else
+   	{
+   		JOptionPane.showMessageDialog(getBrController().getActiveWindow(), message, title, JOptionPane.PLAIN_MESSAGE);
+   	}
+   }
+   
+   public void displayMessage(String title, String message, boolean isMrWilliamsTrigger)
+   {
+   	if(getMissController().isPLEon())
+   	{
+   		getMissController().getSimStPLE().giveMessage(message, isMrWilliamsTrigger);
    	}
    	else
    	{
