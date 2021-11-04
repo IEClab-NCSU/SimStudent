@@ -153,7 +153,7 @@ public class CurriculumBrowser {
     
     public void setVideoSource(String src)
     {
-    	/*String fileName = this.getFileFinder().findFile(src);
+    	String fileName = this.getFileFinder().findFile(src);
     	if(trace.getDebugCode("miss"))trace.out("miss", "setVideoSource fileName: " + fileName);
     	File f = new File(fileName);
     	JFXPanel panel = new JFXPanel();
@@ -282,7 +282,7 @@ public class CurriculumBrowser {
 				if(volumeSlider.isValueChanging())
 					mediaPlayer.setVolume(volumeSlider.getValue()/100.0);
 			}
-		});*/
+		});
     }
     
     
