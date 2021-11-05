@@ -2929,8 +2929,8 @@ public final class SimSt implements Serializable {
 	   bothAgreeSpeechGetterClassDefined = flag;
    }*/
    private transient SkillNameGetter skillNameGetter = null;
-   private transient  NearSimilarProblemsGetter nearSimilarProblemsGetter = null;
-   private transient BothAgreeSpeechGetter bothAgreeSpeechGetter = null;
+   //private transient  NearSimilarProblemsGetter nearSimilarProblemsGetter = null;
+   //private transient BothAgreeSpeechGetter bothAgreeSpeechGetter = null;
    public void setSsSkillNameGetter(String skillNameGetterClassName) {
    	try {
    		if(trace.getDebugCode("miss"))trace.out("miss","DEBUG: "+skillNameGetterClassName);
