@@ -130,6 +130,8 @@ public class SimStTutalk {
 	            	if(trace.getDebugCode("sstt"))trace.out("sstt", "\tExpectedSize = 0; gonna break out!");
 					// Need to display the "bye, thank you" message.
 					interactiveActivity.getSimSt().displayMessage("",finalQuestion);
+					interactiveActivity.getLogger().simStLog( SimStLogger.SIM_STUDENT_EXPLANATION, SimStLogger.EXPLANATION_CATEGORIZE_ACTION,
+							problemName, last_response_label.getLabel(), finalQuestion, 0, "");
 	                break;
 	            }
 
@@ -183,6 +185,7 @@ public class SimStTutalk {
 	            latest_expected = ttClient.getState().getExpected();
 	            if(latest_expected.size() > 0) {
 	            	Response response = latest_expected.get(latest_expected.size() - 1);
+	            	String s = response.getConcept().getLabel();
 	            	interactiveActivity.getLogger().simStLog( SimStLogger.SIM_STUDENT_EXPLANATION, SimStLogger.EXPLANATION_CATEGORIZE_ACTION,
 							problemName, response.getConcept().getLabel(), finalQuestion, 0, input);
 

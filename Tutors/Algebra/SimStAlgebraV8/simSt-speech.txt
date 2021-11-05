@@ -318,25 +318,30 @@ Do you know what step should be performed now?
 Do you know what step need to be performed now?
 
 BRAINSTORMING_THINKING
-I see. Let me ask Mr. Williams if he has some suggestions for us.
-Oops! It seems like we both are stuck. Let me ask Mr. Williams if he can help us find a way out.
-I see. Let me ask Mr. Williams if he has some suggestions for us.
-Oops! It seems like we both are stuck. Let me ask Mr. Williams for some suggestions.
-I see. Let me ask Mr. Williams if he can help us find a way out.
-Oops! Let me see if Mr. Williams can help us anyway with some suggestions.
+I see. Let me ask Mr. Williams if he has some suggestions for us. Mr. Williams, can you help please?
+Oops! It seems like we both are stuck. Mr. Williams, can you help please?.
+I see. Let me ask Mr. Williams if he has some suggestions for us. Mr. Williams, can you help please?
+Oops! It seems like we both are stuck. Let me ask Mr. Williams for some suggestions. Mr. Williams, can you help us please?
+I see. Let me ask Mr. Williams if he can help us find a way out. Mr. Williams, can you help us please?
+Oops! Let me see if Mr. Williams can help us anyway with some suggestions. Mr. Williams, can you help?
+
+BRAINSTORMING_LOGIC_WHEN_NO_FEATURE_FOUND
+it just did not feel right to me.
+it looks wrong to me.
+
 
 MR_WILLIAMS_SUGGESTION
 You should consider <ruleNickName> here. 
 I think you should consider <ruleNickName> here.
 
 STUCK_AFTER_MR_WILLIAMS_SUGGESTION
-Can you demonstrate the the correct step for me then by investigating Mr. Williams suggestion?
-Can you tell me what should I do by analyzing Mr. Williams suggestion?
-What do you think my next step should be examining Mr. Williams suggestion?
+What exactly should I do now?
+What do you think I should do now?
 
 BRAINSTORMING_SUMMARIZE
-Before I proceed further, can you please summarize what did I learn from here?
-Could you please summarize what did I learn from here?
+Before I proceed further, can you please review the reasoning to me that led you to demonstrate this step?
+Can you please explain your reasoning behind the demonstrated step?
+Can you review the reasoning to me that led you to demonstrate this step?
 
 BOTH_STUCK
 It looks like we are both stuck. Can you find out and show me what to do next?

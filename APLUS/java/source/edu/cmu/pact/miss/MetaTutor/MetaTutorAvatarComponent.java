@@ -208,6 +208,7 @@ public class MetaTutorAvatarComponent extends JPanel {
     	super.paint(g);
     	g.drawImage(img, 0,0, this);
     }
+    
     	
 	/**
 	   Listener to listen for mouse events when the meta tutor image is clicked

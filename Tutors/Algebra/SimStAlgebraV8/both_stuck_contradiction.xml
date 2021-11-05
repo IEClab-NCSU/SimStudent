@@ -31,14 +31,23 @@
 
 
 <concepts>
-  <concept label="first-question">
-   <phrase>I thought I could not apply "%i%" in this situation because "%logic%". Why do you think Mr. Williams suggested "%i%" as the correct step here?</phrase>
+   <!--  <concept label="first-question">
+   	 <phrase>I thought I could not apply "%i%" in this situation because "%logic%". Why do you think Mr. Williams suggested "%i%" as the correct step here?</phrase>
 	 <phrase>I am confused because "%i%" cannot be applied in this situation due to the fact that "%logic%". Can you explain the reason why Mr. Williams suggested "%i%" as the way to go here?</phrase>
 	 <phrase>I thought "%i%" cannot be applied in this situation because "%logic%". Can you explain the reason behind Mr. Williams suggestion?</phrase>
 	 <phrase>I thought "%i%" cannot be applied in this situation because "%logic%". Can you clarify what am I missing here?</phrase>
 	 <phrase>From my past knowledges, I thought "%i%" cannot be applied in this situation because "%logic%". Can you explain the reason behind Mr. Williams suggestion?</phrase>
 	 <phrase>How can I apply "%i%" here because from my understanding I could not because "%logic%". Can you resolve my confusion please?</phrase>
+	</concept> -->
+	<concept label="first-question">
+   	 <phrase>Alright, so Mr. Williams suggested that you should consider %i%. But I have applied "%i%" when "%logic%". Why do you think Mr. Williams suggested "%i%" as the correct step here?</phrase>
+	 <phrase>Okay, so Mr. Williams suggested that you should consider %i%. I am confused because I thought "%i%" can be applied when "%logic%". Can you explain the reason why Mr. Williams suggested "%i%" as the way to go here?</phrase>
+	 <phrase>Mr. Williams suggested that you should consider %i%. I thought "%i%" can applied when "%logic%". Can you explain the reason behind Mr. Williams suggestion?</phrase>
+	 <phrase>So, Mr. Williams suggested that you should consider %i%. But I had this impression that "%i%" can be applied when "%logic%". Can you clarify what am I missing here?</phrase>
+	 <phrase>Mr. Williams suggested that you should consider %i%. But in the past I have applied "%i%" when "%logic%". Can you explain the reason behind Mr. Williams suggestion?</phrase>
+	 <phrase>Mr. Williams suggested that you should consider %i%. But this does not make sense to me because I have applied "%i%" when "%logic%". Can you resolve my confusion please?</phrase>
 	</concept>
+	
 	<concept label="R2" model="coded" />
 	<concept label="R2-response-simst">
    <phrase>I see. I think that clarifies my confusion. Thanks!</phrase>
@@ -55,10 +64,10 @@
   </concept>
 	<concept label="R0" model="coded" />
 	<concept label="R0-response-simst">
-   <phrase>That did not address my confusion-could you please try answering my question please?</phrase>
+   <phrase>That did not address my confusion-could you try answering my question please?</phrase>
 	 <phrase>I understand it may be tiring to answer all my questions, but that would help me learn better. Can you please try one more time?</phrase>
-	 <phrase>I think you might have missed my earlier question. Can I please get an answer to that?</phrase>
-	 <phrase>I think you've missed my earlier question. Can I please get an answer to that?</phrase>
+	 <phrase>I think you might have missed my earlier question. Can you please respond to that?</phrase>
+	 <phrase>I think you've missed my earlier question. Can you respond to that please?</phrase>
   </concept>
 	<!--<concept label="courtesy-moveon">
    <phrase>Alright! Can you then demonstrate an alternative step since the one that you have already suggested contradict with what I have learnt so far?</phrase>

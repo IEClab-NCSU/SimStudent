@@ -1837,15 +1837,20 @@ public void fillInQuizProblem(String problemName) {
 								ruleNickName = ple.getSkillNickName(ruleName);
 								String mr_w_suggestion = ple.getConversation().getMessage(SimStConversation.MR_WILLIAMS_SUGGESTION_TOPIC);
 								mr_w_suggestion = mr_w_suggestion.replace("<ruleNickName>", ruleNickName);
-								simSt.displayMessage("Mr Williams suggestion when both tutor and tutee are stuck", mr_w_suggestion, true);
-							}
-							
-							// give the tutor time to analyze Mr. Williams trigger.
-							try {
-								TimeUnit.SECONDS.sleep(4);
-							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
+								//simSt.displayMessage("Mr Williams suggestion when both tutor and tutee are stuck", mr_w_suggestion, true);
+								//ple.getSimStPeerTutoringPlatform().getBrController().getModelTracer().get
+								
+								ple.getSimStPeerTutoringPlatform().showMetaTutorTrigger(mr_w_suggestion);
+								/*while(ple.getSimStPeerTutoringPlatform().is_ok == false) {
+									try {
+										Thread.sleep(4);
+									} catch (InterruptedException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+								}*/
+								//MetaTutorAvatarComponent
+								
 							}
 							
 							getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
@@ -1853,13 +1858,18 @@ public void fillInQuizProblem(String problemName) {
 							// Checking if rule contradicts or not.
 							if(hintHasContradiction(ruleName)) {
 								String rule_not_applied_logic = ruleNotApplicationLogic(currentNode,ruleName);
-								if(rule_not_applied_logic != "") {
-									followupAfterMrWTrigger(currentNode, rule_not_applied_logic, hint.skillName);
-									getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
-									String stuck_after_suggestion = ple.getConversation().getMessage(SimStConversation.STUCK_AFTER_MR_WILLIAMS_SUGGESTION_TOPIC);
-									nextCurrentNode = askWhatToDoNext(currentNode, stuck_after_suggestion);
-									hintReceived = true;
+								if(rule_not_applied_logic == "") {
+									rule_not_applied_logic = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_LOGIC_WHEN_NO_FEATURE_FOUND_TOPIC);
+									followupAfterMrWTrigger(currentNode, rule_not_applied_logic, ruleName, false);
 								}
+								else {
+									followupAfterMrWTrigger(currentNode, rule_not_applied_logic, ruleName, true);
+								}
+								getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
+								String stuck_after_suggestion = ple.getConversation().getMessage(SimStConversation.STUCK_AFTER_MR_WILLIAMS_SUGGESTION_TOPIC);
+								nextCurrentNode = askWhatToDoNext(currentNode, stuck_after_suggestion);
+								hintReceived = true;
+								
 							}
 							else {
 								getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
@@ -2710,17 +2720,25 @@ public void fillInQuizProblem(String problemName) {
 		}
 	}
 	
-	public void followupAfterMrWTrigger(ProblemNode currentNode, String logic, String i) {
+	public void followupAfterMrWTrigger(ProblemNode currentNode, String logic, String i, boolean logic_found) {
 
 		String problemStepString = getBrController(getSimSt()).getMissController()
 				.getSimSt().getProblemStepString();
 		tutalkBridge.setProblemName(problemStepString);
 		contextVariables.clear();
-		contextVariables.addVariable("%logic%", logic);
-		contextVariables.addVariable("%i%", i);
-		tutalkBridge.connect("both_stuck_contradiction",
-				contextVariables,
-				SimStLogger.INPUT_WRONG_EXPLAIN_ACTION);
+		if(logic_found) {
+			contextVariables.addVariable("%logic%", logic);
+			contextVariables.addVariable("%i%", i);
+			tutalkBridge.connect("both_stuck_contradiction",
+					contextVariables,
+					SimStLogger.INPUT_WRONG_EXPLAIN_ACTION);
+		}
+		else {
+			contextVariables.addVariable("%i%", i);
+			tutalkBridge.connect("both_stuck_contradiction_no_logic_found",
+					contextVariables,
+					SimStLogger.INPUT_WRONG_EXPLAIN_ACTION);
+		}
 		while (tutalkBridge.getState() != SimStTutalk.TUTALK_STATE_DONE) {
 			try {
 				Thread.sleep(250);
@@ -3324,10 +3342,12 @@ public void fillInQuizProblem(String problemName) {
 							Class userFunction = getSimSt().getMTRete().findUserfunction(name).getClass();
 							FeaturePredicate predicate = FeaturePredicate.getPredicateByClassName(userFunction.getName());
 							if(nonActiveFeaturePredicates.get(m).contains("not"))
+								//logic += wme_content+" "+predicate.getFeatureDescription().getDescriptions();
+								logic += wme_content+" does not "+predicate.getFeatureDescription().getDescriptions();
+							else
+								//logic += wme_content+" does not "+predicate.getFeatureDescription().getDescriptions();
 								logic += wme_content+" "+predicate.getFeatureDescription().getDescriptions();
 
-							else
-								logic += wme_content+" does not "+predicate.getFeatureDescription().getDescriptions();
 						}
 					}
 				}

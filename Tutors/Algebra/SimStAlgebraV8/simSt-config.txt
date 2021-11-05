@@ -244,7 +244,7 @@ add-2: add
 add-3: add
 divide: divide
 multiply: multiply
-Done: problem is solved
+done: problem is solved
 subtract-typein: subtract operation
 subtract-typein-1: subtract operation
 add-typein: add operation
