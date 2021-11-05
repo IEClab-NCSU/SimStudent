@@ -44,7 +44,6 @@ set TutorArg=%TutorArg% -ssSearchTimeOutDuration 20000
 set TutorArg=%TutorArg% -ssTutorServerTimeOutDuration 100000
 set TutorArg=%TutorArg% -ssMaxSearchDepth 3
 set TutorArg=%TutorArg% -ssSkillNameGetterClass SimStAlgebraV8.AlgebraV8AdhocSkillNameGetter
-set TutorArg=%TutorArg% -ssNearSimilarProblemsGetterClass SimStAlgebraV8.NearSimilarEquationFinder
 set TutorArg=%TutorArg% -ssSetInactiveInterfaceTimeout 5000000
 set TutorArg=%TutorArg% -ssInputCheckerClass SimStAlgebraV8.AlgebraV8InputChecker
 set TutorArg=%TutorArg% -ssStartStateCheckerClass SimStAlgebraV8.AlgebraV8StartStateChecker

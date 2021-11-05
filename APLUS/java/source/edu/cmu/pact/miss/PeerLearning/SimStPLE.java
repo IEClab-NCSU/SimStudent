@@ -4641,15 +4641,6 @@ public class SimStPLE {
 		}
 	}
 	
-	public void giveMessage(String message, boolean isMrWilliamsTrigger) {
-		if (getSimStPeerTutoringPlatform() != null) {
-			getSimStPeerTutoringPlatform().showButtons(false);
-
-			// getSimStPeerTutoringPlatform().setSpeech(message);
-			getSimStPeerTutoringPlatform().appendSpeech(message, "Mr. Williams");
-		}
-	}
-
 	public void giveDialogMessage(String message) {
 		messageDialog.showMessage(message);
 	}

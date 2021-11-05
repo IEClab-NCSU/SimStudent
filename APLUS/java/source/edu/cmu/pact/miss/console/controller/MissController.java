@@ -665,12 +665,12 @@ public class MissController implements MissControllerExternal {
     }
     
     /* @author: Tasmia */
-    public void setSsNearSimilarProblemsGetterClass(String nearSimilarProblemsGetter) {
+    /*public void setSsNearSimilarProblemsGetterClass(String nearSimilarProblemsGetter) {
     	getSimSt().setSsNearSimilarProblemsGetter(nearSimilarProblemsGetter);
     }
     public void setSsBothAgreeSpeechGetterClass(String bothAgreeSpeechGetterClass) {
     	getSimSt().setSsBothAgreeSpeechGetter(bothAgreeSpeechGetterClass);
-    }
+    }*/
     public void setSsPathOrderingClass(String className) {
         getSimSt().setSsPathOrderer(className);
     }    
@@ -1944,9 +1944,9 @@ public class MissController implements MissControllerExternal {
                      * nearSimilarProblemsGetter is an method that returns similar looking problems
                      * that are in edit distance 1 from the current problem
                      * */
-                    else if (keyStem.equalsIgnoreCase("ssNearSimilarProblemsGetterClass")) {
+                    /*else if (keyStem.equalsIgnoreCase("ssNearSimilarProblemsGetterClass")) {
                     	setSsNearSimilarProblemsGetterClass(parameter[0]);
-                    }
+                    }*/
                     /*else if (keyStem.equalsIgnoreCase("ssBothAgreeSpeechGetterClass")) {
                     	setSsBothAgreeSpeechGetterClass(parameter[0]);
                     }*/

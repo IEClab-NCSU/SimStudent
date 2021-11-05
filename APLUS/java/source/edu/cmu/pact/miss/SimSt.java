@@ -2914,20 +2914,20 @@ public final class SimSt implements Serializable {
    /* @author jinyul */
    // Domain dependent ad-hoc method to identify skill name
    public /*private*/ boolean isSkillNameGetterDefined() { return skillNameGetterClassDefined; }
-   public /*private*/ boolean isNearSimilarProblemsGetterDefined() { return nearSimilarProblemsGetterClassDefined; }
-   public /*private*/ boolean isbothAgreeSpeechGetterClassDefined() { return bothAgreeSpeechGetterClassDefined; }
+   //public boolean isNearSimilarProblemsGetterDefined() { return nearSimilarProblemsGetterClassDefined; }
+   //public boolean isbothAgreeSpeechGetterClassDefined() { return bothAgreeSpeechGetterClassDefined; }
    private boolean skillNameGetterClassDefined = false;
-   private boolean nearSimilarProblemsGetterClassDefined = false;
-   private boolean bothAgreeSpeechGetterClassDefined = false;
+   //private boolean nearSimilarProblemsGetterClassDefined = false;
+   //private boolean bothAgreeSpeechGetterClassDefined = false;
    public void setSkillNameGetterClassDefined(boolean flag) {
    	skillNameGetterClassDefined = flag;
    }
-   public void setNearSimilarProblemsGetterClassDefined(boolean flag) {
+   /*public void setNearSimilarProblemsGetterClassDefined(boolean flag) {
 	   nearSimilarProblemsGetterClassDefined = flag;
    }
    public void setBothAgreeSpeechGetterClassDefined(boolean flag) {
 	   bothAgreeSpeechGetterClassDefined = flag;
-   }
+   }*/
    private transient SkillNameGetter skillNameGetter = null;
    private transient  NearSimilarProblemsGetter nearSimilarProblemsGetter = null;
    private transient BothAgreeSpeechGetter bothAgreeSpeechGetter = null;
@@ -2943,7 +2943,7 @@ public final class SimSt implements Serializable {
    	}
    }
 
-   public void setSsNearSimilarProblemsGetter(String nearSimilarProblemsGetterClassName) {
+   /*public void setSsNearSimilarProblemsGetter(String nearSimilarProblemsGetterClassName) {
 	   	try {
 	   		Class nearSimilarProblemsGetterClass = Class.forName(nearSimilarProblemsGetterClassName);
 	   		this.nearSimilarProblemsGetter = (NearSimilarProblemsGetter)nearSimilarProblemsGetterClass.newInstance();
@@ -2962,7 +2962,7 @@ public final class SimSt implements Serializable {
 	   		e.printStackTrace();
 	           logger.simStLogException(e);
 	   	}
-   }
+   }*/
    public /*private*/ boolean isPathOrdererDefined() { return pathOrderingClassDefined; }
    private boolean pathOrderingClassDefined = false;
    public void setPathOrderingClassDefined( boolean flag ) {
@@ -3037,12 +3037,12 @@ public final class SimSt implements Serializable {
    }
 
    /* @author Tasmia */
-   public NearSimilarProblemsGetter getNearSimilarProblemsGetter() {
+   /*public NearSimilarProblemsGetter getNearSimilarProblemsGetter() {
    	return this.nearSimilarProblemsGetter;
    }
    public BothAgreeSpeechGetter getBothAgreeSpeechGetter() {
 	   	return this.bothAgreeSpeechGetter;
-   }
+   }*/
    /**
     * Inner class representing a WME inside the focus of attention
     */
@@ -13381,18 +13381,6 @@ public final class SimSt implements Serializable {
    	}
    }
    
-   public void displayMessage(String title, String message, boolean isMrWilliamsTrigger)
-   {
-   	if(getMissController().isPLEon())
-   	{
-   		getMissController().getSimStPLE().giveMessage(message, isMrWilliamsTrigger);
-   	}
-   	else
-   	{
-   		JOptionPane.showMessageDialog(getBrController().getActiveWindow(), message, title, JOptionPane.PLAIN_MESSAGE);
-   	}
-   }
-
    public void displayMessage(String title, String[] message)
    {
    	if(getMissController().isPLEon())

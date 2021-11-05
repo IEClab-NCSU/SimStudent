@@ -175,8 +175,6 @@ Can you help me out here? I'm stuck, I don't know what I need to do.
 I'm stuck. Can you tell me what to do next?<BD>
 
 
-
-
 TYPEIN_HINT
 I'm stuck. Can you show me how to <o>? 
 I'm stuck. Please show me what to do.
@@ -274,6 +272,14 @@ SKIPPED
 No? Okay.
 Alright.
 Moving on then.
+
+ACKNOWLEDGING_SUMMARIZATION
+Great!
+Perfect!
+Sounds good to me! 
+Thanks for that review!
+Thanks for that review. It helped.
+
 
 UNDO_CONFIRM_STEPS
 Okay.  I would erase these steps back through <o>.  Should I go ahead?

@@ -136,17 +136,6 @@ if [ -z ${SE} ];
 then
 	TutorArg="${TutorArg} -ssSelfExplainMode";
 fi
-if [ ${CTI} == "on" ];
-then
-  TutorArg="${TutorArg} -ssNearSimilarProblemsGetterClass SimStAlgebraV8.NearSimilarEquationFinder";
-fi
-#if [ -z ${CTI} ];
-#then
-#  TutorArg="${TutorArg} -ssNearSimilarProblemsGetterClass SimStAlgebraV8.NearSimilarEquationFinder";
-#fi
-
-
-
 
 TutorArg="${TutorArg} -ssProjectDirectory ${ProjectDir}"
 TutorArg="${TutorArg} -ssOverviewPage curriculum.html"
@@ -157,7 +146,6 @@ TutorArg="${TutorArg} -ssSearchTimeOutDuration 20000"
 TutorArg="${TutorArg} -ssTutorServerTimeOutDuration 100000"
 TutorArg="${TutorArg} -ssMaxSearchDepth 3"
 TutorArg="${TutorArg} -ssSkillNameGetterClass SimStAlgebraV8.AlgebraV8AdhocSkillNameGetter"
-#TutorArg="${TutorArg} -ssNearSimilarProblemsGetterClass SimStAlgebraV8.NearSimilarEquationFinder"
 TutorArg="${TutorArg} -ssSetInactiveInterfaceTimeout 5000000"
 TutorArg="${TutorArg} -ssInputCheckerClass SimStAlgebraV8.AlgebraV8InputChecker"
 TutorArg="${TutorArg} -ssStartStateCheckerClass SimStAlgebraV8.AlgebraV8StartStateChecker"
