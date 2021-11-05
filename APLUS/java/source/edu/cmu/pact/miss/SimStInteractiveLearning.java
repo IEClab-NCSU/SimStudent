@@ -1625,7 +1625,7 @@ public void fillInQuizProblem(String problemName) {
 //		int numStepsPerformed = 0;
 		this.numStepsPerformed = 0;
 		int numStepsBrd = isRunningFromBrd() ? brdDepth() : -1;
-//		boolean killMessageReceived = false; // whether a message to kill the IL
+		this.killMessageReceived = false; // whether a message to kill the IL
 												// thread has been received
 		boolean activations = startWithActivations; // whether to gather
 													// activation list
