@@ -42,7 +42,7 @@
 	<concept label="first-question">
    	 <phrase>Alright, so Mr. Williams suggested that we should consider %i%. But I have applied "%i%" when "%logic%". Why do you think Mr. Williams suggested "%i%" as the correct step here?</phrase>
 	 <phrase>Okay, so Mr. Williams suggested that we should consider %i%. I am confused because I thought "%i%" can be applied when "%logic%". Can you explain the reason why Mr. Williams suggested "%i%" as the way to go here?</phrase>
-	 <phrase>Mr. Williams suggested that we should consider %i%. I thought "%i%" can applied when "%logic%". Can you explain the reason behind Mr. Williams suggestion?</phrase>
+	 <phrase>Mr. Williams suggested that we should consider %i%. I thought "%i%" can be applied when "%logic%". Can you explain the reason behind Mr. Williams suggestion?</phrase>
 	 <phrase>So, Mr. Williams suggested that we should consider %i%. But I had this impression that "%i%" can be applied when "%logic%". Can you clarify what am I missing here?</phrase>
 	 <phrase>Mr. Williams suggested that we should consider %i%. But in the past I have applied "%i%" when "%logic%". Can you explain the reason behind Mr. Williams suggestion?</phrase>
 	 <phrase>Mr. Williams suggested that we should consider %i%. But this does not make sense to me because I have applied "%i%" when "%logic%". Can you resolve my confusion please?</phrase>

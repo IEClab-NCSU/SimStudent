@@ -235,6 +235,7 @@ public class SimStLogger {
    public static final String PROBLEM_RESULT = "Problem Logged Only";
 
    public static final String METATUTOR_CLICK_ACTION = "Clicked Metatutor";
+   public static final String METATUTOR_HINT_TRIGGER_ACTION = "Metatutor Trigger";
    public static final String METATUTOR_QUESTION_ACTION = "Metatutor Question Asked";
    public static final String METATUTOR_NEXT_HINT_ACTION = "Next Metatutor Hint Selected";
    public static final String METATUTOR_PREVIOUS_HINT_ACTION = "Previous Metatutor Hint Selected";

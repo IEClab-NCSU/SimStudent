@@ -123,7 +123,7 @@ public class SimStPeerTutoringPlatform extends JComponent {
 	public String trigger_msg;
 	//public JButton OK = new JButton("OK");
 	public boolean is_ok = false;
-	public void showMetaTutorTrigger(String msg) {
+	public void showMetaTutorTrigger(final String msg, final String ruleNickName, final SimStLogger logger) {
 		trigger_msg = msg;
 		is_ok = false;
 		Runnable runnable = new Runnable() {
@@ -160,9 +160,16 @@ public class SimStPeerTutoringPlatform extends JComponent {
 				    }
 				});
 				menu.add(OK, BorderLayout.CENTER);
+				logger.simStLog(SimStLogger.SIM_STUDENT_METATUTOR, SimStLogger.METATUTOR_HINT_TRIGGER_ACTION, msg);
 				while (is_ok == false) {
 					menu.show(metaTutorComponent, 0 , -((int)menu.getPreferredSize().getHeight()));	
 					menu.setVisible(true);
+					try {
+						Thread.sleep(10);
+					} catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
 				menu.setVisible(false);
 	    			

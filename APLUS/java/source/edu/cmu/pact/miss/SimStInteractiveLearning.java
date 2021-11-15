@@ -1619,7 +1619,7 @@ public void fillInQuizProblem(String problemName) {
 	// repeat mistakes and move straight to questioning
 	public void runInteractiveLearning(ProblemNode currentNode,
 			boolean startWithActivations) {
-
+		
 //		int numStepsPerformed = 0;
 		this.numStepsPerformed = 0;
 		int numStepsBrd = isRunningFromBrd() ? brdDepth() : -1;
@@ -1689,7 +1689,8 @@ public void fillInQuizProblem(String problemName) {
 				long activationListStartTime = Calendar.getInstance()
 						.getTimeInMillis();
 
-				/*kept ony for miss output*/
+				/*kept only for miss output*/
+				// This line was there but it was never used for any purpose except for the trace on line no 1715. Tasmia.
 				Vector activationList = simSt.gatherActivationList(currentNode);
 
 				VariableTable vt = currentNode.getProblemModel().getVariableTable();
@@ -1697,7 +1698,7 @@ public void fillInQuizProblem(String problemName) {
 				if(vtKeys.length >= 2) {
 					String cur_foa_1 = vtKeys[ vtKeys.length - 2 ];
 					String cur_foa_2 = vtKeys[ vtKeys.length - 1 ];
-					System.out.println(cur_foa_1+" "+cur_foa_2);
+					//System.out.println(cur_foa_1+" "+cur_foa_2);
 					current_foas.clear();
 					current_foas.add(cur_foa_1);
 					current_foas.add(cur_foa_2);
@@ -1711,7 +1712,7 @@ public void fillInQuizProblem(String problemName) {
 				 * if it is learning interactively
 				 */
 				if (simSt.isInteractiveLearning()) {
-					if (trace.getDebugCode("miss"))
+					if (trace.getDebugCode("miss")) // Referring to this trace
 						trace.out("miss", "activationList for Problem = " + getBrController(getSimSt()).getProblemModel().getProblemName() + " >> " + activationList);
 
 					int activationListDuration = (int) ((Calendar.getInstance().getTimeInMillis() - activationListStartTime)/1000);
@@ -1836,7 +1837,7 @@ public void fillInQuizProblem(String problemName) {
 								String mr_w_suggestion = ple.getConversation().getMessage(SimStConversation.MR_WILLIAMS_SUGGESTION_TOPIC);
 								mr_w_suggestion = mr_w_suggestion.replace("<ruleNickName>", ruleNickName);
 								//simSt.displayMessage("Mr Williams suggestion when both tutor and tutee are stuck", mr_w_suggestion, true);
-								ple.getSimStPeerTutoringPlatform().showMetaTutorTrigger(mr_w_suggestion);
+								ple.getSimStPeerTutoringPlatform().showMetaTutorTrigger(mr_w_suggestion, ruleNickName, logger);
 								
 							}
 							
@@ -2692,7 +2693,7 @@ public void fillInQuizProblem(String problemName) {
 
 		Random r = new Random();
 	    int probability = r.nextInt(100);
-	    System.out.println(edge.getSelection());
+	    //System.out.println(edge.getSelection());
 		//if (simSt.isSelfExplainMode() && !skillName.contains("typein") && !skillName.contains("unnamed")) {
 		//10/06/2014: now selection is the one that defines if SimStudent should ask for self explanation
 		if (simSt.isSelfExplainMode() && isSelectionValidForSelfExplanation(edge.getSelection()) && !explainedWhyRightSkills.contains(skillName)
@@ -3095,7 +3096,7 @@ public void fillInQuizProblem(String problemName) {
 				RuleActivationNode ran) {
 
 			String logic = "";
-			System.out.println(ran.getName()+" "+currentNode.getName());
+			//System.out.println(ran.getName()+" "+currentNode.getName());
 
 			Rule rule = getSimSt().getRule(ran.getName().replace("MAIN::", ""));
 
@@ -3247,8 +3248,10 @@ public void fillInQuizProblem(String problemName) {
 						for(int m=0; m<nonActiveFeaturePredicates.size(); m++) {
 							if(flag != 0) logic+= " and ";
 							else flag = 1;
+							
+							String cell_name = (String)variable_foa_map.get(nonActiveFeaturePredicates.get(m));
 							String wme_content = getBrController(getSimSt()).getMissController()
-									.getSimStPLE().getComponentName((String)variable_foa_map.get(nonActiveFeaturePredicates.get(m)));
+									.getSimStPLE().getComponentName(cell_name);
 							String name = convertjessPredicatesToJavaClass.getPredicatePart(nonActiveFeaturePredicates.get(m));
 							Class userFunction = getSimSt().getMTRete().findUserfunction(name).getClass();
 							FeaturePredicate predicate = FeaturePredicate.getPredicateByClassName(userFunction.getName());

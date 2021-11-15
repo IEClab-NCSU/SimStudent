@@ -147,7 +147,7 @@ public class MT {
     	while(interfaceIter.hasNext())
     	{
     		InterfaceAction ia=(InterfaceAction)interfaceIter.next();
-    		System.out.println(ia.toString());
+    		trace.out("printInterfaceAction", ia.toString());
     	}
 	}
 	public void removeAdditionaInterfaceActions() {
