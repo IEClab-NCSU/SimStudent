@@ -1848,10 +1848,10 @@ public void fillInQuizProblem(String problemName) {
 								String rule_not_applied_logic = ruleNotApplicationLogic(currentNode,ruleName);
 								if(rule_not_applied_logic == "") {
 									rule_not_applied_logic = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_LOGIC_WHEN_NO_FEATURE_FOUND_TOPIC);
-									followupAfterMrWTrigger(currentNode, rule_not_applied_logic, ruleName, false);
+									followupAfterMrWTrigger(currentNode, rule_not_applied_logic, ruleNickName, false);
 								}
 								else {
-									followupAfterMrWTrigger(currentNode, rule_not_applied_logic, ruleName, true);
+									followupAfterMrWTrigger(currentNode, rule_not_applied_logic, ruleNickName, true);
 								}
 								getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
 								String stuck_after_suggestion = ple.getConversation().getMessage(SimStConversation.STUCK_AFTER_MR_WILLIAMS_SUGGESTION_TOPIC);
