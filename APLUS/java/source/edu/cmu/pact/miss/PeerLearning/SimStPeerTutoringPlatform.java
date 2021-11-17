@@ -165,7 +165,7 @@ public class SimStPeerTutoringPlatform extends JComponent {
 					menu.show(metaTutorComponent, 0 , -((int)menu.getPreferredSize().getHeight()));	
 					menu.setVisible(true);
 					try {
-						Thread.sleep(10);
+						Thread.sleep(100);
 					} catch (InterruptedException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
