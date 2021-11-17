@@ -60,6 +60,7 @@ case $i in
 "-noSe") SE="off";;
 "-tt") AddArgs="${AddArgs} -ssTutalkParams none";;
 "-cti") CTI="on"
+AddArgs=${AddArgs/MetaTutorMC/MetaTutorMC_CTI}
 AddArgs="${AddArgs} -ssConstructiveTuteeInquiryFTIMode -ssCTIBothStuckParams none";;
 "-br") br="on";;
 "-u"|"-user") AddArgs="${AddArgs} -ssUserID";;
