@@ -40,14 +40,14 @@
 	 <phrase>How can I apply "%i%" here because from my understanding I could not because "%logic%". Can you resolve my confusion please?</phrase>
 	</concept> -->
 	<concept label="first-question">
-   	 <phrase>Alright, so Mr. Williams suggested that we should consider %i%. But I have applied "%i%" when "%logic%". Why do you think Mr. Williams suggested "%i%" as the correct step here?</phrase>
-	 <phrase>Okay, so Mr. Williams suggested that we should consider %i%. I am confused because I thought "%i%" can be applied when "%logic%". Can you explain the reason why Mr. Williams suggested "%i%" as the way to go here?</phrase>
-	 <phrase>Mr. Williams suggested that we should consider %i%. I thought "%i%" can be applied when "%logic%". Can you explain the reason behind Mr. Williams suggestion?</phrase>
-	 <phrase>So, Mr. Williams suggested that we should consider %i%. But I had this impression that "%i%" can be applied when "%logic%". Can you clarify what am I missing here?</phrase>
-	 <phrase>Mr. Williams suggested that we should consider %i%. But in the past I have applied "%i%" when "%logic%". Can you explain the reason behind Mr. Williams suggestion?</phrase>
-	 <phrase>Mr. Williams suggested that we should consider %i%. But this does not make sense to me because I have applied "%i%" when "%logic%". Can you resolve my confusion please?</phrase>
+   	 <phrase>Alright, so Mr. Williams suggested that we should consider %i%. But you have never taught me to apply %i% to this cell so far. Why do you think he suggested that as the correct step here?</phrase>
+	 <phrase>Okay, so Mr. Williams suggested that we should consider %i%. But I have never applied %i% to this cell so far. Can you explain the reason why he suggested that?</phrase>
+	 <phrase>Mr. Williams suggested that we should consider %i%.  But I have never applied %i% to this cell so far. Can you explain the reason behind his suggestion?</phrase>
+	 <phrase>So, Mr. Williams suggested that we should consider %i%. But I have never seen %i% on this cell so far. Can you explain the reason behind his suggestion?</phrase>
+	 <phrase>Mr. Williams suggested that we should consider %i%. But you have never taught me to apply %i% to this cell so far. Can you explain the reason behind his suggestion?</phrase>
+	 <phrase>Mr. Williams suggested that we should consider %i%. But I have never seen %i% on this cell so far. Why do you think Mr. Williams suggested "%i%" as the correct step here?</phrase>
 	</concept>
-	
+
 	<concept label="R2" model="coded" />
 	<concept label="R2-response-simst">
    <phrase>I see. I think that clarifies my confusion. Thanks!</phrase>
@@ -64,7 +64,7 @@
   </concept>
 	<concept label="R0" model="coded" />
 	<concept label="R0-response-simst">
-   <phrase>That did not address my confusion-could you try answering my question in this chatbox please?</phrase>
+     <phrase>That did not address my confusion-could you try answering my question in this chatbox please?</phrase>
 	 <phrase>I understand it may be tiring to answer all my questions, but that would help me learn better. Can you please try one more time and reply in this chatbox for me?</phrase>
 	 <phrase>I think you might have missed my earlier question. Can you please respond to that in this chatbox please?</phrase>
 	 <phrase>I think you've missed my earlier question. Can you respond to that in this chatbox please?</phrase>
