@@ -8,86 +8,45 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Frame;
-import java.awt.Rectangle;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.Enumeration;
 import java.util.List;
-import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.GroupLayout;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JProgressBar;
-import javax.swing.JRootPane;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import javax.swing.UIDefaults;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.ChangeListener;
-import javax.swing.plaf.FontUIResource;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-import pact.CommWidgets.JCommLabel;
-import pact.CommWidgets.JCommTable;
-import pact.CommWidgets.JCommWidget;
-//import sun.tools.tree.ThisExpression;
-
 import edu.cmu.pact.BehaviorRecorder.Controller.BR_Controller;
-import edu.cmu.pact.BehaviorRecorder.ProblemModel.Graph.ProblemEdge;
 import edu.cmu.pact.Utilities.trace;
 import edu.cmu.pact.ctat.TutorController;
 import edu.cmu.pact.miss.JTabbedPaneWithCloseIcons;
 import edu.cmu.pact.miss.SimSt;
-import edu.cmu.pact.miss.SimStTutalk;
-import edu.cmu.pact.miss.WebStartFileDownloader;
 import edu.cmu.pact.miss.MetaTutor.APlusHintDialog;
 import edu.cmu.pact.miss.MetaTutor.APlusHintDialogInterface;
 import edu.cmu.pact.miss.MetaTutor.MetaTutorAvatarComponent;
 import edu.cmu.pact.miss.PeerLearning.GameShow.ProblemBankTableModel;
-import edu.cmu.pact.miss.PeerLearning.SimStPLE.UndoThread;
-import edu.cmu.pact.miss.jess.WorkingMemoryConstants;
-
-import javax.swing.border.BevelBorder;
-import javax.swing.border.EtchedBorder;
 
 public class SimStPeerTutoringPlatform extends JComponent {
 
@@ -122,57 +81,14 @@ public class SimStPeerTutoringPlatform extends JComponent {
 	
 	public String trigger_msg;
 	//public JButton OK = new JButton("OK");
-	public boolean is_ok = false;
 	public void showMetaTutorTrigger(final String msg, final String ruleNickName, final SimStLogger logger) {
 		trigger_msg = msg;
-		is_ok = false;
+		final ArrayList<String> msgs = new ArrayList<String>();
+		msgs.add(trigger_msg);
 		Runnable runnable = new Runnable() {
 			@Override
 			public void run() {
-				JPopupMenu menu = new JPopupMenu();
-				menu.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-				
-				JLabel label1 = new JLabel(MetaTutorAvatarComponent.MR_WILLIAMS_SAYS_MSG);
-				label1.setBackground(Color.gray);
-				label1.setFont(new Font(Font.DIALOG, Font.BOLD, 14));
-				menu.add(label1);
-				menu.add(new JSeparator());
-				
-				JLabel label2 = new JLabel(trigger_msg);
-				label2.setFont(new Font(Font.DIALOG, Font.PLAIN, 12));
-				label2.setBackground(Color.white);
-				label2.setOpaque( true );
-				menu.add(label2);
-				menu.add(new JSeparator());
-				
-				JButton OK = new JButton("OK");
-				OK.setFont(new Font(Font.DIALOG, Font.BOLD, 10));
-				OK.setBackground(Color.white);
-				OK.setOpaque( true );
-				//OK.setLayout(new FlowLayout());
-				OK.addActionListener( new ActionListener()
-				{
-				    @Override
-				    public void actionPerformed(ActionEvent e)
-				    {
-				    	is_ok = true;
-				    	//System.out.println("Do Something Clicked");
-				    }
-				});
-				menu.add(OK, BorderLayout.CENTER);
-				logger.simStLog(SimStLogger.SIM_STUDENT_METATUTOR, SimStLogger.METATUTOR_HINT_TRIGGER_ACTION, msg);
-				while (is_ok == false) {
-					menu.show(metaTutorComponent, 0 , -((int)menu.getPreferredSize().getHeight()));	
-					menu.setVisible(true);
-					try {
-						Thread.sleep(100);
-					} catch (InterruptedException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				}
-				menu.setVisible(false);
-	    			
+				getBrController().getAmt().sendResult(msgs, 1, true);	    			
 	    	}
 		};
 		
