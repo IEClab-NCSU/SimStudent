@@ -1836,9 +1836,14 @@ public void fillInQuizProblem(String problemName) {
 								ruleNickName = ple.getSkillNickName(ruleName);
 								String mr_w_suggestion = ple.getConversation().getMessage(SimStConversation.MR_WILLIAMS_SUGGESTION_TOPIC);
 								mr_w_suggestion = mr_w_suggestion.replace("<ruleNickName>", ruleNickName);
-								//simSt.displayMessage("Mr Williams suggestion when both tutor and tutee are stuck", mr_w_suggestion, true);
-								ple.getSimStPeerTutoringPlatform().showMetaTutorTrigger(mr_w_suggestion, ruleNickName, logger);
-								
+//								ple.getSimStPeerTutoringPlatform().showMetaTutorTrigger(mr_w_suggestion, ruleNickName, logger);
+								try {
+									Thread.sleep(1000);
+								} catch (InterruptedException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+								ple.giveMessage(mr_w_suggestion, "Mr. Williams");								
 							}
 							
 							getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
@@ -1853,18 +1858,25 @@ public void fillInQuizProblem(String problemName) {
 								else {
 									followupAfterMrWTrigger(currentNode, rule_not_applied_logic, ruleNickName, true);
 								}
-								getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
-								String stuck_after_suggestion = ple.getConversation().getMessage(SimStConversation.STUCK_AFTER_MR_WILLIAMS_SUGGESTION_TOPIC);
-								nextCurrentNode = askWhatToDoNext(currentNode, stuck_after_suggestion);
-								hintReceived = true;
-								
 							}
-							else {
-								getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
-								String stuck_after_suggestion = ple.getConversation().getMessage(SimStConversation.STUCK_AFTER_MR_WILLIAMS_SUGGESTION_TOPIC);
-								nextCurrentNode = askWhatToDoNext(currentNode, stuck_after_suggestion);
-								hintReceived = true;
+							getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
+							String thank_mr_williams = ple.getConversation().getMessage(SimStConversation.THANK_MR_WILLIAMS);
+							String show_next_after_hint = ple.getConversation().getMessage(SimStConversation.SHOW_NEXT_AFTER_HINT);
+							try {
+								Thread.sleep(2000);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
 							}
+							ple.giveMessage(thank_mr_williams);
+							try {
+								Thread.sleep(1000);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							nextCurrentNode = askWhatToDoNext(currentNode, show_next_after_hint);
+							hintReceived = true;
 							
 							this.askStudentToSummarize();
 							askedExplanation = true;

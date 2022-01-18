@@ -91,6 +91,9 @@ public class SimStConversation {
 	//public static final String BRAINSTORMING_FOLLOWUP_MISTAKE_REALIZATION_TOPIC = "BRAINSTORMING_FOLLOWUP_MISTAKE_REALIZATION";
 	public static final String MR_WILLIAMS_SUGGESTION_TOPIC = "MR_WILLIAMS_SUGGESTION";
 	public static final String STUCK_AFTER_MR_WILLIAMS_SUGGESTION_TOPIC = "STUCK_AFTER_MR_WILLIAMS_SUGGESTION";
+	// Added by Raj: Topics for both disagree
+	public static final String THANK_MR_WILLIAMS = "THANK_MR_WILLIAMS";
+	public static final String SHOW_NEXT_AFTER_HINT = "SHOW_NEXT_AFTER_HINT";
 	// Added by Tasmia: Topics for both agree speech
 	public static final String AGREE_ANY = "ANY";
 	public static final String AGREE_DIVIDE = "DIVIDE";

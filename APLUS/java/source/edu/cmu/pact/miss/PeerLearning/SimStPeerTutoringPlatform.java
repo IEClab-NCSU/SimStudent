@@ -88,7 +88,20 @@ public class SimStPeerTutoringPlatform extends JComponent {
 		Runnable runnable = new Runnable() {
 			@Override
 			public void run() {
-				getBrController().getAmt().sendResult(msgs, 1, true);	    			
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				getBrController().getAmt().sendResult(msgs, 1, true);	    
+				try {
+					getBrController().getMissController().getSimStPLE().getSimStPeerTutoringPlatform().getAPlusHintDialogInterface().OkPressed.acquire();
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 	    	}
 		};
 		

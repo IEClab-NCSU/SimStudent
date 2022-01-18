@@ -340,6 +340,13 @@ MR_WILLIAMS_SUGGESTION
 You should consider <ruleNickName> here. 
 I think you should consider <ruleNickName> here.
 
+THANK_MR_WILLIAMS
+Thanks Mr. Williams!
+Thank you for the help Mr. Williams!
+
+SHOW_NEXT_AFTER_HINT
+Now, please show me the next step
+
 STUCK_AFTER_MR_WILLIAMS_SUGGESTION
 What exactly should I do now?
 What do you think I should do now?

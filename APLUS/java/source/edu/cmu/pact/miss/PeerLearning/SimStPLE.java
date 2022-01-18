@@ -4633,11 +4633,15 @@ public class SimStPLE {
 	}
 
 	public void giveMessage(String message) {
+		giveMessage(message, getSimStName());
+	}
+	
+	public void giveMessage(String message, String name) {
 		if (getSimStPeerTutoringPlatform() != null) {
 			getSimStPeerTutoringPlatform().showButtons(false);
 
 			// getSimStPeerTutoringPlatform().setSpeech(message);
-			getSimStPeerTutoringPlatform().appendSpeech(message, getSimStName());
+			getSimStPeerTutoringPlatform().appendSpeech(message, name);
 		}
 	}
 	

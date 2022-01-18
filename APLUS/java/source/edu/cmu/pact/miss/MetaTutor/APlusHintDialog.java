@@ -177,6 +177,8 @@ public class APlusHintDialog extends JDialog implements ActionListener, StudentA
     				proactiveMessage = false;
     				//System.out.println("Enabled the Model Tracer ");
     			}
+        		if (OkPressed.availablePermits() <= 0)
+        			OkPressed.release();
         	}
         });
 	}
@@ -437,7 +439,8 @@ public class APlusHintDialog extends JDialog implements ActionListener, StudentA
 				proactiveMessage = false;
 				//System.out.println("Enabled the Model Tracer ");
 			}
-			
+			if (OkPressed.availablePermits() <= 0)
+				OkPressed.release();
 			return;
 		}
 		
