@@ -412,8 +412,6 @@ public class SimStPeerTutoringPlatform extends JComponent {
         //yesNoPanel.setMaximumSize(new Dimension(yesNoWidth*2,yesNoHeight*2));
         yesNoPanel.add(getYesResponseButton());
         yesNoPanel.add(getNoResponseButton());
-        
-        //setTextResponse(new JTextField());
         setTextResponse(new JComboBox());
         getTextResponse().setMaximumSize(new Dimension(500,40));
 
@@ -1017,6 +1015,28 @@ public class SimStPeerTutoringPlatform extends JComponent {
     public void refresh()
     {
     	//paintImmediately(this.getBounds());
+    }
+    
+    public void showContinueButton(boolean show)
+    {
+    	if(show)
+    	{
+    		//showTextResponse(false);
+    		getYesResponseButton().setVisible(false);
+	    	getNoResponseButton().setVisible(false);
+	    	setYesResponseButton(new JButton("Continue"));
+	        getYesResponseButton().setPreferredSize(new Dimension(getYesResponseButton().getPreferredSize().width*2, getYesResponseButton().getPreferredSize().height));
+	        yesNoPanel.add(getYesResponseButton());
+	        getYesResponseButton().validate();
+	        yesNoPanel.validate();
+	        yesNoPanel.paintImmediately(yesNoPanel.getBounds());
+    	}
+        else
+        {
+    		getYesResponseButton().setVisible(show);
+	    	getYesResponseButton().validate();
+        }
+    	refresh();
     }
     
     public void showButtons(boolean show)

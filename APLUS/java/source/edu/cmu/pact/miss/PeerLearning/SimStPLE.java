@@ -4660,7 +4660,31 @@ public class SimStPLE {
 		getSimStPeerTutoringPlatform().setSpeech(message);
 
 	}
+	
+	public int giveMessageRequiringAttention(String message) {
+		// getSimStPeerTutoringPlatform().setSpeech(message);
+		setAvatarAsking();
+		getSimStPeerTutoringPlatform().appendSpeech(message, "");
+		getSimStPeerTutoringPlatform().showContinueButton(true);
 
+		if (this.getSimStPeerTutoringPlatform() != null)
+			this.getSimStPeerTutoringPlatform().scrollPaneToBottom();
+
+		YesNoBucket lock = new YesNoBucket();
+
+		getSimStPeerTutoringPlatform().getYesResponseButton().addActionListener(new YesNoListener(lock));
+		getSimStPeerTutoringPlatform().getYesResponseButton().setActionCommand("" + JOptionPane.YES_OPTION);
+		getSimStPeerTutoringPlatform().getNoResponseButton().addActionListener(new YesNoListener(lock));
+		getSimStPeerTutoringPlatform().getNoResponseButton().setActionCommand("" + JOptionPane.NO_OPTION);
+
+		String response = lock.waitForYesNo();
+
+		getSimStPeerTutoringPlatform().showContinueButton(false);
+
+		return Integer.parseInt(response);
+
+	}
+	
 	public int giveMessageRequiringResponse(String message) {
 		// getSimStPeerTutoringPlatform().setSpeech(message);
 		setAvatarAsking();

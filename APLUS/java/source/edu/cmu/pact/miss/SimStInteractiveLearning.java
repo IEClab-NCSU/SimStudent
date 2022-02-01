@@ -1837,13 +1837,9 @@ public void fillInQuizProblem(String problemName) {
 								String mr_w_suggestion = ple.getConversation().getMessage(SimStConversation.MR_WILLIAMS_SUGGESTION_TOPIC);
 								mr_w_suggestion = mr_w_suggestion.replace("<ruleNickName>", ruleNickName);
 //								ple.getSimStPeerTutoringPlatform().showMetaTutorTrigger(mr_w_suggestion, ruleNickName, logger);
-								try {
-									Thread.sleep(1000);
-								} catch (InterruptedException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
-								ple.giveMessage(mr_w_suggestion, "Mr. Williams");								
+								ple.giveMessageRequiringAttention("[ Press the Continue button to continue ]");
+								ple.giveMessage(mr_w_suggestion, "Mr. Williams");
+								ple.giveMessageRequiringAttention("[ Press the Continue button to continue ]");
 							}
 							
 							getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
@@ -1862,12 +1858,6 @@ public void fillInQuizProblem(String problemName) {
 							getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
 							String thank_mr_williams = ple.getConversation().getMessage(SimStConversation.THANK_MR_WILLIAMS);
 							String show_next_after_hint = ple.getConversation().getMessage(SimStConversation.SHOW_NEXT_AFTER_HINT);
-							try {
-								Thread.sleep(2000);
-							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
 							ple.giveMessage(thank_mr_williams);
 							try {
 								Thread.sleep(1000);

@@ -3395,8 +3395,11 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
     
     public void appendSpeech(String text, String name)
     {
+    	if (text.isEmpty())
+    		return;
     	String prevText = getSpeechText().getText();
-    	text = name+": "+text;
+    	if (!name.isEmpty())
+    		text = name+": "+text;
     	
     	String step = getBrController().getMissController().getSimSt().getProblemStepString();
     	getSimStPLE().logger.simStLog(SimStLogger.SIM_STUDENT_DIALOGUE, SimStLogger.CHAT_DIALOG_ACTION, step, "", "", 0, text);
@@ -3532,6 +3535,71 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
     public void refresh()
     {
     	this.repaint();
+    }
+    
+    public void showContinueButton(boolean show)
+    {
+    	trace.out("ss", "SHOW CONTINUE BUTTON ********************************");
+		if(show)
+		{
+			if(!SwingUtilities.isEventDispatchThread())
+			{
+		    	try {
+					SwingUtilities.invokeAndWait(new Runnable() {
+						public void run() {
+							showTextResponse(false);
+							getYesResponseButton().setVisible(false);
+							getNoResponseButton().setVisible(false);
+							yesButton = new JXButton("Continue");
+							getYesResponseButton().setPreferredSize(new Dimension(getYesResponseButton().getPreferredSize().width*2, getYesResponseButton().getPreferredSize().height));
+							yesPanel.add(getYesResponseButton(), BorderLayout.CENTER);
+							getYesResponseButton().validate();
+							yesPanel.setVisible(true);
+						}
+					});
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					e.printStackTrace();
+				}	
+			}
+			else
+			{
+					showTextResponse(false);
+					getYesResponseButton().setVisible(false);
+					getNoResponseButton().setVisible(false);
+					yesButton = new JXButton("Yes");
+					getYesResponseButton().setPreferredSize(new Dimension(getYesResponseButton().getPreferredSize().width*2, getYesResponseButton().getPreferredSize().height));
+					yesPanel.add(getYesResponseButton(), BorderLayout.CENTER);
+					getYesResponseButton().validate();
+					yesPanel.setVisible(true);
+			}
+		 }
+		 else
+		 {
+		    		getYesResponseButton().validate();
+					yesPanel.setVisible(false);
+					showTextResponse(false);
+		 }
+		refresh();
+
+		
+		
+		final JFrame f = new JFrame();	
+		//Must schedule the close before the dialog becomes visible
+		ScheduledExecutorService s = Executors.newSingleThreadScheduledExecutor();     
+		s.schedule(new Runnable() {
+		    public void run() {
+		    	f.setVisible(true);
+		    	f.dispose();
+		    }
+		}, 280, TimeUnit.MILLISECONDS);
+
+		f.setUndecorated(true); // Remove title bar
+		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		f.setVisible(true);
+				
+		//showSplashScreen(show);		
     }
     
     public void showButtons(boolean show)
