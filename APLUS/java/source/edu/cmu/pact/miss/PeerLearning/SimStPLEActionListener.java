@@ -211,75 +211,7 @@ public class SimStPLEActionListener implements ActionListener, ChangeListener {
         }
         //button was "Restart Problem"
         else if (SimStPLE.RESTART.equals(actionCommand)) {
-
-        	brController.getMissController().getSimSt().newProblemButtonLockFlag=false;
-        	brController.getMissController().getSimSt().scheduleNewProblemTimer();
-        	brController.getMissController().getSimStPLE().setIsRestartClicked(true);
-       
-        	getMissController().getSimStPLE().incRestartClickCount();
-        	
-        	if (brController.getMissController().getSimSt().isSsMetaTutorMode()){
-        		     		
-        		brController.getMissController().getSimSt().getModelTraceWM().setNextSelection("nil");
-        		brController.getMissController().getSimSt().getModelTraceWM().setNextAction("nil");
-        		brController.getMissController().getSimSt().getModelTraceWM().setNextInput("nil");
-        		brController.getMissController().getSimSt().getModelTraceWM().setSolutionGiven("false");
-        		
-        		/*update the restart count in working memory*/
-        		int count=this.getMissController().getSimStPLE().getRestartClickCount();		
-        		brController.getMissController().getSimSt().getModelTraceWM().setRestartCount(count); 
-        		brController.getMissController().getSimSt().getModelTraceWM().setStudentEnteredProblem(this.getMissController().getSimStPLE().getSsInteractiveLearning().getPreviousTutoredProblem());			
-
-        	}
-        	
-        	
-        	if (brController.getMissController().getSimSt().isSsMetaTutorMode())
-        		this.brController.getMissController().getSimSt().getModelTraceWM().setSolutionCheckError("false");
-
-        	String problem=null;
-        	if (brController.getMissController().getSimSt().isSsMetaTutorMode())
-        		this.brController.getMissController().getSimSt().getModelTraceWM().getStudentEnteredProblem();
-        	
-        	
-        	if (brController.getMissController().getSimSt().isSsCogTutorMode()){
-    			getBrController().getMissController().getSimSt().getModelTraceWM().setRequestType("hint-request");
-    		}
-        	
-        	
-        	logger.simStLog(SimStLogger.SIM_STUDENT_ACTION_LISTENER, SimStLogger.RESTART_BUTTON_ACTION, "");
-        	
-        	if (brController.getMissController().getSimSt().isSsCogTutorMode() && brController.getMissController().getSimSt().isSsAplusCtrlCogTutorMode() && getBrController().getMissController().getSimStPLE().getSsCognitiveTutor().getQuizSolving()){
-	
-        		getBrController().getMissController().getSimStPLE().getSsCognitiveTutor().initQuizSolutionHash();    
-        		getBrController().getMissController().getSimStPLE().getSsCognitiveTutor().initFailedQuizSolutionHash();  
-        		getBrController().getMissController().getSimStPLE().getSsCognitiveTutor().enterFirstUnsolvedQuizProblemToInterface(true);
-        		getBrController().getMissController().getSimStPLE().unBlockQuiz(true);
-        		
-        		return;
-        	}
-        	
-        	
-        	
-        	//restart the problem
-        	if (brController.getMissController().getSimSt().isSsCogTutorMode()){
-        		
-        		getBrController().getMissController().getSimStPLE().nextProblem(false);
-        		
-        		if (!brController.getMissController().getSimSt().isSsAplusCtrlCogTutorMode()){
-        			getBrController().getMissController().getSimStPLE().getSsCognitiveTutor().giveNextProblem(false);
-        		}
-        		else if (getBrController().getMissController().getSimStPLE().getSsCognitiveTutor().getQuizSolving()){
-        			getBrController().getMissController().getSimStPLE().unBlockQuiz(true);
-        		}
-        		else{
-        			getBrController().getMissController().getSimStPLE().getSsCognitiveTutor().giveProblem(getBrController().getMissController().getSimStPLE().getSsCognitiveTutor().getLastGivenProblem());
-        		}        		
-        	}
-        	else 
-        		getMissController().pleRestartProblemSimSt();
-        	
-        	
-        	
+        	brController.getMissController().getSimStPLE().onRestartClicked();
         }
         //button was "Configure Avatar" - Deprecated
         else if (SimStPLE.CFG.equals(actionCommand)) {
@@ -292,8 +224,6 @@ public class SimStPLEActionListener implements ActionListener, ChangeListener {
             new Exception("Invalid action event: " + event).printStackTrace();
         }
     }
-    
-    
     
     //when a tab is selected
 	@Override

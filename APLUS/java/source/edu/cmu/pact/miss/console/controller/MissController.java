@@ -1670,8 +1670,8 @@ public class MissController implements MissControllerExternal {
     public void pleUndoSimSt() {
     	getSimStPLE().undo();
     }
-    public void pleRestartProblemSimSt() {
-    	getSimStPLE().restartProblem();
+    public String pleRestartProblemSimSt() {
+    	return getSimStPLE().restartProblem();
     }
     
 

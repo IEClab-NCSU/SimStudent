@@ -1442,7 +1442,11 @@ public void fillInQuizProblem(String problemName) {
 
 		simSt.setLastSkillOperand(null);
 		ProblemNode currentNode = getBrController(getSimSt()).getProblemModel().getStartNode();
-		runInteractiveLearning(currentNode, true);
+		if (!runType.equalsIgnoreCase("springboot")) {
+			runInteractiveLearning(currentNode, true);
+		} else {
+			setCurrentNode(currentNode);
+		}
 	}
 
 
@@ -1676,10 +1680,8 @@ public void fillInQuizProblem(String problemName) {
 				trace.out("ss","----------------" + step + " IL: "+ simSt.isInteractiveLearning());
 			// Set SimStudent to thinking
 
-			if(!runType.equals("springBoot")) {
-				if (getBrController(getSimSt()).getMissController().isPLEon() && !isTakingQuiz() && activations) {
-					getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarThinking();
-				}
+			if (getBrController(getSimSt()).getMissController().isPLEon() && !isTakingQuiz())
+				getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarThinking();
 			}
 
 			ProblemNode nextCurrentNode = null;
@@ -1776,10 +1778,8 @@ public void fillInQuizProblem(String problemName) {
 			}
 
 			// Finish SimStudent thinking
-			if(!runType.equals("springBoot")) {
-				if (getBrController(getSimSt()).getMissController().isPLEon() && !isTakingQuiz())
-					getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
-			}
+			if (getBrController(getSimSt()).getMissController().isPLEon() && !isTakingQuiz())
+				getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
 			boolean hintReceived = false;
 
 			// Mon Aug 31 16:53:50 2009: Noboru code-sharing for Quiz SimSt for
@@ -2257,9 +2257,7 @@ public void fillInQuizProblem(String problemName) {
 
 		if (doCheck) {
 			SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();
-			if(!runType.contentEquals("springBoot")) {
-				ple.setAvatarThinking();
-			}
+			ple.setAvatarThinking();
 			return simSt.getProblemAssessor().performInteractiveAnswerCheck(
 					ple, problem, solution);
 
@@ -3649,10 +3647,8 @@ public void fillInQuizProblem(String problemName) {
 			if (!hint.skillName.equals(SimSt.KILL_INTERACTIVE_LEARNING)) {
 
 				// Set SimStudent to thinking
-				if(runType.isEmpty()) {
-					if (getBrController(getSimSt()).getMissController().isPLEon())
-						getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarThinking();
-				}
+				if (getBrController(getSimSt()).getMissController().isPLEon()) 
+					getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarThinking();
 				// Create a new node and edge using the hint SAI
 				simSt.stepDemonstrated(hint.node, hint.getSai(), hint.edge,null);
 
@@ -3715,11 +3711,9 @@ public void fillInQuizProblem(String problemName) {
 				}
 
 				// SimStudent is done thinking
-				if(!getBrController(getSimSt()).getRunType().equals("springBoot")) {
 				if (getBrController(getSimSt()).getMissController().isPLEon())
 					getBrController(getSimSt()).getMissController().getSimStPLE()
 							.setAvatarNormal();
-				}
 				// failure to learn on inputted step and we have not used up
 				// additional attempts
 				if (stillLearning && repeats < simSt.getSsNumBadInputRetries()) {
