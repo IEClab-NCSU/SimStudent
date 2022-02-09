@@ -1680,7 +1680,7 @@ public void fillInQuizProblem(String problemName) {
 				trace.out("ss","----------------" + step + " IL: "+ simSt.isInteractiveLearning());
 			// Set SimStudent to thinking
 
-			if (getBrController(getSimSt()).getMissController().isPLEon() && !isTakingQuiz())
+			if (getBrController(getSimSt()).getMissController().isPLEon() && !isTakingQuiz()) {
 				getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarThinking();
 			}
 
