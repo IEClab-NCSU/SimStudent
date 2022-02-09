@@ -1,7 +1,7 @@
 # How to generate the FOIL6 binary
 
 To generate the FOIL6 binary follow these steps:
-1. Go to the FOIL6 directory based on your system. It will be "FOIL6/FOIL6-MAC-M1" if you are using M1 MAC, for everyone else it'll be "FOIL6/FOIL6-Original".
+1. Go to the FOIL6 directory based on your system. It will be "FOIL6/FOIL6-MAC-M1" if you are using M1 MAC, for everyone else it'll be "FOIL6/FOIL6-Original". While building if you encounter error of kind [-Werror,-Wimplicit-function-declaration] then those can probably be mitigated by building inside FOIL6-MAC-Original-Latest .
 2. Once you are in the correct directory run the following command:
     ```bash
     make foil
