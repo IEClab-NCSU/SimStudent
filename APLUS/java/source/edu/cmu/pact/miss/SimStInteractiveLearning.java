@@ -2497,6 +2497,7 @@ public void fillInQuizProblem(String problemName) {
 
 					if ((firstStategy==ASK_IMMEDIATELY || (firstStategy==ASK_AFTER_SECOND_NO && ruleQueryCounter==2)) && secondStrategyToAskSelfExplQ(ran)){
 						setLastSkillExplained(getFirstRanStudentSaidNo().getName());
+						if(!runType.equals("springBoot")) explainWhyWrong(getFirstRanStudentSaidNo());
 						// TODO handle explain why queries for spring boot
 					}
 			}

@@ -1107,3 +1107,77 @@ REx: selected file is 'both_stuck_model_logreg.model.xml'
 REx: showing dialogue...
 Inside get xstream
 Wrote XML recipe for both_stuck_model_logreg.model.side to /Users/tasmiashahriar/Documents/GitHub/SimStudent/bazaar/lightside/saved/both_stuck_model_logreg.model.xml
+Thu Oct 21 16:20:25 EDT 2021
+no DISPLAY variable set. Using DISPLAY=:0.0...
+Oct 21, 2021 4:20:28 PM com.github.fommil.netlib.ARPACK <clinit>
+WARNING: Failed to load implementation from: com.github.fommil.netlib.NativeSystemARPACK
+Oct 21, 2021 4:20:28 PM com.github.fommil.netlib.ARPACK <clinit>
+WARNING: Failed to load implementation from: com.github.fommil.netlib.NativeRefARPACK
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+Oct 21, 2021 4:22:02 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Oct 21, 2021 4:23:20 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Oct 21, 2021 4:23:34 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Oct 21, 2021 4:23:55 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+saving  (TRAINED_MODEL)
+REx: making new chooser 
+REx: returning chooser for filter [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml]]
+[LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@43235cc6]
+REx: chooser has [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@43235cc6]
+REx: getting trained model...
+REx: setting default name '.model.xml' from selected filter...
+REx: selected file is '.model.xml'
+REx: showing dialogue...
+saving  (TRAINED_MODEL)
+REx: returning chooser for filter [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml]]
+[LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@43235cc6]
+REx: chooser has [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@43235cc6]
+REx: getting trained model...
+REx: setting default name '.model.xml' from selected filter...
+REx: selected file is '.model.xml'
+REx: showing dialogue...
+Oct 21, 2021 4:24:19 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+saving svm__123POSgrams_norm_char34_2 (TRAINED_MODEL)
+REx: returning chooser for filter [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml]]
+[LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@43235cc6]
+REx: chooser has [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@43235cc6]
+REx: getting trained model...
+REx: setting default name 'svm__123POSgrams_norm_char34_2.model.xml' from selected filter...
+REx: selected file is 'svm__123POSgrams_norm_char34_2.model.xml'
+REx: showing dialogue...
+Inside get xstream
+null xtream
+Wrote XML recipe for svm__123POSgrams_norm_char34_2.model.side to /Users/tasmiashahriar/Documents/GitHub/SimStudent/bazaar/lightside/saved/both_stuck_model_svm_f.model.xml
+saving svm__123POSgrams_norm_char34_2 (TRAINED_MODEL)
+REx: returning chooser for filter [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml]]
+[LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@43235cc6]
+REx: chooser has [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@43235cc6]
+REx: getting trained model...
+REx: setting default name 'svm__123POSgrams_norm_char34_2.model.xml' from selected filter...
+REx: selected file is 'svm__123POSgrams_norm_char34_2.model.xml'
+REx: showing dialogue...
+Inside get xstream
+Wrote XML recipe for svm__123POSgrams_norm_char34_2.model.side to /Users/tasmiashahriar/Documents/GitHub/SimStudent/bazaar/lightside/models/both_stuck_model_svm_f.model.xml
+Thu Feb 10 12:53:04 EST 2022
+no DISPLAY variable set. Using DISPLAY=:0.0...
+Feb 10, 2022 12:53:06 PM com.github.fommil.netlib.ARPACK <clinit>
+WARNING: Failed to load implementation from: com.github.fommil.netlib.NativeSystemARPACK
+Feb 10, 2022 12:53:06 PM com.github.fommil.netlib.ARPACK <clinit>
+WARNING: Failed to load implementation from: com.github.fommil.netlib.NativeRefARPACK
