@@ -6,8 +6,8 @@ package edu.cmu.pact.Utilities;
  */
 public class VersionInformation {
     public static String RELEASE_NAME = "CTAT 3.4.0i";
-    public static String VERSION_NUMBER = "20210419-1600";
-    public static String BUILD_DATE = "19 April 2021";
+    public static String VERSION_NUMBER = "20211105-1311";
+    public static String BUILD_DATE = "05 November 2021";
 
     private static VersionInfoGenerator.LicenseType licenseType = VersionInfoGenerator.LicenseType.internal;
 
@@ -16,7 +16,7 @@ public class VersionInformation {
     }
 
     public static void main(String[] args) {
-    	trace.out(getReleaseString());
+        System.out.println(getReleaseString());
     }
 
     /**

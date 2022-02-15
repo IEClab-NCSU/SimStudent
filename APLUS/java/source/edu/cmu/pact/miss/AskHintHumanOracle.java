@@ -48,15 +48,17 @@ public class AskHintHumanOracle extends AskHint {
     // Constructor
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 	
     public AskHintHumanOracle(BR_Controller brController, ProblemNode parentNode){
-        setBrController(brController);
-        logger = new SimStLogger(brController);
-        getHint(brController, parentNode);
+        this(brController, parentNode, null);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     // Constructor
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-    
+    public AskHintHumanOracle(BR_Controller brController, ProblemNode parentNode, String customMessage){
+        setBrController(brController);
+        logger = new SimStLogger(brController);
+        getHint(brController, parentNode, customMessage);
+    }
     //this function puts an Sai in the SaiDrop.
     public static void hereIsTheSai(Sai sai) {
     	if(trace.getDebugCode("miss")) trace.out("miss","AskHintHumanOracle hereIsTheSai");
@@ -112,162 +114,167 @@ public class AskHintHumanOracle extends AskHint {
 
         return new SaiAndSkillName(sai, skillName);
     }
+    
+    public void getHint(BR_Controller brController, ProblemNode parentNode, String customMessage){
+
+        AskHint hint = null;  
+
+        if(logger.getLoggingEnabled()){
+      	  	//hint = new AskHintInBuiltClAlgebraTutor(brController, parentNode);    		
+      	  	//CL oracle must not be hardcoded! Whichever oracle grades the quiz should provide hint for logging
+        		hint = brController.getMissController().getSimSt().askForHintQuizGradingOracle(brController,parentNode); 
+        		brController.setHintInfo(hint);
+        		trace.err("*** hint from designated oracle is :" + hint.getAction() + hint.getInput());	
+        }
+        
+        String title = "SimStudent is asking for a hint";
+        String message[] = { "" };
+        String step = brController.getMissController().getSimSt().getProblemStepString();
+        if(brController.getMissController().isPLEon())
+        {
+      	  SimStPLE ple = brController.getMissController().getSimStPLE();
+      	
+  	      if(step.contains("["))
+  	      {
+  	    	  String op = step.substring(step.indexOf('[')+1, step.indexOf(']'));
+  	    	  String topic=ple.getSsInteractiveLearning().getExplanationGiven() ? SimStConversation.TYPEIN_HINT_EXPLANATION_TOPIC : SimStConversation.TYPEIN_HINT_TOPIC;
+  	    	  ple.getSsInteractiveLearning().setExplanationGiven(false);
+  	    	  message[0] = customMessage != null ? customMessage : ple.getConversation().getMessage(topic, op);
+  	      }
+  	      else
+  	      {
+  	    	 
+  	    	 // String topic=ple.getSsInteractiveLearning().getExplanationGiven() ? SimStConversation.TRANSFORMATION_HINT_EXPLANATION_TOPIC : SimStConversation.TRANSFORMATION_HINT_TOPIC;
+  	    	  ple.getSsInteractiveLearning().setExplanationGiven(false);
+  	    	  message[0] = customMessage != null ? customMessage : ple.getConversation().getMessage(SimStConversation.TRANSFORMATION_HINT_TOPIC);
+  	      }
+        }
+        else
+        {
+  	      if(step.contains("["))
+  	      {
+  	    	  String op = step.substring(step.indexOf('[')+1, step.indexOf(']'));
+  	    	  message[0] = customMessage != null ? customMessage : "I'm not quite sure how to "+op+" here.  Can you please show me what to do?";
+  	      }
+  	      else
+  	      {
+  	    	  message[0] = customMessage != null ? customMessage : "I'm stuck.  I don't know what to do next.  Please show me what to do!.";
+  	      }
+        }
+        JFrame frame = brController.getActiveWindow();
+        /*if(brController.getMissController().isPLEon())
+        {
+      	  brController.getMissController().getSimStPLE().giveMessage(message[0]);
+        }
+        else
+        {
+      	  JOptionPane.showMessageDialog(frame, message, title, JOptionPane.WARNING_MESSAGE);
+        }*/
+        brController.getMissController().getSimSt().displayMessage(title, message);
+        if(hint != null)
+        {
+      	  logger.simStLog(SimStLogger.SIM_STUDENT_DIALOGUE, SimStLogger.HINT_REQUEST_ACTION,step,"","",
+  	  				null, null, hint.getSelection(), hint.getAction(), hint.getInput(), 0,message[0]);
+        }
+        
+  	  if(brController.getMissController() != null && brController.getMissController().getSimSt() != null
+  			  && brController.getMissController().getSimSt().isSsMetaTutorMode()) {
+
+  		 // brController.getAmt().handleInterfaceAction("sshint", "implicit", "-1");
+  		  getBrController().getMissController().getSimSt().getModelTraceWM().setRequestType("hint-request");
+  	  }
+
+//  	  long hintRequestTime = Calendar.getInstance().getTimeInMillis();
+        
+  	 
+  	  if (hint!=null && brController.getMissController().getSimSt().isSsMetaTutorMode() )
+      	  brController.getMissController().getSimSt().getModelTraceWM().setStudentSaiEntered(WorkingMemoryConstants.FALSE);  
+  	  
+  	  brController.setStepInfo(step);
+  	  brController.setParentNodeInfo(parentNode);
+  	  brController.setMessageInfo(message[0]);
+  	  if(!brController.getRunType().isEmpty()) {
+  		  brController.setBrController(brController);
+  	  }
+  	  if(brController.getRunType()== "") {
+  		  SkillNameandSAISet(hint, step, parentNode, message[0], null, brController);
+  	  }
+       /* saiAndSkillName = waitForSaiAndSkillName();
+        setSai(saiAndSkillName.sai);
+        this.skillName = saiAndSkillName.skillName;
+        
+       //System.out.println(" Skill  :  "+this.skillName);
+        if (this.brController.getMissController().isPLEon())
+      	  this.brController.getMissController().getSimStPLE().blockInput(true);
+        
+        if(brController.getMissController().getSimSt().isSsMetaTutorMode() && this.saiAndSkillName.sai.getS().equalsIgnoreCase("done") && this.saiAndSkillName.sai.getA().equalsIgnoreCase("ButtonPressed")){
+
+      	  brController.getMissController().getSimSt().getModelTraceWM().setProblemStatus("solved");
+        }
+        
+        if (hint!=null && brController.getMissController().getSimSt().isSsMetaTutorMode() )
+      	  brController.getMissController().getSimSt().getModelTraceWM().setStudentSaiEntered(WorkingMemoryConstants.TRUE);  
+        
+  	  if (hint!=null && brController.getMissController().getSimSt().isSsMetaTutorMode() ){
+  	    	  brController.getMissController().getSimSt().getModelTraceWM().setNextSelection(hint.getSelection());
+  	   		  brController.getMissController().getSimSt().getModelTraceWM().setNextAction(hint.getAction());
+  	   		  brController.getMissController().getSimSt().getModelTraceWM().setNextInput(hint.getInput());  		  
+  	   		  brController.getMissController().getSimSt().hintRequest=true;
+  	  
+  	  }
+        
+  		JCommButton doneButton = (JCommButton) brController.lookupWidgetByName("Done");
+     		if (doneButton!=null){
+     			//System.out.println(" Done button is clicked ");
+     			doneButton.setText(SimStPLE.DONE_CAPTION_ENABLED);
+     		}
+     		
+        
+        if (!skillName.equals(SimSt.KILL_INTERACTIVE_LEARNING)){
+      	
+      	  // TODO: Need to figure out a unified way to handle all the interface actions at one place
+  	      // Model-tracing the student interface action in response to the SimStudent help request
+  	      if(brController.getMissController().getSimSt().isSsMetaTutorMode()) {
+  	  	      getBrController().getMissController().getSimSt().getModelTraceWM().setRequestType("");
+  	    	  brController.getAmt().handleInterfaceAction(saiAndSkillName.sai.getS(), saiAndSkillName.sai.getA(), saiAndSkillName.sai.getI());
+  	      }
+  	      	
+      	  if(logger.getLoggingEnabled())
+      	  {
+  		      //hint = new AskHintInBuiltClAlgebraTutor(brController, parentNode);
+  		      
+//  		      boolean correct = false;
+//  		      if(brController.getMissController().getSimSt().verifyStep(brController.getProblemModel().getProblemName(),
+//  		    	parentNode, saiAndSkillName.sai.getS(), saiAndSkillName.sai.getA(), saiAndSkillName.sai.getI()).equals(EdgeData.CORRECT_ACTION))
+//  		    	correct = true;
+  		      
+  		
+  		      	int hintDuration = (int) ((Calendar.getInstance().getTimeInMillis() - hintRequestTime)/1000);
+  		      	step = brController.getMissController().getSimSt().getProblemStepString();
+  		      	
+  		      	logger.simStLog(SimStLogger.SIM_STUDENT_INFO_RECEIVED, SimStLogger.HINT_RECEIVED, 
+  		    		  step,"","",saiAndSkillName.sai,parentNode, hint.getSelection(),
+  		    		  hint.getAction(), hint.getInput(), hintDuration,message[0]);
+      	  }
+        		
+            // ProblemModel pModel = brController.getProblemModel();
+            // ProblemNode startNode = pModel.getStartNode();
+            //this.node = brController.getCurrentNode();
+            //this.edge = brController.getProblemModel().returnsEdge(parentNode,node);      
+        }
+
+        //this.node = brController.getCurrentNode();
+        //this.edge = brController.getProblemModel().returnsEdge(parentNode,node); 
+        if(saiAndSkillName != null && edge != null)
+        {
+      	  edge.getEdgeData().addRuleName(saiAndSkillName.skillName);
+        }
+        */
+      }
 
     public void getHint(BR_Controller brController, ProblemNode parentNode){
 
-      AskHint hint = null;  
-
-      if(logger.getLoggingEnabled()){
-    	  	//hint = new AskHintInBuiltClAlgebraTutor(brController, parentNode);    		
-    	  	//CL oracle must not be hardcoded! Whichever oracle grades the quiz should provide hint for logging
-      		hint = brController.getMissController().getSimSt().askForHintQuizGradingOracle(brController,parentNode); 
-      		brController.setHintInfo(hint);
-      		trace.err("*** hint from designated oracle is :" + hint.getAction() + hint.getInput());	
-      }
-      
-      String title = "SimStudent is asking for a hint";
-      String message[] = { "I'm stuck. Please give me a hint." };
-      String step = brController.getMissController().getSimSt().getProblemStepString();
-      if(brController.getMissController().isPLEon())
-      {
-    	  SimStPLE ple = brController.getMissController().getSimStPLE();
-    	
-	      if(step.contains("["))
-	      {
-	    	  String op = step.substring(step.indexOf('[')+1, step.indexOf(']'));
-	    	  String topic=ple.getSsInteractiveLearning().getExplanationGiven() ? SimStConversation.TYPEIN_HINT_EXPLANATION_TOPIC : SimStConversation.TYPEIN_HINT_TOPIC;
-	    	  ple.getSsInteractiveLearning().setExplanationGiven(false);
-	    	  message[0] = ple.getConversation().getMessage(topic, op);
-	      }
-	      else
-	      {
-	    	 
-	    	 // String topic=ple.getSsInteractiveLearning().getExplanationGiven() ? SimStConversation.TRANSFORMATION_HINT_EXPLANATION_TOPIC : SimStConversation.TRANSFORMATION_HINT_TOPIC;
-	    	  ple.getSsInteractiveLearning().setExplanationGiven(false);
-	    	  message[0] = ple.getConversation().getMessage(SimStConversation.TRANSFORMATION_HINT_TOPIC);
-	      }
-      }
-      else
-      {
-	      if(step.contains("["))
-	      {
-	    	  String op = step.substring(step.indexOf('[')+1, step.indexOf(']'));
-	    	  message[0] = "I'm not quite sure how to "+op+" here.  Can you please show me what to do?";
-	      }
-	      else
-	      {
-	    	  message[0] = "I'm stuck.  I don't know what to do next.  Please show me what to do!.";
-	      }
-      }
-      JFrame frame = brController.getActiveWindow();
-      /*if(brController.getMissController().isPLEon())
-      {
-    	  brController.getMissController().getSimStPLE().giveMessage(message[0]);
-      }
-      else
-      {
-    	  JOptionPane.showMessageDialog(frame, message, title, JOptionPane.WARNING_MESSAGE);
-      }*/
-      brController.getMissController().getSimSt().displayMessage(title, message);
-      if(hint != null)
-      {
-    	  logger.simStLog(SimStLogger.SIM_STUDENT_DIALOGUE, SimStLogger.HINT_REQUEST_ACTION,step,"","",
-	  				null, null, hint.getSelection(), hint.getAction(), hint.getInput(), 0,message[0]);
-      }
-      
-	  if(brController.getMissController() != null && brController.getMissController().getSimSt() != null
-			  && brController.getMissController().getSimSt().isSsMetaTutorMode()) {
-
-		 // brController.getAmt().handleInterfaceAction("sshint", "implicit", "-1");
-		  getBrController().getMissController().getSimSt().getModelTraceWM().setRequestType("hint-request");
-	  }
-
-//	  long hintRequestTime = Calendar.getInstance().getTimeInMillis();
-      
-	 
-	  if (hint!=null && brController.getMissController().getSimSt().isSsMetaTutorMode() )
-    	  brController.getMissController().getSimSt().getModelTraceWM().setStudentSaiEntered(WorkingMemoryConstants.FALSE);  
-	  
-	  brController.setStepInfo(step);
-	  brController.setParentNodeInfo(parentNode);
-	  brController.setMessageInfo(message[0]);
-	  if(!brController.getRunType().isEmpty()) {
-		  brController.setBrController(brController);
-	  }
-	  if(brController.getRunType()== "") {
-		  SkillNameandSAISet(hint, step, parentNode, message[0], null, brController);
-	  }
-     /* saiAndSkillName = waitForSaiAndSkillName();
-      setSai(saiAndSkillName.sai);
-      this.skillName = saiAndSkillName.skillName;
-      
-     //System.out.println(" Skill  :  "+this.skillName);
-      if (this.brController.getMissController().isPLEon())
-    	  this.brController.getMissController().getSimStPLE().blockInput(true);
-      
-      if(brController.getMissController().getSimSt().isSsMetaTutorMode() && this.saiAndSkillName.sai.getS().equalsIgnoreCase("done") && this.saiAndSkillName.sai.getA().equalsIgnoreCase("ButtonPressed")){
-
-    	  brController.getMissController().getSimSt().getModelTraceWM().setProblemStatus("solved");
-      }
-      
-      if (hint!=null && brController.getMissController().getSimSt().isSsMetaTutorMode() )
-    	  brController.getMissController().getSimSt().getModelTraceWM().setStudentSaiEntered(WorkingMemoryConstants.TRUE);  
-      
-	  if (hint!=null && brController.getMissController().getSimSt().isSsMetaTutorMode() ){
-	    	  brController.getMissController().getSimSt().getModelTraceWM().setNextSelection(hint.getSelection());
-	   		  brController.getMissController().getSimSt().getModelTraceWM().setNextAction(hint.getAction());
-	   		  brController.getMissController().getSimSt().getModelTraceWM().setNextInput(hint.getInput());  		  
-	   		  brController.getMissController().getSimSt().hintRequest=true;
-	  
-	  }
-      
-		JCommButton doneButton = (JCommButton) brController.lookupWidgetByName("Done");
-   		if (doneButton!=null){
-   			//System.out.println(" Done button is clicked ");
-   			doneButton.setText(SimStPLE.DONE_CAPTION_ENABLED);
-   		}
-   		
-      
-      if (!skillName.equals(SimSt.KILL_INTERACTIVE_LEARNING)){
-    	
-    	  // TODO: Need to figure out a unified way to handle all the interface actions at one place
-	      // Model-tracing the student interface action in response to the SimStudent help request
-	      if(brController.getMissController().getSimSt().isSsMetaTutorMode()) {
-	  	      getBrController().getMissController().getSimSt().getModelTraceWM().setRequestType("");
-	    	  brController.getAmt().handleInterfaceAction(saiAndSkillName.sai.getS(), saiAndSkillName.sai.getA(), saiAndSkillName.sai.getI());
-	      }
-	      	
-    	  if(logger.getLoggingEnabled())
-    	  {
-		      //hint = new AskHintInBuiltClAlgebraTutor(brController, parentNode);
-		      
-//		      boolean correct = false;
-//		      if(brController.getMissController().getSimSt().verifyStep(brController.getProblemModel().getProblemName(),
-//		    	parentNode, saiAndSkillName.sai.getS(), saiAndSkillName.sai.getA(), saiAndSkillName.sai.getI()).equals(EdgeData.CORRECT_ACTION))
-//		    	correct = true;
-		      
-		
-		      	int hintDuration = (int) ((Calendar.getInstance().getTimeInMillis() - hintRequestTime)/1000);
-		      	step = brController.getMissController().getSimSt().getProblemStepString();
-		      	
-		      	logger.simStLog(SimStLogger.SIM_STUDENT_INFO_RECEIVED, SimStLogger.HINT_RECEIVED, 
-		    		  step,"","",saiAndSkillName.sai,parentNode, hint.getSelection(),
-		    		  hint.getAction(), hint.getInput(), hintDuration,message[0]);
-    	  }
-      		
-          // ProblemModel pModel = brController.getProblemModel();
-          // ProblemNode startNode = pModel.getStartNode();
-          //this.node = brController.getCurrentNode();
-          //this.edge = brController.getProblemModel().returnsEdge(parentNode,node);      
-      }
-
-      //this.node = brController.getCurrentNode();
-      //this.edge = brController.getProblemModel().returnsEdge(parentNode,node); 
-      if(saiAndSkillName != null && edge != null)
-      {
-    	  edge.getEdgeData().addRuleName(saiAndSkillName.skillName);
-      }
-      */
+    	getHint(brController, parentNode, null);
     }
     
     public void SkillNameandSAISet(AskHint hint, String step, ProblemNode parentNode, String message,SaiAndSkillName saiNamedSkill, BR_Controller brController) {

@@ -8,79 +8,45 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Frame;
-import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
-import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.Enumeration;
 import java.util.List;
-import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.GroupLayout;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
-import javax.swing.JRootPane;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import javax.swing.UIDefaults;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.ChangeListener;
-import javax.swing.plaf.FontUIResource;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-import pact.CommWidgets.JCommLabel;
-import pact.CommWidgets.JCommTable;
-import pact.CommWidgets.JCommWidget;
-//import sun.tools.tree.ThisExpression;
-
 import edu.cmu.pact.BehaviorRecorder.Controller.BR_Controller;
-import edu.cmu.pact.BehaviorRecorder.ProblemModel.Graph.ProblemEdge;
 import edu.cmu.pact.Utilities.trace;
 import edu.cmu.pact.ctat.TutorController;
 import edu.cmu.pact.miss.JTabbedPaneWithCloseIcons;
 import edu.cmu.pact.miss.SimSt;
-import edu.cmu.pact.miss.WebStartFileDownloader;
 import edu.cmu.pact.miss.MetaTutor.APlusHintDialog;
 import edu.cmu.pact.miss.MetaTutor.APlusHintDialogInterface;
 import edu.cmu.pact.miss.MetaTutor.MetaTutorAvatarComponent;
 import edu.cmu.pact.miss.PeerLearning.GameShow.ProblemBankTableModel;
-import edu.cmu.pact.miss.jess.WorkingMemoryConstants;
-
-import javax.swing.border.BevelBorder;
 
 public class SimStPeerTutoringPlatform extends JComponent {
 
@@ -112,6 +78,36 @@ public class SimStPeerTutoringPlatform extends JComponent {
 	public void setMetaTutorComponent(JComponent metaTutorComponent) {
 		this.metaTutorComponent = metaTutorComponent;
 	}
+	
+	public String trigger_msg;
+	//public JButton OK = new JButton("OK");
+	public void showMetaTutorTrigger(final String msg, final String ruleNickName, final SimStLogger logger) {
+		trigger_msg = msg;
+		final ArrayList<String> msgs = new ArrayList<String>();
+		msgs.add(trigger_msg);
+		Runnable runnable = new Runnable() {
+			@Override
+			public void run() {
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				getBrController().getAmt().sendResult(msgs, 1, true);	    
+				try {
+					getBrController().getMissController().getSimStPLE().getSimStPeerTutoringPlatform().getAPlusHintDialogInterface().OkPressed.acquire();
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	    	}
+		};
+		
+		runnable.run();
+		
+    }
 
 	public MouseListener[] setMetaTutorComponentEnabled(boolean isEnabled, MouseListener[] mListener) {
 		
@@ -416,8 +412,6 @@ public class SimStPeerTutoringPlatform extends JComponent {
         //yesNoPanel.setMaximumSize(new Dimension(yesNoWidth*2,yesNoHeight*2));
         yesNoPanel.add(getYesResponseButton());
         yesNoPanel.add(getNoResponseButton());
-        
-        //setTextResponse(new JTextField());
         setTextResponse(new JComboBox());
         getTextResponse().setMaximumSize(new Dimension(500,40));
 
@@ -1021,6 +1015,28 @@ public class SimStPeerTutoringPlatform extends JComponent {
     public void refresh()
     {
     	//paintImmediately(this.getBounds());
+    }
+    
+    public void showContinueButton(boolean show)
+    {
+    	if(show)
+    	{
+    		//showTextResponse(false);
+    		getYesResponseButton().setVisible(false);
+	    	getNoResponseButton().setVisible(false);
+	    	setYesResponseButton(new JButton("Continue"));
+	        getYesResponseButton().setPreferredSize(new Dimension(getYesResponseButton().getPreferredSize().width*2, getYesResponseButton().getPreferredSize().height));
+	        yesNoPanel.add(getYesResponseButton());
+	        getYesResponseButton().validate();
+	        yesNoPanel.validate();
+	        yesNoPanel.paintImmediately(yesNoPanel.getBounds());
+    	}
+        else
+        {
+    		getYesResponseButton().setVisible(show);
+	    	getYesResponseButton().validate();
+        }
+    	refresh();
     }
     
     public void showButtons(boolean show)

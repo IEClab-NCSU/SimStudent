@@ -131,10 +131,13 @@ public class InquiryJessOracle extends InquiryClSolverTutor{
        	String sel=oracleAgenda.get(0).getActualSelection();
 		String act=oracleAgenda.get(0).getActualAction();
 		String inp=oracleAgenda.get(0).getActualInput();
-
+		String ruleName = oracleAgenda.get(0).getName().replace("MAIN::", "");
 		
-       Sai hintSai= new Sai(sel,act,inp);
-       return hintSai;
+		int index = ruleName.indexOf('&');
+		if(index > -1) ruleName = ruleName.substring(0, index);
+
+		Sai hintSai= new Sai(sel,act,inp, ruleName);
+		return hintSai;
        
 	}
 	

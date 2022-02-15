@@ -3187,7 +3187,7 @@ public class BR_Controller extends TutorController implements PropertyChangeList
             resetTraversedLinks();
             getPseudoTutorMessageHandler().initializePseudoTutor();
         }
-
+        // I do not understand this part as well.
         if (getSolutionState().getCurrentNode() != getProblemModel()
                 .getStartNode())
             setCurrentNode2(getProblemModel().getStartNode());
@@ -3203,10 +3203,11 @@ public class BR_Controller extends TutorController implements PropertyChangeList
         	newMessage.setProperty("ProblemName", startVertex.getText());
         }
 		
-        utp.sendProperty(newMessage);
+        utp.sendProperty(newMessage); // Tasmia: I do not know how this utp messages are being used later
 			
 			
         //Gustavo 2Dec2006: for each message in startNodeMessageVector, send it.
+        // Tasmia: But why do we need to send it? how it is being used by rete and how the interface elements are being changes based on it.
         Iterator<MessageObject> it = getProblemModel().startNodeMessagesIterator();        
         for (int i = 0; it.hasNext(); i++) {
         	MessageObject msg = it.next();
@@ -3226,66 +3227,7 @@ public class BR_Controller extends TutorController implements PropertyChangeList
         	getJGraphWindow().getJGraph().repaint();
         return;
     }
-
-    /**
-	 * Does not set the text from the GUI element
-	 */
-    public void goToStartStateForRuleTutors(String text) {
-    	
-    	if (trace.getDebugCode("br")) trace.out("br", "go to start state()");
-
-        if (getProblemModel().getStartNode() == null)
-            return;
-
-        // fix the bug #1112
-        Cursor hourglassCursor = new Cursor(Cursor.WAIT_CURSOR);
-        //brPanel.setCursor(hourglassCursor);
-
-        if (getCtatModeModel().isJessTracing()) {  // Jess or SimSt
-        	if (trace.getDebugCode("br")) trace.out("br", "getCtatModeModel().isJessTracing()");
-            resetTraversedLinks();
-            getPseudoTutorMessageHandler().initializePseudoTutor();
-        }
-
-        if (getSolutionState().getCurrentNode() != getProblemModel()
-                .getStartNode())
-            setCurrentNode2(getProblemModel().getStartNode());
-
-        MessageObject newMessage = 
-        	MessageObject.create(MsgType.RESTORE_INITIAL_WM_STATE, "SendNoteProperty");
-
-        if (getProblemModel().getStartNode().getNodeView() != null)
-        {        	
-        	if (trace.getDebugCode("br")) 
-        		trace.out("br", "getProblemModel().getStartNode().getNodeView() ");
-        	NodeView startVertex = getProblemModel().getStartNode().getNodeView();
-        	newMessage.setProperty("ProblemName", text);
-        }
-		
-        utp.sendProperty(newMessage);
-			
-			
-        //Gustavo 2Dec2006: for each message in startNodeMessageVector, send it.
-        Iterator<MessageObject> it = getProblemModel().startNodeMessagesIterator();        
-        for (int i = 0; it.hasNext(); i++) {
-        	MessageObject msg = it.next();
-            trace.out("mt", "Sending start Comm Message " + (i+1) +" to LISP: " + msg);
-            trace.out("ss", "Sending start Comm Message " + (i+1) +" to LISP: " + msg);
-        	utp.sendProperty(msg);          
-        }
-
-        // send Start state Comm MSGs to UniversalToolProxy
-        sendCommMsgs(getProblemModel().getStartNode(), getProblemModel()
-                .getStartNode());
-
-        // fix the bug #1112
-        Cursor normalCursor = new Cursor(Cursor.DEFAULT_CURSOR);
-        //brPanel.setCursor(normalCursor);
-        if (!Utils.isRuntime())
-        	getJGraphWindow().getJGraph().repaint();
-        return;
-    }
-
+   
     /**
      * @param true means show cancel option on save-file dialog
      * @return response to save-file dialog 
@@ -4697,7 +4639,9 @@ public class BR_Controller extends TutorController implements PropertyChangeList
 		
 		if (trace.getDebugCode("br")) trace.out("br", "sendStartNodeMessages");
 		if (trace.getDebugCode("startstate")) trace.printStack("startstate", "sendStartNodeMessages");
-
+		// Tasmia: This iterator is reponsible for changing the content in the interface. I need to find
+		// out when it is updated and if we do not update it, then if the activation function
+		// can generate the correct production rule.
 		Iterator<MessageObject> it = getProblemModel().startNodeMessagesIterator();
 		if(!Utils.isRuntime() && getUniversalToolProxy() != null)
 			it = getUniversalToolProxy().startNodeMessagesIterator(getProblemModel());

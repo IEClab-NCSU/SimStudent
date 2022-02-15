@@ -75,6 +75,7 @@ public class AskHintJessOracle extends AskHint{
 			this.setSelection(nextStepSai.getS());
 			this.setAction(nextStepSai.getA());
 			this.setInput(nextStepSai.getI());
+			this.setRuleName(nextStepSai.getRuleName());
 			
 			String[] msg = new String[2];
 

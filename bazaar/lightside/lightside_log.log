@@ -1,0 +1,1183 @@
+Tue Mar  3 12:38:12 EST 2020
+no DISPLAY variable set. Using DISPLAY=:0.0...
+Mar 03, 2020 12:38:17 PM com.github.fommil.netlib.ARPACK <clinit>
+WARNING: Failed to load implementation from: com.github.fommil.netlib.NativeSystemARPACK
+Mar 03, 2020 12:38:17 PM com.github.fommil.netlib.ARPACK <clinit>
+WARNING: Failed to load implementation from: com.github.fommil.netlib.NativeRefARPACK
+Fri Apr  3 17:03:58 EDT 2020
+no DISPLAY variable set. Using DISPLAY=:0.0...
+Apr 03, 2020 5:04:00 PM com.github.fommil.netlib.ARPACK <clinit>
+WARNING: Failed to load implementation from: com.github.fommil.netlib.NativeSystemARPACK
+Apr 03, 2020 5:04:00 PM com.github.fommil.netlib.ARPACK <clinit>
+WARNING: Failed to load implementation from: com.github.fommil.netlib.NativeRefARPACK
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+Apr 03, 2020 5:16:11 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Zero Weights processed. Default weights will be used
+Apr 03, 2020 5:16:11 PM edu.cmu.side.plugin.LearningPlugin train
+INFO: Skipping evaluation -- validationSettings['test'] != 'true'
+saving logit__1grams (TRAINED_MODEL)
+REx: making new chooser 
+REx: returning chooser for filter [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml]]
+[LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@641a76dd]
+REx: chooser has [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@641a76dd]
+REx: getting trained model...
+REx: setting default name 'logit__1grams.model.xml' from selected filter...
+REx: selected file is 'logit__1grams.model.xml'
+REx: showing dialogue...
+Wrote XML recipe for logit__1grams.model.side to /Users/rcmurray/git/DANCEcollaborative/bazaar/lightside/models/sentiment.pos.detected.model.xml
+saving logit__1grams (TRAINED_MODEL)
+REx: returning chooser for filter [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml]]
+[LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@641a76dd]
+REx: chooser has [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@641a76dd]
+REx: getting trained model...
+REx: setting default name 'logit__1grams.model.xml' from selected filter...
+REx: selected file is 'logit__1grams.model.xml'
+REx: showing dialogue...
+Fri Apr  3 21:53:31 EDT 2020
+no DISPLAY variable set. Using DISPLAY=:0.0...
+Apr 03, 2020 9:53:33 PM com.github.fommil.netlib.ARPACK <clinit>
+WARNING: Failed to load implementation from: com.github.fommil.netlib.NativeSystemARPACK
+Apr 03, 2020 9:53:33 PM com.github.fommil.netlib.ARPACK <clinit>
+WARNING: Failed to load implementation from: com.github.fommil.netlib.NativeRefARPACK
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+Apr 03, 2020 9:55:09 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Zero Weights processed. Default weights will be used
+Apr 03, 2020 9:55:09 PM edu.cmu.side.plugin.LearningPlugin train
+INFO: Skipping evaluation -- validationSettings['test'] != 'true'
+saving logit__1grams (TRAINED_MODEL)
+REx: making new chooser 
+REx: returning chooser for filter [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml]]
+[LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@7e019146]
+REx: chooser has [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@7e019146]
+REx: getting trained model...
+REx: setting default name 'logit__1grams.model.xml' from selected filter...
+REx: selected file is 'logit__1grams.model.xml'
+REx: showing dialogue...
+Wrote XML recipe for logit__1grams.model.side to /Users/rcmurray/git/DANCEcollaborative/bazaar/lightside/models/pos.model.xml
+Fri Apr  3 23:04:38 EDT 2020
+no DISPLAY variable set. Using DISPLAY=:0.0...
+Apr 03, 2020 11:04:40 PM com.github.fommil.netlib.ARPACK <clinit>
+WARNING: Failed to load implementation from: com.github.fommil.netlib.NativeSystemARPACK
+Apr 03, 2020 11:04:40 PM com.github.fommil.netlib.ARPACK <clinit>
+WARNING: Failed to load implementation from: com.github.fommil.netlib.NativeRefARPACK
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+Apr 03, 2020 11:06:14 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Zero Weights processed. Default weights will be used
+Apr 03, 2020 11:06:14 PM edu.cmu.side.plugin.LearningPlugin train
+INFO: Skipping evaluation -- validationSettings['test'] != 'true'
+saving logit__1grams (TRAINED_MODEL)
+REx: making new chooser 
+REx: returning chooser for filter [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml]]
+[LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@1584504f]
+REx: chooser has [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@1584504f]
+REx: getting trained model...
+REx: setting default name 'logit__1grams.model.xml' from selected filter...
+REx: selected file is 'logit__1grams.model.xml'
+REx: showing dialogue...
+Wrote XML recipe for logit__1grams.model.predict to /Users/rcmurray/git/DANCEcollaborative/bazaar/lightside/models/pos.predict.xml
+Fri Apr 10 14:22:37 EDT 2020
+no DISPLAY variable set. Using DISPLAY=:0.0...
+Error: Could not find or load main class edu.cmu.side.Workbench
+Fri Apr 10 14:22:43 EDT 2020
+no DISPLAY variable set. Using DISPLAY=:0.0...
+Error: Could not find or load main class edu.cmu.side.Workbench
+Fri Apr 10 14:31:29 EDT 2020
+no DISPLAY variable set. Using DISPLAY=:0.0...
+Error: Could not find or load main class edu.cmu.side.Workbench
+Fri Apr 10 14:31:31 EDT 2020
+no DISPLAY variable set. Using DISPLAY=:0.0...
+Error: Could not find or load main class edu.cmu.side.Workbench
+Fri Apr 10 16:49:18 EDT 2020
+no DISPLAY variable set. Using DISPLAY=:0.0...
+Error: Could not find or load main class edu.cmu.side.Workbench
+Fri Apr 10 16:49:49 EDT 2020
+no DISPLAY variable set. Using DISPLAY=:0.0...
+Error: Could not find or load main class edu.cmu.side.Workbench
+Fri Apr 10 17:24:30 EDT 2020
+no DISPLAY variable set. Using DISPLAY=:0.0...
+Error: Could not find or load main class edu.cmu.side.Workbench
+Fri Apr 10 17:26:18 EDT 2020
+no DISPLAY variable set. Using DISPLAY=:0.0...
+Error: Could not find or load main class edu.cmu.side.Workbench
+Fri Apr 10 17:43:09 EDT 2020
+no DISPLAY variable set. Using DISPLAY=:0.0...
+Apr 10, 2020 5:43:11 PM com.github.fommil.netlib.ARPACK <clinit>
+WARNING: Failed to load implementation from: com.github.fommil.netlib.NativeSystemARPACK
+Apr 10, 2020 5:43:11 PM com.github.fommil.netlib.ARPACK <clinit>
+WARNING: Failed to load implementation from: com.github.fommil.netlib.NativeRefARPACK
+Fri Apr 10 17:47:39 EDT 2020
+no DISPLAY variable set. Using DISPLAY=:0.0...
+Apr 10, 2020 5:47:41 PM com.github.fommil.netlib.ARPACK <clinit>
+WARNING: Failed to load implementation from: com.github.fommil.netlib.NativeSystemARPACK
+Apr 10, 2020 5:47:41 PM com.github.fommil.netlib.ARPACK <clinit>
+WARNING: Failed to load implementation from: com.github.fommil.netlib.NativeRefARPACK
+Fri Apr 10 19:12:35 EDT 2020
+no DISPLAY variable set. Using DISPLAY=:0.0...
+Apr 10, 2020 7:12:37 PM com.github.fommil.netlib.ARPACK <clinit>
+WARNING: Failed to load implementation from: com.github.fommil.netlib.NativeSystemARPACK
+Apr 10, 2020 7:12:37 PM com.github.fommil.netlib.ARPACK <clinit>
+WARNING: Failed to load implementation from: com.github.fommil.netlib.NativeRefARPACK
+PR true
+LR false
+DF false
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+Regex complete in 0 seconds.
+Apr 10, 2020 7:13:37 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+saving logit__columns_parse_regex_stretch_char34_123POSgrams_pairs_length_norm_nostop (TRAINED_MODEL)
+REx: making new chooser 
+REx: returning chooser for filter [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml]]
+[LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@19a31e2c]
+REx: chooser has [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@19a31e2c]
+REx: getting trained model...
+REx: setting default name 'logit__columns_parse_regex_stretch_char34_123POSgrams_pairs_length_norm_nostop.model.xml' from selected filter...
+REx: selected file is 'logit__columns_parse_regex_stretch_char34_123POSgrams_pairs_length_norm_nostop.model.xml'
+REx: showing dialogue...
+Wrote XML recipe for logit__columns_parse_regex_stretch_char34_123POSgrams_pairs_length_norm_nostop.model.side to /Users/tasmiashahriar/Downloads/bazaar/lightside/saved/student_response.model.xml
+Tue Apr 14 01:11:31 EDT 2020
+no DISPLAY variable set. Using DISPLAY=:0.0...
+Apr 14, 2020 1:11:33 AM com.github.fommil.netlib.ARPACK <clinit>
+WARNING: Failed to load implementation from: com.github.fommil.netlib.NativeSystemARPACK
+Apr 14, 2020 1:11:33 AM com.github.fommil.netlib.ARPACK <clinit>
+WARNING: Failed to load implementation from: com.github.fommil.netlib.NativeRefARPACK
+PR true
+LR false
+DF false
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+Regex complete in 0 seconds.
+Apr 14, 2020 1:14:20 AM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+run.sh: line 23: 13278 Killed: 9               java $OS_ARGS -Xmx$MAXHEAP $OTHER_ARGS -splash:toolkits/icons/logo.png -classpath $CLASSPATH $MAIN_CLASS $@
+Tue Apr 14 01:18:59 EDT 2020
+no DISPLAY variable set. Using DISPLAY=:0.0...
+Apr 14, 2020 1:19:01 AM com.github.fommil.netlib.ARPACK <clinit>
+WARNING: Failed to load implementation from: com.github.fommil.netlib.NativeSystemARPACK
+Apr 14, 2020 1:19:01 AM com.github.fommil.netlib.ARPACK <clinit>
+WARNING: Failed to load implementation from: com.github.fommil.netlib.NativeRefARPACK
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+Apr 14, 2020 1:20:00 AM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+run.sh: line 23: 13323 Killed: 9               java $OS_ARGS -Xmx$MAXHEAP $OTHER_ARGS -splash:toolkits/icons/logo.png -classpath $CLASSPATH $MAIN_CLASS $@
+Tue Apr 14 01:58:30 EDT 2020
+no DISPLAY variable set. Using DISPLAY=:0.0...
+Apr 14, 2020 1:58:32 AM com.github.fommil.netlib.ARPACK <clinit>
+WARNING: Failed to load implementation from: com.github.fommil.netlib.NativeSystemARPACK
+Apr 14, 2020 1:58:32 AM com.github.fommil.netlib.ARPACK <clinit>
+WARNING: Failed to load implementation from: com.github.fommil.netlib.NativeRefARPACK
+Apr 14, 2020 1:59:17 AM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Tue Apr 14 12:28:59 EDT 2020
+no DISPLAY variable set. Using DISPLAY=:0.0...
+Apr 14, 2020 12:29:01 PM com.github.fommil.netlib.ARPACK <clinit>
+WARNING: Failed to load implementation from: com.github.fommil.netlib.NativeSystemARPACK
+Apr 14, 2020 12:29:01 PM com.github.fommil.netlib.ARPACK <clinit>
+WARNING: Failed to load implementation from: com.github.fommil.netlib.NativeRefARPACK
+PR true
+LR false
+DF false
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+Regex complete in 0 seconds.
+Apr 14, 2020 12:30:27 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+run.sh: line 23:  1180 Killed: 9               java $OS_ARGS -Xmx$MAXHEAP $OTHER_ARGS -splash:toolkits/icons/logo.png -classpath $CLASSPATH $MAIN_CLASS $@
+Mon Apr 20 14:34:09 EDT 2020
+no DISPLAY variable set. Using DISPLAY=:0.0...
+Apr 20, 2020 2:34:12 PM com.github.fommil.netlib.ARPACK <clinit>
+WARNING: Failed to load implementation from: com.github.fommil.netlib.NativeSystemARPACK
+Apr 20, 2020 2:34:12 PM com.github.fommil.netlib.ARPACK <clinit>
+WARNING: Failed to load implementation from: com.github.fommil.netlib.NativeRefARPACK
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+Apr 20, 2020 2:37:43 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Apr 20, 2020 2:37:52 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+PR true
+LR false
+DF false
+Regex complete in 0 seconds.
+Apr 20, 2020 2:38:12 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Apr 20, 2020 2:38:16 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Apr 20, 2020 2:38:24 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Apr 20, 2020 2:38:29 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Apr 20, 2020 2:38:31 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Apr 20, 2020 2:38:33 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Apr 20, 2020 2:38:49 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Workbench 111: Warning: cannot update null object.
+Workbench 111: Warning: cannot update null object.
+Zero Weights processed. Default weights will be used
+Workbench 111: Warning: cannot update null object.
+Workbench 111: Warning: cannot update null object.
+Workbench 111: Warning: cannot update null object.
+Workbench 111: Warning: cannot update null object.
+Workbench 111: Warning: cannot update null object.
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Workbench 111: Warning: cannot update null object.
+Workbench 111: Warning: cannot update null object.
+Workbench 111: Warning: cannot update null object.
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Apr 20, 2020 2:38:54 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Workbench 111: Warning: cannot update null object.
+Workbench 111: Warning: cannot update null object.
+Workbench 111: Warning: cannot update null object.
+Workbench 111: Warning: cannot update null object.
+Workbench 111: Warning: cannot update null object.
+Workbench 111: Warning: cannot update null object.
+Workbench 111: Warning: cannot update null object.
+Workbench 111: Warning: cannot update null object.
+Workbench 111: Warning: cannot update null object.
+Workbench 111: Warning: cannot update null object.
+Apr 20, 2020 2:39:51 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Apr 20, 2020 2:41:44 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+PR true
+LR false
+DF false
+Regex complete in 0 seconds.
+Apr 20, 2020 2:43:21 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Apr 20, 2020 2:43:27 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Apr 20, 2020 2:43:31 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Apr 20, 2020 2:43:37 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Apr 20, 2020 2:43:39 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Apr 20, 2020 2:43:48 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Apr 20, 2020 2:43:53 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+PR true
+LR false
+DF false
+Regex complete in 0 seconds.
+Apr 20, 2020 2:45:03 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Apr 20, 2020 2:45:04 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Apr 20, 2020 2:45:19 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Apr 20, 2020 2:45:22 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+saving svm__columns_parse_regex_stretch_char34_123POSgrams_pairs_length_norm_nostop_2_2 (TRAINED_MODEL)
+REx: making new chooser 
+REx: returning chooser for filter [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml]]
+[LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@5e627a4d]
+REx: chooser has [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@5e627a4d]
+REx: getting trained model...
+REx: setting default name 'svm__columns_parse_regex_stretch_char34_123POSgrams_pairs_length_norm_nostop_2_2.model.xml' from selected filter...
+REx: selected file is 'svm__columns_parse_regex_stretch_char34_123POSgrams_pairs_length_norm_nostop_2_2.model.xml'
+REx: showing dialogue...
+Inside get xstream
+null xtream
+Wrote XML recipe for svm__columns_parse_regex_stretch_char34_123POSgrams_pairs_length_norm_nostop_2_2.model.side to /Users/tasmiashahriar/Downloads/bazaar/lightside/saved/unfamiliar_problem.model.xml
+PR true
+LR false
+DF false
+Regex complete in 0 seconds.
+Apr 20, 2020 2:51:10 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+saving svm__columns_parse_regex_stretch_char34_123POSgrams_pairs_length_norm_nostop_3 (TRAINED_MODEL)
+REx: returning chooser for filter [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml]]
+[LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@5e627a4d]
+REx: chooser has [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@5e627a4d]
+REx: getting trained model...
+REx: setting default name 'svm__columns_parse_regex_stretch_char34_123POSgrams_pairs_length_norm_nostop_3.model.xml' from selected filter...
+REx: selected file is 'svm__columns_parse_regex_stretch_char34_123POSgrams_pairs_length_norm_nostop_3.model.xml'
+REx: showing dialogue...
+Inside get xstream
+Wrote XML recipe for svm__columns_parse_regex_stretch_char34_123POSgrams_pairs_length_norm_nostop_3.model.side to /Users/tasmiashahriar/Downloads/bazaar/lightside/saved/unfamiliar_problem.model.xml
+Fri Jul 16 15:27:09 EDT 2021
+no DISPLAY variable set. Using DISPLAY=:0.0...
+Jul 16, 2021 3:27:11 PM com.github.fommil.netlib.ARPACK <clinit>
+WARNING: Failed to load implementation from: com.github.fommil.netlib.NativeSystemARPACK
+Jul 16, 2021 3:27:11 PM com.github.fommil.netlib.ARPACK <clinit>
+WARNING: Failed to load implementation from: com.github.fommil.netlib.NativeRefARPACK
+PR true
+LR false
+DF false
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+Regex complete in 0 seconds.
+Jul 16, 2021 4:19:05 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Jul 16, 2021 4:19:10 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Jul 16, 2021 4:19:16 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Jul 16, 2021 4:19:18 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Jul 16, 2021 4:19:22 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Workbench 111: Warning: cannot update null object.
+Workbench 111: Warning: cannot update null object.
+Workbench 111: Warning: cannot update null object.
+Workbench 111: Warning: cannot update null object.
+Workbench 111: Warning: cannot update null object.
+Workbench 111: Warning: cannot update null object.
+Workbench 111: Warning: cannot update null object.
+Workbench 111: Warning: cannot update null object.
+Workbench 111: Warning: cannot update null object.
+Workbench 111: Warning: cannot update null object.
+Jul 16, 2021 4:20:03 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Workbench 111: Warning: cannot update null object.
+Workbench 111: Warning: cannot update null object.
+Workbench 111: Warning: cannot update null object.
+Workbench 111: Warning: cannot update null object.
+Workbench 111: Warning: cannot update null object.
+Workbench 111: Warning: cannot update null object.
+Workbench 111: Warning: cannot update null object.
+Workbench 111: Warning: cannot update null object.
+Workbench 111: Warning: cannot update null object.
+Workbench 111: Warning: cannot update null object.
+Jul 16, 2021 4:20:05 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Jul 16, 2021 4:20:08 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Jul 16, 2021 4:20:12 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Jul 16, 2021 4:20:15 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Jul 16, 2021 4:20:36 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+saving svm__animal_feature_1 (TRAINED_MODEL)
+REx: making new chooser 
+REx: returning chooser for filter [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml]]
+[LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@4a3533b4]
+REx: chooser has [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@4a3533b4]
+REx: getting trained model...
+REx: setting default name 'svm__animal_feature_1.model.xml' from selected filter...
+REx: selected file is 'svm__animal_feature_1.model.xml'
+REx: showing dialogue...
+Inside get xstream
+null xtream
+Wrote XML recipe for svm__animal_feature_1.model.side to /Users/tasmiashahriar/Desktop/backups_tutalk_working_code/bazaar/lightside/saved/svm__animal_feature_1.model.xml
+saving svm__animal_feature_1 (TRAINED_MODEL)
+REx: returning chooser for filter [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml]]
+[LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@4a3533b4]
+REx: chooser has [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@4a3533b4]
+REx: getting trained model...
+REx: setting default name 'svm__animal_feature_1.model.xml' from selected filter...
+REx: selected file is 'svm__animal_feature_1.model.xml'
+REx: showing dialogue...
+saving svm__animal_feature_1 (TRAINED_MODEL)
+REx: returning chooser for filter [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml]]
+[LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@4a3533b4]
+REx: chooser has [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@4a3533b4]
+REx: getting trained model...
+REx: setting default name 'svm__animal_feature_1.model.xml' from selected filter...
+REx: selected file is 'svm__animal_feature_1.model.xml'
+REx: showing dialogue...
+Inside get xstream
+Wrote XML recipe for svm__animal_feature_1.model.side to /Users/tasmiashahriar/Desktop/backups_tutalk_working_code/bazaar/lightside/models/svm__animal_feature_1.model.xml
+Tue Jul 20 16:32:38 EDT 2021
+no DISPLAY variable set. Using DISPLAY=:0.0...
+Jul 20, 2021 4:32:40 PM com.github.fommil.netlib.ARPACK <clinit>
+WARNING: Failed to load implementation from: com.github.fommil.netlib.NativeSystemARPACK
+Jul 20, 2021 4:32:40 PM com.github.fommil.netlib.ARPACK <clinit>
+WARNING: Failed to load implementation from: com.github.fommil.netlib.NativeRefARPACK
+PR true
+LR false
+DF false
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+Regex complete in 0 seconds.
+Jul 20, 2021 4:34:09 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Jul 20, 2021 4:34:30 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Jul 20, 2021 4:35:00 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Jul 20, 2021 4:35:19 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Jul 20, 2021 4:36:11 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Jul 20, 2021 4:36:17 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Jul 20, 2021 4:36:20 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Jul 20, 2021 4:36:41 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+saving student_response_model_nb (TRAINED_MODEL)
+REx: making new chooser 
+REx: returning chooser for filter [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml]]
+[LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@7bdbf7b0]
+REx: chooser has [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@7bdbf7b0]
+REx: getting trained model...
+REx: setting default name 'student_response_model_nb.model.xml' from selected filter...
+REx: selected file is 'student_response_model_nb.model.xml'
+REx: showing dialogue...
+Inside get xstream
+null xtream
+Wrote XML recipe for student_response_model_nb.model.side to /Users/tasmiashahriar/Desktop/backups_tutalk_working_code/bazaar/lightside/saved/student_response_model_nb.model.xml
+saving student_response_model_nb (TRAINED_MODEL)
+REx: returning chooser for filter [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml]]
+[LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@7bdbf7b0]
+REx: chooser has [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@7bdbf7b0]
+REx: getting trained model...
+REx: setting default name 'student_response_model_nb.model.xml' from selected filter...
+REx: selected file is 'student_response_model_nb.model.xml'
+REx: showing dialogue...
+Inside get xstream
+Wrote XML recipe for student_response_model_nb.model.side to /Users/tasmiashahriar/Desktop/backups_tutalk_working_code/bazaar/lightside/models/models
+saving student_response_model_nb (TRAINED_MODEL)
+REx: returning chooser for filter [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml]]
+[LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@7bdbf7b0]
+REx: chooser has [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@7bdbf7b0]
+REx: getting trained model...
+REx: setting default name 'student_response_model_nb.model.xml' from selected filter...
+REx: selected file is 'student_response_model_nb.model.xml'
+REx: showing dialogue...
+Inside get xstream
+Wrote XML recipe for student_response_model_nb.model.side to /Users/tasmiashahriar/Desktop/backups_tutalk_working_code/bazaar/lightside/models/student_response_model_nb.model.xml
+Fri Aug 20 10:47:41 EDT 2021
+no DISPLAY variable set. Using DISPLAY=:0.0...
+Aug 20, 2021 10:47:43 AM com.github.fommil.netlib.ARPACK <clinit>
+WARNING: Failed to load implementation from: com.github.fommil.netlib.NativeSystemARPACK
+Aug 20, 2021 10:47:43 AM com.github.fommil.netlib.ARPACK <clinit>
+WARNING: Failed to load implementation from: com.github.fommil.netlib.NativeRefARPACK
+java.lang.Exception: File: /Users/tasmiashahriar/OneDrive/SimStudent Project/Studies (where we collect data)/Constructive Tutee Dialogue WoOz/Classifier Data/bothStuckCodeData.xlsx could not be parsed.
+	edu.cmu.side.plugin.control.ImportController.makeDocumentList(ImportController.java:57)
+	edu.cmu.side.view.generic.GenericLoadPanel.chooseDocumentList(GenericLoadPanel.java:641)
+	edu.cmu.side.view.generic.GenericLoadPanel.loadNewDocumentsFromCSV(GenericLoadPanel.java:518)
+	edu.cmu.side.view.generic.GenericLoadCSVPanel.loadNewItem(GenericLoadCSVPanel.java:69)
+	edu.cmu.side.view.generic.GenericLoadPanel$4.actionPerformed(GenericLoadPanel.java:315)
+	javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:2022)
+	javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2348)
+	javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:402)
+	javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:259)
+	javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:252)
+	java.awt.AWTEventMulticaster.mouseReleased(AWTEventMulticaster.java:289)
+	java.awt.Component.processMouseEvent(Component.java:6539)
+	javax.swing.JComponent.processMouseEvent(JComponent.java:3324)
+	java.awt.Component.processEvent(Component.java:6304)
+	java.awt.Container.processEvent(Container.java:2239)
+	java.awt.Component.dispatchEventImpl(Component.java:4889)
+	java.awt.Container.dispatchEventImpl(Container.java:2297)
+	java.awt.Component.dispatchEvent(Component.java:4711)
+	java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4904)
+	java.awt.LightweightDispatcher.processMouseEvent(Container.java:4535)
+	java.awt.LightweightDispatcher.dispatchEvent(Container.java:4476)
+	java.awt.Container.dispatchEventImpl(Container.java:2283)
+	java.awt.Window.dispatchEventImpl(Window.java:2746)
+	java.awt.Component.dispatchEvent(Component.java:4711)
+	java.awt.EventQueue.dispatchEventImpl(EventQueue.java:760)
+	java.awt.EventQueue.access$500(EventQueue.java:97)
+	java.awt.EventQueue$3.run(EventQueue.java:709)
+	java.awt.EventQueue$3.run(EventQueue.java:703)
+	java.security.AccessController.doPrivileged(Native Method)
+	java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:84)
+	java.awt.EventQueue$4.run(EventQueue.java:733)
+	java.awt.EventQueue$4.run(EventQueue.java:731)
+	java.security.AccessController.doPrivileged(Native Method)
+	java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	java.awt.EventQueue.dispatchEvent(EventQueue.java:730)
+	edu.cmu.side.view.util.EventQueueProxy.dispatchEvent(EventQueueProxy.java:12)
+	java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:205)
+	java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+
+	at edu.cmu.side.plugin.control.ImportController.makeDocumentList(ImportController.java:57)
+	at edu.cmu.side.view.generic.GenericLoadPanel.chooseDocumentList(GenericLoadPanel.java:641)
+	at edu.cmu.side.view.generic.GenericLoadPanel.loadNewDocumentsFromCSV(GenericLoadPanel.java:518)
+	at edu.cmu.side.view.generic.GenericLoadCSVPanel.loadNewItem(GenericLoadCSVPanel.java:69)
+	at edu.cmu.side.view.generic.GenericLoadPanel$4.actionPerformed(GenericLoadPanel.java:315)
+	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:2022)
+	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2348)
+	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:402)
+	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:259)
+	at javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:252)
+	at java.awt.AWTEventMulticaster.mouseReleased(AWTEventMulticaster.java:289)
+	at java.awt.Component.processMouseEvent(Component.java:6539)
+	at javax.swing.JComponent.processMouseEvent(JComponent.java:3324)
+	at java.awt.Component.processEvent(Component.java:6304)
+	at java.awt.Container.processEvent(Container.java:2239)
+	at java.awt.Component.dispatchEventImpl(Component.java:4889)
+	at java.awt.Container.dispatchEventImpl(Container.java:2297)
+	at java.awt.Component.dispatchEvent(Component.java:4711)
+	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4904)
+	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4535)
+	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4476)
+	at java.awt.Container.dispatchEventImpl(Container.java:2283)
+	at java.awt.Window.dispatchEventImpl(Window.java:2746)
+	at java.awt.Component.dispatchEvent(Component.java:4711)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:760)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:84)
+	at java.awt.EventQueue$4.run(EventQueue.java:733)
+	at java.awt.EventQueue$4.run(EventQueue.java:731)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:730)
+	at edu.cmu.side.view.util.EventQueueProxy.dispatchEvent(EventQueueProxy.java:12)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:205)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+java.lang.IllegalStateException: Can't find the label column named PK     ! b�h^  �   [Content_Types].xml �(�                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 ���N�0E�H�C�-Jܲ@5��*Q>�ēƪc[�ii����B�j7���{2��h�nm���ƻR����U^7/���%��rZY�@1__�f� �q��R4D�AJ�h>����V�ƹ�Z�9����NV�8ʩ����ji){^��-I�"{�v^�P!XS)bR�r��K�s(�3�`c�0��������7M4�����ZƐk+�|\|z�(���P��6h_-[�@�!��� Pk���2n�}�?�L��� ��%���d����dN"m in provided file
+	edu.cmu.side.model.data.DocumentList.setCurrentAnnotation(DocumentList.java:610)
+	edu.cmu.side.model.data.DocumentList.guessTextAndAnnotationColumns(DocumentList.java:410)
+	edu.cmu.side.view.generic.GenericLoadPanel.loadNewDocumentsFromCSV(GenericLoadPanel.java:521)
+	edu.cmu.side.view.generic.GenericLoadCSVPanel.loadNewItem(GenericLoadCSVPanel.java:69)
+	edu.cmu.side.view.generic.GenericLoadPanel$4.actionPerformed(GenericLoadPanel.java:315)
+	javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:2022)
+	javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2348)
+	javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:402)
+	javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:259)
+	javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:252)
+	java.awt.AWTEventMulticaster.mouseReleased(AWTEventMulticaster.java:289)
+	java.awt.Component.processMouseEvent(Component.java:6539)
+	javax.swing.JComponent.processMouseEvent(JComponent.java:3324)
+	java.awt.Component.processEvent(Component.java:6304)
+	java.awt.Container.processEvent(Container.java:2239)
+	java.awt.Component.dispatchEventImpl(Component.java:4889)
+	java.awt.Container.dispatchEventImpl(Container.java:2297)
+	java.awt.Component.dispatchEvent(Component.java:4711)
+	java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4904)
+	java.awt.LightweightDispatcher.processMouseEvent(Container.java:4535)
+	java.awt.LightweightDispatcher.dispatchEvent(Container.java:4476)
+	java.awt.Container.dispatchEventImpl(Container.java:2283)
+	java.awt.Window.dispatchEventImpl(Window.java:2746)
+	java.awt.Component.dispatchEvent(Component.java:4711)
+	java.awt.EventQueue.dispatchEventImpl(EventQueue.java:760)
+	java.awt.EventQueue.access$500(EventQueue.java:97)
+	java.awt.EventQueue$3.run(EventQueue.java:709)
+	java.awt.EventQueue$3.run(EventQueue.java:703)
+	java.security.AccessController.doPrivileged(Native Method)
+	java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:84)
+	java.awt.EventQueue$4.run(EventQueue.java:733)
+	java.awt.EventQueue$4.run(EventQueue.java:731)
+	java.security.AccessController.doPrivileged(Native Method)
+	java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	java.awt.EventQueue.dispatchEvent(EventQueue.java:730)
+	edu.cmu.side.view.util.EventQueueProxy.dispatchEvent(EventQueueProxy.java:12)
+	java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:205)
+	java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+
+	at edu.cmu.side.model.data.DocumentList.setCurrentAnnotation(DocumentList.java:610)
+	at edu.cmu.side.model.data.DocumentList.guessTextAndAnnotationColumns(DocumentList.java:410)
+	at edu.cmu.side.view.generic.GenericLoadPanel.loadNewDocumentsFromCSV(GenericLoadPanel.java:521)
+	at edu.cmu.side.view.generic.GenericLoadCSVPanel.loadNewItem(GenericLoadCSVPanel.java:69)
+	at edu.cmu.side.view.generic.GenericLoadPanel$4.actionPerformed(GenericLoadPanel.java:315)
+	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:2022)
+	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2348)
+	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:402)
+	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:259)
+	at javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:252)
+	at java.awt.AWTEventMulticaster.mouseReleased(AWTEventMulticaster.java:289)
+	at java.awt.Component.processMouseEvent(Component.java:6539)
+	at javax.swing.JComponent.processMouseEvent(JComponent.java:3324)
+	at java.awt.Component.processEvent(Component.java:6304)
+	at java.awt.Container.processEvent(Container.java:2239)
+	at java.awt.Component.dispatchEventImpl(Component.java:4889)
+	at java.awt.Container.dispatchEventImpl(Container.java:2297)
+	at java.awt.Component.dispatchEvent(Component.java:4711)
+	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4904)
+	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4535)
+	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4476)
+	at java.awt.Container.dispatchEventImpl(Container.java:2283)
+	at java.awt.Window.dispatchEventImpl(Window.java:2746)
+	at java.awt.Component.dispatchEvent(Component.java:4711)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:760)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:84)
+	at java.awt.EventQueue$4.run(EventQueue.java:733)
+	at java.awt.EventQueue$4.run(EventQueue.java:731)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:730)
+	at edu.cmu.side.view.util.EventQueueProxy.dispatchEvent(EventQueueProxy.java:12)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:205)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+java.lang.IllegalStateException: Can't find the label column named PK     ! b�h^  �   [Content_Types].xml �(�                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 ���N�0E�H�C�-Jܲ@5��*Q>�ēƪc[�ii����B�j7���{2��h�nm���ƻR����U^7/���%��rZY�@1__�f� �q��R4D�AJ�h>����V�ƹ�Z�9����NV�8ʩ����ji){^��-I�"{�v^�P!XS)bR�r��K�s(�3�`c�0��������7M4�����ZƐk+�|\|z�(���P��6h_-[�@�!��� Pk���2n�}�?�L��� ��%���d����dN"m in provided file
+	edu.cmu.side.model.data.DocumentList.setCurrentAnnotation(DocumentList.java:610)
+	edu.cmu.side.model.data.DocumentList.guessTextAndAnnotationColumns(DocumentList.java:410)
+	edu.cmu.side.view.generic.GenericLoadPanel.loadNewDocumentsFromCSV(GenericLoadPanel.java:521)
+	edu.cmu.side.view.generic.GenericLoadCSVPanel.loadNewItem(GenericLoadCSVPanel.java:69)
+	edu.cmu.side.view.generic.GenericLoadPanel$4.actionPerformed(GenericLoadPanel.java:315)
+	javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:2022)
+	javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2348)
+	javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:402)
+	javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:259)
+	javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:252)
+	java.awt.AWTEventMulticaster.mouseReleased(AWTEventMulticaster.java:289)
+	java.awt.Component.processMouseEvent(Component.java:6539)
+	javax.swing.JComponent.processMouseEvent(JComponent.java:3324)
+	java.awt.Component.processEvent(Component.java:6304)
+	java.awt.Container.processEvent(Container.java:2239)
+	java.awt.Component.dispatchEventImpl(Component.java:4889)
+	java.awt.Container.dispatchEventImpl(Container.java:2297)
+	java.awt.Component.dispatchEvent(Component.java:4711)
+	java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4904)
+	java.awt.LightweightDispatcher.processMouseEvent(Container.java:4535)
+	java.awt.LightweightDispatcher.dispatchEvent(Container.java:4476)
+	java.awt.Container.dispatchEventImpl(Container.java:2283)
+	java.awt.Window.dispatchEventImpl(Window.java:2746)
+	java.awt.Component.dispatchEvent(Component.java:4711)
+	java.awt.EventQueue.dispatchEventImpl(EventQueue.java:760)
+	java.awt.EventQueue.access$500(EventQueue.java:97)
+	java.awt.EventQueue$3.run(EventQueue.java:709)
+	java.awt.EventQueue$3.run(EventQueue.java:703)
+	java.security.AccessController.doPrivileged(Native Method)
+	java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:84)
+	java.awt.EventQueue$4.run(EventQueue.java:733)
+	java.awt.EventQueue$4.run(EventQueue.java:731)
+	java.security.AccessController.doPrivileged(Native Method)
+	java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	java.awt.EventQueue.dispatchEvent(EventQueue.java:730)
+	edu.cmu.side.view.util.EventQueueProxy.dispatchEvent(EventQueueProxy.java:12)
+	java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:205)
+	java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+
+	at edu.cmu.side.model.data.DocumentList.setCurrentAnnotation(DocumentList.java:610)
+	at edu.cmu.side.model.data.DocumentList.guessTextAndAnnotationColumns(DocumentList.java:410)
+	at edu.cmu.side.view.generic.GenericLoadPanel.loadNewDocumentsFromCSV(GenericLoadPanel.java:521)
+	at edu.cmu.side.view.generic.GenericLoadCSVPanel.loadNewItem(GenericLoadCSVPanel.java:69)
+	at edu.cmu.side.view.generic.GenericLoadPanel$4.actionPerformed(GenericLoadPanel.java:315)
+	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:2022)
+	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2348)
+	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:402)
+	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:259)
+	at javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:252)
+	at java.awt.AWTEventMulticaster.mouseReleased(AWTEventMulticaster.java:289)
+	at java.awt.Component.processMouseEvent(Component.java:6539)
+	at javax.swing.JComponent.processMouseEvent(JComponent.java:3324)
+	at java.awt.Component.processEvent(Component.java:6304)
+	at java.awt.Container.processEvent(Container.java:2239)
+	at java.awt.Component.dispatchEventImpl(Component.java:4889)
+	at java.awt.Container.dispatchEventImpl(Container.java:2297)
+	at java.awt.Component.dispatchEvent(Component.java:4711)
+	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4904)
+	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4535)
+	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4476)
+	at java.awt.Container.dispatchEventImpl(Container.java:2283)
+	at java.awt.Window.dispatchEventImpl(Window.java:2746)
+	at java.awt.Component.dispatchEvent(Component.java:4711)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:760)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:84)
+	at java.awt.EventQueue$4.run(EventQueue.java:733)
+	at java.awt.EventQueue$4.run(EventQueue.java:731)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:730)
+	at edu.cmu.side.view.util.EventQueueProxy.dispatchEvent(EventQueueProxy.java:12)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:205)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+Aug 20, 2021 11:18:41 AM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Aug 20, 2021 11:19:16 AM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Aug 20, 2021 11:19:22 AM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Aug 20, 2021 11:19:28 AM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Aug 20, 2021 11:19:46 AM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+saving both_stuck_logis_regression (TRAINED_MODEL)
+REx: making new chooser 
+REx: returning chooser for filter [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml]]
+[LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@650d8482]
+REx: chooser has [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@650d8482]
+REx: getting trained model...
+REx: setting default name 'both_stuck_logis_regression.model.xml' from selected filter...
+REx: selected file is 'both_stuck_logis_regression.model.xml'
+REx: showing dialogue...
+Inside get xstream
+null xtream
+Wrote XML recipe for both_stuck_logis_regression.model.side to /Users/tasmiashahriar/Documents/GitHub/SimStudent/bazaar/lightside/saved/both_stuck_logis_regression.model.xml
+saving both_stuck_logis_regression (TRAINED_MODEL)
+REx: returning chooser for filter [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml]]
+[LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@650d8482]
+REx: chooser has [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@650d8482]
+REx: getting trained model...
+REx: setting default name 'both_stuck_logis_regression.model.xml' from selected filter...
+REx: selected file is 'both_stuck_logis_regression.model.xml'
+REx: showing dialogue...
+saving both_stuck_logis_regression (TRAINED_MODEL)
+REx: returning chooser for filter [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml]]
+[LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@650d8482]
+REx: chooser has [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@650d8482]
+REx: getting trained model...
+REx: setting default name 'both_stuck_logis_regression.model.xml' from selected filter...
+REx: selected file is 'both_stuck_logis_regression.model.xml'
+REx: showing dialogue...
+Inside get xstream
+Wrote XML recipe for both_stuck_logis_regression.model.side to /Users/tasmiashahriar/Documents/GitHub/SimStudent/bazaar/lightside/models/both_stuck_logis_regression.model.xml
+Aug 20, 2021 1:40:04 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+saving both_stuck_model_logreg (TRAINED_MODEL)
+REx: returning chooser for filter [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml]]
+[LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@650d8482]
+REx: chooser has [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@650d8482]
+REx: getting trained model...
+REx: setting default name 'both_stuck_model_logreg.model.xml' from selected filter...
+REx: selected file is 'both_stuck_model_logreg.model.xml'
+REx: showing dialogue...
+Inside get xstream
+Wrote XML recipe for both_stuck_model_logreg.model.side to /Users/tasmiashahriar/Documents/GitHub/SimStudent/bazaar/lightside/models/both_stuck_model_logreg.model.xml
+saving both_stuck_model_logreg (TRAINED_MODEL)
+REx: returning chooser for filter [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml]]
+[LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@650d8482]
+REx: chooser has [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@650d8482]
+REx: getting trained model...
+REx: setting default name 'both_stuck_model_logreg.model.xml' from selected filter...
+REx: selected file is 'both_stuck_model_logreg.model.xml'
+REx: showing dialogue...
+saving both_stuck_model_logreg (TRAINED_MODEL)
+REx: returning chooser for filter [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml]]
+[LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@650d8482]
+REx: chooser has [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@650d8482]
+REx: getting trained model...
+REx: setting default name 'both_stuck_model_logreg.model.xml' from selected filter...
+REx: selected file is 'both_stuck_model_logreg.model.xml'
+REx: showing dialogue...
+Inside get xstream
+Wrote XML recipe for both_stuck_model_logreg.model.side to /Users/tasmiashahriar/Documents/GitHub/SimStudent/bazaar/lightside/saved/both_stuck_model_logreg.model.xml
+Thu Oct 21 16:20:25 EDT 2021
+no DISPLAY variable set. Using DISPLAY=:0.0...
+Oct 21, 2021 4:20:28 PM com.github.fommil.netlib.ARPACK <clinit>
+WARNING: Failed to load implementation from: com.github.fommil.netlib.NativeSystemARPACK
+Oct 21, 2021 4:20:28 PM com.github.fommil.netlib.ARPACK <clinit>
+WARNING: Failed to load implementation from: com.github.fommil.netlib.NativeRefARPACK
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+Oct 21, 2021 4:22:02 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Oct 21, 2021 4:23:20 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Zero Weights processed. Default weights will be used
+Oct 21, 2021 4:23:34 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+Oct 21, 2021 4:23:55 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+saving  (TRAINED_MODEL)
+REx: making new chooser 
+REx: returning chooser for filter [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml]]
+[LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@43235cc6]
+REx: chooser has [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@43235cc6]
+REx: getting trained model...
+REx: setting default name '.model.xml' from selected filter...
+REx: selected file is '.model.xml'
+REx: showing dialogue...
+saving  (TRAINED_MODEL)
+REx: returning chooser for filter [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml]]
+[LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@43235cc6]
+REx: chooser has [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@43235cc6]
+REx: getting trained model...
+REx: setting default name '.model.xml' from selected filter...
+REx: selected file is '.model.xml'
+REx: showing dialogue...
+Oct 21, 2021 4:24:19 PM edu.cmu.side.control.BuildModelControl$BuildModelTask doTask
+INFO: Training new model.
+saving svm__123POSgrams_norm_char34_2 (TRAINED_MODEL)
+REx: returning chooser for filter [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml]]
+[LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@43235cc6]
+REx: chooser has [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@43235cc6]
+REx: getting trained model...
+REx: setting default name 'svm__123POSgrams_norm_char34_2.model.xml' from selected filter...
+REx: selected file is 'svm__123POSgrams_norm_char34_2.model.xml'
+REx: showing dialogue...
+Inside get xstream
+null xtream
+Wrote XML recipe for svm__123POSgrams_norm_char34_2.model.side to /Users/tasmiashahriar/Documents/GitHub/SimStudent/bazaar/lightside/saved/both_stuck_model_svm_f.model.xml
+saving svm__123POSgrams_norm_char34_2 (TRAINED_MODEL)
+REx: returning chooser for filter [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml]]
+[LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@43235cc6]
+REx: chooser has [LightSide Trained Model XML: [model.xml], Predict-Only XML: [predict.xml], com.apple.laf.AquaFileChooserUI$AcceptAllFileFilter@43235cc6]
+REx: getting trained model...
+REx: setting default name 'svm__123POSgrams_norm_char34_2.model.xml' from selected filter...
+REx: selected file is 'svm__123POSgrams_norm_char34_2.model.xml'
+REx: showing dialogue...
+Inside get xstream
+Wrote XML recipe for svm__123POSgrams_norm_char34_2.model.side to /Users/tasmiashahriar/Documents/GitHub/SimStudent/bazaar/lightside/models/both_stuck_model_svm_f.model.xml
+Thu Feb 10 12:53:04 EST 2022
+no DISPLAY variable set. Using DISPLAY=:0.0...
+Feb 10, 2022 12:53:06 PM com.github.fommil.netlib.ARPACK <clinit>
+WARNING: Failed to load implementation from: com.github.fommil.netlib.NativeSystemARPACK
+Feb 10, 2022 12:53:06 PM com.github.fommil.netlib.ARPACK <clinit>
+WARNING: Failed to load implementation from: com.github.fommil.netlib.NativeRefARPACK

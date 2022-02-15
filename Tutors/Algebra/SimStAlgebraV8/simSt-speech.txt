@@ -143,7 +143,7 @@ Finished that one!  I think I'm ready to take the quiz now.  What do you think?
 Great, finished!  I think I'm ready to take the quiz now.  What do you think?
 Cool!  We completed the problem!   I think I'm ready to take the quiz now.  What do you think?
 Okay, done!   I think I'm ready to take the quiz now.  What do you think?
-Great! The problem is solved!!  I think I’m ready to take the quiz now.  What do you think?
+Great! The problem is solved!!  I think Iï¿½m ready to take the quiz now.  What do you think?
 ...and done!  Should I take a quiz now?
 Finished that one!  Should I take a quiz now?
 Great, finished!  Should I take a quiz now?
@@ -165,16 +165,14 @@ Great! The problem is solved!!  What are we doing next? Mr. Williams might have 
 
 TRANSFORMATION_HINT
 I'm stuck. Can you show me what to do next?
-I don't know what to do here, I'm stuck. Could you please show me?
+I don't know what to do here, I'm stumped. Could you please show me?
 This doesn't look familiar. Can you show me what I'm supposed to do next?<A0>
-I'm stuck. Please show me what to do next.
+I'm completely puzzled. Please show me what to do next.
 I'm not sure how to move on from here. I'm stuck. Please show me what to do.
 Can you tell me what I should do now? I'm stuck!
 Can you show me what to do here? I'm stuck.
 Can you help me out here? I'm stuck, I don't know what I need to do.  
 I'm stuck. Can you tell me what to do next?<BD>
-
-
 
 
 TYPEIN_HINT
@@ -275,6 +273,14 @@ No? Okay.
 Alright.
 Moving on then.
 
+ACKNOWLEDGING_SUMMARIZATION
+Great!
+Perfect!
+Sounds good to me! 
+Thanks for that review!
+Thanks for that review. It helped.
+
+
 UNDO_CONFIRM_STEPS
 Okay.  I would erase these steps back through <o>.  Should I go ahead?
 
@@ -285,7 +291,7 @@ UNDO_RESUME
 Alright.  Back to working on the problem from here.  Let me think what I should do.
 
 UNDO_SHOULD_DO
-Alright.  I erased <o>.  Now let me think what I should do instead...
+Alright.  I erased <o>.
 
 UNDO_REMEMBER_PREVIOUS
 I remember I was trying to <o>.
@@ -313,16 +319,51 @@ I see there is still work to be done for this problem. Let me think!
 Hm... so problem is not done. Lets see!
 
 ASKING_IF_TUTOR_KNOWS_STEP
-I think I do not know what to do here. Do you know the next step?
-I am not sure about my next step. Do you know what step should be performed now?
+Do you know the next step?
+Do you know what step should be performed now?
+Do you know what step need to be performed now?
 
-BRAINSTORMING_QUESTION
-I could perform <i> if I had <problem> because <logic>. Do you have any idea on how to reach to that point from this current situation?
+BRAINSTORMING_THINKING
+I see. Let me ask Mr. Williams if he has some suggestions for us. Mr. Williams, can you help please?
+Oops! It seems like we both are stuck. Mr. Williams, can you help please?.
+I see. Let me ask Mr. Williams if he has some suggestions for us. Mr. Williams, can you help please?
+Oops! It seems like we both are stuck. Let me ask Mr. Williams for some suggestions. Mr. Williams, can you help us please?
+I see. Let me ask Mr. Williams if he can help us find a way out. Mr. Williams, can you help us please?
+Oops! Let me see if Mr. Williams can help us anyway with some suggestions. Mr. Williams, can you help?
 
-BRAINSTORMING_QUESTION_WHEN_NO_FEATURE_FOUND
-This situation is also entirely new for me. Would you like to ask Mr. Williams to see if he can help us?
-I searched through my already learned knowledge but could not find anything to help us out. May be Mr. Williams or the resources (unit overview or examples tab) can help you. Would you like to review them?
-This situation is also entirely new for me. Would you like to ask Mr. Williams or review the resources (unit overview or examples tab) to find out how to proceed from here?
+BRAINSTORMING_LOGIC_WHEN_NO_FEATURE_FOUND
+it just did not feel right to me.
+it looks wrong to me.
 
- 
 
+MR_WILLIAMS_SUGGESTION
+You should consider <ruleNickName> here. 
+I think you should consider <ruleNickName> here.
+
+THANK_MR_WILLIAMS
+Thanks Mr. Williams!
+Thank you for the help Mr. Williams!
+
+SHOW_NEXT_AFTER_HINT
+Now, please show me the next step
+
+STUCK_AFTER_MR_WILLIAMS_SUGGESTION
+What exactly should I do now?
+What do you think I should do now?
+
+BRAINSTORMING_SUMMARIZE
+Before I proceed further, can you please review the reasoning to me that led you to demonstrate this step?
+Can you please explain your reasoning behind the demonstrated step?
+Can you review the reasoning to me that led you to demonstrate this step?
+
+BOTH_STUCK
+It looks like we are both stuck. Can you find out and show me what to do next?
+My brain is also jammed. Can you find out and show me what to do next? 
+I also don't know what to do here, I'm stuck. Could you find out and please show me?
+This doesn't look familiar to me as well. Can you show me what I'm supposed to do next?
+I'm also stuck. Please show me what to do next.
+I'm also confused about how to move on from here. Please show me what to do.
+Can you tell me what I should do now? I'm puzzled as well!
+Can you show me what to do here? I'm completely at-a-loss.
+Can you help me out here? I'm also stuck, I don't know what I need to do.  
+I'm also stumped. Please show me what to do next?

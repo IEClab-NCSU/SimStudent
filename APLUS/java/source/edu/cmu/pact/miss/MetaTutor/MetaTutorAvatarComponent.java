@@ -208,6 +208,7 @@ public class MetaTutorAvatarComponent extends JPanel {
     	super.paint(g);
     	g.drawImage(img, 0,0, this);
     }
+    
     	
 	/**
 	   Listener to listen for mouse events when the meta tutor image is clicked
@@ -562,7 +563,7 @@ public class MetaTutorAvatarComponent extends JPanel {
 				question = source.getText();
 				//logger.simStLog(SimStLogger.SIM_STUDENT_METATUTOR_AL, SimStLogger.METATUTOR_QUESTION_ACTION, source.getText());
 			}
-			if(ae.getActionCommand().equalsIgnoreCase(META_COGNITIVE_HINT)) {
+			if(META_COGNITIVE_HINT.equalsIgnoreCase(ae.getActionCommand())) {
 				
 				getSimStudent().getBrController().getAmt().handleInterfaceAction(META_COGNITIVE_HINT_SELECTION, HINT_ACTION, HINT_INPUT);
 				
@@ -572,7 +573,7 @@ public class MetaTutorAvatarComponent extends JPanel {
 				   		"" , "" , 0, "" , "" , question , 0,false, META_COGNITIVE_HINT , null , logger.getCurrentTime());
 				
 				
-			} else if(ae.getActionCommand().equalsIgnoreCase(COGNITIVE_HINT)) {
+			} else if(COGNITIVE_HINT.equalsIgnoreCase(ae.getActionCommand())) {
 							
 				// Ask the Cognitive class to provide the hint message
 				getSimStudent().getBrController().getAmt().handleInterfaceAction(COGNITIVE_HINT_SELECTION, HINT_ACTION, HINT_INPUT);

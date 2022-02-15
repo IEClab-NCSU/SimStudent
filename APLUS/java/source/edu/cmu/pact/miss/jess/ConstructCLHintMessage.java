@@ -239,11 +239,10 @@ public class ConstructCLHintMessage implements Userfunction, Serializable {
 			String[] hintMsg = msg.split(",");
 			Vector focusOfAttn = null;
 			
-			if(amt != null)
-				focusOfAttn = ((BR_Controller)amt.getController()).getMissController().getSimSt().
-					getFoaGetter().foaGetter((BR_Controller)amt.getController(), hintMsg[0].trim(), hintMsg[1].trim(), hintMsg[2], null);
-			
 			if(hintMsg.length == 3) { // Hint message is of the form dorminTable1_C1R2,UpdateTable,3x
+				if(amt != null)
+					focusOfAttn = ((BR_Controller)amt.getController()).getMissController().getSimSt().
+						getFoaGetter().foaGetter((BR_Controller)amt.getController(), hintMsg[0].trim(), hintMsg[1].trim(), hintMsg[2], null);
 				String side = "";
 				String message = "";
 				String runType = ((BR_Controller)amt.getController()).getRunType();

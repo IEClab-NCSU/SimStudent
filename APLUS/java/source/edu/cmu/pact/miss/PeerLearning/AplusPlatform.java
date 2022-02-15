@@ -45,6 +45,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -3394,89 +3395,16 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
     
     public void appendSpeech(String text, String name)
     {
+    	if (text.isEmpty())
+    		return;
     	String prevText = getSpeechText().getText();
-    	text = name+": "+text;
+    	if (!name.isEmpty())
+    		text = name+": "+text;
     	
     	String step = getBrController().getMissController().getSimSt().getProblemStepString();
     	getSimStPLE().logger.simStLog(SimStLogger.SIM_STUDENT_DIALOGUE, SimStLogger.CHAT_DIALOG_ACTION, step, "", "", 0, text);
     	
-    	int width = (int)(getSpeechText().getWidth());
-    	JLabel temp = new JLabel(text);
-    	temp.setFont(MED_FONT);
-    	
-    	int textWidth = temp.getPreferredSize().width;
     	getSpeechText().append(text+"\n");
-    	
-    	/*
-    	if( textWidth > width && width != 0)
-    	{
-    		//Text Does Not Fit - Fancy formatting
-    		double percentFits = ((double) width)/textWidth;
-    		int charsFit = (int) ( percentFits * text.length())-5;
-    		String remaining = text;
-    		String formatted = "";
-    		while(remaining.length() > 0)
-    		{
-    			if(remaining.length() < charsFit)
-    			{
-    				int newLine = remaining.indexOf("\\n");
-    				String tempString = "";
-    				if(newLine != -1)
-    				{
-    					tempString = remaining.substring(0, newLine);
-        				formatted += tempString+"\n";
-    					remaining = remaining.substring(newLine+2);
-    				}
-    				formatted += remaining+"\n";
-    				remaining = "";
-    			}
-    			else
-    			{
-    				int firstSpace = remaining.indexOf(' ');
-    				if(firstSpace == -1)
-    					firstSpace = remaining.length();
-    				int newLine = remaining.indexOf("\\n");
-    				if(newLine == -1)
-    					newLine = remaining.length();
-    				String tempString = "";
-    				if(newLine < charsFit)
-    				{
-    					tempString = remaining.substring(0, newLine);
-    					remaining = remaining.substring(newLine+2);
-    				}
-    				else if(firstSpace > charsFit)
-    				{
-    					tempString = remaining.substring(0,firstSpace);
-    					if(firstSpace+1>=remaining.length())
-    						remaining = "";
-    					else
-    						remaining = remaining.substring(firstSpace+1);
-    				}
-    				else
-    				{
-    					tempString = remaining.substring(0,charsFit);
-    					int lastSpace = tempString.lastIndexOf(' ');
-    					remaining = remaining.substring(lastSpace+1);
-    					tempString = tempString.substring(0,lastSpace);
-    				}
-    				formatted += tempString+"\n";
-    				
-    			}
-    		}
-    		formatted += "";
-    		if(prevText.endsWith(text))
-    			return;
-    		getSpeechText().append(formatted);
-       	}
-    	else
-    	{
-    		if(prevText.endsWith(text+"\n"))
-    			return;
-    		getSpeechText().append(text+"\n");
-    		//appendAndScroll(text);
-    	} */
-
-		//speechScroll.repaint();
 
     	scrollPaneToBottom();
 
@@ -3607,6 +3535,71 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
     public void refresh()
     {
     	this.repaint();
+    }
+    
+    public void showContinueButton(boolean show)
+    {
+    	trace.out("ss", "SHOW CONTINUE BUTTON ********************************");
+		if(show)
+		{
+			if(!SwingUtilities.isEventDispatchThread())
+			{
+		    	try {
+					SwingUtilities.invokeAndWait(new Runnable() {
+						public void run() {
+							showTextResponse(false);
+							getYesResponseButton().setVisible(false);
+							getNoResponseButton().setVisible(false);
+							yesButton = new JXButton("Continue");
+							getYesResponseButton().setPreferredSize(new Dimension(getYesResponseButton().getPreferredSize().width*2, getYesResponseButton().getPreferredSize().height));
+							yesPanel.add(getYesResponseButton(), BorderLayout.CENTER);
+							getYesResponseButton().validate();
+							yesPanel.setVisible(true);
+						}
+					});
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					e.printStackTrace();
+				}	
+			}
+			else
+			{
+					showTextResponse(false);
+					getYesResponseButton().setVisible(false);
+					getNoResponseButton().setVisible(false);
+					yesButton = new JXButton("Yes");
+					getYesResponseButton().setPreferredSize(new Dimension(getYesResponseButton().getPreferredSize().width*2, getYesResponseButton().getPreferredSize().height));
+					yesPanel.add(getYesResponseButton(), BorderLayout.CENTER);
+					getYesResponseButton().validate();
+					yesPanel.setVisible(true);
+			}
+		 }
+		 else
+		 {
+		    		getYesResponseButton().validate();
+					yesPanel.setVisible(false);
+					showTextResponse(false);
+		 }
+		refresh();
+
+		
+		
+		final JFrame f = new JFrame();	
+		//Must schedule the close before the dialog becomes visible
+		ScheduledExecutorService s = Executors.newSingleThreadScheduledExecutor();     
+		s.schedule(new Runnable() {
+		    public void run() {
+		    	f.setVisible(true);
+		    	f.dispose();
+		    }
+		}, 280, TimeUnit.MILLISECONDS);
+
+		f.setUndecorated(true); // Remove title bar
+		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		f.setVisible(true);
+				
+		//showSplashScreen(show);		
     }
     
     public void showButtons(boolean show)

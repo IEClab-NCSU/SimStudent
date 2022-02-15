@@ -2,8 +2,8 @@
 
 echo ${OS}
 cd ..
-# 
-## Change these variables 
+#
+## Change these variables
 #
 
 if [ "${CVSDIR}" = "" ]
@@ -14,7 +14,7 @@ then
 	fi
 	if [ "${OS}" != "Windows_NT" ]
 	then
-		CVSDIR="${HOME}/Desktop/SimStudentGithub/SimStudent-master"
+		CVSDIR="$(pwd)/../.."
 	fi
 fi
 
@@ -45,7 +45,7 @@ echo ${JAVAC} ${VmOption} SimStAlgebraV8.java
 ${JAVAC} ${VmOption} SimStAlgebraV8/SimStAlgebraV8.java -source 1.8 -target 1.8
 
 echo compiling UserDefSymbols...
-echo ${JAVAC} ${VmOption} UserDefSymbols.java 
+echo ${JAVAC} ${VmOption} UserDefSymbols.java
 ${JAVAC} ${VmOption} SimStAlgebraV8/UserDefSymbols.java -source 1.8 -target 1.8
 
 echo compiling AlgebraV8AdhocFoaGetter...

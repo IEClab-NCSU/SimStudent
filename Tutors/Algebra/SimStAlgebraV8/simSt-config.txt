@@ -99,7 +99,7 @@ done:-1:The problem is solved.  The answer is 2.:correct:So, you click on the [P
 section:1
 title:-4=-10+2x
 text:  You need to eliminate the constant term -10, and the coefficient 2. So, first you would add 10, to eliminate '-10' from both sides. This would give you 6 on the left hand side and '2x' on the right hand side. Then, to eliminate 2, you would divide both sides by 2. 
-shortDescription:This is another example of a two step equation. First, you would eliminate the constant term from the left-hand side, which is -10. To do so, you add 10 to both sides. 
+shortDescription:This is another example of a two step equation. First, you would eliminate the constant term from the right-hand side, which is -10. To do so, you add 10 to both sides. 
 dorminTable1_C1R1:-4:This is the left-hand side of the equation.
 dorminTable2_C1R1:-10+2x:How can I get rid of the term -10?:This is the right-hand side of the equation.:.
 dorminTable3_C1R1:add 10::correct:So, you type <font color="#00FF00" face="Times New Roman" size="5">add 10</font> on the transformation box. The next step is to add 10 to the left-hand side, which means -4+10.
@@ -118,9 +118,9 @@ dorminTable1_C1R1:5x+6:How can I get rid of the term 6?:This is the left-hand si
 dorminTable2_C1R1:3x+4:I could get rid of the term 3x but I will take care of 6 on the left hand side first.:This is the right-hand side of the equation.:.
 dorminTable3_C1R1:subtract 6::correct:So, you type <font color="#00FF00" face="Times New Roman" size="5">subtract 6</font> on the tranformation. The next step is to subtract 6 from the left-hand side, which means 5x+6-6. 
 dorminTable1_C1R2:5x::correct:So, you type <font color="#00FF00" face="Times New Roman" size="5">5x</font> on the left-hand side, because subtracting 6  from 5x+6 gives you 5x. The next step is to subtract 6 from the right-hand side, which means 3x+4-6. 
-dorminTable2_C1R2:3x-2::correct:So, you type <font color="#00FF00" face="Times New Roman" size="5">3x-2</font> on the left-hand side, because  subtracting 6 from 3x+4 gives you 3x-2. The next step is to eliminate the variable term from the left-hand side, which is +3x. To do so, you subtract 3x from both sides.    
+dorminTable2_C1R2:3x-2::correct:So, you type <font color="#00FF00" face="Times New Roman" size="5">3x-2</font> on the left-hand side, because  subtracting 6 from 3x+4 gives you 3x-2. The next step is to eliminate the variable term from the right-hand side, which is +3x. To do so, you subtract 3x from both sides.    
 dorminTable3_C1R2:subtract 3x::correct:So, you type <font color="#00FF00" face="Times New Roman" size="5">subtract 3x</font> on the transformation. The next step is to subtract 3x from the left-hand side, which means 5x-3x.  
-dorminTable1_C1R3:2x:How can I get rid of the term 2 to have x by itself?:correct:So, you type <font color="#00FF00" face="Times New Roman" size="5">2x</font> on the left-hand side, because  3x subtract from 5x gives you 2x. The next step is to subtract 3x from the right-hand side, which means 3x-2-3x. 
+dorminTable1_C1R3:2x:How can I get rid of the term 2 to have x by itself?:correct:So, you type <font color="#00FF00" face="Times New Roman" size="5">2x</font> on the left-hand side, because  subtracting 3x from 5x gives you 2x. The next step is to subtract 3x from the right-hand side, which means 3x-2-3x. 
 dorminTable2_C1R3:-2::correct:So, you type  <font color="#00FF00" face="Times New Roman" size="5">-2</font> on the right-hand side, because subtracting 3x from 3x-2 gives you -2. The next step is to have x by itself. To do so, you divide both sides by 2. 
 dorminTable3_C1R3:divide 2::correct:So, you type <font color="#00FF00" face="Times New Roman" size="5">divide 2</font> on the transformation. The next step is to divide the left-hand side by 2, which means 2x/2 (2x divided by 2). The symbol '/' means division. 
 dorminTable1_C1R4:x::correct:So, you type <font color="#00FF00" face="Times New Roman" size="5">x</font> on the left-hand side, because 2x divided by 2 gives you x. The next step is to divide the right-hand side by 2, which means -2/2 (-2 divided by 2).
@@ -137,8 +137,8 @@ dorminTable3_C1R1:add 3::correct:So, you type <font color="#00FF00" face="Times 
 dorminTable1_C1R2:2y:The constant term -3 is eliminated.:correct:So, you type <font color="#00FF00" face="Times New Roman" size="5">2y</font> on the left-hand side, because adding 3 to 2y-3 gives you 2y. The next step is to add 3 to the right-hand side, which means 6-y+3. 
 dorminTable2_C1R2:9-y::correct:So, you type <font color="#00FF00" face="Times New Roman" size="5">9-y</font> on the right-hand side, because adding 3 to 6-y gives you 9-y. The next step is to eliminate -y from the right-hand side. To do so add y to both sides.
 dorminTable3_C1R2:add y::correct:So, you type <font color="#00FF00" face="Times New Roman" size="5">add y</font> on the transformation. The next step is to  add y to the left-hand side, which means 2y+y.
-dorminTable1_C1R3:3y:How can I get rid of the term 3 to have y by itself?:correct:So, you type <font color="#00FF00" face="Times New Roman" size="5">3y</font> on the left-hand side, because adding y to 2y gives 3y. The next step is to add 6 on the right-hand side, which means 9-y+y. 
-dorminTable2_C1R3:9::correct:So, you type <font color="#00FF00" face="Times New Roman" size="5">3y</font> on the right-hand side, because y added to 9-y gives you 9. The next step is to eliminate the coefficient of 3y, which is 3. To do so, you divide both sides by 3. 
+dorminTable1_C1R3:3y:How can I get rid of the term 3 to have y by itself?:correct:So, you type <font color="#00FF00" face="Times New Roman" size="5">3y</font> on the left-hand side, because adding y to 2y gives 3y. The next step is to add y on the right-hand side, which means 9-y+y. 
+dorminTable2_C1R3:9::correct:So, you type <font color="#00FF00" face="Times New Roman" size="5">9</font> on the right-hand side, because y added to 9-y gives you 9. The next step is to eliminate the coefficient of 3y, which is 3. To do so, you divide both sides by 3. 
 dorminTable3_C1R3:divide 3::correct:So, you type <font color="#00FF00" face="Times New Roman" size="5">divide 3</font> on the transformation. The next step is to divide the left-hand side by 3, which means 3y/3 (3y divided by 3). The symbol '/' means division.  
 dorminTable1_C1R4:y::correct:So, you type <font color="#00FF00" face="Times New Roman" size="5">y</font> on the left hand side, because dividing 3y by 3 gives you y. The next step is to divide the right-hand side by 3, which means 9/3 (9 divided by 3). 
 dorminTable2_C1R4:3::correct:So, you type <font color="#00FF00" face="Times New Roman" size="5">3</font> in the right-hand side, because 9 divided by 3 gives you 3. Now the problem is solved! The next step is to click the [Problem is Solved] button.
@@ -217,3 +217,39 @@ dorminTable3_C1R4
 dorminTable3_C1R5
 dorminTable3_C1R6
 
+validSelectionsForBrainstormingQuestions
+dorminTable3_C1R1
+dorminTable3_C1R2
+dorminTable3_C1R3
+dorminTable3_C1R4
+dorminTable3_C1R5
+dorminTable3_C1R6
+done
+
+validSelectionsForBothAgreeQuestions
+dorminTable3_C1R1
+dorminTable3_C1R2
+dorminTable3_C1R3
+dorminTable3_C1R4
+dorminTable3_C1R5
+dorminTable3_C1R6
+
+skillNickName
+combine: combine
+subtract: subtract
+subtract-1: subtract
+add:add  
+add-1: add
+add-2: add
+add-3: add
+divide: divide
+multiply: multiply
+done: problem is solved
+subtract-typein: subtract operation
+subtract-typein-1: subtract operation
+add-typein: add operation
+divide-typein: divide operation
+multiply-typein: multiply operation
+multiply-typein-1: multiply operation
+combine-typein: combine operation
+combine-typein-1: combine operation

@@ -69,6 +69,7 @@
 	<message-set>
 		<name>simst-hint-request-demonstrate-step_DemonstrateStep</name>
 			<menu-option>
+				<!--<meta-cognitive>MetaCognitiveHint: I'm stuck too. What should I do next?</meta-cognitive>-->
 				<meta-cognitive>MetaCognitiveHint: I know the next step but I don't know how to show it.,I know how to skill but I don't know how to show it.</meta-cognitive>
 			</menu-option>
 	</message-set>
@@ -165,7 +166,7 @@
 				<cognitive>CognitiveHint : I am not sure what I can do to help ?ssName? now.</cognitive>
 				<context>ContextHint : I do not know the next step. Show me the hints.</context>
 			</menu-option>
-	</message-set> 
+	</message-set>
 	<message-set>
 		<name>student-view-examples</name>
 		<menu-option>

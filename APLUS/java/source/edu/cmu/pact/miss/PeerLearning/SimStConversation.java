@@ -5,12 +5,14 @@ import java.io.FileReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.Hashtable;
 
 import javax.swing.JOptionPane;
 
 import edu.cmu.pact.BehaviorRecorder.Controller.BR_Controller;
 import edu.cmu.pact.Utilities.trace;
+import edu.cmu.pact.miss.Sai;
 import edu.cmu.pact.miss.WebStartFileDownloader;
 import edu.cmu.pact.miss.jess.ModelTracer;
 import edu.cmu.pact.miss.jess.ModelTraceWorkingMemory;
@@ -78,11 +80,37 @@ public class SimStConversation {
 	public static final String ALL_QUIZ_FAILED_TOPIC = "ALL_QUIZ_FAILED";
 	// Added by Tasmia
 	public static final String ASKING_IF_TUTOR_KNOWS_STEP_TOPIC = "ASKING_IF_TUTOR_KNOWS_STEP";
-	public static final String BRAINSTORMING_QUESTION_TOPIC = "BRAINSTORMING_QUESTION";
-	public static final String BRAINSTORMING_QUESTION_WHEN_NO_FEATURE_FOUND_TOPIC = "BRAINSTORMING_QUESTION_WHEN_NO_FEATURE_FOUND";
-
-	
-	
+	//public static final String BRAINSTORMING_QUESTION_TRANFORMATION_TOPIC = "BRAINSTORMING_QUESTION_TRANFORMATION";
+	//public static final String BRAINSTORMING_QUESTION_TYPEIN_TOPIC = "BRAINSTORMING_QUESTION_TYPEIN";
+	//public static final String BRAINSTORMING_QUESTION_WHEN_NO_RULE_FOUND_TOPIC = "BRAINSTORMING_QUESTION_WHEN_NO_RULE_FOUND";
+	public static final String BRAINSTORMING_LOGIC_WHEN_NO_FEATURE_FOUND_TOPIC = "BRAINSTORMING_LOGIC_WHEN_NO_FEATURE_FOUND";
+	public static final String BRAINSTORMING_SUMMARIZE_CONVERSATION = "BRAINSTORMING_SUMMARIZE";
+	public static final String BRAINSTORMING_THINKING_TOPIC = "BRAINSTORMING_THINKING";
+	public static final String BOTH_STUCK_TOPIC = "BOTH_STUCK";
+	public static final String ACKNOWLEDGING_SUMMARIZATION_TOPIC = "ACKNOWLEDGING_SUMMARIZATION";
+	//public static final String BRAINSTORMING_FOLLOWUP_MISTAKE_REALIZATION_TOPIC = "BRAINSTORMING_FOLLOWUP_MISTAKE_REALIZATION";
+	public static final String MR_WILLIAMS_SUGGESTION_TOPIC = "MR_WILLIAMS_SUGGESTION";
+	public static final String STUCK_AFTER_MR_WILLIAMS_SUGGESTION_TOPIC = "STUCK_AFTER_MR_WILLIAMS_SUGGESTION";
+	// Added by Raj: Topics for both disagree
+	public static final String THANK_MR_WILLIAMS = "THANK_MR_WILLIAMS";
+	public static final String SHOW_NEXT_AFTER_HINT = "SHOW_NEXT_AFTER_HINT";
+	// Added by Tasmia: Topics for both agree speech
+	public static final String AGREE_ANY = "ANY";
+	public static final String AGREE_DIVIDE = "DIVIDE";
+	public static final String AGREE_DIVIDE_POSITIVE_OPERATOR = "DIVIDE_POSITIVE_OPERATOR";
+	public static final String AGREE_MULTIPLY = "MULTIPLY";
+	public static final String AGREE_DONE = "DONE";
+	public static final String AGREE_SUBTRACT_POSITIVE_OPERATOR = "SUBTRACT_POSITIVE_OPERATOR";
+	public static final String AGREE_DIVIDE_WHOLE_NUMBER_OPERATOR = "DIVIDE_WHOLE_NUMBER_OPERATOR";
+	public static final String AGREE_ADD_WHOLE_NUMBER_OPERATOR = "ADD_WHOLE_NUMBER_OPERATOR";
+	public static final String AGREE_MULTIPLY_WHOLE_NUMBER_OPERATOR = "MULTIPLY_WHOLE_NUMBER_OPERATOR";
+	public static final String AGREE_MULTIPLY_POSITIVE_OPERATOR = "MULTIPLY_POSITIVE_OPERATOR";
+	public static final String AGREE_SUBTRACT_WHOLE_NUMBER_OPERATOR = "SUBTRACT_WHOLE_NUMBER_OPERATOR";
+	public static final String AGREE_ADD_OR_SUBTRACT_VARIABLE_TERM_OPERATOR = "ADD_OR_SUBTRACT_VARIABLE_TERM_OPERATOR";
+	public static final String AGREE_ADD = "ADD";
+	public static final String AGREE_SUBTRACT = "SUBTRACT";
+	public static final String AGREE_ADD_POSITIVE_OPERATOR = "ADD_POSITIVE_OPERATOR";
+	//public static final String POST_UNDO = "POST_UNDO";
 	
 	public static final int ERROR_THRESHOLD = 4;
 	
@@ -93,7 +121,10 @@ public class SimStConversation {
 	private ModelTraceWorkingMemory mtwm;
 	private ModelTracer apmt;
 	
+	private ArrayList<String> classnames = new ArrayList<String>();
+	
 	private Hashtable<String, ArrayList<String>> topics;
+	private Hashtable<String, ArrayList<String>> both_agree_topics;
 	
 	//flag to indicate that different behaviour between quiz and tutoring was detected, so 
 	//appropriate message (indicated by <FQ> in simSt-speech.txt) must be displayed.
@@ -117,7 +148,8 @@ public class SimStConversation {
 	{
 		this.brController = brController;
 		topics = new Hashtable<String, ArrayList<String>>();
-		readTopics(filename);
+		both_agree_topics = new Hashtable<String, ArrayList<String>>();
+		readTopics(filename, topics);
 		
 		if(brController.getAmt() != null  && brController.getMissController().getSimSt().getModelTraceWM() != null)
 		{
@@ -128,8 +160,13 @@ public class SimStConversation {
 		if(brController.getMissController().getSimSt().isSsMetaTutorMode() && !brController.getMissController().getSimSt().getSsMetaTutorModeLevel().equals("Cognitive"))
 			metatutored = true;
 	}
+	
+	public void processBothAgreeSpeechFile(String filename) {
+		both_agree_topics = new Hashtable<String, ArrayList<String>>();
+		readTopics(filename, both_agree_topics);
+	}
 		
-	private void readTopics(String filename)
+	private void readTopics(String filename, Hashtable<String, ArrayList<String>> topics)
 	{
 		
 			// worked like that
@@ -158,6 +195,9 @@ public class SimStConversation {
 	    		}
 	    		
 	    		String line = reader.readLine();
+	    		while(line.contains(";;") || line == null || line.isEmpty()) {
+	    			line = reader.readLine();
+	    		}
 	    		
 	    		while(line != null)
 	    		{
@@ -179,6 +219,7 @@ public class SimStConversation {
 	    			}
 	    			if(line != null)
 	    				line = reader.readLine();
+	    				
 	    		}
 	    		
 
@@ -197,6 +238,18 @@ public class SimStConversation {
 	public String getMessage(String topic)
 	{
 		return getMessage(topic, null, null, null, null, -1);
+	}
+	
+	public String getMessage(String topic, Sai s, boolean isBothAgreeSpeech)
+	{
+		ArrayList<String> messages = both_agree_topics.get(topic);   
+	
+		String message = messages.get((int)(Math.random()*messages.size()));
+		/*if(!messageWorks(message, selection, input)) {
+			message = getFilteredMessage(messages, selection, input, operation, activationNum);
+
+		}*/		
+		return replaceVariables(message, s.getS(), s.getA(), s.getI(), "");
 	}
 	
 	public String getSimStMessage1(String topic, String selection, String input)
@@ -392,31 +445,11 @@ public class SimStConversation {
 			if(message.contains(MODEL_TRACE_ERROR))
 				return false;
 		}
-		/*if(selection == null)
-		{
-			if(message.contains(SELECTION))
-				return false;
-		}*/
 		if(input == null)
 		{
 			if(message.contains(INPUT))
 				return false;
 		}
-		/*if(activationNum == -1)
-		{
-			if(message.contains(NO_ACTIVATIONS) || message.contains(NOT_FIRST_ACTIVATION))
-				return false;
-		}
-		if(activationNum < 1)
-		{
-			if(message.contains(NOT_FIRST_ACTIVATION))
-				return false;
-		}
-		if(activationNum > 0)
-		{
-			if(message.contains(NO_ACTIVATIONS))
-				return false;
-		}*/
 		if(input == null)
 		{
 			if(message.contains(PROBLEM))

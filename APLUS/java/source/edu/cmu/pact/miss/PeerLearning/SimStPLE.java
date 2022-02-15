@@ -158,6 +158,12 @@ public class SimStPLE {
 	private static final String SECTIONS_HEADER = "sections";
 	public static final String PROBLEM_DELIMITER_HEADER = "problemDelimiter";
 	private static final String VALID_SELECTIONS_FOR_SE = "validSelectionsForSelfExplanation";
+	
+	// Added by Tasmia
+	private static final String VALID_SELECTIONS_FOR_BQ = "validSelectionsForBrainstormingQuestions";
+	private static final String VALID_SELECTIONS_FOR_BAQ = "validSelectionsForBothAgreeQuestions";
+	private static final String SKILL_NICKNAMES = "skillNickName";
+	
 
 	private final String USER_ID_REQUEST_TITLE = "User ID";
 	private final String USER_ID_REQUEST_MSG = "Please enter your User ID:";
@@ -176,7 +182,7 @@ public class SimStPLE {
 	public static final String DO_PROBLEM_NO = "OK. Click \"Yes\" when you've entered a problem you like better.";
 	public static final String NO_UNDO_MSG = "But we haven't gotten through any work on this problem yet!";
 	public static final String UNDO_DONE_MSG = "Oh, is that not the answer to the problem?  Should I go back to working on it?";
-	public static final String SHOULD_DO_MSG = "Alright, I erased $.  Now let me think what I should do instead...";
+	public static final String SHOULD_DO_MSG = "Alright, I erased $.";
 	public static final String UNDO_ERROR_MSG = "I'm not quite sure how to undo that step.  Can we just restart the problem or go on to a different one?";
 	public static final String RESUME_MSG = "OK, I'm still not sure what I should do next though.  Can you please show me what to do?";
 	public static final String RESTART_MSG = "OK, I'm trying this problem again from the beginning.";
@@ -422,6 +428,9 @@ public class SimStPLE {
 	private Hashtable<String, LinkedList<Explanation>> hintExplanations;
 	private HashSet<String> validSelections;
 	private Map<String, String> startState;
+	private HashSet<String> validSelections_bq;
+	private HashSet<String> validSelections_baq;
+	private Hashtable<String, String> skillNickNames;
 	private boolean modelTracer = true;
 	private String invalidProblemMsg = "";
 
@@ -457,6 +466,12 @@ public class SimStPLE {
 	 */
 	public HashSet<String> getValidSelections() {
 		return validSelections;
+	}
+	public HashSet<String> getValidSelectionsBQ() {
+		return validSelections_bq;
+	}
+	public HashSet<String> getValidSelectionsBAQ() {
+		return validSelections_baq;
 	}
 
 	private boolean startStatus = false;
@@ -1165,11 +1180,13 @@ public class SimStPLE {
 		startStateElements = new ArrayList<String>();
 		examples = new ArrayList<SimStExample>();
 		exampleExplanations = new Hashtable<String, String>();
+		skillNickNames = new Hashtable<String, String>();
 		mistakeExplanations = new Hashtable<String, LinkedList<Explanation>>();
 		problemChoiceExplanations = new Hashtable<String, LinkedList<Explanation>>();
 		hintExplanations = new Hashtable<String, LinkedList<Explanation>>();
 		readConfigFile();
 		conversation = new SimStConversation(brController, "simSt-speech.txt");
+		conversation.processBothAgreeSpeechFile("simSt-both-agree-speech.txt");
 	}
 
 	// Reads the configuration file and applies the items in it to their categories
@@ -1228,8 +1245,22 @@ public class SimStPLE {
 				} else if (line.equals(HINT_EXPLANATION_HEADER)) {
 					configHintExplanations(reader);
 				} else if (line.equals(VALID_SELECTIONS_FOR_SE)) {
-					configValidSelections(reader);
-				} else if (line.equals(SECTIONS_HEADER)) {
+					validSelections = new HashSet<String>();
+					configValidSelections(reader, validSelections);
+				} 
+				// Added by Tasmia: Updating the permissible selections from config.txt for asking brainstorming questions and both agree questions.
+				else if (line.equals(VALID_SELECTIONS_FOR_BQ)) {
+					validSelections_bq = new HashSet<String>();
+					configValidSelections(reader, validSelections_bq);
+				} else if (line.equals(VALID_SELECTIONS_FOR_BAQ)) {
+					validSelections_baq = new HashSet<String>();
+					configValidSelections(reader, validSelections_baq);
+				}
+				else if (line.equals(SKILL_NICKNAMES)) {
+					configSkillNickNames(reader);
+				} 
+				// ended edits by Tasmia
+				else if (line.equals(SECTIONS_HEADER)) {
 					configSections(reader);
 				} else if (line.equals(PROBLEM_DELIMITER_HEADER)) {
 
@@ -1315,6 +1346,25 @@ public class SimStPLE {
 				trace.out("miss", "Unable to read config file (comp names): " + e.getMessage());
 			e.printStackTrace();
 			logger.simStLogException(e, "Unable to read config file (comp names): " + e.getMessage());
+		}
+	}
+	
+	// Added by Tasmia
+	// Read the Jess Oracle production rule file's skills and their nicknames
+	public void configSkillNickNames(BufferedReader reader){
+		try {
+			String line = reader.readLine();
+			while (line != null && line.length() > 0) // Blank line starts next section
+			{
+				int index = line.indexOf(':');
+				String skill = line.substring(0, index);
+				String nickname = line.substring(index + 1);
+				skillNickNames.put(skill, nickname);
+				line = reader.readLine();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.simStLogException(e, "Unable to read config file (skill nicknames): " + e.getMessage());
 		}
 	}
 
@@ -1530,12 +1580,14 @@ public class SimStPLE {
 	 * Method for reading from the config file the valid selections for self
 	 * explanation (selections which SimStudent is allowed to ask self-explanation
 	 * questions).
+	 * Also adding the valid selections for brainstorming questions when both tutor tutee are stuck
+	 * and for both agree questions when they both agree.
 	 * 
 	 * @param reader
 	 */
-	public void configValidSelections(BufferedReader reader) {
+	public void configValidSelections(BufferedReader reader, HashSet<String> validSelections) {
 		try {
-			validSelections = new HashSet<String>();
+			//validSelections = new HashSet<String>();
 
 			String line = reader.readLine();
 			while (line != null && line.length() > 0) // Blank line starts next section
@@ -2069,6 +2121,10 @@ public class SimStPLE {
 		else
 			return null;
 
+	}
+	
+	public String getSkillNickName(String ruleName) {
+		return skillNickNames.get(ruleName);
 	}
 
 	public String messageComposer(String template, String selection, String action, String input) {
@@ -2770,13 +2826,12 @@ public class SimStPLE {
     	brController.getMissController().getSimSt().scheduleNewProblemTimer();
     	brController.getMissController().getSimStPLE().setIsRestartClicked(true);
     	getMissController().getSimStPLE().incRestartClickCount();
-    	
+
     	if (brController.getMissController().getSimSt().isSsMetaTutorMode()){
     		brController.getMissController().getSimSt().getModelTraceWM().setNextSelection("nil");
     		brController.getMissController().getSimSt().getModelTraceWM().setNextAction("nil");
     		brController.getMissController().getSimSt().getModelTraceWM().setNextInput("nil");
     		brController.getMissController().getSimSt().getModelTraceWM().setSolutionGiven("false");
-    		
     		/*update the restart count in working memory*/
     		int count=this.getMissController().getSimStPLE().getRestartClickCount();		
     		brController.getMissController().getSimSt().getModelTraceWM().setRestartCount(count); 
@@ -3448,6 +3503,7 @@ public class SimStPLE {
 		// getSimStPeerTutoringPlatform().getNextProblemButton();
 		// nextProblemButton.setText(getProblemEnteredButtonString());
 		// nextProblemButton.setEnabled(false);
+		getSsInteractiveLearning().setkillMessageReceived(false);
 		getBrController().startNewProblem();
 		setAvatarStart();
 		this.getConversation().setBehaviourDiscrepencyBroughtUp(false);
@@ -4195,7 +4251,7 @@ public class SimStPLE {
 	}
 
 	// Displays that the avatar is thinking
-	public void setAvatarThinking() {
+	public void setAvatarThinking(String customMsg) {
 		status = THINK_STATUS;
 		// Add a yellow border while avatar is thinking
 		// getSimStPeerTutoringPlatform().getSimStAvatarLayerIcon().setBorder(BorderFactory.createLineBorder(Color.yellow,
@@ -4205,7 +4261,10 @@ public class SimStPLE {
 		if(!runType.equals("springBoot"))
 			blockInput(true);
 		// giveMessage(THINK_MESSAGE);
-		giveMessage(conversation.getMessage(SimStConversation.THINK_TOPIC));
+		if(customMsg == null)
+			giveMessage(conversation.getMessage(SimStConversation.THINK_TOPIC));
+		else if (!customMsg.isEmpty())
+			giveMessage(customMsg);
 		startStatus = false;
 		// getSimStPeerTutoringPlatform().setImage(STUDENT_THINK_IMAGE);
 		// getSimStPeerTutoringPlatform().setExpression(THINK_EXPRESSION_EX);
@@ -4221,6 +4280,10 @@ public class SimStPLE {
 		currentThinkingImage = THINK_EXPRESSION_EX;
 		// currentThinkingImage=THINK_EXPRESSION_EX;
 
+	}
+	
+	public void setAvatarThinking() {
+		setAvatarThinking(null);
 	}
 
 	// Displays that the avatar is done thinking
@@ -4704,14 +4767,18 @@ public class SimStPLE {
 	}
 
 	public void giveMessage(String message) {
+		giveMessage(message, getSimStName());
+	}
+	
+	public void giveMessage(String message, String name) {
 		if (getSimStPeerTutoringPlatform() != null) {
 			getSimStPeerTutoringPlatform().showButtons(false);
 
 			// getSimStPeerTutoringPlatform().setSpeech(message);
-			getSimStPeerTutoringPlatform().appendSpeech(message, getSimStName());
+			getSimStPeerTutoringPlatform().appendSpeech(message, name);
 		}
 	}
-
+	
 	public void giveDialogMessage(String message) {
 		messageDialog.showMessage(message);
 	}
@@ -4727,7 +4794,31 @@ public class SimStPLE {
 		getSimStPeerTutoringPlatform().setSpeech(message);
 
 	}
+	
+	public int giveMessageRequiringAttention(String message) {
+		// getSimStPeerTutoringPlatform().setSpeech(message);
+		setAvatarAsking();
+		getSimStPeerTutoringPlatform().appendSpeech(message, "");
+		getSimStPeerTutoringPlatform().showContinueButton(true);
 
+		if (this.getSimStPeerTutoringPlatform() != null)
+			this.getSimStPeerTutoringPlatform().scrollPaneToBottom();
+
+		YesNoBucket lock = new YesNoBucket();
+
+		getSimStPeerTutoringPlatform().getYesResponseButton().addActionListener(new YesNoListener(lock));
+		getSimStPeerTutoringPlatform().getYesResponseButton().setActionCommand("" + JOptionPane.YES_OPTION);
+		getSimStPeerTutoringPlatform().getNoResponseButton().addActionListener(new YesNoListener(lock));
+		getSimStPeerTutoringPlatform().getNoResponseButton().setActionCommand("" + JOptionPane.NO_OPTION);
+
+		String response = lock.waitForYesNo();
+
+		getSimStPeerTutoringPlatform().showContinueButton(false);
+
+		return Integer.parseInt(response);
+
+	}
+	
 	public int giveMessageRequiringResponse(String message) {
 		// getSimStPeerTutoringPlatform().setSpeech(message);
 		setAvatarAsking();

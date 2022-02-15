@@ -1,0 +1,33 @@
+P.244
+
+1st outer loop
+
+    can-reach( X1, X2 ) :- linked-to( X1, X2 ).
+
+2nd outer loop
+
+    T1: + <0,2> <0,4> <0,5> <0,6> ...
+        - <0,0> <0,7> <1,0> <1,1> ...
+
+    L1: linked-to( X1, X3 )
+
+    Q( X1, X2, X3 ) :: {X1, X2} from tuples in T1, i.e., <X1,X2> and
+                       {X3} from the 2nd argument of L1
+
+    The relations of Q/3:
+    Q( 0, X2, 1 ), Q( 0, X2, 3 ), Q( 1, X2, 2 ), Q( 3, X2, 2 ), ...
+
+    T2: + <0,2,1> <0,2,3> <0,4,1> <0,4,3> ...
+	- <0,0,1> <0,0,3> <0,7,1> <0,7,3> ...
+
+	Pick a tuple in T1 (+ or -), unify that with Q(X1,X2,X3) where
+	X1 gets the 1st element in the tuple and X2 gets the 2nd.
+	Find all the relations of Q/3 that unifies with this
+	instantiation.  
+
+    So, the inner loop is to eliminate (or cover, indeed) negative
+    (i.e., those signed as '-') tuples.  Adding a literal (Li) is to
+    commit a scope of the '+' tuples.  In other words, it makes sure
+    that certain '-' would never be covered, hence safe to eliminate
+    from the tuples. 
+

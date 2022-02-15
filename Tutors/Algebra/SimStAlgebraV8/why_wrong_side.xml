@@ -1,17 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <scenario version="$Revision: 1.1 $" default-language="en">
 
-<configuration> 
-	<module kind="model" name="clever" classname="edu.cmu.cs.lti.tutalk.module.SidePredictor"> 
-		<param key="path" value="./Model-2.ser" /> 
+<configuration>
+	<module kind="model" name="clever" classname="basilica2.side.listeners.LightSideMessageAnnotator">
+		<param key="modelPath" value="/Users/tasmiashahriar/Documents/Github/SimStudent/bazaar/lightside/saved/student_response_model_nb.model.xml" />
+		<param key="nickName" value="student_response_model" />
 		<param key="prediction" value="predicted" />
 		<param key="currentAnnotation" value="Category" />
-	</module> 
-	<module kind="model" name="helpful" classname="edu.cmu.cs.lti.tutalk.module.SidePredictor"> 
-		<param key="path" value="./Model.ser" /> 
+		<param key="pathToModel" value="/Users/tasmiashahriar/Documents/Github/SimStudent/bazaar/lightside/models/student_response_model_nb.model.xml" />
+		<param key="modelName" value="student_response_model_nb.model.xml" />
+		<param key="modelNickname" value="student_response_model" />
+		<param key="predictionCommand" value="/Users/tasmiashahriar/Documents/Github/SimStudent/bazaar/lightside/scripts/predict.sh" />
+		<param key="classificationString" value="N1, 70, N2, 70, N3, 70, N4, 70, N5, 70, N6, 70, N7, 70, N8, 70" />
+
+
+	</module>
+	<!--<module kind="model" name="helpful" classname="edu.cmu.cs.lti.tutalk.module.SidePredictor">
+		<param key="path" value="./Model.ser" />
 		<param key="prediction" value="predicted" />
 		<param key="currentAnnotation" value="Category" />
-	</module> 
+	</module>-->
 </configuration>
 
 
@@ -27,8 +35,8 @@
   <concept label="first-question">
    <phrase>Why do you think that %sai_i% is wrong here?</phrase>
   </concept>
-  
-  
+
+
   <concept label="explain-why" model="clever"/>
   <concept label="response-simst-explain-why">
    <phrase>I think I'll need you to show me that, but can you explain why my input won't work in a little more detail first?</phrase>
@@ -38,7 +46,7 @@
   <concept label="response-simst-undo">
    <phrase>I'm a bit confused.  Are you saying you didn't mean to say 'No'?  Let's go back to working on the problem.  I think it would help if you showed me the step.</phrase>
   </concept>
-  
+
   <concept label="wrong" model="clever" />
   <concept label="response-simst-wrong">
    <phrase>I know %sai_i% isn't right now, but can you tell me what it is about the problem that makes it the wrong thing to do?  I would like to avoid making the same mistake in the future.</phrase>
@@ -74,20 +82,20 @@
    <initiation>first-question</initiation>
    </step>-->
  </goal>
- 
+
  <goal name="reasons">
   <step>
    <initiation>first-question</initiation>
    <response push="response-explain-why">explain-why</response>
    <response push="response-wrong">wrong</response>
    <response push="response-unhelpful">unhelpful</response>
-   
+
    <response say="response-simst-okay">okay</response>
-   <response say="response-simst-undo">undo</response> 
+   <response say="response-simst-undo">undo</response>
    <response say="final-thanks">unanticipated-response</response>
   </step>
  </goal>
- 
+
  <goal name="response-explain-why">
   <step>
    <initiation>response-simst-explain-why</initiation>
@@ -105,11 +113,11 @@
  <goal name="response-unhelpful">
   <step>
    <initiation>response-simst-unhelpful</initiation>
-   <response say="response-simst-still-unhelpful">bad</response> 
-   <response say="response-simst-now-helpful">good</response> 
+   <response say="response-simst-still-unhelpful">bad</response>
+   <response say="response-simst-now-helpful">good</response>
    <response say="final-thanks">unanticipated-response</response>
   </step>
  </goal>
- 
+
 </script>
 </scenario>

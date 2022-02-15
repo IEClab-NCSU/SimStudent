@@ -1,6 +1,8 @@
 package edu.cmu.pact.miss.MetaTutor;
 
 import java.awt.Component;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Semaphore;
 
 import javax.swing.JButton;
 
@@ -11,6 +13,10 @@ public interface APlusHintDialogInterface {
 	
 	/**	 */
 	public static final String HINT = "Hint";
+	
+	public final Semaphore OkPressed = new Semaphore(0);
+	
+	public final CountDownLatch okPressed = new CountDownLatch(1);
 
 	/**
 	 * @param message

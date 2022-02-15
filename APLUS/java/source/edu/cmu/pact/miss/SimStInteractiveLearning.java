@@ -18,11 +18,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Vector;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+
+import org.apache.commons.lang.StringUtils;
 
 import jess.Activation;
 import jess.Defrule;
@@ -35,9 +38,12 @@ import pact.CommWidgets.JCommTable;
 import pact.CommWidgets.JCommTable.TableCell;
 import pact.CommWidgets.JCommTable.TableExpressionCell;
 import pact.CommWidgets.JCommWidget;
+import edu.cmu.cs.lti.tutalk.script.Concept;
 import edu.cmu.pact.BehaviorRecorder.Controller.BR_Controller;
 import edu.cmu.pact.BehaviorRecorder.Dialogs.LoadFileDialog;
+import edu.cmu.pact.BehaviorRecorder.ProblemModel.ProblemModel;
 import edu.cmu.pact.BehaviorRecorder.ProblemModel.ProblemModelException;
+import edu.cmu.pact.BehaviorRecorder.ProblemModel.VariableTable;
 import edu.cmu.pact.BehaviorRecorder.ProblemModel.Graph.EdgeData;
 import edu.cmu.pact.BehaviorRecorder.ProblemModel.Graph.ExampleTracerGraph;
 import edu.cmu.pact.BehaviorRecorder.ProblemModel.Graph.ProblemEdge;
@@ -50,8 +56,12 @@ import edu.cmu.pact.Utilities.trace;
 import edu.cmu.pact.ctat.MessageObject;
 import edu.cmu.pact.ctat.MsgType;
 import edu.cmu.pact.ctat.model.CtatModeModel;
+import edu.cmu.pact.jess.JessModelTracing;
 import edu.cmu.pact.jess.MTRete;
 import edu.cmu.pact.jess.RuleActivationNode;
+import edu.cmu.pact.jess.RuleActivationTree;
+import edu.cmu.pact.jess.SimStRete;
+import edu.cmu.pact.jess.RuleActivationTree.TreeTableModel;
 import edu.cmu.pact.miss.SimSt.FoA;
 import edu.cmu.pact.miss.PeerLearning.AplusPlatform;
 import edu.cmu.pact.miss.PeerLearning.AplusSpotlight;
@@ -74,9 +84,14 @@ import edu.cmu.pact.miss.userDef.algebra.EqFeaturePredicate;
 public class SimStInteractiveLearning implements Runnable {
 
 	public final String UNLABELED_SKILLNAME = "unlabeled-interactive-learning";
-
+	private ArrayList<String> already_suggested_skillname = new ArrayList<String>();
+	private Vector current_foas = new Vector();
+	private boolean bq_scope = false;
 	private SimSt simSt;
 
+	public boolean getBqScope() {
+		return bq_scope;
+	}
 	public SimSt getSimSt() {
 		return simSt;
 	}
@@ -86,26 +101,26 @@ public class SimStInteractiveLearning implements Runnable {
 		if (simSt.getSsInteractiveLearning() == null)
 			simSt.setSsInteractiveLearning(this);
 	}
-	
+
 	// TODO: stop using static
 	public static BR_Controller brController; // used by simulateCellTextEntry()
 
 	public static void setBrController(BR_Controller br){
 		SimStInteractiveLearning.brController = br;
 	}
-	
+
 	public static BR_Controller getBrController(SimSt simst)
 	{
 		return SimStInteractiveLearning.brController/*SimStInteractiveLearning.simstLookup.get(simst)*/;
 	}
-	
+
 	// Logger to which simStudent specific messages can be sent
 	private SimStLogger logger;
 
 	public SimStLogger getLogger() {
 		return logger;
 	}
-	
+
 	final int CHANCE = 60;
 
 	public void setLogger(SimStLogger log) {
@@ -122,7 +137,7 @@ public class SimStInteractiveLearning implements Runnable {
 	public SimStProblemGraph getQuizGraph() {
 		return quizGraph;
 	}
-	
+
 	public void clearQuizGraph(){
 		quizGraph=null;
 	}
@@ -133,7 +148,7 @@ public class SimStInteractiveLearning implements Runnable {
 	// DemonstrateModeMessageHandler.processDemonstrateInterfaceAction(),
 	// which does not have an instance of SimStInteractiveLearning
 	private boolean runningFromBrd = false;
-	private boolean killMessageReceived = false; 
+	private boolean killMessageReceived = false;
 
 	public boolean isRunningFromBrd() {
 		return runningFromBrd;
@@ -218,10 +233,10 @@ public class SimStInteractiveLearning implements Runnable {
 	public AskHint getHint() {
 		return hint;
 	}
-	
+
 	private String givenProblemName;
-	
-	
+
+
 	public String getGivenProblemName() {
 		return givenProblemName;
 	}
@@ -229,7 +244,7 @@ public class SimStInteractiveLearning implements Runnable {
 	public void setGivenProblemName(String givenProblemName) {
 		this.givenProblemName = givenProblemName;
 	}
-	
+
 	private String hintInformation;
 
 	public String getHintInformation() {
@@ -239,7 +254,7 @@ public class SimStInteractiveLearning implements Runnable {
 	public void setHintInformation(String hintInformation) {
 		this.hintInformation = hintInformation;
 	}
-	
+
 	private int numStepsPerformed = 0;
 	private String step;
 	public String getStep() {
@@ -251,7 +266,7 @@ public class SimStInteractiveLearning implements Runnable {
 	}
 
 	private long stepStartTime;
-	
+
 	public long getStepStartTime() {
 		return stepStartTime;
 	}
@@ -261,7 +276,7 @@ public class SimStInteractiveLearning implements Runnable {
 	}
 
 	private String solution;
-	
+
 	public String getSolution() {
 		return solution;
 	}
@@ -269,9 +284,9 @@ public class SimStInteractiveLearning implements Runnable {
 	public void setSolution(String solution) {
 		this.solution = solution;
 	}
-	
+
 	public boolean correct;
-	
+
 	public boolean isCorrect() {
 		return correct;
 	}
@@ -279,7 +294,7 @@ public class SimStInteractiveLearning implements Runnable {
 	public void setCorrect(boolean correct) {
 		this.correct = correct;
 	}
-	
+
 	public ProblemNode nextCurrentNode = null;
 	public RuleActivationNode backupRan = null;
 	public int ruleQueryCounter = 0;
@@ -289,6 +304,8 @@ public class SimStInteractiveLearning implements Runnable {
 	public boolean getExplanationGiven(){return this.explanationGiven;}
 	public void setExplanationGiven(boolean flag){this.explanationGiven=flag;}
 	
+	private boolean askStudentToUndo;
+
 	//public static Hashtable<SimSt,BR_Controller> simstLookup = new Hashtable<SimSt,BR_Controller>();
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 	// Constructor
@@ -301,9 +318,14 @@ public class SimStInteractiveLearning implements Runnable {
 		setLogger(new SimStLogger(brController));
 
 		// If Tutalk is enabled, then get its parameters from SimStudent.
-		if (simSt.getTutalkEnabled()) {
+		if (simSt.getTutalkEnabled() || simSt.getCTIBothStuckTutalkEnabled()) {
 			// Currently I haven't planned anything for the params
-			String[] tutalkParam = simSt.getTutalkParam().split(",");
+
+			String[] tutalkParam;
+			if(simSt.getTutalkEnabled())
+				tutalkParam = simSt.getTutalkParam().split(",");
+			else
+				tutalkParam = simSt.getCTIBothStuckTutalkParam().split(",");
 			String tutalkUid = simSt.getUserID();
 			tutalkBridge = new SimStTutalk(tutalkUid, this);
 			tutalkBridge.initialize();
@@ -331,14 +353,14 @@ public class SimStInteractiveLearning implements Runnable {
 			trace.out("miss", "Inside ssInteractiveLearningWithBRD");
 		setRunningFromBrd(true);
 
-		
+
 		/*If for some reason we have nodes here, then reset the controller. */
 		//if (brController.getProblemModel().getNodeCount()>0)
 		//	brController.reset();
-		
+
 		LoadFileDialog.doLoadBRDFile(getBrController(getSimSt()), brdPath, "", true);
-		
-		
+
+
 		// this needs to be done *again*
 		getBrController(getSimSt()).getCtatModeModel().setAuthorMode(
 				CtatModeModel.DEMONSTRATING_SOLUTION);
@@ -366,11 +388,11 @@ public class SimStInteractiveLearning implements Runnable {
 		runInteractiveLearning();
 	}
 
-	
+
 	/**
 	 * Create a new graph for the quizProblem, make a new node using the name of
 	 * the problem and add it to the graph.
-	 * 
+	 *
 	 * @param quizProblem
 	 */
 	public void createStartStateQuizProblem(String quizProblem) {
@@ -389,38 +411,38 @@ public class SimStInteractiveLearning implements Runnable {
 	// Create a start state for the problem string on the input of form LHS=RHS,
 	// split by =
 	public void createStartStateOnProblem(String problemName) {
-		
+
 		filledInComponents.clear();
 		if (trace.getDebugCode("miss"))
 			trace.out("miss", "createStartStateOnProblem: " + problemName);
 
-		
+
 		// TODO: generalize this, so that the argument is a list of <selection,input> pairs
 		try {
 			// if no BRD is loaded, create the start state
 			if (brController.getProblemModel().getStartNode() == null) {
-				
-				trace.out("webAuth","webAuthoringMode is " + this.getSimSt().isSsWebAuthoringMode());				
+
+				trace.out("webAuth","webAuthoringMode is " + this.getSimSt().isSsWebAuthoringMode());
 				if (this.getSimSt().isSsWebAuthoringMode()==false){/*on WebAuthoring mode do not update the interface with start state*/
 					String[] sp = problemName.split("=");
-		
+
 					String c1r1Value = sp[0].trim();
 					String c2r1Value = sp[1].trim();
 
 					if (brController.getMissController().isPLEon()) {
 						SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();
 						ArrayList<String> startElements = ple.getStartStateElements();
-						
+
 
 						for (int i = 0; i < startElements.size() && i < sp.length; i++) {
 							simulateCellTextEntry(startElements.get(i),sp[i].trim());
-							
+
 							/*if we are in cogTutor mode, also update the modeltracer*/
 							if (getSimSt().isSsCogTutorMode() && getSimSt().isSsMetaTutorMode()){
 								brController.getAmt().handleInterfaceAction(startElements.get(i), "UpdateTable", sp[i].trim());
 							}
 						}
-					} 
+					}
 					else {
 						try {
 							// update the cell text
@@ -436,8 +458,8 @@ public class SimStInteractiveLearning implements Runnable {
 						}
 					}
 				}
-				
-								
+
+
 				// Replace symbols unallowed in problem names with stand-in
 				// character
 				String normalProblemName = SimSt
@@ -445,14 +467,14 @@ public class SimStInteractiveLearning implements Runnable {
 				if (trace.getDebugCode("ss"))
 					trace.out("ss", "Problem Name created: " + normalProblemName);
 
-				
+
 				// Problem starts when created
 				setProblemStartTime(Calendar.getInstance().getTimeInMillis());
 
 				brController.createStartState(normalProblemName);
-				
+
 			} else {
-							
+
 				// Problem is already created- use existing start state
 				ProblemNode node = brController.getProblemModel()
 						.getStartNode();
@@ -469,23 +491,23 @@ public class SimStInteractiveLearning implements Runnable {
 		}
 	}
 
-	
-	
-public void fillInQuizProblem(String problemName) {
-		
-		filledInComponents.clear();
-		
 
-		
+
+public void fillInQuizProblem(String problemName) {
+
+		filledInComponents.clear();
+
+
+
 		// TODO: generalize this, so that the argument is a list of <selection,input> pairs
 		try {
 			// if no BRD is loaded, create the start state
 			if (getBrController(getSimSt()).getProblemModel().getStartNode() == null) {
-				
-				trace.out("webAuth","webAuthoringMode is " + this.getSimSt().isSsWebAuthoringMode());				
+
+				trace.out("webAuth","webAuthoringMode is " + this.getSimSt().isSsWebAuthoringMode());
 				if (this.getSimSt().isSsWebAuthoringMode()==false){/*on WebAuthoring mode do not update the interface with start state*/
 					String[] sp = problemName.split("=");
-		
+
 					String c1r1Value = sp[0].trim();
 					String c2r1Value = sp[1].trim();
 
@@ -494,10 +516,10 @@ public void fillInQuizProblem(String problemName) {
 						ArrayList<String> startElements = ple.getStartStateElements();
 						for (int i = 0; i < startElements.size() && i < sp.length; i++) {
 							simulateCellTextEntry(startElements.get(i),sp[i].trim());
-							
-							
+
+
 						}
-					} 
+					}
 					else {
 						try {
 							// update the cell text
@@ -513,9 +535,9 @@ public void fillInQuizProblem(String problemName) {
 						}
 					}
 				}
-				
 
-			} 
+
+			}
 		} catch (Exception e) {
 			if (trace.getDebugCode("miss"))
 				trace.out("miss", "ssInteractiveLearningOnProblem: - - - - Exception - - - -");
@@ -562,7 +584,7 @@ public void fillInQuizProblem(String problemName) {
 		}
 		return compNames;
 	}
-	
+
 	/**
 	 * Method that takes a list of components, a component name and returns
 	 * the value of that component.
@@ -588,7 +610,7 @@ public void fillInQuizProblem(String problemName) {
 									compNames += namePart;
 							}
 						}
-						
+
 					}
 				}
 			}
@@ -606,13 +628,13 @@ public void fillInQuizProblem(String problemName) {
 		}
 		return compNames;
 	}
-	
+
 	public Component tmpComponent=null;
-	
+
 	//code in progress
 	public Component getStudentInterfaceWidget(Component[] list,String componentName){
 		Component returnComponent=null;
-		
+
 		for (int i = 0; i < list.length; i++) {
 
 			if (list[i] instanceof JCommTable) {
@@ -622,22 +644,22 @@ public void fillInQuizProblem(String problemName) {
 					for (int k = 0; k < cells[j].length; k++) {
 						if (cells[j][k].getCommName().equals(componentName)){
 							tmpComponent=cells[j][k];
-						}					
+						}
 					}
 				}
 			}
 			else if (list[i] instanceof JComponent) {
 				JComponent comp = (JComponent) list[i];
 				getStudentInterfaceWidget(comp.getComponents(),componentName);
-				
+
 			}
 		}
-		
+
 		return returnComponent;
 	}
-	
 
-	
+
+
 	public String setWidgetValue(Component[] list,String componentName,String stringValue) {
 		String compNames = "";
 
@@ -651,9 +673,9 @@ public void fillInQuizProblem(String problemName) {
 						//trace.out("ss","comparing " + cells[j][k].getCommName() + " and " + componentName);
 						if (cells[j][k].getCommName().equals(componentName)){
 							cells[j][k].setText(stringValue);
-							
+
 							String namePart = cells[j][k].getText();
-							
+
 							if (namePart.length() > 0) {
 								if (compNames.length() > 0)
 									compNames += "_" + namePart;
@@ -661,7 +683,7 @@ public void fillInQuizProblem(String problemName) {
 									compNames += namePart;
 							}
 						}
-						
+
 					}
 				}
 			}
@@ -679,33 +701,33 @@ public void fillInQuizProblem(String problemName) {
 		}
 		return compNames;
 	}
-	
-	
+
+
 	// Create a start state using all the cells currently filled into the
 	// interface
 	public void createStartState(JComponent studentInterface) {
 
 		createStartState(studentInterface, false);
-		
+
 	}
 
-	
-    
+
+
 	// Create a start state using all the cells currently filled into the
 	// interface
 	public void createStartState(JComponent studentInterface,
 			boolean problemRestart) {
-		
-		
+
+
 		filledInComponents.clear();
 		if (trace.getDebugCode("miss"))
 			trace.out("miss", "createStartState....");
 
 		// calculate name based on filled-in components
 		String problemName = createName(studentInterface.getComponents());
-		
+
 		/**
-		 * Reset the working memory element 
+		 * Reset the working memory element
 		 */
 		getBrController(getSimSt()).getMissController().getSimSt().getModelTraceWM().setConsecutiveResourceReview(0);;
 
@@ -740,7 +762,7 @@ public void fillInQuizProblem(String problemName) {
 				// }
 				//JOptionPane.showMessageDialog(null, "faskelo1");
 
-				
+
 				logger.simStLog(SimStLogger.SIM_STUDENT_PROBLEM,
 						SimStLogger.PROBLEM_ENTERED_ACTION, normalProblemName,
 						"", "");
@@ -751,14 +773,14 @@ public void fillInQuizProblem(String problemName) {
 						"", "");
 				//JOptionPane.showMessageDialog(null, "faskelo3");
 
-		
+
 			}
 
 			// Problem is created, if selfExplanation is on (and we're not just
 			// restarting same problem), ask why
 			/*
 			 * if(simSt.isSelfExplainMode() && !problemRestart) {
-			 * 
+			 *
 			 * // If enabled, TuTalk engine will "hijack" the legacy
 			 * self-explain mode // then exits the function when done. - Huan T.
 			 * if (simSt.getTutalkEnabled()) { // Connect to tutalk server
@@ -768,24 +790,24 @@ public void fillInQuizProblem(String problemName) {
 			 * SimSt.convertFromSafeProblemName(problemName));
 			 * tutalkBridge.connect("why_problem_dialog", contextVariables,
 			 * SimStLogger.PROBLEM_ENTERED_EXPLAIN_ACTION);
-			 * 
+			 *
 			 * // Busy loop when the student haven't finished the smalltalk with
 			 * Tutalk. // Needed to prevent SimStudent to go ahead and do the
 			 * problem before finishing the conversation. while
 			 * (tutalkBridge.getState() != SimStTutalk.TUTALK_STATE_DONE) { try
 			 * { Thread.sleep(250); } catch (java.lang.InterruptedException e) {
 			 * // Nothing we can do here. } }
-			 * 
+			 *
 			 * // Nothing needs to be done after this point, returning is fine.
 			 * // However, if you need something to be done after
 			 * self-explaining, // change this if to if-else and remove this
 			 * return. return; }
-			 * 
+			 *
 			 * problemName = (problemName.replaceAll("_", "=")); //put problem
 			 * name into question String question =
 			 * "Why did you choose the problem "+problemName+"?"; String
 			 * explanation = "";
-			 * 
+			 *
 			 * //Explanation duration includes time from prompt to explanation
 			 * received long explainRequestTime =
 			 * Calendar.getInstance().getTimeInMillis();
@@ -802,10 +824,10 @@ public void fillInQuizProblem(String problemName) {
 			 * brController.getMissController
 			 * ().getSimStPLE().giveMessageSelectableResponse(question,
 			 * qa.getAnswers()); }
-			 * 
+			 *
 			 * int explainDuration = (int)
 			 * (Calendar.getInstance().getTimeInMillis() - explainRequestTime);
-			 * 
+			 *
 			 * if(explanation != null && explanation.length() > 0) { //Log
 			 * non-empty explanation
 			 * logger.simStLog(SimStLogger.SIM_STUDENT_EXPLANATION,
@@ -854,7 +876,7 @@ public void fillInQuizProblem(String problemName) {
 	// Generalized for the commTable, but it's still only for the TableCell...
 	public static void simulateCellTextEntry(String tableCell, String value) {
 
-	
+
 		TableCell cell = (TableCell) brController.lookupWidgetByName(tableCell);
 
 		// we should pass the TableExpressionCell, but getCell returns an
@@ -868,43 +890,43 @@ public void fillInQuizProblem(String problemName) {
 		JCommTable commTable = (JCommTable) brController
 				.lookupWidgetByName(tableName);
 		commTable.focusLost(e);
-		
+
 	}
 
 	/**
 	 * Method to retreive specific edge from quiz graph
-	 * @param edgeID the edge we want, e.g. 3rd 
+	 * @param edgeID the edge we want, e.g. 3rd
 	 * @return
 	 */
 	public SimStEdge getQuizGraphEdge(int edgeID){
-		
+
 		SimStProblemGraph quizGraph=this.getQuizGraph();
 		SimStNode start = quizGraph.getStartNode();
 
 		int parentNodeID=edgeID-1;
-		
+
 		for (int i=0;i<parentNodeID;i++){
-				 start=start.getPrevNode();	//getPrevNode moves gives the next node in the quiz graph...  
+				 start=start.getPrevNode();	//getPrevNode moves gives the next node in the quiz graph...
 		}
-		
+
 		return (SimStEdge) start.getOutgoingEdges().get(0);
 	}
-	
+
 	/**
-	 * Method to return the correctness of a quiz graph edge 
+	 * Method to return the correctness of a quiz graph edge
 	 * @param edgeID the edge we want to check its correctness, e.g. 3rd
 	 * @return
 	 */
 	public String getQuizGraphEdgeCorrectness(int edgeID){
-		
+
 		return getQuizGraphEdge(edgeID).getEdgeData().getActionType();
-		
+
 	}
-	
+
 	public static String QUIZ_SOLUTION_CORRECT="Correct";
 	public static String QUIZ_SOLUTION_INCORRECT="Incorrect";
 	public static String QUIZ_SOLUTION_INCOMPLETE="Incomplete";
-	
+
 	/**
 	 * Method to grade the quiz graph using the oracle, once the problem is solved
 	 * @param solution
@@ -912,11 +934,11 @@ public void fillInQuizProblem(String problemName) {
 	 * @return true of problem is solved correctly, false otherwise
 	 */
 	public String gradeQuizProblem(Vector<Sai> solution, Vector<SolutionStepInfo> solutionStepsInfo){
-		
+
 		String returnValue=QUIZ_SOLUTION_CORRECT;
 		SimStNode currentNode=quizGraph.getStartNode();
-		
-		
+
+
 		boolean hasAnErrorOccured=false;
 		for (int i=0;i<solution.size();i++){
 
@@ -925,27 +947,27 @@ public void fillInQuizProblem(String problemName) {
 			String ruleName="empty";
 			if (solutionStepsInfo!=null)
 				ruleName=solutionStepsInfo.get(i).firedRuleName;
-		
+
 			//add new node to current quiz graph node
 			SimStNode successiveNode = new SimStGraphNavigator().simulatePerformingStep(currentNode, sai);
-			
+
 			//addded so JessOracle can grade correctly on the quiz
 			if (simSt.isSsAplusCtrlCogTutorMode())
 				simSt.setCurrentSsNode(currentNode);
 
 
 			if (successiveNode!=null /*&& !returnValue.equals(QUIZ_SOLUTION_INCORRECT)*/){
-				
+
 				//returnValue=gradeQuizProblemStep(sai,currentNode,ruleName,solution,SimSt.convertFromSafeProblemName(quizGraph.getStartNode().getName()));
 
 				String inquiryResult = simSt.inquiryRuleActivation(quizGraph.getStartNode().getName(), currentNode, "", sai.getS(), sai.getA(), sai.getI(), null);
-				
+
 				if (inquiryResult.equals(EdgeData.CLT_ERROR_ACTION))
 					hasAnErrorOccured=true;
-					
-				currentNode.getOutgoingEdges().get(0).getEdgeData().setActionType(inquiryResult); 
-				currentNode.getOutgoingEdges().get(0).getEdgeData().getRuleNames().add(ruleName);	
-				
+
+				currentNode.getOutgoingEdges().get(0).getEdgeData().setActionType(inquiryResult);
+				currentNode.getOutgoingEdges().get(0).getEdgeData().getRuleNames().add(ruleName);
+
 				returnValue=inquiryResult.equals(EdgeData.CORRECT_ACTION) ? QUIZ_SOLUTION_CORRECT : QUIZ_SOLUTION_INCORRECT;
 
 				if (logger.getLoggingEnabled() && !this.getSimSt().isSsCogTutorMode()) {
@@ -953,154 +975,154 @@ public void fillInQuizProblem(String problemName) {
 					if (solutionStepsInfo!=null)
 						logger.simStLog(SimStLogger.SIM_STUDENT_LEARNING, SimStLogger.ACTIVATION_RULES_ACTION, step, solutionStepsInfo.get(i).agenda.size() + " rules found", "");
 					else
-						logger.simStLog(SimStLogger.SIM_STUDENT_LEARNING, SimStLogger.ACTIVATION_RULES_ACTION, step, "", "");	
+						logger.simStLog(SimStLogger.SIM_STUDENT_LEARNING, SimStLogger.ACTIVATION_RULES_ACTION, step, "", "");
 					int count = 0;
 
 				}
-				
-				
-				if (!returnValue.equals(QUIZ_SOLUTION_CORRECT) && sai.getS().equalsIgnoreCase("Done")){	
-					
+
+
+				if (!returnValue.equals(QUIZ_SOLUTION_CORRECT) && sai.getS().equalsIgnoreCase("Done")){
+
 					//JOptionPane.showMessageDialog(null, sai.getS() + " was incorrect");
 			    	//	AskHint hint = getSimSt().askForHint(getSimSt().getBrController(),currentNode);
 					//if (hint.getInput().contains("rf")){
 					//	JOptionPane.showMessageDialog(null, sai.getS() + " was RF incorrect");
 					//}
 
-					
+
 					if (solution.size()>3){
-						//xi xi 
-						String via_solution = simSt.getProblemAssessor().determineSolution(quizGraph.getStartNode().getName(), quizGraph.getStartNode());	
+						//xi xi
+						String via_solution = simSt.getProblemAssessor().determineSolution(quizGraph.getStartNode().getName(), quizGraph.getStartNode());
 						boolean correct = simSt.getProblemAssessor().isSolution( quizGraph.getStartNode().getName(), via_solution);
 						if (correct){
 		            		returnValue=QUIZ_SOLUTION_CORRECT;
 		            		hasAnErrorOccured=false;
-		    				currentNode.getOutgoingEdges().get(0).getEdgeData().setActionType(EdgeData.CORRECT_ACTION); 
+		    				currentNode.getOutgoingEdges().get(0).getEdgeData().setActionType(EdgeData.CORRECT_ACTION);
 		            	}
-						
+
 						//returnValue=rfPatch(quizGraph.getStartNode().getName(),solution,currentNode);
-	    				
+
 
 						//if (returnValue.equals(QUIZ_SOLUTION_CORRECT))
 						//	hasAnErrorOccured=false;
-		            	
-		            	
+
+
 					}
-					
-					
-					
+
+
+
 				}
-				
+
 				/*if an incorrect step has been detected, don't bother grading anymore.*/
 				//if (returnValue.equals(QUIZ_SOLUTION_INCORRECT)) return returnValue;
-			
-				
+
+
 				currentNode=successiveNode;
 			}
 
 		}
-		
-		
-	
-		
+
+
+
+
 		/*if all steps are correct but last step is not done, then solution is incomplete.*/
-		Sai lastSai=solution.get(solution.size()-1);	
+		Sai lastSai=solution.get(solution.size()-1);
 		if (returnValue.equals(QUIZ_SOLUTION_CORRECT) && !lastSai.getS().equalsIgnoreCase("Done")){
 			returnValue=QUIZ_SOLUTION_INCOMPLETE;
 		}
-		
-		
+
+
 		/*If at least one step is incorrect then entire solution is incorrect*/
 		if (hasAnErrorOccured) {
 
 			returnValue=QUIZ_SOLUTION_INCORRECT;
 		}
-		
+
 
 
 		return returnValue;
-	
+
 	}
-	
+
 	private String rfPatch(String problem, Vector<Sai> solution,SimStNode currentNode){
 		String returnValue=QUIZ_SOLUTION_INCORRECT;
 		Sai lastSai=solution.get(solution.size()-2);
 		Sai beforeLastSai=solution.get(solution.size()-3);
-	
 
-		
-		
-		
-		
+
+
+
+
+
 		if (problem.equals("7c-10_8-9c")){
 			if ((beforeLastSai.getI().equals("c") && lastSai.getI().equals("18/16")) || (beforeLastSai.getI	().equals("18/16") && lastSai.getI().equals("c"))){
-				currentNode.getOutgoingEdges().get(0).getEdgeData().setActionType(EdgeData.CORRECT_ACTION); 
+				currentNode.getOutgoingEdges().get(0).getEdgeData().setActionType(EdgeData.CORRECT_ACTION);
 				returnValue= QUIZ_SOLUTION_CORRECT;
-			}	
+			}
 		}
 		else if (problem.equals("3x_12")){
 			if ((beforeLastSai.getI().equals("x") && lastSai.getI().equals("12/3")) || (beforeLastSai.getI	().equals("12/3") && lastSai.getI().equals("x"))){
-				currentNode.getOutgoingEdges().get(0).getEdgeData().setActionType(EdgeData.CORRECT_ACTION); 
+				currentNode.getOutgoingEdges().get(0).getEdgeData().setActionType(EdgeData.CORRECT_ACTION);
 				returnValue= QUIZ_SOLUTION_CORRECT;
-			}	
+			}
 		}
 		else if (problem.equals("3x-6_x+2")){
 			if ((beforeLastSai.getI().equals("x") && lastSai.getI().equals("8/2")) || (beforeLastSai.getI	().equals("8/2") && lastSai.getI().equals("x"))){
-				currentNode.getOutgoingEdges().get(0).getEdgeData().setActionType(EdgeData.CORRECT_ACTION); 
+				currentNode.getOutgoingEdges().get(0).getEdgeData().setActionType(EdgeData.CORRECT_ACTION);
 				returnValue= QUIZ_SOLUTION_CORRECT;
-			}	
+			}
 		}
 		else if (problem.equals("9x+2_x+8")){
 			if ((beforeLastSai.getI().equals("x") && lastSai.getI().equals("6/8")) || (beforeLastSai.getI	().equals("6/8") && lastSai.getI().equals("x"))){
-				currentNode.getOutgoingEdges().get(0).getEdgeData().setActionType(EdgeData.CORRECT_ACTION); 
+				currentNode.getOutgoingEdges().get(0).getEdgeData().setActionType(EdgeData.CORRECT_ACTION);
 				returnValue= QUIZ_SOLUTION_CORRECT;
-			}	
+			}
 		}
 		else if (problem.equals("1+5b_9b-3")){
 			if ((beforeLastSai.getI().equals("b") && lastSai.getI().equals("4/4")) || (beforeLastSai.getI	().equals("4/4") && lastSai.getI().equals("b"))){
-				currentNode.getOutgoingEdges().get(0).getEdgeData().setActionType(EdgeData.CORRECT_ACTION); 
+				currentNode.getOutgoingEdges().get(0).getEdgeData().setActionType(EdgeData.CORRECT_ACTION);
 				returnValue= QUIZ_SOLUTION_CORRECT;
-			}	
+			}
 		}
 		else if (problem.equals("6-4x_-3-x")){
 			if ((beforeLastSai.getI().equals("x") && lastSai.getI().equals("9/3")) || (beforeLastSai.getI	().equals("9/3") && lastSai.getI().equals("x"))){
-				currentNode.getOutgoingEdges().get(0).getEdgeData().setActionType(EdgeData.CORRECT_ACTION); 
+				currentNode.getOutgoingEdges().get(0).getEdgeData().setActionType(EdgeData.CORRECT_ACTION);
 				returnValue= QUIZ_SOLUTION_CORRECT;
-			}	
+			}
 		}
-		
-		
+
+
 		return returnValue;
 	}
-	
+
 
 	/**
 	 * Method to solve a quiz problem, using the SimStSolver.
-	 * This is faster than previous method to solve quiz (now named {@link #startQuizProblem_old}) 
+	 * This is faster than previous method to solve quiz (now named {@link #startQuizProblem_old})
 	 * @return true if problem was solved correctly, false otherwise
 	 */
 	public Vector<Sai> startQuizProblem_new(){
 		boolean returnValue=false;
 
 		/*Necessary jess files that must be passed to the solver */
-		String jessFilesDirectory=getBrController(getSimSt()).getPreferencesModel().getStringValue(CTAT_Controller.PROBLEM_DIRECTORY);//brController.getPreferencesModel().getStringValue(BR_Controller.PROJECTS_DIR);//this.getSimSt().getProjectDir();	
+		String jessFilesDirectory=getBrController(getSimSt()).getPreferencesModel().getStringValue(CTAT_Controller.PROBLEM_DIRECTORY);//brController.getPreferencesModel().getStringValue(BR_Controller.PROJECTS_DIR);//this.getSimSt().getProjectDir();
 		String productionRulesFile=jessFilesDirectory+ SimSt.PRODUCTION_RULE_FILE;
-		String wmeTypesFile=jessFilesDirectory+ SimSt.WME_TYPE_FILE;  
-		String initialFactsFile=jessFilesDirectory+  SimSt.INIT_STATE_FILE; 
+		String wmeTypesFile=jessFilesDirectory+ SimSt.WME_TYPE_FILE;
+		String initialFactsFile=jessFilesDirectory+  SimSt.INIT_STATE_FILE;
 		String pleConfig=getSimSt().getProjectDir()+"/"+SimStPLE.CONFIG_FILE;
 
 		String quizProblem=SimSt.convertFromSafeProblemName(quizGraph.getStartNode().getName());
- 
+
 		/*Create new solver to solve the current problem*/
 		//SimStSolver solver=new SimStSolver(quizProblem,productionRulesFile,wmeTypesFile, initialFactsFile, pleConfig, simSt);
 
-		
+
 		// SimSt Rete
 		//SimStSolver solver=new SimStSolver(quizProblem,productionRulesFile,wmeTypesFile, initialFactsFile, pleConfig, simSt,simSt.getSsRete());
 		// MT Rete
 		SimStSolver solver=new SimStSolver(quizProblem,productionRulesFile,wmeTypesFile, initialFactsFile, pleConfig, simSt,brController.getModelTracer().getRete());
 
-		
+
 		Vector<Sai> solution=new Vector();
 		Vector<SolutionStepInfo> solutionStepsInfo=new Vector<SolutionStepInfo>();
 
@@ -1111,19 +1133,16 @@ public void fillInQuizProblem(String problemName) {
 
 			e1.printStackTrace();
 		}
-		
-	
+
+
 		solutionStepsInfo=solver.getSolutionStepInfo();
-	
+
 		//String returnValue1=gradeQuizProblemSolution(solution,solutionStepsInfo);
 
 		return solution;
 	}
 	
-	
-	
-	
-	
+
 	/**
 	 * Method that grades if a solution for a quiz problem is correct.
 	 * @param solution
@@ -1133,14 +1152,14 @@ public void fillInQuizProblem(String problemName) {
 	public String gradeQuizProblemSolution(Vector<Sai> solution,Vector<SolutionStepInfo> solutionStepsInfo){
 		String returnValue=QUIZ_SOLUTION_INCORRECT;
 		String quizProblem=SimSt.convertFromSafeProblemName(quizGraph.getStartNode().getName());
-				
-		
-		try{		
+
+
+		try{
 			returnValue=gradeQuizProblem(solution,solutionStepsInfo);
 		}
 		catch(Exception ex){
-			Sai lastSai=solution.get(solution.size()-1);	
-	
+			Sai lastSai=solution.get(solution.size()-1);
+
 			/*if last step is done & correct then */
 			if (lastSai.getS().equalsIgnoreCase("Done")){
 				String answer=simSt.getProblemAssessor().determineSolution(quizProblem, quizGraph.getStartNode());
@@ -1152,17 +1171,17 @@ public void fillInQuizProblem(String problemName) {
 
 			}
 			else returnValue=QUIZ_SOLUTION_INCORRECT;
-			
+
 		}
-		
+
 		return returnValue;
 	}
 
-	
-	
-		
+
+
+
 	/**
-	 * method for grading the step in a quiz. 
+	 * method for grading the step in a quiz.
 	 * @param sai
 	 * @param currentNode
 	 * @param ruleName
@@ -1172,44 +1191,44 @@ public void fillInQuizProblem(String problemName) {
 	 */
 	public boolean gradeQuizProblemStep(Sai sai,ProblemNode currentNode,String ruleName,Vector<Sai> solution,String problemName){
 		boolean returnValue=true;
-		
-		try{		
-			/*see if sai is correct*/	
+
+		try{
+			/*see if sai is correct*/
 			String inquiryResult = simSt.inquiryRuleActivation(quizGraph.getStartNode().getName(), currentNode, "", sai.getS(), sai.getA(), sai.getI(), null);
-			
+
 			/*update quiz graph edge with correctness and rulename*/
-			currentNode.getOutgoingEdges().get(0).getEdgeData().setActionType(inquiryResult); 
+			currentNode.getOutgoingEdges().get(0).getEdgeData().setActionType(inquiryResult);
 			currentNode.getOutgoingEdges().get(0).getEdgeData().getRuleNames().add(ruleName);
-			
+
 			returnValue=inquiryResult.equals(EdgeData.CORRECT_ACTION) ? true : false;
 		}
 		catch(Exception ex){
 			/*If a step caused a fatal exception, then see if overall solution is correct*/
-			Sai lastSai=solution.get(solution.size()-1);	
+			Sai lastSai=solution.get(solution.size()-1);
 			/*if last step is done then solution might be correct...*/
 			if (lastSai.getS().equalsIgnoreCase("Done")){
-				
+
 				String answer=simSt.getProblemAssessor().determineSolution(problemName, quizGraph.getStartNode());
 				boolean isSolutionCorrect=simSt.getProblemAssessor().performInteractiveAnswerCheck(brController.getMissController().getSimStPLE(), problemName, answer);
 				if (isSolutionCorrect){
-					currentNode.getOutgoingEdges().get(0).getEdgeData().setActionType(EdgeData.CORRECT_ACTION); 
+					currentNode.getOutgoingEdges().get(0).getEdgeData().setActionType(EdgeData.CORRECT_ACTION);
 					currentNode.getOutgoingEdges().get(0).getEdgeData().getRuleNames().add(ruleName);
 					returnValue=true;
 				}
 				else{
-					currentNode.getOutgoingEdges().get(0).getEdgeData().setActionType(EdgeData.CLT_ERROR_ACTION); 
+					currentNode.getOutgoingEdges().get(0).getEdgeData().setActionType(EdgeData.CLT_ERROR_ACTION);
 					currentNode.getOutgoingEdges().get(0).getEdgeData().getRuleNames().add(ruleName);
 					returnValue=false;
 				}
 
 			}
-						
+
 		}
-			
+
 	return returnValue;
-				
+
 	}
-	
+
 	/**
 	 * Starts to solve the quiz problem
 	 * Deprecated method, used to be startQuizProblem, replaced by {@link #startQuizProblem}
@@ -1224,19 +1243,19 @@ public void fillInQuizProblem(String problemName) {
 		currentNode = startNode;
 		simSt.setProblemStepString(startNode.getName());
 
-		
+
 		while (!killMessageReceived) {
 			simSt.setCurrentSsNode(currentNode);
 
 			long activationListStartTime = Calendar.getInstance().getTimeInMillis();
 			Vector activationList = simSt.gatherActivationList(currentNode, hm);
-			
-			
+
+
 			//orders rule activations so the one with the highest accepted rate is first.
-			Collection<RuleActivationNode> activList = simSt.createOrderedActivationList(activationList);	
+			Collection<RuleActivationNode> activList = simSt.createOrderedActivationList(activationList);
 			int activationListDuration = (int) ((Calendar.getInstance().getTimeInMillis() - activationListStartTime)/1000);
-				
-		
+
+
 			//simulate first rule in activation list and get next node (this call adds node to the quizGraph).
 
 			try{
@@ -1246,17 +1265,17 @@ public void fillInQuizProblem(String problemName) {
 				ex.printStackTrace();
 				return;
 			}
-			
+
 			if (logger.getLoggingEnabled()) {
 				String step = simSt.getProblemStepString();
 				logger.simStLog(SimStLogger.SIM_STUDENT_LEARNING, SimStLogger.ACTIVATION_RULES_ACTION, step, activList.size() + " rules found", "",activationListDuration);
 				int count = 0;
-				
-				//hint = new AskHintInBuiltClAlgebraTutor(brController,currentNode);	
+
+				//hint = new AskHintInBuiltClAlgebraTutor(brController,currentNode);
 				//CL oracle must not be hardcoded! Whichever oracle grades the quiz should provide hint for logging
        			hint = simSt.askForHintQuizGradingOracle(getBrController(getSimSt()),currentNode);
-				
-		
+
+
        		if (hint.skillName!=null){
 				for (RuleActivationNode ran : activList) {
 					count++;
@@ -1274,8 +1293,8 @@ public void fillInQuizProblem(String problemName) {
 			}
 			}
 
-			
-			
+
+
 			if (nextCurrentNode != null) {
 				currentNode = nextCurrentNode;
 				if (currentNode.getIncomingEdges().size() > 0) {
@@ -1295,7 +1314,7 @@ public void fillInQuizProblem(String problemName) {
 				break;
 			}
 		}
-		
+
 		//return true;
 	}
 
@@ -1305,21 +1324,21 @@ public void fillInQuizProblem(String problemName) {
 		String listAssessment = "";
 		SimStNode nextCurrentNode = null, successiveNode = null;
 		RuleActivationNode backUpRAN = null;
-		
-		
-		
+
+
+
 		Iterator itr = activationList.iterator();
-		for (RuleActivationNode ran : activationList) {	
-			
+		for (RuleActivationNode ran : activationList) {
+
 			if (ran.getActualInput().equalsIgnoreCase("FALSE"))
 				continue;
-			
-			
-			
+
+
+
 			successiveNode = inspectActivation(currentNode, ran);
-				
+
 			if (successiveNode != null) {
-					                
+
 				// Update the HashMap to have a mapping of RAN and new node
 				// generated using the activation
 				hm.put(ran, successiveNode);
@@ -1349,7 +1368,7 @@ public void fillInQuizProblem(String problemName) {
 				}
 			}
 		}
-		
+
 		/*Question: When is this if condition satisfied? backUpRan=ran is commented above, so this never seems to be used....*/
 		if (nextCurrentNode == null && isTakingQuiz() && backUpRAN != null) {
 			listAssessment += "Backup used: " + backUpRAN.getName() + " " + backUpRAN.getActualInput() + "\n";
@@ -1361,7 +1380,7 @@ public void fillInQuizProblem(String problemName) {
 
 		trace.out("ss", listAssessment);
 		simSt.setProblemStepString(simSt.getProblemAssessor().calcProblemStepString(getQuizGraph().getStartNode(),nextCurrentNode, null));
-		
+
 		return nextCurrentNode;
 	}
 
@@ -1369,7 +1388,7 @@ public void fillInQuizProblem(String problemName) {
 			RuleActivationNode ran) {
 
 		SimStNode nextCurrentNode = null;
-	
+
 		Sai sai = getSai(ran);
 		if (sai.getS().equals("NotSpecified")
 				|| sai.getI().equals("NotSpecified"))
@@ -1394,7 +1413,7 @@ public void fillInQuizProblem(String problemName) {
 			// Rule is correct, use it and update var to its node
 			if (inquiryResult.equals(EdgeData.CORRECT_ACTION)) {
 				nextCurrentNode = successiveNode;
-								
+
 			}
 			// Rule is not correct, but taking quiz, so may want to use as
 			// backup
@@ -1410,14 +1429,14 @@ public void fillInQuizProblem(String problemName) {
 		return nextCurrentNode;
 	}
 
-	
-	
+
+
     /*variable to hold the previous tutored problem, just in case student clicks restart*/
     public String previousProblemTutored=null;
     public void setPreviousTutoredProblem(String problem){ this.previousProblemTutored=problem;}
     public String getPreviousTutoredProblem(){return this.previousProblemTutored;}
-    
-    
+
+
 	// runs interactive learning on start node
 	public void runInteractiveLearning() {
 
@@ -1430,93 +1449,101 @@ public void fillInQuizProblem(String problemName) {
 		}
 	}
 
-	
+
 	public ProblemNode currentNode=null;
 	public void setCurrentNode(ProblemNode node){this.currentNode=node;}
 	public ProblemNode getCurrentNode(){return this.currentNode;}
-	
-	
+
+
 	/**
-	 * Method that triggers SimStudent to take the next step. Method used both by runInteractiveLearning and 
-	 * the doNextStep used in webAuthoring. 
+	 * Method that triggers SimStudent to take the next step. Method used both by runInteractiveLearning and
+	 * the doNextStep used in webAuthoring.
 	 * @param currentNode
 	 * @return Returns a list of all the activations
 	 */
 	public Collection<RuleActivationNode> getActivations(ProblemNode currentNode){
-		
+
 		if (currentNode==null){
 			currentNode=this.currentNode;
 		}
-		
-		
-		Vector activationList = simSt.gatherActivationList(currentNode);	
+
+
+		Vector activationList = simSt.gatherActivationList(currentNode);
 		Collection<RuleActivationNode> activList = simSt.createOrderedActivationList(activationList);
-			 
+
 		return activList;
 	}
-	
+
 	public Collection<RuleActivationNode> getActivations(ProblemNode currentNode, boolean isNearSimilar){
-		
+
 		if (currentNode==null){
 			currentNode=this.currentNode;
 		}
-		
-		
-		Vector activationList = simSt.gatherActivationList(currentNode, isNearSimilar);	
-		Collection<RuleActivationNode> activList = simSt.createOrderedActivationList(activationList);
-			 
+
+
+		Vector activationList;
+		Collection<RuleActivationNode> activList = null;
+		try {
+			activationList = simSt.gatherActivationList(currentNode, isNearSimilar);
+			activList = simSt.createOrderedActivationList(activationList);
+		} catch (JessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//Collection<RuleActivationNode> activList = simSt.createOrderedActivationList(activationList);
+
 		return activList;
 	}
-	
+
 	/**
 	 * Method called to make SimStudnet take the next step. Used only for webAuthoring...
 	 * @return A list of SAI's, if SimStudent has a suggestion, or Nothing.
 	 */
 	public ArrayList<Sai> doNextStep(){
-		
+
 		ArrayList<Sai> saiList= new ArrayList<Sai>();
 		if (this.currentNode==null) {
 			trace.out("miss"," **** Current node is NULL, going setting current node to start node");
 			setCurrentNode(getBrController(getSimSt()).getProblemModel().getStartNode());
-		
+
 		}
 		else{
 			trace.out("miss"," **** Current node is NOT the start state" + currentNode.getName());
 		}
-		
+
 		/*get the rule activations*/
 		Collection<RuleActivationNode> activList=getActivations(currentNode);
-		
+
 		/*convert them into an Sai list*/
 		for (RuleActivationNode ran : activList) {
 			Sai sai = new Sai(ran.getActualSelection(), ran.getActualAction(), ran.getActualInput());
 			saiList.add(sai);
 		}
-		
-		
+
+
 		return saiList;
-	
+
 	}
-	
-	
+
+
 	public boolean isSolvable(String oracleClass,String problemName,BR_Controller brController){
 			boolean answer = true;
-			
-			
+
+
 			SimStProblemGraph brGraph = new SimStProblemGraph();
 		    SimStNode problemNode = new SimStNode(SimSt.convertToSafeProblemName(problemName),brGraph);
 			brGraph.addSSNode(problemNode);
 			brController.getProblemModel().setStartNode(problemNode);
-			
-			
-			
-			
+
+
+
+
 			Class[] parameters = new Class[3];
 			parameters[0] = String.class;
 			parameters[1] = ProblemNode.class;
 			parameters[2] = BR_Controller.class;
-			
-			
+
+
 			try {
 				Class oracle = Class.forName("edu.cmu.pact.miss."+oracleClass);
 				Object oracleObj = oracle.newInstance();
@@ -1531,11 +1558,11 @@ public void fillInQuizProblem(String problemName) {
 					else if(nextStep.getI().equalsIgnoreCase("done"))
 						break;
 					else{
-						SimStNode nextNode = new SimStGraphNavigator().simulatePerformingStep(problemNode,nextStep);	
+						SimStNode nextNode = new SimStGraphNavigator().simulatePerformingStep(problemNode,nextStep);
 						problemNode = nextNode;
 						//System.out.println(" Next Node : "+nextStep.toString());
 					}
-									
+
 				}
 				//System.out.println(" After the while loop ");
 				brGraph.clear();
@@ -1543,7 +1570,7 @@ public void fillInQuizProblem(String problemName) {
 				setProblemStartTime(Calendar.getInstance().getTimeInMillis());
 				//SimStNode previous = new SimStNode(SimSt.convertToSafeProblemName(problemName),brGraph);
 				//brController.getProblemModel().setStartNode(previous);
-				
+
 			} catch (NoSuchMethodException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -1571,8 +1598,8 @@ public void fillInQuizProblem(String problemName) {
 			}finally{
 				brGraph.clear();
 			}
-			 
-			
+
+
 			return answer;
 		}
 	public void initModelTracerForProblem(){
@@ -1582,10 +1609,10 @@ public void fillInQuizProblem(String problemName) {
 			simSt.getModelTraceWM().setAfterQuiz(WorkingMemoryConstants.FALSE);
 			simSt.getModelTraceWM().setPreviousProblemType(previousType);
 			simSt.getModelTraceWM().setHintRequest("false");
-			simSt.getModelTraceWM().allTutoredProblemList.push(SimSt.convertFromSafeProblemName(getBrController(getSimSt()).getProblemName()));	
+			simSt.getModelTraceWM().allTutoredProblemList.push(SimSt.convertFromSafeProblemName(getBrController(getSimSt()).getProblemName()));
 		    setPreviousTutoredProblem(getBrController(getSimSt()).getMissController().getSimSt().getModelTraceWM().getStudentEnteredProblem());
 		}
-		
+
 	}
 
 	// runs interactive learning on given node
@@ -1597,11 +1624,10 @@ public void fillInQuizProblem(String problemName) {
 	public void runInteractiveLearning(ProblemNode currentNode,
 			boolean startWithActivations) {
 		
-			
 //		int numStepsPerformed = 0;
 		this.numStepsPerformed = 0;
 		int numStepsBrd = isRunningFromBrd() ? brdDepth() : -1;
-//		boolean killMessageReceived = false; // whether a message to kill the IL
+		this.killMessageReceived = false; // whether a message to kill the IL
 												// thread has been received
 		boolean activations = startWithActivations; // whether to gather
 													// activation list
@@ -1609,33 +1635,36 @@ public void fillInQuizProblem(String problemName) {
 											// been requested on that step
 		String lastInputExplained = null;
 		String lastSkillExplained = null;
-
 		
 		initModelTracerForProblem();
-		
-		
+
+
 		long unixTime = System.currentTimeMillis() / 1000L;
 		simSt.instructionIdentifierStem=String.valueOf(unixTime);
 		previousPositiveInstructionID="start:"+ getBrController(getSimSt()).getProblemName();
-		
+
 		getBrController(getSimSt()).getMissController().getSimSt().hintRequest=false;
 		this.previousType=currentType;
 		String problem=getBrController(getSimSt()).getProblemName();
 		ProblemAssessor assessor = new AlgebraProblemAssessor();
 	    currentType=assessor.classifyProblem(problem);
 	    setAskedExplanation(false);
-		
+	    ProblemModel pm = getBrController(getSimSt()).getProblemModel();
+
 		// when running not from a BRD, it never gets "done" - reaching a done
 		// state breaks out of loop
+
 		while ((!isRunningFromBrd() || this.numStepsPerformed != numStepsBrd || getBrController(getSimSt()).getMissController().isBatchModeOn()) && !this.killMessageReceived) {
 
+			already_suggested_skillname = new ArrayList<String>();
+			bq_scope = false;
 			if (getBrController(getSimSt()).getMissController().isPLEon())
-				getBrController(getSimSt()).getMissController().getSimStPLE().getConversation().setBehaviourDiscrepency(false);	
-			 
-						
+				getBrController(getSimSt()).getMissController().getSimStPLE().getConversation().setBehaviourDiscrepency(false);
+
+
 			askedExplanation = false;
 			/*step = simSt.getProblemAssessor().calcProblemStepString(currentNode.getProblemModel().getStartNode(), currentNode,simSt.getLastSkillOperand());
-			
+
 			simSt.setProblemStepString(step);
 			if (logger.getLoggingEnabled())
 					logger.simStLog(SimStLogger.SIM_STUDENT_STEP, SimStLogger.STEP_STARTED_ACTION, step, "", "");
@@ -1643,17 +1672,18 @@ public void fillInQuizProblem(String problemName) {
 			// used to calculate time for full step
 //			long stepStartTime = Calendar.getInstance().getTimeInMillis();
 			stepStartTime = Calendar.getInstance().getTimeInMillis();*/
-			
+
 //			calculateFullStepTime(step, stepStartTime, currentNode);
 			calculateFullStepTime(currentNode);
-			
+
 			if (trace.getDebugCode("ss"))
 				trace.out("ss","----------------" + step + " IL: "+ simSt.isInteractiveLearning());
 			// Set SimStudent to thinking
-			
-			if (getBrController(getSimSt()).getMissController().isPLEon() && !isTakingQuiz())
+
+			if (getBrController(getSimSt()).getMissController().isPLEon() && !isTakingQuiz()) {
 				getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarThinking();
-			
+			}
+
 			ProblemNode nextCurrentNode = null;
 
 			// Should gather activation list
@@ -1661,19 +1691,30 @@ public void fillInQuizProblem(String problemName) {
 				long activationListStartTime = Calendar.getInstance()
 						.getTimeInMillis();
 
-				/*kept ony for miss output*/
+				/*kept only for miss output*/
+				// This line was there but it was never used for any purpose except for the trace on line no 1715. Tasmia.
 				Vector activationList = simSt.gatherActivationList(currentNode);
-				// activationList outputs [MAIN::subtract] or [MAIN::divide] and so on
-				//Collection<RuleActivationNode> activList = simSt.createOrderedActivationList(activationList);
+
+				VariableTable vt = currentNode.getProblemModel().getVariableTable();
+				String[] vtKeys = vt.keySet().toArray( new String[ vt.size() ] );
+				if(vtKeys.length >= 2) {
+					String cur_foa_1 = vtKeys[ vtKeys.length - 2 ];
+					String cur_foa_2 = vtKeys[ vtKeys.length - 1 ];
+					//System.out.println(cur_foa_1+" "+cur_foa_2);
+					current_foas.clear();
+					current_foas.add(cur_foa_1);
+					current_foas.add(cur_foa_2);
+
+				}
 
 				Collection<RuleActivationNode> activList=getActivations(currentNode);
-				
+
 				/*
 				 * SimStudent only logs the production rule activation list
 				 * if it is learning interactively
-				 */	
+				 */
 				if (simSt.isInteractiveLearning()) {
-					if (trace.getDebugCode("miss"))
+					if (trace.getDebugCode("miss")) // Referring to this trace
 						trace.out("miss", "activationList for Problem = " + getBrController(getSimSt()).getProblemModel().getProblemName() + " >> " + activationList);
 
 					int activationListDuration = (int) ((Calendar.getInstance().getTimeInMillis() - activationListStartTime)/1000);
@@ -1681,29 +1722,31 @@ public void fillInQuizProblem(String problemName) {
 					if (logger.getLoggingEnabled()) {
 						logger.simStLog(SimStLogger.SIM_STUDENT_LEARNING,SimStLogger.ACTIVATION_RULES_ACTION, step,activList.size() + " rules found", "",activationListDuration);
 						int count = 0;
-						
-						//	hint = new AskHintInBuiltClAlgebraTutor(brController, currentNode);	
+
+						//	hint = new AskHintInBuiltClAlgebraTutor(brController, currentNode);
 						//CL oracle must not be hardcoded! Whichever oracle grades the quiz should provide hint for logging
 		       			hint = simSt.askForHintQuizGradingOracle(getBrController(getSimSt()),currentNode);
-	
-		       			
-						
+
+
+
 						for (RuleActivationNode ran : activList) {
+							already_suggested_skillname.add(ran.getName().replace("MAIN::", ""));
+							//current_foas = ran.getRuleFoas();
 							trace.out(ran.getActualSelection()+" : "+ran.getActualAction()+" : "+ran.getActualInput());
 							// we got "dorminTable3_C1R1 : UpdateTable : divide 3" for 3x_6 problem name
 							Sai sai = new Sai(ran.getActualSelection(), ran.getActualAction(), ran.getActualInput());
 							if (!sai.getI().equals("NotSpecified") && !sai.getI().equals("FALSE")) {
 								ran.setAgendaIndex(count);
-						
+
 								logger.simStLog(SimStLogger.SIM_STUDENT_LEARNING,SimStLogger.ACTIVATION_RULE_ACTION,step, "" + count, "", sai, currentNode,hint.getSelection(), hint.getAction(),hint.getInput());
 								count++;
 							}
 						}
 					}
-				 	
+
 
 					nextCurrentNode = inspectAgendaRuleActivations(currentNode,activList);
-				
+
 				/*	// Get an explanation for why the last activation didn't work
 					if (nextCurrentNode == null && !isTakingQuiz() && !askedExplanation) {
 						for (RuleActivationNode ran : activList) {
@@ -1724,18 +1767,15 @@ public void fillInQuizProblem(String problemName) {
 							}
 							lastInputExplained = ran.getActualInput();
 							lastSkillExplained = ran.getName();
-						
+
 							explainWhyWrong(ran);
 							askedExplanation = true;
-							
+
 							break;
 						}
 					}*/
 				}
 			}
-
-			// only the first step of activations can be skipped
-			activations = true;
 
 			// Finish SimStudent thinking
 			if (getBrController(getSimSt()).getMissController().isPLEon() && !isTakingQuiz())
@@ -1748,84 +1788,101 @@ public void fillInQuizProblem(String problemName) {
 			//
 			// Null nextCurrentNode means that no step was performed correctly
 			if (nextCurrentNode == null && !isTakingQuiz() && currentNode != null) {
-				
+
 				/*check for any inconsistancies between quiz and tutoring */
 				if (getBrController(getSimSt()).getMissController().isPLEon())
-					getBrController(getSimSt()).getMissController().getSimStPLE().checkForQuizTutoringBehaviourDiscrepency(brController.getProblemName(),null);	
-				
+					getBrController(getSimSt()).getMissController().getSimStPLE().checkForQuizTutoringBehaviourDiscrepency(brController.getProblemName(),null);
+
 				// Tasmia added code starts here
-				//if(simSt.isCTIInitialInquiryMode()) 
 				{
-					// Ask if tutor knows what to do next so that there opens an opportunity 
+					// Ask if tutor knows what to do next so that there opens an opportunity
 					// for the tutee to ask initial tutee inquiry when tutor is also stuck.
 					String title = SimStConversation.ASKING_IF_TUTOR_KNOWS_STEP_TOPIC;
-					//String message = "I am stuck. Do you know what step to perform next?";
 					SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();
 					String message = ple.getConversation().getMessage(SimStConversation.ASKING_IF_TUTOR_KNOWS_STEP_TOPIC);
-					int oracle = getSimSt().displayConfirmMessage(title,message);
-					// setting avatar to normal mode.
-					getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
+					int oracle = JOptionPane.YES_OPTION;
+					if (activations)
+						oracle = getSimSt().displayConfirmMessage(title,message);
+					// Set avatar asking
+					if(!runType.equals("springBoot")) {
+						if (getBrController(getSimSt()).getMissController().isPLEon() && !isTakingQuiz())
+							ple.setAvatarAsking();
+							//ple.setAvatarThinking();
+					}
+
 					if (oracle == JOptionPane.YES_OPTION) {
 						// ask for the demonstration of the step.
+						ple.blockInput(false);
+						// String custom_message = activations ? null : ple.getConversation().getMessage(SimStConversation.POST_UNDO);
+						// nextCurrentNode = askWhatToDoNext(currentNode, custom_message);
 						nextCurrentNode = askWhatToDoNext(currentNode);
 						hintReceived = true;
 			       	}
 					else {
 						// Tutor is  confused and don't know what to do next.
-						// Ask the initial tutee inquiry when tutor does not know what to do next.
-						if(getSimSt().isNearSimilarProblemsGetterDefined()) {
-							 NearSimilarProblemsGetter nspg = getSimSt().getNearSimilarProblemsGetter();
-							 ArrayList<String> similar_problems = nspg.nearSimilarProblemsGetter(currentNode);       
-							 for(int i=0; i<similar_problems.size(); i++) {
-									ProblemNode similarNode = currentNode;
-									similarNode.setName(similar_problems.get(i));
-									Collection<RuleActivationNode> activList_2=getActivations(similarNode, true);
-									if(activList_2 != null) {
-										for (RuleActivationNode ran : activList_2) {
-											String logic = ruleApplicationLogic(similarNode,ran); // need to make this domain independent by using getter
-											if(logic == "") {
-												logic = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_QUESTION_WHEN_NO_FEATURE_FOUND_TOPIC);
-												askBrainstormingQuestion(logic, false);
-											}
-											else {
-												// we would need the explanation to check for transformation for further followup
-												Sai s_a_i = getSai(ran); // dorminTable3_C1R1, UpdateTable, divide 3
-												String problem_name = similarNode.getName().replace("_", "=");
-												String msg = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_QUESTION_TOPIC,s_a_i.getI(),problem_name,logic);
-												String explanation = askBrainstormingQuestion(msg, true);
-											}
-											// Need to implement listener for nextNode just like askWhatToDoNext. 
-											currentNode.setName(problem);
-											//nextCurrentNode = brainstormWhatToDoNext(currentNode);
-											nextCurrentNode = askWhatToDoNext(currentNode);
-											hintReceived = true;
-											if (trace.getDebugCode("ss"))
-												trace.out("ss", "CallingbrainstormWhatToDoNext  "
-														+ "currentNode: " + currentNode
-														+ " nextCurrentNode: " + nextCurrentNode);
-										}
-										break;
-									}
-									
-									
+						if(simSt.isCTIFollowupInquiryMode()){
+							// Set SimStudent to thinking brainstorming questions
+							bq_scope = true;
+							String brainstorming_thinking = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_THINKING_TOPIC);
+							if(!runType.equals("springBoot")) {
+								if (getBrController(getSimSt()).getMissController().isPLEon() && !isTakingQuiz())
+									getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarThinking(brainstorming_thinking);
+							}
+							//askBrainstormingQuestion(brainstorming_thinking, false);
+							String ruleNickName = null, ruleName = null;
+							while(ruleNickName == null) {
+								AskHintJessOracle mr_w_hint = new AskHintJessOracle(brController,currentNode);
+								ruleName = mr_w_hint.getRuleName();
+								ruleNickName = ple.getSkillNickName(ruleName);
+								String mr_w_suggestion = ple.getConversation().getMessage(SimStConversation.MR_WILLIAMS_SUGGESTION_TOPIC);
+								mr_w_suggestion = mr_w_suggestion.replace("<ruleNickName>", ruleNickName);
+//								ple.getSimStPeerTutoringPlatform().showMetaTutorTrigger(mr_w_suggestion, ruleNickName, logger);
+								ple.giveMessageRequiringAttention("[ Press the Continue button to continue ]");
+								ple.giveMessage(mr_w_suggestion, "Mr. Williams");
+								ple.giveMessageRequiringAttention("[ Press the Continue button to continue ]");
+							}
+							
+							getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
+							
+							// Checking if rule contradicts or not.
+							if(hintHasContradiction(ruleName)) {
+								String rule_not_applied_logic = ruleNotApplicationLogic(currentNode,ruleName);
+								if(rule_not_applied_logic == "") {
+									rule_not_applied_logic = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_LOGIC_WHEN_NO_FEATURE_FOUND_TOPIC);
+									followupAfterMrWTrigger(currentNode, rule_not_applied_logic, ruleNickName, false);
 								}
-						 }
-						 else {
-							String logic = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_QUESTION_WHEN_NO_FEATURE_FOUND_TOPIC);
-							askBrainstormingQuestion(logic, false);
-							nextCurrentNode = askWhatToDoNext(currentNode);
+								else {
+									followupAfterMrWTrigger(currentNode, rule_not_applied_logic, ruleNickName, true);
+								}
+							}
+							getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
+							String thank_mr_williams = ple.getConversation().getMessage(SimStConversation.THANK_MR_WILLIAMS);
+							String show_next_after_hint = ple.getConversation().getMessage(SimStConversation.SHOW_NEXT_AFTER_HINT);
+							ple.giveMessage(thank_mr_williams);
+							try {
+								Thread.sleep(1000);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							nextCurrentNode = askWhatToDoNext(currentNode, show_next_after_hint);
 							hintReceived = true;
-							if (trace.getDebugCode("ss"))
-								trace.out("ss", "CallingbrainstormWhatToDoNext  "
-										+ "currentNode: " + currentNode
-										+ " nextCurrentNode: " + nextCurrentNode);
-						 }
-						
-						
+							
+							this.askStudentToSummarize();
+							askedExplanation = true;
+							simSt.displayMessage("Tutee acknowledging summarization", ple.getConversation().getMessage(SimStConversation.ACKNOWLEDGING_SUMMARIZATION_TOPIC));
+				        	getSimSt().getMissController().getSimStPLE().setAvatarNormal();
+						}
+						else {
+							ple.blockInput(false);
+							String stuck_msg = ple.getConversation().getMessage(SimStConversation.BOTH_STUCK_TOPIC);
+							nextCurrentNode = askWhatToDoNext(currentNode, stuck_msg);
+							hintReceived = true;
+						}
+
 					}
 				}
-				
-				
+
 				/*// Previous code intact start
 				nextCurrentNode = askWhatToDoNext(currentNode);
 				hintReceived = true;
@@ -1834,14 +1891,17 @@ public void fillInQuizProblem(String problemName) {
 							+ "currentNode: " + currentNode
 							+ " nextCurrentNode: " + nextCurrentNode);
 				// Previous code ends */
-				
+
 			}
+			
+			// only the first step of activations can be skipped
+			activations = true;
 
 			// Null nextCurrentNode after the Oracle inquiry means that the user
-			// initiated a new problem			
+			// initiated a new problem
 			if (nextCurrentNode != null) {
 
-				if (!askedExplanation && hintReceived)
+				if (!askedExplanation && hintReceived && !askStudentToUndo)
 					explainWhyRight(nextCurrentNode);
 
 				// update currentNode
@@ -1859,28 +1919,37 @@ public void fillInQuizProblem(String problemName) {
 //			logger.simStLog(SimStLogger.SIM_STUDENT_STEP,
 //					SimStLogger.STEP_COMPLETED_ACTION, step, "", "",
 //					stepDuration);
-	
+
+			// Undo after tutor expressed there was a mistake on their part. No longer required
+			/*if (askStudentToUndo) {
+				String undo_msg = getBrController(getSimSt()).getMissController().getSimStPLE().getConversation().getMessage(SimStConversation.BRAINSTORMING_FOLLOWUP_MISTAKE_REALIZATION_TOPIC);
+				getBrController(getSimSt()).getMissController().getSimStPLE().blockInput(true);
+				simSt.getMissController().getSimStPLE().getSimStPeerTutoringPlatform().setUndoButtonEnabled(true);
+				getSimSt().getMissController().getSimStPLE().giveMessage(undo_msg);
+				this.askStudentToUndo = false;
+				return;
+			}*/
 
 
 			// Do not continue after done state
 			if (currentNode.getDoneState()) {
 				doneNodeState();
 				// check if the answer is right
-//				String solution = simSt.getProblemAssessor().determineSolution(getBrController(getSimSt()).getProblemModel().getProblemName(),brController.getProblemModel().getStartNode());	
+//				String solution = simSt.getProblemAssessor().determineSolution(getBrController(getSimSt()).getProblemModel().getProblemName(),brController.getProblemModel().getStartNode());
 //				boolean correct = simSt.getProblemAssessor().isSolution( getBrController(getSimSt()).getProblemModel().getProblemName(), solution);
-				/*solution = simSt.getProblemAssessor().determineSolution(getBrController(getSimSt()).getProblemModel().getProblemName(),brController.getProblemModel().getStartNode());	
+				/*solution = simSt.getProblemAssessor().determineSolution(getBrController(getSimSt()).getProblemModel().getProblemName(),brController.getProblemModel().getStartNode());
 				setSolution(solution);
 				correct = simSt.getProblemAssessor().isSolution( getBrController(getSimSt()).getProblemModel().getProblemName(), solution);
 				setCorrect(correct);
-				
+
 //				If solution checking failed, then log the reason of failing
 				if (solution.length()<2 && getBrController(getSimSt()).getMissController().isPLEon()){
-					logger.simStLog(SimStLogger.SIM_STUDENT_STEP,SimStLogger.SOLUTION_CHECKING_FAILED, "", "");	
+					logger.simStLog(SimStLogger.SIM_STUDENT_STEP,SimStLogger.SOLUTION_CHECKING_FAILED, "", "");
 //				    String title=  brController.getStudentInterface().getActiveWindow().getTitle();
 //					title=title+"*";
-//				
+//
 //					brController.getStudentInterface().getActiveWindow().setTitle(title);
-//				
+//
 //					JFrame topFrame=null;
 //					try{
 //						topFrame = (JFrame) SwingUtilities.getWindowAncestor(brController.getStudentInterface().getTutorPanel());
@@ -1889,26 +1958,26 @@ public void fillInQuizProblem(String problemName) {
 //						topFrame.setTitle(title);
 //					}
 //					catch(Exception ex){
-//						
-//					}				
-					
+//
+//					}
+
 				}
-				
-				
-				
+
+
+
 				if (simSt.isSsMetaTutorMode()){
 					//System.out.println(" Setting the tutored Corectness : "+correct);
 					getBrController(getSimSt()).getMissController().getSimSt().getModelTraceWM().setTutoredProblemCorrectness(correct);
 
 				}
-				
+
 				// log problem done
-				
-				
+
+
 				//System.out.println("  end :  "+Calendar.getInstance().getTimeInMillis()+"  start " + getProblemStartTime());
-			
+
 				int problemDuration = (int) ((Calendar.getInstance().getTimeInMillis() - getProblemStartTime())/1000);
-				
+
 
 				logger.simStLog(SimStLogger.SIM_STUDENT_PROBLEM, SimStLogger.PROBLEM_DONE_ACTION, simSt.getProblemStepString(), "", "", problemDuration);
 				logger.simStLog(SimStLogger.SIM_STUDENT_PROBLEM, SimStLogger.PROBLEM_ANSWER_SUBMIT_ACTION, new Sai("Answer", "Submit", solution), correct);
@@ -1921,30 +1990,30 @@ public void fillInQuizProblem(String problemName) {
 					// conversation about double-checking work
 					if (trace.getDebugCode("rr"))
 						trace.out("rr", "Calling checkAnswer: " + getBrController(getSimSt()).getProblemName() + " solution: " + solution + " correct: " + correct);
-					
+
 					boolean verified = checkAnswer(getBrController(getSimSt()).getProblemName(), solution, correct);
 					if (trace.getDebugCode("rr")) trace.out("rr", "Called checkAnswer: verified " + verified);
 
 					if (!verified && simSt.isSsMetaTutorMode())
 						 simSt.getModelTraceWM().setSolutionCheckError("true");
-					
-					
-					
+
+
+
 					if (getBrController(getSimSt()).getMissController().getSimSt().isSsMetaTutorMode()){
 						simSt.getModelTraceWM().setSolutionGiven("true");
 						simSt.getModelTraceWM().setSolutionSteps(this.numStepsPerformed);
-					
+
 						if (!getBrController(getSimSt()).getMissController().getSimSt().hintRequest  ){
 							int count=getBrController(getSimSt()).getMissController().getSimSt().getModelTraceWM().getTutoredProblemsWithoutHint();
 							getBrController(getSimSt()).getMissController().getSimSt().getModelTraceWM().setTutoredProblemsWithoutHint(++count);
 						}else{
 							getBrController(getSimSt()).getMissController().getSimSt().getModelTraceWM().setTutoredProblemsWithoutHint(0);
 						}
-								
-						
+
+
 					}
-			
-					
+
+
 					if (getBrController(getSimSt()).getMissController() != null
 							&& getBrController(getSimSt()).getMissController().getSimSt() != null
 							&& getBrController(getSimSt()).getMissController().getSimSt()
@@ -1967,23 +2036,23 @@ public void fillInQuizProblem(String problemName) {
 					else if (getBrController(getSimSt()).getMissController().isPLEon())
 						getBrController(getSimSt()).getMissController().getSimStPLE()
 								.setAvatarFinishedWrong();
-					
-	
+
+
 					if (simSt.isSsMetaTutorMode())
 						getBrController(getSimSt()).getAmt().handleInterfaceAction("solved", "implicit", "-1");*/
 				}
 				break;
 			}
 		}
-		
+
 		pruneBadRules();
 		///brController.getMissController().getSimSt().getModelTraceWM().setSolved("false");
 	}
-	
+
 	public boolean isDoneState() {
 		return this.currentNode.isDoneState();
 	}
-	
+
 	public void calculateFullStepTime(ProblemNode currentNode) {
 		step = simSt.getProblemAssessor().calcProblemStepString(currentNode.getProblemModel().getStartNode(), currentNode,simSt.getLastSkillOperand());
 		setStep(step);
@@ -1996,7 +2065,7 @@ public void fillInQuizProblem(String problemName) {
 		stepStartTime = Calendar.getInstance().getTimeInMillis();
 		setStepStartTime(stepStartTime);
 	}
-	
+
 	public void applyNodeInstructions(ProblemNode currentNode) {
 		try {
 			// Apply instructions for selected next node
@@ -2009,28 +2078,28 @@ public void fillInQuizProblem(String problemName) {
 			logger.simStLogException(e, "setCurrentNode2 to "+ currentNode + " failed");
 		}
 		this.numStepsPerformed++;
-		
+
 		if (currentNode.getIncomingEdges().size() > 0) {
 			ProblemEdge edge = (ProblemEdge) currentNode.getIncomingEdges().get(0);
 			String input = edge.getInput();
-			
+
 			// update skillname on transformation steps
 		// 	if (EqFeaturePredicate
 		//			.isValidSimpleSkill(input.split(" ")[0])) {
 		//		simSt.setLastSkillOperand(input);
 		//	}
-	
+
 			// invoking the valid skill checker to see if input is a valid skill
 			if (FeaturePredicate
 					.isSkillValid(input.split(" ")[0])) {
 				simSt.setLastSkillOperand(input);
 			}
-			
-			
+
+
 			// Update undo button to mention last completed step
 			if(!runType.equals("springBoot")) {
 				if (getBrController(getSimSt()).getMissController().isPLEon()) {
-					
+
 					final SimStPeerTutoringPlatform platform = getBrController(getSimSt())
 						.getMissController().getSimStPLE()
 						.getSimStPeerTutoringPlatform();
@@ -2043,7 +2112,7 @@ public void fillInQuizProblem(String problemName) {
 									.getUndoButtonTitleString("done"));
 							}
 						});
-						
+
 					} else {
 						final String undoText = getBrController(getSimSt())
 							.getMissController().getSimStPLE()
@@ -2058,7 +2127,11 @@ public void fillInQuizProblem(String problemName) {
 			}
 		}
 	}
-	
+
+	public void setkillMessageReceived(boolean b) {
+		this.killMessageReceived = b;
+	}
+
 	public void stopLearningProblem() {
 		this.killMessageReceived = true;
 		if (!getSimSt().isSsBatchMode()&& !getSimSt().isInteractiveLearning()&& !getSimSt().isNonInteractiveLearning()) {
@@ -2078,7 +2151,7 @@ public void fillInQuizProblem(String problemName) {
 			}
 		}
 	}
-	
+
 	public void calculateLogSteps(String step, long stepStartTime) {
 		int stepDuration = (int) ((Calendar.getInstance().getTimeInMillis() - stepStartTime)/1000);
 		step = getBrController(getSimSt()).getMissController().getSimSt()
@@ -2087,7 +2160,7 @@ public void fillInQuizProblem(String problemName) {
 				SimStLogger.STEP_COMPLETED_ACTION, step, "", "",
 				stepDuration);
 	}
-	
+
 	public String problemStepName() {
 		String problemName = getBrController(getSimSt()).getProblemModel().getProblemName();
 		if(runType.equals("SpringBoot")) {
@@ -2095,7 +2168,7 @@ public void fillInQuizProblem(String problemName) {
 		}
 		return problemName;
 	}
-	
+
 	public ProblemNode problemStartNode() {
 		ProblemNode startNode = brController.getProblemModel().getStartNode();
 		if(runType.equals("SpringBoot")) {
@@ -2103,23 +2176,23 @@ public void fillInQuizProblem(String problemName) {
 		}
 		return startNode;
 	}
-	
+
 	public void doneNodeState() {
-//		solution = simSt.getProblemAssessor().determineSolution(getBrController(getSimSt()).getProblemModel().getProblemName(),brController.getProblemModel().getStartNode());	
-		solution = simSt.getProblemAssessor().determineSolution(problemStepName(),problemStartNode());	
+//		solution = simSt.getProblemAssessor().determineSolution(getBrController(getSimSt()).getProblemModel().getProblemName(),brController.getProblemModel().getStartNode());
+		solution = simSt.getProblemAssessor().determineSolution(problemStepName(),problemStartNode());
 		setSolution(solution);
 //		correct = simSt.getProblemAssessor().isSolution( getBrController(getSimSt()).getProblemModel().getProblemName(), solution);
 		correct = simSt.getProblemAssessor().isSolution( problemStepName(), solution);
 		setCorrect(correct);
-		
+
 //		If solution checking failed, then log the reason of failing
 		if (solution.length()<2 && getBrController(getSimSt()).getMissController().isPLEon()){
-			logger.simStLog(SimStLogger.SIM_STUDENT_STEP,SimStLogger.SOLUTION_CHECKING_FAILED, "", "");	
+			logger.simStLog(SimStLogger.SIM_STUDENT_STEP,SimStLogger.SOLUTION_CHECKING_FAILED, "", "");
 //		    String title=  brController.getStudentInterface().getActiveWindow().getTitle();
 //			title=title+"*";
-//		
+//
 //			brController.getStudentInterface().getActiveWindow().setTitle(title);
-//		
+//
 //			JFrame topFrame=null;
 //			try{
 //				topFrame = (JFrame) SwingUtilities.getWindowAncestor(brController.getStudentInterface().getTutorPanel());
@@ -2128,46 +2201,46 @@ public void fillInQuizProblem(String problemName) {
 //				topFrame.setTitle(title);
 //			}
 //			catch(Exception ex){
-//				
-//			}				
-			
+//
+//			}
+
 		}
-		
-		
-		
+
+
+
 		if (simSt.isSsMetaTutorMode()){
 			//System.out.println(" Setting the tutored Corectness : "+correct);
 			getBrController(getSimSt()).getMissController().getSimSt().getModelTraceWM().setTutoredProblemCorrectness(correct);
 
 		}
-		
+
 		// log problem done
-		
-		
+
+
 		//System.out.println("  end :  "+Calendar.getInstance().getTimeInMillis()+"  start " + getProblemStartTime());
-	
+
 		int problemDuration = (int) ((Calendar.getInstance().getTimeInMillis() - getProblemStartTime())/1000);
-		
+
 
 		logger.simStLog(SimStLogger.SIM_STUDENT_PROBLEM, SimStLogger.PROBLEM_DONE_ACTION, simSt.getProblemStepString(), "", "", problemDuration);
 		logger.simStLog(SimStLogger.SIM_STUDENT_PROBLEM, SimStLogger.PROBLEM_ANSWER_SUBMIT_ACTION, new Sai("Answer", "Submit", solution), correct);
 
 	}
-	
+
 	public void takingQuiz(String solution, boolean correct) {
 		simSt.setIsInteractiveLearning(false);
 		// conversation about double-checking work
 		if (trace.getDebugCode("rr"))
 			trace.out("rr", "Calling checkAnswer: " + getBrController(getSimSt()).getProblemName() + " solution: " + solution);
-		
+
 		boolean verified = checkAnswer(getBrController(getSimSt()).getProblemName(), solution);
-		
+
 		logAndModelTraceAnswer(verified);
 	}
 
 	public String currentType="";
 	public String previousType="";
-	
+
 	public boolean shouldCheckAnswer() {
 		boolean doCheck = false;
 		if (simSt.isSelfExplainMode() && getBrController(getSimSt()).getMissController().isPLEon()) {
@@ -2178,7 +2251,7 @@ public void fillInQuizProblem(String problemName) {
 		}
 		return doCheck;
 	}
-	
+
 	private boolean checkAnswer(String problem, String solution) {
 		boolean doCheck = shouldCheckAnswer();
 
@@ -2191,17 +2264,17 @@ public void fillInQuizProblem(String problemName) {
 		} else
 			return true;
 	}
-	
+
 	public void logAndModelTraceAnswer(boolean verified) {
 		if (trace.getDebugCode("rr")) trace.out("rr", "Called checkAnswer: verified " + verified);
 
 		if (!verified && simSt.isSsMetaTutorMode())
 			 simSt.getModelTraceWM().setSolutionCheckError("true");
-		
+
 		if (getBrController(getSimSt()).getMissController().getSimSt().isSsMetaTutorMode()){
 			simSt.getModelTraceWM().setSolutionGiven("true");
 			simSt.getModelTraceWM().setSolutionSteps(this.numStepsPerformed);
-		
+
 			if (!getBrController(getSimSt()).getMissController().getSimSt().hintRequest  ){
 				int count=getBrController(getSimSt()).getMissController().getSimSt().getModelTraceWM().getTutoredProblemsWithoutHint();
 				getBrController(getSimSt()).getMissController().getSimSt().getModelTraceWM().setTutoredProblemsWithoutHint(++count);
@@ -2209,7 +2282,7 @@ public void fillInQuizProblem(String problemName) {
 				getBrController(getSimSt()).getMissController().getSimSt().getModelTraceWM().setTutoredProblemsWithoutHint(0);
 			}
 		}
-		
+
 		if (getBrController(getSimSt()).getMissController() != null
 				&& getBrController(getSimSt()).getMissController().getSimSt() != null
 				&& getBrController(getSimSt()).getMissController().getSimSt()
@@ -2235,7 +2308,7 @@ public void fillInQuizProblem(String problemName) {
 		if (simSt.isSsMetaTutorMode())
 			getBrController(getSimSt()).getAmt().handleInterfaceAction("solved", "implicit", "-1");
 	}
-	
+
 	public List<String> getAnswerCheckMessages(String problem, String solution) {
 		SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();
 		return simSt.getProblemAssessor().getInteractiveAnswerCheckMessages(ple, problem, solution);
@@ -2289,16 +2362,16 @@ public void fillInQuizProblem(String problemName) {
 			Collection<RuleActivationNode> activationList) {
 
 
-	
-		
+
+
 		nextCurrentNode = null;
 		ProblemNode successiveNode = null;
 		// ProblemNode backupNode = null;
 		backupRan = null;
 		ruleQueryCounter=0;
 		firstStategy=ASK_UNINITIALIZED;
-		
-		
+
+
 		// Tracks all activation rules looked at, but nothing is currently done
 		// to display this info
 		String listAssessment = "";
@@ -2312,7 +2385,7 @@ public void fillInQuizProblem(String problemName) {
 			if (!cont)
 				break;
 		}
-		
+
 		listAssessment = listAssessmentBuilder.toString();
 
 		// if we've gotten through all the nodes and have a backup for the quiz
@@ -2327,13 +2400,13 @@ public void fillInQuizProblem(String problemName) {
 					trace.out("miss", "Backup used:");
 			} else {
 				listAssessment += "Not backup used\n";
-			}	
+			}
 		} else {
 			// TODO handle backup option for the quiz for spring boot
 		}
 		return nextCurrentNode;
 	}
-	
+
 	public boolean inspectAgendaRuleActivation(ProblemNode currentNode, RuleActivationNode ran, ProblemNode successiveNode, int totalActivations, StringBuilder listAssessmentBuilder) {
 		// RuleActivationNode ran = (RuleActivationNode)
 		// activationList.get(i);
@@ -2343,7 +2416,7 @@ public void fillInQuizProblem(String problemName) {
 			trace.out("miss","Input with selection " + ran.getActualSelection() + "with FALSE selection detected....moving on to next.");
 			return true;
 		}
-		
+
 		/*Check for any inconsistencies between tutoring and quiz*/
 		if (getBrController(getSimSt()).getMissController().isPLEon())
 			getBrController(getSimSt()).getMissController().getSimStPLE().checkForQuizTutoringBehaviourDiscrepency(brController.getProblemName(),ran);
@@ -2351,9 +2424,9 @@ public void fillInQuizProblem(String problemName) {
 		if (!runType.equalsIgnoreCase("SpringBoot"))
 			successiveNode = inspectRuleActivation(currentNode, ran, null);
 		ruleQueryCounter++;
-		
+
 		if (successiveNode != null) {
-			
+
 			// On the quiz, we want to maintain a backup answer to use if
 			// none of them are correct
 			if (nextCurrentNode == null && isTakingQuiz()) {
@@ -2416,14 +2489,15 @@ public void fillInQuizProblem(String problemName) {
 			}
 		}
 		else {
-			if (!isTakingQuiz() && !ran.getActualInput().equalsIgnoreCase("FALSE") && !ran.getActualInput().equalsIgnoreCase(MTRete.NOT_SPECIFIED)){				
+			if (!isTakingQuiz() && !ran.getActualInput().equalsIgnoreCase("FALSE") && !ran.getActualInput().equalsIgnoreCase(MTRete.NOT_SPECIFIED)){
 					if (ruleQueryCounter==1){
 						setFirstRanStudentSaidNo(ran);
 						firstStategy=firstStrategyToAskSelfExplQ(totalActivations);
 					}
-					
+
 					if ((firstStategy==ASK_IMMEDIATELY || (firstStategy==ASK_AFTER_SECOND_NO && ruleQueryCounter==2)) && secondStrategyToAskSelfExplQ(ran)){
 						setLastSkillExplained(getFirstRanStudentSaidNo().getName());
+						if(!runType.equals("springBoot")) explainWhyWrong(getFirstRanStudentSaidNo());
 						// TODO handle explain why queries for spring boot
 					}
 			}
@@ -2438,11 +2512,11 @@ public void fillInQuizProblem(String problemName) {
 	boolean isItOkToAskForSelfExplanationQuestion(RuleActivationNode ran){
 		return (!isTakingQuiz() && !this.getAskedExplanation() && !ran.getActualInput().equalsIgnoreCase("FALSE") && !ran.getActualInput().equalsIgnoreCase(MTRete.NOT_SPECIFIED));
 	}
-	
+
 	boolean askedExplanation=false;
 	void setAskedExplanation(boolean flag){this.askedExplanation=flag;}
 	boolean getAskedExplanation(){return this.askedExplanation;}
-	
+
 	RuleActivationNode firstRanStudentSaidNo;
 	public void setFirstRanStudentSaidNo(RuleActivationNode ran){this.firstRanStudentSaidNo=ran;}
 	public RuleActivationNode getFirstRanStudentSaidNo(){return this.firstRanStudentSaidNo;}
@@ -2450,9 +2524,9 @@ public void fillInQuizProblem(String problemName) {
 	String lastSkillExplained="";
 	public void setLastSkillExplained(String skill){this.lastSkillExplained=skill;}
 	String getLastSkillExplained(){return this.lastSkillExplained;}
-	
+
 	/**
-	 * 2nd strategy to determine if to ask about self explanation question (2nd strategy). 
+	 * 2nd strategy to determine if to ask about self explanation question (2nd strategy).
 	 * With this strategy
 	 * a) never ask for same thing twice in a row
 	 * b) ask only once per problem
@@ -2462,66 +2536,142 @@ public void fillInQuizProblem(String problemName) {
 	 */
 	public boolean secondStrategyToAskSelfExplQ(RuleActivationNode ran){
 	 	Random randomGenerator = new Random();
-	    double number=randomGenerator.nextDouble(); 
+	    double number=randomGenerator.nextDouble();
 		return (!this.getAskedExplanation() /*&& !lastInputExplained.equals(ran.getActualInput())*/ && !lastSkillExplained.equals(ran.getName()) && number > 0.1);
-			
+
 	}
-	
-	
+
+
 	public static int ASK_UNINITIALIZED=-1;
 	public static int ASK_IMMEDIATELY=1;
 	public static int ASK_AFTER_SECOND_NO=2;
 
-	
+
 	/**
-	 * 1st strategy for asking self-explanation questions. 
-	 * Randomly selects if student should: 
+	 * 1st strategy for asking self-explanation questions.
+	 * Randomly selects if student should:
 	 * 1. ask immediately after 1st time student says no
 	 * 2. ask after the 2nd time student says no (question will be about 1st rule)
 	 * @param agendaSize the size of the agenda. Necessary, because we want SELF_EXPL_STRATEGY_AFTER_SECOND_NO to be activated
 	 * 		  only if there is more than one rule in the agenda
-	 * @return
+	 * @returnw
+	 *
 	 */
 	public int firstStrategyToAskSelfExplQ(int agendaSize){
 		int returnValue=ASK_UNINITIALIZED;
 
 		 	Random randomGenerator = new Random();
-		    double number=randomGenerator.nextDouble(); 
+		    double number=randomGenerator.nextDouble();
 		    if( number <= 0.5) {
 		    	returnValue=ASK_IMMEDIATELY;
 		    }
 		    else {
 		    	returnValue=ASK_AFTER_SECOND_NO;
 		    }
-		     
+
 		    /* if selected to ask after second time student said no, then reconsider strategy (50% chance of asking)*/
 		    if (returnValue==ASK_AFTER_SECOND_NO && agendaSize<2){
 		    	returnValue= ASK_IMMEDIATELY;
 		    }
-		    
-		    //Forcing to ask immediately, because PI's suggested so. 
+
+		    //Forcing to ask immediately, because PI's suggested so.
 		    // For asking after 2nd time we need better language (see todo list item 157).
 		    returnValue=ASK_IMMEDIATELY;
 	    return returnValue;
 	}
-	
-	
+
+
 	HashSet<String> explainedWhyRightSkills = new HashSet<String>();
 	HashSet<String> explainedSelectionSkills = new HashSet<String>();
-	
+
 	/**
 	 * Method that returns true if selection is marked in SimStudent configuration file as
 	 * a valid selection for self explanation (selection which SimStudent is allowed to ask self-explanation questions).
 	 * @param selection
 	 * @return
 	 */
-	private boolean isSelectionValidForSelfExplanation(String selection){	
+	private boolean isSelectionValidForSelfExplanation(String selection){
 		return simSt.getBrController().getMissController().getSimStPLE().getValidSelections()!=null && simSt.getBrController().getMissController().getSimStPLE().getValidSelections().contains(selection);
 	}
-		
+
+	private boolean isSelectionValidForBrainstormingQuestions(String selection){
+		return simSt.getBrController().getMissController().getSimStPLE().getValidSelectionsBQ()!=null && simSt.getBrController().getMissController().getSimStPLE().getValidSelectionsBQ().contains(selection);
+	}
+	private boolean isSelectionValidForBothAgreeQuestions(String selection){
+		return simSt.getBrController().getMissController().getSimStPLE().getValidSelectionsBAQ()!=null && simSt.getBrController().getMissController().getSimStPLE().getValidSelectionsBAQ().contains(selection);
+	}
+
+	public boolean followupWhenStuck(ProblemNode currentNode, String logic, String i) {
+
+		String problemStepString = getBrController(getSimSt()).getMissController()
+				.getSimSt().getProblemStepString();
+		tutalkBridge.setProblemName(problemStepString);
+		contextVariables.clear();
+		contextVariables.addVariable("%logic%", logic);
+		contextVariables.addVariable("%i%", i);
+		tutalkBridge.connect("both_stuck_contradiction",
+				contextVariables,
+				SimStLogger.INPUT_WRONG_EXPLAIN_ACTION);
+		while (tutalkBridge.getState() != SimStTutalk.TUTALK_STATE_DONE) {
+			try {
+				Thread.sleep(250);
+			} catch (java.lang.InterruptedException e) {
+				// Nothing we can do here.
+			}
+		}
+		Concept c = tutalkBridge.getLastStatementLabel();
+		if(getSimSt().getMissController().isPLEon() && !c.getLabel().equals("R1"))
+        {
+			this.askStudentToSummarize();
+			this.askedExplanation = true;
+        	getSimSt().getMissController().getSimStPLE().setAvatarNormal();
+        	return false;
+        }
+		else {
+			getSimSt().getMissController().getSimStPLE().setAvatarNormal();
+			return true;
+		}
+	}
+	
+	public void followupAfterMrWTrigger(ProblemNode currentNode, String logic, String i, boolean logic_found) {
+
+		String problemStepString = getBrController(getSimSt()).getMissController()
+				.getSimSt().getProblemStepString();
+		tutalkBridge.setProblemName(problemStepString);
+		contextVariables.clear();
+		if(logic_found) {
+			contextVariables.addVariable("%logic%", logic);
+			contextVariables.addVariable("%i%", i);
+			tutalkBridge.connect("both_stuck_contradiction",
+					contextVariables,
+					SimStLogger.INPUT_WRONG_EXPLAIN_ACTION);
+		}
+		else {
+			contextVariables.addVariable("%i%", i);
+			tutalkBridge.connect("both_stuck_contradiction_no_logic_found",
+					contextVariables,
+					SimStLogger.INPUT_WRONG_EXPLAIN_ACTION);
+		}
+		while (tutalkBridge.getState() != SimStTutalk.TUTALK_STATE_DONE) {
+			try {
+				Thread.sleep(250);
+			} catch (java.lang.InterruptedException e) {
+				// Nothing we can do here.
+			}
+		}
+	}
+
+	public String askStudentToSummarize() {
+		String message = getSimSt().getMissController().getSimStPLE().getConversation().getMessage(SimStConversation.BRAINSTORMING_SUMMARIZE_CONVERSATION);
+		String summary = getSimSt().getMissController().getSimStPLE().giveMessageFreeTextResponse(message);
+		return summary;
+	}
+	
+
+
 	public void explainWhyRight(ProblemNode node) {
-		
-		
+
+
 		ProblemEdge edge = null;
 		if (node.getInDegree() <= 0)
 			return;
@@ -2531,28 +2681,28 @@ public void fillInQuizProblem(String problemName) {
 		String skillName = (String) edge.getEdgeData().getRuleNames()
 				.get(edge.getEdgeData().getRuleNames().size() - 1);
 
-	
+
 		if (trace.getDebugCode("sstt"))
 			trace.out("sstt", "Why right TutalkI Trace skillName:" + skillName
 					+ "SAI = " + edge.getSai().getS() + ";"
 					+ edge.getSai().getA() + ";" + edge.getSai().getI());
-		
-		
-		
+
+
+
 		if (explainedWhyRightSkills==null)
 			explainedWhyRightSkills = new HashSet<String>();
-		
+
 		Random r = new Random();
 	    int probability = r.nextInt(100);
-		
+	    //System.out.println(edge.getSelection());
 		//if (simSt.isSelfExplainMode() && !skillName.contains("typein") && !skillName.contains("unnamed")) {
 		//10/06/2014: now selection is the one that defines if SimStudent should ask for self explanation
-		if (simSt.isSelfExplainMode() && isSelectionValidForSelfExplanation(edge.getSelection()) && !explainedWhyRightSkills.contains(skillName) 
+		if (simSt.isSelfExplainMode() && isSelectionValidForSelfExplanation(edge.getSelection()) && !explainedWhyRightSkills.contains(skillName)
 			&& probability <= CHANCE && !explainedSelectionSkills.contains(edge.getSelection())){
-			
+
 			explainedWhyRightSkills.add(skillName);
 			explainedSelectionSkills.add(edge.getSelection());
-			
+
 			Sai sai = edge.getSai();
 			step = simSt.getProblemStepString();
 
@@ -2614,7 +2764,7 @@ public void fillInQuizProblem(String problemName) {
 			//setExplanationGiven(true);
 			if (getBrController(getSimSt()).getMissController().getSimSt().isSsMetaTutorMode())
 				getBrController(getSimSt()).getAmt().handleInterfaceAction("selfExp", "implicit", "-1");
-			 
+
 			long explainRequestTime = Calendar.getInstance().getTimeInMillis();
 			if (getBrController(getSimSt()).getMissController().getSimStPLE() == null) {
 				explanation = JOptionPane.showInputDialog(null, question,
@@ -2645,7 +2795,7 @@ public void fillInQuizProblem(String problemName) {
 				}
 			}
 
-			
+
 			int explainDuration = (int) (Calendar.getInstance()
 					.getTimeInMillis() - explainRequestTime);
 			step = getBrController(getSimSt()).getMissController().getSimSt()
@@ -2663,13 +2813,12 @@ public void fillInQuizProblem(String problemName) {
 		}
 	}
 
+	public String askBrainstormingQuestionV2(String question, boolean requireResponse) {
 
-	public String askBrainstormingQuestion(String question, boolean requireResponse) {
-		
 		String explanation = "";
 		if (getBrController(getSimSt()).getMissController().getSimSt().isSsMetaTutorMode())
 				getBrController(getSimSt()).getAmt().handleInterfaceAction("selfExp", "implicit", "-1");
-			 
+
 		long explainRequestTime = Calendar.getInstance().getTimeInMillis();
 		if (getBrController(getSimSt()).getMissController().getSimStPLE() == null) {
 				explanation = JOptionPane.showInputDialog(null, question,
@@ -2690,9 +2839,60 @@ public void fillInQuizProblem(String problemName) {
 		return explanation;
 	}
 
-	
+	public String askBrainstormingQuestion(String question, boolean requireResponse) {
+
+		String explanation = "";
+		if (getBrController(getSimSt()).getMissController().getSimSt().isSsMetaTutorMode())
+				getBrController(getSimSt()).getAmt().handleInterfaceAction("selfExp", "implicit", "-1");
+
+		long explainRequestTime = Calendar.getInstance().getTimeInMillis();
+		if (getBrController(getSimSt()).getMissController().getSimStPLE() == null) {
+				explanation = JOptionPane.showInputDialog(null, question,
+						"Please Provide an Explanation",
+						JOptionPane.PLAIN_MESSAGE);
+		} else {
+				SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();
+				if(requireResponse == false) {
+					ple.giveMessage(question);
+				}
+				else {
+					explanation = ple.giveMessageFreeTextResponse(question);
+				}
+		}
+
+		int explainDuration = (int) (Calendar.getInstance()
+					.getTimeInMillis() - explainRequestTime);
+		return explanation;
+	}
+
+	public String askMoreExampleQuestion(String question, boolean requireResponse) {
+		String explanation = "";
+		if (getBrController(getSimSt()).getMissController().getSimSt().isSsMetaTutorMode())
+				getBrController(getSimSt()).getAmt().handleInterfaceAction("selfExp", "implicit", "-1");
+
+		long explainRequestTime = Calendar.getInstance().getTimeInMillis();
+		if (getBrController(getSimSt()).getMissController().getSimStPLE() == null) {
+				explanation = JOptionPane.showInputDialog(null, question,
+						"Please Provide an Explanation",
+						JOptionPane.PLAIN_MESSAGE);
+		} else {
+				SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();
+				if(requireResponse == false) {
+					ple.giveMessage(question);
+				}
+				else {
+					explanation = ple.giveMessageFreeTextResponse(question);
+				}
+		}
+
+		int explainDuration = (int) (Calendar.getInstance()
+					.getTimeInMillis() - explainRequestTime);
+		return explanation;
+	}
+
+
 	public void explainWhyWrong(RuleActivationNode ran) {
-		
+
 		if (simSt.isSelfExplainMode()) {
 
 			Sai sai = new Sai(ran.getActualSelection(), ran.getActualAction(),
@@ -2775,10 +2975,10 @@ public void fillInQuizProblem(String problemName) {
 			 * if(simSt.instructions.get(ruleName) != null) { question =
 			 * simSt.instructionDesc(ruleName, sai, ran.getRuleFoas()); }
 			 */
-			
-			
+
+
 			String explanation = "";
-			
+
 			if (getBrController(getSimSt()).lookupWidgetByName(sai.getS()) != null) {
 				Object widget = getBrController(getSimSt()).lookupWidgetByName(sai.getS());
 				if (widget instanceof JCommTable.TableCell) {
@@ -2805,9 +3005,9 @@ public void fillInQuizProblem(String problemName) {
 				// brController.getMissController().getSimStPLE().giveMessageFreeTextResponse(question);
 				QuestionAnswers qa = ple.getMatchingMistakeExplanation(
 						ruleName, sai, simSt.getProblemStepString(), ran);
-					
+
 				if (qa == null) {
-				
+
 					if (getBrController(getSimSt()).lookupWidgetByName(sai.getS()) != null) {
 						Object widget = getBrController(getSimSt()).lookupWidgetByName(sai
 								.getS());
@@ -2819,40 +3019,40 @@ public void fillInQuizProblem(String problemName) {
 					}
 					return;
 				}
-				
+
 				explainedSelectionSkills.add(sai.getS());
-				Instruction inst=getBrController(getSimSt()).getMissController().getSimSt().getWhyNotInstruction();				
+				Instruction inst=getBrController(getSimSt()).getMissController().getSimSt().getWhyNotInstruction();
 				if (inst.getPreviousID()==null)
 					return;
-				
-				
+
+
 				//System.out.println("***Previous id in instruction is " + inst.getPreviousID());
-				
-				
-				
+
+
+
 				setAskedExplanation(true);
 				setExplanationGiven(true);
 				if (getBrController(getSimSt()).getMissController().getSimSt().isSsMetaTutorMode())
 					getBrController(getSimSt()).getAmt().handleInterfaceAction("selfExp", "implicit", "-1");
-				
+
 				question = qa.getQuestion();
 
-				//Instruction inst=brController.getMissController().getSimSt().getWhyNotInstruction();		
+				//Instruction inst=brController.getMissController().getSimSt().getWhyNotInstruction();
 				AplusSpotlight spotlight=null;//
 				String[] javaVersionElements = System.getProperty("java.version").split("\\.");
 				int major = Integer.parseInt(javaVersionElements[1]);
 
 				if (major>=7)
 					spotlight=new AplusSpotlight(getBrController(getSimSt()).getMissController().getSimStPLE().getSimStPeerTutoringPlatform(), brController.getMissController().getSimStPLE().getSimStPeerTutoringPlatform().getTutoringAvatarPanel(),SimStRememberBubble.RIGHT,null);
-				
+
 				// This part is responsible for showing the contrasting interface prompt.
 				SimStExplainWhyNotDlg whyNotDlg=new SimStExplainWhyNotDlg(getBrController(getSimSt()).getMissController().getSimStPLE().getSimStPeerTutoringPlatform().getStudentInterface() ,brController,sai,inst,question);
-							
+
 				//explanation = ple.giveMessageSelectableResponse(question, qa.getAnswers());
 				explanation = whyNotDlg.giveMessageSelectableResponse(question, qa.getAnswers(),sai.getI());
 
 				//simSt.getModelTraceWM().setSelfExplanation("false");
-				
+
 				if (explanation != null && explanation.length() > 0) {
 					ple.giveMessage(ple.getConversation().getMessage(
 							SimStConversation.CONFIRM_TOPIC));
@@ -2860,12 +3060,12 @@ public void fillInQuizProblem(String problemName) {
 					ple.giveMessage(ple.getConversation().getMessage(
 							SimStConversation.SKIPPED_TOPIC));
 				}
-				
+
 				whyNotDlg.setVisible(false);
 				if (spotlight!=null)
 					spotlight.removeSpotlight();
 			}
-			
+
 			if (getBrController(getSimSt()).lookupWidgetByName(sai.getS()) != null) {
 				Object widget = getBrController(getSimSt()).lookupWidgetByName(sai.getS());
 				if (widget instanceof JCommTable.TableCell) {
@@ -2873,8 +3073,8 @@ public void fillInQuizProblem(String problemName) {
 					((JCommTable.TableCell) widget).setBackground(Color.white);
 				}
 			}
-				
-			
+
+
 
 			int explainDuration = (int) ((Calendar.getInstance().getTimeInMillis() - explainRequestTime)/1000);
 
@@ -2890,79 +3090,266 @@ public void fillInQuizProblem(String problemName) {
 			}
 		}
 	}
-	
-	// This function lets the tutee agent to speak out the rationale behind a production rule 
-	// using the feature predicates
-	public String ruleApplicationLogic(ProblemNode currentNode,
-			RuleActivationNode ran) {
-		// I could have applied <transformation (rule.getName + number)> if I had <feature predicates>.
-		// Do you have any idea on how to reach to that point from this current equation?
-		String logic = "";
-		System.out.println(ran.getName()+" "+currentNode.getName());
-		Rule rule = getSimSt().getRule(ran.getName().replace("MAIN::", ""));
-		if (rule != null) {
-			/*if (rule.getName().contains("typein")) {
-				// Question will be different
-			}
-			else */
-			{
-				ArrayList feature_predicates = rule.getLhsFeatures();
-				ArrayList feature_path = rule.getLhsPath();
-				// if I know to which dormintable element predicate variable maps to,
-				// I can use this code to get LHS getMissController().getSimStPLE().getComponentName(selection)
-				if (feature_predicates.size()<1) return "";
-				Activation act = ran.getActivation();
-				Defrule d = act.getRule();
-				ArrayList<String> node_names = new ArrayList<String>();
-				HashMap predicate_args = new HashMap();
-				for (Iterator it1 = d.getNodes(); it1.hasNext();) {
-		        	String nodeName = it1.next().toString();
-		        	if(nodeName.contains("slot_value")) {
-		        		String[] token_predicate = nodeName.split("slot_value=");
-		        		node_names.add(convertjessPredicatesToJavaClass.getPredicatePart(token_predicate[1].split(";")[0], predicate_args));
-		        	}
-		        }
-				int flag = 0;
-				for(int l=0; l<feature_predicates.size(); l++) {
-					
-					String[] arr_feature_predicates = (String[]) feature_predicates.get(l);
-					
-					for(int m=0; m<arr_feature_predicates.length; m++) {
-						if(flag != 0) logic+= "and";
+
+	// This function lets the tutee agent to speak out the rationale behind a production rule was fired
+		// using the feature predicates
+		public String ruleApplicationLogic(ProblemNode currentNode,
+				RuleActivationNode ran) {
+
+			String logic = "";
+			//System.out.println(ran.getName()+" "+currentNode.getName());
+
+			Rule rule = getSimSt().getRule(ran.getName().replace("MAIN::", ""));
+
+			if (rule != null) {
+				/*if (rule.getName().contains("typein")) {
+					// Question will be different
+				}
+				else */
+				{
+					ArrayList feature_predicates = rule.getLhsFeatures();
+					HashMap variable_foa_map = new HashMap();
+
+					String[] activeFeaturePredicates = getActiveFeaturePredicates(feature_predicates, rule, ran, variable_foa_map);
+					if(activeFeaturePredicates == null) return logic;
+					int flag = 0;
+					for(int m=0; m<activeFeaturePredicates.length; m++) {
+						if(flag != 0) logic+= " and ";
 						else flag = 1;
-						System.out.println(arr_feature_predicates[m]);
-						
-						if(arr_feature_predicates[m].contains("not")) continue;
-						
-						String name = convertjessPredicatesToJavaClass.getPredicatePart(arr_feature_predicates[m]);
-						
-						if(!node_names.contains(name)) continue;
-						String cell_name = convertjessPredicatesToJavaClass.constructWmeElement((String) predicate_args.get(name), feature_path).trim();
 						String wme_content = getBrController(getSimSt()).getMissController()
-								.getSimStPLE().getComponentName(cell_name); 
+								.getSimStPLE().getComponentName((String)variable_foa_map.get(activeFeaturePredicates[m]));
 						//if(flag == 0) logic = "I could have applied "+ rule.getName()+" number for the equation "+currentNode.getName()+" because the lhs ";
 						//flag = 1;
-						String feature_end_classname = convertjessPredicatesToJavaClass.upperCaseFirstLetterOmmittingDelimeter(name, "-");
-						String feature_full_classname = "edu.cmu.pact.miss.userDef.algebra."+ feature_end_classname;
-						/*for (Object value : all_predicates_map.keySet()) {
-							String s = value.toString();
-						    if(s.contains(feature_end_classname)){
-						    	feature_full_classname = s;
+						String name = convertjessPredicatesToJavaClass.getPredicatePart(activeFeaturePredicates[m]);
+						Class userFunction = getSimSt().getMTRete().findUserfunction(name).getClass();
+						FeaturePredicate predicate = FeaturePredicate.getPredicateByClassName(userFunction.getName());
+						if(activeFeaturePredicates[m].contains("not"))
+							logic += wme_content+" does not "+predicate.getFeatureDescription().getDescriptions();
+						else
+							logic += wme_content+" "+predicate.getFeatureDescription().getDescriptions();
+
+					}
+
+					/*Activation act = ran.getActivation();
+					Defrule d = act.getRule();
+					ArrayList<String> node_names = new ArrayList<String>();
+					HashMap predicate_args = new HashMap();
+					for (Iterator it1 = d.getNodes(); it1.hasNext();) {
+			        	String nodeName = it1.next().toString();
+			        	if(nodeName.contains("slot_value")) {
+			        		String[] token_predicate = nodeName.split("slot_value=");
+			        		node_names.add(convertjessPredicatesToJavaClass.getPredicatePart(token_predicate[1].split(";")[0], predicate_args));
+			        	}
+			        }
+					int flag = 0;
+					for(int l=0; l<feature_predicates.size(); l++) {
+						// feature_predicates is 2D array with all features arranged as "Or"
+						// feature_predicates[m] is a 1D array with all and features
+						String[] arr_feature_predicates = (String[]) feature_predicates.get(l);
+
+						for(int m=0; m<arr_feature_predicates.length; m++) {
+							if(flag != 0) logic+= "and";
+							else flag = 1;
+							System.out.println(arr_feature_predicates[m]);
+
+							if(arr_feature_predicates[m].contains("not")) continue;
+
+							String name = convertjessPredicatesToJavaClass.getPredicatePart(arr_feature_predicates[m]);
+
+							if(!node_names.contains(name)) continue;
+							String cell_name = convertjessPredicatesToJavaClass.constructWmeElement((String) predicate_args.get(name), feature_path).trim();
+							String wme_content = getBrController(getSimSt()).getMissController()
+									.getSimStPLE().getComponentName(cell_name);
+							//if(flag == 0) logic = "I could have applied "+ rule.getName()+" number for the equation "+currentNode.getName()+" because the lhs ";
+							//flag = 1;
+							Class userFunction = getSimSt().getMTRete().findUserfunction(name).getClass();
+							FeaturePredicate predicate = FeaturePredicate.getPredicateByClassName(userFunction.getName());
+							logic += wme_content+" "+predicate.getFeatureDescription().getDescriptions();
+							//System.out.println(predicate.getFeatureDescription().getDescriptions());
+
+						}
+					}*/
+				}
+			}
+
+			return logic;
+
+		}
+
+		public String[] getActiveFeaturePredicates(ArrayList feature_predicates, Rule rule, RuleActivationNode ran, HashMap variable_foa_map) {
+
+			//ArrayList feature_predicates = rule.getLhsFeatures();
+			ArrayList feature_path = rule.getLhsPath();
+			Vector foas = ran.getRuleFoas();
+			String[] activeFeaturePredicates = null;
+
+			if (feature_predicates.size()<1) return activeFeaturePredicates;
+
+			for(int l=0; l<feature_predicates.size(); l++) {
+				// feature_predicates is 2D array with all features arranged as "Or"
+				// feature_predicates[m] is a 1D array with all and features
+				String[] arr_feature_predicates = (String[]) feature_predicates.get(l);
+				String[] replaced_var_feature_predicates = new String[arr_feature_predicates.length];
+				int count = 0;
+				boolean are_all_true = true;
+				for(int m=0; m<arr_feature_predicates.length; m++) {
+					String feature_name = replaceConditionVar(arr_feature_predicates[m], rule.getNumFoA());
+					replaced_var_feature_predicates[count++] = feature_name;
+					String variable =  convertjessPredicatesToJavaClass.getVariablePart(feature_name);
+							//"?val0"; // feature_name = (has-coefficient ?val0 )
+					//feature_name.rep
+					for(int n=0; n<feature_path.size(); n++) {
+						String path = (String) feature_path.get(n);
+						String interface_element = "";
+						if(path.contains(variable)) {
+							interface_element = foas.get(n).toString();
+							variable_foa_map.put(feature_name, interface_element);
+							Fact fact = getSimSt().getbrainStormRete().getFactByName((interface_element));
+					        try {
+					            String value = fact.getSlotValue("value").toString();
+					            feature_name = feature_name.replace(variable, value);
+					            Value truth_value = getSimSt().getbrainStormRete().eval(feature_name);
+					            if (!truth_value.toString().contains("T")) {
+					            	// feature_predicate does not exist
+					            	are_all_true = false;
+					            }
+
+					        } catch (JessException e) {
+					           e.printStackTrace();
+					           logger.simStLogException(e);
+					        }
+					        break;
+						}
+					}
+				}
+				if(are_all_true == true) {
+					activeFeaturePredicates = replaced_var_feature_predicates;
+					break;
+				}
+			}
+			return activeFeaturePredicates;
+		}
+
+		// This function lets the tutee agent to speak out the rationale behind why a production rule was not fired
+		// using the feature predicates
+		public String ruleNotApplicationLogic(ProblemNode currentNode, String rulename) {
+
+				String logic = "";
+				Rule rule = getSimSt().getRule(rulename);
+
+				if (rule != null) {
+
+					{
+						ArrayList feature_predicates = rule.getLhsFeatures();
+						HashMap variable_foa_map = new HashMap();
+
+						ArrayList<String> nonActiveFeaturePredicates = getNonActiveFeaturePredicates(feature_predicates, rule, variable_foa_map);
+						if(nonActiveFeaturePredicates == null) return logic;
+						int flag = 0;
+						for(int m=0; m<nonActiveFeaturePredicates.size(); m++) {
+							if(flag != 0) logic+= " and ";
+							else flag = 1;
+							
+							String cell_name = (String)variable_foa_map.get(nonActiveFeaturePredicates.get(m));
+							String wme_content = getBrController(getSimSt()).getMissController()
+									.getSimStPLE().getComponentName(cell_name);
+							String name = convertjessPredicatesToJavaClass.getPredicatePart(nonActiveFeaturePredicates.get(m));
+							Class userFunction = getSimSt().getMTRete().findUserfunction(name).getClass();
+							FeaturePredicate predicate = FeaturePredicate.getPredicateByClassName(userFunction.getName());
+							if(nonActiveFeaturePredicates.get(m).contains("not"))
+								//logic += wme_content+" "+predicate.getFeatureDescription().getDescriptions();
+								logic += wme_content+" does not "+predicate.getFeatureDescription().getDescriptions();
+							else
+								//logic += wme_content+" does not "+predicate.getFeatureDescription().getDescriptions();
+								logic += wme_content+" "+predicate.getFeatureDescription().getDescriptions();
+
+						}
+					}
+				}
+
+				return logic;
+
+			}
+
+
+		public ArrayList<String> getNonActiveFeaturePredicates(ArrayList feature_predicates, Rule rule, HashMap variable_foa_map) {
+
+			//ArrayList feature_predicates = rule.getLhsFeatures();
+			ArrayList feature_path = rule.getLhsPath();
+			Vector foas = current_foas;
+			ArrayList<String> nonActiveFeaturePredicates = new ArrayList<String>();
+
+			if (feature_predicates.size()<1) return nonActiveFeaturePredicates;
+
+			for(int l=0; l<feature_predicates.size(); l++) {
+				// feature_predicates is 2D array with all features arranged as "Or"
+				// feature_predicates[m] is a 1D array with all and features
+				String[] arr_feature_predicates = (String[]) feature_predicates.get(l);
+				if(arr_feature_predicates.length > 0) {
+					String[] replaced_var_feature_predicates = new String[arr_feature_predicates.length];
+					int count = 0;
+					//boolean are_all_true = true;
+					for(int m=0; m<arr_feature_predicates.length; m++) {
+						String feature_name = replaceConditionVar(arr_feature_predicates[m], rule.getNumFoA());
+						replaced_var_feature_predicates[count++] = feature_name;
+						String variable =  convertjessPredicatesToJavaClass.getVariablePart(feature_name);
+
+						for(int n=0; n<feature_path.size(); n++) {
+							String path = (String) feature_path.get(n);
+							String interface_element = "";
+							if(path.contains(variable)) {
+								interface_element = foas.get(n).toString();
+								variable_foa_map.put(feature_name, interface_element);
+								Fact fact = getSimSt().getMTRete().getFactByName((interface_element));
+						        try {
+						            String value = fact.getSlotValue("value").toString();
+						            feature_name = feature_name.replace(variable, value);
+						            Value truth_value = getSimSt().getMTRete().eval(feature_name);
+						            if (!truth_value.toString().contains("T")) {
+						            	// feature_predicate does not exist
+						            	//are_all_true = false;
+						            	nonActiveFeaturePredicates.add(replaced_var_feature_predicates[count-1]);
+						            }
+
+						        } catch (JessException e) {
+						           e.printStackTrace();
+						           logger.simStLogException(e);
+						        }
 						        break;
-						    }
-						}*/
-						FeaturePredicate predicate=FeaturePredicate.getPredicateByClassName(feature_full_classname);
-						logic += wme_content+" "+predicate.getFeatureDescription().getDescriptions();
-						//System.out.println(predicate.getFeatureDescription().getDescriptions());
-			
+							}
+						}
 					}
 				}
 			}
+			return nonActiveFeaturePredicates;
 		}
-		
-		return logic;
-		
-	}
+
+		public String replaceConditionVar( String condition, int numFoA ) {
+			String newCond = "";
+			String[] terms = condition.split( " " );
+			for (int i = 0; i < terms.length; i++) {
+
+				int outputCount=0;//number of output variables bound
+			    if ( terms[i].startsWith("?") ) {
+				int valN = terms[i].charAt(1) - 'A';
+				if ( valN < numFoA)
+				{
+				    terms[i] = "?val" + valN;
+				}
+				else
+				{
+					if(valN>=numFoA+outputCount)
+						outputCount++;
+					terms[i]="?output"+(valN-numFoA);
+				}
+
+				}
+			    newCond += terms[i] + " ";
+			}
+
+			return newCond;
+		 }
+
 
 	// Examine an activation rule to see if it is valid. If OKed, return the new
 	// node in the BR graph
@@ -2970,7 +3357,7 @@ public void fillInQuizProblem(String problemName) {
 	public String previousMessageGiven="";
 	public ProblemNode inspectRuleActivation(ProblemNode currentNode,
 			RuleActivationNode ran, String inquiryResult) {
-	
+
 		ProblemNode nextCurrentNode = null;
 
 		// Make sure that currentNode is the current node
@@ -2979,12 +3366,12 @@ public void fillInQuizProblem(String problemName) {
 
 		if (sai.getS().equals("NotSpecified") || sai.getI().equals("NotSpecified"))
 			return null;
-	
+
 		// The node we get if we run this step
 		ProblemNode successiveNode = simulatePerformingStep(currentNode, sai);
 		if (trace.getDebugCode("miss"))
 			trace.out("miss", " successiveNode: " + successiveNode);
-	
+
 		ProblemNode startNode = getBrController(getSimSt()).getProblemModel().getStartNode();
 
 		String step = startNode.getName();
@@ -3004,35 +3391,50 @@ public void fillInQuizProblem(String problemName) {
 					.getName();
 
 			edge.getEdgeData().setActionType(EdgeData.GIVEN_ACTION);
-	
+
 			// Ask if the rule is correct
 			if (!runType.equals("springBoot")) {
-				inquiryResult = simSt.inquiryRuleActivation(problemName, 
-						currentNode, ran);				
+				inquiryResult = simSt.inquiryRuleActivation(problemName,
+						currentNode, ran);
 			}
-			if (!inquiryResult.equals(EdgeData.CORRECT_ACTION) && getBrController(getSimSt()).getMissController().isPLEon()){			
-				SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();			
-				//brController.getMissController().getSimSt().displayMessage("",ple.getConversation().getMessage(SimStConversation.THINK_TOPIC));			
+			// Tasmia: if tutor's feedback is "yes", then tutor and tutee both agree on a solution step.
+			// initial tutee inquiry for both agree speech began here.
+			/*if(inquiryResult.equals(EdgeData.CORRECT_ACTION)) {
+				// ask question and after tutor's response move to the later part unless
+				// follow-up tutee inquiry is on
+				// I need to check if the selection interface element is in the permissible region to ask
+				// these questions using config.txt;
+				if(getSimSt().isbothAgreeSpeechGetterClassDefined() && isSelectionValidForBothAgreeQuestions(sai.getS())) {
+					SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();
+					SimStConversation conv = ple.getConversation();
+					BothAgreeSpeechGetter basg = getSimSt().getBothAgreeSpeechGetter();
+					String agree_question = basg.agreeSpeechGetter(ran, sai, conv);
+					askMoreExampleQuestion(agree_question, true);
+				}
+			}*/
+			if (!inquiryResult.equals(EdgeData.CORRECT_ACTION) && getBrController(getSimSt()).getMissController().isPLEon()){
+				SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();
+				//brController.getMissController().getSimSt().displayMessage("",ple.getConversation().getMessage(SimStConversation.THINK_TOPIC));
 				if (!sai.getS().equals("done")){
 					String message=ple.getConversation().getSimStMessage1(SimStConversation.FEEDBACK_NEGATIVE_TOPIC,sai.getS(),sai.getI());
 					this.previousMessageGiven=message;
-					getBrController(getSimSt()).getMissController().getSimSt().displayMessage("",message);	
+					getBrController(getSimSt()).getMissController().getSimSt().displayMessage("",message);
 				}
-				else { 
+				else {
 					String message=ple.getConversation().getSimStMessage1(SimStConversation.FEEDBACK_NEGATIVE_DONE_TOPIC,sai.getS(),sai.getI());
 					this.previousMessageGiven=message;
-					getBrController(getSimSt()).getMissController().getSimSt().displayMessage("",message);	
+					getBrController(getSimSt()).getMissController().getSimSt().displayMessage("",message);
 				}
-				
+
 			}
-						
+
 			if (trace.getDebugCode("miss"))
 				trace.out("miss", "    >>>>> result: " + inquiryResult);
 			edge.getEdgeData().setActionType(inquiryResult);
 
 			// Rule is correct, use it and update var to its node
 			if (inquiryResult.equals(EdgeData.CORRECT_ACTION)) {
-				
+
 				// Update a state (or proceed a step, if you will)
 				if (simSt.getHintMethod().equalsIgnoreCase(
 						AskHint.HINT_METHOD_BRD)) {
@@ -3054,8 +3456,8 @@ public void fillInQuizProblem(String problemName) {
 					signalInstructionAsPositiveExample(ran, nextCurrentNode,
 							sai, null);
 				}
-				
-				
+
+
 			}
 			// Rule is not correct, but taking quiz, so may want to use as
 			// backup
@@ -3153,6 +3555,10 @@ public void fillInQuizProblem(String problemName) {
 
 	// get hint from designated hint oracle
 	public ProblemNode askWhatToDoNext(ProblemNode currentNode) {
+		return askWhatToDoNext(currentNode, null);
+	}
+
+	public ProblemNode askWhatToDoNext(ProblemNode currentNode, String customMessage) {
 		String problemName = currentNode.getProblemModel().getProblemName();
 //		boolean successful = false; // To signify that learning has been
 									// successful or not
@@ -3162,9 +3568,14 @@ public void fillInQuizProblem(String problemName) {
 		trace.out("miss", "runInteractiveLearning: getting a hint on node "
 				+ currentNode);
 		// hint = askHint(brController, currentNode);
-		
-		hint = simSt.askForHint(getBrController(getSimSt()), currentNode);
-		
+
+		hint = simSt.askForHint(getBrController(getSimSt()), currentNode, customMessage);
+		/*if(bq_scope && hintHasContradiction(hint)) {
+			String rule_not_applied_logic = ruleNotApplicationLogic(currentNode,hint.skillName);
+			if(rule_not_applied_logic != "") {
+				askStudentToUndo = followupWhenStuck(currentNode, rule_not_applied_logic, hint.skillName);
+			}
+		}*/
 		trace.out("miss","hint returned is " + hint);
 		simSt.createNewNodeAndEdgeForHintReceived(hint, currentNode);
 		if (trace.getDebugCode("miss"))
@@ -3178,13 +3589,49 @@ public void fillInQuizProblem(String problemName) {
 		setGivenProblemName(problemName);
 		return askNodeSkillName(currentNode, problemName, null);
 	}
+
+	public boolean hintHasContradiction(AskHint hint) {
+		String skillname = hint.skillName;
+		Rule rule = getSimSt().getRule(skillname);
+		if(rule != null) {
+			// Rule already exists
+			// Need to check if SimSt already suggested that rule or not
+			if(already_suggested_skillname.contains(skillname))
+				return false;
+
+			else
+				return true;
+
+		}
+		else {
+			return false;
+		}
+	}
 	
+	public boolean hintHasContradiction(String skillname) {
+		//String skillname = hint.skillName;
+		Rule rule = getSimSt().getRule(skillname);
+		if(rule != null) {
+			// Rule already exists
+			// Need to check if SimSt already suggested that rule or not
+			if(already_suggested_skillname.contains(skillname))
+				return false;
+
+			else
+				return true;
+
+		}
+		else {
+			return false;
+		}
+	}
+
 	public ProblemNode askNodeSkillName(ProblemNode currentNode, String problemName, AskHint hintInfo) {
 		if (problemName == null && currentNode != null) {
 			problemName = currentNode.getProblemModel().getProblemName();
 		}
 		ProblemNode node = null;
-		boolean successful = false; 
+		boolean successful = false;
 		boolean stillLearning = true;
 		if(hintInfo != null) {
 			this.hint = hintInfo;
@@ -3205,7 +3652,7 @@ public void fillInQuizProblem(String problemName) {
 					getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarThinking();
 				// Create a new node and edge using the hint SAI
 				simSt.stepDemonstrated(hint.node, hint.getSai(), hint.edge,null);
-				
+
 				int foaCount = 0;
 				for (int i = 0; i < simSt.numCurrentFoA(); i++) {
 				     //old code, that used to add an foa to the foaCount only if its  not null.
@@ -3221,7 +3668,7 @@ public void fillInQuizProblem(String problemName) {
 					//simSt.getModelTraceWM().setThinking("true");
 					successful = simSt.changeInstructionName(hint.skillName,hint.node);
 					//simSt.getModelTraceWM().setThinking("false");
-				
+
 				} else {
 					foaCorrectness = false;
 				}
@@ -3309,8 +3756,8 @@ public void fillInQuizProblem(String problemName) {
 					// Event(SimStLogger.NOT_LEARN_ACTION));
 					// }
 					int noInstructionsForSkill=getBrController(getSimSt()).getMissController().getSimSt().getInstructionsFor(hint.skillName).size();
-			      	String noInstructions=SimStLogger.INSTRUCTION_SIZE + " = " +  noInstructionsForSkill;   		      	
-			      	
+			      	String noInstructions=SimStLogger.INSTRUCTION_SIZE + " = " +  noInstructionsForSkill;
+
 					logger.simStLog(
 							SimStLogger.SIM_STUDENT_LEARNING,
 							SimStLogger.NOT_LEARN_ACTION,
@@ -3319,7 +3766,7 @@ public void fillInQuizProblem(String problemName) {
 									+ (simSt.getSsNumBadInputRetries() - repeats) +" [" +noInstructions+ "]",
 							"", hint.getSai(), failToLearnDuration,
 							hint.getRetryMessage()[0]);
-				
+
 					// If the problem has changed from the one we are working
 					// on, then don't do the display, kill learning
 					if (getBrController(getSimSt()).getProblemModel() != null
@@ -3529,7 +3976,7 @@ public void fillInQuizProblem(String problemName) {
 	/**
 	 * 10 Sep 2007: the number of steps to solve the problem in this BRD. This
 	 * may only work for a *linear* graph, i.e. single correct path
-	 * 
+	 *
 	 * @return
 	 */
 	private int brdDepth() {
@@ -3548,7 +3995,7 @@ public void fillInQuizProblem(String problemName) {
 
 	/**
 	 * whether the edge matches the RuleActivationNode
-	 * 
+	 *
 	 * @param edge
 	 * @param ran
 	 * @return
@@ -3583,7 +4030,7 @@ public void fillInQuizProblem(String problemName) {
 
 	/**
 	 * 8 September 2007
-	 * 
+	 *
 	 * @param node
 	 * @return node's first correct child
 	 */
@@ -3710,11 +4157,11 @@ public void fillInQuizProblem(String problemName) {
 		return hint;
 	}
 
-	
 
-	
+
+
 	String previousPositiveInstructionID=null;
-	
+
 	public String getPreviousPositiveInstructionID() {
 		return previousPositiveInstructionID;
 	}
@@ -3726,15 +4173,15 @@ public void fillInQuizProblem(String problemName) {
 	// instruction is correct - process as positive example
 	private void signalInstructionAsPositiveExample(RuleActivationNode ran,
 			ProblemNode node, Sai sai, Vector edgePath) {
-		
-		String instructionID=simSt.instructionIdentifierStem + "_" + node.getName();	
+
+		String instructionID=simSt.instructionIdentifierStem + "_" + node.getName();
 		//trace.err("******* sai is " + sai + " instID is "+  instructionID + " and previous is " + previousPositiveInstructionID);
 		Instruction instruction = makeInstruction(node, sai, instructionID, previousPositiveInstructionID);
-		
+
 		previousPositiveInstructionID=instruction.getInstructionID();
-		
+
 		//trace.err("******* previous ID has been updated ans its now " + previousPositiveInstructionID);
-		
+
 		String skillName = Rule.getRuleBaseName(ran.getName()).replaceAll(
 				"MAIN::", "");
 		instruction.setName(skillName);
@@ -3806,10 +4253,10 @@ public void fillInQuizProblem(String problemName) {
 			ProblemNode node, Sai sai) {
 		// if foas.size() < foilDataArity, do nothing
 		Instruction instruction = makeInstruction(node, sai,null,null); // create a new instruction
-		
+
 		Vector foas = ran.getRuleFoas();
 		MTRete rete = getBrController(getSimSt()).getModelTracer().getRete();
-			
+
 		String negTuples = "[";
 		// adding FOAs to the instruction
 		for (int i = 0; i < foas.size(); i++) {
@@ -3820,15 +4267,15 @@ public void fillInQuizProblem(String problemName) {
 															// selection
 
 			try {
-				
+
 				Value inputValue = wmeFact.getSlotValue("value");
 				String input = SimSt.stripQuotes(inputValue.toString());
-				
+
 				// TODO:: Get rid of this hard-code
 				//String foaStr = "MAIN::cell|" + selection + "|" + input;
 				String wmeType=wmeFact.getName();
 				String foaStr = wmeType + "|" + selection + "|" + input;
-				
+
 				instruction.addFocusOfAttention(foaStr);
 				negTuples += input + ", ";
 			} catch (Exception e) {
@@ -3845,8 +4292,8 @@ public void fillInQuizProblem(String problemName) {
 		// getSimSt().getModelTraceWM().new
 		// Event(SimStLogger.NEGATIVE_EXAMPLE_ACTION));
 		// }
-		
-	
+
+
 		logger.simStLog(SimStLogger.SIM_STUDENT_LEARNING,
 				SimStLogger.NEGATIVE_EXAMPLE_ACTION,
 				simSt.getProblemStepString(), "FOA:" + negTuples, "", sai);
@@ -3860,13 +4307,13 @@ public void fillInQuizProblem(String problemName) {
 
 		simSt.negateBadPositiveExample(instruction);
 
-		
+
 		simSt.signalInstructionAsNegativeExample(instruction);
 
 	}
 
 
-	
+
 	// 24 April 2007
 	// makes an Instruction object with the given SAI and node.
 	// refactoring: stepDemonstrated() should call this function.
@@ -3884,8 +4331,8 @@ public void fillInQuizProblem(String problemName) {
 		Instruction instruction = new Instruction(node, saiStr,id,previousID);
 		instruction.setAction(action);
 		instruction.setRecent(true);
-    
-	       
+
+
 		return instruction;
 	}
 
@@ -3939,7 +4386,7 @@ public void fillInQuizProblem(String problemName) {
 						+ currentNode + "\".",
 				"Please give SimStudent a hint in the form of a demonstration.",
 				"Enter the SAI in the shell." };
-		
+
 		JFrame frame = getBrController(getSimSt()).getActiveWindow();
 
 		// JOptionPane.showMessageDialog(frame, message, title,
@@ -4035,7 +4482,7 @@ public void fillInQuizProblem(String problemName) {
 
 	private SimStTutalk tutalkBridge;
 	SimStTutalkContextVariables contextVariables = new SimStTutalkContextVariables();
-	
+
 	private String selection;
 	private String action;
 	private String input;

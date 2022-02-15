@@ -9,7 +9,7 @@ public class IsConstant extends EqFeaturePredicate {
 		setName("is-constant");
 		setArity(1);
 		setArgValueType(new int[]{TYPE_ARITH_EXP});
-		setFeatureDescription(getName(),"is a constant");
+		setFeatureDescription(getName(),"contain only a constant term");
 	}
 
 	public String apply(Vector args) 

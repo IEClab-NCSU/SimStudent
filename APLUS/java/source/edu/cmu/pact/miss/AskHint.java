@@ -29,8 +29,12 @@ public abstract class AskHint {
 	public void setAction(String action) { this.action = action; }
 
 	private String input = null;
+	private String ruleName = null;
 	public String getInput() { return input; }
 	public void setInput(String input) { this.input = input; }
+	public void setRuleName(String ruleName) { this.ruleName = ruleName;}
+	public String getRuleName() { return ruleName; }
+	
 
 	private String[] hintMsg = null;
     public String[] getHintMsg() { return hintMsg; }

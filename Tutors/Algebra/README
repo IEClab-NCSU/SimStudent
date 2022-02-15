@@ -1,0 +1,30 @@
+How to run APLUS application using the script files
+Note that you need java 1.8.0 version in order to run this application.
+
+For MAC/Linux users:
+
+-> To run usual APLUS with existing modes:
+
+1. cd AlgebraTuTalk
+2. ./runAplus.sh
+
+Follow the terminal outcome to open up APLUS with your desired mode
+
+-> To run APLUS in CTI mode:
+
+1. cd AlgebraTuTalk
+2. ./runAplus_cti_lightside.sh
+
+"runAplus_cti_lightside.sh" script performs two functions:
+	(a) Runs the lightside server ("runAplus_lightside.sh")
+	(b) Runs "runAplus.sh" script in CTI mode
+
+For Windows users:
+
+Please choose the appropriate .bat file and run it using the terminal.
+
+For example:
+
+-> to run APLUS in CTI mode, run "runAPLUS-MTMC_CTI_Lightside.bat" file in the terminal.
+
+-> to run APLUS in MTMC mode, run "runAPLUS-MTMC.bat" file in the terminal.

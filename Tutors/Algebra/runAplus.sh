@@ -27,13 +27,13 @@ fi
 
 redir="off"
 
-case $1 in 
+case $1 in
 	"-ct") AddArgs="${AddArgs} -ssCogTutorMode  -ssHintMethod builtInClSolverTutor -ssRuleActivationTestMethod builtInClSolverTutor -ssIntroVideo cogTutor.mov -ssCondition CogTutorControl";;
 	"-cta") AddArgs="${AddArgs} -ssAplusCtrlCogTutorMode -ssProblemCheckerOracle ClOracle -ssHintMethod builtInClSolverTutor -ssRuleActivationTestMethod builtInClSolverTutor -ssIntroVideo aplus_controlS7.mov  -ssCondition AplusControl";;
 	"-mt") AddArgs="${AddArgs} -ssMetaTutorMode -ssProblemCheckerOracle ClOracle -ssRuleActivationTestMethod humanOracle -ssHintMethod humanDemonstration -ssIntroVideo metatutor.mov  -ssCondition MetaTutor";;
 	"-mtc") AddArgs="${AddArgs} -ssMetaTutorMode -ssProblemCheckerOracle ClOracle -ssMetaTutorModeLevel Cognitive -ssRuleActivationTestMethod humanOracle -ssHintMethod humanDemonstration -ssIntroVideo metatutorC.mov -ssCondition MetaTutorC";;
 	"-mtmc") AddArgs="${AddArgs} -ssMetaTutorMode -ssProblemCheckerOracle ClOracle -ssMetaTutorModeLevel MetaCognitive -ssRuleActivationTestMethod humanOracle -ssHintMethod humanDemonstration -ssIntroVideo metatutorMC.mp4 -ssCondition MetaTutorMC";;
-	"-h"|"-help"|*) echo "Usage: $0"
+  "-h"|"-help"|*) echo "Usage: $0"
 	echo " ./runAplus.sh <condition>[-mt | -mtc | -mtmc | -cta | -ct] <otheroptions>"
 	echo "	-datashopLogging <coursename> - turns logging to datashop on"
 	echo "	-localLogging <coursename>    - turns local logging on"
@@ -46,18 +46,22 @@ case $1 in
 	echo "	-cta - launch APLUS in AplusControl mode"
 	echo "	-ct - launch APLUS in Cognitive Tutor mode"
 	echo "	-tt - turns Tutalk on"
+  echo "	-cti - turns constructive tutee inquiry on"
 	echo "	-br - displays Behavior Recorder window"
 	echo "	-u or -user <name> - sets the user ID"
 	echo "	-o or -output <filename> - redirects output to file"
 	exit;;
 esac
-	
+
 
 for i do
 case $i in
 "-noPle") PLE="off";;
 "-noSe") SE="off";;
 "-tt") AddArgs="${AddArgs} -ssTutalkParams none";;
+"-cti") CTI="on"
+AddArgs=${AddArgs/MetaTutorMC/MetaTutorMC_CTI}
+AddArgs="${AddArgs} -ssConstructiveTuteeInquiryFTIMode -ssCTIBothStuckParams none";;
 "-br") br="on";;
 "-u"|"-user") AddArgs="${AddArgs} -ssUserID";;
 "-o"|"-output") redir="on";;
@@ -66,22 +70,22 @@ case $i in
 loggingOptions="-datashopLogging";;
 "-localLogging") AddArgs="${AddArgs} -ssLocalLogging"
 loggingOptions="-localLogging";;
-*) 
+*)
 if [[ ! ${i} ]] || [[ ${i} != -* ]];
-then 
+then
     if [[ -z ${outstr} ]] && [[ ${redir} == "on" ]];
 	then
 		outstr="$i";
     elif [ "${loggingOptions}" == "-datashopLogging" ];
-    then 
+    then
         AddArgs="${AddArgs} -ssLogURL http://pslc-qa.andrew.cmu.edu/log/server";
 		AddArgs="${AddArgs} -Dcourse_name=${i}";
 		loggingOptions="";
 	elif [ "${loggingOptions}" == "-localLogging" ];
-	then 
+	then
 		AddArgs="${AddArgs} -Dcourse_name=${i}";
 		loggingOptions="";
-	else 
+	else
 	    AddArgs="${AddArgs} ${i}";
 	fi;
 fi;;
@@ -109,11 +113,11 @@ then
 fi
 
 if [[ "${AddArgs}" != *-Dcourse_name* ]] && [[ "${AddArgs}" != *-ssNoLogging* ]];
-then 
+then
 	echo "Provide a valid dataset name for the logging";
 	exit 1;
 fi
- 
+
 echo "COMMAND LINE ARGUMENTS : ${AddArgs}";
 
 # VmOption="-cp ${CPATH} -DnoCtatWindow -Xmx512m"
@@ -133,9 +137,6 @@ if [ -z ${SE} ];
 then
 	TutorArg="${TutorArg} -ssSelfExplainMode";
 fi
-
-
-
 
 TutorArg="${TutorArg} -ssProjectDirectory ${ProjectDir}"
 TutorArg="${TutorArg} -ssOverviewPage curriculum.html"
@@ -171,7 +172,6 @@ else
 	echo "${cmd}"
 	${cmd};
 fi
-
 #for bload in *.bload
 #do
 #    rm -f ./"$bload"

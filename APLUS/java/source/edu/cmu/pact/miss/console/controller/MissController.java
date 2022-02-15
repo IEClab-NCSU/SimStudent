@@ -665,10 +665,12 @@ public class MissController implements MissControllerExternal {
     }
     
     /* @author: Tasmia */
-    public void setSsNearSimilarProblemsGetterClass(String nearSimilarProblemsGetter) {
+    /*public void setSsNearSimilarProblemsGetterClass(String nearSimilarProblemsGetter) {
     	getSimSt().setSsNearSimilarProblemsGetter(nearSimilarProblemsGetter);
     }
-    
+    public void setSsBothAgreeSpeechGetterClass(String bothAgreeSpeechGetterClass) {
+    	getSimSt().setSsBothAgreeSpeechGetter(bothAgreeSpeechGetterClass);
+    }*/
     public void setSsPathOrderingClass(String className) {
         getSimSt().setSsPathOrderer(className);
     }    
@@ -857,6 +859,11 @@ public class MissController implements MissControllerExternal {
     public void setSsUseTutalk(String param)
     {
     	getSimSt().setUseTutalk(param);
+    }
+    /* @author: Tasmia */
+    public void setSsUseCTIBothStuckWithTutalk(String param)
+    {
+    	getSimSt().setUseCTIBothStuckWithTutalk(param);
     }
     
     public void setSsIntroVideo(String name){
@@ -1663,7 +1670,6 @@ public class MissController implements MissControllerExternal {
     public void pleUndoSimSt() {
     	getSimStPLE().undo();
     }
-    
     public String pleRestartProblemSimSt() {
     	return getSimStPLE().restartProblem();
     }
@@ -1938,9 +1944,13 @@ public class MissController implements MissControllerExternal {
                      * nearSimilarProblemsGetter is an method that returns similar looking problems
                      * that are in edit distance 1 from the current problem
                      * */
-                    else if (keyStem.equalsIgnoreCase("ssNearSimilarProblemsGetterClass")) {
+                    /*else if (keyStem.equalsIgnoreCase("ssNearSimilarProblemsGetterClass")) {
                     	setSsNearSimilarProblemsGetterClass(parameter[0]);
-                    } else if (keyStem.equalsIgnoreCase("ssFoaSearch")) {
+                    }*/
+                    /*else if (keyStem.equalsIgnoreCase("ssBothAgreeSpeechGetterClass")) {
+                    	setSsBothAgreeSpeechGetterClass(parameter[0]);
+                    }*/
+                    else if (keyStem.equalsIgnoreCase("ssFoaSearch")) {
                         setSsFoaSearch(true);
                         
                     } else if (keyStem.equalsIgnoreCase("ssPathOrderingClass")) {
@@ -2185,6 +2195,10 @@ public class MissController implements MissControllerExternal {
                     	// This flag enables Tutalk dialog mode and sets server parameters
                     	// Param: flag := experimenter@server[:[opt1,opt2,...,optn]]
                     	setSsTutalkParams(parameter[0]);
+                    } else if(keyStem.equalsIgnoreCase("ssCTIBothStuckParams")) {
+                    	// @author Tasmia Shahriar
+                    	// This flag enables Tutalk dialog mode and sets server parameters
+                    	setCTIBothStuckParams(parameter[0]);
                     } else if(keyStem.equalsIgnoreCase("ssGeneralWMEPaths")){
                     	// @author samanz  
                     	// This flag will switch simstudent to not learn any specific wmepaths
@@ -2648,6 +2662,10 @@ public class MissController implements MissControllerExternal {
     /* @author: Huan Truong */
     private void setSsTutalkParams (String flag) {
     	setSsUseTutalk(flag);
+    }
+    
+    private void setCTIBothStuckParams(String flag) {
+    	setSsUseCTIBothStuckWithTutalk(flag);
     }
     
     public void setSsGeneralWmePaths() {
