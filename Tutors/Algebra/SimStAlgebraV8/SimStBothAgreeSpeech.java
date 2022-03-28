@@ -46,22 +46,22 @@ public class SimStBothAgreeSpeech extends BothAgreeSpeechGetter {
 			message = conv.getMessage(SimStConversation.AGREE_SUBTRACT, s, true);
 		}
 		// divide
-		else if(s.getI().contains("divide") && hasPositiveOperator(s.getI())) {
+		/*else if(s.getI().contains("divide") && hasPositiveOperator(s.getI())) {
 			message = conv.getMessage(SimStConversation.AGREE_DIVIDE_POSITIVE_OPERATOR, s, true);
 		}
 		else if(s.getI().contains("divide") && hasWholeNumberOperator(s.getI())) {
 			message = conv.getMessage(SimStConversation.AGREE_DIVIDE_WHOLE_NUMBER_OPERATOR, s, true);
-		}
+		}*/
 		else if(s.getI().contains("divide")) {
 			message = conv.getMessage(SimStConversation.AGREE_DIVIDE, s, true);
 		}
 		// multiply
-		else if(s.getI().contains("multiply") && hasPositiveOperator(s.getI())) {
+		/*else if(s.getI().contains("multiply") && hasPositiveOperator(s.getI())) {
 			message = conv.getMessage(SimStConversation.AGREE_MULTIPLY_POSITIVE_OPERATOR, s, true);
 		}
 		else if(s.getI().contains("multiply") && hasWholeNumberOperator(s.getI())) {
 			message = conv.getMessage(SimStConversation.AGREE_MULTIPLY_WHOLE_NUMBER_OPERATOR, s, true);
-		}
+		}*/
 		else if(s.getI().contains("multiply")) {
 			message = conv.getMessage(SimStConversation.AGREE_MULTIPLY, s, true);
 		}
@@ -84,10 +84,10 @@ public class SimStBothAgreeSpeech extends BothAgreeSpeechGetter {
 			return selected;*/
 			message = conv.getMessage(SimStConversation.AGREE_ANY, s, true);
 		}
-		
+
 		return message;
     }
-	
+
 	public boolean hasPositiveOperator(String input) {
 		if(input.contains(" ")) {
 			String[] operator = input.split(" ");
@@ -103,7 +103,7 @@ public class SimStBothAgreeSpeech extends BothAgreeSpeechGetter {
 		}
 		return false;
 	}
-	
+
 	public boolean hasVariableTermOperator(String input) {
 		if(input.contains(" ")) {
 			String[] operator = input.split(" ");
@@ -111,7 +111,7 @@ public class SimStBothAgreeSpeech extends BothAgreeSpeechGetter {
 		}
 		return false;
 	}
-	
+
 	public boolean hasWholeNumberOperator(String input) {
 		if(input.contains(" ")) {
 			String[] operator = input.split(" ");

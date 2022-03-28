@@ -1,75 +1,66 @@
 ;; Wed Jun 30
-;; 
-;; A rule based speech when both tutor and tutee agrees with each other.
-;; The if-else conditions must grab the correct topic sentences inside the customized java file that extends "BothAgreeSpeechGetter.java" when satisfied.
-;; The speech would only be generated from this text file once a if or else condition satisfies. 
-;; Make sure to write the headers in capital letters
+;; While learning something we often ask ourselves what would happen if the situation was something else or what would happen if we would have taken another 
+;; alternative action. We bring in unknown things in the picture and try to apply our known ideas in those situation to make sure what we learned so far is 
+;; robust. This aim of the questions asked when both tutor tutee agree on a <i> is to help tutor create unknown/complex/similar example situation and apply 
+;; known concepts to those situation to make their knowledge robust. Therefore, people in any domain should design questions in this route 
+;; in a way that prompt tutor to create unknown/complex/similar situation and apply known knowledge to those situation. 
+;; For example: in our linear eq solving domain, Can you state an equation where I might have to add a negative number and explain how adding a negative 
+;;number would work for that equation? Prompting tutor to create an equation where add with negative number would apply and asking him to explain the 
+;;application to make sense of the solution step.
 
-ADD_OR_SUBTRACT_VARIABLE_TERM_OPERATOR
-"Why cannot we get rid of the constant term first? Can you provide an example where I could get rid of the constant term first?"
-"Does it matter which sides' variable term are we getting rid of first?"
-"How do you select which side to start cancelling out the variable terms?"
+;; This file contains questions to help tutors create unknown/complex/similar situations by generating examples and ask tutor to apply the concept <i> in 
+;; those situation.
+;; Make sure to state the different <i>s as capital letter headers (for example: ADD/DIVIDE etc.)
+;; Each questions underneath the header (concepts) ask tutor to explain on unknown/complex/similar example situations and apply <i>.
+;; These questions will be asked by the tutee when both tutor and tutee agree with each other on some <i>.
+;; Which header to pick needs to be defined as "if-else condition" inside "BothAgreeSpeechGetter.java"
+
 
 ADD_POSITIVE_OPERATOR
-"Tutor, we cancel out a negative number by adding a positive number. Can you state an equation where I might have to add a negative number?" 
-"Tutor, by adding, we are giving a number back to this equation. What would happen if I take away the extra number beside the variable term by performing subtract operation? Can you explain the outcome with proper example?" 
-"Tutor, I was wondering why didn’t we simply take away the negative number by performing subtract operation? Can you explain with an appropriate example?" 
-"Do we only add a positive number? Can you tell me an example where I might have to add a negative number?"
+Can you state an equation where I might have to add a negative number and explain how adding a negative number would work for that equation? 
+Whenever we are adding a positive number, we are basically giving back a positive number to the equation so that it cancels out the existing negative number. What would happen if I take away that existing negative number instead by performing subtract operation? Can you explain the outcome stating an appropriate equation?" 
+I was wondering why didn’t we simply take away the negative number by performing subtract operation? Please state an equation where subtracting a negative number would make sense and explain it to me?" 
+I have only seen that we are adding a positive number to any equation. Can you write down another equation in the chat where I might have to add a negative number and explain how add applies there?"
 
 ADD_WHOLE_NUMBER_OPERATOR
-"Can we only add a whole number to the equation? Can you state an equation where I might have to add a fraction?"
+I have only seen that we are adding a whole number to any equation. Can you state an equation where I might have to add a fraction and explain how add can be applied there?"
 
-ADD	
-"I noticed that we are always performing the opposite operation. for example: if I have a number subtracted then we add the same number to make it 0. What would happen if I subtracted the opposite number? Would it give me the same result? Can you explain with examples?"
-"I know I can apply add here. Is there any other transformation that may give the same outcome?"
+ADD
+Can you state another equation where "adding" a number would make sense and explain how that makes sense?
+
 
 SUBTRACT_POSITIVE_OPERATOR
-"Tutor, I can see that you are taking away positive number by performing subtract. Can you state an equation where I might have to take away a negative number? meaning, I might have to perform "subtract negative number"?" 
-"Do we only subtract a positive number? Can you tell me an example equation where I might have to subtract a negative number?"
+I can see that we are taking away a positive number by performing subtract. Can you state an equation where I might have to take away a negative number and explain how subtract a negative number works for that equation? 
+Do we only subtract a positive number? Can you tell me an example equation where I might have to subtract a negative number?
 
 SUBTRACT_WHOLE_NUMBER_OPERATOR
-"Can we only subtract a whole number from the equation? Can you tell me an equation where I might have to subtract a fraction?"
+Can we only subtract a whole number from the equation? Can you explain a situation using another equation where I might have to subtract a fraction?
 
 SUBTRACT
-"I noticed that we are always performing the opposite operation. for example: if I have a number added then we subtract to make it 0. What would happen if I added the opposite number? Would it give me the same result? Can you explain with examples?"
-"I know I can apply subtract here. Is there any other transformation that may give the same outcome?"
-"Is subtracting a number the only right action that can be taken at this state of equation?"
-
-DIVIDE_POSITIVE_OPERATOR
-"Do we only divide by a positive number? Can you give me an example where I might have to divide by a negative number?"
-
-DIVIDE_WHOLE_NUMBER_OPERATOR
-"I have noticed that the coefficient is a whole number but not a fraction. Does the coefficient can only be a whole number?"
-"Tutor, I am dividing here because I have a number multiplied with variable. Is it possible that sometimes the number is not multiplied with variable? How to deal with those situations?"
+Can you state another equation where "subtracting" a number would make sense and explain how that makes sense?
 
 DIVIDE
-"So far, I have always used divide operation to eliminate the coefficient. Do we have any alternative to divide operation in order to eliminate the coefficient term?"
-"I noticed that we are always performing the opposite operation. for example: if I have a number multiplied then we divide to cancel that out. What would happen if I multiplied by the inverse number? Would it give me the same result? Can you explain with examples?"
-"I know I can apply divide here. Is there any other transformation that may give the same outcome?"
-"Is divide by a number the only right action that can be taken at this state of equation?"
-
-MULTIPLY_POSITIVE_OPERATOR
-"Can you explain what are the things that I may need to be careful about when I multiply by a negative number? Please explain with proper examples for my better understanding"
-
-MULTIPLY_WHOLE_NUMBER_OPERATOR
-"Tutor, I know how to multiply by a whole number. Can you show me how to multiply by a fraction in an equation and an example equation of where I may need to use that?"
+Can you state another equation where "divide" would apply and explain how that makes sense?
+I know how to divide by a whole number. Can you explain how dividing an equation by a fraction would look like using another equation?
+I am dividing here because I have a whole number multiplied with the variable. Can you explain what I would do if I have a fraction multiplied with the variable term using a relevant equation?
+Do we only divide by a positive number? Can you state an equation where I might have to divide by a negative number?
 
 MULTIPLY
-"Tutor, could we have somehow applied divide to achieve the same outcome as multiply?"
-"I noticed that we are always performing the opposite operation. for example: if I have a number divided then we multiply to cancel that out. What would happen if I divided by the inverse number instead? Would it give me the same result? Can you explain with examples?"
-"I know I can apply multiply here. Is there any other transformation that may give the same outcome?"
-"Is multiply by a number the only right action that can be taken at this state of equation?"
+Can you state an equation where "multiplying" a number would make sense and explain how that makes sense?
+How can we apply the divide operation to achieve the same outcome as multiply? Can you explain by stating another example equation in the chat?"
+Can you state another transformation (add/subtract/divide) that can achieve the same outcome as multiply? Please use another equation to explain.
+I know how to multiply by a whole number. Can you show me how to multiply by a fraction in an equation? Please explain using another equation for my better understanding.
+What are the things that I may need to be careful about when I multiply any equation by a negative number? Please explain using another equation for my better understanding.
+
+ADD_OR_SUBTRACT_VARIABLE_TERM_OPERATOR
+Can you state an equation where I could get rid of the constant term first?
+What would happen if we got rid of the variable term from the other side? Can you explain with another equation?
 
 DONE
-"How do we know for sure that the equation is solved?"
-"How can we always make sure that our solution is correct?"
-"Is there any way to ensure that we did not do any mistake in solving this equation?"
+How do we know for sure that the equation is solved? Please explain with an appropriate equation.
+How can we ensure that there's no mistake in our solution? Can you explain with an appropriate equation?"
 
 ANY
-"Is <i> the only right action that can be taken at this state of equation?"
-"Tutor, is <i> the only correct transformation to be applied in the equation?"
-"Can you present some other examples for which <i> can be applied?"
-"Can you provide some other example of equations where I can apply <i>?"
-"Please tell me some other example of equations where I can apply <i>?"
-"Can you state some example equations where I can safely apply <i>?"
-"Can you state another equation for which I could have applied <i>?"
+Can you state another equation for which <i> can be applied and explain how <i> would be a correct step for that equation as well?
+Can you tell me another equation where I can apply <i> and explain how <i> would be a correct step for that equation?
+Please tell me another equation where I can apply <i> and explain why <i> would be the correct step for that equation as well?"

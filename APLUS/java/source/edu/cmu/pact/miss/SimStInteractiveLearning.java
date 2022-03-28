@@ -88,7 +88,6 @@ public class SimStInteractiveLearning implements Runnable {
 	private Vector current_foas = new Vector();
 	private boolean bq_scope = false;
 	private SimSt simSt;
-
 	public boolean getBqScope() {
 		return bq_scope;
 	}
@@ -1325,15 +1324,14 @@ public void fillInQuizProblem(String problemName) {
 		SimStNode nextCurrentNode = null, successiveNode = null;
 		RuleActivationNode backUpRAN = null;
 
-
+		String prev_instructionID = "";
+		String instructionID=currentNode.getName();
 
 		Iterator itr = activationList.iterator();
 		for (RuleActivationNode ran : activationList) {
 
 			if (ran.getActualInput().equalsIgnoreCase("FALSE"))
 				continue;
-
-
 
 			successiveNode = inspectActivation(currentNode, ran);
 
@@ -1342,6 +1340,37 @@ public void fillInQuizProblem(String problemName) {
 				// Update the HashMap to have a mapping of RAN and new node
 				// generated using the activation
 				hm.put(ran, successiveNode);
+				// Create instructions using ran
+				String skillName = Rule.getRuleBaseName(ran.getName()).replaceAll(
+							"MAIN::", "");
+				prev_instructionID = instructionID;
+				instructionID = successiveNode.getName();
+				
+				//previousPositiveInstructionID=instruction.getInstructionID();
+				Vector foas = ran.getRuleFoas();
+		  		Vector<String> foaContents = new Vector<String>();
+		  	   	for(int i=0;i<foas.size();i++)
+		  	   	{
+		  	   		Fact fact = getSimSt().getMTRete().getFactByName((String)foas.get(i));
+		  	   		String value = "";
+					try {
+						value = fact.getSlotValue("value").toString();
+						String wmeType = getSimSt().getRete().wmeType( (String)foas.get(i) );
+			  	   		String detailed_foa = wmeType+"|"+(String)foas.get(i)+"|"+value;
+			  	   		foaContents.add(detailed_foa);
+					} catch (JessException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+		  	   	
+		  	   	}
+				
+				if (successiveNode.getInDegree() > 0 && !((SimStEdge) successiveNode.getIncomingEdges().get(0)).isCorrect()) {
+					GradedInstruction newInstr = makeInstruction(skillName, ran.getActualSelection(), ran.getActualAction(), ran.getActualInput(), foaContents);
+					if(!getSimSt().getGradedExamples().contains(newInstr))
+							getSimSt().addGradedExample(newInstr);
+				}
+				
 				if (nextCurrentNode == null && isTakingQuiz()) {
 					if (successiveNode.getInDegree() > 0) {
 						String lastSkill = "";
@@ -2813,58 +2842,6 @@ public void fillInQuizProblem(String problemName) {
 		}
 	}
 
-	public String askBrainstormingQuestionV2(String question, boolean requireResponse) {
-
-		String explanation = "";
-		if (getBrController(getSimSt()).getMissController().getSimSt().isSsMetaTutorMode())
-				getBrController(getSimSt()).getAmt().handleInterfaceAction("selfExp", "implicit", "-1");
-
-		long explainRequestTime = Calendar.getInstance().getTimeInMillis();
-		if (getBrController(getSimSt()).getMissController().getSimStPLE() == null) {
-				explanation = JOptionPane.showInputDialog(null, question,
-						"Please Provide an Explanation",
-						JOptionPane.PLAIN_MESSAGE);
-		} else {
-				SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();
-				if(requireResponse == false) {
-					ple.giveMessage(question);
-				}
-				else {
-					explanation = ple.giveMessageFreeTextResponse(question);
-				}
-		}
-
-		int explainDuration = (int) (Calendar.getInstance()
-					.getTimeInMillis() - explainRequestTime);
-		return explanation;
-	}
-
-	public String askBrainstormingQuestion(String question, boolean requireResponse) {
-
-		String explanation = "";
-		if (getBrController(getSimSt()).getMissController().getSimSt().isSsMetaTutorMode())
-				getBrController(getSimSt()).getAmt().handleInterfaceAction("selfExp", "implicit", "-1");
-
-		long explainRequestTime = Calendar.getInstance().getTimeInMillis();
-		if (getBrController(getSimSt()).getMissController().getSimStPLE() == null) {
-				explanation = JOptionPane.showInputDialog(null, question,
-						"Please Provide an Explanation",
-						JOptionPane.PLAIN_MESSAGE);
-		} else {
-				SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();
-				if(requireResponse == false) {
-					ple.giveMessage(question);
-				}
-				else {
-					explanation = ple.giveMessageFreeTextResponse(question);
-				}
-		}
-
-		int explainDuration = (int) (Calendar.getInstance()
-					.getTimeInMillis() - explainRequestTime);
-		return explanation;
-	}
-
 	public String askMoreExampleQuestion(String question, boolean requireResponse) {
 		String explanation = "";
 		if (getBrController(getSimSt()).getMissController().getSimSt().isSsMetaTutorMode())
@@ -3090,146 +3067,8 @@ public void fillInQuizProblem(String problemName) {
 			}
 		}
 	}
-
-	// This function lets the tutee agent to speak out the rationale behind a production rule was fired
-		// using the feature predicates
-		public String ruleApplicationLogic(ProblemNode currentNode,
-				RuleActivationNode ran) {
-
-			String logic = "";
-			//System.out.println(ran.getName()+" "+currentNode.getName());
-
-			Rule rule = getSimSt().getRule(ran.getName().replace("MAIN::", ""));
-
-			if (rule != null) {
-				/*if (rule.getName().contains("typein")) {
-					// Question will be different
-				}
-				else */
-				{
-					ArrayList feature_predicates = rule.getLhsFeatures();
-					HashMap variable_foa_map = new HashMap();
-
-					String[] activeFeaturePredicates = getActiveFeaturePredicates(feature_predicates, rule, ran, variable_foa_map);
-					if(activeFeaturePredicates == null) return logic;
-					int flag = 0;
-					for(int m=0; m<activeFeaturePredicates.length; m++) {
-						if(flag != 0) logic+= " and ";
-						else flag = 1;
-						String wme_content = getBrController(getSimSt()).getMissController()
-								.getSimStPLE().getComponentName((String)variable_foa_map.get(activeFeaturePredicates[m]));
-						//if(flag == 0) logic = "I could have applied "+ rule.getName()+" number for the equation "+currentNode.getName()+" because the lhs ";
-						//flag = 1;
-						String name = convertjessPredicatesToJavaClass.getPredicatePart(activeFeaturePredicates[m]);
-						Class userFunction = getSimSt().getMTRete().findUserfunction(name).getClass();
-						FeaturePredicate predicate = FeaturePredicate.getPredicateByClassName(userFunction.getName());
-						if(activeFeaturePredicates[m].contains("not"))
-							logic += wme_content+" does not "+predicate.getFeatureDescription().getDescriptions();
-						else
-							logic += wme_content+" "+predicate.getFeatureDescription().getDescriptions();
-
-					}
-
-					/*Activation act = ran.getActivation();
-					Defrule d = act.getRule();
-					ArrayList<String> node_names = new ArrayList<String>();
-					HashMap predicate_args = new HashMap();
-					for (Iterator it1 = d.getNodes(); it1.hasNext();) {
-			        	String nodeName = it1.next().toString();
-			        	if(nodeName.contains("slot_value")) {
-			        		String[] token_predicate = nodeName.split("slot_value=");
-			        		node_names.add(convertjessPredicatesToJavaClass.getPredicatePart(token_predicate[1].split(";")[0], predicate_args));
-			        	}
-			        }
-					int flag = 0;
-					for(int l=0; l<feature_predicates.size(); l++) {
-						// feature_predicates is 2D array with all features arranged as "Or"
-						// feature_predicates[m] is a 1D array with all and features
-						String[] arr_feature_predicates = (String[]) feature_predicates.get(l);
-
-						for(int m=0; m<arr_feature_predicates.length; m++) {
-							if(flag != 0) logic+= "and";
-							else flag = 1;
-							System.out.println(arr_feature_predicates[m]);
-
-							if(arr_feature_predicates[m].contains("not")) continue;
-
-							String name = convertjessPredicatesToJavaClass.getPredicatePart(arr_feature_predicates[m]);
-
-							if(!node_names.contains(name)) continue;
-							String cell_name = convertjessPredicatesToJavaClass.constructWmeElement((String) predicate_args.get(name), feature_path).trim();
-							String wme_content = getBrController(getSimSt()).getMissController()
-									.getSimStPLE().getComponentName(cell_name);
-							//if(flag == 0) logic = "I could have applied "+ rule.getName()+" number for the equation "+currentNode.getName()+" because the lhs ";
-							//flag = 1;
-							Class userFunction = getSimSt().getMTRete().findUserfunction(name).getClass();
-							FeaturePredicate predicate = FeaturePredicate.getPredicateByClassName(userFunction.getName());
-							logic += wme_content+" "+predicate.getFeatureDescription().getDescriptions();
-							//System.out.println(predicate.getFeatureDescription().getDescriptions());
-
-						}
-					}*/
-				}
-			}
-
-			return logic;
-
-		}
-
-		public String[] getActiveFeaturePredicates(ArrayList feature_predicates, Rule rule, RuleActivationNode ran, HashMap variable_foa_map) {
-
-			//ArrayList feature_predicates = rule.getLhsFeatures();
-			ArrayList feature_path = rule.getLhsPath();
-			Vector foas = ran.getRuleFoas();
-			String[] activeFeaturePredicates = null;
-
-			if (feature_predicates.size()<1) return activeFeaturePredicates;
-
-			for(int l=0; l<feature_predicates.size(); l++) {
-				// feature_predicates is 2D array with all features arranged as "Or"
-				// feature_predicates[m] is a 1D array with all and features
-				String[] arr_feature_predicates = (String[]) feature_predicates.get(l);
-				String[] replaced_var_feature_predicates = new String[arr_feature_predicates.length];
-				int count = 0;
-				boolean are_all_true = true;
-				for(int m=0; m<arr_feature_predicates.length; m++) {
-					String feature_name = replaceConditionVar(arr_feature_predicates[m], rule.getNumFoA());
-					replaced_var_feature_predicates[count++] = feature_name;
-					String variable =  convertjessPredicatesToJavaClass.getVariablePart(feature_name);
-							//"?val0"; // feature_name = (has-coefficient ?val0 )
-					//feature_name.rep
-					for(int n=0; n<feature_path.size(); n++) {
-						String path = (String) feature_path.get(n);
-						String interface_element = "";
-						if(path.contains(variable)) {
-							interface_element = foas.get(n).toString();
-							variable_foa_map.put(feature_name, interface_element);
-							Fact fact = getSimSt().getbrainStormRete().getFactByName((interface_element));
-					        try {
-					            String value = fact.getSlotValue("value").toString();
-					            feature_name = feature_name.replace(variable, value);
-					            Value truth_value = getSimSt().getbrainStormRete().eval(feature_name);
-					            if (!truth_value.toString().contains("T")) {
-					            	// feature_predicate does not exist
-					            	are_all_true = false;
-					            }
-
-					        } catch (JessException e) {
-					           e.printStackTrace();
-					           logger.simStLogException(e);
-					        }
-					        break;
-						}
-					}
-				}
-				if(are_all_true == true) {
-					activeFeaturePredicates = replaced_var_feature_predicates;
-					break;
-				}
-			}
-			return activeFeaturePredicates;
-		}
-
+	
+	
 		// This function lets the tutee agent to speak out the rationale behind why a production rule was not fired
 		// using the feature predicates
 		public String ruleNotApplicationLogic(ProblemNode currentNode, String rulename) {
@@ -4332,6 +4171,28 @@ public void fillInQuizProblem(String problemName) {
 		instruction.setAction(action);
 		instruction.setRecent(true);
 
+
+		return instruction;
+	}
+	
+	// Tasmia: 25 March, 2022
+	// makes an Instruction object for quiz examples.
+	private GradedInstruction makeInstruction(String skillname, String selection, String action, String input, List<String> foaStrs) {
+
+		String wmeType = simSt.getRete().wmeType(selection);
+		String saiStr = wmeType + "|" + selection + "|" + input;
+
+		GradedInstruction instruction = new GradedInstruction(saiStr);
+		instruction.setAction(action);
+		instruction.setRecent(true);
+		instruction.setName(skillname);
+		
+		if ( !foaStrs.isEmpty() ) {
+	       for (int i = 0; i < foaStrs.size(); i++) {
+	           String foaStr = foaStrs.get(i);
+	           instruction.addFocusOfAttention( foaStr );
+	       }
+	    }
 
 		return instruction;
 	}

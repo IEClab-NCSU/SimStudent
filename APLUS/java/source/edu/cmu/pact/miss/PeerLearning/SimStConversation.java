@@ -25,7 +25,9 @@ public class SimStConversation {
 	public static final String MODEL_TRACE_ERROR = "<ERR>";
 	public static final String SELECTION = "<s>";
 	public static final String INPUT = "<i>";
+	public static final String PAST_INPUT = "<pi>";
 	public static final String OPERATION = "<o>";
+	public static final String OPERAND = "<op>";
 	public static final String NO_ACTIVATIONS = "<A0>";
 	public static final String NOT_FIRST_ACTIVATION = "<A2>";
 	public static final String BEHAVIOUR_DISCREPENCY = "<BD>";
@@ -80,8 +82,10 @@ public class SimStConversation {
 	public static final String ALL_QUIZ_FAILED_TOPIC = "ALL_QUIZ_FAILED";
 	// Added by Tasmia
 	public static final String ASKING_IF_TUTOR_KNOWS_STEP_TOPIC = "ASKING_IF_TUTOR_KNOWS_STEP";
-	//public static final String BRAINSTORMING_QUESTION_TRANFORMATION_TOPIC = "BRAINSTORMING_QUESTION_TRANFORMATION";
-	//public static final String BRAINSTORMING_QUESTION_TYPEIN_TOPIC = "BRAINSTORMING_QUESTION_TYPEIN";
+	public static final String WHY_WAS_INCORRECT_TUTOR_TRANSFORMATION_TOPIC = "WHY_WAS_INCORRECT_TUTOR_TRANSFORMATION";
+	public static final String WHY_WAS_INCORRECT_TUTOR_TYPEIN_TOPIC = "WHY_WAS_INCORRECT_TUTOR_TYPEIN";
+	public static final String WHY_WAS_INCORRECT_METATUTOR_TRANSFORMATION_TOPIC = "WHY_WAS_INCORRECT_METATUTOR_TRANSFORMATION";
+	public static final String WHY_WAS_INCORRECT_METATUTOR_TYPEIN_TOPIC = "WHY_WAS_INCORRECT_METATUTOR_TYPEIN";
 	//public static final String BRAINSTORMING_QUESTION_WHEN_NO_RULE_FOUND_TOPIC = "BRAINSTORMING_QUESTION_WHEN_NO_RULE_FOUND";
 	public static final String BRAINSTORMING_LOGIC_WHEN_NO_FEATURE_FOUND_TOPIC = "BRAINSTORMING_LOGIC_WHEN_NO_FEATURE_FOUND";
 	public static final String BRAINSTORMING_SUMMARIZE_CONVERSATION = "BRAINSTORMING_SUMMARIZE";
@@ -309,6 +313,15 @@ public class SimStConversation {
 		return replaceVariables(message, input, problem, logic);
 	}
 	
+	public String getMessage(String topic, String type, String problem, String past_input, String operand, String operation)
+	{
+		ArrayList<String> messages = topics.get(topic);   
+	
+		String message = messages.get((int)(Math.random()*messages.size()));
+					
+		return replaceVariables(message, type, problem, past_input, operand, operation);
+	}
+	
 	public String getFilteredMessage(ArrayList<String> messages,String selection, String input, String operation, int activationNum)
 	{
 		ArrayList<String> filtered = new ArrayList<String>();
@@ -499,6 +512,20 @@ public class SimStConversation {
 		
 		/*if (brController.getMissController().getSimStPLE()!=null)
 			message=brController.getMissController().getSimStPLE().messageComposer(message,selection,action,input);*/
+		
+		return message;
+	}
+	public String replaceVariables(String message, String type, String problem, String past_input, String operand, String operation)
+	{
+		if(type == "transformation") {
+			message = message.replaceAll(PAST_INPUT, past_input);
+			message = message.replaceAll(PROBLEM, problem);
+		}
+		else {
+			message = message.replaceAll(PAST_INPUT, past_input);
+			message = message.replaceAll(OPERAND, operand);
+			message = message.replaceAll(OPERATION, operation);
+		}
 		
 		return message;
 	}

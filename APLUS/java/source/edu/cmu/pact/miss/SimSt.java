@@ -1497,9 +1497,12 @@ public final class SimSt implements Serializable {
    // the same name as the key
    public Hashtable<String, Vector<Instruction>> instructions = new Hashtable<String, Vector<Instruction>>();
    public Hashtable<String, Vector<Instruction>> negativeInstructions = new Hashtable<String, Vector<Instruction>>();
+   public Hashtable<String, Vector<Instruction>> gradedNegativeInstructions = new Hashtable<String, Vector<Instruction>>();
+
 
    // A list storing instructions representing negative examples
    private List<Instruction> negativeExamples = new LinkedList<Instruction>();
+   
    public List<Instruction> getNegativeExamples()
    {
 		if(trace.getDebugCode("nbarbaDebug"))trace.out("nbarbaDebug", "retreiving negative examples, which are: " + negativeExamples);
@@ -1524,6 +1527,37 @@ public final class SimSt implements Serializable {
            ;
        }
 
+       instructions.add( example );
+
+   }
+   
+   
+   // Added by Tasmia: in order to ask why step was graded as incorrect in the quiz.
+   // list of graded examples represented as Instructions
+   private List<GradedInstruction> gradedExamples = new LinkedList<GradedInstruction>();
+   
+   public void addGradedExample(GradedInstruction example)
+   {
+	   gradedExamples.add(example);
+	   addGradedNegativeExample(example);
+
+   }
+   public List<GradedInstruction> getGradedExamples()
+   {
+		//if(trace.getDebugCode("nbarbaDebug"))trace.out("nbarbaDebug", "retreiving negative examples, which are: " + negativeExamples);
+	   return gradedExamples;
+   }
+   
+   public void addGradedNegativeExample(Instruction example)
+   {
+
+   		String name = example.getName();
+   		Vector /* Instruction */<Instruction> instructions = this.gradedNegativeInstructions.get( name );
+
+	    if (instructions == null) {
+	          instructions = new Vector<Instruction>();
+	          this.gradedNegativeInstructions.put(name, instructions );
+	    } 
        instructions.add( example );
 
    }
@@ -1813,6 +1847,25 @@ public final class SimSt implements Serializable {
            }
        }
    }
+   
+// Overloaded to allow output to file
+   // Instructions are saved as strings - see Instruction.toString()
+   private void printGradedInstructions(PrintStream out) {
+
+       //for (int i = 0; i < negativeExamples.size(); i++) {
+   	for (int i = gradedExamples.size()-1; i >= 0; i--) {
+           GradedInstruction instruction = gradedExamples.get(i);
+           //if(instruction.is_in_file != true) 
+           {
+        	   //provide identifying character to separate instructions/skills
+        	   out.println("~~~");
+        	   out.print("!");
+        	   out.println(instruction.toString());
+        	   //instruction.is_in_file = true;
+           }
+           
+       }
+   }
 
    /**
     * Called when [Save Instructions] menu is selected on the Miss
@@ -1820,7 +1873,7 @@ public final class SimSt implements Serializable {
     * Re-implemented 6/8/06
     **/
 
-   public void saveInstructions( File output) {
+   public void saveInstructions( File output, String instruction_type) {
        //setup output stream and print instructions to file
        try {
            FileOutputStream fos = new FileOutputStream( output );
@@ -1828,7 +1881,10 @@ public final class SimSt implements Serializable {
            //start by printing name of production set
            printStream.println(this.productionSet);
            //then print instructions
-           printInstructions( printStream );
+           if(instruction_type.equals("instructions"))
+        	   printInstructions( printStream );
+           else
+        	   printGradedInstructions( printStream );
            printStream.close();
            fos.close();
        } catch (Exception e) {
@@ -10033,6 +10089,11 @@ public final class SimSt implements Serializable {
 
           	int oracle = 0;
 	       	oracle = askInquiry(ruleName, msg);
+	       	if(oracle == JOptionPane.YES_OPTION && isCTIFollowupInquiryMode()) {
+	       		// Tutor agreed with what tutee performed.
+	       		if(!checkIfStepsAlreadyNegated(ran, 0)) checkIfStepsAlreadyNegated(ran, 1);
+	       		
+	       	}
 	       	status = getStatusByInquiryResponseAndUpdateSkill(ran, oracle == JOptionPane.YES_OPTION);
 
 	       	if(getSsInteractiveLearning() != null)
@@ -10050,6 +10111,86 @@ public final class SimSt implements Serializable {
        if(trace.getDebugCode("miss"))trace.out("miss", "Oracle status ==> " + status );
 
        return status;
+   }
+   
+   // Added by Tasmia
+   // This function checks if mr_williams = 0 or tutor = 1 already negated a skill for the same equation in the past.
+   // If yes, ask why it was incorrect in the past.
+   public boolean checkIfStepsAlreadyNegated(RuleActivationNode ran, int by_whom) {
+	    
+	    String skillName = Rule.getRuleBaseName(ran.getName()).replaceAll(
+				"MAIN::", "");
+	    String typeOfStep= getFoaGetter().getTypeOfStep(ran.getActualSelection(),getBrController());
+  		Vector foas = ran.getRuleFoas();
+  		Vector<String> foaContents = new Vector<String>();
+  	   	for(int i=0;i<foas.size();i++)
+  	   	{
+  	   		if(getBrController().lookupWidgetByName((String)foas.get(i)) instanceof JCommTable.TableCell)
+  	   		{
+  	   			JCommTable.TableCell cell = (JCommTable.TableCell)getBrController().lookupWidgetByName((String)foas.get(i));
+  	   			String wmeType = rete.wmeType( (String)foas.get(i) );
+  	   			String detailed_foa = wmeType+"|"+(String)foas.get(i)+"|"+cell.getText();
+  	   			foaContents.add(detailed_foa);
+  	   		}
+  	   	}
+  	   	Vector <Instruction> instructions = null;
+  	   	String conversation_topic = "";
+  	   	if(by_whom == 0) {
+  	   		instructions = gradedNegativeInstructions.get(skillName);
+  	   		if(typeOfStep == "transformation") conversation_topic = SimStConversation.WHY_WAS_INCORRECT_METATUTOR_TRANSFORMATION_TOPIC;
+  	   		else conversation_topic = SimStConversation.WHY_WAS_INCORRECT_METATUTOR_TYPEIN_TOPIC;
+  	   	}
+  	   	else {
+  	   		instructions = negativeInstructions.get(skillName);
+  	   		if(typeOfStep == "transformation") conversation_topic = SimStConversation.WHY_WAS_INCORRECT_TUTOR_TRANSFORMATION_TOPIC;
+	   		else conversation_topic = SimStConversation.WHY_WAS_INCORRECT_TUTOR_TYPEIN_TOPIC;
+  	   	}
+  		if (instructions != null && !instructions.isEmpty()) {
+       		for (int i = 0; i < instructions.size(); i++) { //for each instruction
+
+               Instruction inst = instructions.get(i);
+               int count_foa_matches = 0;
+               String problem = "", operation = "", operand = "";
+               Vector neg_example_foas = inst.getFocusOfAttention();
+               for (int j = 0; j < neg_example_foas.size(); j++) {
+               	if(foaContents.contains(neg_example_foas.get(j))) {
+               		count_foa_matches++;
+               		if(typeOfStep == "transformation") {
+               			if(problem == "")
+               				problem = ((String) neg_example_foas.get(j)).split("\\|")[2]+"=";
+               			else
+               				problem += ((String) neg_example_foas.get(j)).split("\\|")[2];
+               		}
+               		else {
+               			if(operand == "" && operation == "")
+               				operand = ((String) neg_example_foas.get(j)).split("\\|")[2];
+               			
+               			if(operand != "")
+               				operation = ((String) neg_example_foas.get(j)).split("\\|")[2];
+               		}
+               	}
+               }
+               if(count_foa_matches == 2) {
+               		// two of the foa_matches.
+               		String previous_negated_input = ((String) neg_example_foas.get(0)).split("\\|")[2];
+               		if(skillName.toLowerCase().equals(Rule.DONE_NAME.toLowerCase())) previous_negated_input = "problem is solved";
+               		SimStPLE ple = getMissController().getSimStPLE();
+               		if(typeOfStep == "transformation") {
+               			String question = ple.getConversation().getMessage(conversation_topic, typeOfStep, problem, previous_negated_input, "", "");
+               			String explanation = getMissController().getSimStPLE().giveMessageFreeTextResponse(question);
+               		}
+               		else {
+               			String question = ple.getConversation().getMessage(conversation_topic, typeOfStep, "", previous_negated_input, operand, operation);
+               			String explanation = getMissController().getSimStPLE().giveMessageFreeTextResponse(question);
+               		}
+               		return true;
+               		
+               				
+               }
+       		}
+       }
+  		return false;
+	   
    }
 
    public String getInquiry(String actualSelection, String actualAction, String actualInput,

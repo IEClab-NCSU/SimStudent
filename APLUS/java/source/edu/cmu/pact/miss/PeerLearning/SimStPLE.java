@@ -2766,7 +2766,7 @@ public class SimStPLE {
 		if (trace.getDebugCode("miss"))
 			trace.out("miss", "Enter nextProblem to call autoSaveInstructions()");
 		/** No longer need to save the instructions, but do for back-up */
-		getMissController().autoSaveInstructions();
+		getMissController().autoSaveInstructions("instructions");
 		getMissController().getSimSt().saveSimStState();
 		getMissController().getSimSt().setProblemStepString(SimSt.START_STEP);
 		// getSimStPeerTutoringPlatform().getNextProblemButton().setForeground(Color.black);
@@ -5887,7 +5887,12 @@ public class SimStPLE {
 				getSsInteractiveLearning().setTakingQuiz(true); // w
 
 				Vector<SimStExample> results = startQuizProblems(); // Start solving the problems // w - return results
-
+				
+				/*for(int i=0; i<getSimSt().getGradedExamples().size(); i++) {
+					// we are getting correct but duplicate results.
+					System.out.println(getSimSt().getGradedExamples().get(i));
+				}*/
+				getMissController().autoSaveInstructions("graded_instructions");
 				for (int i = 0; i < results.size(); i++) {
 					getSimStPeerTutoringPlatform().addQuiz(results.get(i));
 					trace.out("ss",
@@ -6465,6 +6470,7 @@ public class SimStPLE {
 			if (simSt.getProblemAssessor() != null) {
 				result = simSt.getProblemAssessor().isProblemComplete(problem, solution);
 			}
+			
 
 			if (result) {
 				numCorrect++;

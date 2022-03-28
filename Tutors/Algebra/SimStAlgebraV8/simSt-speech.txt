@@ -367,3 +367,15 @@ Can you tell me what I should do now? I'm puzzled as well!
 Can you show me what to do here? I'm completely at-a-loss.
 Can you help me out here? I'm also stuck, I don't know what I need to do.  
 I'm also stumped. Please show me what to do next?
+
+WHY_WAS_INCORRECT_TUTOR_TRANSFORMATION
+Earlier when I had <problem>, I applied <pi> and you said it was wrong. How did you know that <pi> was incorrect? 
+
+WHY_WAS_INCORRECT_TUTOR_TYPEIN
+Earlier when I had <op> and I applied <o> on it, I got <pi>, but you said it was wrong. How did you know that <pi> was incorrect? 
+
+WHY_WAS_INCORRECT_METATUTOR_TRANSFORMATION
+In the quiz, when I had <problem>, I applied <pi> but Mr. Williams graded that as incorrect. Why did Mr. William think <pi> was incorrect? 
+
+WHY_WAS_INCORRECT_METATUTOR_TYPEIN
+In the quiz, when I had <op> and I applied <o> on it, I got <pi>, but Mr. Williams graded that as incorrect. Why did Mr. William think <pi> was incorrect?

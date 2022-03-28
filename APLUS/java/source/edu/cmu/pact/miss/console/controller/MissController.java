@@ -1065,18 +1065,18 @@ public class MissController implements MissControllerExternal {
     	getMissConsole().message (msg);
 
     	// Print the instructions to the file
-    	getSimSt().saveInstructions(file);
+    	getSimSt().saveInstructions(file, "instructions");
 
     	msg += "done";
     	getMissConsole().message(msg);
     }
     
     // jinyul - Automatically saves current instructions into instructions.txt or instructions-userID.txt
-    public void autoSaveInstructions() {
+    public void autoSaveInstructions(String instruction_type) {
     	String msg="";
-        String fileName = "instructions.txt";
+        String fileName = instruction_type+".txt"; //"instructions.txt";
         if(getSimSt() != null && getSimSt().getUserID() != null && !getSimSt().isSsWebAuthoringMode())
-        	fileName = "instructions-"+getSimSt().getUserID()+".txt";
+        	fileName = instruction_type+"-"+getSimSt().getUserID()+".txt"; //"instructions-"+getSimSt().getUserID()+".txt";
         msg += "done\nSaved work to " + fileName + "...";
     	getMissConsole().message (msg);
 
@@ -1091,19 +1091,20 @@ public class MissController implements MissControllerExternal {
         	} else {
         		instructionsFile = new File(getSimSt().getLogDirectory(), fileName); 
         	}
-        	getSimSt().saveInstructions(instructionsFile);
+        	getSimSt().saveInstructions(instructionsFile, instruction_type);
         } else if(getSimSt().isWebStartMode()) { // For webstart
     		
         	try {
         		instructionsFile = new File(WebStartFileDownloader.SimStWebStartDir + fileName);
-    			getSimSt().saveInstructions(instructionsFile);
-    			storageClient.storeFile("instructions-"+getSimSt().getUserID()+".txt", instructionsFile.getCanonicalPath());
+    			getSimSt().saveInstructions(instructionsFile, instruction_type);
+    			//storageClient.storeFile("instructions-"+getSimSt().getUserID()+".txt", instructionsFile.getCanonicalPath());
+    			storageClient.storeFile(instruction_type+"-"+getSimSt().getUserID()+".txt", instructionsFile.getCanonicalPath());
     		} catch (IOException e) {
     			e.printStackTrace();
     		}
          } else if (getSimSt().isSsWebAuthoringMode()) {
         	 instructionsFile = new File(getSimSt().getUserBundleDirectory(), fileName);
-        	 getSimSt().saveInstructions(instructionsFile);
+        	 getSimSt().saveInstructions(instructionsFile, instruction_type);
          }
         msg += "done";
         getMissConsole().message(msg);

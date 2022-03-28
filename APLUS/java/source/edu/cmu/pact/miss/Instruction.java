@@ -248,9 +248,9 @@ public class Instruction implements Serializable{
      * @param sai a <code>String</code> value */
     public Instruction( ProblemNode problemNode, String sai ) {
  
-	setProblemNode( problemNode );
-	setFocusOfAttention( new Vector() );
-	addFocusOfAttention( sai );
+		setProblemNode( problemNode );
+		setFocusOfAttention( new Vector() );
+		addFocusOfAttention( sai );
     }
 
     /**
@@ -261,12 +261,21 @@ public class Instruction implements Serializable{
      * @param sai a <code>String</code> value */
     public Instruction( ProblemNode problemNode, String sai,String instructionID,String previousID ) {
  
-	setProblemNode( problemNode );
-	setFocusOfAttention( new Vector() );
-	addFocusOfAttention( sai );
-	setInstructionID(instructionID);
-	setPreviousID(previousID);
+		setProblemNode( problemNode );
+		setFocusOfAttention( new Vector() );
+		addFocusOfAttention( sai );
+		setInstructionID(instructionID);
+		setPreviousID(previousID);
     }
+    
+    public Instruction(String sai) {
+    	 
+    	//setProblemNode( problemNode );
+    	setFocusOfAttention( new Vector() );
+    	addFocusOfAttention( sai );
+    	//setInstructionID(instructionID);
+    	//setPreviousID(previousID);
+     }
     
     
   
@@ -354,7 +363,7 @@ public class Instruction implements Serializable{
 	str += "\nPreviousId: " + getPreviousID();
 	return str;
     }
-
+    
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // Search for the RHS operator sequence 
     //
