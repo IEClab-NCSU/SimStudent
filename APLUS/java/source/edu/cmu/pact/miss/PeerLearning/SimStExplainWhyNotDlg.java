@@ -286,10 +286,6 @@ public class SimStExplainWhyNotDlg extends JDialog implements ActionListener,Foc
 
 	    }
 	  
-	  
-	  
-	  
-	  
 	/**
 	 * Method responsible for filling the "past" interface based on an instruction. It retrieves 
 	 * the previous instructions in the list. Highlights only the first instruction.

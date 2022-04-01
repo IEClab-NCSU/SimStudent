@@ -209,6 +209,14 @@ done:The variable has no coefficient.
 !done:Because <get-operand "(I)"> is the opposite of one of the terms.
 !done:Because (F) is on the same side with a different type of term.
 
+confidenceDemonstration
+text: I am stuck. I need your help! How confident are you about the next step that you are going to demonstrate to me? 
+:I am pretty confident about what I am going to suggest.
+:I know the next step but it might not be correct.
+:I can take a guess and suggest a step.
+:I am not sure what the next step would be.
+
+
 validSelectionsForSelfExplanation
 dorminTable3_C1R1
 dorminTable3_C1R2

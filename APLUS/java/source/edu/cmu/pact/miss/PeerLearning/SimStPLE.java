@@ -110,6 +110,7 @@ import edu.cmu.pact.miss.PeerLearning.AplusPlatform.ExampleAction;
 import edu.cmu.pact.miss.PeerLearning.QuizPane;
 import edu.cmu.pact.miss.PeerLearning.GameShow.GameShowUtilities;
 import edu.cmu.pact.miss.PeerLearning.GameShow.ProblemType;
+import edu.cmu.pact.miss.PeerLearning.SimStExplainWhyNotDlg.TextEntryListener;
 import edu.cmu.pact.miss.ProblemModel.Graph.SimStNode;
 import edu.cmu.pact.miss.ProblemModel.Graph.SimStProblemGraph;
 import edu.cmu.pact.miss.console.controller.MissController;
@@ -163,6 +164,9 @@ public class SimStPLE {
 	private static final String VALID_SELECTIONS_FOR_BQ = "validSelectionsForBrainstormingQuestions";
 	private static final String VALID_SELECTIONS_FOR_BAQ = "validSelectionsForBothAgreeQuestions";
 	private static final String SKILL_NICKNAMES = "skillNickName";
+	private static final String ASKING_IF_TUTOR_KNOWS_STEP_TOPIC_OPTIONS = "confidenceDemonstration";
+	private static final String CONFIDENCE_DEMONSTRATION_HEADER = "confidenceDemonstration";
+
 	
 
 	private final String USER_ID_REQUEST_TITLE = "User ID";
@@ -425,6 +429,8 @@ public class SimStPLE {
 	private Hashtable<String, String> exampleExplanations;
 	private Hashtable<String, LinkedList<Explanation>> mistakeExplanations;
 	private Hashtable<String, LinkedList<Explanation>> problemChoiceExplanations;
+	// Tasmia
+	private Hashtable<String, LinkedList<Explanation>> confidenceChoiceExplanations;
 	private Hashtable<String, LinkedList<Explanation>> hintExplanations;
 	private HashSet<String> validSelections;
 	private Map<String, String> startState;
@@ -1183,6 +1189,8 @@ public class SimStPLE {
 		skillNickNames = new Hashtable<String, String>();
 		mistakeExplanations = new Hashtable<String, LinkedList<Explanation>>();
 		problemChoiceExplanations = new Hashtable<String, LinkedList<Explanation>>();
+		// Tasmia
+		confidenceChoiceExplanations = new Hashtable<String, LinkedList<Explanation>>();
 		hintExplanations = new Hashtable<String, LinkedList<Explanation>>();
 		readConfigFile();
 		conversation = new SimStConversation(brController, "simSt-speech.txt");
@@ -1255,6 +1263,9 @@ public class SimStPLE {
 				} else if (line.equals(VALID_SELECTIONS_FOR_BAQ)) {
 					validSelections_baq = new HashSet<String>();
 					configValidSelections(reader, validSelections_baq);
+				}
+				else if (line.equals(CONFIDENCE_DEMONSTRATION_HEADER)) {
+					configConfidenceExplanations(reader);
 				}
 				else if (line.equals(SKILL_NICKNAMES)) {
 					configSkillNickNames(reader);
@@ -1519,6 +1530,9 @@ public class SimStPLE {
 	public void configProblemChoiceExplanations(BufferedReader reader) {
 		configExplanations(reader, problemChoiceExplanations);
 	}
+	public void configConfidenceExplanations(BufferedReader reader) {
+		configExplanations(reader, confidenceChoiceExplanations);
+	}
 
 	// Read mistake explanations and their conditions for display from config file
 	public void configHintExplanations(BufferedReader reader) {
@@ -1748,6 +1762,27 @@ public class SimStPLE {
 		QuestionAnswers qa = new QuestionAnswers(question, matches);
 		return qa;
 	}
+	
+	// Get a list of all confidence options to choose when tutee says it is stuck
+		public QuestionAnswers getMatchingConfidenceChoiceExplanation() {
+			Object[] questions = confidenceChoiceExplanations.keySet().toArray();
+			if (questions.length == 0) {
+				return null;
+			}
+			String question = questions[(int) (Math.random() * questions.length)].toString();
+			List<String> matches = new ArrayList<String>();
+			List <Explanation> exp = confidenceChoiceExplanations.get(question);
+			for(int i=0; i<exp.size(); i++) {
+				matches.add(exp.get(i).explanation);
+			}
+			//question = replaceMatchSymbols(question, "", null, problem, null);
+
+			if (question == null)
+				return null;
+
+			QuestionAnswers qa = new QuestionAnswers(question, matches);
+			return qa;
+		}
 
 	// Get a list of all hints which could apply to the given skill, problem step
 	// and given input
@@ -4929,6 +4964,49 @@ public class SimStPLE {
 		return response;
 
 	}
+	
+	// Tasmia
+	// This is essentially the same function as the above with few added lines. I made a new one because the earlier one was not working
+	 /*
+	  public String giveMessageSelectableResponse_(String message, List<String> selections)
+	    {
+		  	
+	    	LinkedBlockingQueue<String> bucket = new LinkedBlockingQueue<String>();
+	    	
+	    	brController.getMissController().getSimStPLE().setAvatarAsking();
+	        brController.getMissController().getSimStPLE().getSimStPeerTutoringPlatform().appendSpeech(message,getSimStName());
+	   
+	    	
+	        brController.getMissController().getSimStPLE().getSimStPeerTutoringPlatform().showTextResponseOptions__(true,selections);
+	
+	        for (ActionListener al : getSimStPeerTutoringPlatform().getTextResponseSubmitButton().getActionListeners()) {
+				getSimStPeerTutoringPlatform().getTextResponseSubmitButton().removeActionListener(al);
+			}
+			getSimStPeerTutoringPlatform().getTextResponseSubmitButton().addActionListener(new TextEntryListener(bucket));
+
+			String response = "";
+
+			getSimStPeerTutoringPlatform().scrollPaneToBottom();
+
+			try {
+				response = bucket.take();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+
+			if (response.length() > 0)
+				getSimStPeerTutoringPlatform().appendSpeech(response, "Me");
+			// getSimStPeerTutoringPlatform().getTextResponse().setText("");
+			getSimStPeerTutoringPlatform().getTextResponse().setSelectedItem("");
+
+			getSimStPeerTutoringPlatform().showTextResponseOptions(false, null);
+			this.setAvatarNormal();
+	    	
+			return response;
+	    	
+
+	    }
+	 */
 
 	class TextEntryListener implements ActionListener {
 
@@ -4953,7 +5031,8 @@ public class SimStPLE {
 				if (((JComboBox) e.getSource()).getSelectedItem() == null)
 					return;
 				if (((JComboBox) e.getSource()).getSelectedItem().equals(SELECT_OPTION))
-					response = "";
+					return;
+					//response = "";
 				else
 					response = (String) ((JComboBox) e.getSource()).getSelectedItem();
 			}
@@ -4963,7 +5042,8 @@ public class SimStPLE {
 				if (combo.getSelectedItem() == null)
 					response = "";
 				else if (combo.getSelectedItem().equals(SELECT_OPTION))
-					response = "";
+					return;
+					//response = "";
 				else
 					response = (String) (combo.getSelectedItem());
 
@@ -5888,10 +5968,6 @@ public class SimStPLE {
 
 				Vector<SimStExample> results = startQuizProblems(); // Start solving the problems // w - return results
 				
-				/*for(int i=0; i<getSimSt().getGradedExamples().size(); i++) {
-					// we are getting correct but duplicate results.
-					System.out.println(getSimSt().getGradedExamples().get(i));
-				}*/
 				getMissController().autoSaveInstructions("graded_instructions");
 				for (int i = 0; i < results.size(); i++) {
 					getSimStPeerTutoringPlatform().addQuiz(results.get(i));

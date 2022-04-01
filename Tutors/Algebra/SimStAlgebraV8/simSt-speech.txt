@@ -375,7 +375,7 @@ WHY_WAS_INCORRECT_TUTOR_TYPEIN
 Earlier when I had <op> and I applied <o> on it, I got <pi>, but you said it was wrong. How did you know that <pi> was incorrect? 
 
 WHY_WAS_INCORRECT_METATUTOR_TRANSFORMATION
-In the quiz, when I had <problem>, I applied <pi> but Mr. Williams graded that as incorrect. Why did Mr. William think <pi> was incorrect? 
+In the quiz, when I had <problem>, I applied <pi> but Mr. Williams graded that as incorrect. Why did Mr. Williams think <pi> was incorrect? 
 
 WHY_WAS_INCORRECT_METATUTOR_TYPEIN
 In the quiz, when I had <op> and I applied <o> on it, I got <pi>, but Mr. Williams graded that as incorrect. Why did Mr. William think <pi> was incorrect?

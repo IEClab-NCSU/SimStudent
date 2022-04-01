@@ -33,6 +33,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.TableModel;
@@ -1103,7 +1104,51 @@ public class SimStPeerTutoringPlatform extends JComponent {
 
     }
     
+/*
+    public void showTextResponseOptions__(final boolean show, List<String> options)
+    {
+    	if(show)
+    	{
+    		showButtons(false);
+    	}
+    	getTextResponse().removeAllItems();
+    	if(options != null)
+    	{
+    		getTextResponse().addItem("Select ... ");
+			for(String option:options) {
+				JTextPane menu_op = new JTextPane();
+				menu_op.setContentType("text/html");
+				menu_op.setText(option);
+				//JScrollPane scrollPane = new JScrollPane(menu_op);
+    			//getTextResponse().addItem(option);
+    			//getTextResponse().addItem(l.getText());
+				getTextResponse().addItem(menu_op.getText());
+			}
+    	}
+		//getTextResponse().setEditable(show);
+    	getTextResponse().setEnabled(show);
+    	//getTextResponse().setLightWeightPopupEnabled (false);
+    	//getTextResponseSubmitButton().setEnabled(show);
 
+    	if(show)
+    	{
+	    	SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+			    	getTextResponse().requestFocus();
+				    getTextResponse().validate();
+				    if(show) {
+				    	//System.out.println(getTextResponseSubmitButton().isVisible());
+				    	//getTextResponseSubmitButton().setVisible(show);
+				    	//System.out.println(getTextResponseSubmitButton().isVisible());
+				    	getTextResponse().setVisible(show);
+				    	getTextResponse().showPopup();
+				    }
+				}
+			});
+    	}
+
+    }
+    */
     public void showTextResponseOptions(final boolean show, List<String> options)
     {
     	if(show)
@@ -1126,13 +1171,15 @@ public class SimStPeerTutoringPlatform extends JComponent {
 				public void run() {
 			    	getTextResponse().requestFocus();
 				    getTextResponse().validate();
-				    if(show)
+				    if(show) {
 				    	getTextResponse().showPopup();
+				    }
 				}
 			});
     	}
 
     }
+    
     
     JFrame waitMsg;
     

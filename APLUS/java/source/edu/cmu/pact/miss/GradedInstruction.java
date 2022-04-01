@@ -18,6 +18,10 @@ public class GradedInstruction extends Instruction {
 	// Tasmia adding equals function to check if same graded instruction is already present or not
     @Override
     public boolean equals(Object v) {
+    	/*if (!super.equals(v))
+        {
+           return false;
+        }*/
           if (v instanceof GradedInstruction){
         	  GradedInstruction cur_instruction_example = (GradedInstruction) v;
         	  for (int i = 0; i < cur_instruction_example.getFocusOfAttention().size(); i++) {

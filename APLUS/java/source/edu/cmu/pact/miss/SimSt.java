@@ -1538,6 +1538,7 @@ public final class SimSt implements Serializable {
    
    public void addGradedExample(GradedInstruction example)
    {
+	   if(gradedExamples == null) gradedExamples = new LinkedList<GradedInstruction>();
 	   gradedExamples.add(example);
 	   addGradedNegativeExample(example);
 
@@ -1552,6 +1553,10 @@ public final class SimSt implements Serializable {
    {
 
    		String name = example.getName();
+   		if(this.gradedNegativeInstructions == null) {
+   			this.gradedNegativeInstructions = new Hashtable<String, Vector<Instruction>>();
+   		}
+   		
    		Vector /* Instruction */<Instruction> instructions = this.gradedNegativeInstructions.get( name );
 
 	    if (instructions == null) {
@@ -2026,6 +2031,9 @@ public final class SimSt implements Serializable {
    	this.negativeExamples = simStObj.negativeExamples;
    	this.solvedQuizProblem = simStObj.solvedQuizProblem;
    	this.skillSliderNameValuePair = simStObj.skillSliderNameValuePair;
+   	// Tasmia:: restore the so far negative grading
+   	this.gradedExamples = simStObj.gradedExamples;
+   	this.gradedNegativeInstructions = simStObj.gradedNegativeInstructions;
 
 
    	generateDisjunctiveSkillNames();
@@ -2888,85 +2896,6 @@ public final class SimSt implements Serializable {
 	   	return this.startStateChecker;
 	}
 
-  /* public boolean isSolvable(String oracleClass,String problemName,BR_Controller brController){
-		boolean answer = true;
-
-
-		SimStProblemGraph brGraph = new SimStProblemGraph();
-	    SimStNode problemNode = new SimStNode(SimSt.convertToSafeProblemName(problemName),brGraph);
-		brGraph.addSSNode(problemNode);
-		brController.getProblemModel().setStartNode(problemNode);
-
-
-
-
-		Class[] parameters = new Class[3];
-		parameters[0] = String.class;
-		parameters[1] = ProblemNode.class;
-		parameters[2] = BR_Controller.class;
-
-
-		try {
-			Class oracle = Class.forName("edu.cmu.pact.miss."+oracleClass);
-			Object oracleObj = oracle.newInstance();
-			Method askMethod = oracle.getMethod("askNextStep",parameters);
-			//System.out.println(" before while loop : "+answer);
-			while(answer){
-				//System.out.println("Inside the while loop");
-				//System.out.println("Next step for node : "+problemNode.toString());
-				Sai nextStep = (Sai)askMethod.invoke(oracleObj,problemName,problemNode,brController);
-				if(nextStep == null)
-					return false;
-				if(nextStep.getI().equalsIgnoreCase("donenosolution"))
-					return false;
-				else if(nextStep.getI().equalsIgnoreCase("done") || nextStep.getS().equalsIgnoreCase("done"))
-					break;
-				else{
-					SimStNode nextNode = new SimStGraphNavigator().simulatePerformingStep(problemNode,nextStep);
-					problemNode = nextNode;
-					//System.out.println(" Next Node : "+nextStep.toString());
-				}
-
-			}
-			//System.out.println(" After the while loop ");
-			brGraph.clear();
-			brController.createStartState(problemName);
-			//SimStNode previous = new SimStNode(SimSt.convertToSafeProblemName(problemName),brGraph);
-			//brController.getProblemModel().setStartNode(previous);
-
-		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ProblemModelException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}finally{
-			brGraph.clear();
-		}
-
-
-		return answer;
-	}*/
-
-
    /* @author jinyul */
    // Domain dependent ad-hoc method to identify skill name
    public /*private*/ boolean isSkillNameGetterDefined() { return skillNameGetterClassDefined; }
@@ -2999,17 +2928,7 @@ public final class SimSt implements Serializable {
    	}
    }
 
-   /*public void setSsNearSimilarProblemsGetter(String nearSimilarProblemsGetterClassName) {
-	   	try {
-	   		Class nearSimilarProblemsGetterClass = Class.forName(nearSimilarProblemsGetterClassName);
-	   		this.nearSimilarProblemsGetter = (NearSimilarProblemsGetter)nearSimilarProblemsGetterClass.newInstance();
-	   		setNearSimilarProblemsGetterClassDefined(true);
-	   	} catch (Exception e) {
-	   		e.printStackTrace();
-	           logger.simStLogException(e);
-	   	}
-   }
-   public void setSsBothAgreeSpeechGetter(String bothAgreeSpeechGetterClassName) {
+   /*public void setSsBothAgreeSpeechGetter(String bothAgreeSpeechGetterClassName) {
 	   	try {
 	   		Class bothAgreeSpeechGetterClass = Class.forName(bothAgreeSpeechGetterClassName);
 	   		this.bothAgreeSpeechGetter = (BothAgreeSpeechGetter)bothAgreeSpeechGetterClass.newInstance();
@@ -3093,9 +3012,7 @@ public final class SimSt implements Serializable {
    }
 
    /* @author Tasmia */
-   /*public NearSimilarProblemsGetter getNearSimilarProblemsGetter() {
-   	return this.nearSimilarProblemsGetter;
-   }
+   /*
    public BothAgreeSpeechGetter getBothAgreeSpeechGetter() {
 	   	return this.bothAgreeSpeechGetter;
    }*/
@@ -9289,10 +9206,10 @@ public final class SimSt implements Serializable {
        try{
     	   if(trace.getDebugCode("miss")) trace.out("miss", "gatherActivationList: currentNode ==>> " + problemNode);
     	   trace.out("webAuth","******* Hm... current facts are : " + getSsRete().getFacts());
-    	   Set<String> nameSet=getRuleNames();
+    	   /*Set<String> nameSet=getRuleNames();
 	   	   	for (String skillName : nameSet) {
 	   	   		trace.out("webAuth","******* found a skill named: " + skillName);
-	   	   	}
+	   	   	}*/
 
 
            if (problemNode != getBrController().getSolutionState().getCurrentNode()) {
@@ -9385,57 +9302,6 @@ public final class SimSt implements Serializable {
 
 
        return activationList;
-   }
-   /**
-    * Finds the activations that are fired at a given problemNode
-    * @param problemNode
-    * @return Vector<RuleActivationNode>
- * @throws JessException
-    */
-   public Vector /* RuleActivationNode */<RuleActivationNode> gatherActivationList(ProblemNode problemNode, boolean isNearSimilar) throws JessException {
-	    Vector<RuleActivationNode> activationList = new Vector<RuleActivationNode>();
-	    
-	    
-	    RuleActivationTree tree = getBrController().getRuleActivationTree();
-		TreeTableModel ttm = tree.getActivationModel();
-		RuleActivationNode root = (RuleActivationNode) ttm.getRoot();
-		
-		if(isNearSimilar) {
-	    	brainStormRete = new SimStRete(getBrController());
-	    	brainStormRete.reset();
-	    	brainStormRete.restoreInitialWMState(problemNode, true);
-	    	
-	    	root.saveState(brainStormRete);
-
-			List wholeAgenda = brainStormRete.getAgendaAsList(null);
-			root.createChildren(wholeAgenda, false);
-			List children = root.getChildren();
-			JessModelTracing jmt = brainStormRete.getJmt();
-
-			    	//fire each rule in agenda to get the sai for every rule.
-			for(int i=0; i< children.size(); i++) {
-			    RuleActivationNode child = (RuleActivationNode)children.get(i);
-				try {
-					root.setUpState(brainStormRete, i);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				jmt.setNodeNowFiring(child);
-			    child.fire(brainStormRete);
-				jmt.setNodeNowFiring(null);
-			    activationList.add(child);
-			 }
-
-
-		    activationList = removeDuplicateActivations(activationList);
-		   	return activationList;
-	    }
-	    else {
-		   	return activationList;
-	    }
-
-		
    }
 
    /* Hash to hold the type of hint for each production rule, so we don't
@@ -10089,11 +9955,11 @@ public final class SimSt implements Serializable {
 
           	int oracle = 0;
 	       	oracle = askInquiry(ruleName, msg);
-	       	if(oracle == JOptionPane.YES_OPTION && isCTIFollowupInquiryMode()) {
+	       	/*if(oracle == JOptionPane.YES_OPTION && isCTIFollowupInquiryMode()) {
 	       		// Tutor agreed with what tutee performed.
-	       		if(!checkIfStepsAlreadyNegated(ran, 0)) checkIfStepsAlreadyNegated(ran, 1);
+	       		if(!checkIfStepsAlreadyNegated(ran.getName(), ran.getActualSelection(), ran.getRuleFoas(), 0)) checkIfStepsAlreadyNegated(ran.getName(), ran.getActualSelection(), ran.getRuleFoas(), 1);
 	       		
-	       	}
+	       	}*/
 	       	status = getStatusByInquiryResponseAndUpdateSkill(ran, oracle == JOptionPane.YES_OPTION);
 
 	       	if(getSsInteractiveLearning() != null)
@@ -10116,12 +9982,15 @@ public final class SimSt implements Serializable {
    // Added by Tasmia
    // This function checks if mr_williams = 0 or tutor = 1 already negated a skill for the same equation in the past.
    // If yes, ask why it was incorrect in the past.
-   public boolean checkIfStepsAlreadyNegated(RuleActivationNode ran, int by_whom) {
-	    
-	    String skillName = Rule.getRuleBaseName(ran.getName()).replaceAll(
+   // checkIfStepsAlreadyNegated(ran.getName(), ran.getActualSelection(), ran.getRuleFoas(), int by_whom)
+   public boolean checkIfStepsAlreadyNegated(String rulename, String selection_foa, Vector foa, int by_whom) {
+	    if(by_whom == 0 && gradedNegativeInstructions == null) return false;
+	    if(by_whom == 1 && negativeInstructions == null) return false;
+	   
+	    String skillName = Rule.getRuleBaseName(rulename).replaceAll(
 				"MAIN::", "");
-	    String typeOfStep= getFoaGetter().getTypeOfStep(ran.getActualSelection(),getBrController());
-  		Vector foas = ran.getRuleFoas();
+	    String typeOfStep= getFoaGetter().getTypeOfStep(selection_foa,getBrController());
+  		Vector foas = foa;
   		Vector<String> foaContents = new Vector<String>();
   	   	for(int i=0;i<foas.size();i++)
   	   	{

@@ -1367,7 +1367,8 @@ public void fillInQuizProblem(String problemName) {
 				
 				if (successiveNode.getInDegree() > 0 && !((SimStEdge) successiveNode.getIncomingEdges().get(0)).isCorrect()) {
 					GradedInstruction newInstr = makeInstruction(skillName, ran.getActualSelection(), ran.getActualAction(), ran.getActualInput(), foaContents);
-					if(!getSimSt().getGradedExamples().contains(newInstr))
+					if(getSimSt().getGradedExamples() == null) getSimSt().addGradedExample(newInstr);
+					else if(!getSimSt().getGradedExamples().contains(newInstr))
 							getSimSt().addGradedExample(newInstr);
 				}
 				
@@ -1499,27 +1500,6 @@ public void fillInQuizProblem(String problemName) {
 
 		Vector activationList = simSt.gatherActivationList(currentNode);
 		Collection<RuleActivationNode> activList = simSt.createOrderedActivationList(activationList);
-
-		return activList;
-	}
-
-	public Collection<RuleActivationNode> getActivations(ProblemNode currentNode, boolean isNearSimilar){
-
-		if (currentNode==null){
-			currentNode=this.currentNode;
-		}
-
-
-		Vector activationList;
-		Collection<RuleActivationNode> activList = null;
-		try {
-			activationList = simSt.gatherActivationList(currentNode, isNearSimilar);
-			activList = simSt.createOrderedActivationList(activationList);
-		} catch (JessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		//Collection<RuleActivationNode> activList = simSt.createOrderedActivationList(activationList);
 
 		return activList;
 	}
@@ -1692,17 +1672,6 @@ public void fillInQuizProblem(String problemName) {
 
 
 			askedExplanation = false;
-			/*step = simSt.getProblemAssessor().calcProblemStepString(currentNode.getProblemModel().getStartNode(), currentNode,simSt.getLastSkillOperand());
-
-			simSt.setProblemStepString(step);
-			if (logger.getLoggingEnabled())
-					logger.simStLog(SimStLogger.SIM_STUDENT_STEP, SimStLogger.STEP_STARTED_ACTION, step, "", "");
-
-			// used to calculate time for full step
-//			long stepStartTime = Calendar.getInstance().getTimeInMillis();
-			stepStartTime = Calendar.getInstance().getTimeInMillis();*/
-
-//			calculateFullStepTime(step, stepStartTime, currentNode);
 			calculateFullStepTime(currentNode);
 
 			if (trace.getDebugCode("ss"))
@@ -1817,17 +1786,19 @@ public void fillInQuizProblem(String problemName) {
 			//
 			// Null nextCurrentNode means that no step was performed correctly
 			if (nextCurrentNode == null && !isTakingQuiz() && currentNode != null) {
-
 				/*check for any inconsistancies between quiz and tutoring */
 				if (getBrController(getSimSt()).getMissController().isPLEon())
 					getBrController(getSimSt()).getMissController().getSimStPLE().checkForQuizTutoringBehaviourDiscrepency(brController.getProblemName(),null);
 
 				// Tasmia added code starts here
+				if(getSimSt().isCTIFollowupInquiryMode())
 				{
 					// Ask if tutor knows what to do next so that there opens an opportunity
 					// for the tutee to ask initial tutee inquiry when tutor is also stuck.
 					String title = SimStConversation.ASKING_IF_TUTOR_KNOWS_STEP_TOPIC;
 					SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();
+					QuestionAnswers qa = ple.getMatchingConfidenceChoiceExplanation();
+					String explanation = ple.giveMessageSelectableResponse(qa.getQuestion(), qa.getAnswers());
 					String message = ple.getConversation().getMessage(SimStConversation.ASKING_IF_TUTOR_KNOWS_STEP_TOPIC);
 					int oracle = JOptionPane.YES_OPTION;
 					if (activations)
@@ -1910,17 +1881,25 @@ public void fillInQuizProblem(String problemName) {
 						}
 
 					}
+					//Vector foa = getSimSt().getCurrentFoA();
+					String skillname = hint.skillName;
+					String selection = hint.getSai().getS();
+					if(!getSimSt().checkIfStepsAlreadyNegated(skillname, selection, current_foas, 0)) getSimSt().checkIfStepsAlreadyNegated(skillname, selection, current_foas, 1);
+					
+					
 				}
-
-				/*// Previous code intact start
-				nextCurrentNode = askWhatToDoNext(currentNode);
-				hintReceived = true;
-				if (trace.getDebugCode("ss"))
-					trace.out("ss", "Calling askWhatToDoNext  "
+				else {
+					//Previous code
+					nextCurrentNode = askWhatToDoNext(currentNode);
+					hintReceived = true;
+					if (trace.getDebugCode("ss"))
+						trace.out("ss", "Calling askWhatToDoNext  "
 							+ "currentNode: " + currentNode
 							+ " nextCurrentNode: " + nextCurrentNode);
-				// Previous code ends */
-
+					// Previous code ends */
+				}
+				
+				
 			}
 			
 			// only the first step of activations can be skipped
@@ -3026,6 +3005,7 @@ public void fillInQuizProblem(String problemName) {
 				SimStExplainWhyNotDlg whyNotDlg=new SimStExplainWhyNotDlg(getBrController(getSimSt()).getMissController().getSimStPLE().getSimStPeerTutoringPlatform().getStudentInterface() ,brController,sai,inst,question);
 
 				//explanation = ple.giveMessageSelectableResponse(question, qa.getAnswers());
+				// gives options
 				explanation = whyNotDlg.giveMessageSelectableResponse(question, qa.getAnswers(),sai.getI());
 
 				//simSt.getModelTraceWM().setSelfExplanation("false");

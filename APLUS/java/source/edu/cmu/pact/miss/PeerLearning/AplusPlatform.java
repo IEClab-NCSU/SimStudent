@@ -3777,7 +3777,7 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
     	}
 
     }
-
+    
     public void restoreButtons()
     {
     	yesPanel.setVisible(true);
@@ -4449,7 +4449,44 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 	@Deprecated
 	public void showTextResponseOptions(final boolean show, List<String> options) 
 	{
-		this.showTextResponse(show);
+		//this.showTextResponse(show);
+		if(show)
+    	{
+    		showButtons(false);
+    	}
+    	getTextResponse().removeAllItems();
+    	if(options != null)
+    	{
+    		getTextResponse().addItem("Please Select One"); 
+    		//getTextResponse().addItem(SELECT_OPTION);
+			for(String option:options) {
+				JTextPane menu_op = new JTextPane();
+				//menu_op.setContentType("text/html");
+				menu_op.setText(option);
+				//JScrollPane scrollPane = new JScrollPane(menu_op);
+    			//getTextResponse().addItem(option);
+    			//getTextResponse().addItem(l.getText());
+				getTextResponse().addItem(menu_op.getText());
+			}
+    	}
+    	getTextResponse().setVisible(show);
+		//getTextResponse().setEditable(show);
+    	getTextResponse().setEnabled(show);
+    	submitPanel.setVisible(show);
+    	getTextResponseSubmitButton().setEnabled(show);
+
+    	if(show)
+    	{
+	    	SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+			    	getTextResponse().requestFocus();
+				    getTextResponse().validate();
+				    if(show) {
+				    	getTextResponse().showPopup();
+				    }
+				}
+			});
+    	}
 	}
 	public String getExampleProblem() {
 		return exampleProblem;
