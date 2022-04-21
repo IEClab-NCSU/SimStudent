@@ -1816,6 +1816,8 @@ public void fillInQuizProblem(String problemName) {
 					if(explanation.contains("K1"))
 					{
 						// ask for the demonstration of the step.
+						if (getBrController(getSimSt()).getMissController().isPLEon() && !isTakingQuiz())
+							getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
 						ple.blockInput(false);
 						is_tutor_stuck = false;
 						// String custom_message = activations ? null : ple.getConversation().getMessage(SimStConversation.POST_UNDO);
