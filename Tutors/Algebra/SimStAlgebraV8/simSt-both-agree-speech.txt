@@ -1,14 +1,14 @@
 ;; Wed Jun 30
-;; While learning something we often ask ourselves what would happen if the situation was something else or what would happen if we would have taken another 
-;; alternative action. We bring in unknown things in the picture and try to apply our known ideas in those situation to make sure what we learned so far is 
-;; robust. This aim of the questions asked when both tutor tutee agree on a <i> is to help tutor create unknown/complex/similar example situation and apply 
-;; known concepts to those situation to make their knowledge robust. Therefore, people in any domain should design questions in this route 
-;; in a way that prompt tutor to create unknown/complex/similar situation and apply known knowledge to those situation. 
-;; For example: in our linear eq solving domain, Can you state an equation where I might have to add a negative number and explain how adding a negative 
-;;number would work for that equation? Prompting tutor to create an equation where add with negative number would apply and asking him to explain the 
+;; While learning something we often ask ourselves what would happen if the situation was something else or what would happen if we would have taken another
+;; alternative action. We bring in unknown things in the picture and try to apply our known ideas in those situation to make sure what we learned so far is
+;; robust. This aim of the questions asked when both tutor tutee agree on a <i> is to help tutor create unknown/complex/similar example situation and apply
+;; known concepts to those situation to make their knowledge robust. Therefore, people in any domain should design questions in this route
+;; in a way that prompt tutor to create unknown/complex/similar situation and apply known knowledge to those situation.
+;; For example: in our linear eq solving domain, Can you state an equation where I might have to add a negative number and explain how adding a negative
+;;number would work for that equation? Prompting tutor to create an equation where add with negative number would apply and asking him to explain the
 ;;application to make sense of the solution step.
 
-;; This file contains questions to help tutors create unknown/complex/similar situations by generating examples and ask tutor to apply the concept <i> in 
+;; This file contains questions to help tutors create unknown/complex/similar situations by generating examples and ask tutor to apply the concept <i> in
 ;; those situation.
 ;; Make sure to state the different <i>s as capital letter headers (for example: ADD/DIVIDE etc.)
 ;; Each questions underneath the header (concepts) ask tutor to explain on unknown/complex/similar example situations and apply <i>.
@@ -17,9 +17,9 @@
 
 
 ADD_POSITIVE_OPERATOR
-Can you state an equation where I might have to add a negative number and explain how adding a negative number would work for that equation? 
-Whenever we are adding a positive number, we are basically giving back a positive number to the equation so that it cancels out the existing negative number. What would happen if I take away that existing negative number instead by performing subtract operation? Can you explain the outcome stating an appropriate equation?" 
-I was wondering why didn’t we simply take away the negative number by performing subtract operation? Please state an equation where subtracting a negative number would make sense and explain it to me?" 
+Can you state an equation where I might have to add a negative number and explain how adding a negative number would work for that equation?
+Whenever we are adding a positive number, we are basically giving back a positive number to the equation so that it cancels out the existing negative number. What would happen if I take away that existing negative number instead by performing subtract operation? Can you explain the outcome stating an appropriate equation?"
+I was wondering why didn’t we simply take away the negative number by performing subtract operation? Please state an equation where subtracting a negative number would make sense and explain it to me?"
 I have only seen that we are adding a positive number to any equation. Can you write down another equation in the chat where I might have to add a negative number and explain how add applies there?"
 
 ADD_WHOLE_NUMBER_OPERATOR
@@ -30,7 +30,7 @@ Can you state another equation where "adding" a number would make sense and expl
 
 
 SUBTRACT_POSITIVE_OPERATOR
-I can see that we are taking away a positive number by performing subtract. Can you state an equation where I might have to take away a negative number and explain how subtract a negative number works for that equation? 
+I can see that we are taking away a positive number by performing subtract. Can you state an equation where I might have to take away a negative number and explain how subtract a negative number works for that equation?
 Do we only subtract a positive number? Can you tell me an example equation where I might have to subtract a negative number?
 
 SUBTRACT_WHOLE_NUMBER_OPERATOR

@@ -8,23 +8,11 @@ For MAC/Linux users:
 1. cd AlgebraTuTalk
 2. ./runAplus.sh
 
-Follow the terminal outcome to open up APLUS with your desired mode
+An example command to run APLUS in cog tutor mode:
+./runAplus.sh -ct -noLogging
 
--> To run APLUS in CTI mode:
+An example command to run APLUS with metatutor metacognitive hints mode:
+./runAplus.sh -mtmc -noLogging
 
-1. cd AlgebraTuTalk
-2. ./runAplus_cti_lightside.sh
-
-"runAplus_cti_lightside.sh" script performs two functions:
-	(a) Runs the lightside server ("runAplus_lightside.sh")
-	(b) Runs "runAplus.sh" script in CTI mode
-
-For Windows users:
-
-Please choose the appropriate .bat file and run it using the terminal.
-
-For example:
-
--> to run APLUS in CTI mode, run "runAPLUS-MTMC_CTI_Lightside.bat" file in the terminal.
-
--> to run APLUS in MTMC mode, run "runAPLUS-MTMC.bat" file in the terminal.
+An example command to run APLUS with metatutor metacognitive hints mode and cti turned on:
+./runAplus.sh -mtmc -cti -noLogging

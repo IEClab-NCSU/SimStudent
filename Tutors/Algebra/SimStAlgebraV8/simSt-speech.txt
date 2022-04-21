@@ -324,12 +324,11 @@ Do you know what step should be performed now?
 Do you know what step need to be performed now?
 
 BRAINSTORMING_THINKING
-I see. Let me ask Mr. Williams if he has some suggestions for us. Mr. Williams, can you help please?
-Oops! It seems like we both are stuck. Mr. Williams, can you help please?.
-I see. Let me ask Mr. Williams if he has some suggestions for us. Mr. Williams, can you help please?
-Oops! It seems like we both are stuck. Let me ask Mr. Williams for some suggestions. Mr. Williams, can you help us please?
-I see. Let me ask Mr. Williams if he can help us find a way out. Mr. Williams, can you help us please?
-Oops! Let me see if Mr. Williams can help us anyway with some suggestions. Mr. Williams, can you help?
+Alright! You can consult with Mr. Williams before we proceed. Let me ask him if he has some suggestions for us! Mr. Williams, can you help, please?
+No worries! It seems like we both are kind of unsure about our next step! Mr. Williams, can you help, please?.
+How about you consult with Mr. Williams before we proceed? Let me ask him if he has some suggestions for us. Mr. Williams, can you help, please?
+Let's check with Mr. Williams for some suggestions before we move forward. Mr. Williams, can you help, please?
+I see. Let me ask Mr. Williams if he can help us with a more certain solution. Mr. Williams, can you help, please?
 
 BRAINSTORMING_LOGIC_WHEN_NO_FEATURE_FOUND
 it just did not feel right to me.
@@ -345,7 +344,9 @@ Thanks Mr. Williams!
 Thank you for the help Mr. Williams!
 
 SHOW_NEXT_AFTER_HINT
-Now, please show me the next step
+Now, please show me the next step.
+Can you now demonstrate the next step, please?
+Please show me the next step now.
 
 STUCK_AFTER_MR_WILLIAMS_SUGGESTION
 What exactly should I do now?
@@ -375,7 +376,8 @@ WHY_WAS_INCORRECT_TUTOR_TYPEIN
 Earlier when I had <op> and I applied <o> on it, I got <pi>, but you said it was wrong. How did you know that <pi> was incorrect? 
 
 WHY_WAS_INCORRECT_METATUTOR_TRANSFORMATION
-In the quiz, when I had <problem>, I applied <pi> but Mr. Williams graded that as incorrect. Why did Mr. Williams think <pi> was incorrect? 
+In the quiz, when I had <problem>, I applied <pi> but Mr. Williams graded that as incorrect. Why did Mr. Williams grade <pi> as incorrect here? 
 
 WHY_WAS_INCORRECT_METATUTOR_TYPEIN
-In the quiz, when I had <op> and I applied <o> on it, I got <pi>, but Mr. Williams graded that as incorrect. Why did Mr. William think <pi> was incorrect?
+In the quiz, when I had <op> and I applied <o> on it, I got <pi>, but Mr. Williams graded that as incorrect. Why did Mr. William grade <pi> as incorrect here?
+

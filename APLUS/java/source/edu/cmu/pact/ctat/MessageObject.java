@@ -265,7 +265,7 @@ public class MessageObject implements Cloneable {
 		else
 			return (result[1]).split("</" + property + ">")[0];
 	}
-
+	
 	/**
 	 * Initialize the {@link #properties} Map from an Element.
 	 * @param propertiesElt

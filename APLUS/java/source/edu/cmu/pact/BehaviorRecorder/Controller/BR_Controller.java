@@ -3166,13 +3166,14 @@ public class BR_Controller extends TutorController implements PropertyChangeList
 			return false;
 		return launcher.inTutoringServiceMode();
 	}
-
+	
 	/**
 	 * Set the tutor and the student interface back to the start state
 	 * for rule engines.
 	 */
     public void goToStartStateForRuleTutors() {
     	
+    	// This function is called only when we are at the first step of any new problem.
     	if (trace.getDebugCode("br")) trace.out("br", "go to start state()");
 
         if (getProblemModel().getStartNode() == null)
@@ -3203,12 +3204,11 @@ public class BR_Controller extends TutorController implements PropertyChangeList
         	newMessage.setProperty("ProblemName", startVertex.getText());
         }
 		
-        utp.sendProperty(newMessage); // Tasmia: I do not know how this utp messages are being used later
+        utp.sendProperty(newMessage);
 			
 			
         //Gustavo 2Dec2006: for each message in startNodeMessageVector, send it.
-        // Tasmia: But why do we need to send it? how it is being used by rete and how the interface elements are being changes based on it.
-        Iterator<MessageObject> it = getProblemModel().startNodeMessagesIterator();        
+        Iterator<MessageObject> it = getProblemModel().startNodeMessagesIterator();
         for (int i = 0; it.hasNext(); i++) {
         	MessageObject msg = it.next();
             trace.out("mt", "Sending start Comm Message " + (i+1) +" to LISP: " + msg);
@@ -4964,7 +4964,6 @@ public class BR_Controller extends TutorController implements PropertyChangeList
     			MessageObject startNodeMsg = it.next();
     			trace.out ("missmt1", "Start Comm Message [" + (i+1) + "] --> " + startNodeMsg);
     			utp.sendProperty(startNodeMsg);
-    	        // trace.removeDebugCode("mt");
     		}
     	}
         if (trace.getDebugCode("missmt1")) trace.out("missmt1", "sendGo_To_WM_State: utp.sendPropery\n"+msg);

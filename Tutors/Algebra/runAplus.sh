@@ -26,13 +26,31 @@ if [ "${OS}" != "Windows_NT" ]; then
 fi
 
 redir="off"
-
+condition=""
 case $1 in
-	"-ct") AddArgs="${AddArgs} -ssCogTutorMode  -ssHintMethod builtInClSolverTutor -ssRuleActivationTestMethod builtInClSolverTutor -ssIntroVideo cogTutor.mov -ssCondition CogTutorControl";;
-	"-cta") AddArgs="${AddArgs} -ssAplusCtrlCogTutorMode -ssProblemCheckerOracle ClOracle -ssHintMethod builtInClSolverTutor -ssRuleActivationTestMethod builtInClSolverTutor -ssIntroVideo aplus_controlS7.mov  -ssCondition AplusControl";;
-	"-mt") AddArgs="${AddArgs} -ssMetaTutorMode -ssProblemCheckerOracle ClOracle -ssRuleActivationTestMethod humanOracle -ssHintMethod humanDemonstration -ssIntroVideo metatutor.mov  -ssCondition MetaTutor";;
-	"-mtc") AddArgs="${AddArgs} -ssMetaTutorMode -ssProblemCheckerOracle ClOracle -ssMetaTutorModeLevel Cognitive -ssRuleActivationTestMethod humanOracle -ssHintMethod humanDemonstration -ssIntroVideo metatutorC.mov -ssCondition MetaTutorC";;
-	"-mtmc") AddArgs="${AddArgs} -ssMetaTutorMode -ssProblemCheckerOracle ClOracle -ssMetaTutorModeLevel MetaCognitive -ssRuleActivationTestMethod humanOracle -ssHintMethod humanDemonstration -ssIntroVideo metatutorMC.mp4 -ssCondition MetaTutorMC";;
+	#"-ct") AddArgs="${AddArgs} -ssCogTutorMode  -ssHintMethod builtInClSolverTutor -ssRuleActivationTestMethod builtInClSolverTutor -ssIntroVideo cogTutor.mov -ssCondition CogTutorControl";;
+	#"-cta") AddArgs="${AddArgs} -ssAplusCtrlCogTutorMode -ssProblemCheckerOracle ClOracle -ssHintMethod builtInClSolverTutor -ssRuleActivationTestMethod builtInClSolverTutor -ssIntroVideo aplus_controlS7.mov  -ssCondition AplusControl";;
+	#"-mt") AddArgs="${AddArgs} -ssMetaTutorMode -ssProblemCheckerOracle ClOracle -ssRuleActivationTestMethod humanOracle -ssHintMethod humanDemonstration -ssIntroVideo metatutor.mov  -ssCondition MetaTutor";;
+	#"-mtc") AddArgs="${AddArgs} -ssMetaTutorMode -ssProblemCheckerOracle ClOracle -ssMetaTutorModeLevel Cognitive -ssRuleActivationTestMethod humanOracle -ssHintMethod humanDemonstration -ssIntroVideo metatutorC.mov -ssCondition MetaTutorC";;
+	#"-mtmc") AddArgs="${AddArgs} -ssMetaTutorMode -ssProblemCheckerOracle ClOracle -ssMetaTutorModeLevel MetaCognitive -ssRuleActivationTestMethod humanOracle -ssHintMethod humanDemonstration -ssIntroVideo metatutorMC.mp4 -ssCondition MetaTutorMC";;
+  "-ct")
+  condition="CogTutorControl"
+  AddArgs="${AddArgs} -ssCogTutorMode  -ssHintMethod builtInClSolverTutor -ssRuleActivationTestMethod builtInClSolverTutor -ssIntroVideo cogTutor.mp4";;
+	"-cta")
+  condition="AplusControl"
+  AddArgs="${AddArgs} -ssAplusCtrlCogTutorMode -ssProblemCheckerOracle ClOracle -ssHintMethod builtInClSolverTutor -ssRuleActivationTestMethod builtInClSolverTutor -ssIntroVideo aplus_controlS7.mp4";;
+	"-mt")
+  condition="MetaTutor"
+  AddArgs="${AddArgs} -ssMetaTutorMode -ssProblemCheckerOracle ClOracle -ssRuleActivationTestMethod humanOracle -ssHintMethod humanDemonstration -ssIntroVideo metatutor.mp4";;
+	"-mtc")
+  condition="MetaTutorC"
+  AddArgs="${AddArgs} -ssMetaTutorMode -ssProblemCheckerOracle ClOracle -ssMetaTutorModeLevel Cognitive -ssRuleActivationTestMethod humanOracle -ssHintMethod humanDemonstration -ssIntroVideo metatutorC.mp4";;
+  "-bl")
+  condition="AplusBaseline"
+  AddArgs="${AddArgs} -ssRuleActivationTestMethod humanOracle -ssHintMethod humanDemonstration -ssIntroVideo metatutorC.mp4";;
+  "-mtmc")
+  condition="MetaTutorMC"
+  AddArgs="${AddArgs} -ssMetaTutorMode -ssProblemCheckerOracle ClOracle -ssMetaTutorModeLevel MetaCognitive -ssRuleActivationTestMethod humanOracle -ssHintMethod humanDemonstration -ssIntroVideo metatutorMC.mp4";;
   "-h"|"-help"|*) echo "Usage: $0"
 	echo " ./runAplus.sh <condition>[-mt | -mtc | -mtmc | -cta | -ct] <otheroptions>"
 	echo "	-datashopLogging <coursename> - turns logging to datashop on"
@@ -60,7 +78,16 @@ case $i in
 "-noSe") SE="off";;
 "-tt") AddArgs="${AddArgs} -ssTutalkParams none";;
 "-cti") CTI="on"
-AddArgs=${AddArgs/MetaTutorMC/MetaTutorMC_CTI}
+condition="${condition}_CTI"
+#AddArgs=${AddArgs/MetaTutorMC/MetaTutorMC_CTI}
+kill -9 $(lsof -ti:8000)
+sh ${CVSDIR}/runAplus_lightside.sh &
+LIGHTSIDE_PID=$!
+function cleanup {
+  kill $LIGHTSIDE_PID
+  kill $(lsof -t -i:8000)
+}
+trap cleanup EXIT
 AddArgs="${AddArgs} -ssConstructiveTuteeInquiryFTIMode -ssCTIBothStuckParams none";;
 "-br") br="on";;
 "-u"|"-user") AddArgs="${AddArgs} -ssUserID";;
@@ -91,6 +118,8 @@ then
 fi;;
 esac
 done
+
+AddArgs="${AddArgs} -ssCondition ${condition}"
 
 if	[[ "${AddArgs}" != *-ssLocalLogging* ]] && [[ "${AddArgs}" != *-ssLogging* ]] && [[ "${AddArgs}" != *-ssNoLogging* ]];
 then

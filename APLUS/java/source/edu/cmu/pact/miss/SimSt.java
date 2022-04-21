@@ -1858,6 +1858,7 @@ public final class SimSt implements Serializable {
    private void printGradedInstructions(PrintStream out) {
 
        //for (int i = 0; i < negativeExamples.size(); i++) {
+	if(gradedExamples == null) return;
    	for (int i = gradedExamples.size()-1; i >= 0; i--) {
            GradedInstruction instruction = gradedExamples.get(i);
            //if(instruction.is_in_file != true) 
@@ -2034,6 +2035,7 @@ public final class SimSt implements Serializable {
    	// Tasmia:: restore the so far negative grading
    	this.gradedExamples = simStObj.gradedExamples;
    	this.gradedNegativeInstructions = simStObj.gradedNegativeInstructions;
+   	this.negativeInstructions = simStObj.negativeInstructions;
 
 
    	generateDisjunctiveSkillNames();
@@ -2043,7 +2045,10 @@ public final class SimSt implements Serializable {
    	saveProductionRules(SAVE_PR_STEP_BASE);
    	if(trace.getDebugCode("miss"))trace.out("miss", "Deserialization done with inputFile");
 
-
+   	if(this.negativeInstructions == null || this.negativeInstructions.size() == 0) {
+   		System.out.println("I am 0");
+   	}
+   	
 
 
 
@@ -2569,7 +2574,14 @@ public final class SimSt implements Serializable {
    public void addFoaString(String name){
 	  this.currentFoA.add(new FoA(name));
    }
-
+   // Added by Tasmia for grabbing the current foas for the current demonstrated step
+	private Vector current_foas = new Vector();
+	public Vector getCurrentFoa() {
+		return current_foas;
+	}
+	public void clearCurrentFoa() {
+		current_foas.clear();
+	}
 
    // A flag showing if Focus Of Attention is specified for the
    // current step.  Reset when a step is demonstrated.
@@ -2900,22 +2912,24 @@ public final class SimSt implements Serializable {
    // Domain dependent ad-hoc method to identify skill name
    public /*private*/ boolean isSkillNameGetterDefined() { return skillNameGetterClassDefined; }
    //public boolean isNearSimilarProblemsGetterDefined() { return nearSimilarProblemsGetterClassDefined; }
-   //public boolean isbothAgreeSpeechGetterClassDefined() { return bothAgreeSpeechGetterClassDefined; }
+   public boolean isbothAgreeSpeechGetterClassDefined() { return bothAgreeSpeechGetterClassDefined; }
    private boolean skillNameGetterClassDefined = false;
    //private boolean nearSimilarProblemsGetterClassDefined = false;
-   //private boolean bothAgreeSpeechGetterClassDefined = false;
+   private boolean bothAgreeSpeechGetterClassDefined = false;
    public void setSkillNameGetterClassDefined(boolean flag) {
    	skillNameGetterClassDefined = flag;
    }
    /*public void setNearSimilarProblemsGetterClassDefined(boolean flag) {
 	   nearSimilarProblemsGetterClassDefined = flag;
-   }
+   }*/
+   
    public void setBothAgreeSpeechGetterClassDefined(boolean flag) {
 	   bothAgreeSpeechGetterClassDefined = flag;
-   }*/
+   }
+   
    private transient SkillNameGetter skillNameGetter = null;
    //private transient  NearSimilarProblemsGetter nearSimilarProblemsGetter = null;
-   //private transient BothAgreeSpeechGetter bothAgreeSpeechGetter = null;
+   private transient BothAgreeSpeechGetter bothAgreeSpeechGetter = null;
    public void setSsSkillNameGetter(String skillNameGetterClassName) {
    	try {
    		if(trace.getDebugCode("miss"))trace.out("miss","DEBUG: "+skillNameGetterClassName);
@@ -2928,7 +2942,7 @@ public final class SimSt implements Serializable {
    	}
    }
 
-   /*public void setSsBothAgreeSpeechGetter(String bothAgreeSpeechGetterClassName) {
+   public void setSsBothAgreeSpeechGetter(String bothAgreeSpeechGetterClassName) {
 	   	try {
 	   		Class bothAgreeSpeechGetterClass = Class.forName(bothAgreeSpeechGetterClassName);
 	   		this.bothAgreeSpeechGetter = (BothAgreeSpeechGetter)bothAgreeSpeechGetterClass.newInstance();
@@ -2937,7 +2951,7 @@ public final class SimSt implements Serializable {
 	   		e.printStackTrace();
 	           logger.simStLogException(e);
 	   	}
-   }*/
+   }
    public /*private*/ boolean isPathOrdererDefined() { return pathOrderingClassDefined; }
    private boolean pathOrderingClassDefined = false;
    public void setPathOrderingClassDefined( boolean flag ) {
@@ -3012,10 +3026,9 @@ public final class SimSt implements Serializable {
    }
 
    /* @author Tasmia */
-   /*
    public BothAgreeSpeechGetter getBothAgreeSpeechGetter() {
 	   	return this.bothAgreeSpeechGetter;
-   }*/
+   }
    /**
     * Inner class representing a WME inside the focus of attention
     */
@@ -3259,6 +3272,9 @@ public final class SimSt implements Serializable {
    public Set getRuleNames() { return rules.keySet(); }
 
    // Returns an Iterator of the Rules induced
+   public HashMap getRules() { return this.rules; }
+
+   // Returns the Rules
    private Iterator getAllRules() { return this.rules.values().iterator(); }
 
    public void removeRule(String ruleName)
@@ -3358,7 +3374,7 @@ public final class SimSt implements Serializable {
 	}
 
 
-	private transient ModelTraceWorkingMemory modelTraceWM = null;
+	private transient ModelTraceWorkingMemory modelTraceWM = new ModelTraceWorkingMemory();
 
 	public ModelTraceWorkingMemory getModelTraceWM() {
 		//System.out.println("Model Trace Working Memory : "+modelTraceWM);
@@ -5797,9 +5813,11 @@ public final class SimSt implements Serializable {
        // Add Focus of Attention, which is either specified by the author
        // or identified by a tutor specific FoA getter
        Vector<FoA> v = getCurrentFoA();
-
+       
 
        addInstructionFoA(instruction, selection, action, input, edgePath);
+       //current_foas.clear();
+       //current_foas = v;
        //if(!getBrController().getMissController().getSimSt().getSsInteractiveLearning().isTypeInStepWithNewFoA())
        //	addInstructionFoA(instruction, selection, action, input, edgePath);
        //else if(getBrController().getMissController().getSimSt().getSsInteractiveLearning().isTypeInStepWithNewFoA())
@@ -5862,10 +5880,13 @@ public final class SimSt implements Serializable {
            }
        }
        printFoa();
+       current_foas.clear();
        //regardless of how the FOA was gotten, we now populate foaStrs
        for (int i = 0; i < numCurrentFoA(); i++) {
            String foaStr = getCurrentFoA().get(i).foaString();
-
+           String foa = foaStr.split("\\|")[1];
+    	   current_foas.add(foa);
+           
            foaStrs.add(foaStr);//getCurrentFoA().get(i).foaString());
        }
 
@@ -9201,17 +9222,10 @@ public final class SimSt implements Serializable {
    public Vector /* RuleActivationNode */<RuleActivationNode> gatherActivationList(ProblemNode problemNode) {
 
        Vector /* RuleActivationNode */<RuleActivationNode> activationList = new Vector<RuleActivationNode>();
-
-       //showActivationList();
+       
        try{
     	   if(trace.getDebugCode("miss")) trace.out("miss", "gatherActivationList: currentNode ==>> " + problemNode);
     	   trace.out("webAuth","******* Hm... current facts are : " + getSsRete().getFacts());
-    	   /*Set<String> nameSet=getRuleNames();
-	   	   	for (String skillName : nameSet) {
-	   	   		trace.out("webAuth","******* found a skill named: " + skillName);
-	   	   	}*/
-
-
            if (problemNode != getBrController().getSolutionState().getCurrentNode()) {
         	   if(trace.getDebugCode("miss")) trace.out("miss", "problem node != solution state ");
            			getBrController().setCurrentNode2(problemNode);
@@ -9956,9 +9970,19 @@ public final class SimSt implements Serializable {
           	int oracle = 0;
 	       	oracle = askInquiry(ruleName, msg);
 	       	/*if(oracle == JOptionPane.YES_OPTION && isCTIFollowupInquiryMode()) {
-	       		// Tutor agreed with what tutee performed.
-	       		if(!checkIfStepsAlreadyNegated(ran.getName(), ran.getActualSelection(), ran.getRuleFoas(), 0)) checkIfStepsAlreadyNegated(ran.getName(), ran.getActualSelection(), ran.getRuleFoas(), 1);
-	       		
+	       		String q_mw_flagged = checkIfStepsAlreadyNegated(ran.getName(), ran.getActualSelection(), ran.getActualInput(), ran.getRuleFoas(), 0);
+				String q_tutor_flagged = "";
+				String why_flagged_explanation = "";
+				if(q_mw_flagged.length() < 2) {
+					q_tutor_flagged = checkIfStepsAlreadyNegated(ran.getName(), ran.getActualSelection(), ran.getActualInput(), ran.getRuleFoas(), 1);
+					if(q_tutor_flagged.length() > 2) {
+						why_flagged_explanation = getMissController().getSimStPLE().giveMessageFreeTextResponse(q_tutor_flagged);
+					}
+				}
+				else {
+           			why_flagged_explanation = getMissController().getSimStPLE().giveMessageFreeTextResponse(q_mw_flagged);
+				}
+	       	
 	       	}*/
 	       	status = getStatusByInquiryResponseAndUpdateSkill(ran, oracle == JOptionPane.YES_OPTION);
 
@@ -9980,17 +10004,64 @@ public final class SimSt implements Serializable {
    }
    
    // Added by Tasmia
+   // This function gives you the flagged instruction
+   public Instruction getFlaggedInstruction(String rulename, String selection_foa, String input, Vector foa, int by_whom) {
+	   if(by_whom == 0 && gradedNegativeInstructions == null) return null;
+	   if(by_whom == 1 && negativeInstructions == null) return null;
+	   if(rulename.isEmpty() || rulename == "" || selection_foa.isEmpty() || selection_foa == "" || input.isEmpty() || input == "" || foa == null) return null;
+	   String skillName = Rule.getRuleBaseName(rulename).replaceAll("MAIN::", "");
+	   String typeOfStep= getFoaGetter().getTypeOfStep(selection_foa,getBrController());
+	   String sai_wmeType = rete.wmeType(selection_foa);
+	   String sai_content = sai_wmeType+"|"+selection_foa+"|"+input;
+	   Vector foas = foa;
+ 	   Vector<String> foaContents = new Vector<String>();
+ 	   for(int i=0;i<foas.size();i++)
+ 	   {
+ 	   		if(getBrController().lookupWidgetByName((String)foas.get(i)) instanceof JCommTable.TableCell)
+ 	   		{
+ 	   			JCommTable.TableCell cell = (JCommTable.TableCell)getBrController().lookupWidgetByName((String)foas.get(i));
+ 	   			String wmeType = rete.wmeType( (String)foas.get(i) );
+ 	   			String detailed_foa = wmeType+"|"+(String)foas.get(i)+"|"+cell.getText();
+ 	   			foaContents.add(detailed_foa);
+ 	   		}
+ 	   }
+ 	   Vector <Instruction> instructions = null;
+ 	   if(by_whom == 0)
+ 	   		instructions = gradedNegativeInstructions.get(skillName);
+ 	   else
+ 	   		instructions = negativeInstructions.get(skillName);
+ 	   
+ 	   if (instructions != null && !instructions.isEmpty()) {
+      		for (int i = 0; i < instructions.size(); i++) { //for each instruction
+
+              Instruction inst = instructions.get(i);
+              int count_foa_matches = 0;
+              Vector neg_example_foas = inst.getFocusOfAttention();
+              for (int j = 0; j < neg_example_foas.size(); j++) {
+              	if(foaContents.contains(neg_example_foas.get(j)) || sai_content.equals(neg_example_foas.get(j))) {
+              		count_foa_matches++;
+              	}
+              }
+              if(count_foa_matches == neg_example_foas.size()) return inst;
+      		}
+ 	   	}
+ 		return null;
+   }
+   
+   
    // This function checks if mr_williams = 0 or tutor = 1 already negated a skill for the same equation in the past.
    // If yes, ask why it was incorrect in the past.
    // checkIfStepsAlreadyNegated(ran.getName(), ran.getActualSelection(), ran.getRuleFoas(), int by_whom)
-   public boolean checkIfStepsAlreadyNegated(String rulename, String selection_foa, Vector foa, int by_whom) {
-	    if(by_whom == 0 && gradedNegativeInstructions == null) return false;
-	    if(by_whom == 1 && negativeInstructions == null) return false;
-	   
+   public String checkIfStepsAlreadyNegated(String rulename, String selection_foa, String input, Vector foa, int by_whom) {
+	    if(by_whom == 0 && gradedNegativeInstructions == null) return "";
+	    if(by_whom == 1 && negativeInstructions == null) return "";
+	    if(rulename.isEmpty() || rulename == "" || selection_foa.isEmpty() || selection_foa == "" || input.isEmpty() || input == "" || foa == null) return "";
 	    String skillName = Rule.getRuleBaseName(rulename).replaceAll(
 				"MAIN::", "");
 	    String typeOfStep= getFoaGetter().getTypeOfStep(selection_foa,getBrController());
-  		Vector foas = foa;
+	    String sai_wmeType = rete.wmeType(selection_foa);
+	    String sai_content = sai_wmeType+"|"+selection_foa+"|"+input;
+	    Vector foas = foa;
   		Vector<String> foaContents = new Vector<String>();
   	   	for(int i=0;i<foas.size();i++)
   	   	{
@@ -10022,15 +10093,15 @@ public final class SimSt implements Serializable {
                String problem = "", operation = "", operand = "";
                Vector neg_example_foas = inst.getFocusOfAttention();
                for (int j = 0; j < neg_example_foas.size(); j++) {
-               	if(foaContents.contains(neg_example_foas.get(j))) {
+               	if(foaContents.contains(neg_example_foas.get(j)) || sai_content.equals(neg_example_foas.get(j))) {
                		count_foa_matches++;
-               		if(typeOfStep == "transformation") {
+               		if(typeOfStep == "transformation" && count_foa_matches > 1) {
                			if(problem == "")
                				problem = ((String) neg_example_foas.get(j)).split("\\|")[2]+"=";
                			else
                				problem += ((String) neg_example_foas.get(j)).split("\\|")[2];
                		}
-               		else {
+               		else if (typeOfStep == "type-in" && count_foa_matches > 1){
                			if(operand == "" && operation == "")
                				operand = ((String) neg_example_foas.get(j)).split("\\|")[2];
                			
@@ -10039,26 +10110,35 @@ public final class SimSt implements Serializable {
                		}
                	}
                }
-               if(count_foa_matches == 2) {
+               if(count_foa_matches == neg_example_foas.size()) {
                		// two of the foa_matches.
                		String previous_negated_input = ((String) neg_example_foas.get(0)).split("\\|")[2];
                		if(skillName.toLowerCase().equals(Rule.DONE_NAME.toLowerCase())) previous_negated_input = "problem is solved";
                		SimStPLE ple = getMissController().getSimStPLE();
+               		String question = "";
                		if(typeOfStep == "transformation") {
-               			String question = ple.getConversation().getMessage(conversation_topic, typeOfStep, problem, previous_negated_input, "", "");
-               			String explanation = getMissController().getSimStPLE().giveMessageFreeTextResponse(question);
+               			question = ple.getConversation().getMessage(conversation_topic, typeOfStep, problem, previous_negated_input, "", "");
+               			//String explanation = getMissController().getSimStPLE().giveMessageFreeTextResponse(question);
                		}
                		else {
-               			String question = ple.getConversation().getMessage(conversation_topic, typeOfStep, "", previous_negated_input, operand, operation);
-               			String explanation = getMissController().getSimStPLE().giveMessageFreeTextResponse(question);
+               			question = ple.getConversation().getMessage(conversation_topic, typeOfStep, "", previous_negated_input, operand, operation);
+               			//String explanation = getMissController().getSimStPLE().giveMessageFreeTextResponse(question);
                		}
-               		return true;
+               		if(inst.getExplanationProvidedFlag() == false) {
+               			inst.setExplanationProvidedFlag(true);
+               			//question += ":"+i;
+               			return question;
+               		}
+               		else {
+               			//return "Flag"+":"+i;
+               			return "Flag";
+               		}
                		
                				
                }
        		}
        }
-  		return false;
+  		return "";
 	   
    }
 

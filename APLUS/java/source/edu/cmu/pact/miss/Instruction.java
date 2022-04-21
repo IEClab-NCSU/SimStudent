@@ -76,10 +76,16 @@ public class Instruction implements Serializable{
     public int getCurrentFoaIndex() {
         return currentFoaIndex;
     }
-//    private void setCurrentFoaIndex(int currentFoaIndex) {
-//        this.currentFoaIndex = currentFoaIndex;
-//    }
-//
+
+    
+    // Maintain a flag to indicate if tutor has provided "N1/best mathematical explanation" to why incorrectly flagged Question.
+    boolean N1_explanation_provided_why_flagged = false;
+    public void setExplanationProvidedFlag(boolean flag) {
+    	N1_explanation_provided_why_flagged = flag;
+    }
+    public boolean getExplanationProvidedFlag() {
+    	return N1_explanation_provided_why_flagged;
+    }
 
     //MAINTAIN AN INDEX
     boolean setToNextPossibleFoa() {
@@ -361,6 +367,7 @@ public class Instruction implements Serializable{
 	//Added 18-2-2015
 	str += "\nId: " + getInstructionID();
 	str += "\nPreviousId: " + getPreviousID();
+	str += "\nExplanationProvided: " + getExplanationProvidedFlag();
 	return str;
     }
     

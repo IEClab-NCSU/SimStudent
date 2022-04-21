@@ -1,4 +1,5 @@
 #!/bin/bash
+cd ..
 LightsideDir=$(pwd)/bazaar/lightside
 cd $LightsideDir
-./scripts/prediction_server.sh
+sh ${LightsideDir}/scripts/prediction_server.sh

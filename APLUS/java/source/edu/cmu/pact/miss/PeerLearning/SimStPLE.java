@@ -1194,7 +1194,8 @@ public class SimStPLE {
 		hintExplanations = new Hashtable<String, LinkedList<Explanation>>();
 		readConfigFile();
 		conversation = new SimStConversation(brController, "simSt-speech.txt");
-		conversation.processBothAgreeSpeechFile("simSt-both-agree-speech.txt");
+		if(getSimSt().isCTIFollowupInquiryMode())
+			conversation.processBothAgreeSpeechFile("simSt-both-agree-speech.txt");
 	}
 
 	// Reads the configuration file and applies the items in it to their categories
@@ -4917,8 +4918,8 @@ public class SimStPLE {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-
-		if (response.length() > 0)
+		
+		if (response.length() > 0 && !response.equals("K-1"))
 			getSimStPeerTutoringPlatform().appendSpeech(response, "Me");
 		// getSimStPeerTutoringPlatform().getTextResponse().setText("");
 		getSimStPeerTutoringPlatform().getTextResponse().setSelectedItem("");
@@ -4953,8 +4954,10 @@ public class SimStPLE {
 			e.printStackTrace();
 		}
 
-		if (response.length() > 0)
-			getSimStPeerTutoringPlatform().appendSpeech(response, "Me");
+		if (response.length() > 0) {
+			String trim_response = response.split("K")[0];
+			getSimStPeerTutoringPlatform().appendSpeech(trim_response, "Me");
+		}
 		// getSimStPeerTutoringPlatform().getTextResponse().setText("");
 		getSimStPeerTutoringPlatform().getTextResponse().setSelectedItem("");
 
@@ -5033,8 +5036,13 @@ public class SimStPLE {
 				if (((JComboBox) e.getSource()).getSelectedItem().equals(SELECT_OPTION))
 					return;
 					//response = "";
-				else
+				else {
 					response = (String) ((JComboBox) e.getSource()).getSelectedItem();
+					int index = (int)((JComboBox) e.getSource()).getSelectedIndex();
+					if(index != -1)
+						response = response + "K" + index;
+					
+				}
 			}
 			if (e.getSource() == getSimStPeerTutoringPlatform().getTextResponseSubmitButton()) {
 				JComboBox combo = getSimStPeerTutoringPlatform().getTextResponse();
@@ -5044,8 +5052,12 @@ public class SimStPLE {
 				else if (combo.getSelectedItem().equals(SELECT_OPTION))
 					return;
 					//response = "";
-				else
+				else {
 					response = (String) (combo.getSelectedItem());
+					int index = (int)(combo.getSelectedIndex());
+					if(index != -1)
+						response = response + "K" + index;
+				}
 
 			}
 			try {
@@ -5257,7 +5269,7 @@ public class SimStPLE {
 			quesMessage.add(message);
 			return quesMessage;
 		}
-
+		
 		getSimSt().getModelTraceWM().setStudentEnteredProblem(prob);
 		if( prob.equals(ModelTraceWorkingMemory.suggestedProblem.replaceAll("\\s+", ""))) {
 			getSimSt().getModelTraceWM().setProblemType("failedQuizProblem");

@@ -25,6 +25,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
+import org.apache.commons.lang.SerializationUtils;
 import org.apache.commons.lang.StringUtils;
 
 import jess.Activation;
@@ -85,7 +86,7 @@ public class SimStInteractiveLearning implements Runnable {
 
 	public final String UNLABELED_SKILLNAME = "unlabeled-interactive-learning";
 	private ArrayList<String> already_suggested_skillname = new ArrayList<String>();
-	private Vector current_foas = new Vector();
+	//private Vector current_foas = new Vector();
 	private boolean bq_scope = false;
 	private SimSt simSt;
 	public boolean getBqScope() {
@@ -1644,7 +1645,7 @@ public void fillInQuizProblem(String problemName) {
 											// been requested on that step
 		String lastInputExplained = null;
 		String lastSkillExplained = null;
-		
+		//current_foas.clear();
 		initModelTracerForProblem();
 
 
@@ -1666,6 +1667,7 @@ public void fillInQuizProblem(String problemName) {
 		while ((!isRunningFromBrd() || this.numStepsPerformed != numStepsBrd || getBrController(getSimSt()).getMissController().isBatchModeOn()) && !this.killMessageReceived) {
 
 			already_suggested_skillname = new ArrayList<String>();
+			//current_foas.clear();
 			bq_scope = false;
 			if (getBrController(getSimSt()).getMissController().isPLEon())
 				getBrController(getSimSt()).getMissController().getSimStPLE().getConversation().setBehaviourDiscrepency(false);
@@ -1693,17 +1695,17 @@ public void fillInQuizProblem(String problemName) {
 				// This line was there but it was never used for any purpose except for the trace on line no 1715. Tasmia.
 				Vector activationList = simSt.gatherActivationList(currentNode);
 
-				VariableTable vt = currentNode.getProblemModel().getVariableTable();
+				/*VariableTable vt = currentNode.getProblemModel().getVariableTable();
 				String[] vtKeys = vt.keySet().toArray( new String[ vt.size() ] );
 				if(vtKeys.length >= 2) {
+					// This is buggy
 					String cur_foa_1 = vtKeys[ vtKeys.length - 2 ];
 					String cur_foa_2 = vtKeys[ vtKeys.length - 1 ];
 					//System.out.println(cur_foa_1+" "+cur_foa_2);
-					current_foas.clear();
 					current_foas.add(cur_foa_1);
 					current_foas.add(cur_foa_2);
 
-				}
+				}*/
 
 				Collection<RuleActivationNode> activList=getActivations(currentNode);
 
@@ -1729,7 +1731,6 @@ public void fillInQuizProblem(String problemName) {
 
 						for (RuleActivationNode ran : activList) {
 							already_suggested_skillname.add(ran.getName().replace("MAIN::", ""));
-							//current_foas = ran.getRuleFoas();
 							trace.out(ran.getActualSelection()+" : "+ran.getActualAction()+" : "+ran.getActualInput());
 							// we got "dorminTable3_C1R1 : UpdateTable : divide 3" for 3x_6 problem name
 							Sai sai = new Sai(ran.getActualSelection(), ran.getActualAction(), ran.getActualInput());
@@ -1785,6 +1786,7 @@ public void fillInQuizProblem(String problemName) {
 			// asking Hint is not appropriate
 			//
 			// Null nextCurrentNode means that no step was performed correctly
+			SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();
 			if (nextCurrentNode == null && !isTakingQuiz() && currentNode != null) {
 				/*check for any inconsistancies between quiz and tutoring */
 				if (getBrController(getSimSt()).getMissController().isPLEon())
@@ -1795,14 +1797,14 @@ public void fillInQuizProblem(String problemName) {
 				{
 					// Ask if tutor knows what to do next so that there opens an opportunity
 					// for the tutee to ask initial tutee inquiry when tutor is also stuck.
-					String title = SimStConversation.ASKING_IF_TUTOR_KNOWS_STEP_TOPIC;
-					SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();
+					//String title = SimStConversation.ASKING_IF_TUTOR_KNOWS_STEP_TOPIC;
+					HashMap rulesDeepCopy = (HashMap) SerializationUtils.clone(getSimSt().getRules());
 					QuestionAnswers qa = ple.getMatchingConfidenceChoiceExplanation();
+					//String message = ple.getConversation().getMessage(SimStConversation.ASKING_IF_TUTOR_KNOWS_STEP_TOPIC);
+					//int oracle = JOptionPane.YES_OPTION;
+					//if (activations)
 					String explanation = ple.giveMessageSelectableResponse(qa.getQuestion(), qa.getAnswers());
-					String message = ple.getConversation().getMessage(SimStConversation.ASKING_IF_TUTOR_KNOWS_STEP_TOPIC);
-					int oracle = JOptionPane.YES_OPTION;
-					if (activations)
-						oracle = getSimSt().displayConfirmMessage(title,message);
+					boolean is_tutor_stuck = false;
 					// Set avatar asking
 					if(!runType.equals("springBoot")) {
 						if (getBrController(getSimSt()).getMissController().isPLEon() && !isTakingQuiz())
@@ -1810,9 +1812,12 @@ public void fillInQuizProblem(String problemName) {
 							//ple.setAvatarThinking();
 					}
 
-					if (oracle == JOptionPane.YES_OPTION) {
+					//if (oracle == JOptionPane.YES_OPTION) 
+					if(explanation.contains("K1"))
+					{
 						// ask for the demonstration of the step.
 						ple.blockInput(false);
+						is_tutor_stuck = false;
 						// String custom_message = activations ? null : ple.getConversation().getMessage(SimStConversation.POST_UNDO);
 						// nextCurrentNode = askWhatToDoNext(currentNode, custom_message);
 						nextCurrentNode = askWhatToDoNext(currentNode);
@@ -1822,6 +1827,7 @@ public void fillInQuizProblem(String problemName) {
 						// Tutor is  confused and don't know what to do next.
 						if(simSt.isCTIFollowupInquiryMode()){
 							// Set SimStudent to thinking brainstorming questions
+							is_tutor_stuck = true;
 							bq_scope = true;
 							String brainstorming_thinking = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_THINKING_TOPIC);
 							if(!runType.equals("springBoot")) {
@@ -1841,37 +1847,18 @@ public void fillInQuizProblem(String problemName) {
 								ple.giveMessage(mr_w_suggestion, "Mr. Williams");
 								ple.giveMessageRequiringAttention("[ Press the Continue button to continue ]");
 							}
-							
 							getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
-							
-							// Checking if rule contradicts or not.
-							if(hintHasContradiction(ruleName)) {
-								String rule_not_applied_logic = ruleNotApplicationLogic(currentNode,ruleName);
-								if(rule_not_applied_logic == "") {
-									rule_not_applied_logic = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_LOGIC_WHEN_NO_FEATURE_FOUND_TOPIC);
-									followupAfterMrWTrigger(currentNode, rule_not_applied_logic, ruleNickName, false);
-								}
-								else {
-									followupAfterMrWTrigger(currentNode, rule_not_applied_logic, ruleNickName, true);
-								}
-							}
-							getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
-							String thank_mr_williams = ple.getConversation().getMessage(SimStConversation.THANK_MR_WILLIAMS);
 							String show_next_after_hint = ple.getConversation().getMessage(SimStConversation.SHOW_NEXT_AFTER_HINT);
-							ple.giveMessage(thank_mr_williams);
-							try {
-								Thread.sleep(1000);
-							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
 							nextCurrentNode = askWhatToDoNext(currentNode, show_next_after_hint);
 							hintReceived = true;
+							handleDemonstratedHintAfterTutorStuck(ple, ruleName, ruleNickName, rulesDeepCopy);
+							//nextCurrentNode = askWhatToDoNext(currentNode, show_next_after_hint);
+							//hintReceived = true;
 							
-							this.askStudentToSummarize();
+							//this.askStudentToSummarize();
 							askedExplanation = true;
-							simSt.displayMessage("Tutee acknowledging summarization", ple.getConversation().getMessage(SimStConversation.ACKNOWLEDGING_SUMMARIZATION_TOPIC));
-				        	getSimSt().getMissController().getSimStPLE().setAvatarNormal();
+							//simSt.displayMessage("Tutee acknowledging summarization", ple.getConversation().getMessage(SimStConversation.ACKNOWLEDGING_SUMMARIZATION_TOPIC));
+				        	//getSimSt().getMissController().getSimStPLE().setAvatarNormal();
 						}
 						else {
 							ple.blockInput(false);
@@ -1881,10 +1868,44 @@ public void fillInQuizProblem(String problemName) {
 						}
 
 					}
-					//Vector foa = getSimSt().getCurrentFoA();
-					String skillname = hint.skillName;
-					String selection = hint.getSai().getS();
-					if(!getSimSt().checkIfStepsAlreadyNegated(skillname, selection, current_foas, 0)) getSimSt().checkIfStepsAlreadyNegated(skillname, selection, current_foas, 1);
+					
+					// Check if demonstrated step was flagged as incorrect in the past only if it is not a step demonstrated after being stuck
+					if(!is_tutor_stuck) {
+						String skillname = hint.skillName;
+						String selection = hint.getSai().getS();
+						String input = hint.getSai().getI();
+						Vector foas = getSimSt().getCurrentFoa();
+						String q_mw_flagged = getSimSt().checkIfStepsAlreadyNegated(skillname, selection, input, foas, 0);
+						String q_tutor_flagged = "";
+						AskHint hh = hint;
+						String why_flagged_explanation = "";
+						if(q_mw_flagged.length() < 2) {
+							q_tutor_flagged = getSimSt().checkIfStepsAlreadyNegated(skillname, selection, input, foas, 1);
+							if(q_tutor_flagged.length() > 2 && !q_tutor_flagged.contains("Flag")) {
+								why_flagged_explanation = ple.giveMessageFreeTextResponse(q_tutor_flagged);
+								askedExplanation = true;
+							}
+							else {
+								// the demonstrated step is not flagged at all
+								if (hintHasContradiction(hint.skillName, rulesDeepCopy)) {
+									String rule_not_applied_logic = ruleNotApplicationLogic(currentNode,hint.skillName, foas, rulesDeepCopy);
+									boolean is_feature_predicate_found = true;
+									/*if(rule_not_applied_logic == "") {
+										rule_not_applied_logic = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_LOGIC_WHEN_NO_FEATURE_FOUND_TOPIC);
+										is_feature_predicate_found = false;
+									}*/
+									if(rule_not_applied_logic != "") {
+										followupAfterMrWTrigger(currentNode, rule_not_applied_logic, hint.skillName.trim(), is_feature_predicate_found, false);
+										askedExplanation = true;
+									}
+								}
+							}
+						}
+						else if(!q_mw_flagged.contains("Flag")) {
+	               			why_flagged_explanation = ple.giveMessageFreeTextResponse(q_mw_flagged);
+	               			askedExplanation = true;
+						}
+					}
 					
 					
 				}
@@ -1908,6 +1929,19 @@ public void fillInQuizProblem(String problemName) {
 			// Null nextCurrentNode after the Oracle inquiry means that the user
 			// initiated a new problem
 			if (nextCurrentNode != null) {
+				
+				// check if rule already was there but SimSt did not perform that
+				/*if(hintHasContradiction(hint) && getSimSt().isCTIFollowupInquiryMode()) {
+					String rule_not_applied_logic = ruleNotApplicationLogic(currentNode,hint.skillName, getSimSt().getCurrentFoa());
+					String ruleNickName = ple.getSkillNickName(hint.skillName);
+					if(rule_not_applied_logic == "") {
+						rule_not_applied_logic = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_LOGIC_WHEN_NO_FEATURE_FOUND_TOPIC);
+						followupAfterMrWTrigger(currentNode, rule_not_applied_logic, ruleNickName, false);
+					}
+					else {
+						followupAfterMrWTrigger(currentNode, rule_not_applied_logic, ruleNickName, true);
+					}
+				}*/
 
 				if (!askedExplanation && hintReceived && !askStudentToUndo)
 					explainWhyRight(nextCurrentNode);
@@ -2055,6 +2089,48 @@ public void fillInQuizProblem(String problemName) {
 
 		pruneBadRules();
 		///brController.getMissController().getSimSt().getModelTraceWM().setSolved("false");
+	}
+	
+	public void handleDemonstratedHintAfterTutorStuck(SimStPLE ple, String suggested_rulename, String suggested_ruleNickName, HashMap rulesDeepCopy) {
+		Vector foas = getSimSt().getCurrentFoa();
+		// Compute the what's missing question
+		boolean was_skill_known_but_not_applied = false, is_feature_predicate_found = true, tutor_shown_same_skill_as_sug = false;
+		String rule_not_applied_logic = "";
+		if(hintHasContradiction(suggested_rulename, rulesDeepCopy) && suggested_rulename.contains(hint.skillName)) {
+			was_skill_known_but_not_applied = true;
+			tutor_shown_same_skill_as_sug = true;
+			rule_not_applied_logic = ruleNotApplicationLogic(currentNode,suggested_rulename, foas, rulesDeepCopy);
+			if(rule_not_applied_logic == "") {
+				rule_not_applied_logic = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_LOGIC_WHEN_NO_FEATURE_FOUND_TOPIC);
+				is_feature_predicate_found = false;
+			}
+		}
+		else if (hintHasContradiction(hint.skillName, rulesDeepCopy)){
+			was_skill_known_but_not_applied = true;
+			rule_not_applied_logic = ruleNotApplicationLogic(currentNode,hint.skillName, foas, rulesDeepCopy);
+			if(rule_not_applied_logic == "") {
+				rule_not_applied_logic = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_LOGIC_WHEN_NO_FEATURE_FOUND_TOPIC);
+				is_feature_predicate_found = false;
+				//followupAfterMrWTrigger(currentNode, rule_not_applied_logic, ruleNickName, false);
+			}
+		}
+		
+		if(was_skill_known_but_not_applied && tutor_shown_same_skill_as_sug)
+			followupAfterMrWTrigger(currentNode, rule_not_applied_logic, suggested_ruleNickName.trim(), is_feature_predicate_found, tutor_shown_same_skill_as_sug);
+		else
+			followupAfterMrWTrigger(currentNode, rule_not_applied_logic, hint.skillName.trim(), is_feature_predicate_found, tutor_shown_same_skill_as_sug);
+		
+		
+		getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
+		String thank_mr_williams = ple.getConversation().getMessage(SimStConversation.THANK_MR_WILLIAMS);
+		//String show_next_after_hint = ple.getConversation().getMessage(SimStConversation.SHOW_NEXT_AFTER_HINT);
+		ple.giveMessage(thank_mr_williams);
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public boolean isDoneState() {
@@ -2389,9 +2465,55 @@ public void fillInQuizProblem(String problemName) {
 		// activation is found
 		for (RuleActivationNode ran : activationList) {
 			// Added to support calling the method for individual activations from WebAPLUS
-			boolean cont = inspectAgendaRuleActivation(currentNode, ran, successiveNode, activationList.size(), listAssessmentBuilder);
-			if (!cont)
-				break;
+			// Check if what simstudent thinks can be applied here (ran) is already flagged or not
+			if(getSimSt().isCTIFollowupInquiryMode()) 
+			{
+				String skillname = ran.getName();
+				String selection = ran.getActualSelection();
+				String input = ran.getActualInput();
+				String q_mw_flagged = getSimSt().checkIfStepsAlreadyNegated(skillname, selection, input, ran.getRuleFoas(), 0);
+				String q_tutor_flagged = "";
+				String why_flagged_explanation = "";
+				if(q_mw_flagged.length() < 2) {
+					// The ran is not flagged by Mr W
+					q_tutor_flagged = getSimSt().checkIfStepsAlreadyNegated(skillname, selection, input, ran.getRuleFoas(), 1);
+					if(q_tutor_flagged.length() < 2) {
+						// The ran is not flagged by tutor
+						//why_flagged_explanation = ple.giveMessageFreeTextResponse(q_tutor_flagged);
+						boolean cont = inspectAgendaRuleActivation(currentNode, ran, successiveNode, activationList.size(), listAssessmentBuilder);
+						if (!cont)
+							break;
+					}
+					else if(q_tutor_flagged.contains("Flag")) {
+						Instruction instruction = getSimSt().getFlaggedInstruction(skillname, selection, input, ran.getRuleFoas(), 1);
+						signalNegativeInstructionFlaggedStep(getSai(ran), ran, instruction);
+						continue;
+					}
+					else {
+						Instruction instruction = getSimSt().getFlaggedInstruction(skillname, selection, input, ran.getRuleFoas(), 1);
+						signalNegativeInstructionFlaggedStep(getSai(ran), ran, instruction);
+						why_flagged_explanation = getBrController(getSimSt()).getMissController().getSimStPLE().giveMessageFreeTextResponse(q_tutor_flagged);
+		       			//break;
+					}
+				}
+				else if(q_mw_flagged.contains("Flag")) {
+					Instruction instruction = getSimSt().getFlaggedInstruction(skillname, selection, input, ran.getRuleFoas(), 0);
+					signalNegativeInstructionFlaggedStep(getSai(ran), ran, instruction);
+					continue;
+				}
+				else if(q_mw_flagged.length() > 2) {
+					Instruction instruction = getSimSt().getFlaggedInstruction(skillname, selection, input, ran.getRuleFoas(), 0);
+					signalNegativeInstructionFlaggedStep(getSai(ran), ran, instruction);
+	       			why_flagged_explanation = getBrController(getSimSt()).getMissController().getSimStPLE().giveMessageFreeTextResponse(q_mw_flagged);
+	       			//break;
+				}
+			}
+			else {
+			// previous code
+				boolean cont = inspectAgendaRuleActivation(currentNode, ran, successiveNode, activationList.size(), listAssessmentBuilder);
+				if (!cont)
+					break;
+			}
 		}
 
 		listAssessment = listAssessmentBuilder.toString();
@@ -2641,25 +2763,22 @@ public void fillInQuizProblem(String problemName) {
 		}
 	}
 	
-	public void followupAfterMrWTrigger(ProblemNode currentNode, String logic, String i, boolean logic_found) {
+	public void followupAfterMrWTrigger(ProblemNode currentNode, String logic, String i, boolean logic_found, boolean same_skill_as_sug_mw) {
 
+		String xml_script_name = "";
+		if(same_skill_as_sug_mw && logic_found) xml_script_name = "tutee_knew_sug_skill_earlier";
+		else if (same_skill_as_sug_mw && !logic_found) xml_script_name = "tutee_knew_sug_skill_earlier_nfp"; 
+		else if(!same_skill_as_sug_mw && logic_found) xml_script_name = "tutee_knew_demon_skill_earlier";
+		else if (!same_skill_as_sug_mw && !logic_found) xml_script_name = "tutee_knew_demon_skill_earlier_nfp"; 
 		String problemStepString = getBrController(getSimSt()).getMissController()
 				.getSimSt().getProblemStepString();
 		tutalkBridge.setProblemName(problemStepString);
 		contextVariables.clear();
-		if(logic_found) {
-			contextVariables.addVariable("%logic%", logic);
-			contextVariables.addVariable("%i%", i);
-			tutalkBridge.connect("both_stuck_contradiction",
-					contextVariables,
-					SimStLogger.INPUT_WRONG_EXPLAIN_ACTION);
-		}
-		else {
-			contextVariables.addVariable("%i%", i);
-			tutalkBridge.connect("both_stuck_contradiction_no_logic_found",
-					contextVariables,
-					SimStLogger.INPUT_WRONG_EXPLAIN_ACTION);
-		}
+		contextVariables.addVariable("%i%", i);
+		if(logic_found) contextVariables.addVariable("%logic%", logic);
+		tutalkBridge.connect(xml_script_name,
+				contextVariables,
+				SimStLogger.INPUT_WRONG_EXPLAIN_ACTION);
 		while (tutalkBridge.getState() != SimStTutalk.TUTALK_STATE_DONE) {
 			try {
 				Thread.sleep(250);
@@ -3051,10 +3170,11 @@ public void fillInQuizProblem(String problemName) {
 	
 		// This function lets the tutee agent to speak out the rationale behind why a production rule was not fired
 		// using the feature predicates
-		public String ruleNotApplicationLogic(ProblemNode currentNode, String rulename) {
+		public String ruleNotApplicationLogic(ProblemNode currentNode, String rulename, Vector foas, HashMap rulesdeepCopy) {
 
 				String logic = "";
-				Rule rule = getSimSt().getRule(rulename);
+				//Rule rule = getSimSt().getRule(rulename);
+				Rule rule = (Rule) rulesdeepCopy.get(rulename);
 
 				if (rule != null) {
 
@@ -3062,7 +3182,7 @@ public void fillInQuizProblem(String problemName) {
 						ArrayList feature_predicates = rule.getLhsFeatures();
 						HashMap variable_foa_map = new HashMap();
 
-						ArrayList<String> nonActiveFeaturePredicates = getNonActiveFeaturePredicates(feature_predicates, rule, variable_foa_map);
+						ArrayList<String> nonActiveFeaturePredicates = getNonActiveFeaturePredicates(feature_predicates, rule, variable_foa_map, foas);
 						if(nonActiveFeaturePredicates == null) return logic;
 						int flag = 0;
 						for(int m=0; m<nonActiveFeaturePredicates.size(); m++) {
@@ -3091,11 +3211,11 @@ public void fillInQuizProblem(String problemName) {
 			}
 
 
-		public ArrayList<String> getNonActiveFeaturePredicates(ArrayList feature_predicates, Rule rule, HashMap variable_foa_map) {
+		public ArrayList<String> getNonActiveFeaturePredicates(ArrayList feature_predicates, Rule rule, HashMap variable_foa_map, Vector foas) {
 
 			//ArrayList feature_predicates = rule.getLhsFeatures();
 			ArrayList feature_path = rule.getLhsPath();
-			Vector foas = current_foas;
+			//Vector foas = current_foas;
 			ArrayList<String> nonActiveFeaturePredicates = new ArrayList<String>();
 
 			if (feature_predicates.size()<1) return nonActiveFeaturePredicates;
@@ -3218,19 +3338,15 @@ public void fillInQuizProblem(String problemName) {
 			}
 			// Tasmia: if tutor's feedback is "yes", then tutor and tutee both agree on a solution step.
 			// initial tutee inquiry for both agree speech began here.
-			/*if(inquiryResult.equals(EdgeData.CORRECT_ACTION)) {
-				// ask question and after tutor's response move to the later part unless
-				// follow-up tutee inquiry is on
-				// I need to check if the selection interface element is in the permissible region to ask
-				// these questions using config.txt;
-				if(getSimSt().isbothAgreeSpeechGetterClassDefined() && isSelectionValidForBothAgreeQuestions(sai.getS())) {
+			if(inquiryResult.equals(EdgeData.CORRECT_ACTION)) {
+				if(getSimSt().isCTIFollowupInquiryMode() && getSimSt().isbothAgreeSpeechGetterClassDefined() && isSelectionValidForBothAgreeQuestions(sai.getS())) {
 					SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();
 					SimStConversation conv = ple.getConversation();
 					BothAgreeSpeechGetter basg = getSimSt().getBothAgreeSpeechGetter();
 					String agree_question = basg.agreeSpeechGetter(ran, sai, conv);
 					askMoreExampleQuestion(agree_question, true);
 				}
-			}*/
+			}
 			if (!inquiryResult.equals(EdgeData.CORRECT_ACTION) && getBrController(getSimSt()).getMissController().isPLEon()){
 				SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();
 				//brController.getMissController().getSimSt().displayMessage("",ple.getConversation().getMessage(SimStConversation.THINK_TOPIC));
@@ -3331,6 +3447,12 @@ public void fillInQuizProblem(String problemName) {
 		}
 		return nextCurrentNode;
 	}
+	
+	public void signalNegativeInstructionFlaggedStep(Sai sai, RuleActivationNode ran, Instruction instruction) {
+		if (ran.getRuleFoas() != null && simSt.isILSignalNegative()) {
+			signalInstructionAsNegativeExample(ran, instruction, sai);
+		}
+	}
 
 	// add skillname onto edge
 	protected ProblemEdge updateEdgeSkillName(ProblemNode currentNode,
@@ -3427,9 +3549,10 @@ public void fillInQuizProblem(String problemName) {
 		}
 	}
 	
-	public boolean hintHasContradiction(String skillname) {
+	public boolean hintHasContradiction(String skillname, HashMap rulesDeepCopy) {
 		//String skillname = hint.skillName;
-		Rule rule = getSimSt().getRule(skillname);
+		//Rule rule = getSimSt().getRule(skillname);
+		Rule rule = (Rule) rulesDeepCopy.get(skillname);
 		if(rule != null) {
 			// Rule already exists
 			// Need to check if SimSt already suggested that rule or not
@@ -3747,6 +3870,28 @@ public void fillInQuizProblem(String problemName) {
 			e.printStackTrace();
 			logger.simStLogException(e,
 					"SimStInteractiveLearning.simulatePerformingStep() got "
+							+ e + "...");
+		}
+		return successiveNode;
+	}
+	
+	public ProblemNode getSuccessiveNode(ProblemNode currentNode, Sai sai) {
+		
+		ProblemNode successiveNode = null;
+		SimStNodeEdge nodeEdge = lookupNodeWithSai(sai, currentNode);
+		if (nodeEdge == null || !nodeEdge.edge.isCorrect()) {
+			nodeEdge = simSt.makeNewNodeAndEdge(sai, currentNode);
+		}
+		try {
+			successiveNode = nodeEdge.node;
+		} catch (Exception e) {
+			if (trace.getDebugCode("miss"))
+				trace.out("miss",
+						"SimStInteractiveLearning.getSuccessiveNode() got "
+								+ e + "...");
+			e.printStackTrace();
+			logger.simStLogException(e,
+					"SimStInteractiveLearning.getSuccessiveNode() got "
 							+ e + "...");
 		}
 		return successiveNode;
@@ -4130,6 +4275,64 @@ public void fillInQuizProblem(String problemName) {
 		simSt.signalInstructionAsNegativeExample(instruction);
 
 	}
+	
+	// instruction is incorrect - process as negative example and don't use it
+		private void signalInstructionAsNegativeExample(RuleActivationNode ran,
+				Instruction instruction, Sai sai) {
+			// if foas.size() < foilDataArity, do nothing
+			//Instruction instruction = makeInstruction(node, sai,null,null); // create a new instruction
+
+			Vector foas = ran.getRuleFoas();
+			MTRete rete = getBrController(getSimSt()).getModelTracer().getRete();
+
+			String negTuples = "[";
+			// adding FOAs to the instruction
+			for (int i = 0; i < foas.size(); i++) {
+				String foa = (String) foas.get(i);
+				String selection = foa; // since 'foa' is storing the selection
+				Fact wmeFact = rete.getFactByName(selection); // gets the WME fact
+																// for the given
+																// selection
+
+				try {
+
+					Value inputValue = wmeFact.getSlotValue("value");
+					String input = SimSt.stripQuotes(inputValue.toString());
+
+					// TODO:: Get rid of this hard-code
+					//String foaStr = "MAIN::cell|" + selection + "|" + input;
+					String wmeType=wmeFact.getName();
+					String foaStr = wmeType + "|" + selection + "|" + input;
+
+					instruction.addFocusOfAttention(foaStr);
+					negTuples += input + ", ";
+				} catch (Exception e) {
+					e.printStackTrace();
+					logger.simStLogException(e);
+				}
+			}
+			negTuples = negTuples.substring(0, negTuples.length() - 2) + "]";
+			if (trace.getDebugCode("miss"))
+				trace.out("miss", "signalInstructionAsNegativeExample: "
+						+ negTuples);
+			
+			logger.simStLog(SimStLogger.SIM_STUDENT_LEARNING,
+					SimStLogger.NEGATIVE_EXAMPLE_ACTION,
+					simSt.getProblemStepString(), "FOA:" + negTuples, "", sai);
+
+			// calling signalTargetNegative
+			String skillName = Rule.getRuleBaseName(ran.getName()).replaceAll(
+					"MAIN::", "");
+			instruction.setName(skillName);
+
+			simSt.getRule(skillName).addRejectedUse(ran.getRuleFoas());
+
+			simSt.negateBadPositiveExample(instruction);
+
+
+			simSt.signalInstructionAsNegativeExample(instruction);
+
+		}
 
 
 

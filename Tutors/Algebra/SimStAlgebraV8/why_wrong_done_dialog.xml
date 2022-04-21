@@ -12,16 +12,27 @@
 		<param key="prediction" value="predicted" />
 		<param key="currentAnnotation" value="Category" />
 	</module> -->
-	<module kind="model" name="clever" classname="basilica2.side.listeners.LightSideMessageAnnotator">
-		<param key="modelPath" value="/Users/tasmiashahriar/Documents/Github/SimStudent/bazaar/lightside/saved/student_response_model_nb.model.xml" />
-		<param key="nickName" value="student_response_model" />
+	<module kind="model" name="coded" classname="basilica2.side.listeners.LightSideMessageAnnotator">
+		<param key="modelPath" value="./bazaar/lightside/saved/student_response_model_f.model.xml" />
+		<param key="nickName" value="student_response_model_f" />
 		<param key="prediction" value="predicted" />
 		<param key="currentAnnotation" value="Category" />
-		<param key="pathToModel" value="/Users/tasmiashahriar/Documents/Github/SimStudent/bazaar/lightside/models/student_response_model_nb.model.xml" />
-		<param key="modelName" value="student_response_model_nb.model.xml" />
-		<param key="modelNickname" value="student_response_model" />
-		<param key="predictionCommand" value="/Users/tasmiashahriar/Documents/Github/SimStudent/bazaar/lightside/scripts/predict.sh" />
+		<param key="pathToModel" value="./bazaar/lightside/models/student_response_model_f.model.xml" />
+		<param key="modelName" value="student_response_model_f.model.xml" />
+		<param key="modelNickname" value="student_response_model_f" />
+		<param key="predictionCommand" value="./⁨bazaar/lightside/scripts/prediction_server.sh" />
 		<param key="classificationString" value="N1, 70, N2, 70, N3, 70, N4, 70, N5, 70, N6, 70, N7, 70, N8, 70" />
+	</module>
+	<module kind="model" name="recheck" classname="basilica2.side.listeners.LightSideMessageAnnotator">
+		<param key="modelPath" value="./bazaar/lightside/saved/student_response_model_f.model.xml" />
+		<param key="nickName" value="student_response_model_f" />
+		<param key="prediction" value="predicted" />
+		<param key="currentAnnotation" value="Category" />
+		<param key="pathToModel" value="./bazaar/lightside/models/student_response_model_f.model.xml" />
+		<param key="modelName" value="student_response_model_f.model.xml" />
+		<param key="modelNickname" value="student_response_model_f" />
+		<param key="predictionCommand" value="./⁨bazaar/lightside/scripts/prediction_server.sh" />
+		<param key="classificationString" value="clarify, 70, bad, 70, okay, 70" />
 	</module>
 </configuration>
 

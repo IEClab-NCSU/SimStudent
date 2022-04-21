@@ -4457,9 +4457,13 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
     	getTextResponse().removeAllItems();
     	if(options != null)
     	{
-    		getTextResponse().addItem("Please Select One"); 
+    		
     		//getTextResponse().addItem(SELECT_OPTION);
+    		int count = 0;
+    		//getTextResponse().addItem(c.toString()); 
+    		getTextResponse().addItem("Please Select One"); 
 			for(String option:options) {
+				count++;
 				JTextPane menu_op = new JTextPane();
 				//menu_op.setContentType("text/html");
 				menu_op.setText(option);
