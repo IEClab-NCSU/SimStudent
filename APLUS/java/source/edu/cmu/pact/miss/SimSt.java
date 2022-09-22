@@ -357,6 +357,7 @@ public final class SimSt implements Serializable {
 
    private boolean selfExplainMode = false;
    private boolean selfCTI_FTI_Mode = false;
+   private boolean simst_strategy_reveal_Mode = false;
    public void setSSSelfExplainMode(boolean explainMode)
    {
    	this.selfExplainMode = explainMode;
@@ -366,6 +367,9 @@ public final class SimSt implements Serializable {
    {
    	this.selfCTI_FTI_Mode = CTIMode;
    }
+   public void setSsSimStStrategyRevealMode(boolean simst_strategy_reveal_Mode) {
+	   this.simst_strategy_reveal_Mode = simst_strategy_reveal_Mode;
+   }
    public boolean isSelfExplainMode()
    {
    	return selfExplainMode;
@@ -373,6 +377,10 @@ public final class SimSt implements Serializable {
    public boolean isCTIFollowupInquiryMode()
    {
    	return selfCTI_FTI_Mode;
+   }
+   public boolean isSimStStrategyRevealMode()
+   {
+   	return simst_strategy_reveal_Mode;
    }
 
   private transient ProblemAssessor problemAssessor = new AlgebraProblemAssessor();
@@ -2128,39 +2136,40 @@ public final class SimSt implements Serializable {
    //Returns number of positive examples negated
    public int negateBadPositiveExample(Instruction instruction)
    {
-   	Vector<Instruction> positiveExamples = instructions.get(instruction.getName());
-   	if(positiveExamples == null)
-   		return 0;
-       Vector<Instruction> negate = new Vector<Instruction>();
-       for(Instruction inst:positiveExamples)
-       {
-       	if(inst.toString().equals(instruction.toString()))
-       	{
-       		negate.add(inst);
-       	}
-       }
-       if(negate.size() > 0)
-       {
-       	//JOptionPane.showMessageDialog(null, "Positive Example negated\n"+instruction+" Remove: "+negate);
-       	for(Instruction inst:negate)
-       	{
-       		positiveExamples.remove(inst);
-       	}
-       	instructions.put(instruction.getName(), positiveExamples);
-       	//JOptionPane.showMessageDialog(null, "Removed: "+negate.size()+" Now:\n"+getInstructionsFor(instruction.getName()));
-       }
-       else
-       {
-       	//JOptionPane.showMessageDialog(null, "No positive example negated by\n"+instruction+" in \n"+positiveExamples);
-       }
-
-       return negate.size();
+		if(instruction == null || instructions == null) return 0;
+	   	Vector<Instruction> positiveExamples = instructions.get(instruction.getName());
+	   	if(positiveExamples == null)
+	   		return 0;
+	    Vector<Instruction> negate = new Vector<Instruction>();
+	    for(Instruction inst:positiveExamples)
+	    {
+	       if(inst.toString().equals(instruction.toString()))
+	       {
+	       		negate.add(inst);
+	       }
+	    }
+	    if(negate.size() > 0)
+	    {
+	       //JOptionPane.showMessageDialog(null, "Positive Example negated\n"+instruction+" Remove: "+negate);
+	       for(Instruction inst:negate)
+	       {
+	       		positiveExamples.remove(inst);
+	       }
+	       instructions.put(instruction.getName(), positiveExamples);
+	       	//JOptionPane.showMessageDialog(null, "Removed: "+negate.size()+" Now:\n"+getInstructionsFor(instruction.getName()));
+	    }
+	    else
+	    {
+	       	//JOptionPane.showMessageDialog(null, "No positive example negated by\n"+instruction+" in \n"+positiveExamples);
+	    }
+	    return negate.size();
 
    }
 
  //Returns number of positive examples negated
    public int negateBadNegativeExample(Instruction instruction)
    {
+	if(instruction == null || negativeInstructions == null) return 0;
    	Vector<Instruction> negativeExamples = negativeInstructions.get(instruction.getName());
 
    	if(negativeExamples == null)
@@ -5211,7 +5220,7 @@ public final class SimSt implements Serializable {
 	    	input.add(modelInput);
 
 	    	// Create a new node and edge
-	    	SimStNodeEdge ssNodeEdge = makeNewNodeAndEdge(hint.getSai(), currentNode);
+	    	SimStNodeEdge ssNodeEdge = makeNewNodeAndEdge(hint.getSai(), currentNode, false);
 	    	hint.setNode(ssNodeEdge.node);
 	    	hint.setEdge(ssNodeEdge.edge);
 
@@ -5942,14 +5951,14 @@ public final class SimSt implements Serializable {
 
    	} else if(hintMethodName.equalsIgnoreCase(AskHint.HINT_METHOD_FAKE_CLT)) {
 
-   		SimStNodeEdge ssNodeEdge = makeNewNodeAndEdge(hint.getSai(), currentNode);
+   		SimStNodeEdge ssNodeEdge = makeNewNodeAndEdge(hint.getSai(), currentNode, false);
    		childNode = ssNodeEdge.node;
    		childEdge = ssNodeEdge.edge;
 
    	} else if(hintMethodName.equalsIgnoreCase(AskHint.HINT_METHOD_FTS)) {
 
    		if(getSsInteractiveLearning() != null) {
-   			childNode = getSsInteractiveLearning().simulatePerformingStep(getBrController().getCurrentNode(), hint.getSai());
+   			childNode = getSsInteractiveLearning().simulatePerformingStep(getBrController().getCurrentNode(), hint.getSai(), false);
    			childEdge = lookupProblemEdge(getBrController().getCurrentNode(), childNode);
    		}
 
@@ -5973,7 +5982,7 @@ public final class SimSt implements Serializable {
    		//childNode = getBrController().getCurrentNode();
    		//childEdge = getBrController().getProblemModel().returnsEdge(parentNode, childNode);
 
-   		SimStNodeEdge ssNodeEdge = makeNewNodeAndEdge(hint.getSai(), currentNode);
+   		SimStNodeEdge ssNodeEdge = makeNewNodeAndEdge(hint.getSai(), currentNode, false);
    		childNode = ssNodeEdge.node;
    		childEdge = ssNodeEdge.edge;
 
@@ -5986,7 +5995,7 @@ public final class SimSt implements Serializable {
    			(getBrController().getMissController().getSimSt().getSsInteractiveLearning().isRunningFromBrd() ||
    			getBrController().getMissController().getSimSt().getHintMethod().equals(AskHint.HINT_METHOD_SOLVER_TUTOR))) {
 
-   			SimStNodeEdge ssNodeEdge = makeNewNodeAndEdge(hint.getSai(), currentNode);
+   			SimStNodeEdge ssNodeEdge = makeNewNodeAndEdge(hint.getSai(), currentNode, false);
    			childNode = ssNodeEdge.node;
    			childEdge = ssNodeEdge.edge;
    		}
@@ -6001,7 +6010,7 @@ public final class SimSt implements Serializable {
 
    //19 April 2007
    //given an SAI and current node, this constructs a new node and a new edge, as a child of currentNode.
-   public SimStNodeEdge makeNewNodeAndEdge(Sai sai, ProblemNode currentNode) {
+   public SimStNodeEdge makeNewNodeAndEdge(Sai sai, ProblemNode currentNode, boolean flagged_activation) {
 
        BR_Controller brController = getBrController();
 
@@ -6016,7 +6025,7 @@ public final class SimSt implements Serializable {
        ProblemNode newNode =
            brController.addNewState(brController.getSolutionState().getCurrentNode(),
                                     sai.selectionV, sai.actionV, sai.inputV,
-                                    null, EdgeData.CORRECT_ACTION); //null messageObject, since we don't care
+                                    null, EdgeData.CORRECT_ACTION, flagged_activation); //null messageObject, since we don't care
 
        ProblemEdge newEdge = brController.getProblemModel().returnsEdge(currentNode,newNode);
 

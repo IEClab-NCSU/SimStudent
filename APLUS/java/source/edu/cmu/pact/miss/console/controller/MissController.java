@@ -900,6 +900,14 @@ public class MissController implements MissControllerExternal {
 			getSimSt().setSsConstructiveTuteeInquiryFTIMode(true);
 		}
 	}
+	public void setSsSimStStrategyRevealMode()
+	{
+		if(getSimSt()!= null)
+		{
+			getSimSt().setSsSimStStrategyRevealMode(true);
+		}
+		
+	}
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // Background knowledge I/O
@@ -2183,7 +2191,12 @@ public class MissController implements MissControllerExternal {
                     	setSsSelfExplainMode();
                     } else if(keyStem.equalsIgnoreCase("ssConstructiveTuteeInquiryFTIMode")) {
                     	setSsConstructiveTuteeInquiryFTIMode();
-                    } else if(keyStem.equalsIgnoreCase("ssIntroVideo")) {
+                    } 
+                    // Tasmia
+                    else if(keyStem.equalsIgnoreCase("ssSimStStrategyRevealMode")) {
+                    	setSsSimStStrategyRevealMode();
+                    }
+                    else if(keyStem.equalsIgnoreCase("ssIntroVideo")) {
                     	setSsIntroVideo(parameter[0]);
                     } else if(keyStem.equalsIgnoreCase("ssLoadPrefsFile")) {
                     	setSsPrefsFile(parameter[0]);

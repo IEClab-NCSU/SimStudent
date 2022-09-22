@@ -124,7 +124,7 @@ public class MatchedStatesDialog extends JDialog implements ActionListener {
             				controller1.getSolutionState().getCurrentNode());
                 ProblemNode newNode =
                 	controller1.addNewState(currentNode,
-                			selection, action, input, CommMsg, actionType);
+                			selection, action, input, CommMsg, actionType, false);
 
                 if (actionType.equalsIgnoreCase(EdgeData.CORRECT_ACTION)
                         || actionType
@@ -147,7 +147,7 @@ public class MatchedStatesDialog extends JDialog implements ActionListener {
         			controller.getExampleTracer().getCurrentNode(true) :
         				controller.getSolutionState().getCurrentNode());
             ProblemNode newNode = controller.addNewState(currentNode,
-                    selection, action, input, CommMsg, actionType);
+                    selection, action, input, CommMsg, actionType, false);
 
             if (actionType.equalsIgnoreCase(EdgeData.CORRECT_ACTION)
                     || actionType

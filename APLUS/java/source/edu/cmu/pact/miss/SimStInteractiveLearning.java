@@ -1426,8 +1426,7 @@ public void fillInQuizProblem(String problemName) {
 			return null;
 
 		// The node we get if we run this step
-		SimStNode successiveNode = new SimStGraphNavigator()
-				.simulatePerformingStep(currentNode, sai);
+		SimStNode successiveNode = new SimStGraphNavigator().simulatePerformingStep(currentNode, sai);
 		if (successiveNode != null) {
 
 			SimStEdge edge = getQuizGraph().lookUpSSEdge(currentNode,
@@ -2482,37 +2481,41 @@ public void fillInQuizProblem(String problemName) {
 					if(q_tutor_flagged.length() < 2) {
 						// The ran is not flagged by tutor
 						//why_flagged_explanation = ple.giveMessageFreeTextResponse(q_tutor_flagged);
-						boolean cont = inspectAgendaRuleActivation(currentNode, ran, successiveNode, activationList.size(), listAssessmentBuilder);
+						boolean cont = inspectAgendaRuleActivation(currentNode, ran, successiveNode, activationList.size(), listAssessmentBuilder, false);
 						if (!cont)
 							break;
 					}
 					else if(q_tutor_flagged.contains("Flag")) {
-						Instruction instruction = getSimSt().getFlaggedInstruction(skillname, selection, input, ran.getRuleFoas(), 1);
-						signalNegativeInstructionFlaggedStep(getSai(ran), ran, instruction);
+						//Instruction instruction = getSimSt().getFlaggedInstruction(skillname, selection, input, ran.getRuleFoas(), 1);
+						//signalNegativeInstructionFlaggedStep(getSai(ran), ran, instruction);
+						boolean cont = inspectAgendaRuleActivation(currentNode, ran, successiveNode, activationList.size(), listAssessmentBuilder, true, q_tutor_flagged);
 						continue;
 					}
 					else {
-						Instruction instruction = getSimSt().getFlaggedInstruction(skillname, selection, input, ran.getRuleFoas(), 1);
-						signalNegativeInstructionFlaggedStep(getSai(ran), ran, instruction);
-						why_flagged_explanation = getBrController(getSimSt()).getMissController().getSimStPLE().giveMessageFreeTextResponse(q_tutor_flagged);
+						//Instruction instruction = getSimSt().getFlaggedInstruction(skillname, selection, input, ran.getRuleFoas(), 1);
+						//signalNegativeInstructionFlaggedStep(getSai(ran), ran, instruction);
+						boolean cont = inspectAgendaRuleActivation(currentNode, ran, successiveNode, activationList.size(), listAssessmentBuilder, true, q_tutor_flagged);
+						//why_flagged_explanation = getBrController(getSimSt()).getMissController().getSimStPLE().giveMessageFreeTextResponse(q_tutor_flagged);
 		       			//break;
 					}
 				}
 				else if(q_mw_flagged.contains("Flag")) {
-					Instruction instruction = getSimSt().getFlaggedInstruction(skillname, selection, input, ran.getRuleFoas(), 0);
-					signalNegativeInstructionFlaggedStep(getSai(ran), ran, instruction);
+					//Instruction instruction = getSimSt().getFlaggedInstruction(skillname, selection, input, ran.getRuleFoas(), 0);
+					//signalNegativeInstructionFlaggedStep(getSai(ran), ran, instruction);
+					boolean cont = inspectAgendaRuleActivation(currentNode, ran, successiveNode, activationList.size(), listAssessmentBuilder, true, q_mw_flagged);
 					continue;
 				}
 				else if(q_mw_flagged.length() > 2) {
-					Instruction instruction = getSimSt().getFlaggedInstruction(skillname, selection, input, ran.getRuleFoas(), 0);
-					signalNegativeInstructionFlaggedStep(getSai(ran), ran, instruction);
-	       			why_flagged_explanation = getBrController(getSimSt()).getMissController().getSimStPLE().giveMessageFreeTextResponse(q_mw_flagged);
+					//Instruction instruction = getSimSt().getFlaggedInstruction(skillname, selection, input, ran.getRuleFoas(), 0);
+					//signalNegativeInstructionFlaggedStep(getSai(ran), ran, instruction);
+					boolean cont = inspectAgendaRuleActivation(currentNode, ran, successiveNode, activationList.size(), listAssessmentBuilder, true, q_mw_flagged);
+	       			//why_flagged_explanation = getBrController(getSimSt()).getMissController().getSimStPLE().giveMessageFreeTextResponse(q_mw_flagged);
 	       			//break;
 				}
 			}
 			else {
 			// previous code
-				boolean cont = inspectAgendaRuleActivation(currentNode, ran, successiveNode, activationList.size(), listAssessmentBuilder);
+				boolean cont = inspectAgendaRuleActivation(currentNode, ran, successiveNode, activationList.size(), listAssessmentBuilder, false);
 				if (!cont)
 					break;
 			}
@@ -2527,7 +2530,7 @@ public void fillInQuizProblem(String problemName) {
 			if (nextCurrentNode == null && isTakingQuiz() && backupRan != null) {
 				listAssessment += "Backup used: " + backupRan.getName() + " "
 						+ backupRan.getActualInput() + "\n";
-				nextCurrentNode = inspectRuleActivation(currentNode, backupRan, null);
+				nextCurrentNode = inspectRuleActivation(currentNode, backupRan, null, false);
 				if (trace.getDebugCode("miss"))
 					trace.out("miss", "Backup used:");
 			} else {
@@ -2538,8 +2541,12 @@ public void fillInQuizProblem(String problemName) {
 		}
 		return nextCurrentNode;
 	}
+	
+	public boolean inspectAgendaRuleActivation(ProblemNode currentNode, RuleActivationNode ran, ProblemNode successiveNode, int totalActivations, StringBuilder listAssessmentBuilder, boolean flagged_activation) {
+		return inspectAgendaRuleActivation(currentNode, ran, successiveNode, totalActivations, listAssessmentBuilder, flagged_activation, null);
+	}
 
-	public boolean inspectAgendaRuleActivation(ProblemNode currentNode, RuleActivationNode ran, ProblemNode successiveNode, int totalActivations, StringBuilder listAssessmentBuilder) {
+	public boolean inspectAgendaRuleActivation(ProblemNode currentNode, RuleActivationNode ran, ProblemNode successiveNode, int totalActivations, StringBuilder listAssessmentBuilder, boolean flagged_activation, String question) {
 		// RuleActivationNode ran = (RuleActivationNode)
 		// activationList.get(i);
 		trace.out("ss", "Checking RAN: " + ran);
@@ -2554,7 +2561,7 @@ public void fillInQuizProblem(String problemName) {
 			getBrController(getSimSt()).getMissController().getSimStPLE().checkForQuizTutoringBehaviourDiscrepency(brController.getProblemName(),ran);
 
 		if (!runType.equalsIgnoreCase("SpringBoot"))
-			successiveNode = inspectRuleActivation(currentNode, ran, null);
+			successiveNode = inspectRuleActivation(currentNode, ran, null, flagged_activation, question);
 		ruleQueryCounter++;
 
 		if (successiveNode != null) {
@@ -2621,7 +2628,7 @@ public void fillInQuizProblem(String problemName) {
 			}
 		}
 		else {
-			if (!isTakingQuiz() && !ran.getActualInput().equalsIgnoreCase("FALSE") && !ran.getActualInput().equalsIgnoreCase(MTRete.NOT_SPECIFIED)){
+			if (!isTakingQuiz() && !ran.getActualInput().equalsIgnoreCase("FALSE") && !ran.getActualInput().equalsIgnoreCase(MTRete.NOT_SPECIFIED) && flagged_activation == false){
 					if (ruleQueryCounter==1){
 						setFirstRanStudentSaidNo(ran);
 						firstStategy=firstStrategyToAskSelfExplQ(totalActivations);
@@ -3297,8 +3304,14 @@ public void fillInQuizProblem(String problemName) {
 	// If not OK, return null
 	public String previousMessageGiven="";
 	public ProblemNode inspectRuleActivation(ProblemNode currentNode,
-			RuleActivationNode ran, String inquiryResult) {
+			RuleActivationNode ran, String inquiryResult, boolean flagged_activation) {
+		return inspectRuleActivation(currentNode, ran, inquiryResult, flagged_activation, null);
+	}
+	
+	public ProblemNode inspectRuleActivation(ProblemNode currentNode,
+			RuleActivationNode ran, String inquiryResult, boolean flagged_activation, String question) {
 
+		if(inquiryResult == null) inquiryResult = "";
 		ProblemNode nextCurrentNode = null;
 
 		// Make sure that currentNode is the current node
@@ -3307,9 +3320,8 @@ public void fillInQuizProblem(String problemName) {
 
 		if (sai.getS().equals("NotSpecified") || sai.getI().equals("NotSpecified"))
 			return null;
-
-		// The node we get if we run this step
-		ProblemNode successiveNode = simulatePerformingStep(currentNode, sai);
+		// The node we get if we run this step: flagged_activation == false gets you the node if we run the step without showing it in the interface.
+		ProblemNode successiveNode = simulatePerformingStep(currentNode, sai, flagged_activation);
 		if (trace.getDebugCode("miss"))
 			trace.out("miss", " successiveNode: " + successiveNode);
 
@@ -3333,14 +3345,19 @@ public void fillInQuizProblem(String problemName) {
 
 			edge.getEdgeData().setActionType(EdgeData.GIVEN_ACTION);
 
-			// Ask if the rule is correct
-			if (!runType.equals("springBoot")) {
+			// Ask if the rule is correct if this is not a flagged step
+			if (!runType.equals("springBoot") && !flagged_activation) {
 				inquiryResult = simSt.inquiryRuleActivation(problemName,
 						currentNode, ran);
 			}
+			else {
+				if(!question.contains("Flag")) {
+					String why_flagged_explanation = getBrController(getSimSt()).getMissController().getSimStPLE().giveMessageFreeTextResponse(question);
+				}
+			}
 			// Tasmia: if tutor's feedback is "yes", then tutor and tutee both agree on a solution step.
 			// initial tutee inquiry for both agree speech began here.
-			if(inquiryResult.equals(EdgeData.CORRECT_ACTION)) {
+			if(inquiryResult.equals(EdgeData.CORRECT_ACTION) && !flagged_activation) {
 				if(getSimSt().isCTIFollowupInquiryMode() && getSimSt().isbothAgreeSpeechGetterClassDefined() && isSelectionValidForBothAgreeQuestions(sai.getS())) {
 					SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();
 					SimStConversation conv = ple.getConversation();
@@ -3349,7 +3366,7 @@ public void fillInQuizProblem(String problemName) {
 					askMoreExampleQuestion(agree_question, true);
 				}
 			}
-			if (!inquiryResult.equals(EdgeData.CORRECT_ACTION) && getBrController(getSimSt()).getMissController().isPLEon()){
+			if (!inquiryResult.equals(EdgeData.CORRECT_ACTION) && getBrController(getSimSt()).getMissController().isPLEon()  && !flagged_activation){
 				SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();
 				//brController.getMissController().getSimSt().displayMessage("",ple.getConversation().getMessage(SimStConversation.THINK_TOPIC));
 				if (!sai.getS().equals("done")){
@@ -3367,10 +3384,12 @@ public void fillInQuizProblem(String problemName) {
 
 			if (trace.getDebugCode("miss"))
 				trace.out("miss", "    >>>>> result: " + inquiryResult);
-			edge.getEdgeData().setActionType(inquiryResult);
-
+			if(!flagged_activation)
+				edge.getEdgeData().setActionType(inquiryResult);
+			//else
+				//edge.getEdgeData().setActionType(inquiryResult);
 			// Rule is correct, use it and update var to its node
-			if (inquiryResult.equals(EdgeData.CORRECT_ACTION)) {
+			if (inquiryResult.equals(EdgeData.CORRECT_ACTION) && !flagged_activation) {
 
 				// Update a state (or proceed a step, if you will)
 				if (simSt.getHintMethod().equalsIgnoreCase(
@@ -3398,7 +3417,7 @@ public void fillInQuizProblem(String problemName) {
 			}
 			// Rule is not correct, but taking quiz, so may want to use as
 			// backup
-			else if (isTakingQuiz()) {
+			else if (isTakingQuiz() && !flagged_activation) {
 				// Mark as not correct
 				if (!inquiryResult.equals(EdgeData.CORRECT_ACTION)) {
 					edge.getEdgeData().setActionType(EdgeData.CLT_ERROR_ACTION);
@@ -3837,7 +3856,7 @@ public void fillInQuizProblem(String problemName) {
 	}
 
 	// get node you would end up at from doing step at given node
-	public ProblemNode simulatePerformingStep(ProblemNode currentNode, Sai sai) {
+	public ProblemNode simulatePerformingStep(ProblemNode currentNode, Sai sai, boolean flagged_activation) {
 		ProblemNode successiveNode = null;
 
 		SimStNodeEdge nodeEdge = lookupNodeWithSai(sai, currentNode);
@@ -3849,11 +3868,11 @@ public void fillInQuizProblem(String problemName) {
 			// SimStudent
 			// performed step, but does not call sendValue for the step unlike
 			// human tutor step.
-			nodeEdge = simSt.makeNewNodeAndEdge(sai, currentNode);
+			nodeEdge = simSt.makeNewNodeAndEdge(sai, currentNode, flagged_activation);
 		}
 
 		try {
-			getBrController(getSimSt()).setCurrentNode2(nodeEdge.node);
+			getBrController(getSimSt()).setCurrentNode2(nodeEdge.node, flagged_activation);
 			successiveNode = nodeEdge.node;
 
 			if (getBrController(getSimSt()).getCurrentNode() != currentNode) {
@@ -3882,7 +3901,7 @@ public void fillInQuizProblem(String problemName) {
 		ProblemNode successiveNode = null;
 		SimStNodeEdge nodeEdge = lookupNodeWithSai(sai, currentNode);
 		if (nodeEdge == null || !nodeEdge.edge.isCorrect()) {
-			nodeEdge = simSt.makeNewNodeAndEdge(sai, currentNode);
+			nodeEdge = simSt.makeNewNodeAndEdge(sai, currentNode, false);
 		}
 		try {
 			successiveNode = nodeEdge.node;

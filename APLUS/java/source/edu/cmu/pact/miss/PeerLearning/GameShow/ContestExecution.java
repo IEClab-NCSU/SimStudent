@@ -239,7 +239,7 @@ public class ContestExecution extends SimStInteractiveLearning{
 
         Sai sai = getSai(ran);
         //Create the new node for that step being done
-        ProblemNode successiveNode = simulatePerformingStep(currentNode, sai);
+        ProblemNode successiveNode = simulatePerformingStep(currentNode, sai, false);
 
         ProblemNode startNode = brController.getProblemModel().getStartNode();
         String step = startNode.getName();

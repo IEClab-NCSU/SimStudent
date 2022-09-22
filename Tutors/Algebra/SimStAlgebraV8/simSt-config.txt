@@ -62,14 +62,14 @@ quizProblems
 examples
 section:0
 title:5=x+2
-text:You might first subtract 2 to both sides, by typing 'subtract 2' for the transformation.  Why?  Because that way you will have 'x' by itself on the right-hand side.  As you see, the constant term '2' is eliminated, the right-hand side becomes 'x' and the right-hand side becomes '3'. 
-shortDescription:This is a one step equation. For your first step you would eliminate the constant term, which is +2, from the right-hand side. To do so, you subtract 2 from both sides. 
+text: You might first subtract 2 to both sides, by typing 'subtract 2' for the transformation.  Why?  Because that way you will have 'x' by itself on the right-hand side.  As you see, the constant term '2' is eliminated, the left-hand side becomes 'x' and the right-hand side becomes '3'.
+shortDescription: This is a one-step equation because you need to manipulate the equation only once to get the <span title="A letter in an equation is called the variable. Here “x” is the variable."> <u> variable </u> </span> 'x' by itself, with no numbers beside it on the right side of the equal sign.
 dorminTable1_C1R1:5:How can I have x by itself?.:This is the left-hand side of the equation.:.
 dorminTable2_C1R1:x+2:This is the right-hand side of the equation.
-dorminTable3_C1R1:subtract 2::correct:So, you type <font color="#00FF00" face="Times New Roman" size="5"> subtract 2 </font> on the transformation. The next step is to subtract 2 from the left-hand side, which means 5-2. 
-dorminTable1_C1R2:3:Now I have 3 on the left side.:correct:So, you type <font color="#00FF00" face="Times New Roman" size="5"> 3 </font> on the left-hand side, because subtracting 2 from 5 gives you 3. The next step is to subtract 2 from the right-hand side, which means x+2-2.
-dorminTable2_C1R2:x:Now I have x all by it self.:correct:So, you type <font color="#00FF00" face="Times New Roman" size="5"> x </font> on the right hand side, because subtracting 2 from x+2 gives you x. The problem is now solved! For the next step, you should click the [Problem is Solved] button.
-done:-1:The problem is solved.  The answer is 3.:correct:So, you click on the [Problem is Solved] button. Now you completed the problem, the answer is 3! Remember to always click the [Problem is Solved] button. 
+dorminTable3_C1R1:subtract 2::correct: Your first step is to eliminate the <font color="#00F7FF" face="Times New Roman" size="5"><u> constant term </u></font> on the right side, which is +2. To do so, you would <font color="#00FF00" face="Times New Roman" size="5"> subtract 2 </font> from both sides.
+dorminTable1_C1R2:3:Now I have 3 on the left side.:correct: Now you would write <font color="#00FF00" face="Times New Roman" size="5"> 3 </font> because <font color="#00F7FF" face="Times New Roman" size="5"><u> subtract 2 </u></font> from the left-hand side means 5-2 which is 3.
+dorminTable2_C1R2:x:Now I have x all by it self.:correct: In this step, you would write <font color="#00FF00" face="Times New Roman" size="5"> x </font> because <font color="#00F7FF" face="Times New Roman" size="5"><u> subtract 2 </u></font> from the right-hand side means x+2-2. This becomes x.
+done:-1:The problem is solved.  The answer is 3.:correct: The problem is now solved! The answer is 3. So, you click on the <font color="#00FF00" face="Times New Roman" size="5"> [Problem is Solved] </font> button. Remember to always click the [Problem is Solved] button.
 .
 section:0
 title:3a=5

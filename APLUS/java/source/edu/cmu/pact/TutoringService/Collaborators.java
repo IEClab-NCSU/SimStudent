@@ -469,7 +469,7 @@ public class Collaborators {
 					moToShare = PseudoTutorMessageBuilder.buildToolInterfaceAction(mo.getSelection(),
 							mo.getAction(), mo.getInput(),
 							PseudoTutorMessageBuilder.TRIGGER_USER, actor);
-				controller.getUniversalToolProxy().handleMessageByPlatform(moToShare);
+				controller.getUniversalToolProxy().handleMessageByPlatform(moToShare, false);
 			}
 			mo.setProperty(Matcher.ACTOR, actor);
 			if(trace.getDebugCode("collab"))

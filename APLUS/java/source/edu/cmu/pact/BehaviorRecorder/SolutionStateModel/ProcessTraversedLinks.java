@@ -152,7 +152,7 @@ public class ProcessTraversedLinks {
                     controller.sendCorrectActionMsg(selection, input, action);
 
 				else if (authorIntent.equalsIgnoreCase(EdgeData.FIREABLE_BUGGY_ACTION))
-                    controller.sendIncorrectActionMsg(selection, input, action);
+                    controller.sendIncorrectActionMsg(selection, input, action, false);
 
 				//if (controller.getMode().equalsIgnoreCase(CtatModeModel.PRODUCTION_SYSTEM_MODE))
                 if (controller.getCtatModeModel().isJessMode() || controller.getCtatModeModel().isTDKMode())
@@ -174,7 +174,7 @@ public class ProcessTraversedLinks {
 				input = commMsgObj.getInput();
 
 				ProblemNode newNode = controller.addNewState(lastVisitedNode, selection, action, input,
-						commMsgObj, traversedLinkObject.getAuthorIntent());
+						commMsgObj, traversedLinkObject.getAuthorIntent(), false);
 
                 lastVisitedNode = newNode;
 			} // else if block

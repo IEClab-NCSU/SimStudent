@@ -77,7 +77,7 @@ public abstract class AskHint {
 	protected void updateNodeInBR(BR_Controller brController,
 			ProblemNode currentNode) {
 		SimSt simSt = brController.getMissController().getSimSt();
-        SimStNodeEdge newNodeEdge = simSt.makeNewNodeAndEdge(getSai(), currentNode);
+        SimStNodeEdge newNodeEdge = simSt.makeNewNodeAndEdge(getSai(), currentNode, false);
         setNode(newNodeEdge.node);
         setEdge(newNodeEdge.edge);
 	}

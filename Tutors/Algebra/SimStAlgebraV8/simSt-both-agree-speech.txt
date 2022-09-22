@@ -39,11 +39,19 @@ Can we only subtract a whole number from the equation? Can you explain a situati
 SUBTRACT
 Can you state another equation where "subtracting" a number would make sense and explain how that makes sense?
 
+SUBTRACT_TYPEIN
+I am curious to know what happens if we subtract a negative number from another negative number. Please explain with an example.
+When do we get a negative outcome after performing subtract operation? Please explain with an example.
+How do we decide the sign of the outcome after performing subtracting a number from another number? Please explain with an example.
+
 DIVIDE
 Can you state another equation where "divide" would apply and explain how that makes sense?
 I know how to divide by a whole number. Can you explain how dividing an equation by a fraction would look like using another equation?
 I am dividing here because I have a whole number multiplied with the variable. Can you explain what I would do if I have a fraction multiplied with the variable term using a relevant equation?
 Do we only divide by a positive number? Can you state an equation where I might have to divide by a negative number?
+
+DIVIDE_TYPEIN
+I am curious to know what happens if we divide a negative number by another negative number. Please explain with an example.
 
 MULTIPLY
 Can you state an equation where "multiplying" a number would make sense and explain how that makes sense?

@@ -175,7 +175,7 @@ public class DemonstrateModeMessageHandler {
         if (EdgeData.CORRECT_ACTION.equalsIgnoreCase(actionType))
             controller.sendCorrectActionMsg(selection, input, action);
     	else
-    		controller.sendIncorrectActionMsg(selection, input, action);
+    		controller.sendIncorrectActionMsg(selection, input, action, false);
         
         return true;
 	}
@@ -262,7 +262,7 @@ public class DemonstrateModeMessageHandler {
                         && (ProblemNode) findMatchedNodes.elementAt(0) == tempEdge.getNodes()[ProblemEdge.SOURCE]) {
 
                     ProblemNode newNode = controller.addNewState(exTracerCurrentNode, selection, action, input,
-                            messageObject, actionType);
+                            messageObject, actionType, false);
                     // find just added Edge
                     ProblemEdge newAddedEdge = controller.getProblemModel()
                             .returnsEdge(exTracerCurrentNode, newNode);
@@ -439,7 +439,7 @@ public class DemonstrateModeMessageHandler {
         // create new state node
         ProblemNode newNode = controller.addNewState(controller.getSolutionState()
                 .getCurrentNode(), selection, action, input, messageObject,
-                actionType);
+                actionType, false);
 
         if (trace.getDebugCode("br")) trace.out( "br", "addNewNodeIfNeeded() newNode name "+newNode.getName()+", "+newNode);
 
@@ -507,7 +507,7 @@ public class DemonstrateModeMessageHandler {
                         EdgeData.CORRECT_ACTION)) {
             controller.sendCorrectActionMsg(selection, input, action);
         } else {
-            controller.sendIncorrectActionMsg(selection, input, action);
+            controller.sendIncorrectActionMsg(selection, input, action, false);
         }
 
         return false;

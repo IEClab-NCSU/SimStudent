@@ -294,7 +294,7 @@ public class ContestMultiProdRules extends SimStInteractiveLearning{
         secureCurrentNode(currentNode);
 
         Sai sai = getSai(ran);
-        ProblemNode successiveNode = simulatePerformingStep(currentNode, sai);
+        ProblemNode successiveNode = simulatePerformingStep(currentNode, sai, false);
 
         ProblemNode startNode = brController.getProblemModel().getStartNode();
         String step = startNode.getName();
@@ -323,7 +323,7 @@ public class ContestMultiProdRules extends SimStInteractiveLearning{
         // Make sure that currentNode is the current node
         secureCurrentNode(currentNode);
 
-        ProblemNode successiveNode = simulatePerformingStep(currentNode, sai);
+        ProblemNode successiveNode = simulatePerformingStep(currentNode, sai, false);
 
         ProblemNode startNode = brController.getProblemModel().getStartNode();
         String step = startNode.getName();

@@ -197,7 +197,8 @@ public class UniversalToolProxy implements CommMessageReceiver, CommMessageHandl
 		MsgType.STATE_GRAPH,
 		MsgType.INTERFACE_REBOOT,
 		MsgType.GET_ALL_INTERFACE_DESCRIPTIONS,
-		MsgType.SEND_WIDGET_LOCK
+		MsgType.SEND_WIDGET_LOCK,
+		"flagged_action",
     };
 
 	/**
@@ -211,23 +212,27 @@ public class UniversalToolProxy implements CommMessageReceiver, CommMessageHandl
 		// o.getParameter("OBJECT").toString());
 	}
 	
+	public void handleMessage(MessageObject messageObject) {
+		 handleMessage(messageObject, false);
+	}
+	
  	/**
 	 * Process a Comm message from the tutor.
 	 * @param  messageObject MessageObject to process
 	 */
-	public void handleMessage(MessageObject messageObject)
+	public void handleMessage(MessageObject messageObject, boolean flagged_activation)
 	{
 		boolean suppressFeedback = (suppressFeedback(messageObject) == FeedbackEnum.HIDE_ALL_FEEDBACK);
 		if(suppressFeedback)
 			return;
-		handleMessageByPlatform(messageObject);
+		handleMessageByPlatform(messageObject, flagged_activation);
 	}
 	
  	/**
 	 * Tool-specific processing for a Comm message from the tutor.
 	 * @param  messageObject MessageObject to process
 	 */
-	public void handleMessageByPlatform(MessageObject messageObject)
+	public void handleMessageByPlatform(MessageObject messageObject,  boolean flagged_activation)
 	{		
         if (trace.getDebugCode("utp")) 
         	trace.out("utp", "inside UniversalToolProxy.handleMessage():\n" + messageObject);
@@ -240,7 +245,7 @@ public class UniversalToolProxy implements CommMessageReceiver, CommMessageHandl
         fireMessageSent(messageObject);
 		if(trace.getDebugCode("log"))trace.out("log", "UTP handleMessage after fireMessageSent for message:"+messageObject.toString());
 		
-        transmitMessage(messageObject);
+        transmitMessage(messageObject, flagged_activation);
 
         if (trace.getDebugCode("utp")) trace.out("utp", "UTP: don't know message type" + messageObject.getMessageType());
 	}
@@ -267,12 +272,16 @@ public class UniversalToolProxy implements CommMessageReceiver, CommMessageHandl
 		}
 	}
 	
+	private synchronized void transmitMessage(MessageObject messageObject) {
+		transmitMessage(messageObject, false);
+	}
+	
 	/**
 	 * After checkMessage and fireMessageSent, transmit the message to the corresponding 
 	 * methods. Method ends when it finds the correct result.
 	 * @param messageObject
 	 */
-	private synchronized void transmitMessage(MessageObject messageObject){
+	private synchronized void transmitMessage(MessageObject messageObject, boolean flagged_activation){
         // clear the message in the message window.
         
         if (controller!=null && controller.getHintMessagesManager()!=null &&
@@ -280,7 +289,7 @@ public class UniversalToolProxy implements CommMessageReceiver, CommMessageHandl
             controller.getHintMessagesManager().cleanUpHintOnChange();
 
         if (messageObject.isMessageType(movedFromWidgetMessages)) {
-            controller.handleCommMessage_movedFromCommWidget(messageObject);
+            controller.handleCommMessage_movedFromCommWidget(messageObject, flagged_activation);
             return;
         }
 

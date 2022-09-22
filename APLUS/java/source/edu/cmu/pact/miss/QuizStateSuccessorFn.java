@@ -112,7 +112,7 @@ public class QuizStateSuccessorFn implements SuccessorFunction {
 			return null;
 		
 		// The node we get if we run this step
-		ProblemNode successiveNode = current.getSsInteractiveLearning().simulatePerformingStep(currentNode, sai);
+		ProblemNode successiveNode = current.getSsInteractiveLearning().simulatePerformingStep(currentNode, sai, false);
 		
 		if(successiveNode != null) {
 			// Create a new QuizState succState using the new ProblemNode i.e. successiveNode

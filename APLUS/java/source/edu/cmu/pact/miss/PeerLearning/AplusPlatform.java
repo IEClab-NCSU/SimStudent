@@ -6,6 +6,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
@@ -22,10 +23,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.Point2D;
+import java.awt.image.BufferedImage;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.LinkedList;
@@ -59,6 +62,7 @@ import javax.swing.JSlider;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import javax.swing.SwingUtilities;
+import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.Border;
@@ -77,6 +81,10 @@ import org.jdesktop.swingx.JXTaskPane;
 import org.jdesktop.swingx.JXTaskPaneContainer;
 import org.jdesktop.swingx.painter.MattePainter;
 import org.jdesktop.swingx.painter.Painter;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import pact.CommWidgets.JCommButton;
 import pact.CommWidgets.JCommComboBox;
@@ -2126,8 +2134,16 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 			  			
 			  			if (!currentStep.equals(exampleTemp.getMinimumStep()))
 			  				setSpeechHTML(exampleTemp.getStepTooltipHover(previousStep));
-			  			else 
-			  				setSpeechHTML(exampleTemp.getShortDescription());
+			  			else {
+			  				//setSpeechHTML(exampleTemp.getShortDescription());
+			  				// If loop added by Tasmia.
+					    	if(getSimStPLE().getSimSt().isSimStStrategyRevealMode()) {
+					    		setSpeechHTML(exampleTemp.getShortDescription());
+					    	}
+					    	else {
+					    		setSpeechHTML(exampleTemp.getShortDescription());
+					    	}
+			  			}
 			  			
 			  			fillInExampleStep(exampleInterface,exampleTemp);
 			  			if(!nextButton.isEnabled())
@@ -2201,7 +2217,14 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 			  		/*get the FOA elements that need to be displayed*/
 			  		validSteps4display.clear();
 			  		validSteps4display = exampleTemp.getValidSteps4display(currentStep);
-			  		setSpeechHTML(exampleTemp.getShortDescription());
+			  		//setSpeechHTML(exampleTemp.getShortDescription());
+			  		// If loop added by Tasmia.
+			    	if(getSimStPLE().getSimSt().isSimStStrategyRevealMode()) {
+			    		setSpeechHTML(exampleTemp.getShortDescription());
+			    	}
+			    	else {
+			    		setSpeechHTML(exampleTemp.getShortDescription());
+			    	}
 			  		fillInExampleStep(exampleInterface,exampleTemp);
 			  				  		
 			  	}
@@ -3024,6 +3047,7 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 			else
 			{
 				/* When in examples tab, we don't want the whole solution to be visible */
+				// This is where the example tab gets infiltrated once clicked on a problem. How to hide or unhide image layover.
 			
 					exampleTemp=example;
 					currentStep=example.getMinimumStep();
@@ -3038,9 +3062,28 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 			    	nextButtonClicked = 0;
 			    	exampleProblem = example.getTitle();
 			    	actionListener.exampleSwitched(example.getTitle());
+			    	
+			    	//BufferedImage img=ImageIO.read(new File("f://images.jpg"));
+			        // Tasmia.
+			    	/*ImageIcon icon=createImageIcon("img/exampleOpen.png");
+			        JFrame frame=new JFrame();
+			        frame.setLayout(new FlowLayout());
+			        frame.setSize(200,300);
+			        JLabel lbl=new JLabel();
+			        lbl.setIcon(icon);
+			        frame.add(lbl);
+			        frame.setVisible(true);
+			        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);*/
+			    	
 			    	//System.out.println(" Action Listener ");
 			    	//setSpeech(example.getShortDescription());
-			    	setSpeechHTML(example.getShortDescription());
+			    	// If loop added by Tasmia.
+			    	if(getSimStPLE().getSimSt().isSimStStrategyRevealMode()) {
+			    		setSpeechHTML(example.getShortDescription());
+			    	}
+			    	else {
+			    		setSpeechHTML(example.getShortDescription());
+			    	}
 			    	
 
 			    	fillInExample(exampleInterface,false,false);
@@ -3834,10 +3877,34 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
     	setSpeech(text, false);
     }
         
-    public void setSpeechHTML(String text){
+    public void setSpeechHTML(String text){   	
     	exampleSpeechText.setContentType("text/html");
     	String textToGive="<html><body style=\"font-family: Comic Sans MS; color: white; font-size:12px; padding: 0.3cm 0.2cm 0.2cm 0.4cm;\">"+text+"</body></html>";
     	exampleSpeechText.setText(textToGive);
+    	if(getSimStPLE().getSimSt().isSimStStrategyRevealMode()) {
+    		Document html = Jsoup.parse(text);
+    		String plain_string = html.text();
+    		Elements title_selections = html.select("[title]");
+    		Elements href_selections = html.select("[href]");
+    		HashMap <String, String> hovertext = new HashMap <String, String>();
+    		HashMap <Integer, String> hovertext_pos = new HashMap <Integer, String>();
+    		HashMap <Integer, String> hovertext_pos_end = new HashMap <Integer, String>();
+    		HashMap <String, String> reftext = new HashMap <String, String>();
+    		for (Element element : title_selections) {
+    			hovertext.put(element.text(), element.attr("title"));
+    			int start_pos = plain_string.indexOf(element.text());
+    			hovertext_pos.put(start_pos,element.text());
+    			hovertext_pos_end.put(start_pos+element.text().length(),element.text());
+    	    }
+    		for (Element element : href_selections) {
+    			reftext.put(element.text(), element.attr("href"));
+    	    }
+    		ToolTipManager.sharedInstance().setInitialDelay(0);
+    		ToolTipManager.sharedInstance().setDismissDelay(3000);
+    		textHoverActionListener tlp = new textHoverActionListener(hovertext, hovertext_pos, hovertext_pos_end);
+    		exampleSpeechText.addMouseMotionListener(tlp);
+    	}
+    	
     }
     
     public void setSpeech(String text, boolean quiz)

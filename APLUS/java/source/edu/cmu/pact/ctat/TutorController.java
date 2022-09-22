@@ -257,11 +257,15 @@ public class TutorController extends CTATBase implements CTAT_Controller
     public boolean isStartStateModified(){
     	return false;
     }
+    
     // ////////////////////////////////////////////////////
     //BORG: Edit. changed handlecommmessage to not take a controller as an argument since that is kinda silly.
     //Why would you have a function in a class take an instance of that class as an argument.
     //Only called by handlecommmessage in utp..
     public void handleCommMessage_movedFromCommWidget(edu.cmu.pact.ctat.MessageObject mo) {
+    	handleCommMessage_movedFromCommWidget(mo, false);
+    }
+    public void handleCommMessage_movedFromCommWidget(edu.cmu.pact.ctat.MessageObject mo, boolean flagged_activation) {
         Vector propertyNames = null;
         Vector propertyValues = null;
         if (trace.getDebugCode("msg")) trace.out("msg", "msg to student interface:\n"+mo);
@@ -316,12 +320,12 @@ public class TutorController extends CTATBase implements CTAT_Controller
             }
 
             
-            if (type.equalsIgnoreCase("CorrectAction")) {
+            if (type.equalsIgnoreCase("CorrectAction") && flagged_activation == false) {
             	if(getRunType() == "")
             		doCorrectAction_movedFromCommWidget(propertyNames,propertyValues);
             	return;
             }
-            if (type.equalsIgnoreCase("IncorrectAction")) {
+            if (type.equalsIgnoreCase("IncorrectAction")  && flagged_activation == false) {
             	if(getRunType() == "")
             		doIncorrectAction_movedFromCommWidget(propertyNames,
             			propertyValues);

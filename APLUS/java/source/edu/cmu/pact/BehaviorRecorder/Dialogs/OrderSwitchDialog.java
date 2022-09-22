@@ -127,7 +127,7 @@ public class OrderSwitchDialog extends JDialog implements ActionListener
             	// treat as KEEP_SAME 
             	//ese_Frame.treatAsSameStates(checkedNode, selection, action, input, CommMsg);
             	// treat as create a new state
-            	ProblemNode newNode = OrderSwitchDialog.this.controller.addNewState (OrderSwitchDialog.this.controller.getSolutionState().getCurrentNode(), selection, action, input, CommMsg, authorIntent);
+            	ProblemNode newNode = OrderSwitchDialog.this.controller.addNewState (OrderSwitchDialog.this.controller.getSolutionState().getCurrentNode(), selection, action, input, CommMsg, authorIntent, false);
 				
 				if (authorIntent.equalsIgnoreCase(EdgeData.CORRECT_ACTION) || authorIntent.equalsIgnoreCase(EdgeData.FIREABLE_BUGGY_ACTION))
                     OrderSwitchDialog.this.controller.setCurrentNode(newNode);
@@ -152,7 +152,7 @@ public class OrderSwitchDialog extends JDialog implements ActionListener
 		else
 		{
 			ProblemNode newNode = controller.addNewState (controller.getSolutionState().getCurrentNode(),
-					selection, action, input, CommMsg, authorIntent);
+					selection, action, input, CommMsg, authorIntent, false);
 			
 			if (authorIntent.equalsIgnoreCase(EdgeData.CORRECT_ACTION) || authorIntent.equalsIgnoreCase(EdgeData.FIREABLE_BUGGY_ACTION)) {
 				if (demonstrateModeMessageHandler != null)

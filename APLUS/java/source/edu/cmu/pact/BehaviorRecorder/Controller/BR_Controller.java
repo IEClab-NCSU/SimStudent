@@ -1059,6 +1059,9 @@ public class BR_Controller extends TutorController implements PropertyChangeList
      */
     //this function seems to just traverse from the start state forward.
     public Vector setCurrentNode2(ProblemNode newCurrentNode) {
+    	return setCurrentNode2(newCurrentNode, false);
+    }
+    public Vector setCurrentNode2(ProblemNode newCurrentNode, boolean flagged_activation) {
     	ExampleTracerPath pathToNode = null;
         //List<ExampleTracerEvent> results = null; // unused?
         ProblemNode beginNode = getCurrentNode();
@@ -1080,7 +1083,7 @@ public class BR_Controller extends TutorController implements PropertyChangeList
 
             // need to send back to utp's part Comm
             // msgs & update currNode
-            if (!msgsToStudentSent)
+            if (!msgsToStudentSent && !flagged_activation)
                 sendCommMsgs(newCurrentNode, getProblemModel().getStartNode());   //paints HERE
 
             setCurrentNode(newCurrentNode);
@@ -1201,7 +1204,7 @@ public class BR_Controller extends TutorController implements PropertyChangeList
                         EdgeData.FIREABLE_BUGGY_ACTION)) {
 
             sendIncorrectActionMsg(myEdge.getStudentSelection(), myEdge
-                    .getStudentInput(), myEdge.getStudentAction());
+                    .getStudentInput(), myEdge.getStudentAction(), false);
 
             if (myEdge.getActionType().equalsIgnoreCase(
                     EdgeData.FIREABLE_BUGGY_ACTION)) {
@@ -1426,6 +1429,25 @@ public class BR_Controller extends TutorController implements PropertyChangeList
             	trace.out("msg", "message = " + mo);
             
         	utp.handleMessage(mo);			
+		}
+	}
+	
+	/**
+     * Pass a message to UTP, usually to the student interface.
+     * @param mo
+     */
+	public void handleMessageUTP(MessageObject mo, boolean flagged_activation) 
+	{
+		debug ("handleMessageUTP () utp="+utp);
+		
+		getLogger().oliLog(mo, true);
+		
+		if (utp != null) 
+		{
+            if (trace.getDebugCode("msg")) 
+            	trace.out("msg", "message = " + mo);
+            
+        	utp.handleMessage(mo, flagged_activation);			
 		}
 	}
 
@@ -2182,7 +2204,7 @@ public class BR_Controller extends TutorController implements PropertyChangeList
         if (trace.getDebugCode("br")) trace.out("br", "handleIncorrectActionMessage: " + " selection = " + selection
         		+ " input = " + input + " action = " + action);
 
-        sendIncorrectActionMsg(selection, input, action);
+        sendIncorrectActionMsg(selection, input, action, false);
     }
 
     /**
@@ -3645,7 +3667,7 @@ public class BR_Controller extends TutorController implements PropertyChangeList
                     // sendBuggyMsg(myEdge.actionLabel.buggyMsg,
                     // myEdge.actionLabel.selection, myEdge.actionLabel.input);
                     sendIncorrectActionMsg(myEdge.getSelection(), myEdge
-                            .getInput(), myEdge.getAction());
+                            .getInput(), myEdge.getAction(), false);
 
                 if (checkResult.equalsIgnoreCase(EdgeData.NOTAPPLICABLE)) {
                     NANumber++;
@@ -3700,7 +3722,7 @@ public class BR_Controller extends TutorController implements PropertyChangeList
                     // sendBuggyMsg(myEdge.actionLabel.buggyMsg,
                     // myEdge.actionLabel.selection, myEdge.actionLabel.input);
                     sendIncorrectActionMsg(myEdge.getSelection(), myEdge
-                            .getInput(), myEdge.getInput());
+                            .getInput(), myEdge.getInput(), false);
 
                 /*
                  * if (uniqueID.intValue() > 11) { trace.out ( "for arc " +
@@ -4094,7 +4116,7 @@ public class BR_Controller extends TutorController implements PropertyChangeList
         if (authorIntent.equalsIgnoreCase(EdgeData.CORRECT_ACTION))
             sendCorrectActionMsg(selection, input, action);
         else
-            sendIncorrectActionMsg(selection, input, action);       
+            sendIncorrectActionMsg(selection, input, action, false);       
         
         if(createNewNode)
         	//getProblemModel().fireProblemModelEvent(new NodeCreatedEvent(this, destNode));
@@ -4151,7 +4173,7 @@ public class BR_Controller extends TutorController implements PropertyChangeList
      */
     public ProblemNode addNewState(ProblemNode sourceNode, Vector selectionP,
             Vector actionP, Vector inputP, MessageObject CommMsgP,
-            String actionType) {
+            String actionType, boolean flagged_activation) {
 
     	//There will be two variables: newProblemNode will be the actual new
     	//ProblemNode that is created, and childCount will be the number of children
@@ -4217,10 +4239,10 @@ public class BR_Controller extends TutorController implements PropertyChangeList
    
         // default: send CorrectAction message to UniversalToolProxy
         if (actionType.equalsIgnoreCase(EdgeData.CORRECT_ACTION)) {
-            sendCorrectActionMsg(selectionP, inputP, actionP);
+            sendCorrectActionMsg(selectionP, inputP, actionP, flagged_activation);
         }
         else {
-            sendIncorrectActionMsg(selectionP, inputP, actionP);
+            sendIncorrectActionMsg(selectionP, inputP, actionP, flagged_activation);
         }
   
         edgeData.getActionLabel().update();
@@ -4379,16 +4401,20 @@ public class BR_Controller extends TutorController implements PropertyChangeList
     }
 
     public void sendCorrectActionMsg(Vector selectionP, Vector inputP, Vector actionP) {
-       sendCorrectActionMsg(selectionP, inputP, actionP, null, null);
+       sendCorrectActionMsg(selectionP, inputP, actionP, null, null, false);
+    }
+    
+    public void sendCorrectActionMsg(Vector selectionP, Vector inputP, Vector actionP, boolean flagged_activation) {
+        sendCorrectActionMsg(selectionP, inputP, actionP, null, null, flagged_activation);
     }
     
     public void sendCorrectActionMsg(Vector selectionP, Vector inputP, Vector actionP, String page) {
-        sendCorrectActionMsg(selectionP, inputP, actionP, page, null);
+        sendCorrectActionMsg(selectionP, inputP, actionP, page, null, false);
      }
     
     // gus 03/04 - for multi-page interfaces
     public void sendCorrectActionMsg(Vector selectionP, Vector inputP,
-    		Vector actionP, String page, String replay) {
+    		Vector actionP, String page, String replay, boolean flagged_activation) {
      
         MessageObject newMessage = MessageObject.create(MsgType.CORRECT_ACTION, "SendNoteProperty");
    
@@ -4401,7 +4427,7 @@ public class BR_Controller extends TutorController implements PropertyChangeList
         if(replay != null)
             newMessage.setProperty("replay", replay);
         newMessage.setTransactionId(getSemanticEventId());
-        handleMessageUTP(newMessage);
+        handleMessageUTP(newMessage, flagged_activation);
     }
 
     public void sendInterfaceActionMsg(Vector selectionP, Vector inputP,Vector actionP) 
@@ -4427,7 +4453,7 @@ public class BR_Controller extends TutorController implements PropertyChangeList
         handleMessageUTP(newMessage);
     }
 
-    public void sendIncorrectActionMsg(Vector selectionP, Vector inputP, Vector actionP) {
+    public void sendIncorrectActionMsg(Vector selectionP, Vector inputP, Vector actionP, boolean flagged_activation) {
         MessageObject newMessage = MessageObject.create(MsgType.INCORRECT_ACTION, "SendNoteProperty");
         newMessage.setSelection(selectionP);
         newMessage.setAction(actionP);
@@ -4803,11 +4829,11 @@ public class BR_Controller extends TutorController implements PropertyChangeList
                         EdgeData.CORRECT_ACTION)) {
                 	sendCorrectActionMsg(myCurrEdge.getStudentSelection(),
                                 myCurrEdge.getStudentInput(), myCurrEdge
-                                        .getStudentAction(), page, replay); //we now handle null's on page and replay together
+                                        .getStudentAction(), page, replay, false); //we now handle null's on page and replay together
                 } else
                     sendIncorrectActionMsg(myCurrEdge.getSelection(),
                             myCurrEdge.getStudentInput(), myCurrEdge
-                            .getStudentAction());
+                            .getStudentAction(), false);
 
                 return;
             }
@@ -4837,12 +4863,12 @@ public class BR_Controller extends TutorController implements PropertyChangeList
                 } else {
                     sendIncorrectActionMsg(myCurrEdge.getSelection(),
                             myCurrEdge.getStudentInput(), myCurrEdge
-                            .getStudentAction());
+                            .getStudentAction(), false);
                 }
             } else
                 sendIncorrectActionMsg(myCurrEdge.getSelection(), myCurrEdge
                         .getStudentInput(), myCurrEdge
-                        .getStudentAction());
+                        .getStudentAction(), false);
         } else {
             edu.cmu.pact.ctat.MessageObject mo = null; // clone edge msg before
             // setSemanticEvent
