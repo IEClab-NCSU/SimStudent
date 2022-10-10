@@ -29,6 +29,8 @@ import javax.swing.JTextPane;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 import javax.media.*;
 
@@ -83,6 +85,7 @@ public class CurriculumBrowser {
     private Slider timeSlider;
     private Duration duration;
     private Label time;
+    private Document curriculum_file_doc; 
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
     // Methods
@@ -344,23 +347,41 @@ public class CurriculumBrowser {
     	    }
     public void setHtmlSource(String src)
     {
-    	
-    	
+    	//System.out.println("trust me");
     	if(trace.getDebugCode("miss"))trace.out("miss", "Inside setHtmlSource with fileName: " + src);
     	try
     	{
     		cbView.getBrowserPane().setEditorKit(new HTMLEditorKit());
-    		if(SimSt.WEBSTARTENABLED)
+    		File curriculum_file;
+    		if(SimSt.WEBSTARTENABLED) {
+    			curriculum_file = new File(this.fileFinder.findFile(src));
     			cbView.getBrowserPane().read(new FileReader(this.fileFinder.findFile(src)), cbView.getBrowserPane().getDocument());
-    		else
-    				cbView.getBrowserPane().read(new FileReader(src), cbView.getBrowserPane().getDocument());
+    		}
+    		else {
+    			curriculum_file = new File(src);
+    			cbView.getBrowserPane().read(new FileReader(src), cbView.getBrowserPane().getDocument());
+    		}
     		htmlSet = true;
+   
+    		curriculum_file_doc = Jsoup.parse(curriculum_file, "ISO-8859-1");
+    		//cbView.getBrowserPane().setText(curriculum_file_doc.html());
+    		//System.out.println(curriculum_file_doc.wholeText());
+        	
     	}
     	catch(IOException e)
     	{
     		if(trace.getDebugCode("miss"))trace.out("miss", "Error setting page of curriculum browser "+e.getMessage());
         	e.printStackTrace();
     	}
+    }
+    
+    public void setHtmlSourceFromDocument(String id) {
+    	
+    	cbView.getBrowserPane().setText(curriculum_file_doc.html());
+    }
+    
+    public Document getCurriculumDocument() {
+    	return curriculum_file_doc;
     }
     
     

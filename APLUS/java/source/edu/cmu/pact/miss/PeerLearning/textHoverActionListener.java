@@ -19,6 +19,13 @@ public class textHoverActionListener extends MouseAdapter{
 	private List<Integer> start_positions;
 	private List<Integer> end_positions;
 	
+	// href variables
+	private HashMap <String, String> reftext;
+	private HashMap <Integer, String> reftext_pos;
+	private HashMap <Integer, String> reftext_pos_end;
+	private List<Integer> ref_start_positions;
+	private List<Integer> ref_end_positions;
+	
 	textHoverActionListener(HashMap <String, String> hovertext, HashMap <Integer, String> hovertext_pos, HashMap <Integer, String> hovertext_pos_end){
 		this.hovertext = hovertext;
 		this.hovertext_pos = hovertext_pos;	
@@ -27,6 +34,16 @@ public class textHoverActionListener extends MouseAdapter{
 		this.hovertext_pos_end = hovertext_pos_end;
 		Set<Integer> end_keys = hovertext_pos_end.keySet();
 		this.end_positions = new ArrayList<Integer>(end_keys);
+	}
+	
+	public void setHrefVariables(HashMap <String, String> reftext, HashMap <Integer, String> reftext_pos, HashMap <Integer, String> reftext_pos_end) {
+		this.reftext = reftext;
+		this.reftext_pos = reftext_pos;	
+		Set<Integer> start_keys = reftext_pos.keySet();
+		this.ref_start_positions = new ArrayList<Integer>(start_keys);
+		this.reftext_pos_end = reftext_pos_end;
+		Set<Integer> end_keys = reftext_pos_end.keySet();
+		this.ref_end_positions = new ArrayList<Integer>(end_keys);
 	}
 	
 	public void mouseMoved(MouseEvent me)
@@ -40,6 +57,7 @@ public class textHoverActionListener extends MouseAdapter{
     	tt.setToolTipText(hovertext.get(to_be_highlighted));
        
     }
+	
 	
 	// If current cursor is placed on a string that has title text
 	public String getTitleText(int startOffset) {

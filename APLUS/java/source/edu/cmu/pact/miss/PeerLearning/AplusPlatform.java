@@ -12,6 +12,7 @@ import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.LinearGradientPaint;
 import java.awt.Window;
@@ -59,8 +60,10 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JSlider;
+import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
@@ -73,6 +76,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.text.DefaultCaret;
+import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.JTextComponent;
 import javax.swing.text.StyleConstants;
 
 import org.jdesktop.swingx.JXButton;
@@ -122,6 +127,9 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 	JPanel commPane, exampleCommPane;
 	JLabel skillometerLabel;
 	JPanel skillometer;
+	
+	// Tasmia on paper
+	JLabel imageLabel;
 	
 	public JTabbedPaneWithCloseIcons getAplusTabs(){
 		return this.tabPane;
@@ -217,6 +225,7 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 	//private boolean modelTracer = true;
 	
 	private SimStExample exampleTemp;
+	private CurriculumBrowser overview_browser;
 	private String currentStep;
 	private  HashSet validSteps4display; //hash set to hold all the FOA that must be displayed in examples tab steps
 	private  boolean splashShown=false;
@@ -721,9 +730,6 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 	}
 	
 	
-	
-
-	
 	private void setUpVideoTab()
 	{
 		videoTab = new JPanel();
@@ -751,21 +757,41 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 
 	JLabel overviewTeacher;
 	
+	public void populateOverviewFromJsoupDoc(String id) {
+		
+		Element content = overview_browser.getCurriculumDocument().getElementById(id);
+		//Element root = ((Object) overview_browser.getCurriculumDocument()).getDefaultRootElement();
+        //Element line = root.getElement(3);
+        //System.out.println("line : " + line);
+		//((JTextComponent) overviewTab).getHighlighter().addHighlight(50, 200, DefaultHighlighter.DefaultPainter);
+
+		
+		//overview_browser.setHtmlSourceFromDocument(id);
+		//Component overview = overviewTab.getComponent(0); 
+		//overview = overview_browser.getBrowserPane();
+		//overviewTab.setC
+	} 
+	
 	private void setUpOverviewTab()
 	{
+		// Tasmia: This function is being called to setup the unit overview tab on load. 
+		//I am not sure why we have another setUpOverviewTab function in SimStPLE.java.
 		overviewTab = new JPanel();
 		overviewTab.setBackground(overviewColor);
 		overviewTab.setBorder(BorderFactory.createEmptyBorder(BORDER_WIDTH,BORDER_WIDTH,BORDER_WIDTH,BORDER_WIDTH));
 		
-		CurriculumBrowser browser = new CurriculumBrowser();
+		if(overview_browser == null) overview_browser = new CurriculumBrowser();
+		//CurriculumBrowser overview_browser = new CurriculumBrowser();
 		
 		//remove this when we start loading from SimStPLE
 		SimStPLE.setOverviewPageName("curriculum.html");
 		
-		if(SimStPLE.overviewPageName != null && SimStPLE.overviewPageName.length() > 0)
-				browser.setHtmlSource(SimStPLE.overviewPageName);
-		Component overview = browser.getBrowserPane();
+		if(SimStPLE.overviewPageName != null && SimStPLE.overviewPageName.length() > 0) {
+			overview_browser.setHtmlSource(SimStPLE.overviewPageName);
+			
+		}
 		
+		Component overview = overview_browser.getBrowserPane();
 	    JScrollPane scrollbar = (JScrollPane)overview;
 	   
 		scrollbar.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener(){
@@ -873,6 +899,8 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 		exampleContainer = new JXTaskPaneContainer();
 		exampleContainer.setBackground(exampleColor);
 		
+		// exampleScroller is responsible for the right scrollable problem option contents.
+		
 		JScrollPane exampleScroller = new JScrollPane(exampleContainer);
 		GridBagConstraints epConst = new GridBagConstraints();
 		epConst.gridx = 1;
@@ -883,9 +911,12 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 		epConst.weighty = 1;
 		epConst.fill = GridBagConstraints.BOTH;
 		epConst.anchor = GridBagConstraints.PAGE_START;
+		//exampleScroller.setVisible(false);
 		exampleTab.add(exampleScroller, epConst);
 		setUpExampleIndex(exampleContainer);
+		setUpOnPaperImage();
 		
+		// exampleCommPane is responsible for left below contents like Mr Williams image, the black board.
 		exampleCommPane = new JPanel();
 		exampleCommPane.setBackground(exampleColor);
 		GridBagConstraints cpConst = new GridBagConstraints();
@@ -905,6 +936,7 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 		int index = tabPane.getTabCount()-1;
 		tabPane.setBackgroundAt(index, unfocusColors[index]);
 	}
+	
 	
 	public static void showComponents(Component component)
 	{
@@ -1924,6 +1956,93 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 		
 		commPanel.add(speechScroller);
 	}
+	
+	public void toggleOnPaper(boolean show) {
+		if(show && exampleTab.getComponent(1).isVisible()) {
+			exampleTab.getComponent(1).setVisible(false);
+			exampleTab.getComponent(2).setVisible(true);
+			
+		}
+		else if(!show && exampleTab.getComponent(2).isVisible()) {
+			exampleTab.getComponent(2).setVisible(false);
+			exampleTab.getComponent(1).setVisible(true);
+		}
+	}
+	
+	public void updateOnPaperImage(String imagename) {
+		if(imagename == null) imagename = SimStPLE.no_preview_image;
+		ImageIcon glossaryImg=createImageIcon(imagename, true);
+		//if(glossaryImg.getImage() == null) glossaryImg=createImageIcon(SimStPLE.PAPER_CLOSE);
+        //imageLabel.setIcon(new ImageIcon(glossaryImg.getImage().getScaledInstance(300, 300, Image.SCALE_DEFAULT)));
+        //System.out.println(imageLabel.getHeight());
+        //System.out.println(imageLabel.getWidth());
+		imageLabel.setIcon(new ImageIcon(glossaryImg.getImage().getScaledInstance(400, 400, Image.SCALE_AREA_AVERAGING)));
+		//imageLabel.setIcon(new ImageIcon(glossaryImg.getImage().getScaledInstance(400, 400, Image.SCALE_SMOOTH)));
+		//imageLabel.setIcon(new ImageIcon(glossaryImg.getImage().getScaledInstance(400, 400, Image.SCALE_DEFAULT)));
+
+        imageLabel.setBackground(exampleColor);
+	}
+	
+    public void setUpOnPaperImage() {
+		
+		GridBagConstraints epConst = new GridBagConstraints();
+		epConst.gridx = 1;
+		epConst.gridy = 0;
+		epConst.gridwidth = 1;
+		epConst.gridheight = 3;
+		epConst.weightx = .25;
+		epConst.weighty = 1;
+		epConst.fill = GridBagConstraints.BOTH;
+		epConst.anchor = GridBagConstraints.PAGE_START;
+		
+		
+		JSplitPane paper_image_pane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+		paper_image_pane.setPreferredSize(new Dimension(300,200));
+		paper_image_pane.setBackground(exampleColor);
+		//paper_image_pane.setDividerSize(5);
+		paper_image_pane.setVisible(false);
+        exampleTab.add(paper_image_pane, epConst);
+		
+        
+        
+        JPanel onPaper_top = new JPanel(new BorderLayout ());
+		onPaper_top.setBackground(exampleColor);
+		JLabel textLabel = new JLabel("On the paper");
+		textLabel.setHorizontalAlignment(JLabel.CENTER);
+		textLabel.setBackground(Color.red);
+		textLabel.setForeground (Color.black);
+		textLabel.setFont(new java.awt.Font("Tahoma", 0, 18));
+		onPaper_top.add(textLabel, BorderLayout.CENTER);
+		
+		JButton crossButton = new JButton(createImageIcon(SimStPLE.PAPER_CLOSE));
+		crossButton.setBackground(exampleColor);
+		crossButton.addActionListener(new ActionListener() { 
+			  public void actionPerformed(ActionEvent e) { 
+				  toggleOnPaper(false);
+			  } 
+		});
+
+		onPaper_top.add(crossButton, BorderLayout.EAST);
+		
+
+		paper_image_pane.setTopComponent(onPaper_top);
+        
+		        
+		ImageIcon glossaryImg=createImageIcon(SimStPLE.no_preview_image);
+        //JLabel imageLabel = new JLabel(glossaryImg);
+        imageLabel = new JLabel();
+        paper_image_pane.setBottomComponent(imageLabel);
+        paper_image_pane.setDividerLocation(0.1);
+        
+        imageLabel.setBackground(Color.BLACK);
+        imageLabel.setHorizontalAlignment(JLabel.CENTER);
+        imageLabel.setVerticalAlignment(JLabel.TOP);
+        imageLabel.setIcon(new ImageIcon(glossaryImg.getImage().getScaledInstance(300, 300, Image.SCALE_DEFAULT)));
+        
+
+        imageLabel.setBackground(exampleColor);
+        
+	}
 
 	private void setUpExampleCommPanel(JPanel commPanel)
 	{
@@ -2090,10 +2209,15 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 				  			
 				  			if(!prevButton.isEnabled())
 				  				prevButton.setEnabled(true);
+				  			
+				  			//System.out.println("GG "+ currentStep+" "+exampleTemp.getOnPaperImageNames(currentStep));
+							updateOnPaperImage(exampleTemp.getOnPaperImageNames(currentStep));
 				  }
 				  else if(currentStep.equals(exampleTemp.getLastStep())) {
 					  nextButton.setEnabled(false);
 					  nextButtonClicked = 0;
+					  //System.out.println("GY "+ currentStep+" "+exampleTemp.getOnPaperImageNames(currentStep));
+					  updateOnPaperImage(exampleTemp.getOnPaperImageNames(currentStep));
 				  }
 			              
 			  }
@@ -2117,7 +2241,7 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 			  String prev = "";
 			  @Override
 			  public void mouseClicked(MouseEvent e) {
-				  
+				System.out.println("I am clicked "+currentStep+" prev: "+prev);  
 			  	if (!currentStep.equals("-1")){
 			  		
 			  		
@@ -2146,15 +2270,28 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 			  			}
 			  			
 			  			fillInExampleStep(exampleInterface,exampleTemp);
+			  			//System.out.println("PG "+ currentStep+" "+exampleTemp.getOnPaperImageNames(currentStep));
+			  			String on_paper_image = exampleTemp.getOnPaperImageNames(currentStep);
+				  		if(on_paper_image == null) on_paper_image = exampleTemp.getOnPaperImageNames("shortDescription");
+			  			updateOnPaperImage(on_paper_image);
 			  			if(!nextButton.isEnabled())
 			  				nextButton.setEnabled(true);
 			  	}
 			  	if(prev.equals(currentStep)){
+			  		//System.out.println("I jave no place to go");
 			  		prevButton.setEnabled(false);
 			  		prev = "";
+					updateOnPaperImage(exampleTemp.getOnPaperImageNames("shortDescription"));
+
 			  	}
-			  	else
+			  	else {
+			  		//System.out.println("What is here? "+currentStep);
 			  		prev = currentStep;
+			  		String on_paper_image = exampleTemp.getOnPaperImageNames(currentStep);
+			  		if(on_paper_image == null) on_paper_image = exampleTemp.getOnPaperImageNames("shortDescription");
+					updateOnPaperImage(on_paper_image);
+
+			  	}
 			  }
 			  public void mouseEntered(MouseEvent me){
 					Cursor cursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR); 
@@ -3080,6 +3217,9 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 			    	// If loop added by Tasmia.
 			    	if(getSimStPLE().getSimSt().isSimStStrategyRevealMode()) {
 			    		setSpeechHTML(example.getShortDescription());
+						updateOnPaperImage(example.getOnPaperImageNames("shortDescription"));
+			    		toggleOnPaper(true);
+			    		//showOnPaperImage();
 			    	}
 			    	else {
 			    		setSpeechHTML(example.getShortDescription());
@@ -3396,6 +3536,7 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 		setDefaultLookAndFeel();
 		
         int index = tabPane.getSelectedIndex();
+        //System.out.println("I am called");
         UIManager.put("TaskPane.titleBackgroundGradientStart", Color.white);
         UIManager.put("TaskPane.titleBackgroundGradientEnd", focusColors[index]);
     	UIManager.put("TabbedPane.focus", focusColors[index]);
@@ -3429,11 +3570,21 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 
 	}
 	 /** Returns an ImageIcon, or null if the path was invalid. */
-    public ImageIcon createImageIcon(String path) {
-    	String file = "/edu/cmu/pact/miss/PeerLearning"+"/"+path;
+    public ImageIcon createImageIcon(String path, boolean isProjectPath) {
+    	String file;
+    	if(!isProjectPath) 
+    		file = "/edu/cmu/pact/miss/PeerLearning"+"/"+path;
+    	else
+    		//file = "/SimStAlgebraV8/"+path;
+    		file = "/"+getBrController().getMissController().getSimSt().getPackageName()+"/"+path;
+    		//file = "/edu/cmu/pact/miss/PeerLearning"+"/"+SimStPLE.no_preview_image;
     	URL url = this.getClass().getResource(file);
     	return new ImageIcon(url);
     	
+    }
+    
+    public ImageIcon createImageIcon(String path) {
+    	return createImageIcon(path, false);
     }
     
     public void appendSpeech(String text, String name)
@@ -3886,10 +4037,14 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
     		String plain_string = html.text();
     		Elements title_selections = html.select("[title]");
     		Elements href_selections = html.select("[href]");
+    		// Hover elements.
     		HashMap <String, String> hovertext = new HashMap <String, String>();
     		HashMap <Integer, String> hovertext_pos = new HashMap <Integer, String>();
     		HashMap <Integer, String> hovertext_pos_end = new HashMap <Integer, String>();
+    		// href unit overview elements.
     		HashMap <String, String> reftext = new HashMap <String, String>();
+    		HashMap <Integer, String> reftext_pos = new HashMap <Integer, String>();
+    		HashMap <Integer, String> reftext_pos_end = new HashMap <Integer, String>();
     		for (Element element : title_selections) {
     			hovertext.put(element.text(), element.attr("title"));
     			int start_pos = plain_string.indexOf(element.text());
@@ -3898,11 +4053,18 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
     	    }
     		for (Element element : href_selections) {
     			reftext.put(element.text(), element.attr("href"));
+    			int start_pos = plain_string.indexOf(element.text());
+    			reftext_pos.put(start_pos,element.text());
+    			reftext_pos_end.put(start_pos+element.text().length(),element.text());
+    			
     	    }
     		ToolTipManager.sharedInstance().setInitialDelay(0);
-    		ToolTipManager.sharedInstance().setDismissDelay(3000);
-    		textHoverActionListener tlp = new textHoverActionListener(hovertext, hovertext_pos, hovertext_pos_end);
-    		exampleSpeechText.addMouseMotionListener(tlp);
+    		ToolTipManager.sharedInstance().setDismissDelay(6000);
+    		textHoverActionListener thal = new textHoverActionListener(hovertext, hovertext_pos, hovertext_pos_end);
+    		mouseActionListener mal = new mouseActionListener(reftext, reftext_pos, reftext_pos_end, this);
+
+    		exampleSpeechText.addMouseMotionListener(thal);
+    		exampleSpeechText.addMouseListener(mal);
     	}
     	
     }

@@ -29,6 +29,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -263,6 +264,12 @@ public class SimStPLE {
 	public static final String METATUTOR_STUDENT_INTERACTION_IMAGE_COGTUTOR = "img/metatutor_student_interaction_cogTutor.png";
 	public static final String BASELINE_MR_WILLIAMS_IMAGE = "img/baseline_Mr.Williams.png";
 
+	// on paper images: Tasmia
+	//public static final String ON_PAPER_IMAGE_LOCATION = "img/on_paper";
+	public static final String no_preview_image = "img/DefaultOnPaper.png";
+	//public static final String E13 = ON_PAPER_IMAGE_LOCATION+"/E13.png";
+	public static final String PAPER_CLOSE = "img/paperClose.png";
+	
 	public static final String BOARD_IMAGE = "img/board.png";
 	public static final String NEXT_EXAMPLE_IMAGE = "img/next.png";
 	public static final String PREVIOUS_EXAMPLE_IMAGE = "img/previous.png";
@@ -327,6 +334,9 @@ public class SimStPLE {
 
 	public static void setOverviewPageName(String name) {
 		overviewPageName = name;
+	}
+	public static String getOverviewPageName() {
+		return overviewPageName;
 	}
 
 	/*
@@ -1194,8 +1204,11 @@ public class SimStPLE {
 		hintExplanations = new Hashtable<String, LinkedList<Explanation>>();
 		readConfigFile();
 		conversation = new SimStConversation(brController, "simSt-speech.txt");
-		if(getSimSt().isCTIFollowupInquiryMode())
-			conversation.processBothAgreeSpeechFile("simSt-both-agree-speech.txt");
+		
+		// Tasmia: Comment out the following lines because we will only do followup with why did you do x and why am I wrong Qs
+		// But if you want to ask more questions when both tutor and tutee agree with each other, you can undo comments to configure the both agree speech file.
+		//if(getSimSt().isCTIFollowupInquiryMode())
+			//conversation.processBothAgreeSpeechFile("simSt-both-agree-speech.txt");
 	}
 
 	// Reads the configuration file and applies the items in it to their categories
@@ -1486,9 +1499,25 @@ public class SimStPLE {
 					String explanation = line.substring(line.indexOf(':') + 1);
 					example.setExplanation(explanation);
 				} else if (line.startsWith("shortDescription:")) {
-					String hint = line.substring(line.indexOf(':') + 1);
+					String[] hint_image = line.split(EXAMPLE_VALUE_MARKER);
+					//String hint = line.substring(line.indexOf(':') + 1);
+					String hint = hint_image[1].trim();
 					example.setShortDescription(hint);
-				} else if (line.equals(".")) {
+					if(hint_image.length==3) {
+						example.addOnPaperImageNames("shortDescription", hint_image[2].trim());
+					}
+				} 
+				// Tasmia added 
+				/*else if (line.startsWith("on_paper_images:") && simSt.isSimStStrategyRevealMode()) {
+					String image_names = line.substring(line.indexOf(':') + 1);
+					ArrayList<String> img_names = new ArrayList<String>(Arrays.asList(image_names.split(",")));
+					for (int i=0; i<img_names.size(); i++) {
+						String[] selection_name = img_names.get(i).split("-");
+						example.addOnPaperImageNames(selection_name[0].trim(), selection_name[1].trim());
+					}
+					
+				}*/ 
+				 else if (line.equals(".")) {
 					numExamples++;
 					examples.add(example);
 					example = new SimStExample();
@@ -1500,14 +1529,22 @@ public class SimStPLE {
 					if (values.length == 3) {
 						example.addStep(values[0], values[1], "", "");
 					} else if (values.length == 4) {
-						example.addStep(values[0], values[1], values[2], values[4]);
-					} else if (values.length >= 4) {
-						if (values[3].equals("correct"))
-							example.addStep(values[0], values[1], values[2], true, values[4]);
-						else if (values[3].equals("incorrect"))
-							example.addStep(values[0], values[1], values[2], false, values[4]);
+						example.addStep(values[0], values[1], values[2], values[3]);
+					} else if (values.length >= 4 && values.length <=5) {
+						if (values[4].trim().equals("correct"))
+							example.addStep(values[0], values[1], values[2], values[3], true);
+						else if (values[4].trim().equals("incorrect"))
+							example.addStep(values[0], values[1], values[2], values[3], false);
 						else
-							example.addStep(values[0], values[1], values[2], values[4]);
+							example.addStep(values[0], values[1], values[2], values[3]);
+					}
+					else if (values.length >= 5) {
+						if (values[4].trim().equals("correct"))
+							example.addStep(values[0], values[1], values[2], values[3], 1, values[5]);
+						else if (values[4].trim().equals("incorrect"))
+							example.addStep(values[0], values[1], values[2], values[3], 0, values[5]);
+						else
+							example.addStep(values[0], values[1], values[2], values[3], -1, values[5]);
 					}
 				}
 				line = reader.readLine();
@@ -1764,7 +1801,10 @@ public class SimStPLE {
 		return qa;
 	}
 	
-	// Get a list of all confidence options to choose when tutee says it is stuck
+	// Get a list of all confidence options to choose when tutee says it is stuck.
+	// We use this function only when we need to distinguish how confident tutor is about knowing the next step or he is stuck.
+	// Currently APLUS does not let tutor express if they are stuck as well.
+	// Only gets activated if APLUS is in CTI followup mode.
 		public QuestionAnswers getMatchingConfidenceChoiceExplanation() {
 			Object[] questions = confidenceChoiceExplanations.keySet().toArray();
 			if (questions.length == 0) {
@@ -6632,7 +6672,7 @@ public class SimStPLE {
 						if (!correctness)
 							comment = input + " is not correct";
 
-						quizResult.addStep(selection, input, comment, correctness, "");
+						quizResult.addStep(selection, input, comment, "", correctness);
 
 						// Don't need to change correctness if it is already set - false true typein is
 						// still incorrect
@@ -6888,7 +6928,7 @@ public class SimStPLE {
 					if (!correctness)
 						comment = input + " is not correct";
 
-					quizResult.addStep(selection, input, comment, correctness, "");
+					quizResult.addStep(selection, input, comment, "", correctness);
 
 					// Don't need to change correctness if it is already set - false true typein is
 					// still incorrect

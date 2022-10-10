@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -35,6 +36,9 @@ public class SimStExample implements Serializable {
 	private String explanation = "";//"This is an example.";
 	private Hashtable<String, StringPair> steps;
 	private Hashtable<String, StringPair> steps_hover;
+	
+	// Tasmia: on paper image names
+	private HashMap<String, String> on_paper_images;
 	
 	public static final Color CORRECT_COLOR = Color.green.darker();
 	public static final Color INCORRECT_COLOR = Color.red;
@@ -68,11 +72,24 @@ public class SimStExample implements Serializable {
 		initQuizSolutionHash();
 	}
 	
+	public void addOnPaperImageNames(String selection, String name) {
+		on_paper_images.put(selection, name);
+	}
+	
+	public HashMap<String, String> getOnPaperImageNames(){
+		return on_paper_images;
+	} 
+	public String getOnPaperImageNames(String selection){
+		return on_paper_images.get(selection);
+	} 
+	
 	public SimStExample()
 	{
 		steps = new Hashtable<String,StringPair>();
 		steps_hover = new Hashtable<String,StringPair>();
 		stepOrder=new LinkedList<String>();
+		// Tasmia 
+		on_paper_images = new HashMap<String, String>();
 		initQuizSolutionHash();
 	}
 	
@@ -323,7 +340,7 @@ public class SimStExample implements Serializable {
 		stepOrder.add(selection);
 	}
 	
-	public void addStep(String selection, String input, String tooltip, boolean correct,String hover)
+	public void addStep(String selection, String input, String tooltip,  String hover, boolean correct)
 	{
 	
 		isExampleFilled=true;
@@ -340,6 +357,26 @@ public class SimStExample implements Serializable {
 		steps_hover.put(selection, info1);
 		stepOrder.add(selection);
 		
+		
+	}
+	
+	public void addStep(String selection, String input, String tooltip,  String hover, int correct, String on_paper_image_path)
+	{
+	
+		isExampleFilled=true;
+		
+		
+		StringPair info = new StringPair(input, tooltip);
+		if(correct==1)
+			info.color = CORRECT_COLOR;
+		else if(correct==0)
+			info.color = INCORRECT_COLOR;
+		steps.put(selection, info);
+		
+		StringPair info1 = new StringPair(input, hover);
+		steps_hover.put(selection, info1);
+		stepOrder.add(selection);
+		addOnPaperImageNames(selection.trim(), on_paper_image_path.trim());	
 		
 	}
 	
