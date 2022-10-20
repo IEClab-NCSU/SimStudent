@@ -160,7 +160,7 @@
 	=>
 	(predicted-sai submit ButtonPressed -1) ;; predicts-the-ruleSAI
 	(construct-tutor-hint-message
-		"[ SimStName is asking you to justify your answer. You should answer SimStName 's question. ]"))	
+		"[ SimStName is asking you to justify your step. You should answer SimStName 's question. Review the Example and Unit overview tab to provide a helpful response. These two tabs have some clues for you.]"))	
 
 
 ;;(defrule simst-solution-error-update

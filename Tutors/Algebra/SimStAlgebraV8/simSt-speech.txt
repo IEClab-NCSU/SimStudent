@@ -50,7 +50,7 @@ Cool!  you completed the problem!   I think you're ready to take the quiz now.  
 
 
 ALL_QUIZ_FAILED
-Oh, I know I did bad on the quiz but I really need to know how to solve <section>... 
+Oh, I know I did badly on the quiz, but I need to know how to solve <section>... 
 
 
 APLUS_CONTROL_QUIZ_SECTION_PASSED
@@ -206,7 +206,7 @@ I don't still get it.  Should we ask Mr. Williams for suggestions? <MT><ERR>
 
 START_PROBLEM_NO
 Okay. Click 'Yes' when you've entered the right problem.
-Alright, then, enter a problem you like and click 'Yes'. 
+Alright, enter a problem you like and click 'Yes'. 
 Okay. Maybe Mr. Williams has a suggestion for what we should be working on? <MT>
 Okay. Should we ask Mr. Williams what kind of problem we should work on? <MT>
 
@@ -356,6 +356,11 @@ BRAINSTORMING_SUMMARIZE
 Before I proceed further, can you please review the reasoning to me that led you to demonstrate this step?
 Can you please explain your reasoning behind the demonstrated step?
 Can you review the reasoning to me that led you to demonstrate this step?
+
+ON_PAPER_EXPLAIN
+How would <i> look like if I was solving this equation on paper?
+What would applying <i> be like on a piece of paper?
+If we were solving this equation on paper, how would <i> look like?
 
 BOTH_STUCK
 It looks like we are both stuck. Can you find out and show me what to do next?

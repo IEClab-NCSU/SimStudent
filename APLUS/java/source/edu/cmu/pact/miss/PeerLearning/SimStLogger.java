@@ -214,6 +214,8 @@ public class SimStLogger {
 
    public static final String SIM_STUDENT_EXPLANATION = "SIM_STUDENT_EXPLANATION";
    public static final String HINT_EXPLAIN_ACTION = "Hint Explained";
+   // Added by Tasmia.
+   public static final String ON_PAPER_EXPLAIN_ACTION = "Paper Explained";
    public static final String INPUT_WRONG_EXPLAIN_ACTION = "Non-Confirmed Input Explained";
    public static final String PROBLEM_ENTERED_EXPLAIN_ACTION = "New Problem Explained";
    public static final String NO_EXPLAIN_ACTION = "Explanation Not Given";
@@ -1086,7 +1088,7 @@ public class SimStLogger {
    	{
    		logMessage.setAsAttempt(STUDENT_META_ATTEMPT);
    	}
-   	else if(action.equals(NOT_LEARN_ACTION) || action.equals(BAD_INPUT_RECEIVED) || action.startsWith(HINT_EXPLAIN_ACTION) 
+   	else if(action.equals(NOT_LEARN_ACTION) || action.equals(BAD_INPUT_RECEIVED) || action.startsWith(HINT_EXPLAIN_ACTION) || action.startsWith(ON_PAPER_EXPLAIN_ACTION)
    			|| action.startsWith(PROBLEM_ENTERED_EXPLAIN_ACTION) || action.startsWith(INPUT_WRONG_EXPLAIN_ACTION) 
    			|| action.equals(NO_EXPLAIN_ACTION) || action.equals(PROBLEM_INVALID_ACTION) || action.equals(PROBLEM_REQUEST_TIMEOUT_ACTION)
    			|| action.equals(CHALLENGE_TIMEOUT_ACTION) || action.equals(OUTSTANDING_ACTION)

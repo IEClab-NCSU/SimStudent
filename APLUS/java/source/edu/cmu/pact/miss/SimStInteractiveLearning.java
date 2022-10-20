@@ -1745,33 +1745,6 @@ public void fillInQuizProblem(String problemName) {
 
 					nextCurrentNode = inspectAgendaRuleActivations(currentNode,activList);
 
-				/*	// Get an explanation for why the last activation didn't work
-					if (nextCurrentNode == null && !isTakingQuiz() && !askedExplanation) {
-						for (RuleActivationNode ran : activList) {
-							// for ( int i=activationList.size()-1; i >= 0; i--)
-							// {
-							// RuleActivationNode ran = (RuleActivationNode)
-							// activationList.get(i);
-
-							// Do not process FALSE inputs, just move on to next
-							if (ran.getActualInput().equalsIgnoreCase("FALSE")|| ran.getActualInput().equalsIgnoreCase(MTRete.NOT_SPECIFIED))
-								continue;
-							// Only ask about done if it's the first thing tried
-							// if(ran.getActualSelection().equalsIgnoreCase(Rule.DONE_NAME)
-							// )
-							// continue;
-							if (lastInputExplained != null && lastInputExplained.equals(ran.getActualInput()) && lastSkillExplained != null && lastSkillExplained.equals(ran.getName())) {
-								break;
-							}
-							lastInputExplained = ran.getActualInput();
-							lastSkillExplained = ran.getName();
-
-							explainWhyWrong(ran);
-							askedExplanation = true;
-
-							break;
-						}
-					}*/
 				}
 			}
 
@@ -1792,18 +1765,19 @@ public void fillInQuizProblem(String problemName) {
 					getBrController(getSimSt()).getMissController().getSimStPLE().checkForQuizTutoringBehaviourDiscrepency(brController.getProblemName(),null);
 
 				// Tasmia added code starts here
+				// block starts
+				/*
 				if(getSimSt().isCTIFollowupInquiryMode())
 				{
 					// Ask if tutor knows what to do next so that there opens an opportunity
 					// for the tutee to ask initial tutee inquiry when tutor is also stuck.
 					//String title = SimStConversation.ASKING_IF_TUTOR_KNOWS_STEP_TOPIC;
-					HashMap rulesDeepCopy = (HashMap) SerializationUtils.clone(getSimSt().getRules());
 					
 					// QuestionAnswers qa asks how confident tutor is while demonstrating a step. We no longer ask that. If if you want to then comment out
 					// the following block:
-					// block starts
-					/*
 					
+					HashMap rulesDeepCopy = (HashMap) SerializationUtils.clone(getSimSt().getRules());
+
 					QuestionAnswers qa = ple.getMatchingConfidenceChoiceExplanation();
 					String explanation = ple.giveMessageSelectableResponse(qa.getQuestion(), qa.getAnswers());
 					boolean is_tutor_stuck = false;
@@ -1891,8 +1865,7 @@ public void fillInQuizProblem(String problemName) {
 	               			askedExplanation = true;
 						}
 					}
-					// block ends
-					*/
+					
 					
 					nextCurrentNode = askWhatToDoNext(currentNode);
 					hintReceived = true;
@@ -1904,7 +1877,10 @@ public void fillInQuizProblem(String problemName) {
 					
 					
 				}
-				else {
+				else 
+				// block ends
+					*/
+				{
 					//Previous code
 					nextCurrentNode = askWhatToDoNext(currentNode);
 					hintReceived = true;
@@ -1938,8 +1914,12 @@ public void fillInQuizProblem(String problemName) {
 					}
 				}*/
 
-				if (!askedExplanation && hintReceived && !askStudentToUndo)
+				//if (!askedExplanation && hintReceived && !askStudentToUndo)
+				if (hintReceived) {
+					if(simSt.isCTIFollowupInquiryMode())
+						explainHowOnPaper(nextCurrentNode);
 					explainWhyRight(nextCurrentNode);
+				}
 
 				// update currentNode
 				currentNode = nextCurrentNode;
@@ -2461,13 +2441,15 @@ public void fillInQuizProblem(String problemName) {
 		for (RuleActivationNode ran : activationList) {
 			// Added to support calling the method for individual activations from WebAPLUS
 			// Check if what simstudent thinks can be applied here (ran) is already flagged or not
+			// Tasmia: Check if Mr Williams has marked that incorrect in the quiz and if yes, ask further questions.
+			// We decided to not implement this part for now.
+			// block starts:
+			/*
 			if(getSimSt().isCTIFollowupInquiryMode()) 
 			{
-				// Tasmia: Check if Mr Williams has marked that incorrect in the quiz and if yes, ask further questions.
-				// We decided to not implement this part for now.
-				// block starts:
 				
-				/*String skillname = ran.getName();
+				
+				String skillname = ran.getName();
 				String selection = ran.getActualSelection();
 				String input = ran.getActualInput();
 				String q_mw_flagged = getSimSt().checkIfStepsAlreadyNegated(skillname, selection, input, ran.getRuleFoas(), 0);
@@ -2495,13 +2477,15 @@ public void fillInQuizProblem(String problemName) {
 				}
 				else if(q_mw_flagged.length() > 2) {
 					boolean cont = inspectAgendaRuleActivation(currentNode, ran, successiveNode, activationList.size(), listAssessmentBuilder, true, q_mw_flagged);
-				}*/
-				// block ends
+				}
 				boolean cont = inspectAgendaRuleActivation(currentNode, ran, successiveNode, activationList.size(), listAssessmentBuilder, false);
 				if (!cont)
 					break;
 			}
-			else {
+			else
+			*/
+			// block ends 
+			{
 			// previous code
 				boolean cont = inspectAgendaRuleActivation(currentNode, ran, successiveNode, activationList.size(), listAssessmentBuilder, false);
 				if (!cont)
@@ -2622,9 +2606,11 @@ public void fillInQuizProblem(String problemName) {
 						firstStategy=firstStrategyToAskSelfExplQ(totalActivations);
 					}
 
-					if ((firstStategy==ASK_IMMEDIATELY || (firstStategy==ASK_AFTER_SECOND_NO && ruleQueryCounter==2)) && secondStrategyToAskSelfExplQ(ran)){
+					// temp if ((firstStategy==ASK_IMMEDIATELY || (firstStategy==ASK_AFTER_SECOND_NO && ruleQueryCounter==2)) && secondStrategyToAskSelfExplQ(ran))
+					{
 						setLastSkillExplained(getFirstRanStudentSaidNo().getName());
-						if(!runType.equals("springBoot")) explainWhyWrong(getFirstRanStudentSaidNo());
+						if(!runType.equals("springBoot") && !simSt.isCTIFollowupInquiryMode()) explainWhyWrong(getFirstRanStudentSaidNo());
+						else if(!runType.equals("springBoot") && simSt.isCTIFollowupInquiryMode()) explainWhyWrongCTI(getFirstRanStudentSaidNo());
 						// TODO handle explain why queries for spring boot
 					}
 			}
@@ -2710,6 +2696,9 @@ public void fillInQuizProblem(String problemName) {
 
 	HashSet<String> explainedWhyRightSkills = new HashSet<String>();
 	HashSet<String> explainedSelectionSkills = new HashSet<String>();
+	// Tasmia added
+	HashSet<String> explainedHowOnPaperSkills = new HashSet<String>();
+	HashSet<String> explainedSelectionSkillsOnPaper = new HashSet<String>();
 
 	/**
 	 * Method that returns true if selection is marked in SimStudent configuration file as
@@ -2721,9 +2710,12 @@ public void fillInQuizProblem(String problemName) {
 		return simSt.getBrController().getMissController().getSimStPLE().getValidSelections()!=null && simSt.getBrController().getMissController().getSimStPLE().getValidSelections().contains(selection);
 	}
 
+	
 	private boolean isSelectionValidForBrainstormingQuestions(String selection){
 		return simSt.getBrController().getMissController().getSimStPLE().getValidSelectionsBQ()!=null && simSt.getBrController().getMissController().getSimStPLE().getValidSelectionsBQ().contains(selection);
 	}
+	
+	
 	private boolean isSelectionValidForBothAgreeQuestions(String selection){
 		return simSt.getBrController().getMissController().getSimStPLE().getValidSelectionsBAQ()!=null && simSt.getBrController().getMissController().getSimStPLE().getValidSelectionsBAQ().contains(selection);
 	}
@@ -2822,10 +2814,13 @@ public void fillInQuizProblem(String problemName) {
 		//if (simSt.isSelfExplainMode() && !skillName.contains("typein") && !skillName.contains("unnamed")) {
 		//10/06/2014: now selection is the one that defines if SimStudent should ask for self explanation
 		if (simSt.isSelfExplainMode() && isSelectionValidForSelfExplanation(edge.getSelection()) && !explainedWhyRightSkills.contains(skillName)
-			&& probability <= CHANCE && !explainedSelectionSkills.contains(edge.getSelection())){
-
-			explainedWhyRightSkills.add(skillName);
-			explainedSelectionSkills.add(edge.getSelection());
+			&& probability <= CHANCE && !explainedSelectionSkills.contains(edge.getSelection()))
+		{
+			
+			if (!simSt.isCTIFollowupInquiryMode() && !simSt.isResponseSatisfactoryGetterClassDefined()) {
+				explainedWhyRightSkills.add(skillName);
+				explainedSelectionSkills.add(edge.getSelection());
+			}
 
 			Sai sai = edge.getSai();
 			step = simSt.getProblemStepString();
@@ -2883,6 +2878,43 @@ public void fillInQuizProblem(String problemName) {
 				// change this if to if-else and remove this return.
 				return;
 			}
+			if (simSt.isCTIFollowupInquiryMode()) {
+				String xml_script_name = "why_right_followup_dialog";
+				
+				String problemStepString = getBrController(getSimSt()).getMissController()
+						.getSimSt().getProblemStepString();
+				tutalkBridge.setProblemName(problemStepString);
+				contextVariables.clear();
+				contextVariables.addVariable("%i%", sai.getI());
+				String[] opr_op = sai.getI().split(" ");
+				contextVariables.addVariable("%i_opr%", opr_op[0]);
+				contextVariables.addVariable("%i_op%", opr_op[1]);
+				//if(logic_found) contextVariables.addVariable("%logic%", logic);
+				tutalkBridge.connect(xml_script_name,
+						contextVariables,
+						SimStLogger.HINT_EXPLAIN_ACTION);
+				while (tutalkBridge.getState() != SimStTutalk.TUTALK_STATE_DONE) {
+					try {
+						Thread.sleep(250);
+					} catch (java.lang.InterruptedException e) {
+						// Nothing we can do here.
+					}
+				}
+				Concept c = tutalkBridge.getLastStatementLabel();
+				if (simSt.isResponseSatisfactoryGetterClassDefined()) {
+					IsResponseSatisfactory resp_satisfaction = getSimSt().getResponseSatisfactoryGetter();
+					if(resp_satisfaction.isResponseSatosfactoryGetter(c.getLabel()))
+						explainedWhyRightSkills.add(skillName);
+						explainedSelectionSkills.add(edge.getSelection());
+				}
+				else {
+					explainedWhyRightSkills.add(skillName);
+					explainedSelectionSkills.add(edge.getSelection());
+				}
+				
+				
+				return;
+			}
 
 			String explanation = "";
 			//setExplanationGiven(true);
@@ -2936,6 +2968,83 @@ public void fillInQuizProblem(String problemName) {
 			}
 		}
 	}
+	
+	
+	public void explainHowOnPaper(ProblemNode node) {
+
+		ProblemEdge edge = null;
+		if (node.getInDegree() <= 0)
+			return;
+		edge = (ProblemEdge) node.getIncomingEdges().get(0);
+		if (edge.getEdgeData().getRuleNames().size() <= 0)
+			return;
+		Sai sai = edge.getSai();
+		if (sai.getS().equalsIgnoreCase(Rule.DONE_NAME)) 
+			return;
+		String skillName = (String) edge.getEdgeData().getRuleNames()
+				.get(edge.getEdgeData().getRuleNames().size() - 1);
+		
+		if (explainedHowOnPaperSkills ==null)
+			explainedHowOnPaperSkills = new HashSet<String>();
+
+		Random r = new Random();
+	    int probability = r.nextInt(100);
+		//if (simSt.isSelfExplainMode() && isSelectionValidForSelfExplanation(edge.getSelection()) && !explainedHowOnPaperSkills.contains(skillName)
+		//	&& probability <= CHANCE && !explainedSelectionSkillsOnPaper.contains(edge.getSelection()))
+		{
+
+			explainedHowOnPaperSkills.add(skillName);
+			explainedSelectionSkillsOnPaper.add(edge.getSelection());
+
+			step = simSt.getProblemStepString();
+			//String question = "Can you explain how "+ sai.getI() + " would be like if I had done that on a piece of paper?";
+			String question = getBrController(getSimSt()).getMissController().getSimStPLE().getConversation().getMessage(SimStConversation.ON_PAPER_EXPLAIN_TOPIC, sai.getI(), "", "");
+			String explanation = "";
+			//setExplanationGiven(true);
+			if (getBrController(getSimSt()).getMissController().getSimSt().isSsMetaTutorMode())
+				getBrController(getSimSt()).getAmt().handleInterfaceAction("selfExp", "implicit", "-1");
+
+			long explainRequestTime = Calendar.getInstance().getTimeInMillis();
+			if (getBrController(getSimSt()).getMissController().getSimStPLE() == null) {
+				explanation = JOptionPane.showInputDialog(null, question,
+						"Please Provide an Explanation",
+						JOptionPane.PLAIN_MESSAGE);
+			} else {
+				SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();
+				
+				if(runType.equals("springBoot")) {
+					explanation = getHintInformation();
+				} else {
+					explanation = ple.giveMessageFreeTextResponse(question);
+				}
+				if (explanation != null && explanation.length() > 0) {
+					ple.giveMessage(ple.getConversation().getMessage(
+							SimStConversation.CONFIRM_TOPIC));
+				} else {
+					ple.giveMessage(ple.getConversation().getMessage(
+							SimStConversation.SKIPPED_TOPIC));
+				}
+			}
+
+
+			int explainDuration = (int) (Calendar.getInstance()
+					.getTimeInMillis() - explainRequestTime);
+			step = getBrController(getSimSt()).getMissController().getSimSt()
+					.getProblemStepString();
+			if (explanation != null && explanation.length() > 0) {
+				logger.simStLog(SimStLogger.SIM_STUDENT_EXPLANATION,
+						SimStLogger.ON_PAPER_EXPLAIN_ACTION, step, explanation,
+						question, sai, explainDuration, question);
+			} else {
+				logger.simStLog(SimStLogger.SIM_STUDENT_EXPLANATION,
+						SimStLogger.ON_PAPER_EXPLAIN_ACTION, step,
+						SimStLogger.NO_EXPLAIN_ACTION, question, sai,
+						explainDuration, question);
+			}
+		}
+	}
+	
+	
 
 	public String askMoreExampleQuestion(String question, boolean requireResponse) {
 		String explanation = "";
@@ -2962,6 +3071,133 @@ public void fillInQuizProblem(String problemName) {
 		return explanation;
 	}
 
+	
+
+
+
+	public void explainWhyWrongCTI(RuleActivationNode ran) {
+
+		if (simSt.isSelfExplainMode()) {
+
+			Sai sai = new Sai(ran.getActualSelection(), ran.getActualAction(),
+					ran.getActualInput());
+			String ruleName = ran.getName().replaceAll("MAIN::", "");
+			String step = simSt.getProblemStepString();
+
+			String question = "Why shouldn't I put " + sai.getI() + "?";
+			if (sai.getS().equalsIgnoreCase(Rule.DONE_NAME)) {
+				question = "Why isn't the problem finished?";
+			}
+
+			if (ruleName.indexOf('&') > 0)
+				ruleName = ruleName.substring(0, ruleName.indexOf('&'));
+			
+			String explanation = "";
+
+			if (getBrController(getSimSt()).lookupWidgetByName(sai.getS()) != null) {
+				Object widget = getBrController(getSimSt()).lookupWidgetByName(sai.getS());
+				if (widget instanceof JCommTable.TableCell) {
+					((JCommTable.TableCell) widget).setText(sai.getI());
+					((JCommTable.TableCell) widget).setBackground(Color.pink);
+				}
+			}
+
+			long explainRequestTime = Calendar.getInstance().getTimeInMillis();
+			if (getBrController(getSimSt()).getMissController().getSimStPLE() == null) {
+				explanation = JOptionPane.showInputDialog(null, question,
+						"Please Provide an Explanation",
+						JOptionPane.PLAIN_MESSAGE);
+			} else {
+
+				SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();
+				QuestionAnswers qa = ple.getMatchingMistakeExplanation(
+						ruleName, sai, simSt.getProblemStepString(), ran);
+
+				if (qa == null) {
+
+					if (getBrController(getSimSt()).lookupWidgetByName(sai.getS()) != null) {
+						Object widget = getBrController(getSimSt()).lookupWidgetByName(sai
+								.getS());
+						if (widget instanceof JCommTable.TableCell) {
+							((JCommTable.TableCell) widget).setText("");
+							((JCommTable.TableCell) widget)
+									.setBackground(Color.white);
+						}
+					}
+					return;
+				}
+
+				explainedSelectionSkills.add(sai.getS());
+				Instruction inst=getBrController(getSimSt()).getMissController().getSimSt().getWhyNotInstruction();
+				if (inst.getPreviousID()==null)
+					return;
+
+				setAskedExplanation(true);
+				setExplanationGiven(true);
+				if (getBrController(getSimSt()).getMissController().getSimSt().isSsMetaTutorMode())
+					getBrController(getSimSt()).getAmt().handleInterfaceAction("selfExp", "implicit", "-1");
+
+				question = qa.getQuestion();
+				question = question.replace("[fontblue]", "");
+				question = question.replace("[fontred]", "");
+				question = question.replace("[fontend]", "");
+				// Showing the pop up:
+				SimStExplainWhyNotDlg whyNotDlg=new SimStExplainWhyNotDlg(getBrController(getSimSt()).getMissController().getSimStPLE().getSimStPeerTutoringPlatform().getStudentInterface() ,brController,sai,inst,question, true);
+
+				
+				String xml_script_name = "why_wrong_followup_dialog";
+				
+				String problemStepString = getBrController(getSimSt()).getMissController()
+						.getSimSt().getProblemStepString();
+				tutalkBridge.setProblemName(problemStepString);
+				contextVariables.clear();
+				contextVariables.addVariable("%i%", sai.getI());
+				String[] opr_op = sai.getI().split(" ");
+				contextVariables.addVariable("%i_opr%", opr_op[0]);
+				contextVariables.addVariable("%i_op%", opr_op[1]);
+				contextVariables.addVariable("%Q%", question);
+				//if(logic_found) contextVariables.addVariable("%logic%", logic);
+				tutalkBridge.connect(xml_script_name,
+						contextVariables,
+						SimStLogger.INPUT_WRONG_EXPLAIN_ACTION);
+				while (tutalkBridge.getState() != SimStTutalk.TUTALK_STATE_DONE) {
+					try {
+						Thread.sleep(250);
+					} catch (java.lang.InterruptedException e) {
+						// Nothing we can do here.
+					}
+				}
+				Concept c = tutalkBridge.getLastStatementLabel();
+				// I need to implement this part for whyWrong and also DONE rules.
+				/*if (simSt.isResponseSatisfactoryGetterClassDefined()) {
+					IsResponseSatisfactory resp_satisfaction = getSimSt().getResponseSatisfactoryGetter();
+					if(resp_satisfaction.isResponseSatosfactoryGetter(c.getLabel()))
+						explainedWhyRightSkills.add(skillName);
+						explainedSelectionSkills.add(edge.getSelection());
+				}
+				else {
+					explainedWhyRightSkills.add(skillName);
+					explainedSelectionSkills.add(edge.getSelection());
+				}*/
+				if (getBrController(getSimSt()).lookupWidgetByName(sai.getS()) != null) {
+					Object widget = getBrController(getSimSt()).lookupWidgetByName(sai.getS());
+					if (widget instanceof JCommTable.TableCell) {
+						((JCommTable.TableCell) widget).setText("");
+						((JCommTable.TableCell) widget).setBackground(Color.white);
+					}
+				}
+				
+				whyNotDlg.setVisible(false);
+				return;
+
+			}
+
+		}
+	}
+	
+	
+	
+	
 
 	public void explainWhyWrong(RuleActivationNode ran) {
 
@@ -3346,8 +3582,10 @@ public void fillInQuizProblem(String problemName) {
 			// Tasmia: if tutor's feedback is "yes", then tutor and tutee both agree on a solution step.
 			// initial tutee inquiry for both agree speech began here.
 			// We decided to not implement this in study 9 intervention.
+			// The below block does not activate until or unless isbothAgreeSpeechGetterClassDefined() is true. To make it true, you need to add
+			// -ssBothAgreeSpeechGetterClass SimStAlgebraV8.SimStBothAgreeSpeech in the program arguements.
 			// block starts
-			/*
+			
 			if(inquiryResult.equals(EdgeData.CORRECT_ACTION) && !flagged_activation) {
 				if(getSimSt().isCTIFollowupInquiryMode() && getSimSt().isbothAgreeSpeechGetterClassDefined() && isSelectionValidForBothAgreeQuestions(sai.getS())) {
 					SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();
@@ -3357,7 +3595,7 @@ public void fillInQuizProblem(String problemName) {
 					askMoreExampleQuestion(agree_question, true);
 				}
 			}
-			*/
+			
 			// block ends
 			if (!inquiryResult.equals(EdgeData.CORRECT_ACTION) && getBrController(getSimSt()).getMissController().isPLEon()  && !flagged_activation){
 				SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();

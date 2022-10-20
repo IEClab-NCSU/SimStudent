@@ -31,6 +31,7 @@
  */
 package edu.cmu.cs.lti.tutalk.script;
 
+import edu.cmu.cs.lti.tutalk.module.KeyTermAnnotator;
 import edu.cmu.cs.lti.tutalk.module.ModelConcept;
 import edu.cmu.cs.lti.tutalk.module.ModelConcept.Predictor;
 //import edu.cmu.cs.lti.tutalk.module.ModelConcept.LightSideMessageAnnotator;
@@ -115,6 +116,7 @@ public class Scenario
 		//Map<String, Predictor> predictors = new HashMap<String, Predictor>();
 
 		Map<String, LightSideMessageAnnotator> predictors = new HashMap<String, LightSideMessageAnnotator>();
+		Map<String, KeyTermAnnotator> key_term_predictors = new HashMap<String, KeyTermAnnotator>();
 
 
 		try
@@ -177,8 +179,15 @@ public class Scenario
 								// Read "https://docs.google.com/document/d/1Scz4-1Njtl49ni4Hp6HKH3UxjfFwQC1XWAYCVhxrBbM/edit?usp=sharing"
 								// Plan to get rid of bazaar code in the middle and directly connect to lightSIDE code for detail
 								// if you want to know why it was not being implemented.
-								LightSideMessageAnnotator pete = new LightSideMessageAnnotator(paramDict.get("pathToModel"),paramDict.get("modelName"),paramDict.get("modelNickname"),paramDict.get("predictionCommand"),paramDict.get("classificationString"));
-								predictors.put(name, pete);
+								// The key term predictor is put for identifying if sentence contain key term included explanation or not.
+								if(classname.contains("LightSideMessageAnnotator")) {
+									LightSideMessageAnnotator pete = new LightSideMessageAnnotator(paramDict.get("pathToModel"),paramDict.get("modelName"),paramDict.get("modelNickname"),paramDict.get("predictionCommand"),paramDict.get("classificationString"));
+									predictors.put(name, pete);
+								}
+								else {
+									KeyTermAnnotator kete = new KeyTermAnnotator(paramDict.get("fileName"));
+									key_term_predictors.put(name, kete);
+								}
 							}
 						}
 					}
@@ -203,7 +212,19 @@ public class Scenario
 							{
 								// use the given model to predict this label
 								//System.out.println(" I am inside if of model "+label);
-								c = new ModelConcept(label, predictors.get(conceptElement.getAttribute("model")));
+								String condition = conceptElement.getAttribute("model");
+								if(condition.contains("&")) {
+									String[] conds = condition.split("&");
+									c = new ModelConcept(label, predictors.get(conds[0]),key_term_predictors.get(conds[1]));
+								}
+								else {
+								
+									if(predictors.containsKey(conceptElement.getAttribute("model")))
+										c = new ModelConcept(label, predictors.get(conceptElement.getAttribute("model")));
+									else
+										c = new ModelConcept(label, key_term_predictors.get(conceptElement.getAttribute("model")));
+								}
+
 							}
 							else if (conceptElement.hasAttribute("type") && conceptElement.getAttribute("type").equals("regex"))
 							{

@@ -28,7 +28,7 @@ public class ModelTraceWorkingMemory implements Serializable,  Cloneable {
 	/**	Serves as a lock to modify any field in the working memory. Before any thread
 	 * tries to modify it must acquire a lock to ensure the operations are atomic */
 	public static Object wmLock = new Object();
-
+	
 	/**	HashMap to keep all the problems that SimStudent failed on the quiz and the student tutored
 	 *  Av = B     1
 	 *  Av+B = C   2

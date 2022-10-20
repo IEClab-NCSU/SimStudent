@@ -119,10 +119,69 @@ public class SimStExplainWhyNotDlg extends JDialog implements ActionListener,Foc
 
 		
 		/*Add the new interfaces to the window*/
-		addSelfExplanationQuestion(backPanel,question);
+		addSelfExplanationQuestion(backPanel,question); // responsible for showing chatbox in the popup.
 		addPastInterface(backPanel);
 		addNowInterface(backPanel);
-		addSelfExplanationResponseTextArea(backPanel);
+		addSelfExplanationResponseTextArea(backPanel); // responsible for showing textbox in the popup.
+	    
+		setResizable(false);
+		
+		/*populate the two interfaces and show the window*/
+		if (sai!=null && inst!=null){
+			populateInterfaceFromSai(nowInterface,sai,BORDER_NOW,true);	
+			populatePastInterface(inst);
+			populateNowInterface(getController());
+			setVisible(true);
+		}
+
+		
+		
+	}
+	
+
+	public SimStExplainWhyNotDlg(JComponent parent,TutorController brController,Sai sai,Instruction inst,String question, boolean isCTI) {
+	
+		BR_Controller temp = (BR_Controller)brController;
+		setController(temp);
+		setStudentInterface(brController.getTutorPanel());
+		
+		Dimension prefs=brController.getTutorPanel().getPreferredSize();
+		
+		//this.setUndecorated(true);
+		setBounds(600, 100, prefs.width*2+40, prefs.height+100);
+
+		setLocationRelativeTo(parent);
+		//setLocationRelativeTo(null);
+		//this.setLocation(680, 500);
+		
+		getContentPane().setBackground( AplusPlatform.studentColor );
+		
+		
+		getRootPane().setBorder( BorderFactory.createLineBorder(Color.black,2) );
+		
+		getContentPane().setLayout(new BorderLayout());
+		this.setAlwaysOnTop(true);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		/*create the new interfaces to add to the dialog*/
+		try {
+			pastInterface = getStudentInterface().getClass().newInstance();
+			nowInterface = getStudentInterface().getClass().newInstance();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		JPanel backPanel=new JPanel();
+		backPanel.setOpaque(false);
+		getContentPane().add(backPanel);
+
+
+		
+		/*Add the new interfaces to the window*/
+		//addSelfExplanationQuestion(backPanel,question); // responsible for showing chatbox in the popup.
+		addPastInterface(backPanel);
+		addNowInterface(backPanel);
+		//addSelfExplanationResponseTextArea(backPanel); // responsible for showing textbox in the popup.
 	    
 		setResizable(false);
 		

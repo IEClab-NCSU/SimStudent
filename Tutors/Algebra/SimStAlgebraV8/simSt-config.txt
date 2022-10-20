@@ -145,9 +145,14 @@ dorminTable2_C1R4:3::Now you type <font color="#00FF00" face="Times New Roman" s
 done:-1:The problem is solved.  The answer is 3.:The problem is solved because y is completely on its own. The answer is 3. At this point, remember to always click the <font color="#00FF00" face="Times New Roman" size="5"> [Problem is Solved] </font> button.:correct:on_paper/E612.png
 
 mistakeExplanations
-text:I remember in the <font color=blue>past</font>, (E) (see <font color=blue>Figure A</font>).  <font color=red>Now</font>, I see (CE) so I thought <font color=red>(I)</font> would work here (see <font color=red>Figure B</font>) . Why is this different? Please explain your reasoning in the box bellow.
+text:I remember in the <font color=blue>past</font>, (E) (see <font color=blue>Figure A</font>).  <font color=red>Now</font>, I see (CE) so I thought <font color=red>(I)</font> would work here (see <font color=red>Figure B</font>) . Why is this different? Please explain your reasoning in the box below.
 .
-text:I remember in the <font color=blue>past</font>, (E) (see <font color=blue>Figure A</font>).  <font color=red>Now</font> I see (CE) so I thought <font color=red>(I)</font> would work here (see <font color=red>Figure B</font>).  Why is this different? Please explain your reasoning in the box bellow.
+text:I remember in the <font color=blue>past</font>, (E) (see <font color=blue>Figure A</font>).  <font color=red>Now</font> I see (CE) so I thought <font color=red>(I)</font> would work here (see <font color=red>Figure B</font>).  Why is this different? Please explain your reasoning in the box below.
+
+mistakeExplanationsCTI
+text:I remember in the past, (E) (see Figure A).  Now, I see (CE) so I thought (I) would work here (see Figure B). Why is this different? Please explain your reasoning in the box below.
+.
+text:I remember in the past, (E) (see Figure A).  Now I see (CE) so I thought (I) would work here (see Figure B).  Why is this different? Please explain your reasoning in the box below.
 
 problemChoiceExplanations
 text:Why did you choose (P) for the problem?

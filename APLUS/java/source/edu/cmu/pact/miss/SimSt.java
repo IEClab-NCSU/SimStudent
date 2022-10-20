@@ -2922,9 +2922,11 @@ public final class SimSt implements Serializable {
    public /*private*/ boolean isSkillNameGetterDefined() { return skillNameGetterClassDefined; }
    //public boolean isNearSimilarProblemsGetterDefined() { return nearSimilarProblemsGetterClassDefined; }
    public boolean isbothAgreeSpeechGetterClassDefined() { return bothAgreeSpeechGetterClassDefined; }
+   public boolean isResponseSatisfactoryGetterClassDefined() { return responseSatisfactoryGetterClassDefined; }
    private boolean skillNameGetterClassDefined = false;
    //private boolean nearSimilarProblemsGetterClassDefined = false;
    private boolean bothAgreeSpeechGetterClassDefined = false;
+   private boolean responseSatisfactoryGetterClassDefined = false;
    public void setSkillNameGetterClassDefined(boolean flag) {
    	skillNameGetterClassDefined = flag;
    }
@@ -2935,10 +2937,14 @@ public final class SimSt implements Serializable {
    public void setBothAgreeSpeechGetterClassDefined(boolean flag) {
 	   bothAgreeSpeechGetterClassDefined = flag;
    }
+   public void setResponseSatisfactoryGetterClassDefined(boolean flag) {
+	   responseSatisfactoryGetterClassDefined = flag;
+   }
    
    private transient SkillNameGetter skillNameGetter = null;
    //private transient  NearSimilarProblemsGetter nearSimilarProblemsGetter = null;
    private transient BothAgreeSpeechGetter bothAgreeSpeechGetter = null;
+   private transient IsResponseSatisfactory isResponseSatisfactoryGetter = null;
    public void setSsSkillNameGetter(String skillNameGetterClassName) {
    	try {
    		if(trace.getDebugCode("miss"))trace.out("miss","DEBUG: "+skillNameGetterClassName);
@@ -2956,6 +2962,17 @@ public final class SimSt implements Serializable {
 	   		Class bothAgreeSpeechGetterClass = Class.forName(bothAgreeSpeechGetterClassName);
 	   		this.bothAgreeSpeechGetter = (BothAgreeSpeechGetter)bothAgreeSpeechGetterClass.newInstance();
 	   		setBothAgreeSpeechGetterClassDefined(true);
+	   	} catch (Exception e) {
+	   		e.printStackTrace();
+	           logger.simStLogException(e);
+	   	}
+   }
+   
+   public void setSsResponseSatisfactoryGetter(String responseSatisfactoryGetterClassName) {
+	   	try {
+	   		Class isResponseSatisfactoryGetterClass = Class.forName(responseSatisfactoryGetterClassName);
+	   		this.isResponseSatisfactoryGetter = (IsResponseSatisfactory)isResponseSatisfactoryGetterClass.newInstance();
+	   		setResponseSatisfactoryGetterClassDefined(true);
 	   	} catch (Exception e) {
 	   		e.printStackTrace();
 	           logger.simStLogException(e);
@@ -3037,6 +3054,9 @@ public final class SimSt implements Serializable {
    /* @author Tasmia */
    public BothAgreeSpeechGetter getBothAgreeSpeechGetter() {
 	   	return this.bothAgreeSpeechGetter;
+   }
+   public IsResponseSatisfactory getResponseSatisfactoryGetter() {
+	   return this.isResponseSatisfactoryGetter;
    }
    /**
     * Inner class representing a WME inside the focus of attention

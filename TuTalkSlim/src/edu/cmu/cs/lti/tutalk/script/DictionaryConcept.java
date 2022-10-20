@@ -94,25 +94,6 @@ public class DictionaryConcept extends Concept
                 }
             }
 
-            // Experimental block added by Tasmia. No longer required.
-            // Adding lightside prediction here for string
-            // This works since no model is given in configuration parameter.
-            // This is not ideal but works.
-
-            /*LightSideMessageAnnotator annotator = new LightSideMessageAnnotator();
-            String label = annotator.annotateText(turn);
-            System.out.println("prediction are "+label);
-            String[] split_label = label.split(",");
-            for(int i=0; i<split_label.length; i++) {
-            	System.out.println("split "+split_label[i]+" label "+getLabel());
-            	if(split_label[i].indexOf(getLabel().trim())!= -1) {
-            		System.out.println("Label is found ");
-            		String prediction = split_label[i].split("-")[1];
-            		System.out.println("prediction is "+prediction);
-            		return Double.parseDouble(prediction);
-            	}
-            }*/
-
             return bestMatch;
     }
 
