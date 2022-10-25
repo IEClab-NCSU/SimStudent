@@ -6713,7 +6713,7 @@ public class SimStPLE {
 				// "", sai.getS(), sai.getA(), sai.getI(), null);
 				if (doneClickedTooSoon) {
 					quizResult.setExplanation(getSimStName()
-							+ " thought the problem is solved here and clicked the \"Problem is Solved\" button. However it is incorrect to click the \"Problem is solved\" button here.");
+							+ " thought the problem is solved here and clicked the \"Problem is Solved\" button. However it is incorrect to click the \"Problem is solved\" button here ");
 				} else {
 					quizResult.setExplanation(incorrectStep + " is incorrect");
 				}
