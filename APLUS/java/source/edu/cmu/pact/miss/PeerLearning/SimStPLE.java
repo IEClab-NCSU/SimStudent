@@ -167,7 +167,7 @@ public class SimStPLE {
 	private static final String SKILL_NICKNAMES = "skillNickName";
 	private static final String ASKING_IF_TUTOR_KNOWS_STEP_TOPIC_OPTIONS = "confidenceDemonstration";
 	private static final String CONFIDENCE_DEMONSTRATION_HEADER = "confidenceDemonstration";
-	private static final String MISTAKE_EXPLANATION_CTI_HEADER = "mistakeExplanationsCTI";
+	//private static final String MISTAKE_EXPLANATION_CTI_HEADER = "mistakeExplanationsCTI";
 
 	
 
@@ -442,7 +442,6 @@ public class SimStPLE {
 	private Hashtable<String, LinkedList<Explanation>> problemChoiceExplanations;
 	// Tasmia
 	private Hashtable<String, LinkedList<Explanation>> confidenceChoiceExplanations;
-	private Hashtable<String, LinkedList<Explanation>> mistakeExplanationsCTI;
 	private Hashtable<String, LinkedList<Explanation>> hintExplanations;
 	private HashSet<String> validSelections;
 	private Map<String, String> startState;
@@ -1200,11 +1199,10 @@ public class SimStPLE {
 		exampleExplanations = new Hashtable<String, String>();
 		skillNickNames = new Hashtable<String, String>();
 		mistakeExplanations = new Hashtable<String, LinkedList<Explanation>>();
-		// Tasmia.
-		if(getSimSt().isCTIFollowupInquiryMode())
-			mistakeExplanationsCTI = new Hashtable<String, LinkedList<Explanation>>();
 		problemChoiceExplanations = new Hashtable<String, LinkedList<Explanation>>();
 		// Tasmia
+		//if(getSimSt().isCTIFollowupInquiryMode())
+			//CONFIG_FILE = "simSt-config-cti.txt";
 		confidenceChoiceExplanations = new Hashtable<String, LinkedList<Explanation>>();
 		hintExplanations = new Hashtable<String, LinkedList<Explanation>>();
 		readConfigFile();
@@ -1268,8 +1266,6 @@ public class SimStPLE {
 					configExamples(reader);
 				} else if (line.equals(MISTAKE_EXPLANATION_HEADER)) {
 					configMistakeExplanations(reader);
-				}  else if (line.equals(MISTAKE_EXPLANATION_CTI_HEADER)) {
-					configMistakeExplanationsCTI(reader);
 				} else if (line.equals(PROBLEM_CHOICE_EXPLANATION_HEADER)) {
 					configProblemChoiceExplanations(reader);
 				} else if (line.equals(HINT_EXPLANATION_HEADER)) {
@@ -1571,11 +1567,6 @@ public class SimStPLE {
 	public void configMistakeExplanations(BufferedReader reader) {
 		configExplanations(reader, mistakeExplanations);
 	}
-	// Read mistake explanations CTI and their conditions for display from config file
-		public void configMistakeExplanationsCTI(BufferedReader reader) {
-			configExplanations(reader, mistakeExplanationsCTI);
-		}
-
 	// Read mistake explanations and their conditions for display from config file
 	public void configProblemChoiceExplanations(BufferedReader reader) {
 		configExplanations(reader, problemChoiceExplanations);
@@ -1778,8 +1769,6 @@ public class SimStPLE {
 			RuleActivationNode ran) {
 
 		Object[] questions = mistakeExplanations.keySet().toArray();
-		if(getSimSt().isCTIFollowupInquiryMode())
-			questions = mistakeExplanationsCTI.keySet().toArray();
 		if (questions.length == 0) {
 			return null;
 		}
@@ -1787,10 +1776,7 @@ public class SimStPLE {
 		String question = questions[(int) (Math.random() * questions.length)].toString();
 		// trace.err("going for question " + question);
 		List<String> matches = null;
-		if(!getSimSt().isCTIFollowupInquiryMode())
-			matches = getMatching(mistakeExplanations.get(question), skill, sai, problem, ran);
-		else if(getSimSt().isCTIFollowupInquiryMode())
-			matches = getMatching(mistakeExplanationsCTI.get(question), skill, sai, problem, ran);
+		matches = getMatching(mistakeExplanations.get(question), skill, sai, problem, ran);
 
 		// trace.err("matches are " + question);
 		question = replaceMatchSymbols(question, skill, sai, problem, ran);

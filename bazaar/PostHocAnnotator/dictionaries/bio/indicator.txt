@@ -1,8 +1,0 @@
-indicator
-test strip
-changes color
-detect
-detects
-presence
-iodine
-/glucose|starch is there/

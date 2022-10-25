@@ -2606,11 +2606,13 @@ public void fillInQuizProblem(String problemName) {
 						firstStategy=firstStrategyToAskSelfExplQ(totalActivations);
 					}
 
-					// temp if ((firstStategy==ASK_IMMEDIATELY || (firstStategy==ASK_AFTER_SECOND_NO && ruleQueryCounter==2)) && secondStrategyToAskSelfExplQ(ran))
+					if ((firstStategy==ASK_IMMEDIATELY || (firstStategy==ASK_AFTER_SECOND_NO && ruleQueryCounter==2)) && secondStrategyToAskSelfExplQ(ran))
 					{
-						setLastSkillExplained(getFirstRanStudentSaidNo().getName());
-						if(!runType.equals("springBoot") && !simSt.isCTIFollowupInquiryMode()) explainWhyWrong(getFirstRanStudentSaidNo());
-						else if(!runType.equals("springBoot") && simSt.isCTIFollowupInquiryMode()) explainWhyWrongCTI(getFirstRanStudentSaidNo());
+						if(!simSt.isCTIFollowupInquiryMode())
+							setLastSkillExplained(getFirstRanStudentSaidNo().getName());
+						//if(!runType.equals("springBoot") && !simSt.isCTIFollowupInquiryMode()) explainWhyWrong(getFirstRanStudentSaidNo());
+						//else if(!runType.equals("springBoot") && simSt.isCTIFollowupInquiryMode()) explainWhyWrongCTI(getFirstRanStudentSaidNo());
+						explainWhyWrong(getFirstRanStudentSaidNo());
 						// TODO handle explain why queries for spring boot
 					}
 			}
@@ -2879,17 +2881,30 @@ public void fillInQuizProblem(String problemName) {
 				return;
 			}
 			if (simSt.isCTIFollowupInquiryMode()) {
-				String xml_script_name = "why_right_followup_dialog";
+				String xml_script_name;
+				if (sai.getS().equalsIgnoreCase(Rule.DONE_NAME)) {
+					xml_script_name = "why_right_done_followup_dialog";
+				} else {
+					xml_script_name = "why_right_followup_dialog";
+				}
 				
 				String problemStepString = getBrController(getSimSt()).getMissController()
 						.getSimSt().getProblemStepString();
 				tutalkBridge.setProblemName(problemStepString);
 				contextVariables.clear();
-				contextVariables.addVariable("%i%", sai.getI());
-				String[] opr_op = sai.getI().split(" ");
-				contextVariables.addVariable("%i_opr%", opr_op[0]);
-				contextVariables.addVariable("%i_op%", opr_op[1]);
-				//if(logic_found) contextVariables.addVariable("%logic%", logic);
+				
+				if (sai.getS().equalsIgnoreCase(Rule.DONE_NAME)) {
+					String stepCV = step.replaceAll("_", "=");
+					stepCV = SimSt.convertFromSafeProblemName(stepCV);
+					contextVariables.addVariable("%problemStepString%", stepCV);
+					
+				} else {
+					contextVariables.addVariable("%i%", sai.getI());
+					String[] opr_op = sai.getI().split(" ");
+					contextVariables.addVariable("%i_opr%", opr_op[0]);
+					contextVariables.addVariable("%i_op%", opr_op[1]);
+				}
+				
 				tutalkBridge.connect(xml_script_name,
 						contextVariables,
 						SimStLogger.HINT_EXPLAIN_ACTION);
@@ -2903,9 +2918,10 @@ public void fillInQuizProblem(String problemName) {
 				Concept c = tutalkBridge.getLastStatementLabel();
 				if (simSt.isResponseSatisfactoryGetterClassDefined()) {
 					IsResponseSatisfactory resp_satisfaction = getSimSt().getResponseSatisfactoryGetter();
-					if(resp_satisfaction.isResponseSatosfactoryGetter(c.getLabel()))
+					if(resp_satisfaction.isResponseSatosfactoryGetter(c.getLabel())) {
 						explainedWhyRightSkills.add(skillName);
 						explainedSelectionSkills.add(edge.getSelection());
+					}
 				}
 				else {
 					explainedWhyRightSkills.add(skillName);
@@ -2928,15 +2944,7 @@ public void fillInQuizProblem(String problemName) {
 						JOptionPane.PLAIN_MESSAGE);
 			} else {
 				SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();
-				// explanation =
-				// brController.getMissController().getSimStPLE().giveMessageFreeTextResponse(question);
-				/*
-				 * QuestionAnswers qa =
-				 * ple.getMatchingHintExplanation(skillName, sai,
-				 * simSt.getProblemStepString()); if(qa == null) return;
-				 * question = qa.getQuestion(); explanation =
-				 * ple.giveMessageSelectableResponse(question, qa.getAnswers());
-				 */
+				
 				if(runType.equals("springBoot")) {
 					explanation = getHintInformation();
 				} else {
@@ -3071,133 +3079,6 @@ public void fillInQuizProblem(String problemName) {
 		return explanation;
 	}
 
-	
-
-
-
-	public void explainWhyWrongCTI(RuleActivationNode ran) {
-
-		if (simSt.isSelfExplainMode()) {
-
-			Sai sai = new Sai(ran.getActualSelection(), ran.getActualAction(),
-					ran.getActualInput());
-			String ruleName = ran.getName().replaceAll("MAIN::", "");
-			String step = simSt.getProblemStepString();
-
-			String question = "Why shouldn't I put " + sai.getI() + "?";
-			if (sai.getS().equalsIgnoreCase(Rule.DONE_NAME)) {
-				question = "Why isn't the problem finished?";
-			}
-
-			if (ruleName.indexOf('&') > 0)
-				ruleName = ruleName.substring(0, ruleName.indexOf('&'));
-			
-			String explanation = "";
-
-			if (getBrController(getSimSt()).lookupWidgetByName(sai.getS()) != null) {
-				Object widget = getBrController(getSimSt()).lookupWidgetByName(sai.getS());
-				if (widget instanceof JCommTable.TableCell) {
-					((JCommTable.TableCell) widget).setText(sai.getI());
-					((JCommTable.TableCell) widget).setBackground(Color.pink);
-				}
-			}
-
-			long explainRequestTime = Calendar.getInstance().getTimeInMillis();
-			if (getBrController(getSimSt()).getMissController().getSimStPLE() == null) {
-				explanation = JOptionPane.showInputDialog(null, question,
-						"Please Provide an Explanation",
-						JOptionPane.PLAIN_MESSAGE);
-			} else {
-
-				SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();
-				QuestionAnswers qa = ple.getMatchingMistakeExplanation(
-						ruleName, sai, simSt.getProblemStepString(), ran);
-
-				if (qa == null) {
-
-					if (getBrController(getSimSt()).lookupWidgetByName(sai.getS()) != null) {
-						Object widget = getBrController(getSimSt()).lookupWidgetByName(sai
-								.getS());
-						if (widget instanceof JCommTable.TableCell) {
-							((JCommTable.TableCell) widget).setText("");
-							((JCommTable.TableCell) widget)
-									.setBackground(Color.white);
-						}
-					}
-					return;
-				}
-
-				explainedSelectionSkills.add(sai.getS());
-				Instruction inst=getBrController(getSimSt()).getMissController().getSimSt().getWhyNotInstruction();
-				if (inst.getPreviousID()==null)
-					return;
-
-				setAskedExplanation(true);
-				setExplanationGiven(true);
-				if (getBrController(getSimSt()).getMissController().getSimSt().isSsMetaTutorMode())
-					getBrController(getSimSt()).getAmt().handleInterfaceAction("selfExp", "implicit", "-1");
-
-				question = qa.getQuestion();
-				question = question.replace("[fontblue]", "");
-				question = question.replace("[fontred]", "");
-				question = question.replace("[fontend]", "");
-				// Showing the pop up:
-				SimStExplainWhyNotDlg whyNotDlg=new SimStExplainWhyNotDlg(getBrController(getSimSt()).getMissController().getSimStPLE().getSimStPeerTutoringPlatform().getStudentInterface() ,brController,sai,inst,question, true);
-
-				
-				String xml_script_name = "why_wrong_followup_dialog";
-				
-				String problemStepString = getBrController(getSimSt()).getMissController()
-						.getSimSt().getProblemStepString();
-				tutalkBridge.setProblemName(problemStepString);
-				contextVariables.clear();
-				contextVariables.addVariable("%i%", sai.getI());
-				String[] opr_op = sai.getI().split(" ");
-				contextVariables.addVariable("%i_opr%", opr_op[0]);
-				contextVariables.addVariable("%i_op%", opr_op[1]);
-				contextVariables.addVariable("%Q%", question);
-				//if(logic_found) contextVariables.addVariable("%logic%", logic);
-				tutalkBridge.connect(xml_script_name,
-						contextVariables,
-						SimStLogger.INPUT_WRONG_EXPLAIN_ACTION);
-				while (tutalkBridge.getState() != SimStTutalk.TUTALK_STATE_DONE) {
-					try {
-						Thread.sleep(250);
-					} catch (java.lang.InterruptedException e) {
-						// Nothing we can do here.
-					}
-				}
-				Concept c = tutalkBridge.getLastStatementLabel();
-				// I need to implement this part for whyWrong and also DONE rules.
-				/*if (simSt.isResponseSatisfactoryGetterClassDefined()) {
-					IsResponseSatisfactory resp_satisfaction = getSimSt().getResponseSatisfactoryGetter();
-					if(resp_satisfaction.isResponseSatosfactoryGetter(c.getLabel()))
-						explainedWhyRightSkills.add(skillName);
-						explainedSelectionSkills.add(edge.getSelection());
-				}
-				else {
-					explainedWhyRightSkills.add(skillName);
-					explainedSelectionSkills.add(edge.getSelection());
-				}*/
-				if (getBrController(getSimSt()).lookupWidgetByName(sai.getS()) != null) {
-					Object widget = getBrController(getSimSt()).lookupWidgetByName(sai.getS());
-					if (widget instanceof JCommTable.TableCell) {
-						((JCommTable.TableCell) widget).setText("");
-						((JCommTable.TableCell) widget).setBackground(Color.white);
-					}
-				}
-				
-				whyNotDlg.setVisible(false);
-				return;
-
-			}
-
-		}
-	}
-	
-	
-	
-	
 
 	public void explainWhyWrong(RuleActivationNode ran) {
 
@@ -3218,75 +3099,13 @@ public void fillInQuizProblem(String problemName) {
 			if (sai.getS().equalsIgnoreCase(Rule.DONE_NAME)) {
 				question = "Why isn't the problem finished?";
 			}
-
-			// If enabled, TuTalk engine will "hijack" the legacy self-explain
-			// mode
-			// then exits the function when done. - Huan T.
-			if (simSt.getTutalkEnabled()) {
-				// Hand over the context of the problem to the tutalk engine
-				tutalkBridge.setProblemName(step);
-				contextVariables.clear();
-				contextVariables.addVariable("%sai_i%", sai.getI());
-				String stepCV = step.replaceAll("_", "=");
-				if (stepCV.contains("[")) {
-					String operation = "do something";
-					if (stepCV.contains("]")) {
-						trace.out("ss", "Parsing: " + stepCV);
-						operation = stepCV.substring(stepCV.indexOf("[") + 1,
-								stepCV.indexOf("]"));
-					}
-					stepCV = stepCV.substring(0, stepCV.indexOf("["));
-					stepCV = SimSt.convertFromSafeProblemName(stepCV);
-					stepCV = "\"" + operation + "\" and \"" + stepCV + "\"";
-				} else {
-					stepCV = SimSt.convertFromSafeProblemName(stepCV);
-					stepCV = "\"" + stepCV + "\"";
-				}
-				contextVariables.addVariable("%problemStepString%", stepCV);
-				String[] priorStep = getSimSt().instructionStepDesc(ruleName,
-						sai, ran.getRuleFoas());
-				contextVariables.addVariable("%prior_step%", priorStep[1]);
-				contextVariables.addVariable("%prior_i%", priorStep[0]);
-				if (sai.getS().equalsIgnoreCase(Rule.DONE_NAME)) {
-					tutalkBridge.connect("why_wrong_done_dialog",
-							contextVariables,
-							SimStLogger.INPUT_WRONG_EXPLAIN_ACTION);
-				} else {
-					// tutalkBridge.connect("why_wrong", contextVariables);
-					// }
-					tutalkBridge.connect("why_wrong_dialog", contextVariables,
-							SimStLogger.INPUT_WRONG_EXPLAIN_ACTION);
-				}
-
-				// Busy loop when the student haven't finished the smalltalk
-				// with Tutalk.
-				// Needed to prevent SimStudent to go ahead and do the problem
-				// before finishing the conversation.
-				while (tutalkBridge.getState() != SimStTutalk.TUTALK_STATE_DONE) {
-					try {
-						Thread.sleep(250);
-					} catch (java.lang.InterruptedException e) {
-						// Nothing we can do here.
-					}
-				}
-
-				// Nothing needs to be done after this point, returning is fine.
-				// However, if you need something to be done after
-				// self-explaining,
-				// change this if to if-else and remove this return.
-				return;
-			}
-
 			if (ruleName.indexOf('&') > 0)
 				ruleName = ruleName.substring(0, ruleName.indexOf('&'));
-			/*
-			 * if(simSt.instructions.get(ruleName) != null) { question =
-			 * simSt.instructionDesc(ruleName, sai, ran.getRuleFoas()); }
-			 */
-
+			
 
 			String explanation = "";
 
+			// Highlighting the step in question
 			if (getBrController(getSimSt()).lookupWidgetByName(sai.getS()) != null) {
 				Object widget = getBrController(getSimSt()).lookupWidgetByName(sai.getS());
 				if (widget instanceof JCommTable.TableCell) {
@@ -3303,14 +3122,6 @@ public void fillInQuizProblem(String problemName) {
 			} else {
 
 				SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();
-				// List<String> choices =
-				// getMissController().getSimStPLE().getMatching(ruleName,
-				// getProblemStepString(), sai.getI());
-				// explanation =
-				// getMissController().getSimStPLE().giveMessageSelectableResponse(question,
-				// choices);
-				// explanation =
-				// brController.getMissController().getSimStPLE().giveMessageFreeTextResponse(question);
 				QuestionAnswers qa = ple.getMatchingMistakeExplanation(
 						ruleName, sai, simSt.getProblemStepString(), ran);
 
@@ -3327,52 +3138,145 @@ public void fillInQuizProblem(String problemName) {
 					}
 					return;
 				}
-
-				explainedSelectionSkills.add(sai.getS());
+				if(!simSt.isCTIFollowupInquiryMode())
+					explainedSelectionSkills.add(sai.getS());
 				Instruction inst=getBrController(getSimSt()).getMissController().getSimSt().getWhyNotInstruction();
 				if (inst.getPreviousID()==null)
 					return;
 
-
-				//System.out.println("***Previous id in instruction is " + inst.getPreviousID());
-
-
-
-				setAskedExplanation(true);
-				setExplanationGiven(true);
+				// We have a question to ask
+				if(!simSt.isCTIFollowupInquiryMode()) {
+					setAskedExplanation(true);
+					setExplanationGiven(true);
+				}
 				if (getBrController(getSimSt()).getMissController().getSimSt().isSsMetaTutorMode())
 					getBrController(getSimSt()).getAmt().handleInterfaceAction("selfExp", "implicit", "-1");
 
 				question = qa.getQuestion();
 
-				//Instruction inst=brController.getMissController().getSimSt().getWhyNotInstruction();
-				AplusSpotlight spotlight=null;//
-				String[] javaVersionElements = System.getProperty("java.version").split("\\.");
-				int major = Integer.parseInt(javaVersionElements[1]);
-
-				if (major>=7)
-					spotlight=new AplusSpotlight(getBrController(getSimSt()).getMissController().getSimStPLE().getSimStPeerTutoringPlatform(), brController.getMissController().getSimStPLE().getSimStPeerTutoringPlatform().getTutoringAvatarPanel(),SimStRememberBubble.RIGHT,null);
-
-				// This part is responsible for showing the contrasting interface prompt.
-				SimStExplainWhyNotDlg whyNotDlg=new SimStExplainWhyNotDlg(getBrController(getSimSt()).getMissController().getSimStPLE().getSimStPeerTutoringPlatform().getStudentInterface() ,brController,sai,inst,question);
-
+				
+				// This part is responsible for showing the contrasting interface prompt as a popup.
+				// The last variable needs to be true if you want to show only see comparison window as a popup and rest other chat in the usual module.
+				SimStExplainWhyNotDlg whyNotDlg=new SimStExplainWhyNotDlg(getBrController(getSimSt()).getMissController().getSimStPLE().getSimStPeerTutoringPlatform().getStudentInterface() ,brController,sai,inst,question, true);
 				//explanation = ple.giveMessageSelectableResponse(question, qa.getAnswers());
 				// gives options
-				explanation = whyNotDlg.giveMessageSelectableResponse(question, qa.getAnswers(),sai.getI());
+				
+				if (simSt.getTutalkEnabled()) {
+					// Hand over the context of the problem to the tutalk engine
+					tutalkBridge.setProblemName(step);
+					contextVariables.clear();
+					contextVariables.addVariable("%sai_i%", sai.getI());
+					String stepCV = step.replaceAll("_", "=");
+					if (stepCV.contains("[")) {
+						String operation = "do something";
+						if (stepCV.contains("]")) {
+							trace.out("ss", "Parsing: " + stepCV);
+							operation = stepCV.substring(stepCV.indexOf("[") + 1,
+									stepCV.indexOf("]"));
+						}
+						stepCV = stepCV.substring(0, stepCV.indexOf("["));
+						stepCV = SimSt.convertFromSafeProblemName(stepCV);
+						stepCV = "\"" + operation + "\" and \"" + stepCV + "\"";
+					} else {
+						stepCV = SimSt.convertFromSafeProblemName(stepCV);
+						stepCV = "\"" + stepCV + "\"";
+					}
+					contextVariables.addVariable("%problemStepString%", stepCV);
+					String[] priorStep = getSimSt().instructionStepDesc(ruleName,
+							sai, ran.getRuleFoas());
+					contextVariables.addVariable("%prior_step%", priorStep[1]);
+					contextVariables.addVariable("%prior_i%", priorStep[0]);
+					if (sai.getS().equalsIgnoreCase(Rule.DONE_NAME)) {
+						tutalkBridge.connect("why_wrong_done_dialog",
+								contextVariables,
+								SimStLogger.INPUT_WRONG_EXPLAIN_ACTION);
+					} else {
+						// tutalkBridge.connect("why_wrong", contextVariables);
+						// }
+						tutalkBridge.connect("why_wrong_dialog", contextVariables,
+								SimStLogger.INPUT_WRONG_EXPLAIN_ACTION);
+					}
+
+					// Busy loop when the student haven't finished the smalltalk
+					// with Tutalk.
+					// Needed to prevent SimStudent to go ahead and do the problem
+					// before finishing the conversation.
+					while (tutalkBridge.getState() != SimStTutalk.TUTALK_STATE_DONE) {
+						try {
+							Thread.sleep(250);
+						} catch (java.lang.InterruptedException e) {
+							// Nothing we can do here.
+						}
+					}
+
+				}
+				
+				if(simSt.isCTIFollowupInquiryMode()) {
+					//question = question.replace("[fontblue]", "");
+					//question = question.replace("[fontred]", "");
+					//question = question.replace("[fontend]", "");
+					String xml_script_name = "why_wrong_followup_dialog";
+					step = step.replace("_", "=");
+					tutalkBridge.setProblemName(step);
+					contextVariables.clear();
+					contextVariables.addVariable("%prev_problem%", simSt.getPastProblem());
+					contextVariables.addVariable("%prev_i%", simSt.getPastInput());
+					contextVariables.addVariable("%current_problem%", step);
+					contextVariables.addVariable("%current_i%", sai.getI());
+					//if(logic_found) contextVariables.addVariable("%logic%", logic);
+					tutalkBridge.connect(xml_script_name,
+							contextVariables,
+							SimStLogger.INPUT_WRONG_EXPLAIN_ACTION);
+					while (tutalkBridge.getState() != SimStTutalk.TUTALK_STATE_DONE) {
+						try {
+							Thread.sleep(250);
+						} catch (java.lang.InterruptedException e) {
+							// Nothing we can do here.
+						}
+					}
+					Concept c = tutalkBridge.getLastStatementLabel();
+					if (simSt.isResponseSatisfactoryGetterClassDefined()) {
+						IsResponseSatisfactory resp_satisfaction = getSimSt().getResponseSatisfactoryGetter();
+						if(resp_satisfaction.isResponseSatosfactoryGetter(c.getLabel())) {
+							explainedSelectionSkills.add(sai.getS());
+							setAskedExplanation(true);
+							setExplanationGiven(true);
+							setLastSkillExplained(getFirstRanStudentSaidNo().getName());
+						}
+					}
+					else {
+						explainedSelectionSkills.add(sai.getS());
+						setAskedExplanation(true);
+						setExplanationGiven(true);
+						setLastSkillExplained(getFirstRanStudentSaidNo().getName());
+					}
+				}
+				
+				if(!simSt.getTutalkEnabled() && !simSt.isCTIFollowupInquiryMode()) {
+					
+					if(!runType.equals("springBoot")) {
+						
+						explanation = ple.giveMessageFreeTextResponse(question);
+					}
+					
+					if (explanation != null && explanation.length() > 0) {
+						ple.giveMessage(ple.getConversation().getMessage(
+								SimStConversation.CONFIRM_TOPIC));
+					} else {
+						ple.giveMessage(ple.getConversation().getMessage(
+								SimStConversation.SKIPPED_TOPIC));
+					}
+					
+				}
+				
+				
+				//explanation = whyNotDlg.giveMessageSelectableResponse(question, qa.getAnswers(),sai.getI());
 
 				//simSt.getModelTraceWM().setSelfExplanation("false");
 
-				if (explanation != null && explanation.length() > 0) {
-					ple.giveMessage(ple.getConversation().getMessage(
-							SimStConversation.CONFIRM_TOPIC));
-				} else {
-					ple.giveMessage(ple.getConversation().getMessage(
-							SimStConversation.SKIPPED_TOPIC));
-				}
-
+				// The pop up comparison window disappears after receiving response from tutor.
 				whyNotDlg.setVisible(false);
-				if (spotlight!=null)
-					spotlight.removeSpotlight();
+				
 			}
 
 			if (getBrController(getSimSt()).lookupWidgetByName(sai.getS()) != null) {
@@ -3382,8 +3286,6 @@ public void fillInQuizProblem(String problemName) {
 					((JCommTable.TableCell) widget).setBackground(Color.white);
 				}
 			}
-
-
 
 			int explainDuration = (int) ((Calendar.getInstance().getTimeInMillis() - explainRequestTime)/1000);
 

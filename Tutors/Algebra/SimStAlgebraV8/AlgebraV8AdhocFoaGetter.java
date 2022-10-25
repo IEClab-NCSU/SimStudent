@@ -221,14 +221,10 @@ public class AlgebraV8AdhocFoaGetter extends FoaGetter {
    }
    
    
-   
-   
-	public String foaDescription(Instruction inst)
-	{
-		String newStr="";
-	
+	public String getComparablePastInput(Instruction inst){
+		
 		if(inst.getFocusOfAttention().size() < 3)
-			super.foaDescription(inst);
+			return null;
 		String str = "";
 		
 		if(((String) inst.getFocusOfAttention().get(0)).contains("done"))
@@ -240,16 +236,49 @@ public class AlgebraV8AdhocFoaGetter extends FoaGetter {
 			str = (String) inst.getFocusOfAttention().get(0);
 		}
 		str = str.substring(str.lastIndexOf('|')+1);
+		return str;
+	}
+	    
+	
+	public String getComparablePastProblem(Instruction inst){
+		if(inst.getFocusOfAttention().size() < 3)
+			return null;
+		String foa1 = ((String) inst.getFocusOfAttention().get(1));
+		foa1 = foa1.substring(foa1.lastIndexOf('|')+1);
+		String foa2 = ((String) inst.getFocusOfAttention().get(2));
+		foa2 = foa2.substring(foa2.lastIndexOf('|')+1);
+		return foa1+"="+foa2;
+		
+	}
+	
+   
+	public String foaDescription(Instruction inst)
+	{
+		String newStr="";
+	
+		if(inst.getFocusOfAttention().size() < 3)
+			super.foaDescription(inst);
+		String str = getComparablePastInput(inst);
+		
+		/*if(((String) inst.getFocusOfAttention().get(0)).contains("done"))
+		{
+			str = "that the problem is solved";
+		}
+		else
+		{
+			str = (String) inst.getFocusOfAttention().get(0);
+		}
+		str = str.substring(str.lastIndexOf('|')+1);
+		setComparablePastInput(str);*/
         String foa1 = ((String) inst.getFocusOfAttention().get(1));
 		char c = foa1.charAt(foa1.indexOf(DORMIN_TABLE_STEM)+DORMIN_TABLE_STEM.length());
         int col1 = c - '1' +1;
 		foa1 = foa1.substring(foa1.lastIndexOf('|')+1);
-
         String foa2 = ((String) inst.getFocusOfAttention().get(2));
 		c = foa2.charAt(foa2.indexOf(DORMIN_TABLE_STEM)+DORMIN_TABLE_STEM.length());
         int col2 = c - '1' +1;
 		foa2 = foa2.substring(foa2.lastIndexOf('|')+1);
-				
+		
 		if(col1 < 3 && col2 < 3)
 		{
 		

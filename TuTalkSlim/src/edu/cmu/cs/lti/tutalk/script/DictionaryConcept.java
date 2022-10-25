@@ -37,7 +37,7 @@ import java.util.List;
 import java.util.Random;
 
 import basilica2.side.listeners.LightSideMessageAnnotator;
-import edu.cmu.side.model.data.DocumentList;
+//import edu.cmu.side.model.data.DocumentList;
 
 /**
  *

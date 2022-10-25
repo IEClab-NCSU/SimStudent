@@ -2261,12 +2261,13 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 			  			else {
 			  				//setSpeechHTML(exampleTemp.getShortDescription());
 			  				// If loop added by Tasmia.
-					    	if(getSimStPLE().getSimSt().isSimStStrategyRevealMode()) {
+					    	//if(getSimStPLE().getSimSt().isSimStStrategyRevealMode()) 
+					    	{
 					    		setSpeechHTML(exampleTemp.getShortDescription());
 					    	}
-					    	else {
+					    	/*else {
 					    		setSpeechHTML(exampleTemp.getShortDescription());
-					    	}
+					    	}*/
 			  			}
 			  			
 			  			fillInExampleStep(exampleInterface,exampleTemp);
@@ -2356,12 +2357,14 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 			  		validSteps4display = exampleTemp.getValidSteps4display(currentStep);
 			  		//setSpeechHTML(exampleTemp.getShortDescription());
 			  		// If loop added by Tasmia.
-			    	if(getSimStPLE().getSimSt().isSimStStrategyRevealMode()) {
+			    	//if(getSimStPLE().getSimSt().isSimStStrategyRevealMode()) 
+			    	{
 			    		setSpeechHTML(exampleTemp.getShortDescription());
 			    	}
-			    	else {
+			    	/*else 
+			    	{
 			    		setSpeechHTML(exampleTemp.getShortDescription());
-			    	}
+			    	}*/
 			  		fillInExampleStep(exampleInterface,exampleTemp);
 			  				  		
 			  	}
@@ -3215,15 +3218,18 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 			    	//System.out.println(" Action Listener ");
 			    	//setSpeech(example.getShortDescription());
 			    	// If loop added by Tasmia.
-			    	if(getSimStPLE().getSimSt().isSimStStrategyRevealMode()) {
+			    	//if(getSimStPLE().getSimSt().isSimStStrategyRevealMode()) 
+			    	{
 			    		setSpeechHTML(example.getShortDescription());
-						updateOnPaperImage(example.getOnPaperImageNames("shortDescription"));
-			    		toggleOnPaper(true);
+			    		if(example.getOnPaperImageNames("shortDescription") != null) {
+			    			updateOnPaperImage(example.getOnPaperImageNames("shortDescription"));
+			    			toggleOnPaper(true);
+			    		}
 			    		//showOnPaperImage();
 			    	}
-			    	else {
+			    	/*else {
 			    		setSpeechHTML(example.getShortDescription());
-			    	}
+			    	}*/
 			    	
 
 			    	fillInExample(exampleInterface,false,false);
@@ -4032,7 +4038,8 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
     	exampleSpeechText.setContentType("text/html");
     	String textToGive="<html><body style=\"font-family: Comic Sans MS; color: white; font-size:12px; padding: 0.3cm 0.2cm 0.2cm 0.4cm;\">"+text+"</body></html>";
     	exampleSpeechText.setText(textToGive);
-    	if(getSimStPLE().getSimSt().isSimStStrategyRevealMode()) {
+    	//if(getSimStPLE().getSimSt().isSimStStrategyRevealMode()) 
+    	{
     		Document html = Jsoup.parse(text);
     		String plain_string = html.text();
     		Elements title_selections = html.select("[title]");

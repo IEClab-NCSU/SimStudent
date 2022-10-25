@@ -1,2 +1,0 @@
-/(glucose|atom|molecule|starch).{1,15}(size|big|small|large|fit)/
-/more|less complex/

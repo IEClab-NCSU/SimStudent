@@ -80,7 +80,7 @@ public class SimStExplainWhyNotDlg extends JDialog implements ActionListener,Foc
 	JTextPane selfExplanationSimStQuestion;
 	JButton submitButton;
 	
-	public SimStExplainWhyNotDlg(JComponent parent,TutorController brController,Sai sai,Instruction inst,String question) {
+	public SimStExplainWhyNotDlg(JComponent parent,TutorController brController,Sai sai,Instruction inst,String question, boolean only_comparison_module) {
 	
 		BR_Controller temp = (BR_Controller)brController;
 		setController(temp);
@@ -89,7 +89,11 @@ public class SimStExplainWhyNotDlg extends JDialog implements ActionListener,Foc
 		Dimension prefs=brController.getTutorPanel().getPreferredSize();
 		
 		//this.setUndecorated(true);
-		setBounds(600, 100, prefs.width*2+40, prefs.height+220);
+		if(only_comparison_module)
+			setBounds(600, 100, prefs.width*2+40, prefs.height+220);
+		else
+			setBounds(600, 100, prefs.width*2+40, prefs.height+90);
+
 
 		setLocationRelativeTo(parent);
 		//setLocationRelativeTo(null);
@@ -119,10 +123,12 @@ public class SimStExplainWhyNotDlg extends JDialog implements ActionListener,Foc
 
 		
 		/*Add the new interfaces to the window*/
-		addSelfExplanationQuestion(backPanel,question); // responsible for showing chatbox in the popup.
+		if(!only_comparison_module) 
+			addSelfExplanationQuestion(backPanel,question); // responsible for showing chatbox in the popup.
 		addPastInterface(backPanel);
 		addNowInterface(backPanel);
-		addSelfExplanationResponseTextArea(backPanel); // responsible for showing textbox in the popup.
+		if(!only_comparison_module) 
+			addSelfExplanationResponseTextArea(backPanel); // responsible for showing textbox in the popup.
 	    
 		setResizable(false);
 		
@@ -139,7 +145,7 @@ public class SimStExplainWhyNotDlg extends JDialog implements ActionListener,Foc
 	}
 	
 
-	public SimStExplainWhyNotDlg(JComponent parent,TutorController brController,Sai sai,Instruction inst,String question, boolean isCTI) {
+	/*public SimStExplainWhyNotDlg(JComponent parent,TutorController brController,Sai sai,Instruction inst,String question, boolean isCTI) {
 	
 		BR_Controller temp = (BR_Controller)brController;
 		setController(temp);
@@ -161,9 +167,9 @@ public class SimStExplainWhyNotDlg extends JDialog implements ActionListener,Foc
 		
 		getContentPane().setLayout(new BorderLayout());
 		this.setAlwaysOnTop(true);
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);*/
 		/*create the new interfaces to add to the dialog*/
-		try {
+		/*try {
 			pastInterface = getStudentInterface().getClass().newInstance();
 			nowInterface = getStudentInterface().getClass().newInstance();
 		} catch (InstantiationException e) {
@@ -173,20 +179,20 @@ public class SimStExplainWhyNotDlg extends JDialog implements ActionListener,Foc
 		}
 		JPanel backPanel=new JPanel();
 		backPanel.setOpaque(false);
-		getContentPane().add(backPanel);
+		getContentPane().add(backPanel);*/
 
 
 		
 		/*Add the new interfaces to the window*/
 		//addSelfExplanationQuestion(backPanel,question); // responsible for showing chatbox in the popup.
-		addPastInterface(backPanel);
+		/*addPastInterface(backPanel);
 		addNowInterface(backPanel);
 		//addSelfExplanationResponseTextArea(backPanel); // responsible for showing textbox in the popup.
 	    
-		setResizable(false);
+		setResizable(false);*/
 		
 		/*populate the two interfaces and show the window*/
-		if (sai!=null && inst!=null){
+		/*if (sai!=null && inst!=null){
 			populateInterfaceFromSai(nowInterface,sai,BORDER_NOW,true);	
 			populatePastInterface(inst);
 			populateNowInterface(getController());
@@ -195,7 +201,7 @@ public class SimStExplainWhyNotDlg extends JDialog implements ActionListener,Foc
 
 		
 		
-	}
+	}*/
 	
 
 	void addSelfExplanationQuestion(JPanel backPanel,String question){

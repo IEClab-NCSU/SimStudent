@@ -1,1 +1,0 @@
-Doctor Bob_thermo-f11-a01,foobar,yes,AFFIRMATIVE+AFFIRMATIVE.SVN-BASE

@@ -10474,6 +10474,22 @@ public final class SimSt implements Serializable {
 
    	return parts;
    }
+   
+   
+   private String past_comparable_problem = "";
+   private String past_comparable_input = "";
+   public void setPastProblem(String past_problem) {
+	   past_comparable_problem = past_problem;
+   }
+   public void setPastInput(String past_input) {
+	   past_comparable_input = past_input;
+   }
+   public String getPastProblem() {
+	   return past_comparable_problem;
+   }
+   public String getPastInput() {
+	   return past_comparable_input;
+   }
 
    public String instructionDesc(String ruleName, Sai sai, Vector foas)
    {
@@ -10517,6 +10533,11 @@ public final class SimSt implements Serializable {
    	if(foaGetter != null)
    	{
    		foaDesc = foaGetter.foaDescription(inst);
+   		if(isCTIFollowupInquiryMode()) {
+   			setPastProblem(foaGetter.getComparablePastProblem(inst));
+   			setPastInput(foaGetter.getComparablePastInput(inst));
+   		}
+   		
    	}
    	else
    	{

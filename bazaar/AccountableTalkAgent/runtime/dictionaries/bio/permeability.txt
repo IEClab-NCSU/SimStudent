@@ -1,5 +1,0 @@
-/perm(e?)ab/
-/move|pass|flow|go|let outside|inside|through|across/
-porous
-select
-permeable

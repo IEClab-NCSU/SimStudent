@@ -69,6 +69,17 @@ public class FoaGetter {
          return null;
     }
     
+    // Added by Tasmia
+    public String getComparablePastInput(Instruction inst){
+   	 new Exception("you must override FoaGetter.getComparablePastInput with your domain-specific implementation.").printStackTrace();
+        return null;
+    }
+    
+    public String getComparablePastProblem(Instruction inst){
+      	 new Exception("you must override FoaGetter.getComparablePastProblem with your domain-specific implementation.").printStackTrace();
+         return null;
+    }
+    
     
     /**
      * adds record to history. All implementations of FoaGetter.foaGetter() should call this method.
@@ -126,8 +137,6 @@ public class FoaGetter {
     public String getSaiString(String selection, String action, String input,BR_Controller brController){ 	
     	return "enter "+ input + " in the " + brController.getMissController().getSimStPLE().getComponentName(selection);
     }
-    
-    
     
     
     //Override this method to provide different word description of the FOA for an instruction
