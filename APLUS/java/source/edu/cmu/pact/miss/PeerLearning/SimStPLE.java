@@ -6662,6 +6662,8 @@ public class SimStPLE {
 			}
 
 			boolean doneClickedTooSoon = false;
+			int count = 0;
+			String incorrectLHS = "";
 			if (solution != null) {
 				for (int j = 0; j < solution.size(); j++) {
 					boolean correctness = solution.get(j).isCorrect();
@@ -6687,6 +6689,7 @@ public class SimStPLE {
 					if (!incorrect || !finishTypein) {
 
 						String comment = input + " is correct."; // this is the tooltip.
+						count++;
 						if (!correctness)
 							comment = input + " is not correct";
 
@@ -6710,6 +6713,8 @@ public class SimStPLE {
 								finishTypein = true;
 						}
 					} else {
+						if(incorrectLHS.isEmpty())
+							incorrectLHS = input;
 						quizResult.addStep(selection, input,
 								"This step wasn't graded, because a mistake was already made.", "");
 					}
@@ -6730,13 +6735,23 @@ public class SimStPLE {
 				/* check is solution is correct but given in more steps */
 				String via_solution = simSt.getProblemAssessor().determineSolution(quizResult.getTitle(),
 						startNode /* getSsInteractiveLearning().getQuizGraph().getStartNode() */);
-				// JOptionPane.showMessageDialog(null, "faskelo solutin is " + via_solution);
+				// JOptionPane.showMessageDialog(null, "faskelo solution is " + via_solution);
 				boolean correct = simSt.getProblemAssessor().isSolution(quizResult.getTitle(), via_solution);
-				if (correct) {
+				
+				if(correct && (solution.size() - count -1)<=2) {
 					String explanation = quizResult.getExplanation();
 					quizResult.setExplanation(explanation
-							+ ", eventhough the final answer is correct because you can solve this equation in fewer steps.");
+							+ " because it requires more steps than the best solution. By the way, "+incorrectLHS+" is incorrect if you were to do "+incorrectStep);
+				}
+				else if (correct) {
+					String explanation = quizResult.getExplanation();
+					quizResult.setExplanation(explanation
+							+ " because it requires you to perform "+(solution.size() - count -1)+" more steps; however, this problem can be solved in fewer steps.");
 
+				} else {
+					String explanation = quizResult.getExplanation();
+					quizResult.setExplanation("The problem is not solved yet. By the way, " + explanation
+							+ " because it requires more steps than the best solution.");
 				}
 
 				quizResult.setStatus(SimStExample.QUIZ_INCORRECT);
