@@ -79,6 +79,7 @@ if "!br!" equ "off" (
 ) else (
    set VmOptions= -cp %CPATH% -Xmx512m -DssFoilBase=../FOIL6 -XX:+UnlockCommercialFeatures -XX:+FlightRecorder
 )
+set VmOptions=!VmOptions! -DappRunType=shellscript
 
 
 if "!PLE!" equ "on" (
