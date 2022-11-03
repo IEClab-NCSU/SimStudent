@@ -1082,7 +1082,9 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 	
 	private StudentAvatarDisplay tutoringAvatar;
 	private JLabel studentName;
-	private JTextArea tutoringSpeechText;
+	//private JTextArea tutoringSpeechText;
+	private JTextPane tutoringSpeechText;
+	private Document conversation_history;
 	private JScrollPane speechScroller;
 	private JComboBox tutoringSpeechEntry;
 	private JXButton yesButton;
@@ -1311,9 +1313,12 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 		
 		commPanel.add(dialogPanel);
 
-		tutoringSpeechText = new JTextArea();
-		tutoringSpeechText.setLineWrap(true);
-		tutoringSpeechText.setWrapStyleWord(true);
+		//tutoringSpeechText = new JTextArea();
+		tutoringSpeechText = new JTextPane();
+		tutoringSpeechText.setContentType("text/html");
+		conversation_history = Jsoup.parseBodyFragment(tutoringSpeechText.getText());
+		//tutoringSpeechText.setLineWrap(true);
+		//tutoringSpeechText.setWrapStyleWord(true);
 		tutoringSpeechText.setFont(MED_FONT);
 		tutoringSpeechText.setEditable(false);
 		tutoringSpeechText.setBorder(BorderFactory.createLineBorder(Color.white, BORDER_WIDTH));
@@ -3595,29 +3600,55 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
     
     public void appendSpeech(String text, String name)
     {
+    	//text = "I remember in the <font color=blue>past</font>, I did x";
     	if (text.isEmpty())
     		return;
-    	String prevText = getSpeechText().getText();
+    	//String prevText = getSpeechText().getText();
     	if (!name.isEmpty())
     		text = name+": "+text;
     	
     	String step = getBrController().getMissController().getSimSt().getProblemStepString();
     	getSimStPLE().logger.simStLog(SimStLogger.SIM_STUDENT_DIALOGUE, SimStLogger.CHAT_DIALOG_ACTION, step, "", "", 0, text);
     	
-    	getSpeechText().append(text+"\n");
+    	//getSpeechText().append(text+"\n"); // Previous text
+    	//Document doc = Jsoup.parseBodyFragment(prevText);
+    	//Element body = doc.body();
+    	conversation_history.body().appendElement("p").text(text);
+    	Element last_p = conversation_history.body().select("p").last();
+    	if(text.contains("Bear with me"))
+    		last_p.attr("style", "margin:0px;color:#92a8d1");
+    	else
+    		last_p.attr("style", "margin:0px");
+    	//String prevTextBody = body.text();
+    	//String text_to_give = doc.html();
+    	getSpeechText().setContentType("text/html");
+    	String refined_text = conversation_history.html();
+    	refined_text=refined_text.replaceAll("&lt;", "<");
+    	refined_text=refined_text.replaceAll("&gt;", ">");
+    	getSpeechText().setText(refined_text);
 
     	scrollPaneToBottom();
 
 		
     }
         
-    public JTextArea getSpeechText() {
+    /*public JTextArea getSpeechText() {
+		return tutoringSpeechText;
+	}*/
+    public JTextPane getSpeechText() {
 		return tutoringSpeechText;
 	}
+    
+    public Document getConversationHistory() {
+  		return conversation_history;
+  	}
 
 	public void clearSpeech()
     {
-		getSpeechText().setText("");
+		//conversation_history.body().
+		conversation_history.getElementsByTag("p").remove();
+		getSpeechText().setContentType("text/html");
+		getSpeechText().setText(conversation_history.html());
 
 		getTextResponse().setEditable(false);
     	getTextResponse().setEnabled(false);

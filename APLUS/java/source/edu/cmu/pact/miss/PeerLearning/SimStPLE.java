@@ -140,6 +140,7 @@ public class SimStPLE {
 	public static final String EXAMPLES_FILE = "examples.txt";
 	public static final String COMPONENT_NAME_FILE = "compNames.txt";
 	public static final String CONFIG_FILE = System.getProperty("configFile") == null ? "simSt-config.txt" : System.getProperty("configFile");
+
 	public static final String CURRICULUM_BROWSER = "curriculum browser";
 	public static final String CURRICULUM_FILE = "curriculum.html";
 	private static final String ASK_NEW_PROBLEM_MSG = "Enter next problem";
@@ -1968,7 +1969,7 @@ public class SimStPLE {
 			}
 		}
 
-		matchString = matchString.replace("<font color=blue>", "[fontblue]");
+		/*matchString = matchString.replace("<font color=blue>", "[fontblue]");
 		matchString = matchString.replace("<font color=red>", "[fontred]");
 		matchString = matchString.replace("</font>", "[fontend]");
 
@@ -2035,7 +2036,7 @@ public class SimStPLE {
 			} else {
 				return null;
 			}
-		}
+		}*/
 
 		return matchString;
 	}

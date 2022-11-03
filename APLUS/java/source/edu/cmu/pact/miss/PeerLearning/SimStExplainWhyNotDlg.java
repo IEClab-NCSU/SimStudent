@@ -88,21 +88,23 @@ public class SimStExplainWhyNotDlg extends JDialog implements ActionListener,Foc
 		
 		Dimension prefs=brController.getTutorPanel().getPreferredSize();
 		
-		//this.setUndecorated(true);
-		if(only_comparison_module)
+		if(!only_comparison_module) {
 			setBounds(600, 100, prefs.width*2+40, prefs.height+220);
-		else
-			setBounds(600, 100, prefs.width*2+40, prefs.height+90);
+			setLocationRelativeTo(parent);
+		}
+		else {
+			setLocation(600, 100);
+		}
 
 
-		setLocationRelativeTo(parent);
+		//setLocationRelativeTo(parent);
 		//setLocationRelativeTo(null);
 		//this.setLocation(680, 500);
 		
 		getContentPane().setBackground( AplusPlatform.studentColor );
 		
 		
-		getRootPane().setBorder( BorderFactory.createLineBorder(Color.black,2) );
+		getRootPane().setBorder(BorderFactory.createLineBorder(Color.black,2) );
 		
 		getContentPane().setLayout(new BorderLayout());
 		this.setAlwaysOnTop(true);
@@ -137,6 +139,9 @@ public class SimStExplainWhyNotDlg extends JDialog implements ActionListener,Foc
 			populateInterfaceFromSai(nowInterface,sai,BORDER_NOW,true);	
 			populatePastInterface(inst);
 			populateNowInterface(getController());
+			//this.setUndecorated(true);
+			if(only_comparison_module)
+				pack();
 			setVisible(true);
 		}
 

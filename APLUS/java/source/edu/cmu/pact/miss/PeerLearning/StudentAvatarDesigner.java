@@ -565,9 +565,10 @@ public class StudentAvatarDesigner extends JPanel implements ActionListener {
 
 	        		((AplusPlatform)gui).updateSkillometerLabelText(ssName);
 	        		((AplusPlatform)gui).updateSectionMeterLabelText(ssName);        		
-	        		String msg = ((AplusPlatform)gui).getSpeechText().getText();
-	        		msg = msg.replaceAll("[Jj][Oo][Ee][:]","");
-	        		msg = msg.replace('\n', ' ');
+	        		//String msg = ((AplusPlatform)gui).getSpeechText().getText();
+	        		String msg = ((AplusPlatform)gui).getConversationHistory().body().text();
+	        		//msg = msg.replaceAll("[Jj][Oo][Ee][:]","");
+	        		//msg = msg.replace('\n', ' ');
 	        		((AplusPlatform)gui).clearSpeech();
 	        		((AplusPlatform)gui).appendSpeech(msg, SimSt.SimStName);
 	        		

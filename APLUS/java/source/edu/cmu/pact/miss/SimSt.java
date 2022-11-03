@@ -10478,6 +10478,8 @@ public final class SimSt implements Serializable {
    
    private String past_comparable_problem = "";
    private String past_comparable_input = "";
+   private ArrayList<String> past_foa_contents;
+   private ArrayList<String> current_foa_contents;
    public void setPastProblem(String past_problem) {
 	   past_comparable_problem = past_problem;
    }
@@ -10486,6 +10488,12 @@ public final class SimSt implements Serializable {
    }
    public String getPastProblem() {
 	   return past_comparable_problem;
+   }
+   public ArrayList<String> getPastFoaContent() {
+	   return past_foa_contents;
+   }
+   public ArrayList<String> getCurrentFoaContent() {
+	   return current_foa_contents;
    }
    public String getPastInput() {
 	   return past_comparable_input;
@@ -10536,6 +10544,7 @@ public final class SimSt implements Serializable {
    		if(isCTIFollowupInquiryMode()) {
    			setPastProblem(foaGetter.getComparablePastProblem(inst));
    			setPastInput(foaGetter.getComparablePastInput(inst));
+   			past_foa_contents = foaGetter.getComparablePastFoas(inst);
    		}
    		
    	}
@@ -10599,7 +10608,7 @@ public final class SimSt implements Serializable {
 			foaName = (String) ((TableExpressionCell)foas.elementAt(i)).getCommName();
 		}
 
-		foaDesc = foaDesc + " <font color=red>" + foaInput + "</font> and";
+		foaDesc = foaDesc + " <font color=\"red\">" + foaInput + "</font> and";
 	}
 
 

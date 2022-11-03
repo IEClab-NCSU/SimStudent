@@ -19,6 +19,7 @@ import edu.cmu.pact.miss.SimSt;
 import edu.cmu.pact.miss.PeerLearning.AplusPlatform;
 import edu.cmu.pact.miss.PeerLearning.AplusSpotlight;
 import edu.cmu.pact.miss.PeerLearning.SimStLogger;
+import edu.cmu.pact.miss.PeerLearning.SimStPLE;
 import edu.cmu.pact.miss.PeerLearning.SimStPeerTutoringPlatform;
 import edu.cmu.pact.miss.PeerLearning.SimStRememberBubble;
 import edu.cmu.pact.miss.PeerLearning.GameShow.GameShowUtilities;
@@ -479,7 +480,8 @@ public class AplusController implements ModelTracingListener{
 				if (type==PROACTIVE_HINT_MESSAGE && message!=null){
 					//System.out.println(" Gonna display proactive message thus disabling Model Tracer");
 					controller.getMissController().getSimStPLE().setModelTracer(false);
-					ctlr.getMissController().getSimStPLE().getSimStPeerTutoringPlatform().getAPlusHintDialogInterface().showThinkBubble();
+					if(!ctlr.getMissController().getSimStPLE().getStatus().equals(SimStPLE.ASK_STATUS)) // If condition added by Tasmia: So that splotlight does not come up when simst is asking question
+						ctlr.getMissController().getSimStPLE().getSimStPeerTutoringPlatform().getAPlusHintDialogInterface().showThinkBubble();
 				}
 				//System.out.println(" In send Result ");
 				ctlr.getMissController().getSimStPLE().getSimStPeerTutoringPlatform().getAPlusHintDialogInterface().showMessage(message);

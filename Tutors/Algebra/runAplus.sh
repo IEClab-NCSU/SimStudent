@@ -188,6 +188,10 @@ TutorArg="${TutorArg} -ssNumBadInputRetries 2"
 TutorArg="${TutorArg} -ssProblemsPerQuizSection 2"
 TutorArg="${TutorArg} -Dschool_name=someSchool"
 TutorArg="${TutorArg} -Dclass_name=someClass"
+if [ ${CTI} == "on" ];
+then
+  TutorArg="${TutorArg} -ssResponseSatisfactoryGetterClass SimStAlgebraV8.AlgebraResponseSatisfactoryGetter"
+fi
 #TutorArg="${TutorArg} -ssCondition devTesting"
 TutorArg="${TutorArg} ${AddArgs}"
 

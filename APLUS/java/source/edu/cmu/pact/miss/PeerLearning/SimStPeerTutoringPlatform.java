@@ -418,7 +418,6 @@ public class SimStPeerTutoringPlatform extends JComponent {
 
         setTextResponseSubmitButton(new JButton("Submit"));
         getTextResponseSubmitButton().setMaximumSize(new Dimension(75,40));
-        
         setSpeechText(new JTextArea());
         getSpeechText().setFont(new Font("Monospace", Font.PLAIN,12));
         getSpeechText().setLineWrap(true);
@@ -1373,6 +1372,7 @@ public class SimStPeerTutoringPlatform extends JComponent {
     private void setSpeechText(JTextArea speechText)
     {
     	this.speechText = speechText;
+    	
     }
     
     private JTextArea getSpeechText()
