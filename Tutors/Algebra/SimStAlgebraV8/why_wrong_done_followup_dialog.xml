@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scenario version="$Revision: 1.2 $" default-language="en">
+
+<configuration>
+	<module kind="model" name="coded" classname="basilica2.side.listeners.LightSideMessageAnnotator">
+		<param key="modelPath" value="./LightSide/lightside/saved/both_stuck_model_svm_f.model.xml" />
+		<param key="nickName" value="both_stuck_model_f" />
+		<param key="prediction" value="predicted" />
+		<param key="currentAnnotation" value="Category" />
+		<param key="pathToModel" value="⁨.⁩/⁨LightSide/lightside/models/both_stuck_model_svm_f.model.xml"/>
+		<param key="modelName" value= "both_stuck_model_svm_f.model.xml"/>
+		<param key="modelNickname" value= "both_stuck_model_f"/>
+		<param key="predictionCommand" value= "⁨./⁨LightSide/lightside/scripts/prediction_server.sh"/>
+		<param key="classificationString" value= "R0,70,R1,70,R2,70"/>
+	</module>
+	<module kind="model" name="key_term_adhoc" classname="edu.cmu.cs.lti.tutalk.module.KeyTermAnnotator">
+		<param key="fileName" value= "key_terms.txt"/>
+		<param key="classificationString" value= "Y,70,N,70"/>
+	</module>
+</configuration>
+
+<concepts>
+	<concept label="first-question">
+	 <!--<phrase>%Q%</phrase>-->
+	 <phrase>But before I said "the problem was solved" for &lt;font color="blue"&gt;"%prev_problem%"&lt;/font&gt;. To me, &lt;font color="red"&gt;"%current_problem%"&lt;/font&gt; looks the same.  Why is the problem not solved yet?</phrase>
+	 <phrase>But in the &lt;font color="blue"&gt;past&lt;/font&gt;, when I had &lt;font color="blue"&gt;"%prev_problem%"&lt;/font&gt;, I said the problem was solved. To me, &lt;font color="red"&gt;"%current_problem%"&lt;/font&gt; looks the same. Why is the problem not solved yet?</phrase>
+	</concept>
+
+	<concept label="R2&amp;Y" model="coded&amp;key_term_adhoc" />
+	<concept label="R2Y-response-simst">
+		<phrase>Fantastic! Thanks!</phrase>
+		<phrase>That's a helpful response. Thanks!</phrase>
+ 	 	<phrase>Perfect! You are one of the best teachers I had so far!</phrase>
+ 	 	<phrase>Makes perfect sense to me. Thank you!</phrase>
+ 	 	<phrase>Genius! That helped a lot!</phrase>
+ 	 	<phrase>Sweet! Explanation right on spot!</phrase>
+ 	 	<phrase>Thanks for explaining using the key terms. That’s very helpful!</phrase>
+  </concept>
+	<concept label="R2&amp;N" model="coded&amp;key_term_adhoc" />
+	<concept label="R2N-response-simst">
+   <phrase>I am looking for an in-depth answer. Please explain why I could say "problem is solved" for &lt;font color="blue"&gt;"%prev_problem%"&lt;/font&gt; but not the same for &lt;font color="red"&gt;"%current_problem%"&lt;/font&gt;?</phrase>
+	 <phrase>I am trying to understand in-depth. Please explain why I could say "problem is solved" for &lt;font color="blue"&gt;"%prev_problem%"&lt;/font&gt; but not the same for &lt;font color="red"&gt;"%current_problem%"&lt;/font&gt;?</phrase>
+	 <phrase>I am thinking deeply about what you just said, but I need more information. What makes you think that the &lt;font color="red"&gt;"%current_problem%"&lt;/font&gt; is not solved yet?</phrase>
+  </concept>
+
+	<concept label="R1&amp;Y" model="coded&amp;key_term_adhoc" />
+	<concept label="R1Y-response-simst">
+		<phrase>Thanks for describing it so thoughtfully!</phrase>
+  	<phrase>Thanks for the witty response!</phrase>
+  	<phrase>Thanks for explaining it to me so wisely!</phrase>
+  	<phrase>Your explanation was right on spot!</phrase>
+  </concept>
+	<concept label="R1&amp;N" model="coded&amp;key_term_adhoc" />
+	<concept label="R1N-response-simst">
+		<phrase>I see! Please explain what went wrong using key terms in the Unit Overview section.</phrase>
+  	<phrase>How did you figure out that something went wrong? Please explain using key terms in the Unit Overview section.</phrase>
+  	<phrase>Please explain what went wrong using key terms from the Unit Overview section.</phrase>
+  	<phrase>Please describe what went wrong using key terms from the Unit Overview section.</phrase>
+  </concept>
+
+	<concept label="R0" model="coded" />
+	<concept label="R0-response-simst">
+   <phrase>I am trying to understand why &lt;font color="red"&gt;"%current_problem%"&lt;/font&gt; is not solved yet. Please explain using key terms in the Unit Overview section?</phrase>
+	 <phrase>Can you please explain why &lt;font color="red"&gt;"%current_problem%"&lt;/font&gt; is not solved yet using key terms in the Unit Overview section?</phrase>
+	 <phrase>I attempt to learn things deeply so that I can solve any equation. Which part of &lt;font color="red"&gt;"%current_problem%"&lt;/font&gt; motivated you to say that the problem is not solved yet?</phrase>
+	 <phrase>I want to solidify my basics. I failed to see how I could say &lt;font color="blue"&gt;"%prev_problem%"&lt;/font&gt; was solved but the &lt;font color="red"&gt;"%current_problem%"&lt;/font&gt; is not. Can you explain it to me?</phrase>
+	 <phrase>I want to strengthen my basic understanding. Can you explain how &lt;font color="blue"&gt;"%prev_problem%"&lt;/font&gt; and &lt;font color="red"&gt;"%current_problem%"&lt;/font&gt; are different that makes the &lt;font color="red"&gt;"%current_problem%"&lt;/font&gt; not solved yet?</phrase>
+  </concept>
+	<concept label="R0-response-simst-2">
+   <phrase>Still no luck for me! Why cannot I say "the problem is solved" now?</phrase>
+	 <phrase>I am still in doubt! Which part of &lt;font color="red"&gt;"%current_problem%"&lt;/font&gt; motivated you to say that the problem is not solved yet?</phrase>
+	 <phrase>Let's concentrate on the differences between &lt;font color="red"&gt;"%current_problem%"&lt;/font&gt; and &lt;font color="blue"&gt;"%prev_problem%"&lt;/font&gt;. How do we know when an equation is solved?</phrase>
+	 <phrase>Let's concentrate on the differences between &lt;font color="red"&gt;"%current_problem%"&lt;/font&gt; and &lt;font color="blue"&gt;"%prev_problem%"&lt;/font&gt;. When specifically do I know an equation is solved ot not?</phrase>
+  </concept>
+
+	<concept label="move-on">
+	 <phrase>Tough luck! Let’s move on!</phrase>
+ 	 <phrase>Umm...although I am not entirely sure, let’s move on!</phrase>
+	 <phrase>Umm...okay, let’s move on for now!</phrase>
+ 	 <phrase>Although I am not sure what you meant, let’s move on!</phrase>
+ 	 <phrase>Okay! Let’s move on although I’m still confused.</phrase>
+  </concept>
+	<concept label="unanticipated-response">
+   <phrase>anything else</phrase>
+  </concept>
+
+</concepts>
+
+<script>
+ <goal name="start">
+  <step><subgoal>reasons</subgoal></step>
+ </goal>
+ <goal name="reasons">
+  <step>
+   <initiation>first-question</initiation>
+   <response push="R0-response-action">R0</response>
+	 <response say="R1Y-response-simst">R1&amp;Y</response>
+	 <response say="R2Y-response-simst">R2&amp;Y</response>
+   <response push="R1N-response-action">R1&amp;N</response>
+	 <response push="R2N-response-action">R2&amp;N</response>
+	 <response say="move-on">unanticipated-response</response>
+  </step>
+ </goal>
+
+ <goal name="R0-response-action">
+  <step>
+   <initiation>R0-response-simst</initiation>
+   <response push="R0-response-action-2">R0</response>
+	 <response say="R1Y-response-simst">R1&amp;Y</response>
+	 <response say="R2Y-response-simst">R2&amp;Y</response>
+   <response push="R1N-response-action">R1&amp;N</response>
+	 <response push="R2N-response-action">R2&amp;N</response>
+	 <response say="move-on">unanticipated-response</response>
+  </step>
+ </goal>
+
+ <goal name="R0-response-action-2">
+  <step>
+   <initiation>R0-response-simst-2</initiation>
+   <response say="move-on">R0</response>
+	 <response say="R1Y-response-simst">R1&amp;Y</response>
+	 <response say="R2Y-response-simst">R2&amp;Y</response>
+   <response push="R1N-response-action">R1&amp;N</response>
+	 <response push="R2N-response-action">R2&amp;N</response>
+	 <response say="move-on">unanticipated-response</response>
+  </step>
+ </goal>
+
+ <goal name="R1N-response-action">
+  <step>
+   <initiation>R1N-response-simst</initiation>
+   <response say="move-on">R0</response>
+	 <response say="R1Y-response-simst">R1&amp;Y</response>
+	 <response say="R2Y-response-simst">R2&amp;Y</response>
+   <response say="move-on">R1&amp;N</response>
+	 <response say="move-on">R2&amp;N</response>
+	 <response say="move-on">unanticipated-response</response>
+  </step>
+ </goal>
+
+ <goal name="R2N-response-action">
+	<step>
+	 <initiation>R2N-response-simst</initiation>
+	 <response say="move-on">R0</response>
+	 <response say="R1Y-response-simst">R1&amp;Y</response>
+	 <response say="R2Y-response-simst">R2&amp;Y</response>
+   <response say="move-on">R1&amp;N</response>
+	 <response say="move-on">R2&amp;N</response>
+	 <response say="move-on">unanticipated-response</response>
+	</step>
+ </goal>
+
+
+</script>
+</scenario>
