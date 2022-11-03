@@ -19,7 +19,7 @@ import edu.cmu.pact.miss.PeerLearning.SimStPLE;
 public class AlgebraV8AdhocInterfaceElementGetter implements InterfaceElementGetter {
 
 	/**	Configuration file specifying domain dependent element names, foa names, component names */
-	private static final String CONFIG_FILE = "simSt-config.txt";
+	private static final String CONFIG_FILE = System.getProperty("configFile") == null ? "simSt-config.txt" : System.getProperty("configFile");
 
 	private ArrayList<String> startStateElements;
 
