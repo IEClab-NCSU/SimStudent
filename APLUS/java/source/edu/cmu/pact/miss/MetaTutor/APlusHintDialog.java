@@ -297,17 +297,19 @@ public class APlusHintDialog extends JDialog implements ActionListener, StudentA
 			}
 
 		
-	if (major>=7 ){
+		if (major>=7 ){
 			if(aplus.getAplusTabs().getSelectedIndex() == 0)
 				spotlight=new AplusSpotlight(peerTutoringPlatform,selectedTab,SimStRememberBubble.RIGHT,null);
 			else
-				  spotlight=new AplusSpotlight(peerTutoringPlatform,selectedTab,SimStRememberBubble.LEFT,null);
+				spotlight=new AplusSpotlight(peerTutoringPlatform,selectedTab,SimStRememberBubble.LEFT,null);
 
 		}
 		
 		
 		originalLocation=this.getLocation();
-		Point mtAvatarLocation= selectedTab.getLocationOnScreen();
+		//Point mtAvatarLocation;
+		//if(selectedTab.isDisplayable())
+			//mtAvatarLocation= selectedTab.getLocationOnScreen();
 
 		//Point mtAvatarLocation=aplus.getLocationOnScreen();
 		//mtAvatarLocation.x=mtAvatarLocation.x-.getWidth();
@@ -321,6 +323,7 @@ public class APlusHintDialog extends JDialog implements ActionListener, StudentA
 	@Override
 	public void showMessage(String message) {
 		
+		
 		hintsJEditorPane.setText("");	
 			
 		
@@ -329,7 +332,10 @@ public class APlusHintDialog extends JDialog implements ActionListener, StudentA
 			java.awt.EventQueue.invokeLater(new Runnable() {
 				@Override
 				public void run() {
-					setVisible(false);					
+					setVisible(false);
+					if (spotlight!=null){
+						spotlight.removeSpotlight();
+					}
 				}
 			});
 			return;
@@ -348,7 +354,10 @@ public class APlusHintDialog extends JDialog implements ActionListener, StudentA
 			java.awt.EventQueue.invokeLater(new Runnable() {
 				@Override
 				public void run() {
-					setVisible(visibleFlag);					
+					setVisible(visibleFlag);
+					if (spotlight!=null && visibleFlag==false){
+						spotlight.removeSpotlight();
+					}
 				}
 			});
 		} else {

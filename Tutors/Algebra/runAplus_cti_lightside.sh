@@ -6,4 +6,4 @@ function cleanup {
   kill $(lsof -t -i:8000)
 }
 trap cleanup EXIT
-./runAplus.sh -mtmc -cti -localLogging cti_study
+./runAplus.sh -mtmc -cti -localLogging cti_study_2022

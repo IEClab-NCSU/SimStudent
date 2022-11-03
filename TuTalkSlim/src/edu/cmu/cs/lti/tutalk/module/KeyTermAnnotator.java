@@ -38,7 +38,7 @@ public class KeyTermAnnotator {
 		
 	}
 	public String hasKeyTerm(String turn) {
-		if(Arrays.stream(key_terms).anyMatch(turn::contains)) return "Y-1.0,N-0.0,";
+		if(Arrays.stream(key_terms).anyMatch(turn.toLowerCase()::contains)) return "Y-1.0,N-0.0,";
 		//if(turn.contains("coefficient")) return "Y-1.0,N-0.0,";
 
 		return "Y-0.0,N-1.0,";

@@ -35,6 +35,7 @@ import jess.JessException;
 import jess.Node1RTLTest;
 import jess.Rete;
 import jess.Value;
+import pact.CommWidgets.JCommComboBox;
 import pact.CommWidgets.JCommTable;
 import pact.CommWidgets.JCommTable.TableCell;
 import pact.CommWidgets.JCommTable.TableExpressionCell;
@@ -1914,8 +1915,9 @@ public void fillInQuizProblem(String problemName) {
 					}
 				}*/
 
-				//if (!askedExplanation && hintReceived && !askStudentToUndo)
-				if (hintReceived) {
+				if (!askedExplanation && hintReceived)
+				//if (hintReceived) 
+				{
 					if(simSt.isCTIFollowupInquiryMode())
 						explainHowOnPaper(nextCurrentNode);
 					explainWhyRight(nextCurrentNode);
@@ -2997,8 +2999,8 @@ public void fillInQuizProblem(String problemName) {
 
 		Random r = new Random();
 	    int probability = r.nextInt(100);
-		//if (simSt.isSelfExplainMode() && isSelectionValidForSelfExplanation(edge.getSelection()) && !explainedHowOnPaperSkills.contains(skillName)
-		//	&& probability <= CHANCE && !explainedSelectionSkillsOnPaper.contains(edge.getSelection()))
+		if (simSt.isSelfExplainMode() && isSelectionValidForSelfExplanation(edge.getSelection()) && !explainedHowOnPaperSkills.contains(skillName)
+				&& probability <= CHANCE && !explainedSelectionSkillsOnPaper.contains(edge.getSelection()))
 		{
 
 			explainedHowOnPaperSkills.add(skillName);
@@ -3144,7 +3146,7 @@ public void fillInQuizProblem(String problemName) {
 				if (inst.getPreviousID()==null)
 					return;
 
-				// We have a question to ask
+				// In cti mode, we only conside a explanation was provided if it was tagged satisfactory as per the current dialog structure.
 				if(!simSt.isCTIFollowupInquiryMode()) {
 					setAskedExplanation(true);
 					setExplanationGiven(true);
@@ -3157,6 +3159,7 @@ public void fillInQuizProblem(String problemName) {
 				
 				// This part is responsible for showing the contrasting interface prompt as a popup.
 				// The last variable needs to be true if you want to show only see comparison window as a popup and rest other chat in the usual module.
+				//ple.setAvatarAsking();
 				SimStExplainWhyNotDlg whyNotDlg=new SimStExplainWhyNotDlg(getBrController(getSimSt()).getMissController().getSimStPLE().getSimStPeerTutoringPlatform().getStudentInterface() ,brController,sai,inst,question, true);
 				//explanation = ple.giveMessageSelectableResponse(question, qa.getAnswers());
 				// gives options
@@ -3212,17 +3215,60 @@ public void fillInQuizProblem(String problemName) {
 				}
 				
 				if(simSt.isCTIFollowupInquiryMode()) {
-					//question = question.replace("[fontblue]", "");
-					//question = question.replace("[fontred]", "");
-					//question = question.replace("[fontend]", "");
-					String xml_script_name = "why_wrong_followup_dialog";
-					step = step.replace("_", "=");
-					tutalkBridge.setProblemName(step);
 					contextVariables.clear();
-					contextVariables.addVariable("%prev_problem%", simSt.getPastProblem());
 					contextVariables.addVariable("%prev_i%", simSt.getPastInput());
-					contextVariables.addVariable("%current_problem%", step);
 					contextVariables.addVariable("%current_i%", sai.getI());
+					String stepCV = step.replaceAll("_", "=");
+					if (stepCV.contains("[")) {
+						// typeIN
+						ArrayList <String> past_foa_content = simSt.getPastFoaContent();
+						String current_foa2 = "do something";
+						if (stepCV.contains("]")) {
+							current_foa2 = stepCV.substring(stepCV.indexOf("[") + 1,
+									stepCV.indexOf("]"));
+						}
+						stepCV = stepCV.substring(0, stepCV.indexOf("["));
+						contextVariables.addVariable("%prev_foa1%",past_foa_content.get(0));
+						contextVariables.addVariable("%prev_foa2%",past_foa_content.get(1));
+						contextVariables.addVariable("%current_foa2%",current_foa2);
+						
+						// Getting the current foa1 in question
+						String foa1_cell_name = (String)ran.getRuleFoas().elementAt(0);
+						if (getBrController(getSimSt()).lookupWidgetByName(foa1_cell_name) != null) {
+							Object widget = getBrController(getSimSt()).lookupWidgetByName(foa1_cell_name);
+							if (widget instanceof JCommTable.TableCell) {
+								String current_foa1 = ((JCommTable.TableCell) widget).getText();
+								contextVariables.addVariable("%current_foa1%",current_foa1);
+								
+							}
+						}
+						
+						//stepCV = SimSt.convertFromSafeProblemName(stepCV);
+						//tutalkBridge.setProblemName(stepCV);
+						//stepCV = "\"" + current_foa2 + "\" and \"" + stepCV + "\"";
+					} 
+					else {
+						contextVariables.addVariable("%prev_problem%", simSt.getPastProblem());
+					}
+					stepCV = SimSt.convertFromSafeProblemName(stepCV);
+					tutalkBridge.setProblemName(stepCV);
+					contextVariables.addVariable("%current_problem%", stepCV);
+					
+					
+					String xml_script_name;
+					if (sai.getS().equalsIgnoreCase(Rule.DONE_NAME) && !step.contains("[")) {
+						xml_script_name = "why_wrong_done_followup_dialog";
+						
+					} else if(!step.contains("[")) {
+						xml_script_name = "why_wrong_followup_dialog";
+						//contextVariables.addVariable("%prev_i%", simSt.getPastInput());
+					}
+					else {
+						xml_script_name = "why_wrong_typein_followup_dialog";
+						
+					}
+					
+					
 					//if(logic_found) contextVariables.addVariable("%logic%", logic);
 					tutalkBridge.connect(xml_script_name,
 							contextVariables,

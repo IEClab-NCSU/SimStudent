@@ -3,6 +3,7 @@
  */
 package edu.cmu.pact.miss;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -79,6 +80,12 @@ public class FoaGetter {
       	 new Exception("you must override FoaGetter.getComparablePastProblem with your domain-specific implementation.").printStackTrace();
          return null;
     }
+    
+    public ArrayList<String> getComparablePastFoas(Instruction inst){
+     	 new Exception("you must override FoaGetter.getComparablePastFoas with your domain-specific implementation.").printStackTrace();
+        return null;
+   }
+   
     
     
     /**

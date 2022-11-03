@@ -26,6 +26,8 @@ import jess.ValueVector;
 import edu.cmu.pact.BehaviorRecorder.ProblemModel.Graph.ProblemEdge;
 import edu.cmu.pact.BehaviorRecorder.ProblemModel.Graph.ProblemNode;
 import edu.cmu.pact.miss.Sai;
+
+import java.util.ArrayList;
 import java.util.List;
 import edu.cmu.pact.miss.jess.WorkingMemoryConstants;
 
@@ -53,7 +55,7 @@ public class AlgebraV8AdhocFoaGetter extends FoaGetter {
 		if(selection.equalsIgnoreCase("done"))
 		{
 			//Start at last row and go backwards
-			for(int i=5;i>=0;i--)
+			for(int i=6;i>=1;i--)
 			{
 				if(getTableCell(brController, i, 1).getText().length() > 0
 						|| getTableCell(brController, i, 2).getText().length() > 0)
@@ -251,6 +253,20 @@ public class AlgebraV8AdhocFoaGetter extends FoaGetter {
 		
 	}
 	
+	public ArrayList<String> getComparablePastFoas(Instruction inst){
+		ArrayList<String> foa_contents = new ArrayList<String>();
+		if(inst.getFocusOfAttention().size() < 3)
+			return null;
+		String foa1 = ((String) inst.getFocusOfAttention().get(1));
+		foa1 = foa1.substring(foa1.lastIndexOf('|')+1);
+		foa_contents.add(foa1);
+		String foa2 = ((String) inst.getFocusOfAttention().get(2));
+		foa2 = foa2.substring(foa2.lastIndexOf('|')+1);
+		foa_contents.add(foa2);
+		return foa_contents;
+		
+	}
+	
    
 	public String foaDescription(Instruction inst)
 	{
@@ -282,7 +298,7 @@ public class AlgebraV8AdhocFoaGetter extends FoaGetter {
 		if(col1 < 3 && col2 < 3)
 		{
 		
-			newStr=" when I had <font color=blue>"+foa1+"="+foa2+"</font>, I did the transformation <font color=blue>"+str+"</font>";
+			newStr=" when I had <font color=\"blue\">"+foa1+"="+foa2+"</font>, I did the transformation <font color=\"blue\">"+str+"</font>";
 		
 		//	str += " for '"+foa1+"="+foa2+"'";
 			
@@ -292,7 +308,7 @@ public class AlgebraV8AdhocFoaGetter extends FoaGetter {
 		else
 		{
 			//str += " for the result of '"+foa2+"' and '"+foa1+"'";
-			newStr=" I did the transformation <font color=blue>"+foa2+"</font> when I had <font color=blue>"+foa1+"</font> and got <font color=blue>"+str+"</font>";
+			newStr=" I did the transformation <font color=\"blue\">"+foa2+"</font> when I had <font color=\"blue\">"+foa1+"</font> and got <font color=\"blue\">"+str+"</font>";
 		}
 		
 		
