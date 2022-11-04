@@ -1975,6 +1975,7 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 	}
 	
 	public void updateOnPaperImage(String imagename) {
+		if(exampleTemp.getOnPaperImageNames().size() == 0) return; //No images present in config file.
 		if(imagename == null) imagename = SimStPLE.no_preview_image;
 		ImageIcon glossaryImg=createImageIcon(imagename, true);
 		//if(glossaryImg.getImage() == null) glossaryImg=createImageIcon(SimStPLE.PAPER_CLOSE);
