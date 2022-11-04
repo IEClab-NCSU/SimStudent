@@ -3219,8 +3219,10 @@ public void fillInQuizProblem(String problemName) {
 					contextVariables.addVariable("%prev_i%", simSt.getPastInput());
 					contextVariables.addVariable("%current_i%", sai.getI());
 					String stepCV = step.replaceAll("_", "=");
+					
 					if (stepCV.contains("[")) {
 						// typeIN
+						
 						ArrayList <String> past_foa_content = simSt.getPastFoaContent();
 						String current_foa2 = "do something";
 						if (stepCV.contains("]")) {
@@ -3281,7 +3283,7 @@ public void fillInQuizProblem(String problemName) {
 						}
 					}
 					Concept c = tutalkBridge.getLastStatementLabel();
-					if (simSt.isResponseSatisfactoryGetterClassDefined()) {
+					if (!step.contains("[") && simSt.isResponseSatisfactoryGetterClassDefined()) {
 						IsResponseSatisfactory resp_satisfaction = getSimSt().getResponseSatisfactoryGetter();
 						if(resp_satisfaction.isResponseSatosfactoryGetter(c.getLabel())) {
 							explainedSelectionSkills.add(sai.getS());
@@ -3290,7 +3292,13 @@ public void fillInQuizProblem(String problemName) {
 							setLastSkillExplained(getFirstRanStudentSaidNo().getName());
 						}
 					}
-					else {
+					else if(!step.contains("[")) {
+						explainedSelectionSkills.add(sai.getS());
+						setAskedExplanation(true);
+						setExplanationGiven(true);
+						setLastSkillExplained(getFirstRanStudentSaidNo().getName());
+					}
+					else if(step.contains("[") && (c.getLabel().equals("R2")||c.getLabel().equals("R1"))){
 						explainedSelectionSkills.add(sai.getS());
 						setAskedExplanation(true);
 						setExplanationGiven(true);

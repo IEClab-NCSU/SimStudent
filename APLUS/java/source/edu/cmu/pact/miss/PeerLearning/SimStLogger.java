@@ -145,6 +145,7 @@ public class SimStLogger {
    public static final String EXAMPLE_VIEW = "Example Solution Viewed";
    public static final String QUIZ_VIEW_END = "Finished Quiz Solution View";
    public static final String EXAMPLE_VIEW_END = "Finished Example Solution View";
+   public static final String ON_PAPER_VIEW_END = "Closed On Paper View";
    public static final String QUIZ_VIEW_END_TAB = "Finished Quiz Solution View by Leaving Tab";
    public static final String EXAMPLE_VIEW_END_TAB = "Finished Example Solution View by Leaving Tab";
    public static final String QUIZ_VIEW_TAB = "Quiz Solution Viewed";

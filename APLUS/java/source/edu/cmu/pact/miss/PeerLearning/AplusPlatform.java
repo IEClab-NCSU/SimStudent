@@ -2023,7 +2023,13 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 		crossButton.setBackground(exampleColor);
 		crossButton.addActionListener(new ActionListener() { 
 			  public void actionPerformed(ActionEvent e) { 
-				  toggleOnPaper(false);
+				  // Add log here
+				//System.out.println("Quiz Start time : "+quizStartTime);
+				toggleOnPaper(false);
+				long on_paper_Duration = (Calendar.getInstance().getTimeInMillis() - actionListener.getExampleStartTime())/1000;
+	    		logger.simStLog(SimStLogger.SIM_STUDENT_ACTION_LISTENER, SimStLogger.ON_PAPER_VIEW_END, 
+	    				"",actionListener.getExampleTitle(), "", (int) on_paper_Duration);
+				
 			  } 
 		});
 
@@ -3206,6 +3212,7 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 			    	isLogged = false;
 			    	nextButtonClicked = 0;
 			    	exampleProblem = example.getTitle();
+			    	// The exampleSwitched function logs the start time of seeing the current example. This is exactly the time when on_paper image was shown.
 			    	actionListener.exampleSwitched(example.getTitle());
 			    	
 			    	//BufferedImage img=ImageIO.read(new File("f://images.jpg"));
@@ -3232,6 +3239,8 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 			    		}
 			    		//showOnPaperImage();
 			    	}
+			    	
+			    	
 			    	/*else {
 			    		setSpeechHTML(example.getShortDescription());
 			    	}*/

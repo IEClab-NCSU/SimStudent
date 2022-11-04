@@ -46,6 +46,9 @@ public class SimStPLEActionListener implements ActionListener, ChangeListener {
     public long getExampleStartTime() {
 		return exampleStartTime;
 	}
+    public String getExampleTitle() {
+		return exampleTitle;
+	}
 
 	public void setExampleStartTime(long exampleStartTime) {
 		this.exampleStartTime = exampleStartTime;

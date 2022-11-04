@@ -191,6 +191,7 @@ TutorArg="${TutorArg} -Dclass_name=someClass"
 if [ ${CTI} == "on" ];
 then
   TutorArg="${TutorArg} -ssResponseSatisfactoryGetterClass SimStAlgebraV8.AlgebraResponseSatisfactoryGetter"
+  TutorArg="${TutorArg} -DconfigFile=simSt-config-cti.txt"
 fi
 #TutorArg="${TutorArg} -ssCondition devTesting"
 TutorArg="${TutorArg} ${AddArgs}"
