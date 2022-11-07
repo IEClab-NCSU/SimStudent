@@ -270,7 +270,7 @@ public class ProblemStateReaderJDom {
             addMatcherForEdge(actionLabelElement, messageObject, edgeData);
             
             if(actionLabelElement.getChild("callbackFn") != null){
-            	System.out.println("Callback function is = " + actionLabelElement.getChild("callbackFn").getValue());
+            	trace.out("Callback function is = " + actionLabelElement.getChild("callbackFn").getValue());
             	edgeData.setCallbackFn(actionLabelElement.getChild("callbackFn").getValue());
             }
             

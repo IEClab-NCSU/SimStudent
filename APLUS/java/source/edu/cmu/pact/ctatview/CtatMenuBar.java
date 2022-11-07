@@ -2942,7 +2942,7 @@ public class CtatMenuBar extends CTATBase implements ActionListener, ProblemMode
     	debug ("saveGraphMenuActionPerformed()");
     	BR_Controller controller = getController();
     	ProblemModel probMod = controller.getProblemModel();
-    	System.out.println("probMod is named " + probMod.getProblemName() + ", " + probMod.getProblemFullName());
+    	trace.out("probMod is named " + probMod.getProblemName() + ", " + probMod.getProblemFullName());
     	
 
         if (probMod.getProblemFullName().length() == 0) 

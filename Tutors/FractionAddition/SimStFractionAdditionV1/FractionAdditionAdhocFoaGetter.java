@@ -129,7 +129,7 @@ public class FractionAdditionAdhocFoaGetter extends FoaGetter {
 			char r = selection.charAt(rIdx +1);
 			int row = r - '1' +1;      
   			if ((col==3 && row==1)){	/*second fraction addition, complex fraction 3 numerator*/	 
-  			System.out.println("****" + this.getCommCombo(brController, 2).getValue());
+  			trace.out("****" + this.getCommCombo(brController, 2).getValue());
 				/*** ADD_NUM****/
 				if (this.getCommCombo(brController, 2).getValue().equals("Add")){
 					vFoa.add(getTableCell(brController, 1, 1));  	//denominator of 2nd fraction

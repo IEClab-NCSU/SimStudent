@@ -1213,7 +1213,7 @@ public class NodeView extends JTextField {
         menuItem.setEnabled(notStartNode);
         menuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	System.out.println("***DELETE***");
+            	trace.out("***DELETE***");
             	trace.out ("problem node = " + problemNode);
             	trace.out ("node view = " + problemNode.getNodeView());
             	controller.processDeleteNode(problemNode);

@@ -41,8 +41,8 @@ public class LaunchHelp {
            // hs.setHomeID("blah");
         } catch (Exception ee) {
             //Say what the exception really is
-            System.out.println( "HelpSet " + ee.getMessage());
-            System.out.println("HelpSet "+ helpHS +" not found");
+            trace.out( "HelpSet " + ee.getMessage());
+            trace.out("HelpSet "+ helpHS +" not found");
             return;
          }
 //      Create a HelpBroker object:

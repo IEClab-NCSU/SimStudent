@@ -21,6 +21,8 @@ import edu.cmu.pact.BehaviorRecorder.ProblemModel.Graph.Groups.GroupChangeListen
 import edu.cmu.pact.BehaviorRecorder.ProblemModel.Graph.Groups.GroupEditorContext;
 import edu.cmu.pact.BehaviorRecorder.ProblemModel.Graph.Groups.GroupModel;
 import edu.cmu.pact.BehaviorRecorder.ProblemModel.Graph.Groups.LinkGroup;
+import edu.cmu.pact.Utilities.trace;
+
 /**
  * This GroupTreeModel class tells the groupTree how the tree is structured
  * and notifies listeners when the structure is changed.  This includes changes
@@ -112,7 +114,7 @@ public class GroupTreeModel implements TreeModel, GroupChangeListener, EditorCon
 			return -1;
 		}
 		else {
-			System.out.println(arg0.getClass());
+			trace.out(arg0.getClass().toString());
 			throw new IllegalArgumentException("Tree Node not of type ExampleTracerGroup");
 		}			
 	}

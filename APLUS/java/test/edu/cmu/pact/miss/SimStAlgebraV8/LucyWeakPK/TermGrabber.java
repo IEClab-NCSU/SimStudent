@@ -17,104 +17,104 @@ public class TermGrabber
 		String expString="4x+8=8";
 		
 		
-		System.out.println(TermGrabber.stripSign(TermGrabber.findNthNearestInteger(expString, 0)));
+		trace.out(TermGrabber.stripSign(TermGrabber.findNthNearestInteger(expString, 0)));
 	        
 	        
 	        
 	      
 	        
 	        
-/*		System.out.println();
+/*		trace.out();
 
-		System.out.println(findNthInteger(s2, 0));
-		System.out.println(findNthNumber(s2, 0));
-		System.out.println(findNthNumber(s2, 1));
-		System.out.println(findNthNumber(s2, 2));
-		System.out.println(findNthNumber(s2, 3));
-		System.out.println(findNthNumber(s2, 4));
-		System.out.println(findNthNumber(s2, 5));
-		System.out.println(findNthVarTermWithCoefficient(s2, 0));
-		System.out.println(findNthIntegerBeforeLetter(s2, 0));
-		System.out.println(findNthNumberBeforeLetter(s2, 0));
-		System.out.println(findNthNumberBeforeLetter(s2, 1));
-		System.out.println("-5/4x".matches("^(-)?((\\d)+|((\\d)+)/((\\d)+)|((\\d){0,})\\.(\\d)+)([a-z|A-Z]){1}"));
+		trace.out(findNthInteger(s2, 0));
+		trace.out(findNthNumber(s2, 0));
+		trace.out(findNthNumber(s2, 1));
+		trace.out(findNthNumber(s2, 2));
+		trace.out(findNthNumber(s2, 3));
+		trace.out(findNthNumber(s2, 4));
+		trace.out(findNthNumber(s2, 5));
+		trace.out(findNthVarTermWithCoefficient(s2, 0));
+		trace.out(findNthIntegerBeforeLetter(s2, 0));
+		trace.out(findNthNumberBeforeLetter(s2, 0));
+		trace.out(findNthNumberBeforeLetter(s2, 1));
+		trace.out("-5/4x".matches("^(-)?((\\d)+|((\\d)+)/((\\d)+)|((\\d){0,})\\.(\\d)+)([a-z|A-Z]){1}"));
 
-		System.out.println();
+		trace.out();
 
 
-		System.out.println(findNthInteger(s1, 0));
-		System.out.println(findNthInteger(s1, 1));
-		System.out.println(findNthInteger(s1, 2));
-		System.out.println(findNthInteger(s1, 3));
-		System.out.println(findNthInteger(s1, 4));
-		System.out.println(findNthInteger(s1, 5));
-		System.out.println(findNthInteger(s1, 6));
-		System.out.println(findNthInteger(s1, 7));
-		System.out.println(findNthInteger(s1, 8));
-		System.out.println(findNthInteger(s1, 9));
-		System.out.println();
+		trace.out(findNthInteger(s1, 0));
+		trace.out(findNthInteger(s1, 1));
+		trace.out(findNthInteger(s1, 2));
+		trace.out(findNthInteger(s1, 3));
+		trace.out(findNthInteger(s1, 4));
+		trace.out(findNthInteger(s1, 5));
+		trace.out(findNthInteger(s1, 6));
+		trace.out(findNthInteger(s1, 7));
+		trace.out(findNthInteger(s1, 8));
+		trace.out(findNthInteger(s1, 9));
+		trace.out();
 
-		System.out.println(findNthIntegerWithoutSign(s1, 0));
-		System.out.println(findNthIntegerWithoutSign(s1, 1));
-		System.out.println(findNthIntegerWithoutSign(s1, 2));
-		System.out.println(findNthIntegerWithoutSign(s1, 3));
-		System.out.println(findNthIntegerWithoutSign(s1, 4));
-		System.out.println(findNthIntegerWithoutSign(s1, 5));
-		System.out.println(findNthIntegerWithoutSign(s1, 6));
-		System.out.println(findNthIntegerWithoutSign(s1, 7));
-		System.out.println(findNthIntegerWithoutSign(s1, 8));
-		System.out.println(findNthIntegerWithoutSign(s1, 9));
-		System.out.println();
+		trace.out(findNthIntegerWithoutSign(s1, 0));
+		trace.out(findNthIntegerWithoutSign(s1, 1));
+		trace.out(findNthIntegerWithoutSign(s1, 2));
+		trace.out(findNthIntegerWithoutSign(s1, 3));
+		trace.out(findNthIntegerWithoutSign(s1, 4));
+		trace.out(findNthIntegerWithoutSign(s1, 5));
+		trace.out(findNthIntegerWithoutSign(s1, 6));
+		trace.out(findNthIntegerWithoutSign(s1, 7));
+		trace.out(findNthIntegerWithoutSign(s1, 8));
+		trace.out(findNthIntegerWithoutSign(s1, 9));
+		trace.out();
 
-		System.out.println(findNthNearestInteger(s1, 0));
-		System.out.println(findNthNearestInteger(s1, 1));
-		System.out.println(findNthNearestInteger(s1, 2));
-		System.out.println(findNthNearestInteger(s1, 3));
-		System.out.println(findNthNearestInteger(s1, 4));
-		System.out.println(findNthNearestInteger(s1, 5));
-		System.out.println(findNthNearestInteger(s1, 6));
-		System.out.println(findNthNearestInteger(s1, 7));
-		System.out.println(findNthNearestInteger(s1, 8));
-		System.out.println();
+		trace.out(findNthNearestInteger(s1, 0));
+		trace.out(findNthNearestInteger(s1, 1));
+		trace.out(findNthNearestInteger(s1, 2));
+		trace.out(findNthNearestInteger(s1, 3));
+		trace.out(findNthNearestInteger(s1, 4));
+		trace.out(findNthNearestInteger(s1, 5));
+		trace.out(findNthNearestInteger(s1, 6));
+		trace.out(findNthNearestInteger(s1, 7));
+		trace.out(findNthNearestInteger(s1, 8));
+		trace.out();
 /*
-		System.out.println(findNthInteger(s, 0));
-		System.out.println(findNthInteger(s1, 0));
-		System.out.println(findNthInteger(s, 1));
-		System.out.println(findNthInteger(s1, 1));
-		System.out.println(findNthInteger(s, 2));
-		System.out.println(findNthInteger(s1, 2));
-		System.out.println(findNthInteger(s, 3));
-		System.out.println(findNthInteger(s1, 3));
-		System.out.println(findNthInteger(s, 4));
-		System.out.println(findNthInteger(s1, 4));
+		trace.out(findNthInteger(s, 0));
+		trace.out(findNthInteger(s1, 0));
+		trace.out(findNthInteger(s, 1));
+		trace.out(findNthInteger(s1, 1));
+		trace.out(findNthInteger(s, 2));
+		trace.out(findNthInteger(s1, 2));
+		trace.out(findNthInteger(s, 3));
+		trace.out(findNthInteger(s1, 3));
+		trace.out(findNthInteger(s, 4));
+		trace.out(findNthInteger(s1, 4));
 
-		System.out.println();
-		System.out.println(findNthVarTermWithCoefficient(s1, 0));
-		System.out.println(findNthVarTermWithCoefficient(s1, 1));
-		System.out.println(findNthVarTermWithCoefficient(s1, 2));
-		System.out.println(findNthVarTermWithCoefficient(s1, 3));
-		System.out.println(findNthVarTermWithCoefficient(s1, 4));
-		System.out.println(findNthVarTermWithCoefficient(s1, 5));
-		System.out.println(findNthVarTermWithCoefficient(s1, 6));
-		System.out.println(findNthVarTermWithCoefficient(s1, 7));
-		System.out.println(findNthVarTermWithCoefficient(s1, 8));
-		System.out.println(findNthVarTermWithCoefficient(s1, 9));
+		trace.out();
+		trace.out(findNthVarTermWithCoefficient(s1, 0));
+		trace.out(findNthVarTermWithCoefficient(s1, 1));
+		trace.out(findNthVarTermWithCoefficient(s1, 2));
+		trace.out(findNthVarTermWithCoefficient(s1, 3));
+		trace.out(findNthVarTermWithCoefficient(s1, 4));
+		trace.out(findNthVarTermWithCoefficient(s1, 5));
+		trace.out(findNthVarTermWithCoefficient(s1, 6));
+		trace.out(findNthVarTermWithCoefficient(s1, 7));
+		trace.out(findNthVarTermWithCoefficient(s1, 8));
+		trace.out(findNthVarTermWithCoefficient(s1, 9));
 
-		System.out.println();
-		System.out.println(findNthIntegerBeforeLetter(s1, 0));
-		System.out.println(findNthIntegerBeforeLetter(s1, 1));
-		System.out.println(findNthIntegerBeforeLetter(s1, 2));
-		System.out.println(findNthIntegerBeforeLetter(s1, 3));
-		System.out.println(findNthIntegerBeforeLetter(s1, 4));
-		System.out.println(findNthIntegerBeforeLetter(s1, 5));
-		System.out.println(findNthIntegerBeforeLetter(s1, 6));
-		System.out.println(findNthIntegerBeforeLetter(s1, 7));
-		System.out.println(findNthIntegerBeforeLetter(s1, 8));
-		System.out.println(findNthIntegerBeforeLetter(s1, 9));
+		trace.out();
+		trace.out(findNthIntegerBeforeLetter(s1, 0));
+		trace.out(findNthIntegerBeforeLetter(s1, 1));
+		trace.out(findNthIntegerBeforeLetter(s1, 2));
+		trace.out(findNthIntegerBeforeLetter(s1, 3));
+		trace.out(findNthIntegerBeforeLetter(s1, 4));
+		trace.out(findNthIntegerBeforeLetter(s1, 5));
+		trace.out(findNthIntegerBeforeLetter(s1, 6));
+		trace.out(findNthIntegerBeforeLetter(s1, 7));
+		trace.out(findNthIntegerBeforeLetter(s1, 8));
+		trace.out(findNthIntegerBeforeLetter(s1, 9));
 
-*/		//System.out.println(stripSign(null));
+*/		//trace.out(stripSign(null));
 			
-	//	System.out.println(findNthToken("4x+8", " =+,*", 9, "^(-)?(((\\d)+/(\\d)+)([a-z|A-Z]){1}|((\\d)+)([a-z|A-Z]){1}|((\\d)+)/([a-z|A-Z]){1}|([a-z|A-Z]){1}/((\\d)+)|((\\d)+)([a-z|A-Z]){1}/((\\d)+))"));
+	//	trace.out(findNthToken("4x+8", " =+,*", 9, "^(-)?(((\\d)+/(\\d)+)([a-z|A-Z]){1}|((\\d)+)([a-z|A-Z]){1}|((\\d)+)/([a-z|A-Z]){1}|([a-z|A-Z]){1}/((\\d)+)|((\\d)+)([a-z|A-Z]){1}/((\\d)+))"));
 		
 		
 		
@@ -275,7 +275,7 @@ public class TermGrabber
 		while(st.hasMoreTokens())
 		{
 			numString = st.nextToken();
-			//System.out.print(numString + " ");
+			//trace.out(numString + " ");
 	
 			if(numString.matches(pat))
 			{	
@@ -311,7 +311,7 @@ public class TermGrabber
 	
 			
 			numString = st.nextToken();
-			//System.out.println("\t" + numString + " " + numString.matches(pat));
+			//trace.out("\t" + numString + " " + numString.matches(pat));
 	
 			if(numString.matches(pat))
 			{
@@ -348,7 +348,7 @@ public static String findNthIntegerOld(String expString, int t)
 		while(st.hasMoreTokens())
 		{
 			numString = st.nextToken();
-			System.out.println(numString);
+			trace.out(numString);
 			try
 			{
 				int newNum = Integer.parseInt(numString);

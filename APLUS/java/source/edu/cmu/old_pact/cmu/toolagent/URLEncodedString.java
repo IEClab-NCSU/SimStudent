@@ -56,13 +56,13 @@ public class URLEncodedString extends Object {
 	    if (EncodedString.length() > 0) {
 			while (((new_pos = EncodedString.indexOf ('&', pos)) >=0) && (field < MaxFields)) {
 				DecodedFields[field][0] = EncodedString.substring(pos, new_pos);
-				//System.out.println(field + ": " + DecodedFields[field][0]);
+				//trace.out(field + ": " + DecodedFields[field][0]);
 				pos = new_pos + 1;
 				field = field + 1;
 				}
 			
 			DecodedFields[field][0] = EncodedString.substring(pos, EncodedString.length());
-			//System.out.println(field + "*:* " + DecodedFields[field][0]);
+			//trace.out(field + "*:* " + DecodedFields[field][0]);
 			field = field + 1;
 			}
 			
@@ -71,9 +71,9 @@ public class URLEncodedString extends Object {
 		for (field = 0; field < NumFields; field++) {
 			pos = DecodedFields[field][0].indexOf('=') + 1;
 			DecodedFields[field][1] = DecodedFields[field][0].substring(pos, DecodedFields[field][0].length());
-			//System.out.println(field + "$:$ " + DecodedFields[field][1]);
+			//trace.out(field + "$:$ " + DecodedFields[field][1]);
 			DecodedFields[field][0] = DecodedFields[field][0].substring(0, pos - 1);
-			//System.out.println(field + "%:% " + DecodedFields[field][0]);
+			//trace.out(field + "%:% " + DecodedFields[field][0]);
 			}
 		}
 	public String getField ( String field ) {

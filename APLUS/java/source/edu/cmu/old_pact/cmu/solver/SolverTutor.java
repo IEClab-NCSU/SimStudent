@@ -32,6 +32,7 @@ import edu.cmu.old_pact.cmu.uiwidgets.SolverFrame;
 import edu.cmu.old_pact.dormin.DataFormatException;
 import edu.cmu.old_pact.dormin.DorminException;
 import edu.cmu.old_pact.dormin.NoSuchPropertyException;
+import edu.cmu.pact.Utilities.trace;
 
 public class SolverTutor implements Tutor {
 
@@ -113,18 +114,18 @@ public class SolverTutor implements Tutor {
 			q = e.getProperty("variable side expression").getProperty("variables").getArrayValue();
 			if(q.length > 0){
 				var = ((StringQuery)q[0]).getStringValue();
-				//System.out.println("    using variable from left side: " + var);
+				//trace.out("    using variable from left side: " + var);
 			}
 		}
 		catch(NoSuchFieldException nsfe){
 			//just return null
-			System.out.println("ST: exception guessing target variable: " + nsfe.toString());
+			trace.out("ST: exception guessing target variable: " + nsfe.toString());
 		}
 		catch(NullPointerException npe){
 			//this happens when the first line of the above try
 			//statement fails somewhere in the middle (eg if the
 			//user enters the 'equation' "1+2"
-			System.out.println("ST: exception guessing target variable: " + npe.toString());
+			trace.out("ST: exception guessing target variable: " + npe.toString());
 		}
 
 		return var;
@@ -135,17 +136,17 @@ public class SolverTutor implements Tutor {
         public boolean verifyTargetVar(Equation e,VariableExpression v){
             boolean ret = false;
 
-            /*System.out.println("vTV(" + e.getStringValue() + "," +
+            /*trace.out("vTV(" + e.getStringValue() + "," +
               v.getStringValue() + ")");*/
 
             try{
                 Expression ls = (Expression)e.getProperty("left");
                 Queryable[] vars = (Queryable[])(ls.getProperty("variables").getArrayValue());
                 for(int i=0;i<vars.length;i++){
-                    //System.out.println("vTV: checking variable " + i + " of left side");
+                    //trace.out("vTV: checking variable " + i + " of left side");
                     if(v.getStringValue().equalsIgnoreCase(vars[i].getStringValue())){
                         ret = true;
-                        //System.out.println("     money.");
+                        //trace.out("     money.");
                         break;
                     }
                 }
@@ -155,17 +156,17 @@ public class SolverTutor implements Tutor {
                     Expression rs = (Expression)e.getProperty("right");
                     vars = (Queryable[])(rs.getProperty("variables").getArrayValue());
                     for(int i=0;i<vars.length;i++){
-                        //System.out.println("vTV: checking variable " + i + " of right side");
+                        //trace.out("vTV: checking variable " + i + " of right side");
                         if(v.getStringValue().equalsIgnoreCase(vars[i].getStringValue())){
                             ret = true;
-                            //System.out.println("     money.");
+                            //trace.out("     money.");
                             break;
                         }
                     }
                 }
             }
             catch(NoSuchFieldException nsfe){
-                //System.out.println("vTV: failure because " + nsfe.toString());
+                //trace.out("vTV: failure because " + nsfe.toString());
             }
 
             return ret;
@@ -173,9 +174,9 @@ public class SolverTutor implements Tutor {
 
 	public void showSkills(){
 		if(!ruleUpdates.isEmpty()){
-			System.out.println("SolverTutor: skills updated: ");
+			trace.out("SolverTutor: skills updated: ");
 			for(Enumeration e = ruleUpdates.keys();e.hasMoreElements();){
-				System.out.println(e.nextElement());
+				trace.out(e.nextElement().toString());
 			}
 		}
 	}
@@ -208,20 +209,20 @@ public class SolverTutor implements Tutor {
                 targetVar = equation.substring(semicolonPos+1);
                 /*make sure that the target var actually occurs in the equation*/
                 try{
-                    /*System.out.println("startProblem: new Equation(" +
+                    /*trace.out("startProblem: new Equation(" +
 					  equation.substring(0,semicolonPos) +
 					  ") for target verification");*/
                     Equation test = new Equation(equation.substring(0,semicolonPos));
                     //test.getProperty("target variable side " + targetVar);
                     targetVarInfo = new VariableExpression(targetVar);
                     if(!verifyTargetVar(test,targetVarInfo)){
-                        System.out.println("startProblem: verification error");
+                        trace.out("startProblem: verification error");
                         targetVar = "";
                         targetVarInfo = null;
                     }
                 }
                 catch(BadExpressionError bee){
-                    System.out.println("startProblem: verification error: " + bee.toString());
+                    trace.out("startProblem: verification error: " + bee.toString());
                     targetVar = "";
                     targetVarInfo = null;
                 }
@@ -237,7 +238,7 @@ public class SolverTutor implements Tutor {
                 /*the caller didn't specify a variable to solve for,
                   so we'll just take a guess*/
                 try{
-                    /*System.out.println("startProblem: new Equation(" +
+                    /*trace.out("startProblem: new Equation(" +
 					  equation.substring(0,semicolonPos) +
 					  ") for target guessing");*/
                     targetVar = guessTargetVar(new Equation(equation.substring(0,semicolonPos)));
@@ -262,7 +263,7 @@ public class SolverTutor implements Tutor {
 			originalEquation = currentEquation;
 
 			if(SolverFrame.debug()){
-				System.out.println("ST.startProblem(): solving " + currentEquation + " for " + targetVar);
+				trace.out("ST.startProblem(): solving " + currentEquation + " for " + targetVar);
 			}
 	}
 
@@ -276,7 +277,7 @@ public class SolverTutor implements Tutor {
                 currentEquationInfo = new Equation(equation,new String[] {targetVar});
             }
             catch (BadExpressionError err) {
-                //System.out.println("Equation "+equation+" does not parse");
+                //trace.out("Equation "+equation+" does not parse");
                 return;
             }
 
@@ -284,10 +285,10 @@ public class SolverTutor implements Tutor {
 				try{
 					Expression ls = (Expression)currentEquationInfo.getProperty("left");
 					Expression rs = (Expression)currentEquationInfo.getProperty("right");
-					System.out.println("ST.sCE: " + ls + " = " + rs);
-					System.out.println("ST.sCE: " + ls.debugForm() +
+					trace.out("ST.sCE: " + ls + " = " + rs);
+					trace.out("ST.sCE: " + ls.debugForm() +
 									   " = " + rs.debugForm());
-					/*System.out.println("setCurrentEquation: makeForm(" + currentEquation + ") == " + 
+					/*trace.out("setCurrentEquation: makeForm(" + currentEquation + ") == " +
 					  currentEquationInfo.makeForm(currentEquation).toString());*/
 				}
 				catch(Exception e){}
@@ -306,7 +307,7 @@ public class SolverTutor implements Tutor {
 			validActions = (String[])rawObj;
 		}
 		catch (Exception e) {
-			System.out.println("exception getting actions: "+e);
+			trace.out("exception getting actions: "+e);
 		}
 	}
 	
@@ -334,7 +335,7 @@ public class SolverTutor implements Tutor {
 	}
 	
 	public RuleMatchInfo checkStudentAction(String selection,String action,String input) {
-		//System.out.println("ST.cSA(" + selection + "," + action + "," + input + ")");
+		//trace.out("ST.cSA(" + selection + "," + action + "," + input + ")");
 		RuleMatchInfo tempRuleMatchInfo = null;
 		int toDo = getTutorAction(action);
 		if (toDo == cycle) {
@@ -367,7 +368,7 @@ public class SolverTutor implements Tutor {
 		}
 		else if (toDo == typeinNotCompleted){
 		// What to do here?
-			System.out.println("TypeIn step "+currentEquation+" is not completed!");
+			trace.out("TypeIn step "+currentEquation+" is not completed!");
 		}
 		return tempRuleMatchInfo;
 	}
@@ -378,7 +379,7 @@ public class SolverTutor implements Tutor {
 			nextEquation = trans.getProperty("Tool","current equation");
 		}
 		catch (NoSuchPropertyException err) {
-			System.out.println("can't get current equation of solver tool");
+			trace.out("can't get current equation of solver tool");
 			nextEquation = "3x+4=5"; //yeech
 		}
 		int toDo = getTutorAction(action);
@@ -397,7 +398,7 @@ public class SolverTutor implements Tutor {
 			ruleUpdates.put(skillname,new Object());
 		}
 		/*else{
-		  System.out.println("ST.uS: skill " + skillname + " has already been updated");
+		  trace.out("ST.uS: skill " + skillname + " has already been updated");
 		  }*/
 	}
 
@@ -413,12 +414,12 @@ public class SolverTutor implements Tutor {
 		String directionCode;
 		if (currentRules != null) {
 			if(SolverFrame.debug()){
-				System.out.println("ST.uSFR: found "+currentRules.length+" skills for rule: " + modelRule);
+				trace.out("ST.uSFR: found "+currentRules.length+" skills for rule: " + modelRule);
 			}
 			for (int i=0;i<currentRules.length;++i) {
 				SkillRule foundSkill = currentRules[i];
 				if (foundSkill.isTraced())
-						System.out.println("***Found Skill rule "+foundSkill.getName()+" subskill: "+foundSkill.getSubskillName());
+						trace.out("***Found Skill rule "+foundSkill.getName()+" subskill: "+foundSkill.getSubskillName());
 				//for some reason, we pass a code of 1 for up and 0 for down
 				if (up)
 					directionCode = "1";
@@ -430,7 +431,7 @@ public class SolverTutor implements Tutor {
 			setSkillInfo(true);
 		}
 		else if(SolverFrame.debug()){
-			System.out.println("ST.uSFR: warning: no skills found for rule: " + modelRule);
+			trace.out("ST.uSFR: warning: no skills found for rule: " + modelRule);
 		}
 	}
 
@@ -444,13 +445,13 @@ public class SolverTutor implements Tutor {
 																input);
 		if (foundRule != null && foundRule.getBoolean() == true) { //found rule, so can find skill to increment
 			if (foundRule.getRule().isTraced())
-				System.out.println("***Found Done rule "+foundRule.getRule().getName());
+				trace.out("***Found Done rule "+foundRule.getRule().getName());
 			updateSkillsForRule(foundRule.getRule(),true);
 			
 //			SkillRule foundSkill = skillRules.findRuleToFire(currentEquationInfo,(foundRule.getRule()).getName());
 //			if (foundSkill != null && (foundSkill.getName().toLowerCase()).indexOf("done") != -1) {
 //				if (foundRule.getRule().isTraced())
-//					System.out.println("***Found Skill rule "+foundSkill.getName()+" subskill: "+foundSkill.getSubskillName());
+//					trace.out("***Found Skill rule "+foundSkill.getName()+" subskill: "+foundSkill.getSubskillName());
 //				isDone = true;
 //				trans.updateSkill(foundSkill.getSubskillName(),"1", currentEquationInfo.toString());
 //				trans.suggestNewProblem();
@@ -465,7 +466,7 @@ public class SolverTutor implements Tutor {
 		}
 		
 		if(!isDone) {
-			//System.out.println("ST.cTD: No Action rule");
+			//trace.out("ST.cTD: No Action rule");
 			trans.setFlag(selection,true);
 			//SkillRule foundSkill = skillRules.findRuleToFire(currentEquationInfo,"Done");
 			updateSkillsForRule(strategicRules().getRuleByName("doneleft"),false); //no rule found, decrement done
@@ -499,11 +500,11 @@ public class SolverTutor implements Tutor {
 				}
 			}
 			else if(SolverFrame.debug()){
-				System.out.println("Can't find help rule (done)");
+				trace.out("Can't find help rule (done)");
 			}
 			if(bugRule == null){
 				if(SolverFrame.debug()){
-					System.out.println("ST.cTD: no bug rule for failed done action; using generic message.");
+					trace.out("ST.cTD: no bug rule for failed done action; using generic message.");
 				}
 				/*even if we can't find a help/bug rule, we want to
                   give the student some feedback as to why nothing is
@@ -520,8 +521,8 @@ public class SolverTutor implements Tutor {
 	
 	private RuleMatchInfo cycleTutor(String selection, String action, String input) throws DorminException {
 		//check the strategic rules
-		//System.out.println("about to cycle tutor on "+currentEquationInfo.toString()+" "+action+" "+input);
-		//System.out.println("pattern is "+currentEquationInfo.getPattern());
+		//trace.out("about to cycle tutor on "+currentEquationInfo.toString()+" "+action+" "+input);
+		//trace.out("pattern is "+currentEquationInfo.getPattern());
 		
 		long start = System.currentTimeMillis();
 
@@ -539,13 +540,13 @@ public class SolverTutor implements Tutor {
 																input);
 		if (foundRule != null && foundRule.getBoolean() == true) { //found rule, so can find skill to increment
 			if (foundRule.getRule().isTraced())
-				System.out.println("***Found Strategic rule "+foundRule.getRule().getName());
+				trace.out("***Found Strategic rule "+foundRule.getRule().getName());
 			//currentRule = (foundRule.getRule()).getName();
 			updateSkillsForRule(foundRule.getRule(),true);
 //				SkillRule foundSkill = skillRules.findRuleToFire(currentEquationInfo,(foundRule.getRule()).getName());
 //				if (foundSkill != null) {
 //					if (foundRule.getRule().isTraced())
-//						System.out.println("***Found Skill rule "+foundSkill.getName()+" subskill is "+foundSkill.getSubskillName());
+//						trace.out("***Found Skill rule "+foundSkill.getName()+" subskill is "+foundSkill.getSubskillName());
 //					trans.updateSkill(foundSkill.getSubskillName(),"1", currentEquationInfo.toString());
 		}
 		else { //no strategic rule found -- check for bugs and decrement skills
@@ -557,16 +558,16 @@ public class SolverTutor implements Tutor {
 														   validActions);
 			if (helpRule != null) {
 				if (helpRule.isTraced())
-					System.out.println("***Found help rule to decrement skill: "+helpRule.getName());
+					trace.out("***Found help rule to decrement skill: "+helpRule.getName());
 				//currentRule = helpRule.getName();
 //				SkillRule foundSkill = skillRules.findRuleToFire(currentEquationInfo,helpRule.getName());
 //				if (foundSkill != null) {
 //					if (helpRule.isTraced())
-//						System.out.println("***Skill to decrement is : "+foundSkill.getSubskillName());
+//						trace.out("***Skill to decrement is : "+foundSkill.getSubskillName());
 //					trans.updateSkill(foundSkill.getSubskillName(),"0", currentEquationInfo.toString());
 //				}
 //				else
-//					System.out.println("No skill found for rule "+helpRule.getName());
+//					trace.out("No skill found for rule "+helpRule.getName());
 				updateSkillsForRule(helpRule,false); //decrement skills corresponding to help rule
 				//check for a bug rule
 				Rule bugRule = bugRules().findRuleToFire(new EquationHistory(currentEquationInfo,
@@ -577,7 +578,7 @@ public class SolverTutor implements Tutor {
 													   helpRule.getAction(),
 													   helpRule.getInput());
 				if (bugRule != null) {
-//System.out.println("Found ST bug rule "+bugRule.getName());
+//trace.out("Found ST bug rule "+bugRule.getName());
 					String[] messages = bugRule.getMessages(new EquationHistory(currentEquationInfo,
 																			targetVar,
 																			originalEquation));
@@ -585,12 +586,12 @@ public class SolverTutor implements Tutor {
 				}
 			}
 			else if(SolverFrame.debug()){
-				System.out.println("Can't find help rule");
+				trace.out("Can't find help rule");
 			}
 		}
 		long end = System.currentTimeMillis();
 		
-//System.out.println("cycle took "+((double)end-(double)start)/1000.0+" seconds");
+//trace.out("cycle took "+((double)end-(double)start)/1000.0+" seconds");
 		return foundRule;
 	}
 	
@@ -615,7 +616,7 @@ public class SolverTutor implements Tutor {
 														   validActions);
 			if (helpRule != null) {
 				if (helpRule.isTraced())
-					System.out.println("***Found Help rule "+helpRule.getName());
+					trace.out("***Found Help rule "+helpRule.getName());
 				String[] messages = helpRule.getMessages(new EquationHistory(currentEquationInfo,
 																			targetVar,
 																			originalEquation));
@@ -626,7 +627,7 @@ try {
 					//				SkillRule foundSkill = skillRules.findRuleToFire(currentEquationInfo,helpRule.getName());
 //				if (foundSkill != null) {
 //					if (helpRule.isTraced())
-//						System.out.println("***In Hint, Found Skill rule "+foundSkill.getName()+" subskill is "+foundSkill.getSubskillName());
+//						trace.out("***In Hint, Found Skill rule "+foundSkill.getName()+" subskill is "+foundSkill.getSubskillName());
 //					trans.updateSkill(foundSkill.getSubskillName(),"2", currentEquationInfo.toString());
 //				}
 					updateSkillsForRule(helpRule,false); //decrement skills corresponding to this help
@@ -661,20 +662,20 @@ try {
 	}
 	
 	private void updateSkillsTypeIn(String skillGradient, int skillSide){
-		//System.out.println("ST updateSkillsTypeIn skillGradient = "+skillGradient);
+		//trace.out("ST updateSkillsTypeIn skillGradient = "+skillGradient);
 		if (currentRules != null){
 			boolean foundASkill = false;
 			//Typein skills use PREVIOUS equation info (i.e. they refer to the equation before the strategic step was taken)
 			EquationHistory eh = new EquationHistory(previousEquationInfo,targetVar,originalEquation);
 			if(SolverFrame.debug()){
-				System.out.println("ST.uSTI: finding typein skills for " + currentRules.length + " skills");
+				trace.out("ST.uSTI: finding typein skills for " + currentRules.length + " skills");
 			}
 			for(int i=0;i<currentRules.length;i++){
 				SkillRule[] foundSkills = typeinSkillRules().findAllRulesToFire(eh,currentRules[i].getSubskillName());
 				if(foundSkills != null){
 					foundASkill = true;
 					if(SolverFrame.debug()){
-						System.out.println("ST.uSTI: found " + foundSkills.length +
+						trace.out("ST.uSTI: found " + foundSkills.length +
 										   " typein skill(s) for skill rule " + currentRules[i].getSubskillName());
 					}
 					for(int j=0;j<foundSkills.length;j++){
@@ -687,7 +688,7 @@ try {
 							currSides = trans.getProperty("Tool", "current sides");
 						} catch (DorminException err) { }
 						if (foundSkills[j].isTraced())
-							System.out.println("***Found Skill rule "+foundSkills[j].getName()+
+							trace.out("***Found Skill rule "+foundSkills[j].getName()+
 											   " subskill: "+foundSkills[j].getSubskillName());
 						try {
 							updateSkill(foundSkills[j].getSubskillName(),skillGradient, currSides);
@@ -698,7 +699,7 @@ try {
 					}
 				}
 				else if(SolverFrame.debug()){
-					System.out.println("ST.uSTI: no typein skills found for skill rule " + currentRules[i].getName() +
+					trace.out("ST.uSTI: no typein skills found for skill rule " + currentRules[i].getName() +
 									   "(" + currentRules[i].getSubskillName() + ")");
 				}
 			}
@@ -708,17 +709,17 @@ try {
 			}
 			else if(SolverFrame.debug()){
 				//this failure is more problematic
-				System.out.print("ST.uSTI: warning: no typein skills found for skill rules {" + currentRules[0]);
+				trace.out("ST.uSTI: warning: no typein skills found for skill rules {" + currentRules[0]);
 				if(currentRules.length > 1){
-					System.out.println(", ...}");
+					trace.out(", ...}");
 				}
 				else{
-					System.out.println("}");
+					trace.out("}");
 				}
 			}
 		}
 		else if(SolverFrame.debug()){
-			System.out.println("ST.uSTI: no skill rules, so can't search for typein skill rules");
+			trace.out("ST.uSTI: no skill rules, so can't search for typein skill rules");
 		}
 	}
 
@@ -753,7 +754,7 @@ try {
 			}
 		}
 		catch(NoSuchPropertyException nspe){
-			System.out.println("ST.gSI: " + nspe);
+			trace.out("ST.gSI: " + nspe);
 		}
 
 		return ret;
@@ -776,15 +777,15 @@ try {
 			}
 		}
 		catch(NoSuchPropertyException nspe){
-			System.out.println("ST.gSI: " + nspe);
+			trace.out("ST.gSI: " + nspe);
 		}
 
 		return ret;
 	}
 
 	private void cycleTutorTypein(String selection, String action, String input) {
-		/*System.out.println("ST.cTT("+selection+","+action+","+input+")");
-		  System.out.println("ST.cTT: Current equation: "+currentEquation);*/
+		/*trace.out("ST.cTT("+selection+","+action+","+input+")");
+		  trace.out("ST.cTT: Current equation: "+currentEquation);*/
 //		Test.clearHash();
 		SymbolManipulator sm = new SymbolManipulator();
 		sm.setMaintainVarList(true);
@@ -799,15 +800,15 @@ try {
 				comparison = sm.runScript("right",currentEquation);
 				skillSide = RIGHTSIDE;
 			}
-			//System.out.println("ST.cTT: comparing: " + input + " =?= " + comparison);
+			//trace.out("ST.cTT: comparing: " + input + " =?= " + comparison);
 			if (typeinEqual(selection,input,comparison)) {
-				//System.out.println("ST.cTT: input " + input + " matches " + comparison);
+				//trace.out("ST.cTT: input " + input + " matches " + comparison);
 				trans.setFlag(selection,false);
 				updateSkillsTypeIn("1", skillSide);
 			}
 			else{
 				if(SolverFrame.debug()){
-					System.out.println("ST.cTT: input " + input + " does not match " + comparison);
+					trace.out("ST.cTT: input " + input + " does not match " + comparison);
 				}
 				trans.setFlag(selection,true);
 				updateSkillsTypeIn("0", skillSide);
@@ -841,10 +842,10 @@ try {
 		}
 		catch (BadExpressionError err) {
 			trans.setFlag(selection,true);
-			System.out.println("Bad expression in cycleTutorTypein...");
+			trace.out("Bad expression in cycleTutorTypein...");
 		}
 		catch (NoSuchFieldException err) {
-			System.out.println("No such field in cycleTutorTypein");
+			trace.out("No such field in cycleTutorTypein");
 		}
 	}
 
@@ -854,8 +855,8 @@ try {
       basis, we want to allow the student to make some implicit
       simplifications, but not others.  See below for specifics.*/
 	private boolean typeinEqual(String selection,String input,String comparison) throws BadExpressionError{
-		/*System.out.println("ST.tE: checking user input " + input + " against " + comparison);
-		  System.out.println("ST.tE: context: " + prevTIeq + "; " + prevTIaction + "; " + prevTIinput);*/
+		/*trace.out("ST.tE: checking user input " + input + " against " + comparison);
+		  trace.out("ST.tE: context: " + prevTIeq + "; " + prevTIaction + "; " + prevTIinput);*/
 		SymbolManipulator sm = new SymbolManipulator();
 		sm.setMaintainVarList(true);
 		sm.allowExtraParens = false;
@@ -864,7 +865,7 @@ try {
 
 		/*we always allow the expected equation*/
 		if(sm.similar(sm.removeExtraParens(input),sm.removeExtraParens(comparison))){
-			//System.out.println("ST.tE: similar; true");
+			//trace.out("ST.tE: similar; true");
 			return true;
 		}
 
@@ -878,7 +879,7 @@ try {
 
 		/*something must have changed ...*/
 		if(sm.exactEqual(prevTIside,input)){
-			//System.out.println("ST.tE: nothing was changed: false");
+			//trace.out("ST.tE: nothing was changed: false");
 			return false;
 		}
 
@@ -886,12 +887,12 @@ try {
           intermediate equation, as well*/
 		if(SolverFrame.getSelf().getSM().autoSimplify &&
 		   sm.similar(sm.simplify(input),comparison)){
-			//System.out.println("ST.tE: not fully simplified: true");
+			//trace.out("ST.tE: not fully simplified: true");
 			return true;
 		}
 		else if(SolverFrame.getSelf().getSM().autoStandardize &&
 				sm.similar(sm.standardize(input),comparison)){
-			//System.out.println("ST.tE: not fully standardized: true");
+			//trace.out("ST.tE: not fully standardized: true");
 			return true;
 		}
 
@@ -962,7 +963,7 @@ try {
 			modComparison = sm.noOp(comparison);
 			sm.autoDistribute = sm.autoMultiplyThrough = sm.autoReduceFractions = false;
 			modInput = sm.distribute(input);
-			//System.out.println("ST.tE: checking mod input " + modInput + " against mod " + modComparison);
+			//trace.out("ST.tE: checking mod input " + modInput + " against mod " + modComparison);
 			if(sm.similar(modInput,modComparison)){
 				return true;
 			}
@@ -1023,7 +1024,7 @@ try {
 		}
 		else{
 			if(SolverFrame.debug()){
-				System.out.println("ST.tE: nothing specific to action " + prevTIaction + "; false");
+				trace.out("ST.tE: nothing specific to action " + prevTIaction + "; false");
 			}
 			return false;
 		}
@@ -1041,7 +1042,7 @@ try {
 	  2+4x-1-3x,1+x,1+3x ==> true (since 2 & 1 match the "1" term of
 	  'term', and 4x & 3x match the "3x" term of 'term'*/
 	private boolean exprCLTequiv(String ex1,String ex2,String term) throws BadExpressionError{
-		//System.out.println("ST.eCLTe(" + ex1 + "," + ex2 + "," + term + ")");
+		//trace.out("ST.eCLTe(" + ex1 + "," + ex2 + "," + term + ")");
 		SymbolManipulator sm = new SymbolManipulator();
 		sm.setMaintainVarList(true);
 		sm.allowExtraParens = false;
@@ -1052,7 +1053,7 @@ try {
 		/*anything that was left out has to have been combinable
           (which means it was equal to 0)*/
 		if(!sm.algebraicEqual(diff,"0")){
-			//System.out.println("         " + diff + " != 0: false");
+			//trace.out("         " + diff + " != 0: false");
 			return false;
 		}
 
@@ -1080,15 +1081,15 @@ try {
 				diff = "0";
 			}
 
-			//System.out.println("         " + diff + " == 0: checking terms");
+			//trace.out("         " + diff + " == 0: checking terms");
 
 			int termCount = Integer.valueOf(sm.runScript("length of terms",diff)).intValue();
 
 			for(int i=1;i<=termCount;i++){
-				//System.out.println("         checking term: " + sm.runScript("absolute value of item " + i + " of terms",diff));
+				//trace.out("         checking term: " + sm.runScript("absolute value of item " + i + " of terms",diff));
 				boolean found = false;
 				for(int j=0;j<termPatterns.length && !found;j++){
-					//System.out.println("               against: " + termPatterns[j]);
+					//trace.out("               against: " + termPatterns[j]);
 					try{
 						sm.runScript("term matching " + termPatterns[j] + " of absolute value of item " + i + " of terms",diff);
 						found = true;
@@ -1101,12 +1102,12 @@ try {
 			}
 
 			/*all of the terms match the pattern, so combining them was legal in this case*/
-			//System.out.println("         all matched: true");
+			//trace.out("         all matched: true");
 			return true;
 		}
 		catch(NoSuchFieldException nsfe){
 			/*one of the terms didn't match, so it wasn't legal to combine it*/
-			//System.out.println("         failed: " + nsfe.toString());
+			//trace.out("         failed: " + nsfe.toString());
 			return false;
 		}
 	}

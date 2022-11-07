@@ -1,6 +1,8 @@
 package edu.cmu.pact.miss.userDef.algebra.expression;
 
 
+import edu.cmu.pact.Utilities.trace;
+
 /**
  * A class to parse Strings into AlgExps, functions as a combination lexer and parse
  * @author ajzana
@@ -62,13 +64,13 @@ public class AlgExpParser
 			if (ca[i] == c)
 				chCount++;
 		}
-//                System.out.println("returning chCount = " + chCount);                
+//                trace.out("returning chCount = " + chCount);
 		return chCount;
 	}
 	
 	public static void debugPrintln (String s){
 		if (debugFlag){
-			System.out.println("(gustavo): " + s);
+			trace.out("(gustavo): " + s);
 		}			
 	}
     
@@ -99,7 +101,7 @@ public class AlgExpParser
     public static AlgExp parse(String s) throws ExpParseException
     {
 
-//        System.out.println("s = " + s);
+//        trace.out("s = " + s);
         
         //if more than one '/' or unbalanced parentheses, return null
     	//Gustavo 21Oct2006: should we deal with empty strings?
@@ -569,10 +571,10 @@ public class AlgExpParser
     private static AlgExp makeExp(char lastOp, AlgExp leftOperand, AlgExp rightOperand, boolean hasParens)
     throws ExpParseException
     {
-    	//System.out.println("makeExp entered");
+    	//trace.out("makeExp entered");
     	//debugPrintln("makeExp entered");
 
-    	//System.out.println("lastOp='" + lastOp + "'   leftOperand=" + leftOperand.toString() + "   rightOperand=" + rightOperand.toString());
+    	//trace.out("lastOp='" + lastOp + "'   leftOperand=" + leftOperand.toString() + "   rightOperand=" + rightOperand.toString());
     	
     	AlgExp result;
         switch(lastOp)
@@ -583,24 +585,24 @@ public class AlgExpParser
             return result;
 
         case '*':
-        	//System.out.println("case *");
+        	//trace.out("case *");
             if(leftOperand.isConstant() && rightOperand.isVariable())
             {
-            	//System.out.println("const-var");
+            	//trace.out("const-var");
                 result=new SimpleTerm(leftOperand,rightOperand);
                 result.setParenBit(hasParens);
-                //System.out.println("result="+result);                
+                //trace.out("result="+result);
                 return result;
             }
 
             if(leftOperand.isVariable() && rightOperand.isConstant())
             {
-            	//System.out.println("var-const");
+            	//trace.out("var-const");
             	result= new SimpleTerm(rightOperand,leftOperand);
                 result.setParenBit(hasParens);
                 return result;
             }
-        	//System.out.println("neither");            
+        	//trace.out("neither");
             result= new ComplexTerm(leftOperand,rightOperand);
             result.setParenBit(hasParens);
             return result;
@@ -617,20 +619,20 @@ public class AlgExpParser
             {
                 result= new SimpleTerm(rightOperand.invert(),leftOperand);
                 result.setParenBit(hasParens);
-                System.out.println("makeExp: SimpleTerm...");
+                trace.out("makeExp: SimpleTerm...");
                 return result;
             }
             */
             if(leftOperand instanceof SimpleTerm && ! leftOperand.hasParens() && rightOperand.isConstant())
             {
-                // System.out.println("SimpleTerm(ConstantFraction)");
+                // trace.out("SimpleTerm(ConstantFraction)");
                 SimpleTerm t=(SimpleTerm)leftOperand;
                 result= new SimpleTerm(new ConstantFraction(t.getConstant(),rightOperand),t.getVariable());
                 result.setParenBit(hasParens);
                 return result;
             }
 
-            // System.out.println("ComplexFraction");
+            // trace.out("ComplexFraction");
             result= new ComplexFraction(leftOperand,rightOperand);
             result.setParenBit(hasParens);
             return result;

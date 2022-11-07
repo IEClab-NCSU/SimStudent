@@ -233,7 +233,7 @@ public class ContestMultiProdRules extends SimStInteractiveLearning{
         }
         for(String str:scores.keySet())
         {
-        	System.out.println(str+" "+scores.get(str));
+        	trace.out(str+" "+scores.get(str));
         }
     }
 	
@@ -261,7 +261,7 @@ public class ContestMultiProdRules extends SimStInteractiveLearning{
 		while(!answers.isEmpty())
 		{
 			Answer answer = answers.remove();
-			System.out.println(answer);
+			trace.out(answer.toString());
 			results+= answer.toString()+"\n";
 			if(goodAnswer == null)
 			{
@@ -271,7 +271,7 @@ public class ContestMultiProdRules extends SimStInteractiveLearning{
 					goodAnswer = answer;
 			}
 		}
-		System.out.println(results);
+		trace.out(results);
 		if(goodAnswer == null)
 		{
 			AskHint hint = new AskHintInBuiltClAlgebraTutor(brController, problemNode);
@@ -483,7 +483,7 @@ public class ContestMultiProdRules extends SimStInteractiveLearning{
 		            	if(!activationList.get(i).getActualInput().equals("FALSE"))
 		            		results.add(new Answer(studentName[student], i*prodRules.size()+rand, activationList.get(i)));
 			        }
-			        System.out.println("Student "+student+" finished");
+			        trace.out("Student "+student+" finished");
 			        
 		      }	
 	    	
@@ -615,7 +615,7 @@ public class ContestMultiProdRules extends SimStInteractiveLearning{
         }
         for(String str:scores.keySet())
         {
-        	System.out.println(str+" "+scores.get(str));
+        	trace.out(str+" "+scores.get(str));
         }
         
         return solution;

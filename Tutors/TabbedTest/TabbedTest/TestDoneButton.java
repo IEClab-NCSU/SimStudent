@@ -53,12 +53,12 @@ public class TestDoneButton extends JCommButton {
 	boolean completed=true;
 		 for(String selection: interfaceElements.keySet()){
 			//JOptionPane.showMessageDialog(null,selection);
-            System.out.println("Value of "+selection+" is: "+interfaceElements.get(selection));
+            trace.out("Value of "+selection+" is: "+interfaceElements.get(selection));
      	
      		JCommWidget obj=this.interfaceElements.get(selection);	
 		  	if (obj instanceof JCommMultipleChoiceRecover){
 		  		int input=((JCommMultipleChoiceRecover) obj).getSelectedChoiceIndex();
-		  		System.out.println("Input : "+input);
+		  		trace.out("Input : "+input);
 		  		if (input==-1){
 		  		  //((JCommMultipleChoiceRecover) obj).setBackground(Color.RED);
 		  		  completed=false;
@@ -96,19 +96,19 @@ public class TestDoneButton extends JCommButton {
      		JCommWidget obj=this.interfaceElements.get(selection);	
 		  	if (obj instanceof JCommMultipleChoiceRecover){
 		  		String input=((JCommMultipleChoiceRecover) obj).getInputText();
-		  		System.out.println("Registering " + selection + " with value " + input);
+		  		trace.out("Registering " + selection + " with value " + input);
 		  		((JCommMultipleChoiceRecover) obj).recoverStudentAction(input);
 
 			}
 		  	else if (obj instanceof JCommTextFieldRecover){
 				String input=((JCommTextFieldRecover) obj).getText();
-				System.out.println("Registering " + selection + " with value " + input);
+				trace.out("Registering " + selection + " with value " + input);
 				((JCommTextFieldRecover) obj).recoverStudentAction(input);
 
 		  	}
 		  	else if (obj instanceof JCommTextAreaRecover){
 				String input=((JCommTextAreaRecover) obj).getInputText();
-				System.out.println("Registering " + selection + " with value " + input);
+				trace.out("Registering " + selection + " with value " + input);
 				((JCommTextAreaRecover) obj).recoverStudentAction(input);
 		  	}  
   
@@ -120,7 +120,7 @@ public class TestDoneButton extends JCommButton {
 	public void actionPerformed(ActionEvent e) {
 
 	boolean completed=checkIfTestCompleted();
-	System.out.println(" Completed : "+completed);
+	trace.out(" Completed : "+completed);
 	if (!completed) {
 		JOptionPane.showMessageDialog(null,"I'm sorry but you are not done yet. Please continue working.");
 		return;

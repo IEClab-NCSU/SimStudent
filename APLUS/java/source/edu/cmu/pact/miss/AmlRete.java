@@ -873,7 +873,7 @@ public class AmlRete extends Rete implements Cloneable {
 		WmePathNode.setSensitiveSlots((String[])sensSlots.toArray(new String[1]));
 		
 		
-		//System.out.println(" fianl wmeChildSlots: " + wmeChildSlots);
+		//trace.out(" fianl wmeChildSlots: " + wmeChildSlots);
 		return true;
     }
 

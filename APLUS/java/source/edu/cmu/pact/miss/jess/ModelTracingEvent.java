@@ -16,7 +16,7 @@ public class ModelTracingEvent extends java.util.EventObject {
 	
 	public ModelTracingEvent(Object source, String selection, String action, String input, int modelTracingResult, RuleActivationNode node, Vector<String> message) {
 		super(source);
-		//System.out.println("Node "+node.getDisplayName()+" Message : "+message.size());
+		//trace.out("Node "+node.getDisplayName()+" Message : "+message.size());
 		this.modelTracingResult = modelTracingResult;		
 		this.node=node;
 		this.message=message;

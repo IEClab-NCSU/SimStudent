@@ -78,6 +78,7 @@ import java.util.GregorianCalendar;
 
 import javax.swing.table.DefaultTableModel;
 
+import edu.cmu.pact.Utilities.trace;
 import org.joda.time.DateTime;
 
 import com.sleepycat.bind.EntryBinding;
@@ -389,17 +390,17 @@ public class CTATBerkeleyDBDataGenerator extends CTATBase
 	 */
 	private void usage ()
 	{
-		System.out.println("Usage: ");
-		System.out.println(" java -cp \".;..;lib\\je-5.0.34.jar;TutorMonitor.jar;..\\java\\lib\\ctat.jar\\\" CTATBerkeleyDBDataGenerator <options>");
-		System.out.println("");
-		System.out.println("Example:");
-		System.out.println(" java -cp \".;..;lib\\je-5.0.34.jar;TutorMonitor.jar;..\\java\\lib\\ctat.jar\\\" CTATBerkeleyDBDataGenerator -entries 100000 -databases 3 -delta 5");
-		System.out.println("");
-		System.out.println("Options:");
-		System.out.println(" -entries <value>");
-		System.out.println(" -databases <value>");
-		System.out.println(" -delta <value>");
-		System.out.println(" -startdate <value> (Please enter a date in the format: MM dd yyyy)");
+		trace.out("Usage: ");
+		trace.out(" java -cp \".;..;lib\\je-5.0.34.jar;TutorMonitor.jar;..\\java\\lib\\ctat.jar\\\" CTATBerkeleyDBDataGenerator <options>");
+		trace.out("");
+		trace.out("Example:");
+		trace.out(" java -cp \".;..;lib\\je-5.0.34.jar;TutorMonitor.jar;..\\java\\lib\\ctat.jar\\\" CTATBerkeleyDBDataGenerator -entries 100000 -databases 3 -delta 5");
+		trace.out("");
+		trace.out("Options:");
+		trace.out(" -entries <value>");
+		trace.out(" -databases <value>");
+		trace.out(" -delta <value>");
+		trace.out(" -startdate <value> (Please enter a date in the format: MM dd yyyy)");
 	}
 	/**
 	 * 

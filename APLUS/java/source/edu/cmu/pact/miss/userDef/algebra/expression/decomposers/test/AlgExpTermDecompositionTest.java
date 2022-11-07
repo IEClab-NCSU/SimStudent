@@ -2,6 +2,7 @@ package edu.cmu.pact.miss.userDef.algebra.expression.decomposers.test;
 
 import java.util.Vector;
 
+import edu.cmu.pact.Utilities.trace;
 import edu.cmu.pact.miss.userDef.algebra.expression.decomposers.AlgExpTermDecomposer;
 
 public class AlgExpTermDecompositionTest 
@@ -19,14 +20,14 @@ public class AlgExpTermDecompositionTest
 	{
 		int  numTests=0;
 		 int numFailed=0;
-		 System.out.println("Algebra Exp Chunk Test");
+		 trace.out("Algebra Exp Chunk Test");
 		 for(int testnum=0; testnum<tests.length; testnum++)
 		 {
 			
-			 System.out.print(tests[testnum]);
+			 trace.out(tests[testnum]);
 			 AlgExpTermDecomposer c=new AlgExpTermDecomposer();
 			 Vector result=c.decompose(tests[testnum]);
-			 System.out.println(result);
+			 trace.out(String.valueOf(result));
 			 
 			 
 			 
@@ -35,7 +36,7 @@ public class AlgExpTermDecompositionTest
 				 
 				 
 			 
-			 System.out.println("Num failed: "+numFailed);
-			 System.out.println("Num tests: "+numTests);
+			 trace.out("Num failed: "+numFailed);
+			 trace.out("Num tests: "+numTests);
 	}
 }

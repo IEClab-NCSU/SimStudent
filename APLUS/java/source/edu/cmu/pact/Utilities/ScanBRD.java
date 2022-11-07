@@ -59,7 +59,7 @@ public class ScanBRD {
 				this.traversalCount = 0;
 			else
 				this.traversalCount = Integer.parseInt(traversalCount);
-//			System.out.println(this);
+//			trace.out(this);
 		}
 		/**
 		 * @return {@link Link#name}
@@ -252,9 +252,9 @@ public class ScanBRD {
 			if (label != null)
 				s.setLabel(label);
 			if (traversalThreshold > -1)
-				System.out.print(s.countLinksOverTraversalThreshold(traversalThreshold));
+				trace.out(s.countLinksOverTraversalThreshold(traversalThreshold));
 			if (traversalCounts)
-				System.out.print(s.traversalCounts());
+				trace.out(s.traversalCounts());
 		} catch (Exception e) {
 			e.printStackTrace();
 			usageExit(e.toString(), 2);

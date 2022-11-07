@@ -203,7 +203,7 @@ public class AskHintHumanOracle extends AskHint {
         setSai(saiAndSkillName.sai);
         this.skillName = saiAndSkillName.skillName;
         
-       //System.out.println(" Skill  :  "+this.skillName);
+       //trace.out(" Skill  :  "+this.skillName);
         if (this.brController.getMissController().isPLEon())
       	  this.brController.getMissController().getSimStPLE().blockInput(true);
         
@@ -225,7 +225,7 @@ public class AskHintHumanOracle extends AskHint {
         
   		JCommButton doneButton = (JCommButton) brController.lookupWidgetByName("Done");
      		if (doneButton!=null){
-     			//System.out.println(" Done button is clicked ");
+     			//trace.out(" Done button is clicked ");
      			doneButton.setText(SimStPLE.DONE_CAPTION_ENABLED);
      		}
      		
@@ -287,7 +287,7 @@ public class AskHintHumanOracle extends AskHint {
         setSai(saiAndSkillName.sai);
         this.skillName = saiAndSkillName.skillName;
         
-       //System.out.println(" Skill  :  "+this.skillName);
+       //trace.out(" Skill  :  "+this.skillName);
         if(brController.getRunType().isEmpty()) {
         	if (this.brController.getMissController().isPLEon())
         		this.brController.getMissController().getSimStPLE().blockInput(true);
@@ -311,7 +311,7 @@ public class AskHintHumanOracle extends AskHint {
   	  if(brController.getRunType().isEmpty()) {
   		  JCommButton doneButton = (JCommButton) brController.lookupWidgetByName("Done");
   		  if (doneButton!=null){
-  			  //System.out.println(" Done button is clicked ");
+  			  //trace.out(" Done button is clicked ");
   			  doneButton.setText(SimStPLE.DONE_CAPTION_ENABLED);
   		  }
   	  }

@@ -896,7 +896,7 @@ public class SimStRete extends MTRete implements Serializable, JessParser {
 	        parse(files[i], false, false);
         	
         }
-        //System.out.println(" Completed parsing the file !!!!");
+        //trace.out(" Completed parsing the file !!!!");
         }
 	}
 	
@@ -1231,9 +1231,9 @@ public class SimStRete extends MTRete implements Serializable, JessParser {
 	    textOutput.append("\n");
 	      //if (interfaceTemplatesList!=null)
 	    	//	loadInterfaceTemplates(interfaceTemplatesList);
-	   /* System.out.println("Completed parsing the file !!!");
+	   /* trace.out("Completed parsing the file !!!");
 	    for(int i=0; i<results.length; i++)
-	    	System.out.println(" File : "+files[i]+"  result : "+results[i]);*/
+	    	trace.out(" File : "+files[i]+"  result : "+results[i]);*/
 	    
 	    return results;
 	}
@@ -1479,23 +1479,23 @@ public class SimStRete extends MTRete implements Serializable, JessParser {
 		if (!(rdr instanceof BufferedReader || rdr instanceof StringReader))
 			rdr = new BufferedReader(rdr);
 		// addInputRouter(uid.toString(), rdr, false); // false=>not consoleLike
-	//	System.out.println("Parsing ..............");
+	//	trace.out("Parsing ..............");
 		Jesp jesp = new Jesp(rdr, this);
-	//	System.out.println(" Jesp object .... "+jesp.toString());
-	//	System.out.println(" Rete   : "+this.getGlobalContext().toString());
+	//	trace.out(" Jesp object .... "+jesp.toString());
+	//	trace.out(" Rete   : "+this.getGlobalContext().toString());
 		trace.out(" Before Working memory : "+this.getController().getModelTracer().getRete().getFacts());
 
 		Value result = jesp.parse(false, this.getGlobalContext());
 		
 		trace.out(" MTRete  Working memory : "+this.getController().getModelTracer().getRete().getFacts());
-		//System.out.println(" SimSTRete After  Working memory : "+this.getController().getMissController().getSimSt().getSsRete().getFacts());
+		//trace.out(" SimSTRete After  Working memory : "+this.getController().getMissController().getSimSt().getSsRete().getFacts());
 
-	//	System.out.println(" Result of parsing : "+result.toString());
+	//	trace.out(" Result of parsing : "+result.toString());
 		// removeInputRouter(uid.toString());
 		// if (removeBuggyRules)
 		// unloadBuggyRules();
 		// if (trace.getDebugCode("rr")) trace.out("rr", "Exit parse in MTRete");
-		//System.out.println("mpikame");
+		//trace.out("mpikame");
 		//Thread.dumpStack();
 		return result;
 	}
@@ -1781,7 +1781,7 @@ public class SimStRete extends MTRete implements Serializable, JessParser {
 	    	
 	    	if(reader != null){
 	    		try {
-	    			//System.out.println(" Successfully read the file");
+	    			//trace.out(" Successfully read the file");
 					reader.close();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
@@ -1974,7 +1974,7 @@ public class SimStRete extends MTRete implements Serializable, JessParser {
 			
 			    String value="";
 				try {
-					//System.out.println("fact " + wmeName + " is " + fact);
+					//trace.out("fact " + wmeName + " is " + fact);
 					value = fact.getSlotValue("value").toString();
 				} catch (JessException e) {
 					// TODO Auto-generated catch block

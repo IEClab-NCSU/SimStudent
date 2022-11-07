@@ -3,6 +3,7 @@ package edu.cmu.old_pact.cmu.solver.ruleset;
 import edu.cmu.old_pact.cmu.sm.Equation;
 import edu.cmu.old_pact.cmu.sm.Expression;
 import edu.cmu.old_pact.cmu.sm.query.Queryable;
+import edu.cmu.pact.Utilities.trace;
 
 
 //A SideRule is a rule that checks to see whether some operation (typically some kind of
@@ -29,7 +30,7 @@ public class SideRule extends Rule {
 	}
 
 	public RuleMatchInfo canFire(Queryable info,String userAction,String userInput) {
-		//System.out.println("in canFire Rule name = "+name);
+		//trace.out("in canFire Rule name = "+name);
 		RuleMatchInfo tempRuleMatchInfo = null;
 		if(testConditionsForHelp(info)){
 			tempRuleMatchInfo = testActionAndInput(info,userAction,userInput);
@@ -60,7 +61,7 @@ public class SideRule extends Rule {
 		
 	private boolean testSide(Equation info, String side) {
 		if (isTraced())
-			System.out.println("  Testing rule: "+getName()+" on "+side+" side");
+			trace.out("  Testing rule: "+getName()+" on "+side+" side");
 		boolean OK = true;
 		for (int i=0;i<conditions.length && OK;++i) {
 			Expression theSide;
@@ -70,27 +71,27 @@ public class SideRule extends Rule {
 				theSide = info.getRight();
 			boolean passed = conditions[i].passes(theSide,true);
 			if (isTraced())
-				System.out.println("   testing condition "+conditions[i]+" on "+side+"; passes: "+passed);
+				trace.out("   testing condition "+conditions[i]+" on "+side+"; passes: "+passed);
 			if (!passed)
 				OK = false;
 		}
 		if (isTraced())
-			System.out.println("   All conditions for "+getName()+" on "+side+" pass: "+OK);
+			trace.out("   All conditions for "+getName()+" on "+side+" pass: "+OK);
 		return OK;
 	}
 
 	//override getMessages to substitute "the left side," "the right side" or "both sides" for {*side*}	
 	public String[] getMessages(Equation info) {
-//		System.out.println("in getMessages, input is "+input+"::"+getName());
-//		System.out.println("equation is "+info);
+//		trace.out("in getMessages, input is "+input+"::"+getName());
+//		trace.out("equation is "+info);
 		if(messages != null){
 			Expression theSide;
 			if (input.equals("right"))
 			theSide = info.getRight();
 			else
 			theSide = info.getLeft();
-			//System.out.println("theSide is "+theSide);
-			//System.out.println("messages is "+messages);
+			//trace.out("theSide is "+theSide);
+			//trace.out("messages is "+messages);
 			//This is a little strange -- if we can simplify on both sides, we will provide an example
 			//from the left side but suggest to simplify (or whatever) on both sides
 			String resolvedMessages[] = new String[messages.length];
@@ -103,14 +104,14 @@ public class SideRule extends Rule {
 			return resolvedMessages;
 		}
 		else{
-			System.out.println("SideRule.getMessages: Warning: rule '" + getName() +
+			trace.out("SideRule.getMessages: Warning: rule '" + getName() +
 							   "' fired for help but has no messages");
 			return new String[] {"Sorry, I can't help you here."};
 		}
 	}
 	
 	public String subSide(String message) {
-//		System.out.println("in subSide with "+message);
+//		trace.out("in subSide with "+message);
 		int sideMarker = message.indexOf("{*side*}");
 		if (sideMarker >= 0) {
 			String sidePhrase;
@@ -121,7 +122,7 @@ public class SideRule extends Rule {
 			else
 				sidePhrase = "both sides";
 			String newMessage = message.substring(0,sideMarker)+sidePhrase+message.substring(sideMarker+8);
-//			System.out.println("subside about to recurse with "+newMessage);
+//			trace.out("subside about to recurse with "+newMessage);
 			return subSide(newMessage);
 		}
 		else

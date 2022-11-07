@@ -157,7 +157,7 @@ public class MasterAvatarDesigner extends StudentAvatarDesigner implements Docum
         		/*saveString += expressions[expressionIndex]+"%";
        		saveString += noses[noseIndex]+"%";*/
         		saveString += shirts[shirtIndex];
-			//System.out.println(saveString);
+			//trace.out(saveString);
         	SimStPLE.STUDENT_IMAGE = saveString;
         	if(name.getText().length() > 0)
         	{

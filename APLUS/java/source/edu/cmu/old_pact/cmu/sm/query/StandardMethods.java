@@ -10,10 +10,12 @@
 
 
 package edu.cmu.old_pact.cmu.sm.query;
+import edu.cmu.pact.Utilities.trace;
+
 import java.util.Vector;
 
 public abstract class StandardMethods {
-	public static boolean trace = false;
+	public static boolean traceBool = false;
 
 	public static Queryable evalQuery(String[] query,Queryable obj) throws NoSuchFieldException{
 		return doEvalQuery(query,obj);
@@ -40,9 +42,9 @@ public abstract class StandardMethods {
 			if (ofPlace > -1) {
 				String thisProperty = query.substring(ofPlace+4);
 				Queryable thisResult = evalQuery(thisProperty,obj);
-				if (trace) {
+				if (traceBool) {
 					String resultClass = thisResult.getClass().getName();
-					System.out.println("<<property \""+thisProperty+"\" of "+obj.getStringValue()+" is "+thisResult.getStringValue()+"["+resultClass+"]>>");
+					trace.out("<<property \""+thisProperty+"\" of "+obj.getStringValue()+" is "+thisResult.getStringValue()+"["+resultClass+"]>>");
 				}
 				return thisResult.evalQuery(query.substring(0,ofPlace));
 			}
@@ -54,9 +56,9 @@ public abstract class StandardMethods {
 				else{
 					finalResult = obj.getProperty(query);
 				}
-				if (trace) {
+				if (traceBool) {
 					String finalClass = finalResult.getClass().getName();
-					System.out.println("<<property \""+query+"\" of "+obj.getStringValue()+" is "+finalResult.getStringValue()+"["+finalClass+"]>>");
+					trace.out("<<property \""+query+"\" of "+obj.getStringValue()+" is "+finalResult.getStringValue()+"["+finalClass+"]>>");
 				}
 				return finalResult;
 			}
@@ -68,13 +70,13 @@ public abstract class StandardMethods {
 	public static Queryable doEvalQuery(String[] query,Queryable obj) throws NoSuchFieldException{
 		Queryable q = obj;
 		for(int i=query.length-1;i>=0;i--){
-			if(trace){
-				System.out.print("<<property \""+query[i]+"\" of "+q.getStringValue()+" is ");
+			if(traceBool){
+				trace.out("<<property \""+query[i]+"\" of "+q.getStringValue()+" is ");
 			}
 			q = evalQuery(query[i],q);
-			if(trace){
+			if(traceBool){
 				String resultClass = q.getClass().getName();
-				System.out.println(q.getStringValue()+"["+resultClass+"]>>");
+				trace.out(q.getStringValue()+"["+resultClass+"]>>");
 			}
 		}
 

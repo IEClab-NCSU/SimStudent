@@ -48,7 +48,7 @@ public class MessageDrop {
 
 //        while (!isEmpty()) {
 //            try { 
-//                System.out.println("put: message is not empty. Waiting for a space to put " + message);
+//                trace.out("put: message is not empty. Waiting for a space to put " + message);
 //                wait();
 //            } catch (InterruptedException e) {}
 //        }

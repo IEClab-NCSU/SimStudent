@@ -150,11 +150,11 @@ public class ProblemModelEventTest
 
     	Enumeration Nodes = this.PGraph.nodes();
     	assertNotNull("Nodes Empty.", Nodes);
-    	System.out.println("Nodes Generated: " + Nodes);
+    	trace.out("Nodes Generated: " + Nodes);
 
     	Enumeration Edges = this.PGraph.edges();
     	assertNotNull("Edges Empty", Edges);
-    	System.out.println("Edges Generated: " + Edges);
+    	trace.out("Edges Generated: " + Edges);
 
     	// Package atomic events.
     	testAtomicEvents(PGraph);

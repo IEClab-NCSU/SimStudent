@@ -16,6 +16,7 @@ import edu.cmu.old_pact.cmu.sm.SymbolManipulator;
 import edu.cmu.old_pact.cmu.sm.query.Queryable;
 import edu.cmu.old_pact.jal.String.BinaryPredicate;
 import edu.cmu.old_pact.jal.String.Sorting;
+import edu.cmu.pact.Utilities.trace;
 
 public class EquationDialog extends CommandLineOkCancelDialog{
     String targetVar = null;
@@ -152,7 +153,7 @@ public class EquationDialog extends CommandLineOkCancelDialog{
             /*put the variable settings back the way we found them*/
             SymbolManipulator.setVarList(oldVarList);
 
-            System.out.println("EquationDialog.getTargetVar failed: " + nsfe);
+            trace.out("EquationDialog.getTargetVar failed: " + nsfe);
             return null;
         }
         catch(BadExpressionError bee){

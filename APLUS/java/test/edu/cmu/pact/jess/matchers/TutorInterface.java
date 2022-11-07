@@ -42,7 +42,7 @@ public class TutorInterface extends JPanel {
         table1 = new pact.CommWidgets.JCommTable() {
         	public void doCorrectAction(String selection, String input) {
         		super.doCorrectAction(selection, input);
-        		System.out.println("FOUND IT");
+        		trace.out("FOUND IT");
         	}
         };
         jLabel1 = new javax.swing.JLabel();

@@ -3,6 +3,8 @@
  */
 package edu.cmu.pact.BehaviorRecorder.ProblemModel.Matcher.Functions;
 
+import edu.cmu.pact.Utilities.trace;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -67,7 +69,7 @@ public class fmtDouble {
 		fmtDouble t = new fmtDouble();
 		for (; i < args.length; ++i) {
 			String arg = args[i];
-			System.out.println("toDouble("+arg+")="+t.fmtDouble(arg, prec));
+			trace.out("toDouble("+arg+")="+t.fmtDouble(arg, prec));
 		}
 	}
 

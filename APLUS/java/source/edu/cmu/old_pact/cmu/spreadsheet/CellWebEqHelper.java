@@ -10,6 +10,7 @@ import edu.cmu.old_pact.cmu.sm.BadExpressionError;
 import edu.cmu.old_pact.cmu.sm.SymbolManipulator;
 import edu.cmu.old_pact.html.library.WebEqImage;
 import edu.cmu.old_pact.settings.ParameterSettings;
+import edu.cmu.pact.Utilities.trace;
 
 
 public class CellWebEqHelper {
@@ -51,7 +52,7 @@ public class CellWebEqHelper {
 		  	resultMathML = sm.noOpExprOrEquation(expr);
 		  }
 			catch (BadExpressionError err) {
-				System.out.println("SM error: can't convert to MathML...");
+				trace.out("SM error: can't convert to MathML...");
 		  }	
   
    		  // FOR NOW (before 'pi' is handled properly by SM)

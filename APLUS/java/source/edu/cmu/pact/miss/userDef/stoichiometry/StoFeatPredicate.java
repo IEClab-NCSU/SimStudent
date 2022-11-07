@@ -9,6 +9,7 @@ package edu.cmu.pact.miss.userDef.stoichiometry;
 
 import java.util.Vector;
 
+import edu.cmu.pact.Utilities.trace;
 import edu.cmu.pact.miss.FeaturePredicate;
 
 
@@ -616,7 +617,7 @@ public abstract class StoFeatPredicate extends FeaturePredicate {
 		try {
 			//find minimum sig figs
 			SFNumber product = num1.multiplyBy(num2, false);
-			System.out.println("num1=" + num1+"  num2 = " + num2 + "    product = " + product);
+			trace.out("num1=" + num1+"  num2 = " + num2 + "    product = " + product);
 			return product;
 		} catch (Exception e) {
 			return null; //error in parsing number
@@ -721,7 +722,7 @@ public abstract class StoFeatPredicate extends FeaturePredicate {
 		try {
 			SFNumber num1 =new SFNumber(firstExp.trim());
 			SFNumber num2 =new SFNumber(secondExp.trim());
-			//System.out.println(firstVec.get(0));
+			//trace.out(firstVec.get(0));
 			//SFNumber num1 = (SFNumber)firstVec.get(0);
 			//SFNumber num2 = (SFNumber)secondVec.get(0);
 			//firstVec.setElementAt(divideExactFlash(num1,num2), 0);
@@ -768,7 +769,7 @@ public abstract class StoFeatPredicate extends FeaturePredicate {
 		try {
 			SFNumber num1 =new SFNumber(firstExp.trim());
 			int sf =Integer.parseInt(secondExp.trim());
-			//System.out.println(firstVec.get(0));
+			//trace.out(firstVec.get(0));
 			//SFNumber num1 = (SFNumber)firstVec.get(0);
 			//SFNumber num2 = (SFNumber)secondVec.get(0);
 			//firstVec.setElementAt(divideExactFlash(num1,num2), 0);

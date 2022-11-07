@@ -36,7 +36,7 @@ public class TSLTPreProcessor {
 			preProcessHTML(args[0], args[1],args[2],args[3]);
 		}else
 		{
-			System.out.println(usage);	
+			trace.out(usage);
 		}
 	}
 	
@@ -72,7 +72,7 @@ public class TSLTPreProcessor {
 						temp = temp.substring(0, temp.indexOf("\""));
 						if(temp.contains(".brd")){
 							foundQuestionFile= true;
-							System.out.println("question file found via problemname qf=" + temp);
+							trace.out("question file found via problemname qf=" + temp);
 							trace.out("tslt", "question file found. Name = " + temp);
 							logForCompare = logForCompare.replace("myBRDFileName", temp);
 						}
@@ -110,7 +110,7 @@ public class TSLTPreProcessor {
 			trace.out("tslt", "Wrote file: " + inputXMLName);
 		}catch(Exception e) {
 			e.printStackTrace();
-			System.out.println(usage);
+			trace.out(usage);
 		} 
 	}
 	
@@ -130,8 +130,8 @@ public class TSLTPreProcessor {
 			br.close();
 			if(!brdFileName.contains(".brd")){
 				trace.out("tslt", "Couldn't find brd filename");
-				System.out.println("Couldn't find brd filename");
-				System.out.println(usage);
+				trace.out("Couldn't find brd filename");
+				trace.out(usage);
 				return;
 			}
 			brdFileName=brdFileName.substring(brdFileName.indexOf("BRDFileName="));
@@ -154,7 +154,7 @@ public class TSLTPreProcessor {
 			trace.out("tslt", "Done preprocessing HTML file");
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println(usage);
+			trace.out(usage);
 		} 
 	}
 }

@@ -1,6 +1,7 @@
 package edu.cmu.old_pact.cmu.solver.ruleset;
 
 import edu.cmu.old_pact.cmu.sm.query.Queryable;
+import edu.cmu.pact.Utilities.trace;
 
 public class BooleanTest extends Test {
 	protected boolean comparison;
@@ -25,13 +26,13 @@ public class BooleanTest extends Test {
 	public boolean passes(Queryable info) {
 		try {
                     /*if(info instanceof Equation){
-                      System.out.println("BooleanTest: passes(" + ((Equation)info).debugForm() + ")");
+                      trace.out("BooleanTest: passes(" + ((Equation)info).debugForm() + ")");
                       }
                       else if(info instanceof Expression){
-                      System.out.println("BooleanTest: passes(" + ((Expression)info).debugForm() + ")");
+                      trace.out("BooleanTest: passes(" + ((Expression)info).debugForm() + ")");
                       }
                       else{
-                      System.out.println("BooleanTest: passes(" + info + ")");
+                      trace.out("BooleanTest: passes(" + info + ")");
                       }*/
 			boolean thisValue = info.evalQuery(propertyString).getBooleanValue();
 			if (thisValue == comparison)
@@ -41,7 +42,7 @@ public class BooleanTest extends Test {
 		}
 		catch (NoSuchFieldException err) {
 			if(Rule.debug()){
-				System.out.println("Error resolving test:"+err+" info = "+info.getStringValue()+" class = "+getClass());
+				trace.out("Error resolving test:"+err+" info = "+info.getStringValue()+" class = "+getClass());
 			}
 			return false;
 		}

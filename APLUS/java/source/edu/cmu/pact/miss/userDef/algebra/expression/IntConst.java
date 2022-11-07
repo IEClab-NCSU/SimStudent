@@ -79,10 +79,10 @@ public class IntConst extends Constant
             int thisVal = (int)value;
 
             /*
-            System.out.println("div(IntConst)");
-            System.out.println("value = " + value + " otherVal = " + (int)c.getVal());
-            System.out.println("value % otherVal = " + value % otherVal);
-            System.out.println("value/otherVal = " + value/otherVal);
+            trace.out("div(IntConst)");
+            trace.out("value = " + value + " otherVal = " + (int)c.getVal());
+            trace.out("value % otherVal = " + value % otherVal);
+            trace.out("value/otherVal = " + value/otherVal);
             */
 	    
 	    if(thisVal % otherVal==0)

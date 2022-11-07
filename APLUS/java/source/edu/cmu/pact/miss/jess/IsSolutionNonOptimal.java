@@ -133,8 +133,8 @@ public class IsSolutionNonOptimal implements Userfunction, Serializable {
 			else
 				optimalSteps=20;
 			
-			//System.out.println("****** optimal steps " + optimalSteps);
-			//System.out.println("****** actual steps " + actualSteps);
+			//trace.out("****** optimal steps " + optimalSteps);
+			//trace.out("****** actual steps " + actualSteps);
 			
 			
 			if (optimalSteps<actualSteps)

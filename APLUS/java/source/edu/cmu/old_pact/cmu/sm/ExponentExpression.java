@@ -353,7 +353,7 @@ public class ExponentExpression extends Expression implements CompoundExpression
 // end Olga	
 
 	public Expression eliminateExponentWhole(){
-		//System.out.println("EE.eE: " + debugForm());
+		//trace.out("EE.eE: " + debugForm());
 		if(getExponent() instanceof NumericExpression &&
 		   ((NumericExpression)getExponent()).isIntegerType()){
 			Expression ret = null;
@@ -375,11 +375,11 @@ public class ExponentExpression extends Expression implements CompoundExpression
 					ret = ret.reciprocal();
 				}
 			}
-			//System.out.println("EE.eE: returning: " + ret.debugForm());
+			//trace.out("EE.eE: returning: " + ret.debugForm());
 			return ret;
 		}
 		else{
-			//System.out.println("EE.eE: returning this");
+			//trace.out("EE.eE: returning this");
 			return this;
 		}
 	}

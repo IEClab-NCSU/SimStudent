@@ -2393,7 +2393,7 @@ public class WMEEditor implements MessageEventListener, PropertyChangeListener,
 	public static void main(String[] args) {
 		int i = 0;
 		for (i = 0; i < args.length; i++) {
-			System.out.println(edu.cmu.pact.jess.Utils.escapeString(args[i]));
+			trace.out(edu.cmu.pact.jess.Utils.escapeString(args[i]));
 		}
 	}
 

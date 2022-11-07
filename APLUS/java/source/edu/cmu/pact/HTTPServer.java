@@ -70,7 +70,7 @@ public class HTTPServer{
 			pathToRoot = args[1];
 			logFileName = args[2];
 		}else{
-			System.out.println(usage);
+			trace.out(usage);
 			return;
 		}
 		new HTTPServer(port, pathToRoot, logFileName);
@@ -82,7 +82,7 @@ public class HTTPServer{
 			
 			InetSocketAddress address = new InetSocketAddress(port);
 			//address = new InetSocketAddress();
-			System.out.println("Address = "+ address.toString());
+			trace.out("Address = "+ address.toString());
 			//Should we use a backlog (max number of queued incoming connections)? 0 goes to system default.
 			HttpServer server = HttpServer.create(address, 0);
 			//server.bind(address, 0);
@@ -91,18 +91,18 @@ public class HTTPServer{
 				handler = new HTTPHandler(pathToRoot, logFileName);
 			}catch(IOException e){
 				trace.out("error", "Failed to open logFile, exiting HTTP Server");
-				System.out.println("Failed to open logFile, exiting HTTP Server\n" + usage);
+				trace.out("Failed to open logFile, exiting HTTP Server\n" + usage);
 				return;
 			}
 			server.createContext("/", handler);
 			server.start();
 			trace.out("http", "HTTPServer open and listenning on " + address.getHostName() + address.getPort());
-			System.out.println("HTTPServer open and listenning on " + address.getHostName() + address.getPort());
+			trace.out("HTTPServer open and listenning on " + address.getHostName() + address.getPort());
 		}
 		catch (Exception uhe) {
 			trace.out("http", uhe + " : Failed to open HTTPserver on localhost:" + port);
-			System.out.println("Failed to open HTTPserver on localhost:" + port + " error = " + uhe);
-			System.out.println(usage);
+			trace.out("Failed to open HTTPserver on localhost:" + port + " error = " + uhe);
+			trace.out(usage);
 		}
 	}
 }
@@ -219,7 +219,7 @@ class HTTPHandler implements HttpHandler{
 	}
 	
 	public void handle(HttpExchange arg0){
-		System.out.println("Handling a connection");
+		trace.out("Handling a connection");
 		String requestMethod = arg0.getRequestMethod();
 		if(requestMethod.equalsIgnoreCase("put")){
 			if(logging)
@@ -236,7 +236,7 @@ class HTTPHandler implements HttpHandler{
 			return;
 		}
 		String fileURI = arg0.getRequestURI().toString();
-		System.out.println("File uri = " + fileURI);
+		trace.out("File uri = " + fileURI);
 		trace.out("http", "Request Method = " + requestMethod); 
 		if(requestMethod.equalsIgnoreCase("get")){
 		    /*Crossdomain.xml Requested.
@@ -254,7 +254,7 @@ class HTTPHandler implements HttpHandler{
 		    		arg0.close();
 		    	}catch(Exception e){
 		    		trace.out("http", e + " : Exception in trying to write back crossdomain.xml");
-		    		System.out.println(e.toString() + "Exception in trying to write back crossdomain.xml");
+		    		trace.out(e.toString() + "Exception in trying to write back crossdomain.xml");
 		    	}
 		    }else{
 		    	fileURI = pathToRoot+ File.separator + fileURI.substring(1);
@@ -288,10 +288,10 @@ class HTTPHandler implements HttpHandler{
 		    		trace.out("http","Wrote back the entire file succesfully");
 		    		arg0.close();
 				    trace.out("http","Closed the connection");
-				    System.out.println("Close connection");
+				    trace.out("Close connection");
 		    	}catch(IOException e){
 		    		trace.out("http", e + "Exception in trying to write back response");
-		    		System.out.println(e + "Exception in trying to write back response");
+		    		trace.out(e + "Exception in trying to write back response");
 		    	}
 		    } 
 		}

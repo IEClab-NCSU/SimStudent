@@ -163,7 +163,7 @@ public class FractionExpression extends NumericExpression {
 	
 	public Expression reduceFractionsWhole() {
 		Expression result=this;
-		//System.out.println("FE.rFW: " + debugForm());
+		//trace.out("FE.rFW: " + debugForm());
 		if (bottom.isZero())
 			throw new DivideByZeroException(this,"reducing fractions");
 		if (top.isIntegerType() && bottom.isIntegerType()) {

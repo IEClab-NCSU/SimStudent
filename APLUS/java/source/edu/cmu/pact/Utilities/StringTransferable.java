@@ -57,25 +57,25 @@ public class StringTransferable implements Transferable, ClipboardOwner {
   }
   
   private void dumpFlavor(DataFlavor flavor) {
-    System.out.println( "getMimeType " +
+    trace.out( "getMimeType " +
       flavor.getMimeType() );
-    System.out.println( "getHumanPresentableName " +
+    trace.out( "getHumanPresentableName " +
       flavor.getHumanPresentableName() );
-    System.out.println( "getRepresentationClass " +
+    trace.out( "getRepresentationClass " +
       flavor.getRepresentationClass().getName() );
-    System.out.println( "isMimeTypeSerializedObject " +
+    trace.out( "isMimeTypeSerializedObject " +
       flavor.isMimeTypeSerializedObject() );
-    System.out.println( "isRepresentationClassInputStream " +
+    trace.out( "isRepresentationClassInputStream " +
       flavor.isRepresentationClassInputStream() );
-    System.out.println( "isRepresentationClassSerializable " +
+    trace.out( "isRepresentationClassSerializable " +
       flavor.isRepresentationClassSerializable() );
-    System.out.println( "isRepresentationClassRemote " +
+    trace.out( "isRepresentationClassRemote " +
       flavor.isRepresentationClassRemote() );
-    System.out.println( "isFlavorSerializedObjectType " +
+    trace.out( "isFlavorSerializedObjectType " +
       flavor.isFlavorSerializedObjectType() );
-    System.out.println( "isFlavorRemoteObjectType " +
+    trace.out( "isFlavorRemoteObjectType " +
       flavor.isFlavorRemoteObjectType() );
-    System.out.println( "isFlavorJavaFileListType " +
+    trace.out( "isFlavorJavaFileListType " +
       flavor.isFlavorJavaFileListType() );
   }
      

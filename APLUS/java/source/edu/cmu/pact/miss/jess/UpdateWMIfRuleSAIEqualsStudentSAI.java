@@ -132,7 +132,7 @@ public class UpdateWMIfRuleSAIEqualsStudentSAI /*extends jess.NVPairOperation*/ 
 			
 			// If hintRequest is true then exit out of the function as user made a hint request
 			hintRequest = ((SimStRete)context.getEngine()).eval("?*hintRequest*").stringValue(context);
-			//System.out.println(" Hint request : "+hintRequest);
+			//trace.out(" Hint request : "+hintRequest);
 			if(hintRequest.equalsIgnoreCase(WorkingMemoryConstants.TRUE)) {
 
 				return Funcall.TRUE;
@@ -209,14 +209,14 @@ public class UpdateWMIfRuleSAIEqualsStudentSAI /*extends jess.NVPairOperation*/ 
 					String ruleInput = amt.getNodeNowFiring().getActualInput();
 					
 					boolean result = compareSAI(studentSelection, studentAction, studentInput, ruleSelection, ruleAction, ruleInput);
-					//System.out.println(" Comparing : "+studentSelection+","+studentAction+","+studentInput);
-					//System.out.println(" With : "+ruleSelection+","+ruleAction+","+ruleInput);
-					//System.out.println("Compare the SAI results : "+result);
+					//trace.out(" Comparing : "+studentSelection+","+studentAction+","+studentInput);
+					//trace.out(" With : "+ruleSelection+","+ruleAction+","+ruleInput);
+					//trace.out("Compare the SAI results : "+result);
 					if(result) {
 						// If the SAI match then assign the slot (the second argument) the value which we got as the third argument
 						int count = slotNames.length;
 						for(int i = 0; i < count; i++) {
-							//System.out.println("Modifying : "+f+" Names : "+slotNames[i]+" Values : "+slotValues[i].toStringWithParens());
+							//trace.out("Modifying : "+f+" Names : "+slotNames[i]+" Values : "+slotValues[i].toStringWithParens());
 							((SimStRete)context.getEngine()).modify(f, slotNames[i], slotValues[i]);
 						}
 						//ssRete.eval("(bind ?*studentInput* " + studentInput + ")");

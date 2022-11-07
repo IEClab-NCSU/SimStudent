@@ -64,7 +64,7 @@ public class URLCoder extends Object {
 			new_string = new_string + new_char;
 			}
 		
-		//System.out.println("in urldecoder "+new_string);	
+		//trace.out("in urldecoder "+new_string);	
 		return new_string;
 	    }
 

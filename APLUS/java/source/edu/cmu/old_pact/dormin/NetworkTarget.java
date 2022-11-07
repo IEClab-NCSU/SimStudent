@@ -15,14 +15,14 @@ public class NetworkTarget extends FilterTarget{
 	}
 	
 	public NetworkTarget(String newName,Socket newSocket){
-//		System.out.println("Creating NetworkTarget (name,socket)");
+//		trace.out("Creating NetworkTarget (name,socket)");
 		this.Name = newName;
 		try{
-//			System.out.println("About to create outputstream in networktarget");
+//			trace.out("About to create outputstream in networktarget");
 			outputStream = new PrintStream(newSocket.getOutputStream());
-//			System.out.println("After creating outputstream in networktarget");
+//			trace.out("After creating outputstream in networktarget");
 //			myTranslator = new Translator();
-//			System.out.println("After creating translator in networktarget");
+//			trace.out("After creating translator in networktarget");
 	 		targetSocket = newSocket;
 		} catch (IOException e){};
 	}

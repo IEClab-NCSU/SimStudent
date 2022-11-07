@@ -384,7 +384,7 @@ public class JCommRadioButton extends JCommWidget implements ActionListener {
 			actionFromBRFlag = false;
 			if (trace.getDebugCode("inter")) trace.out("inter", "DRB.doCorrectAction: !" + this.alreadyDone);
 			if (!this.alreadyDone) {
-				// System.out.println("firing studentAction in
+				// trace.out("firing studentAction in
 				// JCommQuestionTextField: " + this.alreadyDone + "-
 				// JCommQuestionTextField.java ");
 				this.fireStudentAction(new StudentActionEvent(this));
@@ -1124,7 +1124,7 @@ public class JCommRadioButton extends JCommWidget implements ActionListener {
 	}
 
 	public void setImage(ImageIcon image) {
-		System.out.println("image = " + image);
+		trace.out("image = " + image);
 		this.image = image;
 //		this.repaint();
 	}
@@ -1138,7 +1138,7 @@ public class JCommRadioButton extends JCommWidget implements ActionListener {
 		  this.imageFile = imageFile;
 		else this.imageFile = "NoImage";
 
-		System.out.println("imageFile = " + imageFile);
+		trace.out("imageFile = " + imageFile);
 		setImage(loadImage(imageFile));
 
 	}

@@ -68,7 +68,7 @@ public class urldecode {
 				}
 //				System.err.println("decoded:\n  "+decoded);
 				if(!prettyPrint)
-					System.out.println(decoded);
+					trace.out(decoded);
 				else {
 					Matcher ms = startOfXML.matcher(decoded), me = endOfXML.matcher(decoded);
 					boolean s = ms.find(), e = me.find();
@@ -90,7 +90,7 @@ public class urldecode {
 			if(prettyPrint) {
 				if(baos.size() <= "<root>".getBytes().length) {
 					System.out.write(baos.toByteArray());
-					System.out.println();
+					trace.out();
 				} else {
 					SAXBuilder builder = new SAXBuilder();	
 					ByteArrayInputStream is = new ByteArrayInputStream(baos.toByteArray());

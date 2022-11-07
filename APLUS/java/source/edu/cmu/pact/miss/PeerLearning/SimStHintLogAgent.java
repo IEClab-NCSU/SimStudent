@@ -247,17 +247,17 @@ public class SimStHintLogAgent extends SimStLogAgent{
 			setHintReceived(true);
 			setHintCategory(result);
 			setCurrentHintType();
-			//System.out.println(" SimStLogger should NOT proceed with logging this log entry, storeHintLogEntry should either directly log this or buffer it...");
-			//System.out.println(" New Hint " );
+			//trace.out(" SimStLogger should NOT proceed with logging this log entry, storeHintLogEntry should either directly log this or buffer it...");
+			//trace.out(" New Hint " );
 			storeHintLogEntry( actionType,  action,  step,  result,  resultDetails,  sai,  node,  correctness,  expSelection,
 		    		 expAction,  expInput,  duration,  feedback,  opponent,  info,  myRating,  event_time);
 			returnValue=true; //SimStLogger should NOT proceed with logging this log entry, storeHintLogEntry should either directly log this or buffer it...
 		}
 		else if (action.equals(SimStLogger.METATUTOR_HINT_ACTION) && getHintReceived()){	//repeated hint	
-			//System.out.println("Repeated log entry....");
+			//trace.out("Repeated log entry....");
 			setHintCategory(result);
 			setCurrentHintType();
-			//System.out.println(" Repeated hint !!");
+			//trace.out(" Repeated hint !!");
 
 			logger.simStLog( actionType,  action,  step,  result,  resultDetails,  sai,  node,  correctness,  expSelection,
 		    		 expAction,  expInput,  duration,  feedback,  opponent,  info,  myRating, false, getHintCategory() + " " + getCurrentHintType(),REPEATED_HINT, event_time);
@@ -265,7 +265,7 @@ public class SimStHintLogAgent extends SimStLogAgent{
 		}
 		else if (!action.equals(SimStLogger.METATUTOR_HINT_ACTION) && getHintReceived()){  // see if log item can "release" a buffered log 
 			//we have received a hint so far, either its time to log what is buffered or we have a repeated hint...		
-			//System.out.println(" Releasing the log ");
+			//trace.out(" Releasing the log ");
 			releaseHintLogEntry( actionType,  action,  step,  result,  resultDetails,  sai,  node,  correctness,  expSelection,
 					expAction,  expInput,  duration,  feedback,  opponent,  info,  myRating,  event_time);
 			returnValue=false; 
@@ -309,10 +309,10 @@ public class SimStHintLogAgent extends SimStLogAgent{
 	public void storeHintLogEntry(String actionType, String action, String step, String result, Object resultDetails, Sai sai, ProblemNode node, String correctness, String expSelection,
    		String expAction, String expInput, int duration, String feedback, String opponent, String info, int myRating, String event_time){
 		
-			//System.out.println(" Current Hint category  : "+getHintCategory());
+			//trace.out(" Current Hint category  : "+getHintCategory());
 			if (getHintCategory().equals(QUIZ)){
 				logBuffer.add(new LogEntry(actionType, action, step, result, resultDetails, sai, node, correctness, expSelection, expAction, expInput, duration, feedback, opponent, info, myRating, event_time));
-				//System.out.println("its a quiz hint, so store it....(logBuffer size = " + logBuffer.size()+")");	
+				//trace.out("its a quiz hint, so store it....(logBuffer size = " + logBuffer.size()+")");
 			}
 			/*else if (getCurrentHintType().equals(COG_FEEDBACK) || getCurrentHintType().equals(COG_DEMONSTRATE)){
 			 	// this else section is what happend for study V, where cognitive hints where not tracked
@@ -322,24 +322,24 @@ public class SimStHintLogAgent extends SimStLogAgent{
 			else if (getHintCategory().equals(COG_FEEDBACK)){
 				setFeedbackHint();
 				logBuffer.add(new LogEntry(actionType, action, step, result, resultDetails, sai, node, correctness, expSelection, expAction, expInput, duration, feedback, opponent, info, myRating, event_time));
-				//System.out.println("Its a " + getCurrentHintType() + " type of hint, so log and store....(logBuffer size = " + logBuffer.size()+")");
+				//trace.out("Its a " + getCurrentHintType() + " type of hint, so log and store....(logBuffer size = " + logBuffer.size()+")");
 			}
 			else if (getHintCategory().equals(COG_DEMONSTRATE)){	
 				setMTSuggestedSai(getMetatutorSai(getCurrentHintType()));
 				logBuffer.add(new LogEntry(actionType, action, step, result, resultDetails, sai, node, correctness, expSelection, expAction, expInput, duration, feedback, opponent, info, myRating, event_time));
-				//System.out.println("Its a " + getCurrentHintType() + " type of hint, so log and store....(logBuffer size = " + logBuffer.size()+")");
+				//trace.out("Its a " + getCurrentHintType() + " type of hint, so log and store....(logBuffer size = " + logBuffer.size()+")");
 			}		
 			else if (getHintCategory().equals(RESOURCE)){
 				setAnticipatedResource(result);
-				//System.out.println(" Size of log before adding : "+logBuffer.size());
+				//trace.out(" Size of log before adding : "+logBuffer.size());
 				logBuffer.add(new LogEntry(actionType, action, step, result, resultDetails, sai, node, correctness, expSelection, expAction, expInput, duration, feedback, opponent, info, myRating, event_time));
-				//System.out.println(" Size of log after adding :  "+logBuffer.size());
+				//trace.out(" Size of log after adding :  "+logBuffer.size());
 			}
 			else if (getHintCategory().equals(PROBLEM) || getHintCategory().equals(PROBLEMTYPE) ){				
 				/*lock mt hash so we keep what MT suggested*/
 				lockMTHash=true;
 				logBuffer.add(new LogEntry(actionType, action, step, result, resultDetails, sai, node, correctness, expSelection, expAction, expInput, duration, feedback, opponent, info, myRating, event_time));		
-				//System.out.println("its a problem hint, so lock and store....(logBuffer size = " + logBuffer.size()+")");
+				//trace.out("its a problem hint, so lock and store....(logBuffer size = " + logBuffer.size()+")");
 			}
 					
 	}
@@ -378,7 +378,7 @@ public class SimStHintLogAgent extends SimStLogAgent{
 			if (!logBuffer.isEmpty())
 				logBuffer.pop().log(logger, getHintCategory() + " " + getCurrentHintType(),hintFollowedBooleanToString(hintFollowed));
 			setHintReceived(false);	//reset the hintReceived flag for the next hint...
-			System.out.println("quiz button has been clicked, hint followed is ..." + hintFollowed + " hintType is " + getCurrentHintType());
+			trace.out("quiz button has been clicked, hint followed is ..." + hintFollowed + " hintType is " + getCurrentHintType());
 			
 		}
 		else if (action.equals(SimStLogger.PROBLEM_ENTERED_ACTION)){
@@ -398,7 +398,7 @@ public class SimStHintLogAgent extends SimStLogAgent{
 				logBuffer.pop().log(logger,getHintCategory() + " " + getCurrentHintType(),hintFollowedBooleanToString(hintFollowed));
 			
 			setHintReceived(false);	//reset the hintReceived flag for the next hint...
-			System.out.println("a new problem has been given, hintFollowed is " + hintFollowed + " hintType is " + getHintCategory());
+			trace.out("a new problem has been given, hintFollowed is " + hintFollowed + " hintType is " + getHintCategory());
 			
 		}
 		else if (action.equals(SimStLogger.INPUT_VERIFY_ACTION) || action.equals(SimStLogger.HINT_RECEIVED) ||action.equals(SimStLogger.STUDENT_STEP_ENTERED)){
@@ -413,14 +413,14 @@ public class SimStHintLogAgent extends SimStLogAgent{
 				
 			if (!logBuffer.isEmpty())
 				logBuffer.pop().log(logger,getHintCategory() + " " + getCurrentHintType(),hintFollowedBooleanToString(hintFollowed));
-			//System.out.println("Sai is " + sai + " and MT sai is " + this.getMTSuggestedSai());
-			System.out.println("cognitive hint is provided AND hint followed is " + hintFollowed + " hintType is " + getHintCategory());
+			//trace.out("Sai is " + sai + " and MT sai is " + this.getMTSuggestedSai());
+			trace.out("cognitive hint is provided AND hint followed is " + hintFollowed + " hintType is " + getHintCategory());
 			setHintReceived(false);
 		}
 		else if (action.equals(SimStLogger.TAB_SWITCH_ACTION) && !getHintCategory().equals(QUIZ)){		
 			
 			/*first check if given hint is a resource... If not, then hint is not followed*/
-			//System.out.println("current hint type is " + getCurrentHintType() + " and we wait for " + getAnticipatedResource());
+			//trace.out("current hint type is " + getCurrentHintType() + " and we wait for " + getAnticipatedResource());
 			boolean resourceHint=(getHintCategory().equals(RESOURCE)) ? true : false;
 			if (resourceHint && result!=null){
 				result=result.replace(" ", "");
@@ -429,14 +429,14 @@ public class SimStHintLogAgent extends SimStLogAgent{
 			else
 				hintFollowed=false;
 			
-			//System.out.println("Preparing to log... " + hintFollowed);
+			//trace.out("Preparing to log... " + hintFollowed);
 			if (!logBuffer.isEmpty()) {
-				System.out.println(" Release log (size) " +logBuffer.size());
+				trace.out(" Release log (size) " +logBuffer.size());
 				logBuffer.pop().log(logger, getHintCategory() + " " + getCurrentHintType(),hintFollowedBooleanToString(hintFollowed)); 
 			}
 				   			
 			setHintReceived(false);	//reset the hintReceived flag for the next hint...
-			System.out.println("a new tab has been clicked, hintFollowed is " + hintFollowed + " hintType is " + getHintCategory());
+			trace.out("a new tab has been clicked, hintFollowed is " + hintFollowed + " hintType is " + getHintCategory());
 			
 		}
 		

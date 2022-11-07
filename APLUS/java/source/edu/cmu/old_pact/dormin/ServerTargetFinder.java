@@ -1,4 +1,6 @@
 package edu.cmu.old_pact.dormin;
+import edu.cmu.pact.Utilities.trace;
+
 import java.applet.Applet;
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -41,21 +43,21 @@ public class ServerTargetFinder {
 		try {
 				MessageObject portMessage = new MessageObject(inMessage,new ObjectProxy("Application"));
 				int portToUse = portMessage.extractIntValue("PORT");
-				System.out.println("Using port "+portToUse);
+				trace.out("Using port "+portToUse);
 				if (portToUse != -1) {
-//					System.out.println("about to create socket to server");
-//					System.out.println("host is "+theApplet.getCodeBase().getHost()+" and port is "+portToUse);
+//					trace.out("about to create socket to server");
+//					trace.out("host is "+theApplet.getCodeBase().getHost()+" and port is "+portToUse);
 					Socket serverSocket = new Socket(theApplet.getCodeBase().getHost(),portToUse);
-//					System.out.println("About to create ServerTarget: "+theApplet+";"+name+";"+portToUse);
+//					trace.out("About to create ServerTarget: "+theApplet+";"+name+";"+portToUse);
 					returnTarget = new ServerTarget(name,serverSocket);
-//					System.out.println("After creating ServerTarget");
+//					trace.out("After creating ServerTarget");
 				}
 				else
 					throw new IOException("No available ports");
 					
 			}
 		catch (DorminException d) {
-			System.out.println(d);
+			trace.out(String.valueOf(d));
 		}
 		return returnTarget;
 	}		

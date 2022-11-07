@@ -29,7 +29,7 @@ public class MatcherTest extends TestCase {
 
 	public static Test suite() {
     	if(verbose)
-        	System.out.println("CONSTRUCTING TEST SUITE...\n\n\n");
+        	trace.out("CONSTRUCTING TEST SUITE...\n\n\n");
         return new TestSuite(MatcherTest.class);
     }
 
@@ -291,7 +291,7 @@ public class MatcherTest extends TestCase {
         assertTrue("match("+expression+", "+value+")",
         		expressionMatcherNullVT().match(makeVector("mySelection"), makeVector("myAction"), makeVector(value)));
         if(verbose)
-        	System.out.println(expressionMatcherNullVT().toXML());
+        	trace.out(expressionMatcherNullVT().toXML());
     }
 	
     private void testExpression(String expression, String value) {
@@ -299,7 +299,7 @@ public class MatcherTest extends TestCase {
         assertTrue("match("+expression+", "+value+")",
         		expressionMatcher().match(makeVector("mySelection"), makeVector("myAction"), makeVector(value)));
         if(verbose)
-        	System.out.println(expressionMatcher().toXML());
+        	trace.out(expressionMatcher().toXML());
     }
 	
     private void testExpressionSyntaxError(String expression, String errorPrefix) {
@@ -312,21 +312,21 @@ public class MatcherTest extends TestCase {
         assertTrue("wrong error string on bad syntax \'"+expression+"\'",
         		mErrStr.startsWith(errorPrefix)); 
         if(verbose)
-        	System.out.println(expressionMatcher().toXML());
+        	trace.out(expressionMatcher().toXML());
     }
 	
     private void testExpressionFalseNullVT(String expression, String value) {
         expressionMatcherNullVT().setInputExpression(expression);
         assertFalse(expressionMatcherNullVT().match(makeVector("mySelection"), makeVector("myAction"), makeVector(value)));
         if(verbose)
-        	System.out.println(expressionMatcherNullVT().toXML());
+        	trace.out(expressionMatcherNullVT().toXML());
     }
 	
     private void testExpressionFalse(String expression, String value) {
         expressionMatcher().setInputExpression(expression);
         assertFalse(expressionMatcher().match(makeVector("mySelection"), makeVector("myAction"), makeVector(value)));
         if(verbose)
-        	System.out.println(expressionMatcher().toXML());
+        	trace.out(expressionMatcher().toXML());
     }
 
     /**
@@ -343,7 +343,7 @@ public class MatcherTest extends TestCase {
         assertTrue("test("+input+" "+relop+" "+expression+")",
         		expressionMatcher().match(makeVector("mySelection"), makeVector("myAction"), makeVector(input)));
         if(verbose)
-        	System.out.println(expressionMatcher().toXML());
+        	trace.out(expressionMatcher().toXML());
         expressionMatcher().setRelation(oldRelop);
     }
 	
@@ -351,7 +351,7 @@ public class MatcherTest extends TestCase {
         expressionMatcher().setInputExpression(expression);
         assertTrue(expected.equals(expressionMatcher().interpolate(expression, "mySelection", "myAction", value)));
         if(verbose)
-        	System.out.println(expressionMatcher().toXML());
+        	trace.out(expressionMatcher().toXML());
     }
     
     private void testBooleanExpressionNullVT(String expression) {
@@ -382,14 +382,14 @@ public class MatcherTest extends TestCase {
         expressionMatcher().setInputExpression(expression);
         assertTrue(expressionMatcher().checkExpression());
         if(verbose)
-        	System.out.println(expressionMatcher().toXML());
+        	trace.out(expressionMatcher().toXML());
     }
 	
     private void checkExpressionFalse(String expression) {
         expressionMatcher().setInputExpression(expression);
         assertFalse(expressionMatcher().checkExpression());
         if(verbose)
-        	System.out.println(expressionMatcher().toXML());
+        	trace.out(expressionMatcher().toXML());
     }
     
     public void testNewExpressionMatching() {
@@ -408,7 +408,7 @@ public class MatcherTest extends TestCase {
     
     public void testExpressionMatching() {
     	if(verbose)
-        	System.out.println("TEST EXPRESSION MATCHING...\n\n\n");
+        	trace.out("TEST EXPRESSION MATCHING...\n\n\n");
         
         testExpressionSyntaxError("x +", "ERROR:");
 
@@ -633,6 +633,6 @@ public class MatcherTest extends TestCase {
         TestResult tr = new TestResult();
         suite().run(tr);
         for (java.util.Enumeration failures = tr.failures(); failures.hasMoreElements(); )
-            System.out.println("failure: " + failures.nextElement());
+            trace.out("failure: " + failures.nextElement());
     }
 }

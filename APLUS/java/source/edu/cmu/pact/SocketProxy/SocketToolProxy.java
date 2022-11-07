@@ -272,7 +272,7 @@ public class SocketToolProxy extends RemoteToolProxy{
 	protected String createMessageString(MessageObject o) {
 		String toSend = super.createMessageString(o);
 		if (logOnly) {
-			System.out.println("SocketToolProxy.handleCommMessage():\n" + toSend);
+			trace.out("SocketToolProxy.handleCommMessage():\n" + toSend);
 			return null;
 		}		
 		return toSend;

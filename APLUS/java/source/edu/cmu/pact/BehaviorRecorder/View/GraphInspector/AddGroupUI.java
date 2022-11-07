@@ -147,7 +147,7 @@ public class AddGroupUI extends JPanel implements ActionListener, GroupChangeLis
 				actionDesc = "Add or remove links in group";
 			}
 			
-			//System.out.println("**Checkpoint test for addRemoveLinksButton **");
+			//trace.out("**Checkpoint test for addRemoveLinksButton **");
 			//Undo checkpoint for add/remove to group ID: 1337
 			if (actionDesc != null) {                           // only if links moved
 				ActionEvent ae = new ActionEvent(this, 0, actionDesc);

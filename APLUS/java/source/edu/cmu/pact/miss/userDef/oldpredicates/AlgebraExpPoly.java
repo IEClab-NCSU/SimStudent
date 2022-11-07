@@ -88,7 +88,7 @@ public class AlgebraExpPoly extends AlgebraExp {
 
     public AlgebraExp evalArithmetic() {
 
-	// System.out.print(this + ".evalArithmetic() ... ");
+	// trace.out(this + ".evalArithmetic() ... ");
 	AlgebraExp evalArithmetic = null;
 
 	if ( getSecondTerm().isTerm() ) {
@@ -103,8 +103,8 @@ public class AlgebraExpPoly extends AlgebraExp {
 		doArithmetic( getOp(), getFirstTerm().evalArithmetic(), normalSecond ) ;
 	}
 
-	// System.out.println(evalArithmetic);
-	// System.out.println(this + ".evalArithmetic() -> " + evalArithmetic);
+	// trace.out(evalArithmetic);
+	// trace.out(this + ".evalArithmetic() -> " + evalArithmetic);
 	return evalArithmetic;
     }
 
@@ -123,7 +123,7 @@ public class AlgebraExpPoly extends AlgebraExp {
 
 	if ( op.equals( "+" ) ) {
 	    
-	    // System.out.println("doArithmetic(" + t1 + "," + t2 + ")...");
+	    // trace.out("doArithmetic(" + t1 + "," + t2 + ")...");
 	    
 	    if ( t2.isZero() ) {
 
@@ -131,7 +131,7 @@ public class AlgebraExpPoly extends AlgebraExp {
 
 	    } else if ( t1.isTerm() && t2.isTerm() ||(t1.isSimpleFraction() && t2.isSimpleFraction()) ) {
 		
-		// System.out.println("t2.isTerm()");
+		// trace.out("t2.isTerm()");
 		doArithmetic = evalArithmeticAdd( t1, t2 );
 
 	    } else if ( !t1.isTerm() && t2.isTerm() ) {
@@ -140,7 +140,7 @@ public class AlgebraExpPoly extends AlgebraExp {
 		
 	    } else if ( !t1.isTerm() && !t2.isTerm() ) {
 		
-		// System.out.println("!t1.isTerm() : " + t1);
+		// trace.out("!t1.isTerm() : " + t1);
 		/*
 		doArithmetic = t1.comesBefore(t2) ?
 		    new AlgebraExpPoly( op, t1, t2 ) :
@@ -152,11 +152,11 @@ public class AlgebraExpPoly extends AlgebraExp {
 	    } else {
 
 		AlgebraExp sameTerm = t2.lookupSameTypeTerm( "+", t1 );
-		// System.out.println( "doArithmetic: sameTerm = " + sameTerm );
+		// trace.out( "doArithmetic: sameTerm = " + sameTerm );
 		if ( sameTerm != null ) {
 		    
 		    AlgebraExp newTerm = evalArithmeticAdd( t1, sameTerm );
-		    // System.out.println("newTerm = " + newTerm);
+		    // trace.out("newTerm = " + newTerm);
 		    doArithmetic = t2.replaceTerm( sameTerm, newTerm );
 
 		} else {
@@ -202,7 +202,7 @@ public class AlgebraExpPoly extends AlgebraExp {
 	    
 	} else if ( getOp().equals( "*" ) ) {
 	    
-	    // System.out.println("AlgebraExpPoly.evalArithmetic() -> Mult");
+	    // trace.out("AlgebraExpPoly.evalArithmetic() -> Mult");
 	    return evalArithmeticMult( t1, t2 );
 	    
 	} else if ( getOp().equals( "/" ) ) {
@@ -300,7 +300,7 @@ public class AlgebraExpPoly extends AlgebraExp {
 
     public AlgebraExp divTerm( AlgebraExp term ) {
 
-//	 System.out.println(this + ".AlgebraExpPoly.divTerm(" + term + ")");
+//	 trace.out(this + ".AlgebraExpPoly.divTerm(" + term + ")");
 	AlgebraExp divTerm = null;
 	AlgebraExp inverseTerm = null;
 
@@ -323,7 +323,7 @@ public class AlgebraExpPoly extends AlgebraExp {
 
 	    inverseTerm = getNumerator().divTerm( term );
 
-	    // System.out.println("inverseTerm = " + inverseTerm);
+	    // trace.out("inverseTerm = " + inverseTerm);
 
 	    if ( inverseTerm != null ) {
 
@@ -352,7 +352,7 @@ public class AlgebraExpPoly extends AlgebraExp {
 
 	}
 
-	// System.out.println(" ==> " + divTerm);
+	// trace.out(" ==> " + divTerm);
 	return divTerm;
     }
 
@@ -365,10 +365,10 @@ public class AlgebraExpPoly extends AlgebraExp {
 		if ( isFraction()) {
 
 			
-	    // System.out.println(this + ".multTerm(" + term + ")");
+	    // trace.out(this + ".multTerm(" + term + ")");
 			
 	    AlgebraExp multiplier = term.divTerm( getDenominator() );
-	    // System.out.println("multiplier = " + multiplier);
+	    // trace.out("multiplier = " + multiplier);
 
 	    if ( multiplier != null ) {
 

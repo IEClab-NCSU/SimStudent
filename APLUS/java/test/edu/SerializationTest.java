@@ -21,7 +21,7 @@ public class SerializationTest extends TestCase {
 		
 		
 		// instiatinate the SImSt object 
-		System.out.println("setup");
+		trace.out("setup");
 	}
 	
 	
@@ -43,26 +43,26 @@ public class SerializationTest extends TestCase {
 			servletConnection.setUseCaches(false);
 			servletConnection.setDefaultUseCaches(false);
 			ObjectInputStream ois = new ObjectInputStream(servletConnection.getInputStream());
-			System.out.println(" OutputStream : "+ois);
+			trace.out(" OutputStream : "+ois);
 		    if(ois != null)
 				{
 				   Object obj = ois.readObject();
 				   ois.close();
 				   SimSt simstObj = (SimSt)obj;
-				   System.out.println(" SimSt : "+simstObj);
+				   trace.out(" SimSt : "+simstObj);
 				   //launcher.getFocusedController().getMissController().getSimSt().loadInstnDeSerialize(simstObj);
 
 				}
 		    			
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
-			System.out.println(e.getMessage());
+			trace.out(e.getMessage());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			trace.err(e.toString());
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
-			System.out.println(e.getMessage());
+			trace.out(e.getMessage());
 		}
 		
 		

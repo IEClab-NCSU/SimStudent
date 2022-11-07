@@ -63,7 +63,7 @@ public class QuestionnaireDemographics extends javax.swing.JPanel implements Don
 			Object value=null;
 			try {
 				value = field.get(this);	
-				System.out.println(" Field : "+value);
+				trace.out(" Field : "+value);
 			} catch (IllegalArgumentException e) {
 				e.printStackTrace();
 			} catch (IllegalAccessException e) {
@@ -76,7 +76,7 @@ public class QuestionnaireDemographics extends javax.swing.JPanel implements Don
 					multipleChoice.setCommName(field.getName());	
 					interfaceElements.put(field.getName(),multipleChoice);
 				}
-				System.out.println("Key : "+field.getName()+" Value : "+interfaceElements.get(field.getName()));
+				trace.out("Key : "+field.getName()+" Value : "+interfaceElements.get(field.getName()));
 			}
 		}
 	}

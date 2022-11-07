@@ -81,11 +81,11 @@ public class TutorMessageContentsTest extends TestCase {
 		List<SkillContent> skills = test.getSkills();
 		SkillContent skill1 = skills.get(0);
 		
-//		System.out.println(skill1.getDiffName());
-//		System.out.println(skill1.getDiffBuggy());
-//		System.out.println(skill1.getDiffCategory());
-//		System.out.println(skill1.getDiffProbability());
-//		System.out.println(skill1.getDiffModel_names());
+//		trace.out(skill1.getDiffName());
+//		trace.out(skill1.getDiffBuggy());
+//		trace.out(skill1.getDiffCategory());
+//		trace.out(skill1.getDiffProbability());
+//		trace.out(skill1.getDiffModel_names());
 		
 		assertTrue(skill1.getName().equals("unnamed") &&
 				skill1.getBuggy() == false &&
@@ -150,7 +150,7 @@ public class TutorMessageContentsTest extends TestCase {
 		try {
 			result = URLDecoder.decode(input, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
-			System.out.println("Failed escapeXML");
+			trace.out("Failed escapeXML");
 		}
 		
 		return result;

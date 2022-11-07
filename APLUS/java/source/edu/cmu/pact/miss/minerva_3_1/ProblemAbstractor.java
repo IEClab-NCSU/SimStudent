@@ -16,14 +16,14 @@ public class ProblemAbstractor extends Abstractor {
 	 * - constants abstracted from left to right
 	 */
 	public String abstractEquationAbsolute(String equation) {
-		// System.out.println("absolute abstraction equation: " + equation);
+		// trace.out("absolute abstraction equation: " + equation);
 		
 		equation = abstractVars(equation);
-		// System.out.println("abstractVars() = " + equation);
+		// trace.out("abstractVars() = " + equation);
 		
 		equation = orient(equation);
 		equation = abstractNumbersAbsolute(equation);
-		// System.out.println("abstractNumbersAbsolute() = " + equation);
+		// trace.out("abstractNumbersAbsolute() = " + equation);
 		
 		return equation;
 	}
@@ -33,11 +33,11 @@ public class ProblemAbstractor extends Abstractor {
 	 * - unnecessary negative signs removed
 	 */
 	public String abstractEquationSimple(String equation) {
-		// System.out.println("simple abstract equation: " + equation);
+		// trace.out("simple abstract equation: " + equation);
 		equation = abstractEquationAbsolute(equation);
 		equation = removeNegatives(equation);
 
-		// System.out.println(equation);
+		// trace.out(equation);
 		return equation;
 	}
 
@@ -50,21 +50,21 @@ public class ProblemAbstractor extends Abstractor {
 	 */
 	public String abstractEquationContext(String equation,
 			Map<String, String> abstractionConstants, char nextConstant) {
-		// System.out.println("Context abstract equation: " + equation);
+		// trace.out("Context abstract equation: " + equation);
 		equation = abstractVars(equation);
-		// System.out.println("abstractVars(equation): " + equation);
+		// trace.out("abstractVars(equation): " + equation);
 		equation = orient(equation);
-		// System.out.println("orient(equation): " + equation);
+		// trace.out("orient(equation): " + equation);
 		abstractVarNumContext(equation, abstractionConstants);
-		// System.out.println("abstractVarNumContext: " + equation);
+		// trace.out("abstractVarNumContext: " + equation);
 		equation = abstractNumbersContext(equation, abstractionConstants, nextConstant);
-		// System.out.println("abstractNumbersContext: " + equation);
+		// trace.out("abstractNumbersContext: " + equation);
 		
 		Set keys = abstractionConstants.keySet();
 		Iterator itr = keys.iterator();
 		while(itr.hasNext()) {
 			Object key = itr.next();
-			// System.out.println(key + "   " + abstractionConstants.get(key));
+			// trace.out(key + "   " + abstractionConstants.get(key));
 		}
 		return equation;
 	}
@@ -77,7 +77,7 @@ public class ProblemAbstractor extends Abstractor {
 	    equation = abstractVars(equation);
 	    
 	    int vIndex = equation.indexOf('v');
-	    // System.out.println("vIndex: " + vIndex + "length: " + equation.length());
+	    // trace.out("vIndex: " + vIndex + "length: " + equation.length());
 	    
 	    if (vIndex >= 2) {
 	        int leftIndex = vIndex - 2;
@@ -88,7 +88,7 @@ public class ProblemAbstractor extends Abstractor {
 	            }
 
 	            abstractionConstants.put(equation.substring(leftIndex, vIndex - 1), "A");
-	            // System.out.println(equation.substring(leftIndex, vIndex-1) + "       " + "A");
+	            // trace.out(equation.substring(leftIndex, vIndex-1) + "       " + "A");
 	            return;
 	        }
 	    }
@@ -108,7 +108,7 @@ public class ProblemAbstractor extends Abstractor {
 	            }
 	            
 	            abstractionConstants.put(equation.substring(start, rightIndex + 1), "A");
-	            // System.out.println(equation.substring(start, rightIndex+1) + "       " + "A");
+	            // trace.out(equation.substring(start, rightIndex+1) + "       " + "A");
 	        }
 	    }
 	}
@@ -121,10 +121,10 @@ public class ProblemAbstractor extends Abstractor {
 	    
 	    String orient = "";
 	    
-	    // System.out.println("orient(" + equation + ")");
+	    // trace.out("orient(" + equation + ")");
 	    int vIndex = equation.indexOf('v');
 	    int equalsIndex = equation.indexOf('=');
-	    // System.out.println("vIndex = " + vIndex + ", equalsIndex = " + equalsIndex);
+	    // trace.out("vIndex = " + vIndex + ", equalsIndex = " + equalsIndex);
 	    
 	    if (vIndex > equalsIndex) {
 	        orient = equation.substring(equalsIndex + 2) + " = " + equation.substring(0, equalsIndex);

@@ -44,7 +44,7 @@ public class Login extends Activity {
             	if (username == null || username.length() < 1)
             		return;
             	AndroidTutorShop ats = AndroidTutorShop.create(Login.this);
-            	System.out.println("Calling AndroidTutorShop.runService("+username+")");
+            	trace.out("Calling AndroidTutorShop.runService("+username+")");
             	ats.runService(username);
             }
 

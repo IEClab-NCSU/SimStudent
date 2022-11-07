@@ -29,7 +29,7 @@ public class SerializationTest {
 
 			 ois = new ObjectInputStream(servletConnection.getInputStream());
 			 SimSt simstObj =(SimSt) ois.readObject();
-			 System.out.println(" SimSt : "+simstObj);
+			 trace.out(" SimSt : "+simstObj);
 		} 
 		catch (MalformedURLException e) {
 			trace.err(e.toString());
@@ -45,8 +45,8 @@ public class SerializationTest {
 				if(ois != null)
 					ois.close();
 				else
-					System.out.println("No close");
-			System.out.println(" Response : "+servletConnection.getResponseMessage());
+					trace.out("No close");
+			trace.out(" Response : "+servletConnection.getResponseMessage());
 		}
 		
 		
@@ -73,7 +73,7 @@ public class SerializationTest {
 				output.writeObject(obj);
 				output.flush();
 				output.close();
-				System.out.println(" Code : "+servletConnection.getResponseMessage());
+				trace.out(" Code : "+servletConnection.getResponseMessage());
 			}
 			catch(Exception e){
 				trace.err(e.toString());

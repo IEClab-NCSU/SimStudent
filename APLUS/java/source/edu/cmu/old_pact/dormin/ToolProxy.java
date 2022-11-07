@@ -119,7 +119,7 @@ public abstract class ToolProxy extends CommonObjectProxy {
                     completed = true;
                 }
 		else {
-//			System.out.println("about to call super.treatMessage");
+//			trace.out("about to call super.treatMessage");
 			super.treatMessage(mo, inVerb);
 		}
 	}

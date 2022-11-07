@@ -5,6 +5,8 @@
  */
 package edu.cmu.pact.miss.minerva_3_1;
 
+import edu.cmu.pact.Utilities.trace;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -40,7 +42,7 @@ public class Step {
         public Step(String step_Name, String attempt_At_Step, String outcome,
                 String action, String input, String feedback) {
 	    
-	    // System.out.print("Step(): step_Name=" + step_Name + ", sttempt_At_Step=" + attempt_At_Step + ", outcome=" + outcome + ", action=" + action + ", input=" + input +"\n");
+	    // trace.out("Step(): step_Name=" + step_Name + ", sttempt_At_Step=" + attempt_At_Step + ", outcome=" + outcome + ", action=" + action + ", input=" + input +"\n");
 	    
 		this.step_Name = step_Name;
 		this.attempt_At_Step = 0;
@@ -62,13 +64,13 @@ public class Step {
 			signedInputAbstractionContext = s.abstractSignedInputSimpleContext(signedAbstractionConstants, step_Name);
 			unsignedInputAbstractionContext = s.abstractUnsignedInputSimpleContext(unsignedAbstractionConstants, step_Name);
 		}
-		// System.out.println("Step " + step_Name + "  " + "SignedNoContext: " + equationAbstractionAbsolute);
+		// trace.out("Step " + step_Name + "  " + "SignedNoContext: " + equationAbstractionAbsolute);
 		//inputAbstractionAbsolute = action + " " + s.abstractInputAbsolute(input, step_Name);
 		//inputAbstractionAbsolute = action + " " + s.abstractInputAbsolute(input);
 
 		if(step_Name.indexOf('=') != -1)
 			unsignedAbstraction = s.unsignedAbstraction(step_Name);
-		// System.out.println("Step " + step_Name + "  " + "NoSignNoContext: " + equationAbstractionSimple);
+		// trace.out("Step " + step_Name + "  " + "NoSignNoContext: " + equationAbstractionSimple);
 		//inputAbstractionSimple = action + " " + s.abstractInputSimple(input);
 	}
         
@@ -103,11 +105,11 @@ public class Step {
 		boolean flag = false;
 
 		for (int i = 0; i < equation.length(); i++) {
-			// System.out.println(i);
+			// trace.out(i);
 			while(i < equation.length() && Character.isDigit(equation.charAt(i))) {
 				value +=  equation.charAt(i);
 				++i;
-				// System.out.println("Inside while: " + i);
+				// trace.out("Inside while: " + i);
 			}
 			if(value != "") {
 				constantized += (char)this.nextConstant;
@@ -132,7 +134,7 @@ public class Step {
 		newEquation = s.abstractNumbersContext(newEquation,
 				abstractionConstants, (char)nextConstant);
 		signedInputAbstractionContext = action + " " + newEquation;
-		System.out.println("Error Step.java line 134");
+		trace.out("Error Step.java line 134");
 		return abstractionConstants;
 	}
 
@@ -141,13 +143,13 @@ public class Step {
 			Map<String, String> abstractionConstants, int nextConstant) {
 
 	    String newEquation = Abstractor.abstractVars(step_Name);
-	    // System.out.println("abstractEquationContext: " + newEquation);
+	    // trace.out("abstractEquationContext: " + newEquation);
 	    
 	    newEquation = s.assignLHS(newEquation) + " = " + s.assignRHS(newEquation);
-	    // System.out.println("abstractEquationContext: " + newEquation);
+	    // trace.out("abstractEquationContext: " + newEquation);
 	    
 	    newEquation = s.abstractNumbersContext(newEquation, abstractionConstants, (char)nextConstant);
-	    // System.out.println("abstractEquationContext: " + newEquation);
+	    // trace.out("abstractEquationContext: " + newEquation);
 	    
 	    equationAbstractionContext = newEquation;
 	    

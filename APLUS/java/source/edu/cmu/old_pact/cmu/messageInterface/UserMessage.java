@@ -1,5 +1,6 @@
 package edu.cmu.old_pact.cmu.messageInterface;
 import edu.cmu.old_pact.dormin.DorminException;
+import edu.cmu.pact.Utilities.trace;
 
 /**
  * A class that contains all the information about a single user message.
@@ -63,7 +64,7 @@ public class UserMessage {
 	* Sends point() to all Pointers of this message.
 	*/
     public synchronized void point() {
-//    	System.out.println("in UserMessage::point, pointers are "+pointers);
+//    	trace.out("in UserMessage::point, pointers are "+pointers);
 		try {
 	    	if(pointers == null)
 	    		return;
@@ -89,7 +90,7 @@ public class UserMessage {
 	    		pointers[i].unPoint();
 	    }
 	    catch (DorminException ex) {
-	    	System.out.println("invalid pointer in UserMessage::unpoint");
+	    	trace.out("invalid pointer in UserMessage::unpoint");
 	    }
     }
     

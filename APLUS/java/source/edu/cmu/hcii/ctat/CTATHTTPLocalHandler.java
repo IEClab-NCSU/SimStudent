@@ -967,7 +967,7 @@ public class CTATHTTPLocalHandler extends CTATHTTPHandlerBase implements CTATHTT
 				} 
 				catch (UnsupportedEncodingException uee) 
 				{
-					System.out.println("Exception decoding UTF-8:"+uee);  // shouldn't happen
+					trace.out("Exception decoding UTF-8:"+uee);  // shouldn't happen
 				}
 				
 				/*

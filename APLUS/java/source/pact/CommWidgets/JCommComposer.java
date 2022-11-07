@@ -495,7 +495,7 @@ public class JCommComposer extends JCommWidget implements ActionListener,	ItemLi
 			comboBoxesNumber = Integer.parseInt((String) obj);
 			setComboBoxesNumber(comboBoxesNumber);
 		} else
-			System.out.println("Unexpected TYPE of comboBoxesNumber");
+			trace.out("Unexpected TYPE of comboBoxesNumber");
 		// parsing "ComboBoxesWidths"
 		obj = messageObject.getProperty("ComboBoxesWidths");
 
@@ -504,7 +504,7 @@ public class JCommComposer extends JCommWidget implements ActionListener,	ItemLi
 		} else if (obj instanceof String) {
 			setComboBoxesWidths((String) obj);
 		} else
-			System.out.println("Unexpected TYPE of comboBoxesWidths");
+			trace.out("Unexpected TYPE of comboBoxesWidths");
 		// parsing Value1, ... ValueN
 		for (int i = 0; i < comboBoxesNumber; i++) {
 			valuesString = "Values" + (i + 1);

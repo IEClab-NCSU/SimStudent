@@ -56,7 +56,7 @@ public class DelayedAction  implements Runnable {
 			ie.printStackTrace();
 		}
 
-//		System.out.println("Thread " + thread.currentThread().getName() + "After Wake up => " + cancelAction);
+//		trace.out("Thread " + thread.currentThread().getName() + "After Wake up => " + cancelAction);
     	if (trace.getDebugCode("ls")) trace.out("ls", "DelayedAction run() about to reach r.run()");
     	
 			if (getCancelAction() == null) {
@@ -82,7 +82,7 @@ public class DelayedAction  implements Runnable {
 	 */
 	 public String cancel() {
 		cancelAction = "Thread " + thread.currentThread().getName() + "cancelled at " + new Date();
-		System.out.println(cancelAction);
+		trace.out(cancelAction);
 		return cancelAction;
 	}
 

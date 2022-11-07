@@ -225,7 +225,7 @@ private void loadJessFiles(String problemName, boolean useBinary) {
 				JESS_ORACLE_PRODUCTION_RULES_FILE, 
 				INIT_FILE, problemName + ".wme" }; 
 
-		//System.out.println("ss" + Arrays.toString(filenames));
+		//trace.out("ss" + Arrays.toString(filenames));
 
 		boolean[] results = null;
 		for (int i = 0; i < filenames.length; ++i) {

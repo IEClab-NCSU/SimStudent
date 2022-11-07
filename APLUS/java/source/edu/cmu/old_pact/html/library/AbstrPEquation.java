@@ -42,13 +42,13 @@ public class AbstrPEquation extends PEquation {
     	if(my_face == null)
     		return;
     	my_graphics = my_face.getGraphics();
-    		//System.out.println("from createPeImage: w=" + w +" h=" + h);
+    		//trace.out("from createPeImage: w=" + w +" h=" + h);
     	
     	my_graphics.setColor(handler.getBackground()); 
     	my_graphics.fillRect(0, 0, w,h); //size().width, size().height);
     	my_graphics.setColor(Color.black); 
     	 
-// System.out.println("WebEqImage: w="+w+" h="+h+"  descent="+root.getDescent());
+// trace.out("WebEqImage: w="+w+" h="+h+"  descent="+root.getDescent());
     	
     	if(root.getDescent() <=4) 
     	  descent = 3;

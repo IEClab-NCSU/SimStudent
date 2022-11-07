@@ -91,7 +91,7 @@ class GraphicsElement {
 		
 		return new Rectangle(TopLeft.x,TopLeft.y,width,height);
 		} catch (NullPointerException e) { 
-			//System.out.println("GraphicsElement unionRect "+e.toString());
+			//trace.out("GraphicsElement unionRect "+e.toString());
 		}
 		return null;
 	}	

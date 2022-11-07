@@ -1,6 +1,8 @@
 package edu.cmu.old_pact.htmlPanel;
 
 
+import edu.cmu.pact.Utilities.trace;
+
 public class HiddenHTMLString {
 	private String text;
 	
@@ -82,7 +84,7 @@ public class HiddenHTMLString {
 								
 				if((i == endMathmlInd) && (startMathmlInd ==-1)) {
 				   		// malformed Html -- WHAT TO DO??
-				   	System.out.println("Malformed Html text!(end tag comes before start tag)"+
+				   	trace.out("Malformed Html text!(end tag comes before start tag)"+
 				   		text.substring(start) );
 				 }					   				
 				if(Pos == end && end != -1) {
@@ -177,7 +179,7 @@ public class HiddenHTMLString {
 		  endMathmlInd = str.indexOf("</MATHML>");
 		
 		  if (endMathmlInd == -1) {
-		    System.out.println("!!! malformed Html: '</MATHML>' not found !!!");
+		    trace.out("!!! malformed Html: '</MATHML>' not found !!!");
 		    return toret + str;
 		  }	
 		  startMstyleInd = str.indexOf("<mstyle"); 

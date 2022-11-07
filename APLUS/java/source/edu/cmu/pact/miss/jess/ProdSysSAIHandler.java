@@ -111,7 +111,7 @@ public class ProdSysSAIHandler extends SAIHandler {
 				result = amt.runModelTrace(true, false, selection, "", "", messages);
 				
 				if(messages.size() < 1){
-					//System.out.println(" Message size is zero ");
+					//trace.out(" Message size is zero ");
 					messages.add("I'm sorry, no hint is available at this step");
 				}
 				

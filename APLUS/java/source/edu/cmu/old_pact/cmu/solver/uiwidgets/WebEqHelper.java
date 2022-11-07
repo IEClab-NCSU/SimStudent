@@ -9,6 +9,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Font;
 
+import edu.cmu.pact.Utilities.trace;
 import webeq3.parser.Parser;
 import webeq3.schema.Box;
 import webeq3.util.ErrorHandler;
@@ -92,7 +93,7 @@ public class WebEqHelper {
 		}
 		catch (BadExpressionError err) {
 			//hmm -- should be a better way to deal with unparsable equations...
-			System.out.println("Can't parse equation: "+err);
+			trace.out("Can't parse equation: "+err);
 		}
 		catch (NoSuchFieldException e) {
 		}
@@ -108,7 +109,7 @@ public class WebEqHelper {
 			theParser = null;
 		}
 		catch(Exception e) {
-			System.out.println("Error parsing: "+e);
+			trace.out("Error parsing: "+e);
 			e.printStackTrace();
    		}
 		return theEquation;
@@ -128,7 +129,7 @@ public class WebEqHelper {
 			negArg = sm.negate(arg);
 		}
 		catch (BadExpressionError err) {
-			System.out.println("Bad expression in getAlignedTerm: "+err);
+			trace.out("Bad expression in getAlignedTerm: "+err);
 			negArg = arg;
 		}
 		int foundTerm = -1;
@@ -164,10 +165,10 @@ public class WebEqHelper {
 			
 		}
 		catch (BadExpressionError err) {
-			System.out.println("Bad expression in getAlignedTerm: "+err);
+			trace.out("Bad expression in getAlignedTerm: "+err);
 		}
 		catch (NoSuchFieldException err) {
-			System.out.println("can't get terms of "+expression);
+			trace.out("can't get terms of "+expression);
 		}
 
 		if (foundTerm == -1)
@@ -213,7 +214,7 @@ public class WebEqHelper {
 			//reconstruct the MathML for the original expression
 			sm.setOutputType(SymbolManipulator.mathMLOutput);
 			if (numTerms > 1) {
-//				System.out.println("1 case, prefix: "+expressionTermPrefix);
+//				trace.out("1 case, prefix: "+expressionTermPrefix);
 				if (foundTerm == 0)
 					originalExpression = sm.runScript("[set] ['prefix'] [term 1] ['"+expressionTermPrefix+"']",
 												  		expression);
@@ -222,26 +223,26 @@ public class WebEqHelper {
 												  		expression);
 			}
 			else {
-//				System.out.println("2 case, prefix: "+expressionTermPrefix);
+//				trace.out("2 case, prefix: "+expressionTermPrefix);
 				originalExpression = expressionTermPrefix+sm.format(expression);
 			}
-//			System.out.println("OrigEx: "+originalExpression);
+//			trace.out("OrigEx: "+originalExpression);
 			sm.setOutputType(SymbolManipulator.intermediateOutput);
 			
 	 		//set up the alignedOperatorExpression (the expression that represents the operator)
 	 		alignedOperatorExpression = expression;
-			//System.out.println("WEH.gAE[1]: aOE = " + alignedOperatorExpression);
+			//trace.out("WEH.gAE[1]: aOE = " + alignedOperatorExpression);
 			//replace argument (if it is different)
 			if (numTerms == 1){
 				alignedOperatorExpression = arg; //since there's only 1 term, just replace it with arg
-				//System.out.println("WEH.gAE[2]: aOE = " + alignedOperatorExpression);
+				//trace.out("WEH.gAE[2]: aOE = " + alignedOperatorExpression);
 			}
 			
 	
 			else /*if (!expressionTerm.equals(arg))*/{
 				alignedOperatorExpression = sm.runScript("[set] ['term "+(foundTerm+1)+"'] [self] ['"+arg+"']",
 										  					alignedOperatorExpression);
-				//System.out.println("WEH.gAE[3]: aOE = " + alignedOperatorExpression);
+				//trace.out("WEH.gAE[3]: aOE = " + alignedOperatorExpression);
 			}
 			
 	
@@ -251,19 +252,19 @@ public class WebEqHelper {
                   insert the '-' for the subtraction.*/
 				if (numTerms == 1){
 					alignedOperatorExpression = "-"+alignedOperatorExpression;
-					//System.out.println("WEH.gAE[4]: aOE = " + alignedOperatorExpression);
+					//trace.out("WEH.gAE[4]: aOE = " + alignedOperatorExpression);
 				}
 				else {
 					for(int i=0; i< numTerms; i++){
 						if(i != foundTerm) {
 							alignedOperatorExpression = sm.runScript("[set] ['operator'] [item "+(i+1)+" of terms] ['+']",
 										  						alignedOperatorExpression);
-							//System.out.println("WEH.gAE[7]: aOE = " + alignedOperatorExpression);
+							//trace.out("WEH.gAE[7]: aOE = " + alignedOperatorExpression);
 						}
 						else if (i == foundTerm){
 							alignedOperatorExpression = sm.runScript("[set] ['operator'] [item "+(foundTerm+1)+" of terms] ['-']",
 																	 alignedOperatorExpression);
-							//System.out.println("WEH.gAE[6]: aOE = " + alignedOperatorExpression);
+							//trace.out("WEH.gAE[6]: aOE = " + alignedOperatorExpression);
 						}
 					}
 				}
@@ -274,18 +275,18 @@ public class WebEqHelper {
 					alignedOperatorExpression = sm.runScript("[set] ['operator'] [item "+(foundTerm+1)+" of terms] ['+']",
 															alignedOperatorExpression);
 			}
-//			System.out.println("Aligning "+arg+" with "+expression+" before IE: "+alignedOperatorExpression);
+//			trace.out("Aligning "+arg+" with "+expression+" before IE: "+alignedOperatorExpression);
 			alignedOperatorExpression = invisibleExcept(alignedOperatorExpression,foundTerm,numTerms,argSuffix);
-//			System.out.println("Aligning "+arg+" with "+expression+" after IE: "+alignedOperatorExpression);
+//			trace.out("Aligning "+arg+" with "+expression+" after IE: "+alignedOperatorExpression);
 
 			if (foundTerm == 0 && op.equals("add"))  //if this is the first term and it is positive, make the operator explicit
 				alignedOperatorExpression = "<mo>+</mo>"+alignedOperatorExpression;
 		}
 		catch (BadExpressionError err) {
-			System.out.println("Bad expression in getAlignedExpressions: "+err);
+			trace.out("Bad expression in getAlignedExpressions: "+err);
 		}
 		catch (NoSuchFieldException err) {
-			System.out.println("can't get terms of "+expression);
+			trace.out("can't get terms of "+expression);
 		}
 		sm = null;
 		return new String[] {alignedOperatorExpression,originalExpression};
@@ -332,10 +333,10 @@ public class WebEqHelper {
 			result = formatter.format(expression,accessor,attribute,value);
 		}
 		catch (BadExpressionError err) {
-			System.out.println("Bad expression in invisibleExcept: "+err);
+			trace.out("Bad expression in invisibleExcept: "+err);
 		}
 		catch (NoSuchFieldException err) {
-			System.out.println("Attribute not found in invisibleExcept:"+err);
+			trace.out("Attribute not found in invisibleExcept:"+err);
 		}
 		formatter = null;
 		return result;
@@ -343,12 +344,12 @@ public class WebEqHelper {
 	
 	public static void getContainers(Component c) {
 		Container parent = c.getParent();
-		System.out.println("Parents of "+c+":");
+		trace.out("Parents of "+c+":");
 		while (parent != null) {
-			System.out.println(parent+"::"+parent.getSize());
+			trace.out(parent+"::"+parent.getSize());
 			parent = parent.getParent();
 		}
-		System.out.println("----");
+		trace.out("----");
 	}
 }
 

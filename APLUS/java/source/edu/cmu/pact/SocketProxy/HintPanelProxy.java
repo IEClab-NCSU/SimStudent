@@ -580,7 +580,7 @@ public class HintPanelProxy {
 			 * started after this process's listener has been started.
 			 */ 
 			if (nSenders < 2) {
-				System.out.println("\nStart HintPanelProxy, open interface and " +
+				trace.out("\nStart HintPanelProxy, open interface and " +
 								   "graph in the Behavior Recorder,\nand then " +
 								   "press Enter here to start sending.\n");
 				promptRdr.readLine();
@@ -589,7 +589,7 @@ public class HintPanelProxy {
 				if (msg.trim().length() < 1)        // skip blank lines
 					continue;
 				if (msg.trim().charAt(0) == '#') {  // just print comment lines
-					System.out.println("\nComment: " + msg + "\n");
+					trace.out("\nComment: " + msg + "\n");
 					continue;
 				}
 				if (trace.getDebugCode("sp")) trace.out("sp", "runClient waitForResponse "+waitForResponse+
@@ -599,13 +599,13 @@ public class HintPanelProxy {
 				else
 					sendString(host, clientPort, msg);
 				if (oneAtATime) {
-					System.out.println("\n___press Enter to send next msg");
+					trace.out("\n___press Enter to send next msg");
 					promptRdr.readLine();
 				}
 			}
 			if (nSenders < 2) {
 				do {
-					System.out.print("\n___enter 'q' to stop listener: ");
+					trace.out("\n___enter 'q' to stop listener: ");
 				} while (!promptRdr.readLine().toLowerCase().startsWith("q"));
 			}			
 			this.resetOutputStream(true);  // true=>close unconditionally

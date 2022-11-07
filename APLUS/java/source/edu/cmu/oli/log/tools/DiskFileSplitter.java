@@ -3,6 +3,8 @@
  */
 package edu.cmu.oli.log.tools;
 
+import edu.cmu.pact.Utilities.trace;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -26,7 +28,7 @@ public class DiskFileSplitter {
 	 * @param msg
 	 */
 	private static void usageExit(String msg) {
-		System.out.println(msg+" Purpose: splits OLI disk log by lines. Writes to stdout or chunk files "+
+		trace.out(msg+" Purpose: splits OLI disk log by lines. Writes to stdout or chunk files "+
 				"named <inputFile>.1, <inputFile>.2, ....\n"+
 				"Usage:\n"+
 				"  java -cp .. "+DiskFileSplitter.class.getName()+" [-h] [-s splitLength] [inputFile]\n"+
@@ -94,8 +96,8 @@ public class DiskFileSplitter {
 			ex.printStackTrace();
 			System.exit(2); // i/o error 
 		}
-		//System.out.println("FILE:\n" + toSend);
-		System.out.println("\nFound "+totalRecordsWritten+" documents.");
+		//trace.out("FILE:\n" + toSend);
+		trace.out("\nFound "+totalRecordsWritten+" documents.");
 	}
 
 	private static int chunkNo = 0;

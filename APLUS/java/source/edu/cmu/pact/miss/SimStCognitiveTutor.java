@@ -298,12 +298,12 @@ public class SimStCognitiveTutor {
 	public void prepareModeltracer(){
 
 		/*notify that problem is started*/
-		//System.out.println(" Notify the problem is started");
+		//trace.out(" Notify the problem is started");
 		getBrController().getAmt().handleInterfaceAction("yes","ButtonPressed","-1");
 		/*initialize all variables*/
 		getSimStPLE().getSsInteractiveLearning().initModelTracerForProblem();
 		/*notify MT that we are always expecting for a hint*/
-		System.out.println(" Preparing for Model Tracer !!!");
+		trace.out(" Preparing for Model Tracer !!!");
 		getBrController().getMissController().getSimSt().getModelTraceWM().setRequestType("hint-request");
 	}
 
@@ -407,7 +407,7 @@ public class SimStCognitiveTutor {
 
 
 		//quizSolution.add(new Sai(selection, action, input));
-		//System.out.println(" In the hash : "+selection+"  value : "+input);
+		//trace.out(" In the hash : "+selection+"  value : "+input);
 		getQuizSolutionHash().put(selection, new Sai(selection, action, input));
 		
 		
@@ -423,24 +423,24 @@ public class SimStCognitiveTutor {
 		 for(int i=0; i< components.size(); i++) {
 			 String key = components.get(i);
 			 if(getQuizSolutionHash().containsKey(key)){
-				// System.out.println(" Key : "+key+"   value : "+getQuizSolutionHash().get(key));
+				// trace.out(" Key : "+key+"   value : "+getQuizSolutionHash().get(key));
 				 tmpSolution.add(getQuizSolutionHash().get(key));
 			 } 
 			/* else 
-				System.out.println("Not found in the hash  "+key);*/
+				trace.out("Not found in the hash  "+key);*/
 		 }
 		/*for (String key : getQuizSolutionHash().keySet()) {
 			          tmpSolution.add(getQuizSolutionHash().get(key));
 					 // if(!key.equalsIgnoreCase("done"))
 						//  		components.add(key);
-			          System.out.println(" Key "+key+" Selection : "+getQuizSolutionHash().get(key).getS()+"  Action : "+getQuizSolutionHash().get(key).getA()+" Input :   "+getQuizSolutionHash().get(key).getI());
+			          trace.out(" Key "+key+" Selection : "+getQuizSolutionHash().get(key).getS()+"  Action : "+getQuizSolutionHash().get(key).getA()+" Input :   "+getQuizSolutionHash().get(key).getI());
 		}*/
 		
 	
 		
 		/*call existing quiz grading method to see if solution is correct*/
 		String res=this.getSimStPLE().getSsInteractiveLearning().gradeQuizProblemSolution(tmpSolution/*quizSolution*/, null);
-		//System.out.println(" Result  :  "+res);
+		//trace.out(" Result  :  "+res);
 		String quizAssessment ="";
 		
 		String problem=SimSt.convertFromSafeProblemName(getSimStPLE().getSsInteractiveLearning().getQuizGraph().getStartNode().getName());
@@ -477,7 +477,7 @@ public class SimStCognitiveTutor {
 		isTakingQuiz=false;
 		
 		/*update the model tracer working memory with the quiz results*/
-		//System.out.println(" Updating the working memory ");
+		//trace.out(" Updating the working memory ");
 		/**
 		 * The next line is a bug. It updates the working memory with the No of problems that have been attempted correctly so far
 		 * So the next line is commented 
@@ -791,7 +791,7 @@ public class SimStCognitiveTutor {
 	 * @return
 	 */
 	private boolean addQuizStep(String selection,String action,String input){
-		//System.out.println(" Step added : " + selection + " "+ input);
+		//trace.out(" Step added : " + selection + " "+ input);
 		//updateInterfaceElementWithTutorResponse("Done", startColor);
 		setInterfaceElementColor("Done",startColor);
 		
@@ -801,7 +801,7 @@ public class SimStCognitiveTutor {
 			this.initQuizSolutionHash();
 		}
 		
-		//System.out.println(" In the hash : "+selection+"  value : "+input);
+		//trace.out(" In the hash : "+selection+"  value : "+input);
 		getQuizSolutionHash().put(selection, new Sai(selection, action, input));
 		
 		failedQuizProblemSolutionHash.put(selection, new Sai(selection, action, input));
@@ -833,7 +833,7 @@ public class SimStCognitiveTutor {
 		restoreFailedQuizSolution();
 		
 		if (quizSolutionHash!=null){
-			//System.out.println(" Removed from hash : "+selection);
+			//trace.out(" Removed from hash : "+selection);
 			quizSolutionHash.remove(selection);
 		}
 		

@@ -4,6 +4,8 @@
 
 package edu.cmu.old_pact.gridbagsupport;
 
+import edu.cmu.pact.Utilities.trace;
+
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -218,7 +220,7 @@ public class UniqueLayout implements LayoutManager2, java.io.Serializable {
                 } else {
                     componentSize = c.minimumSize();
                 }
-                if (constraints.gridheight == 0 || constraints.gridwidth == 0){ System.out.println("Error"); }
+                if (constraints.gridheight == 0 || constraints.gridwidth == 0){ trace.out("Error"); }
                 else {
                 maxCellSize.width = Math.max(maxCellSize.width,componentSize.width / constraints.gridwidth);
                 maxCellSize.height = Math.max(maxCellSize.height,componentSize.height / constraints.gridheight);

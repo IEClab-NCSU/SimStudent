@@ -36,7 +36,7 @@ public class ExpressionPart implements Queryable {
 	
 	//setProperty assumes that the property is a display attribute
 	public void setProperty(String prop, String value) throws NoSuchFieldException {
-//		System.out.println("setting property "+prop+" to "+value+" for "+this.getStringValue());
+//		trace.out("setting property "+prop+" to "+value+" for "+this.getStringValue());
 		myExpression.setPartAttribute(myName,prop,value);
 //		throw new NoSuchFieldException("ExpressionParts do not have properties: "+prop);
 	}

@@ -2,6 +2,7 @@ package edu.cmu.pact.miss.userDef.algebra.test;
 
 import java.util.Arrays;
 
+import edu.cmu.pact.Utilities.trace;
 import edu.cmu.pact.miss.FeaturePredicate;
 
 /**
@@ -39,8 +40,8 @@ public class FPTest {
             if(!fpTest( (String)test[i][0],(Object[])test[i][1],(String)test[i][2] ))
                 errorCount++;
         }
-        System.out.println("Number failed: "+ errorCount);
-        System.out.println("Total tests run: " +test.length);
+        trace.out("Number failed: "+ errorCount);
+        trace.out("Total tests run: " +test.length);
 
     }
 

@@ -39,11 +39,11 @@ public class Parseappletstring {
         
         //   for (int t = 0; t < inttest.size(); t++)
         //   {
-        //      System.out.println(t+"="+Integer.parseInt(""+inttest.elementAt(t)));
+        //      trace.out(t+"="+Integer.parseInt(""+inttest.elementAt(t)));
         //   }
         
-        //for (i = 0; i < intnum; i++) System.out.println("Int "+i+ ":"+integers[i]);
-//        for (i = 0; i < intnum; i++) System.out.println("Str "+i+":***"+strings[i]+"***");
+        //for (i = 0; i < intnum; i++) trace.out("Int "+i+ ":"+integers[i]);
+//        for (i = 0; i < intnum; i++) trace.out("Str "+i+":***"+strings[i]+"***");
     }
     
     public static Color makeColor(String s) {

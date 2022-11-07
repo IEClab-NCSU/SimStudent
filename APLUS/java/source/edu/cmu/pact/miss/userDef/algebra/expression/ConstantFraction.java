@@ -292,8 +292,8 @@ public class ConstantFraction extends Constant {
 	public AlgExp eval() {
 
             /*
-            System.out.println("Numerator = " + Numerator.getVal() + ", Denominator = " + Denominator);
-            System.out.println("Numerator.isInt() = " + Numerator.isInt() + ", Denominator.isInt() = " + Denominator.isInt());
+            trace.out("Numerator = " + Numerator.getVal() + ", Denominator = " + Denominator);
+            trace.out("Numerator.isInt() = " + Numerator.isInt() + ", Denominator.isInt() = " + Denominator.isInt());
             try {
                 System.in.read();
             } catch (IOException e) {
@@ -331,7 +331,7 @@ public class ConstantFraction extends Constant {
                 int nValue=(int)((IntConst)Numerator).getVal();
 	        int dValue=(int)((IntConst)Denominator).getVal();
 	        int gcd=MathLib.gcd(nValue,dValue);
-                // System.out.println("GCD = " + gcd);
+                // trace.out("GCD = " + gcd);
                 
 	        if(gcd==1) {
 	            // return this;
@@ -361,7 +361,7 @@ public class ConstantFraction extends Constant {
                 reduce = this;
             }
             
-            // System.out.println("reduce(" + Numerator + "/" + Denominator + ") = " + reduce);
+            // trace.out("reduce(" + Numerator + "/" + Denominator + ") = " + reduce);
             return reduce;
 	}
         

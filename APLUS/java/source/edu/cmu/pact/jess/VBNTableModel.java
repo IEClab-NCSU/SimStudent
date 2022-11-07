@@ -122,13 +122,13 @@ public class VBNTableModel extends AbstractTableModel {
 				sb.append(factToHtmlTable(fact));
 				sb.append("</html>");
 				toolTipText = sb.toString();
-//                                    System.out.println("getToolTipText: did not enter JessException");
+//                                    trace.out("getToolTipText: did not enter JessException");
 			} catch (JessException je) {
-//			    System.out.println("getToolTipText: entered JessException");
+//			    trace.out("getToolTipText: entered JessException");
 				toolTipText = displayValue;
 			}
-//                        System.out.println("getToolTipText: displayName = " + displayName);
-//                        System.out.println("getToolTipText: toolTipText = " + toolTipText);
+//                        trace.out("getToolTipText: displayName = " + displayName);
+//                        trace.out("getToolTipText: toolTipText = " + toolTipText);
 			return toolTipText;
 		}
 		

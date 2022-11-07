@@ -405,7 +405,7 @@ public class ActionLabelHandler extends MouseInputAdapter
         	
         	String ans = (String) JOptionPane.showInputDialog(null, "Set the callback function for the swf to execute upon traversing this link",
         												SET_CALL_BACK_FUNCTION,JOptionPane.PLAIN_MESSAGE, null, null, edgeData.getCallbackFn());
-        	System.out.println("ans = " + ans);
+        	trace.out("ans = " + ans);
         	if(ans != null)
         		edgeData.setCallbackFn(ans);
         } else if (action.equals(ATTACH_DIALOGUE)) {

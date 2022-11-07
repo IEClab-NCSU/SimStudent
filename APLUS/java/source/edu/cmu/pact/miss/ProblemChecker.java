@@ -35,11 +35,11 @@ public class ProblemChecker {
 				Class oracle = Class.forName(oracleClass);
 				Object oracleObj = oracle.newInstance();
 				Method askMethod = oracle.getMethod("askNextStep",parameters);
-				//System.out.println(" before while loop : "+answer);
+				//trace.out(" before while loop : "+answer);
 				while(answer){
-					//System.out.println("Inside the while loop");
+					//trace.out("Inside the while loop");
 					Sai nextStep = (Sai)askMethod.invoke(oracleObj,problemName,problemNode,brController);
-					//System.out.println("Next Step  : "+nextStep);
+					//trace.out("Next Step  : "+nextStep);
 					if(nextStep == null)
 						return false;
 					else if(nextStep.getA().equalsIgnoreCase("done"))
@@ -47,7 +47,7 @@ public class ProblemChecker {
 					else
 						problemNode = new SimStGraphNavigator().simulatePerformingStep(problemNode,nextStep);				
 				}
-				//System.out.println(" After the while loop ");
+				//trace.out(" After the while loop ");
 				
 			} catch (NoSuchMethodException e) {
 				// TODO Auto-generated catch block

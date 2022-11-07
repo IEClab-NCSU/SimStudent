@@ -23,7 +23,7 @@ public class LispTarget extends Target{
          	//ev.send(target);
          	connectTo.sendMessage(message);                
      	//}catch (IOException e)  { 
-     		//System.out.println("LispTarget transmitEvent "+e);
+     		//trace.out("LispTarget transmitEvent "+e);
      	//}
 	}
 }

@@ -38,7 +38,7 @@ public class SimStudentValidationTest extends TestCase {
     public void testSimStudentValidation() throws IOException,
             InterruptedException {
 
-        System.out.println(new File(".").getAbsolutePath());
+        trace.out(new File(".").getAbsolutePath());
 
         // Process p =
         // Runtime.getRuntime().exec("..\\..\\QA\\Tests\\TestTutors\\Projects\\SimStEquation\\simStSmokeTest.sh");
@@ -82,11 +82,11 @@ public class SimStudentValidationTest extends TestCase {
         // This test must be converted into true junit tests
         // Also, we plan to make a Marathon test for SimSt 
         
-//        System.out.println("running...");
+//        trace.out("running...");
 //        inputGobbler.start();
 //        outputGobbler.start();
 //        outputGobbler.waitForComplition();
-//        System.out.println("done!");
+//        trace.out("done!");
 //
 //        smokeTestProcess.waitFor();
 //        assertEquals(0, smokeTestProcess.exitValue());
@@ -153,7 +153,7 @@ public class SimStudentValidationTest extends TestCase {
                         pw.flush();
                     }
                     /*
-                     * if ( notifyWhenDone ) { System.out.println(">> " + line); }
+                     * if ( notifyWhenDone ) { trace.out(">> " + line); }
                      */
                 }
 
@@ -165,7 +165,7 @@ public class SimStudentValidationTest extends TestCase {
                 completed = true;
 
                 /*
-                 * if ( notifyWhenDone ) { notifyAll(); System.out.println("I'm
+                 * if ( notifyWhenDone ) { notifyAll(); trace.out("I'm
                  * done!!"); }
                  */
 

@@ -65,7 +65,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 
 	if (!isArithmeticExpression( term )) return null;
 	
-	// System.out.println("coefficient(" + term + ")...");
+	// trace.out("coefficient(" + term + ")...");
 
 	String coefficient = null;
 	try {
@@ -91,7 +91,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 	}
 	*/
 
-	// System.out.println("coefficient(" + term + ") = " + coefficient);
+	// trace.out("coefficient(" + term + ") = " + coefficient);
 	return coefficient;
     }
 
@@ -136,7 +136,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 		    
 	    /*
 	    } catch (NullPointerException e) {
-		System.out.println("hasCoefficient( " + term + " )");
+		trace.out("hasCoefficient( " + term + " )");
 		e.printStackTrace();
 	    }
 	    */
@@ -162,7 +162,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 		e.printStackTrace();
 	    }
 	}
-	// System.out.println("firstVarTerm(" + term + ") = |" + firstVarTerm + "|");
+	// trace.out("firstVarTerm(" + term + ") = |" + firstVarTerm + "|");
 	return firstVarTerm;
     }
 
@@ -181,7 +181,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 		}
 	    }
 	}
-	// System.out.println("firstVarTerm(" + term + ") = |" + firstVarTerm + "|");
+	// trace.out("firstVarTerm(" + term + ") = |" + firstVarTerm + "|");
 	return firstVarTerm;
     }
     
@@ -247,7 +247,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 	    }
 	}
 
-	// System.out.println("lastTerm(" + term + ") = " + lastTerm);
+	// trace.out("lastTerm(" + term + ") = " + lastTerm);
 	return lastTerm;
     }
 
@@ -268,7 +268,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 	    lastTerm = (String)termTokens.get(termTokens.size()-1);
 	    lastTerm = trimPlusSignInFront( lastTerm );
 	}
-	// System.out.println("lastTerm(" + term + ") = " + lastTerm);
+	// trace.out("lastTerm(" + term + ") = " + lastTerm);
 	return lastTerm;
     }
 
@@ -295,7 +295,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 	    }
 	}
 
-	// System.out.println("lastConstTerm(" + term + ") = " + lastConstTerm);
+	// trace.out("lastConstTerm(" + term + ") = " + lastConstTerm);
 	return lastConstTerm;
 
     }
@@ -317,7 +317,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 	    }
 	}
 
-	// System.out.println("lastConstTerm(" + term + ") = " + lastConstTerm);
+	// trace.out("lastConstTerm(" + term + ") = " + lastConstTerm);
 	return lastConstTerm;
     }
 
@@ -362,7 +362,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 		break;
 	    }
 	}
-	// System.out.println("varName(" + term + ")=" + name);
+	// trace.out("varName(" + term + ")=" + name);
 	return name;
     }
 
@@ -522,7 +522,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 
 	    }
 	}
-	// System.out.println("varTerm(" + term + ")=" + returnVal);
+	// trace.out("varTerm(" + term + ")=" + returnVal);
 	return returnVal;
     }
 
@@ -573,7 +573,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 	    termTokens.remove(0);
 	/*
 	} catch (Exception e) {
-	    System.out.println("homogeneous(" + term + ")");
+	    trace.out("homogeneous(" + term + ")");
 	    e.printStackTrace();
 	}
 	*/
@@ -587,7 +587,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 		homogeneous = "T";
 	    }
 	}
-	// System.out.println("homogeneous(" + term + ") = " + homogeneous);
+	// trace.out("homogeneous(" + term + ") = " + homogeneous);
 	return homogeneous;
     }
 
@@ -658,19 +658,19 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 	}
 	/*
 	catch (Exception e) {
-	    System.out.println("ripCoefficient(" + term + ") .... ");
+	    trace.out("ripCoefficient(" + term + ") .... ");
 	    e.printStackTrace();
 	}
 	*/
 
-	// System.out.println("ripCoefficient(" + term + ")=" + ripCoefficient);
+	// trace.out("ripCoefficient(" + term + ")=" + ripCoefficient);
 	return ripCoefficient;
     }
 
     public String ripCoefficient_obsolete( String term ) {
 
 	String val = (monomial( term ) != null ? varName( term ) : null);
-	// System.out.println("ripCoefficient(" + term + ")=" + val);
+	// trace.out("ripCoefficient(" + term + ")=" + val);
 	return val;
     }
 
@@ -702,7 +702,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 	    }
 	}
 
-	// System.out.println("removeFirstVarTerm(" + term + ")=" + removeFirstVarTerm);
+	// trace.out("removeFirstVarTerm(" + term + ")=" + removeFirstVarTerm);
 	return removeFirstVarTerm;
     }
 
@@ -729,7 +729,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 	    result = trimPlusSignInFront( result );
 	}
 
-	// System.out.println("removeFirstVarTerm(" + term + ")=" + result);
+	// trace.out("removeFirstVarTerm(" + term + ")=" + result);
 	return result;
     }
 
@@ -756,7 +756,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 	    }
 	}
 
-	// System.out.println("removeLastTerm(" + term + ") = " + removeLastTerm);
+	// trace.out("removeLastTerm(" + term + ") = " + removeLastTerm);
 	return removeLastTerm;
     }
 
@@ -774,7 +774,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 
 	}
 
-	// System.out.println("removeLastTerm(" + term + ") = " + removeLastTerm);
+	// trace.out("removeLastTerm(" + term + ") = " + removeLastTerm);
 	return removeLastTerm;
     }
 
@@ -810,7 +810,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 	    }
 	}
 
-	// System.out.println("removeLastConstTerm(" + term + ")=" + removeLastConstTerm);
+	// trace.out("removeLastConstTerm(" + term + ")=" + removeLastConstTerm);
 	return removeLastConstTerm;
     }
 
@@ -826,7 +826,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 	    for ( int i = termTokens.size(); i > 0; i-- ) {
 
 		String theTerm = (String)termTokens.get(i-1);
-		// System.out.println(theTerm);
+		// trace.out(theTerm);
 		if ( (!termRemoved) && (varTerm( theTerm ) == null) ) {
 		    termRemoved = true;
 		} else {
@@ -837,7 +837,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 	if ( result != null ) {
 	    result = trimPlusSignInFront( result );
 	}
-	// System.out.println("removeLastConstTerm(" + term + ")=" + result);
+	// trace.out("removeLastConstTerm(" + term + ")=" + result);
 	return result;
     }
 
@@ -862,9 +862,9 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 
 		if ( exp.isFraction() ) {
 		    
-		    // System.out.println("1stTerm: " + exp.getFirstTerm());
-		    // System.out.println("2ndTerm: " + exp.getSecondTerm());
-			// System.out.println(term);
+		    // trace.out("1stTerm: " + exp.getFirstTerm());
+		    // trace.out("2ndTerm: " + exp.getSecondTerm());
+			// trace.out(term);
 		    String t1 = reverseSign( exp.getFirstTerm().toString() );
 		    String t2 = exp.getSecondTerm().toString();
 		    if ( isVarTerm( t2 ) ) t2 = "(" + t2 + ")";
@@ -917,7 +917,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 	    }
 	}
 
-	// System.out.println("reverseSign(" + term + ") = " + reverseSign);
+	// trace.out("reverseSign(" + term + ") = " + reverseSign);
 	return reverseSign;
     }
     /**
@@ -1052,7 +1052,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 
     public String inverseTerm_obsolete_II( String term ) {
 
-	// System.out.println("inverseTerm(" + term + ")...");
+	// trace.out("inverseTerm(" + term + ")...");
 
 	String inverseTerm = null;
 
@@ -1075,10 +1075,10 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 		// inverseTerm( "8x/4" ) must be "4/(8x)" not "4/8x"
 		if ( inverseTerm != null ) {
 		    String denominator = denominator( inverseTerm );
-		    // System.out.println("denominator: " + denominator);
+		    // trace.out("denominator: " + denominator);
 		    if ( denominator != null ) {
 			String numerator = numerator( inverseTerm );
-			// System.out.println("numerator: " + numerator);
+			// trace.out("numerator: " + numerator);
 			if ( numerator != null ) {
 			    inverseTerm = divTermBy( numerator, denominator );
 			}
@@ -1092,7 +1092,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 
 	/*
 	} catch (Exception e) {
-	    System.out.println("inverseTerm(" + term + ")...");
+	    trace.out("inverseTerm(" + term + ")...");
 	    e.printStackTrace();
 	}
 	*/
@@ -1123,7 +1123,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 	    }
 	}
 
-	// System.out.println("inverseTerm(" + term + ") = " + inverseTerm);
+	// trace.out("inverseTerm(" + term + ") = " + inverseTerm);
 	return inverseTerm;
     }
 
@@ -1151,7 +1151,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 
 	if ( !t2.equals( "0" ) ) {
 
-	    // System.out.print("divTermBy(" + t1 + "," + t2 + ") = " );
+	    // trace.out("divTermBy(" + t1 + "," + t2 + ") = " );
 	    if ( t1.indexOf('-') != -1 ||
 		 t1.indexOf('+') != -1 ||
 		 t1.indexOf('/') != -1 ) {
@@ -1165,7 +1165,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 	    divTermBy = t1 + "/" + t2;
 	}
 
-	// System.out.println(divTermBy);
+	// trace.out(divTermBy);
 	return divTermBy;
     }
 
@@ -1173,7 +1173,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 
 	if (!isArithmeticExpression(t1) || !isArithmeticExpression(t2)) return null;
 	
-	// System.out.print("addTermBy(" + t1 + "," + t2 + ") = ");
+	// trace.out("addTermBy(" + t1 + "," + t2 + ") = ");
 
 	// if ( t1.equals("0") ) return t2;
 	// if ( t2.equals("0") ) return t1;
@@ -1197,7 +1197,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 		e.printStackTrace();
 	    }
 	}
-	// System.out.println(addTermBy);
+	// trace.out(addTermBy);
 	return addTermBy;
     }
 
@@ -1227,7 +1227,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 
 	mulTermBy = t1 + "*" + t2;
 	
-	// System.out.println("mulTermBy(" + t1 + "," + t2 + ")=" + mulTermBy);
+	// trace.out("mulTermBy(" + t1 + "," + t2 + ")=" + mulTermBy);
 	return mulTermBy;
     }
 
@@ -1344,9 +1344,9 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 	    }
 	    /*
 	    catch (NullPointerException e) {
-		System.out.println("divTerm(" + t1 + "," + t2 + ")");
-		System.out.println("Goal test: " + RhsGoalTest.getGoalTest());
-		System.out.println("Rhs State: " + RhsGoalTest.getRhsState());
+		trace.out("divTerm(" + t1 + "," + t2 + ")");
+		trace.out("Goal test: " + RhsGoalTest.getGoalTest());
+		trace.out("Rhs State: " + RhsGoalTest.getRhsState());
 		e.printStackTrace();
 	    }
 	    */
@@ -1357,8 +1357,8 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 	    }
 	    */
 	    
-	    // System.out.print("EqFeaturePredicate.divTerm(" + t1 + "," + t2 + ") = ");
-	    // System.out.println(divTerm);
+	    // trace.out("EqFeaturePredicate.divTerm(" + t1 + "," + t2 + ") = ");
+	    // trace.out(divTerm);
 	}
 
 	return divTerm;
@@ -1380,7 +1380,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 	    AlgebraExp exp1 = AlgebraExp.parseExp( t1 );
 	    AlgebraExp exp2 = AlgebraExp.parseExp( t2 );
 	    
-	    // System.out.println("exp1 is term? " + exp1.isTerm());
+	    // trace.out("exp1 is term? " + exp1.isTerm());
 
 	    AlgebraExp exp = exp1.multTerm( exp2 );
 
@@ -1399,7 +1399,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 
     public String divTerm_obsolete( String t1, String t2 ) {
 	
-	// System.out.println("divTerm(" + t1 + "," + t2 + ")");
+	// trace.out("divTerm(" + t1 + "," + t2 + ")");
 	String quatient = null;
 
 	//
@@ -1434,7 +1434,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 	} else {
 	    quatient = MathLib.div( t1, t2 );
 	}
-	// System.out.println("divTerm(" + t1 + "," + t2 + ") = " + quatient);
+	// trace.out("divTerm(" + t1 + "," + t2 + ") = " + quatient);
 	return quatient;
     }
     
@@ -1449,7 +1449,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 
 	if (!isArithmeticExpression(term1) || !isArithmeticExpression(term2)) return null;
 
-	// System.out.println("addTerm(" + term1 + "," + term2 + ")...");
+	// trace.out("addTerm(" + term1 + "," + term2 + ")...");
 	
 	String addTerm = null;
 	try {
@@ -1482,7 +1482,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 	    }
 	}
 
-	// System.out.println("addTerm(" + term1 + "," + term2 + ")=" + addTerm);
+	// trace.out("addTerm(" + term1 + "," + term2 + ")=" + addTerm);
 	return addTerm;
     }
 
@@ -1496,7 +1496,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 		(term2.charAt(0) != '+' && term2.charAt(0) != '-' ? "+" : "") +
 		term2;
 	}
-	// System.out.println("addTerm(" + term1 + ", " + term2 + ")=" + addTerm);
+	// trace.out("addTerm(" + term1 + ", " + term2 + ")=" + addTerm);
 
 	return addTerm;
     }
@@ -1511,14 +1511,14 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 
 	if (!isArithmeticExpression(term)) return null;
 
-	// System.out.println("evalArithmetic(" + term + ")");
+	// trace.out("evalArithmetic(" + term + ")");
 	
 	AlgebraExp algebraExp = null;
 
 	try {
 	    algebraExp = AlgebraExp.parseExp( term );
-	    // System.out.println("evalArithmetic: algebraExp = " + algebraExp);
-	    // System.out.println( algebraExp.isTerm() );
+	    // trace.out("evalArithmetic: algebraExp = " + algebraExp);
+	    // trace.out( algebraExp.isTerm() );
 	    algebraExp = algebraExp.evalArithmetic();
 	} catch (java.text.ParseException e) {
 	    if (trace.getDebugCode("missalgebra")) {
@@ -1530,7 +1530,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
     
     public String evalArithmetic_Old( String term ) {
 
-	// System.out.println("evalArithmetic(" + term + ")");
+	// trace.out("evalArithmetic(" + term + ")");
 
 	String doAlgebra = ( isPolynomial( term ) && isHomogeneous( term ) ) ?
 	    "" : null;
@@ -1571,7 +1571,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 
 	/*
 	if ( doAlgebra != null ) {
-	    System.out.println("evalArithmetic(" + term + ") = " + doAlgebra);
+	    trace.out("evalArithmetic(" + term + ") = " + doAlgebra);
 	}
 	*/
 
@@ -1597,7 +1597,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 	    }
 	}
 
-	// System.out.println("numerator(" + term + ") = " + numerator );
+	// trace.out("numerator(" + term + ") = " + numerator );
 	return numerator;
     }
 
@@ -1620,7 +1620,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 	    }
 	}
 
-	// System.out.println("denominator(" + term + ") = " + denominator);
+	// trace.out("denominator(" + term + ") = " + denominator);
 	return denominator;
     }
 
@@ -1670,22 +1670,22 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
     // embedded into the production rule file
 
     public String sameRow( String fact1, String fact2 ) {
-	System.out.println("sameRow(" + fact1 + "," + fact2 + ")");
+	trace.out("sameRow(" + fact1 + "," + fact2 + ")");
 	return null;
     }
 
     public String consecutiveRow( String fact1, String fact2 ) {
-	System.out.println("consecutiveRow(" + fact1 + "," + fact2 + ")");
+	trace.out("consecutiveRow(" + fact1 + "," + fact2 + ")");
 	return null;
     }
 
     public String sameColumn( String fact1, String fact2 ) {
-	System.out.println("sameColumn(" + fact1 + "," + fact2 + ")");
+	trace.out("sameColumn(" + fact1 + "," + fact2 + ")");
 	return null;
     }
 
     public String consecutiveColumn( String fact1, String fact2 ) {
-	System.out.println("consecutiveColumn(" + fact1 + "," + fact2 + ")");
+	trace.out("consecutiveColumn(" + fact1 + "," + fact2 + ")");
 	return null;
     }
 
@@ -1769,7 +1769,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 
     private boolean hasVarTerm( AlgebraExp exp ) {
 
-	// System.out.println("hasVarTerm( " + exp + " )");
+	// trace.out("hasVarTerm( " + exp + " )");
 
 	if ( exp.isTerm() ) {
 	    return isVarTerm( exp.toString() );
@@ -1921,11 +1921,11 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 
 	/*
 	StringTokenizer x = new StringTokenizer( term, "+-", true );
-	System.out.print("[" + term + "] termTokens: ");
+	trace.out("[" + term + "] termTokens: ");
 	while ( x.hasMoreTokens() ) {
-	    System.out.print( x.nextToken() + " | " );
+	    trace.out( x.nextToken() + " | " );
 	}
-	System.out.println();
+	trace.out();
 	*/
 
 	while ( termTokens.hasMoreTokens() ) {

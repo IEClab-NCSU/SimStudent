@@ -177,12 +177,12 @@ public class InquiryRuleActivationBRD {
         String action = "UpdateComboBox";
         String input = "Given Value";
         
-        System.out.println(isValidSAI(selection, action, input, path+"/"+brd));
+        trace.out(String.valueOf(isValidSAI(selection, action, input, path+"/"+brd)));
         
         selection = "done";
         action = "ButtonPressed";
         input = "1";
         
-        System.out.println(isValidSAI(selection, action, input, path+"/"+brd));
+        trace.out(String.valueOf(isValidSAI(selection, action, input, path+"/"+brd)));
     }
 }

@@ -3,6 +3,8 @@
  */
 package edu.cmu.pact.BehaviorRecorder.ProblemModel.Matcher.Functions;
 
+import edu.cmu.pact.Utilities.trace;
+
 /**
  * Test whether an algebraic expression can be simplified further.
  */
@@ -41,9 +43,9 @@ public class isSimplifiedMixed {
 		isSimplifiedMixed smt = new isSimplifiedMixed();
 		int result = smt.exec(args);
 		if (result < 0)
-			System.out.println("\nErrors on "+(-result)+" expressions.");
+			trace.out("\nErrors on "+(-result)+" expressions.");
 		else if (result > 0)
-			System.out.println("\nisSimplifiedMixed() false on "+result+" expressions.");
+			trace.out("\nisSimplifiedMixed() false on "+result+" expressions.");
 		System.exit(result == 0 ? 0 : (result < 0 ? 2 : 1));
 	}
 	

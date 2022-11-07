@@ -275,7 +275,7 @@ public class UtilsTest extends TestCase {
 			BufferedReader rdr = new BufferedReader(new FileReader(f));
 			String line;
 			for (lineNo = 1; null != (line = rdr.readLine()); ++lineNo)
-				System.out.println("" + lineNo + ". " + line);
+				trace.out("" + lineNo + ". " + line);
 		} catch (IOException ioe) {
 			System.err.println("error reading url " + url + " at line " +
 							   lineNo + ":");

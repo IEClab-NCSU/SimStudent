@@ -3,6 +3,7 @@ package edu.cmu.pact.miss;
 import cl.tutors.solver.SolverTutor;
 import cl.utilities.TestableTutor.InvalidParamException;
 import cl.utilities.TestableTutor.SAI;
+import edu.cmu.pact.Utilities.trace;
 
 public class NextStepTutor {
 
@@ -54,13 +55,13 @@ public class NextStepTutor {
 		SAI nextStep = whatToDoNext();
 		String msg = HINTMESSAGE + ";" + 
 			nextStep.getSelection() + ";" + nextStep.getAction() + ";" + nextStep.getInput();
-		System.out.println("getNextStep >> " + msg);
+		trace.out("getNextStep >> " + msg);
 		//replyMessage(msg);
 		return nextStep;
 	}
 
 	private SAI whatToDoNext() {
-		// System.out.println("whatToDoNext called ...");
+		// trace.out("whatToDoNext called ...");
 		SAI nextStep = null;
 		if (isNonBasicSkillApplied()) {
 			for (int i = 0; i < 2; i++) {

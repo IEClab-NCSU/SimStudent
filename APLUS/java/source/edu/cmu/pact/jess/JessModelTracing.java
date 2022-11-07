@@ -452,7 +452,7 @@ public class JessModelTracing {
 		
 		wmImages = null;
 		
-		//System.out.println("entered JessModelTracing's modelTrace(...)   REMOVE THIS PRINT");
+		//trace.out("entered JessModelTracing's modelTrace(...)   REMOVE THIS PRINT");
 
 		if (trace.getDebugCode("mt")) trace.out("mt", "modelTrace() rete="+rete.hashCode());
 		
@@ -1363,7 +1363,7 @@ public class JessModelTracing {
 	public void fireNodeOracle(RuleActivationNode ran, JessOracleRete oracleRete) throws JessException {
 		
 		List wholeAgenda = oracleRete.getAgendaAsList(null);
-		System.out.println("############ Whole agenda mesa stin ruleActivation fireOracle:"+wholeAgenda);
+		trace.out("############ Whole agenda mesa stin ruleActivation fireOracle:"+wholeAgenda);
 		
 		nodeNowFiring = ran;
 	    ran.fireOracle(oracleRete);

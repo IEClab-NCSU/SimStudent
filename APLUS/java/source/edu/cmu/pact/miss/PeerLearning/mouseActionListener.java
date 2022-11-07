@@ -1,5 +1,7 @@
 package edu.cmu.pact.miss.PeerLearning;
 
+import edu.cmu.pact.Utilities.trace;
+
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -36,13 +38,13 @@ public class mouseActionListener extends MouseAdapter{
      {
          int x = me.getX();
          int y = me.getY();
-         System.out.println("X : " + x);
-         System.out.println("Y : " + y);
+         trace.out("X : " + x);
+         trace.out("Y : " + y);
          int startOffset = ((JTextComponent) me.getSource()).viewToModel(new Point(x, y));
-         //System.out.println("x: "+x+" y: "+y+" string_pos: "+startOffset);
+         //trace.out("x: "+x+" y: "+y+" string_pos: "+startOffset);
          String redirect_to =  getHrefLocation(startOffset);
          if(redirect_to!="") {
-        	 System.out.println(redirect_to);
+        	 trace.out(redirect_to);
         	 String id = redirect_to.split("#")[1];
         	 //Element content = doc.getElementById("content");
         	 simStAplusPlatform.populateOverviewFromJsoupDoc(id);

@@ -243,7 +243,7 @@ public class JCommQuestionTextField extends JCommQuestion implements ActionListe
 	}
 
 	public void doIncorrectAction (String selection, String input) {
-//		System.out.println("incorrect called");
+//		trace.out("incorrect called");
 		this.answerTxt.setForeground(this.incorrectColor);
 		this.answerTxt.setFont(this.incorrectFont);
 		this.answerTxt.setText(input);
@@ -329,7 +329,7 @@ public class JCommQuestionTextField extends JCommQuestion implements ActionListe
 	 * Used to reset the commwidget
 	 */
 	public void reset (TutorController controller ) {
-//		System.out.println("reset: JCommQuestionTextField");
+//		trace.out("reset: JCommQuestionTextField");
 		initialize();
 		this.setEnabled(true);
 		((JCommDocument)this.answerTxt.getDocument()).locked = false;

@@ -762,7 +762,7 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 		Element content = overview_browser.getCurriculumDocument().getElementById(id);
 		//Element root = ((Object) overview_browser.getCurriculumDocument()).getDefaultRootElement();
         //Element line = root.getElement(3);
-        //System.out.println("line : " + line);
+        //trace.out("line : " + line);
 		//((JTextComponent) overviewTab).getHighlighter().addHighlight(50, 200, DefaultHighlighter.DefaultPainter);
 
 		
@@ -801,10 +801,10 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 				// TODO Auto-generated method stub
 				if(e.getValueIsAdjusting()){
 				
-					//System.out.println("Scrolled ");
+					//trace.out("Scrolled ");
 					if(!brController.getMissController().getSimSt().getModelTraceWM().isOverviewScrolled())
 						brController.getMissController().getSimSt().getModelTraceWM().setOverviewScrolled(true);
-					//System.out.println("********************************");
+					//trace.out("********************************");
 				}
 			}
 			
@@ -1980,8 +1980,8 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 		ImageIcon glossaryImg=createImageIcon(imagename, true);
 		//if(glossaryImg.getImage() == null) glossaryImg=createImageIcon(SimStPLE.PAPER_CLOSE);
         //imageLabel.setIcon(new ImageIcon(glossaryImg.getImage().getScaledInstance(300, 300, Image.SCALE_DEFAULT)));
-        //System.out.println(imageLabel.getHeight());
-        //System.out.println(imageLabel.getWidth());
+        //trace.out(imageLabel.getHeight());
+        //trace.out(imageLabel.getWidth());
 		imageLabel.setIcon(new ImageIcon(glossaryImg.getImage().getScaledInstance(400, 400, Image.SCALE_AREA_AVERAGING)));
 		//imageLabel.setIcon(new ImageIcon(glossaryImg.getImage().getScaledInstance(400, 400, Image.SCALE_SMOOTH)));
 		//imageLabel.setIcon(new ImageIcon(glossaryImg.getImage().getScaledInstance(400, 400, Image.SCALE_DEFAULT)));
@@ -2025,7 +2025,7 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 		crossButton.addActionListener(new ActionListener() { 
 			  public void actionPerformed(ActionEvent e) { 
 				  // Add log here
-				//System.out.println("Quiz Start time : "+quizStartTime);
+				//trace.out("Quiz Start time : "+quizStartTime);
 				toggleOnPaper(false);
 				long on_paper_Duration = (Calendar.getInstance().getTimeInMillis() - actionListener.getExampleStartTime())/1000;
 	    		logger.simStLog(SimStLogger.SIM_STUDENT_ACTION_LISTENER, SimStLogger.ON_PAPER_VIEW_END, 
@@ -2187,7 +2187,7 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 				  		  
 			  	/*If example has been initalized and we are not in the last step*/
 				  
-				  //System.out.println(" Current Step : "+currentStep+"  Last Step : "+exampleTemp.getLastStep());
+				  //trace.out(" Current Step : "+currentStep+"  Last Step : "+exampleTemp.getLastStep());
 				  if (!currentStep.equals("-1") && !currentStep.equals(exampleTemp.getLastStep())){
 					  
 					  
@@ -2198,7 +2198,7 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 				  			clearInterface(exampleInterface);
 				  			nextButtonClicked++;
 				  			if(nextButtonClicked >= 2 && !brController.getMissController().getSimSt().getModelTraceWM().isExampleProblemViewed()){
-				  				//System.out.println("Next button Clicked : "+nextButtonClicked);
+				  				//trace.out("Next button Clicked : "+nextButtonClicked);
 				  				 brController.getMissController().getSimSt().getModelTraceWM().setExampleProblemViewed(true);
 				  			}
 				  			
@@ -2210,7 +2210,7 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 				  			validSteps4display = exampleTemp.getValidSteps4display(nextStep);
 	
 				  			setSpeechHTML(exampleTemp.getStepTooltipHover(nextStep));
-				  			//System.out.println(" To be filled : "+exampleTemp+ " current Step : "+currentStep+ " validStep4dispaly :"+validSteps4display);
+				  			//trace.out(" To be filled : "+exampleTemp+ " current Step : "+currentStep+ " validStep4dispaly :"+validSteps4display);
 				  			fillInExampleStep(exampleInterface,exampleTemp);
 				  			if(currentStep.equals("done") && !isLogged) {
 				  				 long exampleDuration = (Calendar.getInstance().getTimeInMillis() - actionListener.getExampleStartTime())/1000;
@@ -2222,13 +2222,13 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 				  			if(!prevButton.isEnabled())
 				  				prevButton.setEnabled(true);
 				  			
-				  			//System.out.println("GG "+ currentStep+" "+exampleTemp.getOnPaperImageNames(currentStep));
+				  			//trace.out("GG "+ currentStep+" "+exampleTemp.getOnPaperImageNames(currentStep));
 							updateOnPaperImage(exampleTemp.getOnPaperImageNames(currentStep));
 				  }
 				  else if(currentStep.equals(exampleTemp.getLastStep())) {
 					  nextButton.setEnabled(false);
 					  nextButtonClicked = 0;
-					  //System.out.println("GY "+ currentStep+" "+exampleTemp.getOnPaperImageNames(currentStep));
+					  //trace.out("GY "+ currentStep+" "+exampleTemp.getOnPaperImageNames(currentStep));
 					  updateOnPaperImage(exampleTemp.getOnPaperImageNames(currentStep));
 				  }
 			              
@@ -2253,7 +2253,7 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 			  String prev = "";
 			  @Override
 			  public void mouseClicked(MouseEvent e) {
-				System.out.println("I am clicked "+currentStep+" prev: "+prev);  
+				trace.out("I am clicked "+currentStep+" prev: "+prev);  
 			  	if (!currentStep.equals("-1")){
 			  		
 			  		
@@ -2283,7 +2283,7 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 			  			}
 			  			
 			  			fillInExampleStep(exampleInterface,exampleTemp);
-			  			//System.out.println("PG "+ currentStep+" "+exampleTemp.getOnPaperImageNames(currentStep));
+			  			//trace.out("PG "+ currentStep+" "+exampleTemp.getOnPaperImageNames(currentStep));
 			  			String on_paper_image = exampleTemp.getOnPaperImageNames(currentStep);
 				  		if(on_paper_image == null) on_paper_image = exampleTemp.getOnPaperImageNames("shortDescription");
 			  			updateOnPaperImage(on_paper_image);
@@ -2291,14 +2291,14 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 			  				nextButton.setEnabled(true);
 			  	}
 			  	if(prev.equals(currentStep)){
-			  		//System.out.println("I jave no place to go");
+			  		//trace.out("I jave no place to go");
 			  		prevButton.setEnabled(false);
 			  		prev = "";
 					updateOnPaperImage(exampleTemp.getOnPaperImageNames("shortDescription"));
 
 			  	}
 			  	else {
-			  		//System.out.println("What is here? "+currentStep);
+			  		//trace.out("What is here? "+currentStep);
 			  		prev = currentStep;
 			  		String on_paper_image = exampleTemp.getOnPaperImageNames(currentStep);
 			  		if(on_paper_image == null) on_paper_image = exampleTemp.getOnPaperImageNames("shortDescription");
@@ -3209,7 +3209,7 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 			    	validSteps4display = example.getValidSteps4display(currentStep);
 			
 			    	clearInterface(exampleInterface);
-			    	//System.out.println(" Before the example Switched ");
+			    	//trace.out(" Before the example Switched ");
 			    	isLogged = false;
 			    	nextButtonClicked = 0;
 			    	exampleProblem = example.getTitle();
@@ -3228,7 +3228,7 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 			        frame.setVisible(true);
 			        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);*/
 			    	
-			    	//System.out.println(" Action Listener ");
+			    	//trace.out(" Action Listener ");
 			    	//setSpeech(example.getShortDescription());
 			    	// If loop added by Tasmia.
 			    	//if(getSimStPLE().getSimSt().isSimStStrategyRevealMode()) 
@@ -3557,7 +3557,7 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 		setDefaultLookAndFeel();
 		
         int index = tabPane.getSelectedIndex();
-        //System.out.println("I am called");
+        //trace.out("I am called");
         UIManager.put("TaskPane.titleBackgroundGradientStart", Color.white);
         UIManager.put("TaskPane.titleBackgroundGradientEnd", focusColors[index]);
     	UIManager.put("TabbedPane.focus", focusColors[index]);

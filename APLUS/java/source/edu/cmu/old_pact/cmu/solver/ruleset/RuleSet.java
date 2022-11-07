@@ -3,6 +3,7 @@ package edu.cmu.old_pact.cmu.solver.ruleset;
 import java.util.Vector;
 
 import edu.cmu.old_pact.cmu.sm.Equation;
+import edu.cmu.pact.Utilities.trace;
 
 //a RuleSet is just a list of rules. 
 
@@ -30,7 +31,7 @@ public class RuleSet {
 		int len = rules.length;
 		for (int i=0;i<len && foundrule == false;++i) {
 			if (Rule.allRulesTraced())
-				System.out.println("checking rule number "+i+": "+rules[i].getName());
+				trace.out("checking rule number "+i+": "+rules[i].getName());
 			ruleToFire = rules[i].canFire(info,action,input);
 			if (ruleToFire!=null && ruleToFire.getBoolean()==true) {
 				foundrule = true;
@@ -71,24 +72,24 @@ public class RuleSet {
 		for (int i=0;i<len;++i) {
 			if (inActions(rules[i].getAction(),validActions) &&
 				rules[i].testConditionsForHelp(info)){
-				//System.out.println("in RuleSet findRuleForHelp canFire for "+rules[i].getName()+" i="+i);
+				//trace.out("in RuleSet findRuleForHelp canFire for "+rules[i].getName()+" i="+i);
 				if(ruleToFire == null){
 					ruleToFire = rules[i];
 					if(ruleToFire.hasMessages()){
-						//System.out.println("RS.fRFH: rule '" + ruleToFire + "' matches for help and has messages; returning");
+						//trace.out("RS.fRFH: rule '" + ruleToFire + "' matches for help and has messages; returning");
 						return ruleToFire;
 					}
 					/*else{
-					  System.out.println("RS.fRFH: rule '" + ruleToFire + "' matches for help, but has no messages; keep looking");
+					  trace.out("RS.fRFH: rule '" + ruleToFire + "' matches for help, but has no messages; keep looking");
 					  }*/
 				}
 				else if(rules[i].hasMessages()){
-					//System.out.println("RS.fRFH: rule '" + rules[i] + "' matches and has messages; returning it instead of '" + ruleToFire + "'.");
+					//trace.out("RS.fRFH: rule '" + rules[i] + "' matches and has messages; returning it instead of '" + ruleToFire + "'.");
 					return rules[i];
 				}
 			}
 		}
-		//System.out.println("RS.fRFH: rule '" + ruleToFire + "' matches; didn't find any with help, so returning it.");
+		//trace.out("RS.fRFH: rule '" + ruleToFire + "' matches; didn't find any with help, so returning it.");
 		return ruleToFire;
 	}
 	

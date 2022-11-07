@@ -11,6 +11,7 @@ import edu.cmu.old_pact.cmu.sm.query.NumberQuery;
 import edu.cmu.old_pact.cmu.sm.query.Queryable;
 import edu.cmu.old_pact.cmu.sm.query.StandardMethods;
 import edu.cmu.old_pact.cmu.sm.query.StringQuery;
+import edu.cmu.pact.Utilities.trace;
 
 //The abstract "expression" class
 
@@ -71,7 +72,7 @@ public abstract class Expression  implements Cloneable, Queryable, Serializable 
 			return super.clone();
 		}
 		catch (CloneNotSupportedException e) {
-			System.out.println("clone not supported in Expression");
+			trace.out("clone not supported in Expression");
 			return null;
 		}
 	}
@@ -170,7 +171,7 @@ public abstract class Expression  implements Cloneable, Queryable, Serializable 
 	}
 
 	public Expression reciprocal() {
-//		System.out.println("expression reciprocal: "+debugForm());
+//		trace.out("expression reciprocal: "+debugForm());
 //		Expression recip = new ExponentExpression(this,-1);
 		Expression recip = new RatioExpression(new NumberExpression(1),this);
 		return recip;
@@ -331,7 +332,7 @@ public abstract class Expression  implements Cloneable, Queryable, Serializable 
 	//in reduceFractions
 
 	public final Expression reduceFractions() {
-		//System.out.println("Expression: reduceFractions(): " + debugForm());
+		//trace.out("Expression: reduceFractions(): " + debugForm());
 		Expression reduced;
 		if (canHaveComponents()) {
 			ExpressionArray components = getComponentArray();
@@ -353,12 +354,12 @@ public abstract class Expression  implements Cloneable, Queryable, Serializable 
 	
 	//these "whole" functions should be protected, but reflection won't let me find them, if they are...
 	public Expression reduceFractionsWhole() {
-		//System.out.println("Expression: reduceFractionsWhole(): " + debugForm());
+		//trace.out("Expression: reduceFractionsWhole(): " + debugForm());
 		return this;
 	}
 	
 	public boolean canReduceFractions() {
-            //System.out.println("Expression: canReduceFractions(): " + debugForm());
+            //trace.out("Expression: canReduceFractions(): " + debugForm());
 		boolean canRed=false;
 		if (canHaveComponents()) {
 			ExpressionArray components = getComponentArray();
@@ -379,7 +380,7 @@ public abstract class Expression  implements Cloneable, Queryable, Serializable 
 	//canReduceFractionsWhole is the method that subclasses should override
 	//This does not need to check any sub-components (if there are any)
 	public boolean canReduceFractionsWhole() {
-            //System.out.println("Expression: canReduceFractionsWhole(): " + debugForm());
+            //trace.out("Expression: canReduceFractionsWhole(): " + debugForm());
 		return false;
 	}
 	
@@ -437,7 +438,7 @@ public abstract class Expression  implements Cloneable, Queryable, Serializable 
 
 	public final Expression multiplyThrough() {
 		/*level++;
-		  System.out.println("E.mT[" + level + "]: " + debugForm());
+		  trace.out("E.mT[" + level + "]: " + debugForm());
 		  /*if(level > 100){
 			(new Exception()).printStackTrace();
 			}*/
@@ -456,9 +457,9 @@ public abstract class Expression  implements Cloneable, Queryable, Serializable 
 		}
 		else
 			mult = this;
-		//System.out.println("E.mT[" + level + "]: calling whole");
+		//trace.out("E.mT[" + level + "]: calling whole");
 		Expression ret = mult.multiplyThroughWhole();		
-		/*System.out.println("E.mT[" + level + "]: returning: " + ret.debugForm());
+		/*trace.out("E.mT[" + level + "]: returning: " + ret.debugForm());
 		  level--;*/
 		return ret;
 	}
@@ -589,7 +590,7 @@ public abstract class Expression  implements Cloneable, Queryable, Serializable 
 
 	//Distribute means to multiply a term across a polynomial (e.g. 3(x+5) = 3x+15)
 	public final Expression distribute(int type) {
-		//System.out.println("Expression: distribute: " + debugForm());
+		//trace.out("Expression: distribute: " + debugForm());
 		Expression dist;
 		if (canHaveComponents()) {
 			ExpressionArray components = getComponentArray();
@@ -606,7 +607,7 @@ public abstract class Expression  implements Cloneable, Queryable, Serializable 
 		else
 			dist = this;
 
-		//System.out.println("Expression: distribute: about to distributeWhole: " + dist.debugForm());
+		//trace.out("Expression: distribute: about to distributeWhole: " + dist.debugForm());
 		return dist.distributeWhole(type);
 	}
 	
@@ -961,7 +962,7 @@ public abstract class Expression  implements Cloneable, Queryable, Serializable 
 	////////////////////
 
 /*	public final Expression simplify() {
-//		System.out.println("Starting simplify of "+this+"::"+debugForm());
+//		trace.out("Starting simplify of "+this+"::"+debugForm());
 		Expression simp;
 		if (canHaveComponents()) {
 			Vector components = getComponents();
@@ -973,7 +974,7 @@ public abstract class Expression  implements Cloneable, Queryable, Serializable 
 				components.setElementAt(thisComp,i);
 			}
 			simp = buildFromComponents(components,componentInfo);
-//			System.out.println("components simplified, "+toString()+" is now "+simp.toString());
+//			trace.out("components simplified, "+toString()+" is now "+simp.toString());
 		}
 		else {
 			simp = this;
@@ -983,13 +984,13 @@ public abstract class Expression  implements Cloneable, Queryable, Serializable 
 */	
 	public final Expression simplify() {
 		///quick check of caching...
-		/*System.out.println("Expression.simplify(): begin level " + level);
+		/*trace.out("Expression.simplify(): begin level " + level);
               level++;*/
 		Key key = new Key(debugForm());
 		Expression cached = (Expression)(simplificationCache.get(key));
 		if (cached != null) {
                     /*level--;
-                      System.out.println("Expression.simplify():  end  level " + level);*/
+                      trace.out("Expression.simplify():  end  level " + level);*/
 			return cached;
 		}
 		///
@@ -998,80 +999,80 @@ public abstract class Expression  implements Cloneable, Queryable, Serializable 
 		boolean foundSimp = true;
 		int cycles = 0;
 		while (foundSimp && cycles<10) {
-//			System.out.println("simplifying "+intermediate+"::"+intermediate.debugForm()+" cycle: "+cycles);
+//			trace.out("simplifying "+intermediate+"::"+intermediate.debugForm()+" cycle: "+cycles);
 			foundSimp = false;
 			if (intermediate.canRemoveParens()) {
 				intermediate = intermediate.removeParens();
-//				System.out.println("after removeParens: "+intermediate);
+//				trace.out("after removeParens: "+intermediate);
 				foundSimp=true;
 			}
 			if (intermediate.canReduceFractions()) {
 				intermediate = intermediate.reduceFractions();
-//				System.out.println("after reduceFractions: "+intermediate);
+//				trace.out("after reduceFractions: "+intermediate);
 				foundSimp=true;
 			}
 			if (intermediate.canCombineLikeTerms()) {
 				intermediate = intermediate.combineLikeTerms();
-//				System.out.println("after combineLikeTerms: "+intermediate);
+//				trace.out("after combineLikeTerms: "+intermediate);
 				foundSimp=true;
 			}
 			if (intermediate.canMultiplyThrough()) {
 				intermediate = intermediate.multiplyThrough();
-//				System.out.println("after multiplyThrough: "+intermediate.debugForm());
+//				trace.out("after multiplyThrough: "+intermediate.debugForm());
 				foundSimp=true;
 			}
 			if (intermediate.canRemoveDoubleSigns()) {
 				intermediate = intermediate.removeDoubleSigns();
-//				System.out.println("after removeDoubleSigns: "+intermediate);
+//				trace.out("after removeDoubleSigns: "+intermediate);
 				foundSimp=true;
 			}
 			if (intermediate.canExpandExponent()) {
 				intermediate = intermediate.expandExponent();
-//				System.out.println("after expandExponent: "+intermediate);
+//				trace.out("after expandExponent: "+intermediate);
 				foundSimp=true;
 			}
 			cycles +=1;
 		}
 		if (cycles == 10) //only cycle 10 times. If we don't simplify by then, some "can" predicate is returning true when we can't really simplify
-			System.out.println("Error: simplification loop for "+toString()+" results in "+intermediate.toString());
+			trace.out("Error: simplification loop for "+toString()+" results in "+intermediate.toString());
 		////
 		///mmmBUG -- should cache on something other than a string for performance reasons
 		simplificationCache.put(key,intermediate);
 		////
                 /*level--;
-                  System.out.println("Expression.simplify():  end  level " + level);*/
+                  trace.out("Expression.simplify():  end  level " + level);*/
 		return intermediate;
 	}
 		
 
 	public final boolean canSimplify() {
-            //System.out.println("canSimplify: checking: " + debugForm());
+            //trace.out("canSimplify: checking: " + debugForm());
             if (canCombineLikeTerms()){
-                //System.out.println("             CLT");
+                //trace.out("             CLT");
                 return true;
             }
             else if(canMultiplyThrough()){
-                //System.out.println("             MT");
+                //trace.out("             MT");
                 return true;
             }
             else if(canReduceFractions()){
-                //System.out.println("             RF");
+                //trace.out("             RF");
                 return true;
             }
             else if(canRemoveDoubleSigns()){
-                //System.out.println("             RDS");
+                //trace.out("             RDS");
                 return true;
             }
             else if(canRemoveParens()){
-                //System.out.println("             RP");
+                //trace.out("             RP");
                 return true;
             }
             else if(canExpandExponent()){
-                //System.out.println("             EE");
+                //trace.out("             EE");
                 return true;
             }
             else{
-                //System.out.println("             * all failed *");
+                //trace.out("             * all failed *");
                 return false;
             }
 	}
@@ -1110,33 +1111,33 @@ public abstract class Expression  implements Cloneable, Queryable, Serializable 
 		Expression intermediate = this;
 		int cycles = 0;
 		while (intermediate.canSimplifyWhole() && cycles<10) {
-//			System.out.println("Simplifying "+intermediate.debugForm()+" cycle "+cycles);
+//			trace.out("Simplifying "+intermediate.debugForm()+" cycle "+cycles);
 /*
-			System.out.println("Simplifying "+intermediate.toString()+" cycle "+cycles);
-			System.out.println("  "+intermediate.canCombineLikeTerms()+intermediate.canMultiplyThrough()+
+			trace.out("Simplifying "+intermediate.toString()+" cycle "+cycles);
+			trace.out("  "+intermediate.canCombineLikeTerms()+intermediate.canMultiplyThrough()+
 									intermediate.canExpandExponent()+intermediate.canReduceFractions()+intermediate.canRemoveDoubleSigns()
 								    +intermediate.canRemoveParens());
 */
 			intermediate = intermediate.removeParensWhole();
-//			System.out.println("After RP: "+intermediate.toString());
+//			trace.out("After RP: "+intermediate.toString());
 			intermediate = intermediate.combineLikeTermsWhole();
-//			System.out.println("after CLT: "+intermediate.toString());
+//			trace.out("after CLT: "+intermediate.toString());
 			intermediate = intermediate.multiplyThroughWhole();
-//			System.out.println("after MT: "+intermediate.toString());
+//			trace.out("after MT: "+intermediate.toString());
 			intermediate = intermediate.reduceFractionsWhole();
-//			System.out.println("After RF: "+intermediate.toString());
+//			trace.out("After RF: "+intermediate.toString());
 			intermediate = intermediate.removeDoubleSignsWhole();
-//			System.out.println("After RDS: "+intermediate.toString());
+//			trace.out("After RDS: "+intermediate.toString());
 			intermediate = intermediate.cleanExpression();
-//			System.out.println("After CE: "+intermediate.toString());
+//			trace.out("After CE: "+intermediate.toString());
 			intermediate = intermediate.expandExponentWhole();
-//			System.out.println("after EE: "+intermediate.toString());
+//			trace.out("after EE: "+intermediate.toString());
 //			if (!intermediate.canSimplifyWhole() && intermediate.canSimplify())
 //				intermediate = intermediate.simplify();
 			cycles +=1;
 		}
 		if (cycles == 10) //only cycle 10 times. If we don't simplify by then, some "can" predicate is returning true when we can't really simplify
-			System.out.println("Error: simplification loop for "+toString()+" results in "+intermediate.toString());
+			trace.out("Error: simplification loop for "+toString()+" results in "+intermediate.toString());
 		return intermediate;
 	}
 
@@ -1196,20 +1197,20 @@ public abstract class Expression  implements Cloneable, Queryable, Serializable 
 	protected Expression standardizeWhole(int type) {
 		Expression intermediate=this;
 		int count=0;
-                //System.out.println("standardizeWhole(): " + debugForm());
+                //trace.out("standardizeWhole(): " + debugForm());
 		boolean canSimp = intermediate.canSimplify();
 		boolean canDist = intermediate.canDistributeWhole(type);
-		//System.out.println(intermediate+" cansimp: "+intermediate.canSimplify()+" canCLT: "+intermediate.canCombineLikeTerms());
+		//trace.out(intermediate+" cansimp: "+intermediate.canSimplify()+" canCLT: "+intermediate.canCombineLikeTerms());
 		while ((canDist || canSimp) && count < 10) {
                     String pre = intermediate.debugForm();
-                    //System.out.println("standardizeWhole, start of step "+count+": "+intermediate.debugForm());
+                    //trace.out("standardizeWhole, start of step "+count+": "+intermediate.debugForm());
 			if (canSimp)
 				intermediate = intermediate.simplify(); //was simplifyWhole...
 			else if (canDist)
 				intermediate = intermediate.distributeWhole(type);
-			//System.out.println("standardizeWhole, end of step "+count+": "+intermediate.debugForm());
+			//trace.out("standardizeWhole, end of step "+count+": "+intermediate.debugForm());
                         if(intermediate.debugForm().equals(pre)){
-                            //System.out.println("!!! standardizeWhole: error: simplification didn't change expression: " +
+                            //trace.out("!!! standardizeWhole: error: simplification didn't change expression: " +
                             //                 pre + "\n!!! canDist: " + canDist + "; canSimp: " + canSimp);
                         }
 			count++;
@@ -1217,9 +1218,9 @@ public abstract class Expression  implements Cloneable, Queryable, Serializable 
 			canDist = intermediate.canDistributeWhole(type);
 		}
 		if (count == 10){
-                    //System.out.println("Standardization error; result is "+intermediate.toString());
+                    //trace.out("Standardization error; result is "+intermediate.toString());
                 }
-                //System.out.println("standardizeWhole() returning: " + intermediate.debugForm());
+                //trace.out("standardizeWhole() returning: " + intermediate.debugForm());
 		return intermediate;
 	}
 	
@@ -1296,28 +1297,28 @@ public abstract class Expression  implements Cloneable, Queryable, Serializable 
 	
 	public final Expression cannonicalize() {
 		/*level++;
-		  System.out.println("cannonicalize[" + level + "]: begin: "+this);*/
+		  trace.out("cannonicalize[" + level + "]: begin: "+this);*/
 		Expression cannon = standardize(DISTBOTH);
-		//System.out.println("cannonicalize[" + level + "]:"+this+" after standardize:"+cannon.debugForm());
+		//trace.out("cannonicalize[" + level + "]:"+this+" after standardize:"+cannon.debugForm());
 		cannon = cannon.initialCannonicalize();
-		//System.out.println("cannonicalize[" + level + "]:"+this+" after initialCannonicalize:"+cannon.debugForm());
+		//trace.out("cannonicalize[" + level + "]:"+this+" after initialCannonicalize:"+cannon.debugForm());
 		if (cannon.canHaveComponents()) {
 			ExpressionArray components = cannon.getComponentArray();
 			Object componentInfo = cannon.getComponentInfo();
 			//recursively cannonicalize
 			for (int i=0;i<components.size();++i) {
 				Expression thisComp = components.expressionAt(i);
-				//System.out.println("cannonicalize[" + level + "]: recurring on component " + i);
+				//trace.out("cannonicalize[" + level + "]: recurring on component " + i);
 				thisComp = thisComp.cannonicalize();
-				//System.out.println("cannonicalize[" + level + "]: done recurring on comp " + i);
+				//trace.out("cannonicalize[" + level + "]: done recurring on comp " + i);
 				components.setExpressionAt(thisComp,i);
 			}
 			cannon = cannon.buildFromComponents(components,componentInfo);
 			ExpressionArray.deallocate(components);
 		}
-		//System.out.println("cannonicalize[" + level + "]:" +this+" before cannonWhole:"+cannon);
+		//trace.out("cannonicalize[" + level + "]:" +this+" before cannonWhole:"+cannon);
 		Expression ret = cannon.cannonicalizeWhole();		
-		/*System.out.println("cannonicalize[" + level + "]:" +this+" after cannonWhole:"+cannon.cannonicalizeWhole());
+		/*trace.out("cannonicalize[" + level + "]:" +this+" after cannonWhole:"+cannon.cannonicalizeWhole());
 		  level--;*/
 		return ret;
 	}
@@ -1328,7 +1329,7 @@ public abstract class Expression  implements Cloneable, Queryable, Serializable 
 	
 	//isLike is true iff the two expressions can be added together into a single term (that is, they are "like terms")
 	protected boolean isLike(Expression ex) {
-//		System.out.println("In expression -- canCombine");
+//		trace.out("In expression -- canCombine");
 		return false;
 	}
 	
@@ -1348,8 +1349,8 @@ public abstract class Expression  implements Cloneable, Queryable, Serializable 
 	//two expressions are similar if they are algebraically equal and at the same level of simplification
 	// (e.g. x+3 is similar to 3+x, but x+1+2 is not)
 	public boolean similar(Expression ex) {
-		/*System.out.println("E.s: " + debugForm());
-		  System.out.println("     " + ex.debugForm());*/
+		/*trace.out("E.s: " + debugForm());
+		  trace.out("     " + ex.debugForm());*/
 		boolean sim=true;
 		if (algebraicEqual(ex)) {
 			if (canHaveComponents()) {
@@ -1378,7 +1379,7 @@ public abstract class Expression  implements Cloneable, Queryable, Serializable 
 		else
 			sim = false;
 //		if (sim == false)
-//			System.out.println(whyNotSimilar(ex));
+//			trace.out(whyNotSimilar(ex));
 		return sim;
 	}
 	
@@ -1437,23 +1438,23 @@ public abstract class Expression  implements Cloneable, Queryable, Serializable 
 		  if(level > 100){
 		  throw new Exception();
 		  }
-		  System.out.println("algebraicEqual[" + level + "]: comparing "+this+" to "+ex+":  "+
+		  trace.out("algebraicEqual[" + level + "]: comparing "+this+" to "+ex+":  "+
 		  this.debugForm()+" to "+ex.debugForm());*/
-			//		System.out.println("comparing "+this+" to "+ex+":  "+this.cannonicalize()+" to "+ex.cannonicalize());
+			//		trace.out("comparing "+this+" to "+ex+":  "+this.cannonicalize()+" to "+ex.cannonicalize());
             Expression cannon,excannon;
             boolean ret;
             cannon = this.cannonicalize();
-            //System.out.println("algebraicEqual[" + level + "]: this.cannonicalize() = " + cannon);
+            //trace.out("algebraicEqual[" + level + "]: this.cannonicalize() = " + cannon);
             excannon = ex.cannonicalize();
-            //System.out.println("algebraicEqual[" + level + "]: ex.cannonicalize() = " + excannon);
+            //trace.out("algebraicEqual[" + level + "]: ex.cannonicalize() = " + excannon);
             ret = cannon.exactEqual(excannon);
-            /*System.out.println("algebraicEqual[" + level + "]: result: " + ret);
+            /*trace.out("algebraicEqual[" + level + "]: result: " + ret);
 			  level--;*/
             return ret;
             //return this.cannonicalize().exactEqual(ex.cannonicalize());
 			/*}
 			  catch(Exception e){
-			  System.out.println("algebraicEqual[" + level + "]: overflow, level " + level);
+			  trace.out("algebraicEqual[" + level + "]: overflow, level " + level);
 			  e.printStackTrace();
 			  level--;
 			  System.exit(1);
@@ -1817,7 +1818,7 @@ public abstract class Expression  implements Cloneable, Queryable, Serializable 
 				if(onlyOneDegree){
 					try{
 						st = getProperty("term with degree 1");
-					} catch (NoSuchFieldException e) {System.out.println("in Exp :"); e.printStackTrace(); }	
+					} catch (NoSuchFieldException e) {trace.out("in Exp :"); e.printStackTrace(); }
 					if(st != null && !st.getStringValue().startsWith("0"))
 						onlyOneDegree = false;
 				}
@@ -1834,7 +1835,7 @@ public abstract class Expression  implements Cloneable, Queryable, Serializable 
 	//Queryable Interface
 	
 	public Queryable getProperty(String prop) throws NoSuchFieldException {
-		//System.out.println("getProperty (expression): "+prop);
+		//trace.out("getProperty (expression): "+prop);
 		Queryable result=null;
 		if (prop.equalsIgnoreCase("self") || prop.equalsIgnoreCase("term 1"))
 			return this;
@@ -1937,7 +1938,7 @@ public abstract class Expression  implements Cloneable, Queryable, Serializable 
 				result = new StringQuery(thisForm.getPattern());
 			}
 			catch (BadExpressionError err) {
-				System.out.println("bad expression in term with degree: "+prop.substring(14));
+				trace.out("bad expression in term with degree: "+prop.substring(14));
 			}
 		}
 		else if (prop.length() > 13 && prop.substring(0,13).equalsIgnoreCase("term matching")) {
@@ -1950,7 +1951,7 @@ public abstract class Expression  implements Cloneable, Queryable, Serializable 
 					throw new NoSuchFieldException(this+" does not match "+prop.substring(14));
 			}
 			catch (BadExpressionError err) {
-				System.out.println("bad expression in term matching: "+prop.substring(14));
+				trace.out("bad expression in term matching: "+prop.substring(14));
 			}
 		}
 		else if (prop.length() > 15 && prop.substring(0,15).equalsIgnoreCase("factor matching")){
@@ -2023,7 +2024,7 @@ public abstract class Expression  implements Cloneable, Queryable, Serializable 
 			for (int i=0;i<components.size();++i) {
 				Expression thisComponent = (Expression)(components.elementAt(i));
 				boolean thisMatch = thisComponent.evalQuery(predicate).getBooleanValue();
-				//System.out.println(predicate+" on "+thisComponent+":"+thisMatch);
+				//trace.out(predicate+" on "+thisComponent+":"+thisMatch);
 				if (thisMatch)
 					passingComponents.addElement(thisComponent);
 				else if (thisComponent.canHaveComponents()) { //recursively check components
@@ -2378,9 +2379,9 @@ public abstract class Expression  implements Cloneable, Queryable, Serializable 
 				//recursively simplify
 				for (int i=0;i<components.size();++i) {
 					Expression thisComp = (Expression)(components.elementAt(i));
-					System.out.println(step+" on "+thisComp);
+					trace.out(step+" on "+thisComp);
 					Object result = simpMethod.invoke(thisComp,args);
-					System.out.println("   results in "+result);
+					trace.out("   results in "+result);
 					components.setElementAt(result,i);
 				}
 				composed = buildFromComponents(components);
@@ -2390,20 +2391,20 @@ public abstract class Expression  implements Cloneable, Queryable, Serializable 
 			return (Expression)(wholeMethod.invoke(composed,args));
 		}
 		catch (ClassNotFoundException err) {
-			System.out.println(err);
+			trace.out(err);
 			return this;
 		}
 		catch (NoSuchMethodException err) {
-			System.out.println(err);
+			trace.out(err);
 			return this;
 		}
 		catch (IllegalAccessException err) {
-			System.out.println(err);
+			trace.out(err);
 			return this;
 		}
 		catch (InvocationTargetException err) {
 			Throwable exception = err.getTargetException();
-			System.out.println(err+exception.toString());
+			trace.out(err+exception.toString());
 			return this;
 		}			
 	}
@@ -2437,20 +2438,20 @@ public abstract class Expression  implements Cloneable, Queryable, Serializable 
 			return canDo;
 		}
 		catch (ClassNotFoundException err) {
-			System.out.println(err);
+			trace.out(err);
 			return false;
 		}
 		catch (NoSuchMethodException err) {
-			System.out.println(err);
+			trace.out(err);
 			return false;
 		}
 		catch (IllegalAccessException err) {
-			System.out.println(err);
+			trace.out(err);
 			return false;
 		}
 		catch (InvocationTargetException err) {
 			Throwable exception = err.getTargetException();
-			System.out.println(err+exception.toString());
+			trace.out(err+exception.toString());
 			return false;
 		}			
 	}

@@ -43,7 +43,7 @@ public class MissControllerStub implements MissControllerExternal {
 	}
 
 	public SimSt getSimSt() {
-		//System.out.println("Its returning null");
+		//trace.out("Its returning null");
 		return null;
 	}
 

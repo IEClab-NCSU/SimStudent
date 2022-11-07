@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.*;
 
 import edu.cmu.pact.BehaviorRecorder.Controller.BR_Controller;
+import edu.cmu.pact.Utilities.trace;
 import edu.cmu.pact.miss.SimSt;
 import edu.cmu.pact.miss.PeerLearning.GameShow.Connection;
 import edu.cmu.pact.miss.console.controller.MissController;
@@ -97,7 +98,7 @@ public class DummyContestant  {
 				try {
 					while(activeListener && (incomingMsg = connection.reader.readLine()) != null)
 					{
-					    System.out.println("Server: " + incomingMsg);
+					    trace.out("Server: " + incomingMsg);
 					    if(incomingMsg.startsWith(ContestServer.LIST))
 					    	listParticipants(incomingMsg);
 					    if(incomingMsg.startsWith(ContestServer.START_CONTEST))

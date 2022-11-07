@@ -345,7 +345,7 @@ public class InquiryClSolverTutor extends InquiryClAlgebraTutor {
 			} else if (GET_NEXT_STEP.equals(cmd)) {
 				getNextStep();
 			} else {
-				System.out.println("dispatchClientMsg: invalid msg >> " + clientMsg);
+				trace.out("dispatchClientMsg: invalid msg >> " + clientMsg);
 			}
 		}	
 
@@ -492,7 +492,7 @@ public class InquiryClSolverTutor extends InquiryClAlgebraTutor {
 				hintMessages = getSolverTutor().getHintMessage(sai);
 			} catch (InvalidStepException e) {
 				e.printStackTrace();
-				System.out.println("-----e.getCause:------" + e.getCause());
+				trace.out("-----e.getCause:------" + e.getCause());
 			}
 			
 			return hintMessages;
@@ -737,9 +737,9 @@ public class InquiryClSolverTutor extends InquiryClAlgebraTutor {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		 if(trace.getDebugCode("miss"))System.out.println((new StringBuilder()).append("isCorrectStep(").append(selection).append(",").append(action).append(",").append(input).append(") = ").append(flag).toString());
+		 if(trace.getDebugCode("miss"))trace.out((new StringBuilder()).append("isCorrectStep(").append(selection).append(",").append(action).append(",").append(input).append(") = ").append(flag).toString());
          SAI nextStep = clSolverTutor.whatToDoNext();
-         if(trace.getDebugCode("miss"))System.out.println((new StringBuilder()).append("nextStep = ").append(nextStep).toString());
+         if(trace.getDebugCode("miss"))trace.out((new StringBuilder()).append("nextStep = ").append(nextStep).toString());
 
 		 //try
 		 //{

@@ -478,7 +478,7 @@ public class GraphEditsTest extends TestCase {
 			long startTime = (new Date()).getTime();
 			MTTest t = tests[currTest];
 			Vector msgs = runProcessPseudoTutorInterfaceAction(t.selection, t.action, t.input, t.actor);
-			System.out.println("S = " + t.selection + "A = " + t.action + "I = " + t.input);
+			trace.out("S = " + t.selection + "A = " + t.action + "I = " + t.input);
 			t.checkResult(tests, currTest, msgs);
 		}
 	}

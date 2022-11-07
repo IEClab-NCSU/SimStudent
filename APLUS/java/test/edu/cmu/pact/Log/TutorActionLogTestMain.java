@@ -149,7 +149,7 @@ public class TutorActionLogTestMain {
 			" </tool_message>\n" +
 			"</tutor_related_message_sequence>\n";
     
-		System.out.println("msgs=\n" + msgs);
+		trace.out("msgs=\n" + msgs);
 		Reader rdr = new StringReader(msgs);
 		Iterator it = TutorActionLog.factoryIterator(rdr, null, null);
 		for (int i = 0; i < count && it.hasNext(); ++i) {
@@ -158,7 +158,7 @@ public class TutorActionLogTestMain {
 			logEntry.setUserGuid(userId);
 			logEntry.setSessionId(sessionId);
 
-			System.out.println("Sending log entry [" + i + "], getInfo()=\n" +
+			trace.out("Sending log entry [" + i + "], getInfo()=\n" +
 							   logEntry.getInfo());
 			if (streamLogger != null)
 				streamLogger.logActionLog(logEntry);
@@ -247,7 +247,7 @@ public class TutorActionLogTestMain {
 				Iterator it = TutorActionLog.factoryIterator(rdr, null, null);
 				for (entryNo = 1; it.hasNext(); ++entryNo) {
 					TutorActionLog entry = (TutorActionLog) it.next();
-					System.out.println(entryNo + ":\t" + entry);
+					trace.out(entryNo + ":\t" + entry);
 				}
 			} catch (Exception e) {
 				System.err.println("Error reading " + infile + ", entry " +

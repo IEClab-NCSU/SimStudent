@@ -333,15 +333,15 @@ public class LogicExprParser extends TreeBuilderSemantic
 
         	vSet.toArray(vArray);
 
-        // 	System.out.println("getVariableList = " + vArray[0] + " " + vArray[1]);
+        // 	trace.out("getVariableList = " + vArray[0] + " " + vArray[1]);
 
     	    for (int i = 0; i < vSet.size(); ++i)
 
     	    {
 
-          	System.out.print("vArray[" + i + "]" + vArray[i]);
+          	trace.out("vArray[" + i + "]" + vArray[i]);
 
-    	    System.out.print("\n");
+    	    trace.out("\n");
 
     	    }
 
@@ -355,7 +355,7 @@ public class LogicExprParser extends TreeBuilderSemantic
 
         public String[] getSubExprArray() {
 
-        	System.out.println("Get subExpreArray = " + subExprArray);
+        	trace.out("Get subExpreArray = " + subExprArray);
 
         return (subExprArray);
 
@@ -367,7 +367,7 @@ public class LogicExprParser extends TreeBuilderSemantic
 
         public List getSubExprList() {
 
-        	System.out.println("Get subExpreList = " + subExprList);
+        	trace.out("Get subExpreList = " + subExprList);
 
         return (subExprList);
 
@@ -379,7 +379,7 @@ public class LogicExprParser extends TreeBuilderSemantic
 
         public LogicExprTree.Node[] getExprTreeNode() {
 
-        	System.out.println("Get ExprTreeNode = " + ExprTreeNode);
+        	trace.out("Get ExprTreeNode = " + ExprTreeNode);
 
         return (ExprTreeNode);
 
@@ -819,7 +819,7 @@ private LogicExprTree.Node[] ExprTreeNode = null;
 
 		 * boolean ok = parser.parse(input, this);
 
-		 * System.out.println("Parse return "+ok+", result: " +
+		 * trace.out("Parse return "+ok+", result: " +
 
 		 *                    parser.getResult());
 
@@ -875,7 +875,7 @@ private LogicExprTree.Node[] ExprTreeNode = null;
 
 						subExprArray = tree.getSubExprArray();
 
-						System.out.println("Save subExpreArray = " + subExprArray);
+						trace.out("Save subExpreArray = " + subExprArray);
 
 						subExprList = tree.getSubExprList();
 
@@ -963,7 +963,7 @@ private LogicExprTree.Node[] ExprTreeNode = null;
 
 		if (!pe.getResult()) {
 
-			System.out.println("Error parsing expression \""+expr+"\":\n  "+
+			trace.out("Error parsing expression \""+expr+"\":\n  "+
 
 					pe.getErrorMsg());
 
@@ -971,27 +971,27 @@ private LogicExprTree.Node[] ExprTreeNode = null;
 
 		}
 
-		System.out.println("Parsing expression \""+expr+"\":"+
+		trace.out("Parsing expression \""+expr+"\":"+
 
 				pe.getRoot().formatSubtree());
 
 		LogicExprTree tree = new LogicExprTree(pe.getRoot().getParserNode());
 
-		System.out.println("LogicExprTree.toString(): "+tree.getRoot().toString());
+		trace.out("LogicExprTree.toString(): "+tree.getRoot().toString());
 
-		System.out.println("LogicExprTree.toString(): "+tree.getRoot().toString(true));
+		trace.out("LogicExprTree.toString(): "+tree.getRoot().toString(true));
 
-		System.out.println("LogicExprTree is: "+tree.toString());
+		trace.out("LogicExprTree is: "+tree.toString());
 
-		System.out.println("LogicExprTree.getVariableTable() is: "+tree.getVariableTable());
+		trace.out("LogicExprTree.getVariableTable() is: "+tree.getVariableTable());
 
-		System.out.println("LogicExprTree.getVariableSet is: "+pe.getVariableSet());
+		trace.out("LogicExprTree.getVariableSet is: "+pe.getVariableSet());
 
-		System.out.println("LogicExprTree.getVariableSet is: "+pe.getVariableList());
+		trace.out("LogicExprTree.getVariableSet is: "+pe.getVariableList());
 
-		System.out.println("LogicExprTree.getsubExprArray() is: "+tree.getSubExprArray());
+		trace.out("LogicExprTree.getsubExprArray() is: "+tree.getSubExprArray());
 
-		System.out.println("LogicExprTree.getSubExprList() is: "+tree.getSubExprList());		
+		trace.out("LogicExprTree.getSubExprList() is: "+tree.getSubExprList());		
 
 	//	Transfer connection = new Transfer();
 
@@ -1009,15 +1009,15 @@ private LogicExprTree.Node[] ExprTreeNode = null;
 
 //		for (int j = 0; j < subExprList.size(); ++j) {
 
-//		    System.out.print(""+(j+1)+" ");
+//		    trace.out(""+(j+1)+" ");
 
 //		    String[] le = ((LogicExprTree.Node) subExprList.get(j)).getLogicEvaluation();
 
 //		    for (int i = 0; i < le.length; ++i)
 
-//			System.out.print(" "+le[i]);
+//			trace.out(" "+le[i]);
 
-//		    System.out.print("\n");
+//		    trace.out("\n");
 
 //		}
 
@@ -1101,7 +1101,7 @@ private LogicExprTree.Node[] ExprTreeNode = null;
 
 		Boolean result = (Boolean) TERM; //ReflectSemantic.fallback() does this
 
-		System.out.println("result: EXPRESSION(Object TERM)=" + result.booleanValue());
+		trace.out("result: EXPRESSION(Object TERM)=" + result.booleanValue());
 
 		return result;
 
@@ -1135,7 +1135,7 @@ private LogicExprTree.Node[] ExprTreeNode = null;
 
 			result = new Boolean(((Boolean) EXPRESSION).booleanValue() && ((Boolean) TERM).booleanValue());
 
-		System.out.println("result: EXPRESSION(Object EXPRESSION, " + operator + ", Object TERM)=" + result.booleanValue());
+		trace.out("result: EXPRESSION(Object EXPRESSION, " + operator + ", Object TERM)=" + result.booleanValue());
 
 		return result;
 
@@ -1163,7 +1163,7 @@ private LogicExprTree.Node[] ExprTreeNode = null;
 
 		Boolean result = (Boolean) FACTOR; //ReflectSemantic.fallback() does this
 
-		System.out.println("result: TERM(Object FACTOR)=" + result.booleanValue());
+		trace.out("result: TERM(Object FACTOR)=" + result.booleanValue());
 
 		return result;
 
@@ -1203,7 +1203,7 @@ private LogicExprTree.Node[] ExprTreeNode = null;
 
 								  ! ((Boolean) FACTOR).booleanValue()));
 
-		System.out.println("trace: TERM(Object TERM, " + operator + ", Object FACTOR)=" + result.booleanValue());
+		trace.out("trace: TERM(Object TERM, " + operator + ", Object FACTOR)=" + result.booleanValue());
 
 		return result;
 
@@ -1229,7 +1229,7 @@ private LogicExprTree.Node[] ExprTreeNode = null;
 
 		Boolean result = (Boolean) PRIMARY;
 
-		System.out.println("result: FACTOR(Object PRIMARY)=" + result.booleanValue());
+		trace.out("result: FACTOR(Object PRIMARY)=" + result.booleanValue());
 
 		return result;
 
@@ -1255,7 +1255,7 @@ private LogicExprTree.Node[] ExprTreeNode = null;
 
 		Boolean result = (Boolean) new Boolean( ! ((Boolean) FACTOR).booleanValue() );
 
-		System.out.println("result: FACTOR(Object not, Object FACTOR)=" + result.booleanValue());
+		trace.out("result: FACTOR(Object not, Object FACTOR)=" + result.booleanValue());
 
 		return result;
 
@@ -1281,7 +1281,7 @@ private LogicExprTree.Node[] ExprTreeNode = null;
 
 		Boolean result = (Boolean) EXPRESSION;
 
-		System.out.println("result: PRIMARY(Object leftParenthesis, Object EXPRESSION, Object rightParenthesis)=" + result.booleanValue());
+		trace.out("result: PRIMARY(Object leftParenthesis, Object EXPRESSION, Object rightParenthesis)=" + result.booleanValue());
 
 		return result;
 
@@ -1315,7 +1315,7 @@ private LogicExprTree.Node[] ExprTreeNode = null;
 
 		String v = identifier.toString();
 
-		System.out.println("trace: PRIMARY("+v+")");
+		trace.out("trace: PRIMARY("+v+")");
 
 		return new Boolean(v.equalsIgnoreCase("P") || v.equalsIgnoreCase("R"));
 

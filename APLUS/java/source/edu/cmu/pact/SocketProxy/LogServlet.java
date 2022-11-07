@@ -257,7 +257,7 @@ public class LogServlet extends LogWriterForwarder implements ExitableServer
     		stdin.write(c);
     	boolean[] isHTTP = new boolean[1];
     	String logMsg = extractLogRecord(stdin.toString(), isHTTP);
-    	System.out.println(logMsg);
+    	trace.out(logMsg);
     }
 
     /**

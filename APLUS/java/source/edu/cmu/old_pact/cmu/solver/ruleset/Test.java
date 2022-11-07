@@ -30,10 +30,10 @@ public abstract class Test {
               equation/expression, because its entire structure is not
               reflected*/
 			Key key = new Key(toString() + info.hashCode());
-//System.out.println("in TEST cache test "+key);
+//trace.out("in TEST cache test "+key);
 			Object cacheValue = testCache.get(key);
 			if (cacheValue != null) {
-//System.out.println("in TEST cache hit "+key);
+//trace.out("in TEST cache hit "+key);
 				return ((Boolean)cacheValue).booleanValue();
 			}
 			else {

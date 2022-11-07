@@ -12,6 +12,7 @@ import java.util.Vector;
 import edu.cmu.old_pact.cmu.sm.query.ArrayQuery;
 import edu.cmu.old_pact.cmu.sm.query.BooleanQuery;
 import edu.cmu.old_pact.cmu.sm.query.Queryable;
+import edu.cmu.pact.Utilities.trace;
 
 public class RatioExpression extends Expression implements CompoundExpression {
 	private Expression top;
@@ -19,7 +20,7 @@ public class RatioExpression extends Expression implements CompoundExpression {
 	
 	public RatioExpression(Expression numerator,Expression denominator) {
 		if(numerator == null){
-			System.out.println("RE: created with null numerator!");
+			trace.out("RE: created with null numerator!");
 			(new Exception()).printStackTrace();
 		}
 		top = numerator;
@@ -42,7 +43,7 @@ public class RatioExpression extends Expression implements CompoundExpression {
 		else
 			bottom = new TermExpression(denominator);
 		if(top == null){
-			System.out.println("RE: created with null numerator!");
+			trace.out("RE: created with null numerator!");
 			(new Exception()).printStackTrace();
 		}
 	}
@@ -290,7 +291,7 @@ return texp.cleanExpression();
 	}
 	
 	public Expression exceptSimplifiedCoefficient() {
-		//System.out.println("top is "+top+" and bottom is "+bottom);
+		//trace.out("top is "+top+" and bottom is "+bottom);
 		Expression topEx = top.exceptSimplifiedCoefficient();
 		Expression bottomEx = bottom.exceptSimplifiedCoefficient();
 		if (bottomEx == null && topEx == null) //if number/number, return null
@@ -323,7 +324,7 @@ return texp.cleanExpression();
 	//toTermExpression allows us to re-use the TermExpression simplification routines
 	//Basically, any simplification involves turning the Ratio into a Term and simplifying it
 	private TermExpression toTermExpression() {
-		//System.out.println("RE.toTermExpression: " + debugForm());
+		//trace.out("RE.toTermExpression: " + debugForm());
 		TermExpression ret = null;
 		Vector topTerms;
 		Vector bottomTerms;
@@ -344,7 +345,7 @@ return texp.cleanExpression();
 			bottomTerms = new Vector();
 			bottomTerms.addElement(openBottom);
 		}
-		/*System.out.println("RE.toTermExpression: creating new TermExpression: {" + topTerms +
+		/*trace.out("RE.toTermExpression: creating new TermExpression: {" + topTerms +
 		  "}, {" + bottomTerms + "}");*/
 		if(!TermExpression.wouldBecomeRatio(bottomTerms)){
 			ret = new TermExpression(topTerms,bottomTerms);
@@ -360,9 +361,9 @@ return texp.cleanExpression();
 	
 	//cheat on this one (since reducing fractions for a term involves relationships across components)
 	public boolean canReduceFractionsWhole() {
-		//System.out.println("RatioExpression: canReduceFractionsWhole(): " + debugForm());
+		//trace.out("RatioExpression: canReduceFractionsWhole(): " + debugForm());
 		boolean ret = !(debugForm().equals(reduceFractions().debugForm()));
-		//System.out.println("RatioExpression: canReduceFractionsWhole(): " + ret);
+		//trace.out("RatioExpression: canReduceFractionsWhole(): " + ret);
 		return ret;
 	}
 	
@@ -376,23 +377,23 @@ return texp.cleanExpression();
 	// factorAndReduce:  [3x+6] / 3 --> x+2
 	
 	public Expression reduceFractionsWhole() {
-		//System.out.println("RatioExpression: reduceFractionsWhole(): " + debugForm());
+		//trace.out("RatioExpression: reduceFractionsWhole(): " + debugForm());
 		Expression finalEx = removeFractionalComponent();
 		if (finalEx instanceof RatioExpression) {
 			finalEx = ((RatioExpression)finalEx).cancelTerms().cleanExpression();
-			//System.out.println("after cancelterms: "+finalEx);
+			//trace.out("after cancelterms: "+finalEx);
 			if (finalEx instanceof RatioExpression) {
 				finalEx = ((RatioExpression)finalEx).reduceTermExponents();
-				//System.out.println("after reduceTermExponents: "+finalEx);
+				//trace.out("after reduceTermExponents: "+finalEx);
 				if (finalEx instanceof RatioExpression) {
 					finalEx = ((RatioExpression)finalEx).reduceNumerics();
-					//System.out.println("after reduceNumerics: "+finalEx);
+					//trace.out("after reduceNumerics: "+finalEx);
 					if (finalEx instanceof RatioExpression) {
 						finalEx = ((RatioExpression)finalEx).reducePolyNumerics(); //shouldn't have to special-case this, but test 26 doesn't pass without it...
-						//System.out.println("after reducePolyNumerics: "+finalEx.debugForm());
+						//trace.out("after reducePolyNumerics: "+finalEx.debugForm());
 						if (finalEx instanceof RatioExpression) {
 							finalEx = ((RatioExpression)finalEx).factorAndReduce();
-							//System.out.println("after factorAndReduce: "+finalEx);
+							//trace.out("after factorAndReduce: "+finalEx);
 						}
 						else
 							finalEx = finalEx.reduceFractions();
@@ -409,7 +410,7 @@ return texp.cleanExpression();
 		else
 			finalEx = finalEx.reduceFractions(); //now that its something else, try reducing that...
 
-		//System.out.println("RatioExpression: reduceFractionsWhole()> " + finalEx.debugForm());
+		//trace.out("RatioExpression: reduceFractionsWhole()> " + finalEx.debugForm());
 		return finalEx;
 	}
 
@@ -584,13 +585,13 @@ return texp.cleanExpression();
 	
 	private Expression factorAndReduce() {
 		Expression result = this;
-		//System.out.println("RE.fAR: " + debugForm());
+		//trace.out("RE.fAR: " + debugForm());
 		if (canFactor()) {
-			//System.out.println("RE.fAR: canFactor");
+			//trace.out("RE.fAR: canFactor");
 			RatioExpression factored = (RatioExpression)(factor());
-			//System.out.println("RE.fAR: factored to: " + debugForm());
+			//trace.out("RE.fAR: factored to: " + debugForm());
 			if (factored.canCancelTerms()) {
-				//System.out.println("RE.fAR: canCancelTerms");
+				//trace.out("RE.fAR: canCancelTerms");
 				result = factored.cancelTerms();
 			}
 		}
@@ -605,8 +606,8 @@ return texp.cleanExpression();
 		Expression topExpr = num.numericSimplifiedCoefficient();
 		Expression bottomExpr = den.numericSimplifiedCoefficient();
 
-		/*System.out.println("RE.rN: " + topExpr.debugForm());
-		  System.out.println("       " + bottomExpr.debugForm());*/
+		/*trace.out("RE.rN: " + topExpr.debugForm());
+		  trace.out("       " + bottomExpr.debugForm());*/
 
 		NumericExpression topNum=null, bottomNum=null;
 
@@ -680,10 +681,10 @@ return texp.cleanExpression();
 						}
 					}
 					else {
-						//					System.out.println("Den is "+den.toString()+" without coeff: "+den.exceptCoefficient().toString());
+						//					trace.out("Den is "+den.toString()+" without coeff: "+den.exceptCoefficient().toString());
 						newDen = withoutDen;
 					}
-					//				System.out.println("newNum: "+newNum.debugForm()+" newden: "+newDen.debugForm());
+					//				trace.out("newNum: "+newNum.debugForm()+" newden: "+newDen.debugForm());
 					if (newNum.isEmpty() && newDen.isEmpty())
 						return new NumberExpression(1);
 					else if (newNum.isEmpty())
@@ -728,7 +729,7 @@ return texp.cleanExpression();
 			if (((NumericExpression)(denT.elementAt(0))).isIntegerType()) {
 				NumericExpression numD = ((NumericExpression)(denT.elementAt(0)));
 				long denom = (long)(numD.doubleValue());
-//				System.out.println("denom is "+denom);
+//				trace.out("denom is "+denom);
 				Vector numT = top.getExplicitFactors(true);
 				PolyExpression numPoly = null;
 				if (numT.size() == 1) {
@@ -742,18 +743,18 @@ return texp.cleanExpression();
 						long[] coeffs = new long[numTerms+1];
 						for (int i=0;i<numTerms;++i) {
 							coeffs[i] = (long)(numPoly.getTermAt(i).numericSimplifiedCoefficient().doubleValue());
-//							System.out.println("coeff "+i+" is "+coeffs[i]);
+//							trace.out("coeff "+i+" is "+coeffs[i]);
 						}
 						coeffs[numTerms] = denom;
 						long gcf = FractionExpression.gcf(coeffs);
-//						System.out.println("gcf is "+gcf);
+//						trace.out("gcf is "+gcf);
 						if (gcf != 0 && gcf != 1) { //finally, we can do something
 							Vector newNumerator = new Vector();
 							for (int i=0;i<numTerms;++i) {
 								long newCoeff = coeffs[i]/gcf;
-//								System.out.println("new coeff is "+newCoeff);
+//								trace.out("new coeff is "+newCoeff);
 								Expression thisEx = numPoly.getTermAt(i);
-//								System.out.println("checking "+thisEx);
+//								trace.out("checking "+thisEx);
 								Expression withoutCoeff = thisEx.exceptSimplifiedCoefficient();
 								if (newCoeff != 1 && withoutCoeff != null)
 									newNumerator.addElement(new NumberExpression(newCoeff).multiply(withoutCoeff));
@@ -763,7 +764,7 @@ return texp.cleanExpression();
 									newNumerator.addElement(withoutCoeff);
 								else //withoutCoeff is null -- must be a constant
 									newNumerator.addElement(new NumberExpression(newCoeff));
-//								System.out.println("numerator is now "+newNumerator);
+//								trace.out("numerator is now "+newNumerator);
 							}
 							long newDen = denom/gcf;
 							if (newDen != 1) {
@@ -794,18 +795,18 @@ return texp.cleanExpression();
 
 	
 	public Expression distributeWhole(int type) {
-		//System.out.println("RE.dW(" + distributeDenominator + ") " + debugForm());
+		//trace.out("RE.dW(" + distributeDenominator + ") " + debugForm());
 		if ((type & DISTDEN) != 0) {
 			Expression numEx = top.unfence(); //ignore fences during distribution
-			//System.out.println("RE.dW: numEx = " + numEx.debugForm());
+			//trace.out("RE.dW: numEx = " + numEx.debugForm());
 			if (numEx instanceof PolyExpression) {
 				Vector components = numEx.getComponents();
 				Object compInfo = numEx.getComponentInfo();
 				for (int i=0;i<components.size();++i)
 					components.setElementAt(((Expression)(components.elementAt(i))).divide(bottom),i);
-				//System.out.println("RE.dW: about to bFC: " + components);
+				//trace.out("RE.dW: about to bFC: " + components);
 				Expression ret = numEx.buildFromComponents(components,compInfo);
-				//System.out.println("RE.dW: returning: " + ret.debugForm());
+				//trace.out("RE.dW: returning: " + ret.debugForm());
 				components.removeAllElements();
 				components = null;
 				return ret;
@@ -820,12 +821,12 @@ return texp.cleanExpression();
 
 
 	protected Expression fractionToDecimalWhole(){
-		//System.out.println("RE.fTDW: begin: " + debugForm());
+		//trace.out("RE.fTDW: begin: " + debugForm());
 		NumericExpression coeff = top.numericSimplifiedCoefficient().numDivide(bottom.numericSimplifiedCoefficient());
 		Expression topRest = top.exceptNumericSimplifiedCoefficient();
 		Expression botRest = bottom.exceptNumericSimplifiedCoefficient();
 
-		/*System.out.println("RE.fTDW: coeff: " + coeff + "; topRest: " + topRest +
+		/*trace.out("RE.fTDW: coeff: " + coeff + "; topRest: " + topRest +
 		  "; botRest: " + botRest);*/
 
 		Expression rest;
@@ -911,41 +912,41 @@ return texp.cleanExpression();
 		// in case "3.17/x" it falls into the infinite loop with terms, because in terms :
 		//[TermExp(2):  1:[NumExp: 3::3.17] 2:[Ratio: [NumExp: 0::1.0] :: [var: x]]]
 		/*level++;
-		  System.out.println("RE.initialCannonicalize[" + level + "]: " + debugForm());
+		  trace.out("RE.initialCannonicalize[" + level + "]: " + debugForm());
 		  if(level > 100){
 		  (new Exception()).printStackTrace();
 		  System.exit(1);
 		  }*/
             if(!top.canSimplify() && bottom instanceof VariableExpression){
-                /*System.out.println("RE.initialCannonicalize: doing nothing");
+                /*trace.out("RE.initialCannonicalize: doing nothing");
 				  level--;*/
 				return this;
             }
-            //System.out.println("RE.initialCannonicalize[" + level + "]: converting to TermExpression");
+            //trace.out("RE.initialCannonicalize[" + level + "]: converting to TermExpression");
             /*toTermExpression returns null if it can't get rid of all
               the RatioExpressions*/
             TermExpression te = toTermExpression();
             if(te != null){
-                //System.out.println("RE.initialCannonicalize[" + level + "]: toTermExpression successful");
+                //trace.out("RE.initialCannonicalize[" + level + "]: toTermExpression successful");
                 Expression ret = te.simplify();
 				if(ret instanceof RatioExpression){
 					/*getting rid of the RatioExpressions in
                       toTermExpression was only temporary -- they've
                       re-surfaced.*/
-					/*System.out.println("RE.initialCannonicalize[" + level + "]: simplified back to ratio: doing nothing");
+					/*trace.out("RE.initialCannonicalize[" + level + "]: simplified back to ratio: doing nothing");
 					  level--;*/
 					return this;
 				}
 				else{
-					//System.out.println("RE.initialCannonicalize[" + level + "]: simplify successful");
+					//trace.out("RE.initialCannonicalize[" + level + "]: simplify successful");
 					/*ret = ret.initialCannonicalize();
-					  System.out.println("RE.initialCannonicalize[" + level + "]: initialCannonicalize successful");*/
+					  trace.out("RE.initialCannonicalize[" + level + "]: initialCannonicalize successful");*/
 					//level--;
 					return ret;
 				}
             }
             else{
-                /*System.out.println("RE.initialCannonicalize[" + level + "]: doing nothing after toTermExpression");
+                /*trace.out("RE.initialCannonicalize[" + level + "]: doing nothing after toTermExpression");
 				  level--;*/
                 return this;
             }

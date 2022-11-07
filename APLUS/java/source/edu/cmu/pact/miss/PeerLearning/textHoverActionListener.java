@@ -51,7 +51,7 @@ public class textHoverActionListener extends MouseAdapter{
         int x = me.getX();
         int y = me.getY();
         int startOffset = ((JTextComponent) me.getSource()).viewToModel(new Point(x, y));
-        //System.out.println("x: "+x+" y: "+y+" string_pos: "+startOffset);
+        //trace.out("x: "+x+" y: "+y+" string_pos: "+startOffset);
         String to_be_highlighted =  getTitleText(startOffset);
         JTextPane tt = (JTextPane) ((JTextComponent)me.getSource());
     	tt.setToolTipText(hovertext.get(to_be_highlighted));
@@ -64,25 +64,25 @@ public class textHoverActionListener extends MouseAdapter{
 		String title_text = "";
 		int index = Collections.binarySearch(start_positions, startOffset);
 		index = (index+2)*-1;
-		//System.out.println(index);
+		//trace.out(index);
 	    if(hovertext_pos.containsKey(startOffset)){
-	    	//System.out.println("11111");
+	    	//trace.out("11111");
 	    	title_text = hovertext_pos.get(startOffset);
-	        //System.out.println(title_text);
+	        //trace.out(title_text);
 	        return title_text;
 	        	
 	    }
 	    else if(hovertext_pos_end.containsKey(startOffset)){
-	    	//System.out.println("22222");
+	    	//trace.out("22222");
 	        title_text = hovertext_pos_end.get(startOffset);
-	        //System.out.println(title_text);
+	        //trace.out(title_text);
 	        return title_text;
 	    }
 	    else if(index >=0 && startOffset <= end_positions.get(index) && startOffset>= start_positions.get(index))
 	    {
-	    	//System.out.println("3333 "+index);
+	    	//trace.out("3333 "+index);
 	    	title_text = hovertext_pos.get(start_positions.get(index));
-	        //System.out.println(title_text);
+	        //trace.out(title_text);
 	        return title_text;
 	    }
 		return title_text;

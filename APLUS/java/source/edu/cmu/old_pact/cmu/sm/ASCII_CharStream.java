@@ -9,6 +9,8 @@
 
 package edu.cmu.old_pact.cmu.sm;
 
+import edu.cmu.pact.Utilities.trace;
+
 public final class ASCII_CharStream implements CharStream
 {
   int bufsize;
@@ -70,7 +72,7 @@ public final class ASCII_CharStream implements CharStream
      }
      catch (Throwable t)
      {
-        System.out.println("Error : " + t.getClass().getName());
+        trace.out("Error : " + t.getClass().getName());
         throw new Error();
      }
 

@@ -6,6 +6,7 @@ import java.text.NumberFormat;
 import java.util.StringTokenizer;
 
 import edu.cmu.old_pact.cmu.sm.query.Queryable;
+import edu.cmu.pact.Utilities.trace;
 
 //Number expressions -- store any kind of number (except fractions)
 
@@ -54,7 +55,7 @@ public class NumberExpression extends NumericExpression {
       converting it to an integer).*/
 	public NumberExpression(String newVal) throws NumberFormatException{
 		String val = stripCommas(newVal);
-		//System.out.println("NE: new: " + val);
+		//trace.out("NE: new: " + val);
 		try{//integer
 			value = Integer.valueOf(val);
 			numberType = typeInt;
@@ -378,7 +379,7 @@ public class NumberExpression extends NumericExpression {
 				value = newValue;
 			}
 			catch (java.text.ParseException e) {
-				System.out.println("can't parse "+setVal);
+				trace.out("can't parse "+setVal);
 			}
 		}
 		else
@@ -398,7 +399,7 @@ public class NumberExpression extends NumericExpression {
                   BigDecimal to avoid that.*/
 				/*yes, I know that the real lower limit is 0.001, not
                   0.01.  But there is a very weird bug converting
-                  doubles to strings: System.out.println(.003) gives
+                  doubles to strings: trace.out(.003) gives
                   0.0030.  <shrug>  So we handle that with BigDecimal
                   instead.*/
 				BigDecimal bd = new BigDecimal(NumberExpression.roundDecimalPlaces(value.doubleValue(),
@@ -428,7 +429,7 @@ public class NumberExpression extends NumericExpression {
 			}
 			else if(countSigFigs(finalString) > sigfigs){
 				//code to convert to exponent would go here
-				System.out.println("NE.tA: warning: too many sig figs: " + finalString +
+				trace.out("NE.tA: warning: too many sig figs: " + finalString +
 								   " (should be " + sigfigs + ")");
 			}
 			/*only start adding zeros if we aren't dealing with

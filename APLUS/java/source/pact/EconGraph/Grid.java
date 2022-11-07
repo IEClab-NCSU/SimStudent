@@ -466,11 +466,11 @@ public class Grid  {
                     Point testerPt = convertPixel(ln.point[p]);
          
          
-                  //  System.out.println("the ln.point[p].x = " + ln.point[p].x + " and the xmax is: " + xmax);
-                  //  System.out.println("the ln.point[p].y = " + ln.point[p].y + " and the ymax is: " + ymax);
+                  //  trace.out("the ln.point[p].x = " + ln.point[p].x + " and the xmax is: " + xmax);
+                  //  trace.out("the ln.point[p].y = " + ln.point[p].y + " and the ymax is: " + ymax);
          
                     if (ln.point[p].x < xmin){
-                        System.out.println("the ln.point[p].x = " +ln.point[p].x + " and the xmin is: " + xmin);
+                        trace.out("the ln.point[p].x = " +ln.point[p].x + " and the xmin is: " + xmin);
          
                         tempx=xmin;
                       //  dontdraw=true;
@@ -478,20 +478,20 @@ public class Grid  {
          
          
                     if (ln.point[p].x > xmax){
-                        System.out.println("the ln.point[p].x = " + ln.point[p].x + " and the xmax is: " + xmax);
+                        trace.out("the ln.point[p].x = " + ln.point[p].x + " and the xmax is: " + xmax);
          
                         tempx=xmax;
                       //  dontdraw=true;
                     }
                     if (ln.point[p].y < ymin){
-                        System.out.println("the ln.point[p].y = " + ln.point[p].y + " and the ymin is: " + ymin);
+                        trace.out("the ln.point[p].y = " + ln.point[p].y + " and the ymin is: " + ymin);
          
                         tempy=ymin;
                     //    dontdraw=true;
                    }
          
                     if (ln.point[p].y> ymax){
-                        System.out.println("the ln.point[p].y = " + ln.point[p].y+ " and the ymax is: " + ymax);
+                        trace.out("the ln.point[p].y = " + ln.point[p].y+ " and the ymax is: " + ymax);
          
                         tempy=ymax;
                     //    dontdraw=true;
@@ -506,12 +506,12 @@ public class Grid  {
                                          plotPoint(g,temppoint);
                                      g.setColor(ln.color);
          
-                        System.out.println("temppoint: " + temppoint);
-                      //  System.out.println("absoluteLocation of temppoint: " + absoluteXLoc(temppoint)+ ", " +absoluteYLoc(temppoint));
+                        trace.out("temppoint: " + temppoint);
+                      //  trace.out("absoluteLocation of temppoint: " + absoluteXLoc(temppoint)+ ", " +absoluteYLoc(temppoint));
                         for (int i = -linewidth; i <= linewidth; i++) {
-                        //    System.out.println("graph.grid.plotline line 417: " + absoluteXLoc(temppoint) + "temppoint by itself: " + temppoint);
-                        //    System.out.println("ln.point.size = " + ln.point.length + " p = " + p);
-                           System.out.println("the point from: " + (absoluteXLoc(temppoint)+i) + " , "
+                        //    trace.out("graph.grid.plotline line 417: " + absoluteXLoc(temppoint) + "temppoint by itself: " + temppoint);
+                        //    trace.out("ln.point.size = " + ln.point.length + " p = " + p);
+                           trace.out("the point from: " + (absoluteXLoc(temppoint)+i) + " , "
                             + (absoluteYLoc(temppoint)) + " and going to: " + (absoluteXLoc(ln.point[p-1])+i) + " , "
                             + (absoluteYLoc(ln.point[p-1])));
          

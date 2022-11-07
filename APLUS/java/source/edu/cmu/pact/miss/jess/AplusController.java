@@ -174,7 +174,7 @@ public class AplusController implements ModelTracingListener{
 		if(mtEvent.node == null)
 			  return;
 		
-	System.out.println(" model tracing result "+mtEvent.node.getName()+" Model tracing result : "+mtEvent.modelTracingResult+" Model Tracer NO Model "+ModelTracer.NOMODEL);
+	trace.out(" model tracing result "+mtEvent.node.getName()+" Model tracing result : "+mtEvent.modelTracingResult+" Model Tracer NO Model "+ModelTracer.NOMODEL);
 		
 		if (mtEvent.modelTracingResult!=ModelTracer.NOMODEL /*&& !mtEvent.node.getName().contains("BUG")*/){
 			
@@ -185,7 +185,7 @@ public class AplusController implements ModelTracingListener{
 			//int typeOfHint=getProactiveHintGiven() ? FOLLOWUP_HINT_MESSAGE: NORMAL_HINT_MESSAGE;
 			int typeOfHint=NORMAL_HINT_MESSAGE;
 			if (mtEvent.action.equals("MetaTutorClicked")){
-				//System.out.println(" MetaTutor Clicked ");
+				//trace.out(" MetaTutor Clicked ");
 				displayMessage(mtEvent.selection,typeOfHint,mtEvent.message, mtEvent.node);
 				if (!mtEvent.selection.equals("activations")) setProactiveHintGiven(false);
 			}
@@ -196,7 +196,7 @@ public class AplusController implements ModelTracingListener{
 				rk=this.getaPlusModelTracing().noMatchedMetaCogNode;
 			else rk=mtEvent.node;
 			
-			System.out.println("FAILED FOR " + rk.getName());
+			trace.out("FAILED FOR " + rk.getName());
 			
 			if (!isOkToGive(mtEvent.selection,mtEvent.action)) return;	
 			boolean inc=increaseNotMatchedCountForRule(mtEvent.selection, rk.getName());
@@ -256,7 +256,7 @@ public class AplusController implements ModelTracingListener{
 		}
 		
 		//if(getFiredButNotMatchedCount().containsKey("MAIN::simst-launch-take-quiz"))
-			//System.out.println(" ***************** Count  for MAIN::simst-launch-take-quiz is " + getFiredButNotMatchedCount().get("MAIN::simst-launch-take-quiz") );
+			//trace.out(" ***************** Count  for MAIN::simst-launch-take-quiz is " + getFiredButNotMatchedCount().get("MAIN::simst-launch-take-quiz") );
 
 	}
 	
@@ -274,18 +274,18 @@ public class AplusController implements ModelTracingListener{
 		boolean returnValue=false;
 		if (startStateElement.contains(selection)){
 			increasePendingCount(rulename);
-			//System.out.println("increaseing for " + rulename + " now its " + getPendingCount().get(rulename) + " out of " + 2*startStateElement.size() );
+			//trace.out("increaseing for " + rulename + " now its " + getPendingCount().get(rulename) + " out of " + 2*startStateElement.size() );
 			if (getPendingCount().get(rulename)==2*startStateElement.size()){
 				removePending(rulename);
-				//System.out.println("OK for " + rulename);
-				//System.out.println(" Incrementing the no SAI count for "+rulename);
+				//trace.out("OK for " + rulename);
+				//trace.out(" Incrementing the no SAI count for "+rulename);
 				increaseFiredButNotMatchedCount(rulename);
 				returnValue=true;
 			}
 				
 		}
 		else{	/*if its not about start state element, increase count*/
-			    //System.out.println(" Incrementing the no SAI count for "+rulename);
+			    //trace.out(" Incrementing the no SAI count for "+rulename);
 				increaseFiredButNotMatchedCount(rulename);
 				returnValue=true;
 		}
@@ -392,7 +392,7 @@ public class AplusController implements ModelTracingListener{
 			//returnValue = 0.6f;
 			returnValue=0.4f;
 		
-		System.out.println(" Predicted Rule Accuracy : "+returnValue);
+		trace.out(" Predicted Rule Accuracy : "+returnValue);
 		return returnValue;*/
 		
 		return accuracy;
@@ -443,7 +443,7 @@ public class AplusController implements ModelTracingListener{
 	
 
 			boolean isCognitiveHint=node.getName().contains("demonstrate-step") ? true : false;
-			//System.out.println(" In the display length ");
+			//trace.out(" In the display length ");
 			sendResult(returnMessage,type,isCognitiveHint);
 		}
 		
@@ -476,14 +476,14 @@ public class AplusController implements ModelTracingListener{
 			String message = ctlr.getMissController().getAPlusHintMessagesManager().getFirstMessage();
 			if(ctlr.getMissController() != null && ctlr.getMissController().getSimStPLE() != null
 					&& ctlr.getMissController().getSimStPLE().getSimStPeerTutoringPlatform() != null) {		
-				//System.out.println(" Metatutor ? "+ctlr.getMissController().getSimSt().isSsMetaTutorMode());
+				//trace.out(" Metatutor ? "+ctlr.getMissController().getSimSt().isSsMetaTutorMode());
 				if (type==PROACTIVE_HINT_MESSAGE && message!=null){
-					//System.out.println(" Gonna display proactive message thus disabling Model Tracer");
+					//trace.out(" Gonna display proactive message thus disabling Model Tracer");
 					controller.getMissController().getSimStPLE().setModelTracer(false);
 					if(!ctlr.getMissController().getSimStPLE().getStatus().equals(SimStPLE.ASK_STATUS)) // If condition added by Tasmia: So that splotlight does not come up when simst is asking question
 						ctlr.getMissController().getSimStPLE().getSimStPeerTutoringPlatform().getAPlusHintDialogInterface().showThinkBubble();
 				}
-				//System.out.println(" In send Result ");
+				//trace.out(" In send Result ");
 				ctlr.getMissController().getSimStPLE().getSimStPeerTutoringPlatform().getAPlusHintDialogInterface().showMessage(message);
 			}
 		}

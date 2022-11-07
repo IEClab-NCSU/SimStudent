@@ -1394,7 +1394,7 @@ public final class SimSt implements Serializable {
 	public void setSsMetaTutorMode(boolean ssMetaTutorMode) {
 		this.ssMetaTutorMode = ssMetaTutorMode;
 		if(isSsMetaTutorMode()){
-			//System.out.println(" Resettting the Memory ");
+			//trace.out(" Resettting the Memory ");
 			setModelTraceWM(new ModelTraceWorkingMemory());
 		}
 	}
@@ -2054,7 +2054,7 @@ public final class SimSt implements Serializable {
    	if(trace.getDebugCode("miss"))trace.out("miss", "Deserialization done with inputFile");
 
    	if(this.negativeInstructions == null || this.negativeInstructions.size() == 0) {
-   		System.out.println("I am 0");
+   		trace.out("I am 0");
    	}
    	
 
@@ -3406,7 +3406,7 @@ public final class SimSt implements Serializable {
 	private transient ModelTraceWorkingMemory modelTraceWM = new ModelTraceWorkingMemory();
 
 	public ModelTraceWorkingMemory getModelTraceWM() {
-		//System.out.println("Model Trace Working Memory : "+modelTraceWM);
+		//trace.out("Model Trace Working Memory : "+modelTraceWM);
 		return modelTraceWM;
 	}
 	public void setModelTraceWM(ModelTraceWorkingMemory modelTraceWM) {
@@ -9022,18 +9022,18 @@ public final class SimSt implements Serializable {
 //   		if (getInquiryJessOracle()==null)
    			mtStatus = builtInInquiryClTutor(selection, action, input, problemNode, problemName);
 //		  else{
-						/*System.out.println("@*@*@*@*@*@*@*@*@*@*@*@*@*@*@*@*@*@*@*@*");
-						System.out.println("@*@*@*@*@* checking for status.... for " + problemNode.getName());
+						/*trace.out("@*@*@*@*@*@*@*@*@*@*@*@*@*@*@*@*@*@*@*@*");
+						trace.out("@*@*@*@*@* checking for status.... for " + problemNode.getName());
 
 
 						mtStatus=inquiryJessOracle(selection, action, input, problemNode, problemName);
 						if (mtStatus.contains("Error")){
-						System.out.println("@*@*@*@*@* calling again...");
+						trace.out("@*@*@*@*@* calling again...");
 
 							mtStatus=inquiryJessOracle(selection, action, input, problemNode, problemName);
 						}
 
-						System.out.println("&&&& mtstatus = " + mtStatus);*/
+						trace.out("&&&& mtstatus = " + mtStatus);*/
 
 				//trace.out("*@*@*@ ta sugs einai: " + altSug);
 
@@ -10220,7 +10220,7 @@ public final class SimSt implements Serializable {
 
    public void performModelTracingForInquiryResponse(int oracle, String ruleName) {
 	   if(isSsMetaTutorMode() && getBrController() != null && getBrController().getAmt() != null) {
- 			//System.out.println("Yes or No or Done button clicked ");
+ 			//trace.out("Yes or No or Done button clicked ");
  			if(oracle == JOptionPane.YES_OPTION) {
  				// If the feedback is for done then run the model-tracer for done, ButtonPressed, -1
  				if(ruleName.replaceAll("MAIN::", "").contains(WorkingMemoryConstants.DONE_BUTTON_SELECTION)) {
@@ -10310,7 +10310,7 @@ public final class SimSt implements Serializable {
 			if(isSsMetaTutorMode()) {
 		
 				if(getBrController() != null && getBrController().getAmt() != null) {
-					//System.out.println("Yes or No or Done button clicked ");
+					//trace.out("Yes or No or Done button clicked ");
 					if(oracle == JOptionPane.YES_OPTION) {
 		
 						// If the feedback is for done then run the model-tracer for done, ButtonPressed, -1
@@ -13670,7 +13670,7 @@ public final class SimSt implements Serializable {
 		try{
 
 			File file = null;
-			//System.out.println(" Web start ? "+isWebStartMode());
+			//trace.out(" Web start ? "+isWebStartMode());
 			if(!isWebStartMode())
 //				file = new File(getUserID()+"-wm.xml");
 

@@ -52,7 +52,7 @@ public class algebraicEqual {
 		for (i = 0; i < args.length; ++i)
 			eqList.add(new String(args[i]));
 		if (DEFAULT_FUNCTION.equalsIgnoreCase(testName))
-			System.out.println("Result: "+(0 < (result = algebraicEqual(eqList))));
+			trace.out("Result: "+(0 < (result = algebraicEqual(eqList))));
 		else
 			usageExit("unknown test name \""+testName+"\"");
 		return result;

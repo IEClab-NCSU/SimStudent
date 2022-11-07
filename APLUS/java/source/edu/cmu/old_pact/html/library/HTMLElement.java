@@ -59,7 +59,7 @@ public class HTMLElement{
 	}
 	
 	public String getText() {
-//System.out.println("in HTMLElement getText = "+text);
+//trace.out("in HTMLElement getText = "+text);
 		return text;
 	}
 	

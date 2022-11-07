@@ -63,7 +63,7 @@ public class AskHintJessOracle extends AskHint{
         
         Sai nextStepSai = iJessOracle.askNexStep();
 
-       // System.out.println("****" + iJessOracle.altSug);
+       // trace.out("****" + iJessOracle.altSug);
         brController.getMissController().getSimSt().altSug.clear();
         brController.getMissController().getSimSt().altSug=iJessOracle.altSug;
         

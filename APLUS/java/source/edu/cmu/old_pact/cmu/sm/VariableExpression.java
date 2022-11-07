@@ -43,7 +43,7 @@ public class VariableExpression extends Expression {
 	}
 	
 	public boolean isLike(Expression ex) {
-		//System.out.println("VE.isLike: " + debugForm() + ".(" + ex.debugForm() + ")");
+		//trace.out("VE.isLike: " + debugForm() + ".(" + ex.debugForm() + ")");
 		if (ex instanceof VariableExpression)
 			//return (getString().equals(((VariableExpression)ex).getString()));
 			return exactEqual(ex);
@@ -69,7 +69,7 @@ public class VariableExpression extends Expression {
 	}
 	
 	public boolean exactEqual(Expression ex) {
-		//System.out.println("VE.exactEqual: " + debugForm() + ".(" + ex.debugForm() + ")");
+		//trace.out("VE.exactEqual: " + debugForm() + ".(" + ex.debugForm() + ")");
 		if (ex instanceof BoundExpression ||
 			ex instanceof ConstantExpression ||
 			ex instanceof LiteralExpression){
@@ -84,37 +84,37 @@ public class VariableExpression extends Expression {
 	//variables sort before other variables, if their string is less
 	//variables sort after numeric expressions (and before everything else)
 	public boolean termSortBefore(Expression ex) {
-		/*System.out.println(debugForm() + ".termSortBefore(" +
+		/*trace.out(debugForm() + ".termSortBefore(" +
 		  ex.debugForm() + ")");*/
 		if (ex instanceof BoundExpression){
-			//System.out.println("\tfalse");
+			//trace.out("\tfalse");
 			return false;
 		}
 		else if (ex instanceof LiteralExpression){
-			//System.out.println("\tfalse");
+			//trace.out("\tfalse");
 			return false;
 		}
 		else if (ex instanceof ConstantExpression){
-			//System.out.println("\tfalse");
+			//trace.out("\tfalse");
 			return false;
 		}
 		else if (ex instanceof VariableExpression) {
 			VariableExpression vEx = (VariableExpression)ex;
 			if (getString().compareTo(vEx.getString()) > 0){
-				//System.out.println("\ttrue");
+				//trace.out("\ttrue");
 				return true;
 			}
 			else{
-				//System.out.println("\tfalse");
+				//trace.out("\tfalse");
 				return false;
 			}
 		}
 		else if (ex instanceof NumericExpression){
-			//System.out.println("\tfalse");
+			//trace.out("\tfalse");
 			return false;
 		}
 		else{
-			//System.out.println("\ttrue");
+			//trace.out("\ttrue");
 			return true;
 		}
 	}

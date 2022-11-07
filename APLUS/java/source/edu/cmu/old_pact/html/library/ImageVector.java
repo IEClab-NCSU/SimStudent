@@ -59,21 +59,21 @@ class ImageVector implements ImageObserver
     dataHeight[size] = h;
     try
     {
- //System.out.println("ImageVector src = "+src+" base = "+base);
+ //trace.out("ImageVector src = "+src+" base = "+base);
     	if(	src.indexOf("http://") != -1 || 
     		src.indexOf("file:/") != -1 ||
     		src.indexOf("C:/") != -1)
     		base = null;
       url = new URL(base, src);
-//System.out.println("** ImageVector HTMLLib got url = "+url);
+//trace.out("** ImageVector HTMLLib got url = "+url);
       img = tk.getImage(new URL(base, src));
-//System.out.println("img in ImageVector = "+img);
+//trace.out("img in ImageVector = "+img);
       tk.prepareImage(img, w, h, null);
     }
     catch (Exception e)
     {
     // start for CMU debug 
-   // System.out.println("ImageVector in HTMLLib: can't get image src = "+src+" base = "+base);
+   // trace.out("ImageVector in HTMLLib: can't get image src = "+src+" base = "+base);
     //e.printStackTrace();
     // ens for CMU debug
      url = null;
@@ -204,19 +204,19 @@ class ImageVector implements ImageObserver
       try
       {
 	int info = tk.checkImage(img, w, h, this);
-//System.out.println("** imageSizeAvailable info = "+info);
+//trace.out("** imageSizeAvailable info = "+info);
 	if ((info & (ABORT | ERROR)) != 0){
-//System.out.println("IMV info & (ABORT | ERROR) ret FALSE");
+//trace.out("IMV info & (ABORT | ERROR) ret FALSE");
 	  return false;
 	 }
 	//if ((info & (WIDTH | HEIGHT)) == (WIDTH | HEIGHT))
 	if ((info & ALLBITS) != 0) {
-//System.out.println("** imageSizeAvailable about to ret true");
+//trace.out("** imageSizeAvailable about to ret true");
 	  return true;
 	 }
-//System.out.println("IMV  about to wait ..");	
+//trace.out("IMV  about to wait ..");
 	wait();
-//System.out.println("IMV  AFTER wait ..");
+//trace.out("IMV  AFTER wait ..");
       }
       catch (InterruptedException e)
       {

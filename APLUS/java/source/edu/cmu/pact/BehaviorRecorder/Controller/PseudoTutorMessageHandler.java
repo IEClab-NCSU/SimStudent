@@ -996,7 +996,7 @@ public class PseudoTutorMessageHandler implements ProblemModelListener {
 		
 		ProblemNode oldState = controller.getCurrentNode();
 		boolean resetToOldState = exampleTracerGraph.handleProblemModelEvent(e);
-		//System.out.println("PME in PTMH: " + e.getClass().toString());
+		//trace.out("PME in PTMH: " + e.getClass().toString());
 		if(e instanceof NewProblemEvent){
 			//denverexampleTracerGraph.getExampleTracer().initialize(controller.getProblemModel().getVariableTable());
 			exampleTracerGraph.getExampleTracer().setDemonstrateMode(false);

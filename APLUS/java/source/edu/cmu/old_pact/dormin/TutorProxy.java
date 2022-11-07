@@ -48,7 +48,7 @@ public abstract class TutorProxy extends CommonObjectProxy {
 	public void treatMessage(MessageObject mo, String inVerb) throws DorminException{
 		inVerb = inVerb.toUpperCase();
 		boolean completed = false;
-//System.out.println("in TutorProxy mo = "+mo.toString());		
+//trace.out("in TutorProxy mo = "+mo.toString());		
 		if(inVerb.equalsIgnoreCase("NOTECREATION")){
 			noteCreation(mo);
 			completed = true;

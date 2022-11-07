@@ -430,7 +430,7 @@ public class AltTextField extends Canvas implements Gridable, PropertyChangeList
 	    	}
 	   
 	    } catch (NullPointerException e) { 
-	    	//System.out.println("AltTextField setHeight "+e.toString());
+	    	//trace.out("AltTextField setHeight "+e.toString());
 	    }
     }
    
@@ -538,7 +538,7 @@ public class AltTextField extends Canvas implements Gridable, PropertyChangeList
 	    		if(rect != null)
 	    			rect.grow(0,2);
 	    	} catch (NullPointerException e) {
-	    		//System.out.println("AltTextField calculateLineBreaks "+e.toString());
+	    		//trace.out("AltTextField calculateLineBreaks "+e.toString());
 	    	}
 	    }	
     }
@@ -560,7 +560,7 @@ public class AltTextField extends Canvas implements Gridable, PropertyChangeList
     	longestWordWidth = getLongestWordWidth();
     	maxWidth = Math.max(minWidth, (longestWordWidth + 2*hInset));
     	
-//System.out.println("=== minWidth="+minWidth+" longestWordWidth="+longestWordWidth+
+//trace.out("=== minWidth="+minWidth+" longestWordWidth="+longestWordWidth+
 //" canGrowHorizontally="+canGrowHorizontally +" maxWidth="+maxWidth+" currentWidth="+currentWidth);
  
  
@@ -854,7 +854,7 @@ public class AltTextField extends Canvas implements Gridable, PropertyChangeList
     		if (pos != null) 
 				pos.x += fm.charWidth(text[index]);
 		}catch (ArrayIndexOutOfBoundsException e) {
-			//System.out.println("AltTextField  index2rightEdge "+e.toString());
+			//trace.out("AltTextField  index2rightEdge "+e.toString());
 		}
 		return pos;
 	}
@@ -1095,7 +1095,7 @@ public class AltTextField extends Canvas implements Gridable, PropertyChangeList
         			box=GraphicsElement.intersectRect(box,getMaxBox());
         			g.drawRect(box.x,box.y,box.width,box.height);
         		} catch (NullPointerException e) {
-        			//System.out.println("AltTextField  drawBoundingBox "+e.toString()); 
+        			//trace.out("AltTextField  drawBoundingBox "+e.toString());
         		}
         }	
     }
@@ -1183,7 +1183,7 @@ public class AltTextField extends Canvas implements Gridable, PropertyChangeList
     		return rec;
     		
    		} catch (NullPointerException e){
-   			//System.out.println("AltTextField  getBox "+e.toString());
+   			//trace.out("AltTextField  getBox "+e.toString());
    		}
     	return null;
    }
@@ -1726,7 +1726,7 @@ public class AltTextField extends Canvas implements Gridable, PropertyChangeList
 //				theThread.sleep(500);
 //			}
 //			catch (InterruptedException e) {
-//				//System.out.println("AltTextField  run "+e.toString());
+//				//trace.out("AltTextField  run "+e.toString());
 //			}
 //			synchronized (theThread) {
 //				if (atf != null) {

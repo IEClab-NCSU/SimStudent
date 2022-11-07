@@ -2365,7 +2365,7 @@ public class CTATContentCache extends CTATBase
 	{
 		if (errMsg != null)
 			System.out.printf("\n%s. ", errMsg);
-		System.out.println(
+		trace.out(
 				"Usage:\n  "+CTATContentCache.class.getSimpleName()+" [-d dir] -cmd file...\n"+
 				"where--\n"+
 				"  dir     is the cache directory; default is htdocs/cache;\n"+
@@ -2479,7 +2479,7 @@ public class CTATContentCache extends CTATBase
 			for (String name : ccc.records.keySet()) 
 			{
 				CacheRecord record = ccc.records.get(name);
-				System.out.println(record2String(record));
+				trace.out(record2String(record));
 			}
 			
 			return;

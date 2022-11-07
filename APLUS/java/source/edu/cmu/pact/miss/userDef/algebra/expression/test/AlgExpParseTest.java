@@ -1,4 +1,5 @@
 package edu.cmu.pact.miss.userDef.algebra.expression.test;
+import edu.cmu.pact.Utilities.trace;
 import edu.cmu.pact.miss.userDef.algebra.expression.AlgExp;
 import edu.cmu.pact.miss.userDef.algebra.expression.ExpParseException;
 
@@ -18,15 +19,15 @@ public class AlgExpParseTest
 	{
 		int  numTests=0;
 		 int numFailed=0;
-		 System.out.println("Algebra Exp Parse Test");
+		 trace.out("Algebra Exp Parse Test");
 		 for(int testnum=0; testnum<tests.length; testnum++)
 		 {
 			
 			 try
 			 {
-			 System.out.print(tests[testnum]);
+			 trace.out(tests[testnum]);
 			 AlgExp result=AlgExp.parseExp(tests[testnum]);
-			 System.out.println(" "+result.getClass()+" "+result.parseRep());
+			 trace.out(" "+result.getClass()+" "+result.parseRep());
 			 }
 			 catch(ExpParseException e)
 			 {
@@ -39,8 +40,8 @@ public class AlgExpParseTest
 				 
 				 
 			 
-			 System.out.println("Num failed: "+numFailed);
-			 System.out.println("Num tests: "+numTests);
+			 trace.out("Num failed: "+numFailed);
+			 trace.out("Num tests: "+numTests);
 	}
 	
 	

@@ -110,11 +110,11 @@ public class FractionAdditionInputChecker extends InputChecker {
 	String denominator1=getTableCell(brController,2,1).getText();
 	String denominator2=getTableCell(brController,2,2).getText();
 
-	System.out.println("denom1="+denominator1+" and denom2=" + denominator2);
+	trace.out("denom1="+denominator1+" and denom2=" + denominator2);
 	
 	if (denominator1.equals("") || denominator2.equals("") ) return false;
 	
-	System.out.println("result is=" + denominator1.equals(denominator2));
+	trace.out("result is=" + denominator1.equals(denominator2));
 		
 	return denominator1.equals(denominator2);
 	}

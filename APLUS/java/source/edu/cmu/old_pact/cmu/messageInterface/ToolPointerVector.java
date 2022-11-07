@@ -4,6 +4,7 @@ import java.util.Vector;
 
 import edu.cmu.old_pact.dormin.ObjectProxy;
 import edu.cmu.old_pact.dormin.Range;
+import edu.cmu.pact.Utilities.trace;
 
 public class ToolPointerVector {
 	UserMessage[] userMessage;
@@ -59,7 +60,7 @@ public class ToolPointerVector {
 			return pointer;
 		}
 		else {
-			System.out.println("ToolPointerVector : can't create pointer from "+obj+"["+obj.getClass().getName()+"]"); //should throw an error
+			trace.out("ToolPointerVector : can't create pointer from "+obj+"["+obj.getClass().getName()+"]"); //should throw an error
 			return null;
 		}
 	}

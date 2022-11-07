@@ -117,8 +117,8 @@ public class CTAT_Launcher {
         if(hasSimStArgs(argv)){
 			
 			/*if(isServlet()){
-				System.out.println(" No of Max Tabs allowed "+this.tabManager.getMaxTabsServlet());
-				System.out.println(" No of Tabs created : "+this.tabManager.getNumTabServlet());
+				trace.out(" No of Max Tabs allowed "+this.tabManager.getMaxTabsServlet());
+				trace.out(" No of Tabs created : "+this.tabManager.getNumTabServlet());
 				this.tabManager.setMaxTabsServlet(1);
 			}
 			else*/

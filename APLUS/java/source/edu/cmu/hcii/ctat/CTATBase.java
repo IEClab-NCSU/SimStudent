@@ -361,7 +361,7 @@ public class CTATBase
 		}
 		catch (UnknownFormatConversionException fe)
 		{
-			System.out.println("Unknown format conversion exception for: " + className + ", " + aDateString + ", " + CTATLink.debugLine + ", " + s);
+			trace.out("Unknown format conversion exception for: " + className + ", " + aDateString + ", " + CTATLink.debugLine + ", " + s);
 		}
 				
 		//outStream.printf (aString);
@@ -409,7 +409,7 @@ public class CTATBase
 		}
 		catch (UnknownFormatConversionException fe)
 		{
-			System.out.println("Unknown format conversion exception for: " + className + ", " + aDateString + ", " + CTATLink.debugLine + ", " + s);
+			trace.out("Unknown format conversion exception for: " + className + ", " + aDateString + ", " + CTATLink.debugLine + ", " + s);
 		}
 				
 		errStream.print(aString);

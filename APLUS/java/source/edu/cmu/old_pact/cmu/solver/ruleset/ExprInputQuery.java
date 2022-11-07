@@ -54,7 +54,7 @@ public class ExprInputQuery extends Equation{
 	}
 
 	public Queryable getProperty(String prop) throws NoSuchFieldException{
-		//System.out.println("EIQ.gP(" + prop + ")");
+		//trace.out("EIQ.gP(" + prop + ")");
 		Queryable result;
 		if(prop.equalsIgnoreCase("input") && (input != null)){
 			return input;

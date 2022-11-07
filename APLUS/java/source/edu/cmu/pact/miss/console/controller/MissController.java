@@ -323,7 +323,7 @@ public class MissController implements MissControllerExternal {
      */
     private void deleteFile(File file) {
         if (file.exists()){
-            System.out.println("deleting a file!");
+            trace.out("deleting a file!");
             file.delete();
         }
     }
@@ -1304,7 +1304,7 @@ public class MissController implements MissControllerExternal {
 	    		// Key associated when retrieving the .ser file is simst-getSimSt().getUserID()+.ser
     			//trace.err("retrieving object... " + "simst-"+getSimSt().getUserID()+".ser");
     			simStObj = (SimSt) storageClient.retrieveObject("simst-"+getSimSt().getUserID()+".ser");
-    			System.out.println(simStObj);
+    			trace.out(simStObj.toString());
 			} catch (IOException e) {
 				//if(trace.getDebugCode("rr"))
 					trace.err(e.getMessage());
@@ -1505,7 +1505,7 @@ public class MissController implements MissControllerExternal {
 	Activation activation = null;
 	while (activations != null && activations.hasNext()) {
 	    activation = (Activation)activations.next();
-	    System.out.println("Rule: " + activation.getRule().toString().split("::")[1]
+	    trace.out("Rule: " + activation.getRule().toString().split("::")[1]
 	                       + " Salience: " + activation.getSalience() +
 	                       " Active? " + activation.isInactive());
 	}
@@ -1514,17 +1514,17 @@ public class MissController implements MissControllerExternal {
 	    // rule -> "MAIN::foobar"
 	    ruleName = rule.toString().split("::")[1];
 	}
-	System.out.println("Last rule: " + ruleName);
+	trace.out("Last rule: " + ruleName);
 	
 	// alt
 	ArrayList fired = rete.getFiredRuleList();
 	if (fired == null) {
-		System.out.println("No fired rule list");
+		trace.out("No fired rule list");
 		return ruleName;
 	}
 	ListIterator iter = fired.listIterator();
 	while(iter.hasNext()) {
-		System.out.println(iter.next());
+		trace.out(iter.next());
 	}
 	
 	return ruleName;
@@ -1534,17 +1534,17 @@ public class MissController implements MissControllerExternal {
     	edu.cmu.pact.jess.MT mt = getBrController().getModelTracer();
     	ArrayList ruleSeq = mt.getMtRuleSeq();
     	if (ruleSeq == null) {
-    		System.out.println("****** No rule seq");
+    		trace.out("****** No rule seq");
     		return null;
     	}
     	ListIterator iter = ruleSeq.listIterator();
     	while (iter.hasNext()) {
-    		System.out.println("Rule: " + iter.next().toString());
+    		trace.out("Rule: " + iter.next().toString());
     	}
     	//find last rule in sequence
     	if (ruleSeq.size() > 0){
     		String lastRuleName = ruleSeq.get(ruleSeq.size()-1).toString();
-    		System.out.println("Last rule: " + lastRuleName);
+    		trace.out("Last rule: " + lastRuleName);
     		return lastRuleName;
     	}
     	return null;

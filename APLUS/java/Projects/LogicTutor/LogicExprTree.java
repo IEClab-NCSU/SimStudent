@@ -10,7 +10,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 
-
+import edu.cmu.pact.Utilities.trace;
 import fri.patterns.interpreter.parsergenerator.semantics.*;
 
 
@@ -682,9 +682,9 @@ public class LogicExprTree implements Serializable {
 
 	public String[] Save_getSubExprArray() {
 
-//		System.out.print("getSubExprArray "+subExprList);
+//		trace.out("getSubExprArray "+subExprList);
 
-//	    System.out.print("\n");
+//	    trace.out("\n");
 
 	    
 
@@ -696,7 +696,7 @@ public class LogicExprTree implements Serializable {
 
 	    	   String[] le = ((LogicExprTree.Node) subExprList.get(j)).getLogicEvaluation();
 
-	    	   System.out.println("le [" + j + "]" + le);
+	    	   trace.out("le [" + j + "]" + le);
 
 		   String SubExp = "";
 
@@ -708,7 +708,7 @@ public class LogicExprTree implements Serializable {
 
 			   SubExp = SubExp.concat(le[i]);
 
-	    	   System.out.println("le [" + j + ","+i+ "]" + le[i]);
+	    	   trace.out("le [" + j + ","+i+ "]" + le[i]);
 
 			   
 
@@ -726,9 +726,9 @@ public class LogicExprTree implements Serializable {
 
 //	    {
 
-//      	System.out.print("getSubExprArray[" + i + "]" + subExprArray[i]);
+//      	trace.out("getSubExprArray[" + i + "]" + subExprArray[i]);
 
-//	    System.out.print("\n");
+//	    trace.out("\n");
 
 //	    }
 
@@ -740,9 +740,9 @@ public class LogicExprTree implements Serializable {
 
 	public String[] getSubExprArray() {
 
-//		System.out.print("getSubExprArray "+subExprList);
+//		trace.out("getSubExprArray "+subExprList);
 
-//	    System.out.print("\n");
+//	    trace.out("\n");
 
 	    
 
@@ -754,7 +754,7 @@ public class LogicExprTree implements Serializable {
 
 	    	subExprArray[j] = ((LogicExprTree.Node) subExprList.get(j)).toString(true);
 
-	    	   System.out.println("le [" + j + "]" + subExprArray[j]);
+	    	   trace.out("le [" + j + "]" + subExprArray[j]);
 
 			   
 
@@ -766,9 +766,9 @@ public class LogicExprTree implements Serializable {
 
 //	    {
 
-//      	System.out.print("getSubExprArray[" + i + "]" + subExprArray[i]);
+//      	trace.out("getSubExprArray[" + i + "]" + subExprArray[i]);
 
-//	    System.out.print("\n");
+//	    trace.out("\n");
 
 //	    }
 
@@ -812,9 +812,9 @@ public class LogicExprTree implements Serializable {
 
 //	    {
 
-//      	System.out.print("nodes[" + j + "]" + nodes[j]);
+//      	trace.out("nodes[" + j + "]" + nodes[j]);
 
-//	    System.out.print("\n");
+//	    trace.out("\n");
 
 //	    }	    
 

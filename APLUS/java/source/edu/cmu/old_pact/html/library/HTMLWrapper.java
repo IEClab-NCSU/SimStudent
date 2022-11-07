@@ -58,7 +58,7 @@ public class HTMLWrapper {
 	}
 	
 	public String getText() {
-//System.out.println("text = "+text);
+//trace.out("text = "+text);
 		return text;
 	}
 	
@@ -117,7 +117,7 @@ public class HTMLWrapper {
 	  			}//switch
 	  		}//if attrExist
 	  	}
-	  //System.out.println("in HTMLWrapper htmlText = "+htmlText);
+	  //trace.out("in HTMLWrapper htmlText = "+htmlText);
 	  
 	  	return htmlText;
 	}

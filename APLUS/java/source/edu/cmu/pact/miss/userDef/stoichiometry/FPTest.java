@@ -1,6 +1,7 @@
 package edu.cmu.pact.miss.userDef.stoichiometry;
 import java.util.Arrays;
 
+import edu.cmu.pact.Utilities.trace;
 import edu.cmu.pact.miss.FeaturePredicate;
 import edu.cmu.pact.miss.userDef.algebra.SkillClt;
 import edu.cmu.pact.miss.userDef.generic.weak.CopyString;
@@ -33,21 +34,21 @@ public class FPTest
 		    if(!fpTest( (String)test[i][0],(Object[])test[i][1],(String)test[i][2] ))
 		    	errorCount++;
 		}
-		System.out.println("Number failed: "+ errorCount);
-		System.out.println("Total tests run: " +test.length);
+		trace.out("Number failed: "+ errorCount);
+		trace.out("Total tests run: " +test.length);
 		FeaturePredicate m = new CopyString();
 		Vector argV = new Vector();
 		
 		    argV.add( "H2O" );
 		
-		System.out.println(m.cachedApply(argV));
+		trace.out(m.cachedApply(argV));
 		//FeaturePredicate m = new UnitConv();
 		//Vector argV = new Vector();
 		
 		    //argV.add( "1m1L3 s" );
 		    //argV.add( "1m1L3 s" );
 		
-		//System.out.println(m.cachedApply(argV));
+		//trace.out(m.cachedApply(argV));
 		
 	    }
 	

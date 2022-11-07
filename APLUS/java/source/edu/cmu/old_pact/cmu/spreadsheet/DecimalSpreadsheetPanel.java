@@ -51,8 +51,8 @@ public class DecimalSpreadsheetPanel extends SpreadsheetPanel {
 		numRows = cellMatrix.getNumOfRows();
 		numCols = cellMatrix.getNumOfCols();
 		
-//System.out.println("!!!!!!! NATASHA: in DecimalSpreadsheetPanel.updateView!!!!!!!");
-//System.out.println("  -----numRows= "+numRows+" (cur="+currNumRows+")  numCols= "+numCols+
+//trace.out("!!!!!!! NATASHA: in DecimalSpreadsheetPanel.updateView!!!!!!!");
+//trace.out("  -----numRows= "+numRows+" (cur="+currNumRows+")  numCols= "+numCols+
 //" (cur="+currNumCols+")  numDigits= "+numDigits);	
 		
 		grids = new GridBox[numRows][numCols];		
@@ -101,7 +101,7 @@ public class DecimalSpreadsheetPanel extends SpreadsheetPanel {
 			x_size = x_size + grids[0][j].getWidth() + 25;
 		}
 		//x_size = x_size + 250;
-		//System.out.println("Natasha:In DSP.preferredSize; x_size= " +x_size);
+		//trace.out("Natasha:In DSP.preferredSize; x_size= " +x_size);
 		if(showHeaders == HEADER_BOTH || showHeaders == HEADER_ROW)
 			x_size = x_size+rowHeader[0].getWidth()+10;
 		

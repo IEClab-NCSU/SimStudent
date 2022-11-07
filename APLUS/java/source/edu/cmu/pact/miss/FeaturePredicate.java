@@ -200,11 +200,11 @@ public abstract class FeaturePredicate
         // int valueType = valueTypeForAlgebra(value);
         // int valueType = TypeCheckerForStoich.valueType(value);
         String typeChecker = SimSt.getTypeChecker();
-       // System.out.println("Type checker used is " + typeChecker);
+       // trace.out("Type checker used is " + typeChecker);
         String className = typeChecker.substring(0, typeChecker.lastIndexOf('.'));
-       // System.out.println("Class name is " + className);
+       // trace.out("Class name is " + className);
         String methodName = typeChecker.substring(typeChecker.lastIndexOf('.') +1);
-        //System.out.println("Method name is " + methodName);
+        //trace.out("Method name is " + methodName);
         Method method = null;    
         Class[] argTypes = new Class[] {String.class};
         Object[] args = new Object[] {value};

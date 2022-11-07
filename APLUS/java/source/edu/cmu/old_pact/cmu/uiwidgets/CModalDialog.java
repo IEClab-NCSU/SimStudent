@@ -1,4 +1,6 @@
 package edu.cmu.old_pact.cmu.uiwidgets;
+import edu.cmu.pact.Utilities.trace;
+
 import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Event;
@@ -54,8 +56,8 @@ public class CModalDialog /*extends Frame {*/ extends Dialog {
 	
 	public void finishModalDialog(boolean key)
 	{
-		//System.out.println("starting finishModalDialog...");
-		//System.out.println("argument is "+getArgument());
+		//trace.out("starting finishModalDialog...");
+		//trace.out("argument is "+getArgument());
 
 		if (parent != null)
 			parent.modalDialogPerformed(new ModalDialogEvent(parent,command,getArgument(),key), this);
@@ -63,7 +65,7 @@ public class CModalDialog /*extends Frame {*/ extends Dialog {
 
 	public boolean keyDown(Event e, int key) {
 		if (e.id == Event.KEY_PRESS && (key == 10 || key == 3)) {
-			//System.out.println("Got return or enter");
+			//trace.out("Got return or enter");
 			finishModalDialog(true);
 			return true;
 		}
@@ -75,18 +77,18 @@ public class CModalDialog /*extends Frame {*/ extends Dialog {
 		if(e.arg instanceof String){
 			String str = (String)e.arg;
 			if (str.toUpperCase().indexOf("OK") != -1) {
-				//System.out.println("got OK in modal dialog");
+				//trace.out("got OK in modal dialog");
 				finishModalDialog(true);
 				return true;
 			}
 			else if (str.toUpperCase().indexOf("CANCEL") != -1) {
-				//System.out.println("got cancel in modal dialog");
+				//trace.out("got cancel in modal dialog");
 				finishModalDialog(false);
 				return true;
 			}
 		}
 
-		System.out.println("got modal dialog action event: "+e.arg);
+		trace.out("got modal dialog action event: "+e.arg);
 		return false;
 	}
 }						

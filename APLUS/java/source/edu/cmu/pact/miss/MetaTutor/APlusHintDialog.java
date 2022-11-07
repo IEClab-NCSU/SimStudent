@@ -155,7 +155,7 @@ public class APlusHintDialog extends JDialog implements ActionListener, StudentA
     				mtAvatar.changeMetaTutorImage(SimStPLE.METATUTOR_IMAGE);
     			}
     			
-    			//System.out.println(" Closing the pop up ");
+    			//trace.out(" Closing the pop up ");
 
                 logger.simStLog(SimStLogger.SIM_STUDENT_METATUTOR_AL, SimStLogger.METATUTOR_LEFT_HINT_ACTION, "", ""+depth, "", durationHint, leavingMessage);
     			logger.simStLog(SimStLogger.SIM_STUDENT_METATUTOR_AL,SimStLogger.METATUTOR_CLOSE_HINT_ACTION, "", ""+depth, "", duration);
@@ -167,15 +167,15 @@ public class APlusHintDialog extends JDialog implements ActionListener, StudentA
         		reset();
         		
         		visibleFlag = false;
-        		//System.out.println("Going to setVisible(false)");
+        		//trace.out("Going to setVisible(false)");
         		setVisible(false);
-        		//System.out.println("Going to set the previus tab");
+        		//trace.out("Going to set the previus tab");
         		if(proactiveMessage) {
     				if(getPreviousTab() != aplus.getAplusTabs().getSelectedIndex())
     					aplus.getAplusTabs().setSelectedIndex(previousTab);
     				mtAvatar.getSimStudent().getMissController().getSimStPLE().setModelTracer(true);
     				proactiveMessage = false;
-    				//System.out.println("Enabled the Model Tracer ");
+    				//trace.out("Enabled the Model Tracer ");
     			}
         		if (OkPressed.availablePermits() <= 0)
         			OkPressed.release();
@@ -263,17 +263,17 @@ public class APlusHintDialog extends JDialog implements ActionListener, StudentA
 		String[] javaVersionElements = System.getProperty("java.version").split("\\.");
 		proactiveMessage = true;
 		int major = Integer.parseInt(javaVersionElements[1]);
-		//System.out.println("Tab no : "+aplus.getAplusTabs()+"  "+(aplus.getAplusTabs().getSelectedIndex()));
-		//System.out.println(" Array : "+peerTutoringPlatform.getTargetWindow().split(":").toString());
+		//trace.out("Tab no : "+aplus.getAplusTabs()+"  "+(aplus.getAplusTabs().getSelectedIndex()));
+		//trace.out(" Array : "+peerTutoringPlatform.getTargetWindow().split(":").toString());
 		String targetWindow =peerTutoringPlatform.getTargetWindow().split(":")[1].trim(); 
 		JPanel selectedTab = null;
 		//MetaTutorAvatarComponent avatar = 
-		//System.out.println("Target Window : "+targetWindow);
-		//System.out.println("Previous Tab : "+aplus.getAplusTabs().getSelectedIndex());
+		//trace.out("Target Window : "+targetWindow);
+		//trace.out("Previous Tab : "+aplus.getAplusTabs().getSelectedIndex());
 		
 		setPreviousTab(aplus.getAplusTabs().getSelectedIndex());
 		if(targetWindow.equalsIgnoreCase("quiz")){
-			//System.out.println("Tab set ");
+			//trace.out("Tab set ");
 			aplus.getAplusTabs().setSelectedIndex(5);
 			selectedTab = (JPanel)aplus.getAplusTabs().getComponentAt(5);
 		}
@@ -426,7 +426,7 @@ public class APlusHintDialog extends JDialog implements ActionListener, StudentA
 			}
 			
             int duration = (int) ((endTime - openTime)/1000);
-           // System.out.println(" In action Performed : "+openTime+ "   End "+endTime);
+           // trace.out(" In action Performed : "+openTime+ "   End "+endTime);
             logger.simStLog(SimStLogger.SIM_STUDENT_METATUTOR_AL, SimStLogger.METATUTOR_LEFT_HINT_ACTION, "", ""+depth, "", durationHint, leavingMessage);
 			logger.simStLog(SimStLogger.SIM_STUDENT_METATUTOR_AL,SimStLogger.METATUTOR_CLOSE_HINT_ACTION, "", ""+depth, "", duration);
 			aPlusHintMessagesManger.dialogCloseCleanUp();
@@ -438,15 +438,15 @@ public class APlusHintDialog extends JDialog implements ActionListener, StudentA
 			
 			reset();
 			visibleFlag = false;
-			//System.out.println("Going to setVisible false");
+			//trace.out("Going to setVisible false");
 			setVisible(false);
-			//System.out.println(" Going to set to previous ttab : "+previousTab);
+			//trace.out(" Going to set to previous ttab : "+previousTab);
 			if(proactiveMessage) {
 				if(getPreviousTab() != aplus.getAplusTabs().getSelectedIndex())
 					aplus.getAplusTabs().setSelectedIndex(previousTab);
 				mtAvatar.getSimStudent().getMissController().getSimStPLE().setModelTracer(true);
 				proactiveMessage = false;
-				//System.out.println("Enabled the Model Tracer ");
+				//trace.out("Enabled the Model Tracer ");
 			}
 			if (OkPressed.availablePermits() <= 0)
 				OkPressed.release();

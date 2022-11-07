@@ -39,7 +39,7 @@ public class RowMatrixElement extends DorminMatrixElement{
 			vetoableChange(evt);
 		} catch (PropertyVetoException e){
 			//if(h < height)
-			//	System.out.println("in RowMatrixElement can't setHeight to "+h+" minHeight = "+height);
+			//	trace.out("in RowMatrixElement can't setHeight to "+h+" minHeight = "+height);
 		}
 	}	
 	
@@ -53,7 +53,7 @@ public class RowMatrixElement extends DorminMatrixElement{
 				if((width > newsize && canModifyWidth(newsize, accrossVisCells)) ||
 					width < newsize)
 					canModify = true;
-		//System.out.println("for "+this+" canModify = "+canModify+" accross = "+accross);
+		//trace.out("for "+this+" canModify = "+canModify+" accross = "+accross);
 				
 				if(canModify) {
 					accross.firePropertyChange("width", Integer.valueOf(String.valueOf(width)),Integer.valueOf(String.valueOf(newsize)));

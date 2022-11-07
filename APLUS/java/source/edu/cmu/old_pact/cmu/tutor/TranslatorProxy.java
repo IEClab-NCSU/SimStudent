@@ -13,6 +13,7 @@ import edu.cmu.old_pact.dormin.DorminException;
 import edu.cmu.old_pact.dormin.MessageObject;
 import edu.cmu.old_pact.dormin.NoSuchPropertyException;
 import edu.cmu.old_pact.dormin.ObjectProxy;
+import edu.cmu.pact.Utilities.trace;
 
 public class TranslatorProxy extends Object {
     // needs to be in a file imported by TRESolverTutor
@@ -90,7 +91,7 @@ public class TranslatorProxy extends Object {
 	
 	public void updateSkill(String skillname, String gradient, String currentEquation) throws DorminException {
 		if(SolverFrame.debug()){
-			System.out.println("in updateSkill for "+skillname);
+			trace.out("in updateSkill for "+skillname);
 		}
             if(((Boolean)tool.getProperty(SEND_SKILLS)).booleanValue())
 			{
@@ -152,7 +153,7 @@ public class TranslatorProxy extends Object {
 		if(standalone){
 			UserMessage[] msgs = new UserMessage[messages.length];
 			for (int i=0;i<messages.length;++i){
-				//System.out.println("TP.sM: message " + i + ": " + messages[i]);
+				//trace.out("TP.sM: message " + i + ": " + messages[i]);
 				msgs[i] = new UserMessage(messages[i]);
 			}
 			help = new UserMessageWindow();
@@ -218,7 +219,7 @@ public class TranslatorProxy extends Object {
 				help.requestFocus();
 		}
 		else
-			System.out.println("Error: response completed for event "+eventNum+":"+storage);
+			trace.out("Error: response completed for event "+eventNum+":"+storage);
 	}
 	
 	public String getProperty(String obj,String property) throws NoSuchPropertyException {

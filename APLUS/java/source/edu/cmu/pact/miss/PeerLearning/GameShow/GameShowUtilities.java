@@ -39,7 +39,7 @@ public class GameShowUtilities {
 		if (problem.contains("N"))
 			 problem = GameShowUtilities.determinePattern(problem);
 		
-		//System.out.println(" problem pattern generated : "+problem);
+		//trace.out(" problem pattern generated : "+problem);
 		GameShowUtilities.isDegenerateProblem=false;
 		
 		//A & C are coefficients, B & D are constants.  Coefficients can be 2-11, Constants can be 1-10

@@ -1558,10 +1558,10 @@ public void fillInQuizProblem(String problemName) {
 				Class oracle = Class.forName("edu.cmu.pact.miss."+oracleClass);
 				Object oracleObj = oracle.newInstance();
 				Method askMethod = oracle.getMethod("askNextStep",parameters);
-				//System.out.println(" before while loop : "+answer);
+				//trace.out(" before while loop : "+answer);
 				while(answer){
-					//System.out.println("Inside the while loop");
-					//System.out.println("Next step for node : "+problemNode.toString());
+					//trace.out("Inside the while loop");
+					//trace.out("Next step for node : "+problemNode.toString());
 					Sai nextStep = (Sai)askMethod.invoke(oracleObj,problemName,problemNode,brController);
 					if(nextStep.getI().equalsIgnoreCase("donenosolution"))
 						return false;
@@ -1570,11 +1570,11 @@ public void fillInQuizProblem(String problemName) {
 					else{
 						SimStNode nextNode = new SimStGraphNavigator().simulatePerformingStep(problemNode,nextStep);
 						problemNode = nextNode;
-						//System.out.println(" Next Node : "+nextStep.toString());
+						//trace.out(" Next Node : "+nextStep.toString());
 					}
 
 				}
-				//System.out.println(" After the while loop ");
+				//trace.out(" After the while loop ");
 				brGraph.clear();
 				brController.createStartState(SimSt.convertToSafeProblemName(problemName));
 				setProblemStartTime(Calendar.getInstance().getTimeInMillis());
@@ -1701,7 +1701,7 @@ public void fillInQuizProblem(String problemName) {
 					// This is buggy
 					String cur_foa_1 = vtKeys[ vtKeys.length - 2 ];
 					String cur_foa_2 = vtKeys[ vtKeys.length - 1 ];
-					//System.out.println(cur_foa_1+" "+cur_foa_2);
+					//trace.out(cur_foa_1+" "+cur_foa_2);
 					current_foas.add(cur_foa_1);
 					current_foas.add(cur_foa_2);
 
@@ -1985,7 +1985,7 @@ public void fillInQuizProblem(String problemName) {
 
 
 				if (simSt.isSsMetaTutorMode()){
-					//System.out.println(" Setting the tutored Corectness : "+correct);
+					//trace.out(" Setting the tutored Corectness : "+correct);
 					getBrController(getSimSt()).getMissController().getSimSt().getModelTraceWM().setTutoredProblemCorrectness(correct);
 
 				}
@@ -1993,7 +1993,7 @@ public void fillInQuizProblem(String problemName) {
 				// log problem done
 
 
-				//System.out.println("  end :  "+Calendar.getInstance().getTimeInMillis()+"  start " + getProblemStartTime());
+				//trace.out("  end :  "+Calendar.getInstance().getTimeInMillis()+"  start " + getProblemStartTime());
 
 				int problemDuration = (int) ((Calendar.getInstance().getTimeInMillis() - getProblemStartTime())/1000);
 
@@ -2037,7 +2037,7 @@ public void fillInQuizProblem(String problemName) {
 							&& getBrController(getSimSt()).getMissController().getSimSt() != null
 							&& getBrController(getSimSt()).getMissController().getSimSt()
 									.isSsMetaTutorMode()) {
-						//System.out.println(" Student steps are verified ");
+						//trace.out(" Student steps are verified ");
 						if (verified)
 							getBrController(getSimSt()).getAmt().handleInterfaceAction(
 									"sssolutionCorrectness", "implicit",
@@ -2270,7 +2270,7 @@ public void fillInQuizProblem(String problemName) {
 
 
 		if (simSt.isSsMetaTutorMode()){
-			//System.out.println(" Setting the tutored Corectness : "+correct);
+			//trace.out(" Setting the tutored Corectness : "+correct);
 			getBrController(getSimSt()).getMissController().getSimSt().getModelTraceWM().setTutoredProblemCorrectness(correct);
 
 		}
@@ -2278,7 +2278,7 @@ public void fillInQuizProblem(String problemName) {
 		// log problem done
 
 
-		//System.out.println("  end :  "+Calendar.getInstance().getTimeInMillis()+"  start " + getProblemStartTime());
+		//trace.out("  end :  "+Calendar.getInstance().getTimeInMillis()+"  start " + getProblemStartTime());
 
 		int problemDuration = (int) ((Calendar.getInstance().getTimeInMillis() - getProblemStartTime())/1000);
 
@@ -2348,7 +2348,7 @@ public void fillInQuizProblem(String problemName) {
 				&& getBrController(getSimSt()).getMissController().getSimSt() != null
 				&& getBrController(getSimSt()).getMissController().getSimSt()
 						.isSsMetaTutorMode()) {
-			//System.out.println(" Student steps are verified ");
+			//trace.out(" Student steps are verified ");
 			if (verified)
 				getBrController(getSimSt()).getAmt().handleInterfaceAction(
 						"sssolutionCorrectness", "implicit",
@@ -2381,21 +2381,21 @@ public void fillInQuizProblem(String problemName) {
 		int total = 0;
 		// if(trace.getDebugCode("ss"))trace.out("ss",
 		// "Examining Rules for Pruning");
-		// if(trace.getDebugCode("ss"))System.out.println("--------------------------------------------");
+		// if(trace.getDebugCode("ss"))trace.out("--------------------------------------------");
 		for (Object name : simSt.getRuleNames()) {
 			String ruleName = (String) name;
 			Rule rule = simSt.getRule(ruleName);
 			int recencyValue = Rule.count;
 			recencyValue -= (rule.identity + rule.getAcceptedUses());
 			double ruleRating = rule.getAcceptedRatio();
-			// if(trace.getDebugCode("ss"))System.out.println(ruleName+": "+ruleRating+" "+rule.getAcceptedUses()
+			// if(trace.getDebugCode("ss"))trace.out(ruleName+": "+ruleRating+" "+rule.getAcceptedUses()
 			// + " ["+recencyValue+"]");
 			average += recencyValue;
 			total++;
 		}
 		average /= total;
-		// if(trace.getDebugCode("ss"))System.out.println("Average: "+average);
-		// if(trace.getDebugCode("ss"))System.out.println("--------------------------------------------");
+		// if(trace.getDebugCode("ss"))trace.out("Average: "+average);
+		// if(trace.getDebugCode("ss"))trace.out("--------------------------------------------");
 
 		Vector<String> toRemove = new Vector<String>();
 		for (Object name : simSt.getRuleNames()) {
@@ -2814,7 +2814,7 @@ public void fillInQuizProblem(String problemName) {
 
 		Random r = new Random();
 	    int probability = r.nextInt(100);
-	    //System.out.println(edge.getSelection());
+	    //trace.out(edge.getSelection());
 		//if (simSt.isSelfExplainMode() && !skillName.contains("typein") && !skillName.contains("unnamed")) {
 		//10/06/2014: now selection is the one that defines if SimStudent should ask for self explanation
 		if (simSt.isSelfExplainMode() && isSelectionValidForSelfExplanation(edge.getSelection()) && !explainedWhyRightSkills.contains(skillName)

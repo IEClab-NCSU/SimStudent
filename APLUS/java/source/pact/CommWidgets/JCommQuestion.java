@@ -168,12 +168,12 @@ public abstract class JCommQuestion extends JCommWidget implements QuestionWidge
 	}
 	
 	public void fireStudentAction(StudentActionEvent e){
-//		System.out.println("Inside fireStudentAction");
+//		trace.out("Inside fireStudentAction");
 		Object[] listeners = studentActionListeners.getListenerList();
 		for(int i = 0; i < listeners.length; i++){
-//			System.out.println("studentListener: " + i + " :" + listeners[i]);
+//			trace.out("studentListener: " + i + " :" + listeners[i]);
 			if(listeners[i] == StudentActionListener.class){
-//				System.out.println("calling studentActionPerformed: JCommQuestion.java");
+//				trace.out("calling studentActionPerformed: JCommQuestion.java");
 				((StudentActionListener)listeners[i+1]).studentActionPerformed(e);
 			}
 		}
@@ -221,11 +221,11 @@ public abstract class JCommQuestion extends JCommWidget implements QuestionWidge
 	}
 
 	public void fireIncorrectAction(IncorrectActionEvent e){
-//		System.out.println("Inside fireIncorrectActionEvent");
+//		trace.out("Inside fireIncorrectActionEvent");
 		Object[] listeners = studentActionListeners.getListenerList();
 		for(int i = 0; i < listeners.length; i++){
 			if(listeners[i] == IncorrectActionListener.class){
-//				System.out.println("Calling incorrectActionPerformed");
+//				trace.out("Calling incorrectActionPerformed");
 				((IncorrectActionListener)listeners[i+1]).incorrectActionPerformed(e);
 			}
 		}

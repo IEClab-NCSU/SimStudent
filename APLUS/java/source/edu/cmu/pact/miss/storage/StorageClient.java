@@ -259,7 +259,7 @@ public class StorageClient extends StorageAccess {
 			e.printStackTrace();
 		}
 		
-		System.out.println("*** I read:  " + object);
+		trace.out("*** I read:  " + object);
 		// Close the stream
 		inputFromServlet.close();
 		return object;
@@ -316,7 +316,7 @@ public class StorageClient extends StorageAccess {
 		PrintWriter dataWriter = new PrintWriter(output);
 		dataWriter.write(fileData);
 		dataWriter.flush();
-		/*System.out.println("Printed: "+fileData);*/
+		/*trace.out("Printed: "+fileData);*/
 		
         try {
 			reader.close();
@@ -335,7 +335,7 @@ public class StorageClient extends StorageAccess {
 			data = input.read();
 		}
 
-		//System.out.print(dataString);
+		//trace.out(dataString);
 	}
 	
 	public void storeZIPFile(String key, String filename) throws IOException {
@@ -381,7 +381,7 @@ public class StorageClient extends StorageAccess {
 			data = input.read();
 		}
 
-		//System.out.print(dataString);		
+		//trace.out(dataString);		
 	}
 	
 	/**
@@ -412,7 +412,7 @@ public class StorageClient extends StorageAccess {
 		output.writeObject(obj);
 		output.flush();
 		output.close();
-		System.out.println(" Code : "+servletConnection.getResponseMessage());
+		trace.out(" Code : "+servletConnection.getResponseMessage());
 
 		
 	}
@@ -462,7 +462,7 @@ public class StorageClient extends StorageAccess {
 			dataString = dataString + (char)data;
 			data = input.read();
 		}
-		//System.out.print(dataString);
+		//trace.out(dataString);
 
 	}
 

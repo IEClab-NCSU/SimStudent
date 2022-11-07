@@ -160,7 +160,7 @@ public class ImageButton extends Canvas implements Runnable{
 			try {
      			((ActionListener) actionListeners.elementAt(i)).actionPerformed(evt);
     		} catch (Exception ex) {
-      			System.out.println("toolframe.ImageButton: Exception occured during event dispatch");
+      			trace.out("toolframe.ImageButton: Exception occured during event dispatch");
       			ex.printStackTrace();
     		}
   		}
@@ -175,7 +175,7 @@ public class ImageButton extends Canvas implements Runnable{
 		//m_EnabledImage = Toolkit.getDefaultToolkit().getImage(ImageFile);
 		m_EnabledImage = Settings.loadImage(this, ImageFile);
 		if (m_EnabledImage==null)
-			System.out.println("Image "+ImageFile+" not found"); 
+			trace.out("Image "+ImageFile+" not found");
 		ImageFilter intensityFilter=new IntensityFilter();
 		m_DisabledImage=Toolkit.getDefaultToolkit().createImage(new FilteredImageSource(
 			m_EnabledImage.getSource(),intensityFilter));

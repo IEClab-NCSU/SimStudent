@@ -134,7 +134,7 @@ public class ContestServer implements TimeoutRecovery{
 		    serverSocket = new ServerSocket(port);
 		} catch (IOException e) {
 			//If can't listen to the port, throw an error msg & end program 
-		    System.out.println("Could not listen on port: "+port);
+		    trace.out("Could not listen on port: "+port);
 		    System.exit(-1);
 		}
 
@@ -168,9 +168,9 @@ public class ContestServer implements TimeoutRecovery{
 		//reload problem stats from file
 		readProblemStatisticFile();
 		
-		System.out.println("Starting a new Thread AcceptThread: " + Thread.currentThread());
+		trace.out("Starting a new Thread AcceptThread: " + Thread.currentThread());
 		new Thread(new AcceptThread()).start();
-		System.out.println("Started a new Thread AcceptThread: " + Thread.currentThread());
+		trace.out("Started a new Thread AcceptThread: " + Thread.currentThread());
 	}
 	
 
@@ -181,9 +181,9 @@ public class ContestServer implements TimeoutRecovery{
     		//continuing receiving new connections while running
     		while(true)
     		{
-    			System.out.println("Calling acceptConnection AcceptThread running: " + Thread.currentThread());
+    			trace.out("Calling acceptConnection AcceptThread running: " + Thread.currentThread());
     			acceptConnection();
-   				System.out.println("Called acceptConnection AcceptThread running: " + Thread.currentThread());
+   				trace.out("Called acceptConnection AcceptThread running: " + Thread.currentThread());
     		}
     	}
     }
@@ -207,7 +207,7 @@ public class ContestServer implements TimeoutRecovery{
 				//Loop through receiving messages & perform activities as dictated
 				while(activeListener && (incomingMsg = connection.reader.readLine()) != null)
 				{
-				    System.out.println("Client (server): " + incomingMsg);
+				    trace.out("Client (server): " + incomingMsg);
 				    if(incomingMsg.startsWith(JOIN))
 				    	joinProgram(incomingMsg);
 				    else if(incomingMsg.startsWith(LEAVE))
@@ -289,7 +289,7 @@ public class ContestServer implements TimeoutRecovery{
 	    		now = now.replace("0:", "12:");
 			list += ",(Updated: "+now+")";
 			connection.writer.println(list);
-			System.out.println(connection.userid+": "+list);
+			trace.out(connection.userid+": "+list);
 		}
     	
     	
@@ -305,7 +305,7 @@ public class ContestServer implements TimeoutRecovery{
 			for(Connection connect:connections)
 			{
 				connect.writer.println(ContestServer.CHAT_GROUP_MESSAGE+","+chat);
-				System.out.println(connect.userid+":"+ContestServer.CHAT_GROUP_MESSAGE+","+chat);
+				trace.out(connect.userid+":"+ContestServer.CHAT_GROUP_MESSAGE+","+chat);
 			}
 		}
 
@@ -372,7 +372,7 @@ public class ContestServer implements TimeoutRecovery{
     		if(remove != null)
     		{
 				remove.writer.println(DUPLICATE_USERID);
-				System.out.println(remove.userid+":"+DUPLICATE_USERID);
+				trace.out(remove.userid+":"+DUPLICATE_USERID);
 				connections.remove(remove);
     		}
     		connection.valid = true;
@@ -390,7 +390,7 @@ public class ContestServer implements TimeoutRecovery{
     	protected void leaveProgram(String args)
     	{
     		connection.writer.println(LEAVE);
-    		System.out.println(connection.userid+":"+LEAVE);
+    		trace.out(connection.userid+":"+LEAVE);
     		//give the contestant time to close their own connection before dropping them
     		try {
 				Thread.sleep(100);
@@ -508,7 +508,7 @@ public class ContestServer implements TimeoutRecovery{
 		if(connection.hasOutstandingChallenge())
 		{
 			//TODO :  You can't make a challenge when you have one outstanding! 
-			System.out.println(connection.name+" was outstanding - abort!");
+			trace.out(connection.name+" was outstanding - abort!");
 			connection.writer.println(OUTSTANDING+","+OUTSTAND_ME_MSG+",self");
 			return false;
 		}
@@ -523,7 +523,7 @@ public class ContestServer implements TimeoutRecovery{
 			{
 				if(challengeConnection.hasOutstandingChallenge())
 				{
-					System.out.println(challengeConnection.name+" was outstanding - abort!");
+					trace.out(challengeConnection.name+" was outstanding - abort!");
 					connection.writer.println(OUTSTANDING+","+GameShowUtilities.replacePiece(OUTSTAND_MSG, challengeConnection.name)+","+challengeConnection.userid);
 					return false;
 				}
@@ -531,7 +531,7 @@ public class ContestServer implements TimeoutRecovery{
 				challengeConnection.setOutstandingChallenge(true);
 				
 				challengeConnection.writer.println(CONTEST_REQUESTED+","+connection.userid);
-				System.out.println(challengeConnection.userid+":"+CONTEST_REQUESTED+","+connection.userid);
+				trace.out(challengeConnection.userid+":"+CONTEST_REQUESTED+","+connection.userid);
 				challengeRequestResponse = new Timer(CHALLENGE_TIMEOUT_TIME, new TimeoutDelay(this, ContestServer.CHALLENGE_REQUEST_TIMEOUT,challengeConnection,connection));
 				challengeRequestResponse.setRepeats(false);
 				challengeRequestResponse.start();
@@ -559,7 +559,7 @@ public class ContestServer implements TimeoutRecovery{
 				challengeConnection.setOutstandingChallenge(false);
 				
 				challengeConnection.writer.println(CONTEST_AGREED+","+connection.userid+",false");
-				System.out.println(challengeConnection.userid+":"+CONTEST_AGREED+","+connection.userid+",false");
+				trace.out(challengeConnection.userid+":"+CONTEST_AGREED+","+connection.userid+",false");
 
 				new Thread(new ListenerThread(challengeConnection)).start();
 				return;
@@ -585,7 +585,7 @@ public class ContestServer implements TimeoutRecovery{
 				challengeConnection.setOutstandingChallenge(false);
 				
 				challengeConnection.writer.println(CONTEST_AGREED+","+connection.userid+",true");
-				System.out.println(challengeConnection.userid+":"+CONTEST_AGREED+","+connection.userid+",true");
+				trace.out(challengeConnection.userid+":"+CONTEST_AGREED+","+connection.userid+",true");
 				Connection contestant1 = challengeConnection;
 				Connection contestant2 = connection;
 				//create object to organize game
@@ -632,7 +632,7 @@ public class ContestServer implements TimeoutRecovery{
 	private void acceptConnection()
 	{
 		try {
-			System.out.println("Enter in acceptConnection: " + Thread.currentThread());
+			trace.out("Enter in acceptConnection: " + Thread.currentThread());
 			//create a connection object for the new connection
 		    Socket socket = serverSocket.accept();
 		    PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
@@ -643,10 +643,10 @@ public class ContestServer implements TimeoutRecovery{
 			//begin listening to it, though not added as an active connection until it
 			//sends a join message
 			new Thread(new ListenerThread(connection)).start();
-			System.out.println("Exit from acceptConnection: " + Thread.currentThread());
+			trace.out("Exit from acceptConnection: " + Thread.currentThread());
 			
 		} catch (IOException e) {
-		    System.out.println("Accept failed: 4444");
+		    trace.out("Accept failed: 4444");
 		    System.exit(-1);
 		}
 	}
@@ -669,7 +669,7 @@ public class ContestServer implements TimeoutRecovery{
 		if(remove != null)
 		{
 			remove.writer.println(DUPLICATE_USERID);
-			System.out.println(remove.userid+":"+DUPLICATE_USERID);
+			trace.out(remove.userid+":"+DUPLICATE_USERID);
 			connections.remove(remove);
 			return;
 		}
@@ -701,7 +701,7 @@ public class ContestServer implements TimeoutRecovery{
 		for(Connection connect:connections)
 		{
 			connect.writer.println(report);
-			System.out.println(connect.userid+":"+report);
+			trace.out(connect.userid+":"+report);
 		}
 		//Update the details in the connection file for later retrieval
 		writeCompetitorFile();
@@ -859,7 +859,7 @@ public class ContestServer implements TimeoutRecovery{
 		for(Connection connect:connections)
 		{
 			connect.writer.println(ContestServer.ANNOUNCE_MESSAGE+","+message);
-			System.out.println(connect.userid+":"+ContestServer.ANNOUNCE_MESSAGE+","+message);
+			trace.out(connect.userid+":"+ContestServer.ANNOUNCE_MESSAGE+","+message);
 		}
 	}
 	
@@ -1054,11 +1054,11 @@ public class ContestServer implements TimeoutRecovery{
 		/*String[] examples = GameShowUtilities.generateExamples();
 		for(int i=0;i<examples.length;i++)
 		{
-			System.out.println(examples[i]+" "+GameShowUtilities.determinePattern(examples[i]));
+			trace.out(examples[i]+" "+GameShowUtilities.determinePattern(examples[i]));
 		}*/
 		if(args.length > 0)
 		{
-			System.out.println("Port "+args[0]);
+			trace.out("Port "+args[0]);
 			new ContestServer(Integer.parseInt(args[0]));
 		}
 		else
@@ -1073,13 +1073,13 @@ public class ContestServer implements TimeoutRecovery{
 			connection1.setOutstandingChallenge(false);
 			
 			connection1.writer.println(CHALLENGE_REQUEST_TIMEOUT+","+connection2.userid+","+connection2.name);
-			System.out.println(connection1.userid+":"+CHALLENGE_REQUEST_TIMEOUT+","+connection2.userid);
+			trace.out(connection1.userid+":"+CHALLENGE_REQUEST_TIMEOUT+","+connection2.userid);
 			if(connection2 != null)
 			{
 				connection2.setOutstandingChallenge(false);
 				
 				connection2.writer.println(CONTEST_AGREED+","+connection1.userid+",false");
-				System.out.println(connection2.userid+":"+CONTEST_AGREED+","+connection1.userid+",false");
+				trace.out(connection2.userid+":"+CONTEST_AGREED+","+connection1.userid+",false");
 				new Thread(new ListenerThread(connection2)).start();
 			}
 		}

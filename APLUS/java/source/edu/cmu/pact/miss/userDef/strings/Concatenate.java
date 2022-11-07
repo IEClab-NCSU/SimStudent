@@ -46,7 +46,7 @@ public class Concatenate extends EqFeaturePredicate{
     	eq=eq.replace("g", "");
     	eq=eq.replace("lb", "");
     	
-		//System.out.println("Equation: " + eq);
+		//trace.out("Equation: " + eq);
 		
 		
 		

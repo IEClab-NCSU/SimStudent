@@ -30,29 +30,29 @@ public class BoundExpression extends VariableExpression {
         //Bounds sort before other Bounds, if their string is less
 	//Bounds sort after numeric expressions (and before everything else)
 	public boolean termSortBefore(Expression ex) {
-		/*System.out.println(debugForm() + ".termSortBefore(" +
+		/*trace.out(debugForm() + ".termSortBefore(" +
 		  ex.debugForm() + ")");*/
 		if (ex instanceof BoundExpression) {
 			BoundExpression vEx = (BoundExpression)ex;
 			if (getString().compareTo(vEx.getString()) > 0){
-				//System.out.println("\ttrue");
+				//trace.out("\ttrue");
 				return true;
 			}
 			else{
-				//System.out.println("\tfalse");
+				//trace.out("\tfalse");
 				return false;
 			}
 		}
 		else if (ex instanceof VariableExpression){
-			//System.out.println("\ttrue");
+			//trace.out("\ttrue");
 			return true;
 		}
 		else if (ex instanceof NumericExpression){
-			//System.out.println("\tfalse");
+			//trace.out("\tfalse");
 			return false;
 		}
 		else{
-			//System.out.println("\ttrue");
+			//trace.out("\ttrue");
 			return true;
 		}
 	}

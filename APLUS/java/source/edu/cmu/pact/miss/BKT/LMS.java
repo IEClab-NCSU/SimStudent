@@ -278,9 +278,9 @@ public class LMS {
 		
 		updateProblemCountPerSkill(pickedProblem);
 		String problem = trimSectionFromProblem(pickedProblem);
-		System.out.println("Problem pattern : "+problem );
+		trace.out("Problem pattern : "+problem );
 		String actualProblemGiven=GameShowUtilities.generate(problem);
-		System.out.println("Actual Problem : "+actualProblemGiven);	
+		trace.out("Actual Problem : "+actualProblemGiven);
 
 		/* check if problem about to be given has the necessary skills.
 		 * if not generate a new one that has */
@@ -335,7 +335,7 @@ public class LMS {
 			logResult+="["+split[0]+" "+split[1]+"],";
 			
 		}
-		System.out.println("Log Result : "+logResult);
+		trace.out("Log Result : "+logResult);
 		simStLogger.simStLog(SimStLogger.LMS_PROBLEM, SimStLogger.LMS_PROBLEM_CONSIDERED, "",logResult , lmsID);		
 		
 		

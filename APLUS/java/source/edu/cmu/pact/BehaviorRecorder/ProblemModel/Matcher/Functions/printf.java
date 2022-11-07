@@ -3,6 +3,8 @@
  */
 package edu.cmu.pact.BehaviorRecorder.ProblemModel.Matcher.Functions;
 
+import edu.cmu.pact.Utilities.trace;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -32,6 +34,6 @@ public class printf {
 		printf p = new printf();
 		double d1 = 34.298342, d2 = -304.22;
 		String fmt = "%.2f %08.1f";
-		System.out.println("printf(\""+fmt+"\","+d1+","+d2+")="+p.printf(fmt, d1, d2));
+		trace.out("printf(\""+fmt+"\","+d1+","+d2+")="+p.printf(fmt, d1, d2));
 	}
 }

@@ -3,6 +3,7 @@ package edu.cmu.old_pact.cmu.solver.ruleset;
 import edu.cmu.old_pact.cmu.sm.Equation;
 import edu.cmu.old_pact.cmu.sm.ParseException;
 import edu.cmu.old_pact.cmu.sm.query.Queryable;
+import edu.cmu.pact.Utilities.trace;
 
 /*a typein bug rule applies to an expression (that is, one side of the
   equation).  It is conditioned on the previous expression in addition
@@ -45,7 +46,7 @@ public class TypeinBugRule extends Rule {
 	  for example: canFire("3x+4","subtract","4","3x")*/
 	public RuleMatchInfo canFire(Queryable info,String userAction,String userInput,
 								 String typeinInput,String expectedInput){
-		/*System.out.println("TBR.cF(" + info + "," + userAction + "," + userInput + "," +
+		/*trace.out("TBR.cF(" + info + "," + userAction + "," + userInput + "," +
 		  typeinInput + "," + expectedInput + ")");*/
 		RuleMatchInfo ret = new RuleMatchInfo();
 		ret.setBoolean(false);
@@ -62,7 +63,7 @@ public class TypeinBugRule extends Rule {
 										  userInput,
 										  expectedInput);
 
-			//System.out.println("TBR.cF: calling tCFH(" + leftExpr + ")");
+			//trace.out("TBR.cF: calling tCFH(" + leftExpr + ")");
 			cfhLeft = testConditionsForHelp(leftExpr);
 		}
 		catch(ParseException pe){
@@ -111,7 +112,7 @@ public class TypeinBugRule extends Rule {
 			return resolvedMessages;
 		}
 		else{
-			System.out.println("Rule.getMessages: Warning: rule '" + getName() + "' fired for help but has no messages");
+			trace.out("Rule.getMessages: Warning: rule '" + getName() + "' fired for help but has no messages");
 			return new String[] {"Sorry, I can't help you here."};
 		}
 	}

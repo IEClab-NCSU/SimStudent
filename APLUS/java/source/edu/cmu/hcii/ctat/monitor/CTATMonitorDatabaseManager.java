@@ -905,7 +905,7 @@ public class CTATMonitorDatabaseManager extends JFrame implements MouseListener,
             
             if (entry!=null)
             {            
-            	//System.out.print(".");
+            	//trace.out(".");
             	
             	if (showDates==true)
             	{
@@ -950,7 +950,7 @@ public class CTATMonitorDatabaseManager extends JFrame implements MouseListener,
             
             if (entry!=null)
             {            
-            	//System.out.print(".");
+            	//trace.out(".");
             	
             	if (showDates==true)
             	{

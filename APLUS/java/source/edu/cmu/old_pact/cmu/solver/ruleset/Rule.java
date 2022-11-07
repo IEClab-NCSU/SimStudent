@@ -8,6 +8,7 @@ import edu.cmu.old_pact.cmu.sm.NumberExpression;
 import edu.cmu.old_pact.cmu.sm.SymbolManipulator;
 import edu.cmu.old_pact.cmu.sm.query.ArrayQuery;
 import edu.cmu.old_pact.cmu.sm.query.Queryable;
+import edu.cmu.pact.Utilities.trace;
 
 public class Rule {
 	protected Test[] conditions;
@@ -15,7 +16,7 @@ public class Rule {
 	protected String action;
 	protected String input;
 	private String name;
-	private static boolean trace=false;  //if true, trace all rules
+	private static boolean traceRule=false;  //if true, trace all rules
 	private static boolean exprFormatting = true;
 	protected boolean traceLocal=false;    //if true, trace this rule
 	protected boolean canEncapsulateVar = true; // variable is not encapsulable for x^2=a;
@@ -86,7 +87,7 @@ public class Rule {
 			try {
 				Queryable intermediateInput = info.evalQuery(ruleInput.substring(1,ruleInput.length()-1));
 				if(intermediateInput instanceof ArrayQuery){
-					//System.out.println("R.iI: evaled: " + intermediateInput.evalQuery("conjunct"));
+					//trace.out("R.iI: evaled: " + intermediateInput.evalQuery("conjunct"));
 					Queryable[] qa = intermediateInput.getArrayValue();
 					if(qa == null){
 						throw new NoSuchFieldException();
@@ -102,7 +103,7 @@ public class Rule {
 			}
 			catch (NoSuchFieldException err) {
 				/*if(debug){
-				  System.out.println("R.iI: " + err.toString());
+				  trace.out("R.iI: " + err.toString());
 				  }*/
 				evaledInput = new String[] {ruleInput}; //if field doesn't exist, maybe bracket was a mistake, so try just plain input
 			}
@@ -111,7 +112,7 @@ public class Rule {
 	}
 	
 	public static RuleMatchInfo testInput(Queryable info,String ruleInput, String userInput) {
-		//System.out.println("R.tI(" + info + "," + ruleInput + "," + userInput + ")");
+		//trace.out("R.tI(" + info + "," + ruleInput + "," + userInput + ")");
 		RuleMatchInfo tempRuleMatchInfo = null;
 		boolean inputOK = false;
 		String [] evaledInput = null;
@@ -128,7 +129,7 @@ public class Rule {
 				try {
 					for(int i=0;i<evaledInput.length && !inputOK;i++){
 						try{
-							//System.out.println("R.tI: comparing: " + evaledInput[i] + " =?= " + userInput);
+							//trace.out("R.tI: comparing: " + evaledInput[i] + " =?= " + userInput);
 							if(sm.algebraicEqual(evaledInput[i],userInput)){
 								inputOK = true;
 								evaledInputIndex = i;
@@ -149,7 +150,7 @@ public class Rule {
 			}
 		}
 		if(evaledInput == null || evaledInput.length == 0){
-			//System.out.println("R.tI: evaledInput is empty");
+			//trace.out("R.tI: evaledInput is empty");
 			tempRuleMatchInfo = new RuleMatchInfo(inputOK,null,null,null);
 		}
 		else{
@@ -163,7 +164,7 @@ public class Rule {
 		boolean actionOK = false;
 		tempRuleMatchInfo = testInput(info,input,userInput);
 		if (isTraced()){
-			System.out.println("  input for "+name+" matches: "+tempRuleMatchInfo.getBoolean()+"; evaled is {"+interpretInput(info,input)+", ...} ["+input+"]");
+			trace.out("  input for "+name+" matches: "+tempRuleMatchInfo.getBoolean()+"; evaled is {"+interpretInput(info,input)+", ...} ["+input+"]");
 		}
 		if (tempRuleMatchInfo.getBoolean()) {
 			if (action == null)
@@ -171,7 +172,7 @@ public class Rule {
 			else
 				actionOK = action.equalsIgnoreCase(userAction);
 			if (isTraced())
-				System.out.println("   action for "+name+"["+userAction+"] matches: "+actionOK);
+				trace.out("   action for "+name+"["+userAction+"] matches: "+actionOK);
 		}
 		tempRuleMatchInfo.setAction(action);
 		tempRuleMatchInfo.setBoolean(tempRuleMatchInfo.getBoolean() && actionOK);
@@ -179,7 +180,7 @@ public class Rule {
 	}
 	
 	public RuleMatchInfo canFire(Queryable info,String userAction,String userInput) {
-		//System.out.println("in canFire Rule name = "+name);
+		//trace.out("in canFire Rule name = "+name);
 		RuleMatchInfo tempRuleMatchInfo = null;
 		/*many rules will fail the action/input test, and it's a lot
           faster than checking the conditions since it usually doesn't
@@ -194,15 +195,15 @@ public class Rule {
 	public boolean testConditionsForHelp(Queryable info) {
 		boolean OK=true;
 		if (isTraced())
-			System.out.println("  Testing rule: "+name);
+			trace.out("  Testing rule: "+name);
 		for (int i=0;i<conditions.length && OK;++i) {
 			if (isTraced())
-				System.out.println("   testing condition "+conditions[i]+"; passes: "+conditions[i].passes(info));
+				trace.out("   testing condition "+conditions[i]+"; passes: "+conditions[i].passes(info));
 			if (!(conditions[i].passes(info,true)))
 				OK = false;
 		}
 		if (isTraced())
-			System.out.println("   All conditions for "+name+" pass: "+OK);
+			trace.out("   All conditions for "+name+" pass: "+OK);
 		return OK;
 	}
 
@@ -226,7 +227,7 @@ public class Rule {
 			return resolvedMessages;
 		}
 		else{
-			System.out.println("Rule.getMessages: Warning: rule '" + name + "' fired for help but has no messages");
+			trace.out("Rule.getMessages: Warning: rule '" + name + "' fired for help but has no messages");
 			return new String[] {"Sorry, I can't help you here."};
 		}
 	}
@@ -283,7 +284,7 @@ public class Rule {
 					}
 				}
 				catch(NoSuchFieldException err) {
-					System.out.println("***can't interpret "+embedded+" in message: "+err);
+					trace.out("***can't interpret "+embedded+" in message: "+err);
 					result = "-something-";
 				}
 				sm.setPrintDecimalPlaces(NumberExpression.defaultPrintDecimalPlaces);
@@ -308,16 +309,16 @@ public class Rule {
 			setTraceRule(true);
 			RuleMatchInfo tempRuleMatchInfo = canFire(info,action,input);
 			if (tempRuleMatchInfo.getBoolean() == true) {
-				//System.out.println("Rule "+name+" fires with "+equation+" "+action+" "+input+", messages are:");
+				//trace.out("Rule "+name+" fires with "+equation+" "+action+" "+input+", messages are:");
 				String[] messages = getMessages(info);
 				for (int i=0;i<messages.length;++i)
-					System.out.println(messages[i]);
+					trace.out(messages[i]);
 			}
 			else
-				System.out.println("Rule "+name+" fails");
+				trace.out("Rule "+name+" fails");
 		}
 		catch (BadExpressionError err) {
-			System.out.println("Equation "+equation+" does not parse, testing rule "+name);
+			trace.out("Equation "+equation+" does not parse, testing rule "+name);
 		}
 		traceLocal = holdTrace;
 	}
@@ -339,7 +340,7 @@ public class Rule {
 	}
 	
 	public static void setTraceAllRules(boolean onOrOff) {
-		trace = onOrOff;
+		traceRule = onOrOff;
 	}
 	
 	public void setTraceRule(boolean onOrOff) {
@@ -347,7 +348,7 @@ public class Rule {
 	}
 	
 	static public boolean allRulesTraced() {
-		return trace;
+		return traceRule;
 	}
 	
 	
@@ -365,7 +366,7 @@ public class Rule {
 	
 
 	public boolean isTraced() {
-		return (traceLocal || trace);
+		return (traceLocal || traceRule);
 	}
 
 	public String toString(){

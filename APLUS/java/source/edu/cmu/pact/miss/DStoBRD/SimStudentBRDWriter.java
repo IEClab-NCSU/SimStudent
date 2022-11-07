@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import edu.cmu.pact.Utilities.trace;
 import org.xml.sax.SAXException;
 
 import com.megginson.sax.DataWriter;
@@ -321,7 +322,7 @@ public class SimStudentBRDWriter{
         
         try{
         	
-            // System.out.println("buildGraphfromFile: problemName = " + probName);
+            // trace.out("buildGraphfromFile: problemName = " + probName);
         	//used to be hardcoded problName.substring(5). Now it gets value from parseProblemName which can be overriden
            // StartNodeMessagesElement startMessage = startNodeMessages("StartNodeMsgTemplate.txt", probName.substring(5)); //eliminates "Eg##"
             StartNodeMessagesElement startMessage = startNodeMessages("StartNodeMsgTemplate.txt", parseProblemName(probName)); //eliminates "Eg##"
@@ -473,15 +474,15 @@ public class SimStudentBRDWriter{
            String outcome = tokens[base+6];
            
            
-        /*   System.out.println();
-           System.out.println(student);
-           System.out.println(problem);
-           System.out.println(selection);
-           System.out.println(action);
-           System.out.println(input);
-           System.out.println(skill);
-           System.out.println(outcome);
-           System.out.println();
+        /*   trace.out();
+           trace.out(student);
+           trace.out(problem);
+           trace.out(selection);
+           trace.out(action);
+           trace.out(input);
+           trace.out(skill);
+           trace.out(outcome);
+           trace.out();
            */
            StudentTransactionItems item = 
                    new StudentTransactionItems(student, problem, selection, action, input, skill, outcome);
@@ -525,7 +526,7 @@ public class SimStudentBRDWriter{
                 // Read a transaction for a new (i.e., different) problem hence flush the queue
             	
             	//if (((StudentTransactionItems) transactionList.get(0)).action.equals("") && transactionList.size()==1){
-            	//	System.out.println("Generating brd for ... " + previousProblemName + " with transaction " + transactionList.size());
+            	//	trace.out("Generating brd for ... " + previousProblemName + " with transaction " + transactionList.size());
             		
             	//	}
                 generateBRD(transactionList, previousProblemName);
@@ -540,7 +541,7 @@ public class SimStudentBRDWriter{
         }
         
        // if (((StudentTransactionItems) transactionList.get(0)).action.equals("") && transactionList.size()==1){
-    //		System.out.println("Generating brd for ... " + previousProblemName + " with transaction " + transactionList.size());
+    //		trace.out("Generating brd for ... " + previousProblemName + " with transaction " + transactionList.size());
     		
     	//	}
         generateBRD(transactionList, previousProblemName);
@@ -549,7 +550,7 @@ public class SimStudentBRDWriter{
         String studentName = ((StudentTransactionItems)transactionList.get(0)).studentID;
         if ( xmlstategraph != null ) {
             String brdFileName = brdFileName(previousProblemName);
-            // System.out.println("Writing BRD to " + brdFileName);
+            // trace.out("Writing BRD to " + brdFileName);
             writeBrdToFile(xmlstategraph, brdFileName, studentName);
         } else {
             incNumBrokenBrd();
@@ -597,7 +598,7 @@ public class SimStudentBRDWriter{
 	if ( xmlstategraph != null ) {
 	    String brdFileName = brdFileName(previousProblemName);
 	    
-	    // System.out.println("Writing BRD to " + brdFileName);
+	    // trace.out("Writing BRD to " + brdFileName);
 	    
 	    writeBrdToFile(xmlstategraph, brdFileName, studentName);
 	} else {
@@ -614,7 +615,7 @@ public class SimStudentBRDWriter{
         new File(parentDir).mkdirs();
         
     //    if (flag==true)
-	 //   	System.out.println("Writing BRD to " + filePathName);
+	 //   	trace.out("Writing BRD to " + filePathName);
         
         PrintWriter pw = new PrintWriter(new FileOutputStream(filePathName));
         DataWriter w = new DataWriter(pw);
@@ -696,9 +697,9 @@ public class SimStudentBRDWriter{
             
             printBRD(fileName);
             
-            System.out.println(getNumBrdTransactions() + " BRD transactions read.");
-            System.out.println(getNumBrdFiles() + " BRD files generated for " + getNumStudents() + " students.");
-            System.out.println(getNumBrokenBrd() + " potential broken BRD files.");
+            trace.out(getNumBrdTransactions() + " BRD transactions read.");
+            trace.out(getNumBrdFiles() + " BRD files generated for " + getNumStudents() + " students.");
+            trace.out(getNumBrokenBrd() + " potential broken BRD files.");
             
             //ArrayList testList = getStudentActions("Sim_data_1.txt");
 
@@ -716,8 +717,8 @@ public class SimStudentBRDWriter{
         SimStudentBRDWriter ssBRDTest = new SimStudentBRDWriter();
         
         if (args.length != 2) {
-            System.out.println("Usage: SimStBRDWriter <input_file> <output_dir>");
-            System.out.println("Specify both the input file to read and a directory where the files would be saved.");
+            trace.out("Usage: SimStBRDWriter <input_file> <output_dir>");
+            trace.out("Specify both the input file to read and a directory where the files would be saved.");
             System.exit(-1);
         }
         
@@ -810,7 +811,7 @@ public class SimStudentBRDWriter{
 //        transactionList.add(item);
 //    }
 //
-//    //System.out.println("action list size = " + transactionList.size());
+//    //trace.out("action list size = " + transactionList.size());
 //    return transactionList;
 //}
 //

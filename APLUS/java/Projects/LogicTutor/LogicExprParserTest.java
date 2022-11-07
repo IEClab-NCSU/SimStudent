@@ -6,6 +6,7 @@ package LogicTutor;
 import java.util.*;
 import java.io.*;
 
+import edu.cmu.pact.Utilities.trace;
 import junit.framework.Assert;
 import junit.framework.AssertionFailedError;
 import junit.framework.Test;
@@ -68,7 +69,7 @@ public class LogicExprParserTest extends TestCase
 		if (evt.getResult())
 			assertEquals(t.variableCount, evt.getVariableCount());
 		else
-			System.out.println("Parse failed:\n" + evt.getErrorMsg());
+			trace.out("Parse failed:\n" + evt.getErrorMsg());
 	}
 	
 	/**

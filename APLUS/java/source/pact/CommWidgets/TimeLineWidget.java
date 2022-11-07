@@ -304,7 +304,7 @@ class TimeLine extends Canvas
 	// ***************************************************************************//
 	public void drawStartEnd(Graphics g)
 	{
-		// System.out.println("drawStartEnd");
+		// trace.out("drawStartEnd");
 		g.setColor(Color.gray);
 		// starting time position before ending time position
 		if (((startHour == endHour) && (startMinutes < endMinutes)) ||
@@ -341,7 +341,7 @@ class TimeLine extends Canvas
 	// ***************************************************************************//
 	public void drawIntervals(Graphics g)
 	{
-		// System.out.println("drawIntervals");
+		// trace.out("drawIntervals");
 		g.setColor(Color.red);
 		for (int j = 0; j < intervals.size(); j++)
 		{

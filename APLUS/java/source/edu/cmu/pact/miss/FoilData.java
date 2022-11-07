@@ -1028,7 +1028,7 @@ public class FoilData implements Serializable{
 
 	    } catch (IllegalThreadStateException e) {
 		if ( n++ == 500 ) {
-		    System.out.print(".");
+		    trace.out(".");
 		    n = 0;
 		}
 		try {
@@ -1327,7 +1327,7 @@ public class FoilData implements Serializable{
 
     	public void waitForComplition() {
     	    while ( !completed ) {
-    	        System.out.print(".");
+    	        trace.out(".");
     	    }
    	}
 

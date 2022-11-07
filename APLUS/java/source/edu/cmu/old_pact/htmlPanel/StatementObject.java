@@ -41,7 +41,7 @@ public class StatementObject extends Object{
 	
 	protected void setBoldFontSize(String s){
 		boldFontSize = s;
-//System.out.println("** SO boldFontSize"+boldFontSize);
+//trace.out("** SO boldFontSize"+boldFontSize);
 	}
 	
 	public void setText(String text) {

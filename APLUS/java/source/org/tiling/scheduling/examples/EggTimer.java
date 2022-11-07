@@ -1,5 +1,7 @@
 package org.tiling.scheduling.examples;
 
+import edu.cmu.pact.Utilities.trace;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -18,7 +20,7 @@ public class EggTimer {
                 timer.cancel();
             }
             private void playSound() {
-                System.out.println("Your egg is ready!");
+                trace.out("Your egg is ready!");
                 // Start a new thread to play a sound...
             }
         }, minutes * 60 * 1000);

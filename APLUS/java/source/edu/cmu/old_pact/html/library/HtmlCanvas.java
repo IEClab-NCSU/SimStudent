@@ -302,7 +302,7 @@ public class HtmlCanvas extends Canvas
 	}
 
 	public Dimension preferredSize(){
-		//System.out.println("HC.pS: getNeededWidth returns: " + getNeededWidth());
+		//trace.out("HC.pS: getNeededWidth returns: " + getNeededWidth());
 		return new Dimension(getNeededWidth(),getHeight());
 	}
 

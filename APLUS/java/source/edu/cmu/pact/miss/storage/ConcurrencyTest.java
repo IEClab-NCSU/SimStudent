@@ -1,5 +1,7 @@
 package edu.cmu.pact.miss.storage;
 
+import edu.cmu.pact.Utilities.trace;
+
 import java.awt.Color;
 import java.io.IOException;
 

@@ -494,7 +494,7 @@ public class JCommMultipleChoiceCheckBox extends JCommQuestion implements Action
 	 * Used to reset the commwidget
 	 */
 	public void reset(TutorController controller) {
-		//		System.out.println("Reset Called: JCommMultipleChoice");
+		//		trace.out("Reset Called: JCommMultipleChoice");
 		alreadyDone = false;
 		initialize();
 		resetChoiceColors();

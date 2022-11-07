@@ -214,7 +214,7 @@ public class CTATUUDecode extends CTATBase
   {
     if (args.length < 1 )
     {
-      System.out.println("Usage: java UUDecode <filename>");
+      trace.out("Usage: java UUDecode <filename>");
       System.exit(0);
     }
         

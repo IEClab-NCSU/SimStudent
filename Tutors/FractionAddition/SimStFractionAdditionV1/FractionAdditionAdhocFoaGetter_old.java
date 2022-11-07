@@ -178,7 +178,7 @@ public class FractionAdditionAdhocFoaGetter extends FoaGetter {
         }
         
         	if (col==6 && row==1){  
-        		System.out.println("eimaste sto swsto...");
+        		trace.out("eimaste sto swsto...");
         		vFoa.add(getTableCell(brController, 1, 5));     	 
         		vFoa.add(getTableCell(brController, 2, 6));  
         		vFoa.add(getCommText(brController));
@@ -186,7 +186,7 @@ public class FractionAdditionAdhocFoaGetter extends FoaGetter {
         
         }
 
-    //    System.out.println("FOAAAAAAA" + vFoa);
+    //    trace.out("FOAAAAAAA" + vFoa);
         return vFoa;
 	}
 	

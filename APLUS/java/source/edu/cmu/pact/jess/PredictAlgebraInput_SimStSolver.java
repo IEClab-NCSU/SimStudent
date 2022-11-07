@@ -37,7 +37,7 @@ public class PredictAlgebraInput_SimStSolver implements Userfunction, Serializab
 	
 	public Value call(ValueVector vv, Context context) throws JessException {
 
-		//       System.out.println("entered PredictAlgebraInput.call()");
+		//       trace.out("entered PredictAlgebraInput.call()");
 
 		Value result = Funcall.TRUE;
 		

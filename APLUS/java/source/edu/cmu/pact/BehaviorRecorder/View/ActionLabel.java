@@ -351,9 +351,9 @@ public class ActionLabel extends BR_Label implements MarathonElement {
 		try {
 			return edgeData.getActionLabel().getFont().getStyle();
 		} catch (java.lang.NullPointerException npe) {
-			System.out.println("Marathon threw NPE getting text style for action label");
+			trace.out("Marathon threw NPE getting text style for action label");
 		}
-		System.out.println("Couldn't get text style for "+getMarathonIdentifier()+"; return 0 instead");
+		trace.out("Couldn't get text style for "+getMarathonIdentifier()+"; return 0 instead");
 		return 0;
 	}
 

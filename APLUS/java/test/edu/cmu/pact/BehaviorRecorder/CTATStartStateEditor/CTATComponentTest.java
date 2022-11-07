@@ -134,7 +134,7 @@ public class CTATComponentTest extends TestCase {
 
 			Element outElt = comp.toStringElement(includeIn);  // transform by filter includeIn
 			xmlOut.output(outElt, System.out);
-			System.out.println(); System.out.println();
+			trace.out(); trace.out();
 			
 			List<Element> eltsToTest = new ArrayList<Element>();
 			

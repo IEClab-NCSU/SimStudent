@@ -13,8 +13,8 @@ public class StringQuery extends PrimitiveValueQuery {
 			return new NumberQuery (new Integer(str.length()));
 		else{
 			/*if(prop.equalsIgnoreCase("length")){
-			  System.out.println("StringQuery ERROR: property 'length' is deprecated");
-			  System.out.println("           target: " + getStringValue());
+			  trace.out("StringQuery ERROR: property 'length' is deprecated");
+			  trace.out("           target: " + getStringValue());
 			  }*/
 			throw new NoSuchFieldException("No field "+prop+" in StringQuery");
 		}

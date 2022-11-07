@@ -32,20 +32,20 @@ public class PictureTransferHandler extends TransferHandler {
     	destPic = (JCommPicture) c;
       //Don't drop on myself.
       if (sourcePic == destPic) {
-    	  System.out.println("importData: don't drop to the same picture");  
+    	  trace.out("importData: don't drop to the same picture");
         shouldRemove = false;
         return true;
       }
       try {
-          System.out.println("importData: " + destPic.getCommName() ); 
+          trace.out("importData: " + destPic.getCommName() );
         image = (ImageIcon) t.getTransferData(pictureFlavor);
         //Set the component to the new picture.
         destPic.setImage(image);
         return true;
       } catch (UnsupportedFlavorException ufe) {
-        System.out.println("importData: unsupported data flavor");
+        trace.out("importData: unsupported data flavor");
       } catch (IOException ioe) {
-        System.out.println("importData: I/O exception");
+        trace.out("importData: I/O exception");
       }
     }
     return false;

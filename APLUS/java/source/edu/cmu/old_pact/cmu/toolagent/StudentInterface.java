@@ -11,6 +11,7 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
 
+import edu.cmu.pact.Utilities.trace;
 import pact.CommWidgets.UniversalToolProxy;
 import edu.cmu.old_pact.cl.coreInterface.CoreInterface;
 import edu.cmu.old_pact.cl.util.menufactory.MenuFactory;
@@ -190,7 +191,7 @@ public class StudentInterface implements Sharable, Runnable, ActionListener,
 	}
 	
 	public void quit(){
-		System.out.println("Application. Got quit request");
+		trace.out("Application. Got quit request");
 	}
 	//
 	public String getName(){
@@ -202,7 +203,7 @@ public class StudentInterface implements Sharable, Runnable, ActionListener,
     	try{
     		toret = mo.extractStrValue(name);
     	} catch (DorminException e) { 
-    		System.out.println("StudentInterface getValue "+e);
+    		trace.out("StudentInterface getValue "+e);
     	}
     	
     	return toret;

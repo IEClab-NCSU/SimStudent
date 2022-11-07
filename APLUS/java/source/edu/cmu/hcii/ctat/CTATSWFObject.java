@@ -179,13 +179,13 @@ public class CTATSWFObject
 //
 //      if (info != null)
 //      {
-//          System.out.println("File: " + file);
-//          System.out.println("Flash ver: " + info.version + " FPS: " + info.fps + " Frames: " + info.frameCount);
-//          System.out.println("File size: " + file.length() + " Compressed: " + info.isCompressed + " Uncompressed size: " + info.size);
-//          System.out.println("Dimensions: " + info.width + "x" + info.height);
+//          trace.out("File: " + file);
+//          trace.out("Flash ver: " + info.version + " FPS: " + info.fps + " Frames: " + info.frameCount);
+//          trace.out("File size: " + file.length() + " Compressed: " + info.isCompressed + " Uncompressed size: " + info.size);
+//          trace.out("Dimensions: " + info.width + "x" + info.height);
 //      }
 //      else
-//          System.out.println("File not a .SWF: " + file);
+//          trace.out("File not a .SWF: " + file);
 //  }
 
     /**

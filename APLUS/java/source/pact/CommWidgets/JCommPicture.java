@@ -598,7 +598,7 @@ public class JCommPicture extends JCommWidget implements FocusListener,
 
 	public boolean resetStartStateLock(boolean startStateLock) {
 		///        if (!textArea.getText().equals(resetValue)) {
-		/// //       	System.out.println("Reset TextField [" + commName + "] - " + textArea.getText() + startStateLock);
+		/// //       	trace.out("Reset TextField [" + commName + "] - " + textArea.getText() + startStateLock);
 		///            ((JCommDocument) textArea.getDocument()).locked = startStateLock;
 		///            textArea.setHighlighter(null);
 		///            setFocusable(!startStateLock);
@@ -925,7 +925,7 @@ public class JCommPicture extends JCommWidget implements FocusListener,
 
 		firstMouseEvent = e;
 		e.consume();
-		//		System.out.println("mousePressed image = " + imageFile.toString()); //  + " [" + firstMouseEvent + "]");
+		//		trace.out("mousePressed image = " + imageFile.toString()); //  + " [" + firstMouseEvent + "]");
 	}
 
 	public void mouseDragged(MouseEvent e) {
@@ -936,7 +936,7 @@ public class JCommPicture extends JCommWidget implements FocusListener,
 
 		/*		if (firstMouseEvent != null) {
 		 e.consume();
-		 System.out.println("mouseDragged image = " + image);
+		 trace.out("mouseDragged image = " + image);
 		 //If they are holding down the control key, COPY rather than MOVE
 		 int ctrlMask = InputEvent.CTRL_DOWN_MASK;
 		 int action = ((e.getModifiersEx() & ctrlMask) == ctrlMask) ? TransferHandler.COPY
@@ -956,9 +956,9 @@ public class JCommPicture extends JCommWidget implements FocusListener,
 		 // handler.exportAsDrag(c, firstMouseEvent, action);
 		 c.getPicHandler().exportAsDrag(c, firstMouseEvent, action);
 		 firstMouseEvent = null;
-		 System.out.println("mouseDragged Done ");
+		 trace.out("mouseDragged Done ");
 
-		 System.out.println("mouseDragged handler = "
+		 trace.out("mouseDragged handler = "
 		 + c.getPicHandler().getSourcePic().getCommName()
 		 + " Component:[" + c.getCommName() + "] Event:["
 		 + firstMouseEvent + " || " + action);
@@ -1070,7 +1070,7 @@ public class JCommPicture extends JCommWidget implements FocusListener,
 		else
 			this.imageFile = "NoImage.gif";
 
-		System.out.println("imageFile = " + imageFile);
+		trace.out("imageFile = " + imageFile);
 		setImage(loadImage(imageFile));
 		//		initImageFile = imageFile;
 		//		initImage = image;
@@ -1237,7 +1237,7 @@ public class JCommPicture extends JCommWidget implements FocusListener,
 		 */
 		public void dragEnter(DropTargetDragEvent e) {
 
-			//			System.out.println("dt enter: accepting " + e.getDropAction());
+			//			trace.out("dt enter: accepting " + e.getDropAction());
 			e.acceptDrag(e.getDropAction());
 			// if (image != null && !imageFile.contains("NoImage.gif"))
 			if (imageLock || locked)
@@ -1252,18 +1252,18 @@ public class JCommPicture extends JCommWidget implements FocusListener,
 		 * rejectDrag based on isDragOk
 		 */
 		public void dragOver(DropTargetDragEvent e) {
-			//   	      System.out.println( "dt over: accepting");
+			//   	      trace.out( "dt over: accepting");
 			e.acceptDrag(e.getDropAction());
 		}
 
 		public void dropActionChanged(DropTargetDragEvent e) {
-			//   	      System.out.println( "dt changed: accepting"+e.getDropAction());
+			//   	      trace.out( "dt changed: accepting"+e.getDropAction());
 			e.acceptDrag(e.getDropAction());
 
 		}
 
 		public void dragExit(DropTargetEvent e) {
-			//   	      System.out.println( "dtlistener dragExit");
+			//   	      trace.out( "dtlistener dragExit");
 			//    	      DropLabel.this.borderColor=Color.green;            
 			//    	      showBorder(false);
 		}
@@ -1284,7 +1284,7 @@ public class JCommPicture extends JCommWidget implements FocusListener,
 			//  			if (image != null && !imageFile.contains("NoImage.gif"))
 			if (imageLock || locked)
 				return;
-			System.out.println("dtlistener drop [ " + getImageFile() + " ]");
+			trace.out("dtlistener drop [ " + getImageFile() + " ]");
 			if (dragMouseEvent != null) {
 				//				e.consume();
 
@@ -1333,12 +1333,12 @@ public class JCommPicture extends JCommWidget implements FocusListener,
 
 					JCommPicture c = (JCommPicture) t.getComponent();
 
-					//					System.out.println("JCommPicture Drop = " + c.getCommName() + " [ " + firstMouseEvent + " ]");
+					//					trace.out("JCommPicture Drop = " + c.getCommName() + " [ " + firstMouseEvent + " ]");
 					c.getPicHandler().exportAsDrag(c, firstMouseEvent, action);
 					dragMouseEvent = null;
-					//					System.out.println("mouseDragged Done ");
+					//					trace.out("mouseDragged Done ");
 
-					//					System.out.println("mouseDragged handler = "
+					//					trace.out("mouseDragged handler = "
 					//							+ c.getPicHandler().getSourcePic().getCommName()
 					//							+ " Component:[" + c.getCommName() + "] Event:["
 					//							+ dragMouseEvent + " || " + action);
@@ -1375,10 +1375,10 @@ public class JCommPicture extends JCommWidget implements FocusListener,
 
 			// if the action is ok we go ahead
 			// otherwise we punt
-			//          System.out.println(e.getDragAction());
+			//          trace.out(e.getDragAction());
 			if ((e.getDragAction() & JCommPicture.this.acceptableActions) == 0)
 				return;
-			//          System.out.println( "kicking off drag");
+			//          trace.out( "kicking off drag");
 
 			// get the label's text and put it inside a Transferable
 			// Transferable transferable = new StringSelection( DragLabel.this.getText() );
@@ -1427,7 +1427,7 @@ public class JCommPicture extends JCommWidget implements FocusListener,
 		 */
 		public void dragDropEnd(DragSourceDropEvent e) {
 			if (e.getDropSuccess() == false) {
-				System.out.println("not successful");
+				trace.out("not successful");
 				return;
 			}
 
@@ -1435,7 +1435,7 @@ public class JCommPicture extends JCommWidget implements FocusListener,
 			 * the dropAction should be what the drop target specified
 			 * in acceptDrop
 			 */
-			//          System.out.println( "dragdropend action " +  picHandler.getDestPic().getCommName());
+			//          trace.out( "dragdropend action " +  picHandler.getDestPic().getCommName());
 			//	      dirty = true;
 			//	  		sendValue();
 			// this is the action selected by the drop target
@@ -1448,7 +1448,7 @@ public class JCommPicture extends JCommWidget implements FocusListener,
 		 * @param e the event
 		 */
 		public void dragEnter(DragSourceDragEvent e) {
-			//         System.out.println( "draglabel enter " + e);
+			//         trace.out( "draglabel enter " + e);
 			DragSourceContext context = e.getDragSourceContext();
 			//intersection of the users selected action, and the source and target actions
 			int myaction = e.getDropAction();
@@ -1468,17 +1468,17 @@ public class JCommPicture extends JCommWidget implements FocusListener,
 			int ua = e.getUserAction();
 			int da = e.getDropAction();
 			int ta = e.getTargetActions();
-			//         System.out.println("dl dragOver source actions" + sa);
-			//         System.out.println("user action" + ua);
-			//         System.out.println("drop actions" + da);
-			//         System.out.println("target actions" + ta);      
+			//         trace.out("dl dragOver source actions" + sa);
+			//         trace.out("user action" + ua);
+			//         trace.out("drop actions" + da);
+			//         trace.out("target actions" + ta);
 		}
 
 		/**
 		 * @param e the event
 		 */
 		public void dragExit(DragSourceEvent e) {
-			//         System.out.println( "draglabel exit " + e);      
+			//         trace.out( "draglabel exit " + e);
 			DragSourceContext context = e.getDragSourceContext();
 		}
 

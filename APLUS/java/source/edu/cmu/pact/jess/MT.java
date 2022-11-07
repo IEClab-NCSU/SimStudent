@@ -247,7 +247,7 @@ public class MT {
 		}
 		
 		public String toString(){
-			//System.out.println(Arrays.toString(selectionList.toArray()));
+			//trace.out(Arrays.toString(selectionList.toArray()));
 			String output = "selectionList "+ Arrays.toString(selectionList.toArray()) + " actionList "+ Arrays.toString(actionList.toArray())+" inputList "+ Arrays.toString(inputList.toArray());
 			return output;
 		}
@@ -369,7 +369,7 @@ public class MT {
 			thisPkg+".SetDefaultSkillCategory"
 		};
 		if(trace.getDebugCode("dumpjessinfo")) {
-			//System.out.println("Jess Userfunction instances loaded:");
+			//trace.out("Jess Userfunction instances loaded:");
 			for(String ufn : userfunctions) {
 				try {
 					Class<Userfunction> cls = (Class<Userfunction>) Class.forName(ufn);
@@ -2049,7 +2049,7 @@ public class MT {
 						if (nameVal != null) {
 							String name =
 								nameVal.stringValue(rete.getGlobalContext());
-							//System.out.println("**** " + name + " fact = " + fact);
+							//trace.out("**** " + name + " fact = " + fact);
 							interfaceFactsMap.put(name, fact);
 						}
 					}

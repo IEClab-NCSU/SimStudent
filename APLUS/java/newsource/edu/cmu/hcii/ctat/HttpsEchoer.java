@@ -19,6 +19,8 @@ package edu.cmu.hcii.ctat;
  *   Enter key password for <my_home> (RETURN if same as keystore password): My1stKey
  * </tt>
  */
+import edu.cmu.pact.Utilities.trace;
+
 import java.io.*;
 import java.security.*;
 import java.util.Date;
@@ -28,7 +30,7 @@ import javax.net.ssl.*;
 public class HttpsEchoer {
 	public static void main(String[] args) {
 		String pkg = HttpsEchoer.class.getPackage().getName();
-		System.out.println(pkg);
+		trace.out(pkg);
 		String ksName = pkg.replaceAll("[.]", Matcher.quoteReplacement(File.separator))+
 				File.separator+"herong.jks";
 		char ksPass[] = "HerongJKS".toCharArray();
@@ -44,7 +46,7 @@ public class HttpsEchoer {
 			SSLServerSocketFactory ssf = sc.getServerSocketFactory();
 			SSLServerSocket s 
 			= (SSLServerSocket) ssf.createServerSocket(8888);
-			System.out.println("Server started:");
+			trace.out("Server started:");
 			printServerSocketInfo(s);
 			// Listening to the port
 			int count = 0;
@@ -53,7 +55,7 @@ public class HttpsEchoer {
 					SSLSocket c = (SSLSocket) s.accept();
 					// Someone is calling this server
 					count++;
-					System.out.println("Connection #: "+count);
+					trace.out("Connection #: "+count);
 					printSocketInfo(c);
 					BufferedWriter w = new BufferedWriter(
 							new OutputStreamWriter(c.getOutputStream()));
@@ -86,7 +88,7 @@ public class HttpsEchoer {
 					w.close();
 					r.close();
 					c.close();
-					System.out.println("Finished send at "+(new Date())+".\n\n");
+					trace.out("Finished send at "+(new Date())+".\n\n");
 				} catch(Exception ee) {
 					ee.printStackTrace();
 				}
@@ -96,29 +98,29 @@ public class HttpsEchoer {
 		}
 	}
 	private static void printSocketInfo(SSLSocket s) {
-		System.out.println("Socket class: "+s.getClass()+" at "+(new Date()));
-		System.out.println("   Remote address = "
+		trace.out("Socket class: "+s.getClass()+" at "+(new Date()));
+		trace.out("   Remote address = "
 				+s.getInetAddress().toString());
-		System.out.println("   Remote port = "
+		trace.out("   Remote port = "
 				+s.getPort());
-		System.out.println("   Local socket address = "
+		trace.out("   Local socket address = "
 				+s.getLocalSocketAddress().toString());
-		System.out.println("   Local address = "
+		trace.out("   Local address = "
 				+s.getLocalAddress().toString());
-		System.out.println("   Local port = "
+		trace.out("   Local port = "
 				+s.getLocalPort());
 	}
 	private static void printServerSocketInfo(SSLServerSocket s) {
-		System.out.println("Server socket class: "+s.getClass());
-		System.out.println("   Socker address = "
+		trace.out("Server socket class: "+s.getClass());
+		trace.out("   Socker address = "
 				+s.getInetAddress().toString());
-		System.out.println("   Socker port = "
+		trace.out("   Socker port = "
 				+s.getLocalPort());
-		System.out.println("   Need client authentication = "
+		trace.out("   Need client authentication = "
 				+s.getNeedClientAuth());
-		System.out.println("   Want client authentication = "
+		trace.out("   Want client authentication = "
 				+s.getWantClientAuth());
-		System.out.println("   Use client mode = "
+		trace.out("   Use client mode = "
 				+s.getUseClientMode());
 	} 
 }

@@ -26,6 +26,8 @@
 
 package edu.cmu.pact.BehaviorRecorder.StartStateEditor;
 
+import edu.cmu.pact.Utilities.trace;
+
 import java.awt.Color;
 
 /**
@@ -65,7 +67,7 @@ public class CTATColorUtil
 		}
 		 */
 		
-		System.out.println("nm=" + nm );
+		trace.out("nm=" + nm );
 		Color color=new Color(Integer.parseInt(nm,16));
 		return color;
 	} 

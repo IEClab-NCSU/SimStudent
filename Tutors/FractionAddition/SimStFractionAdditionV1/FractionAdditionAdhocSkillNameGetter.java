@@ -107,7 +107,7 @@ public class FractionAdditionAdhocSkillNameGetter extends SkillNameGetter {
 			}
 			
 			else if (col==5 && row==2){
-				System.out.println("******* col5, row2 and combo is " + this.getCommCombo(brController, 3).getValue());
+				trace.out("******* col5, row2 and combo is " + this.getCommCombo(brController, 3).getValue());
 				/*** ADD_DEN****/
 				if (this.getCommCombo(brController, 3).getValue().equals("Add")){	
 					skill="add_denominator";
@@ -152,7 +152,7 @@ public class FractionAdditionAdhocSkillNameGetter extends SkillNameGetter {
 				}
 				/*** SIMPLIFY_DEN****/
 				else if (this.getCommCombo(brController, 4).getValue().equals("Simplify")){
-					System.out.println("******* col7, row2, 4rd dropdown complex");
+					trace.out("******* col7, row2, 4rd dropdown complex");
 						skill="simplify_denominator";	
 					
 				}

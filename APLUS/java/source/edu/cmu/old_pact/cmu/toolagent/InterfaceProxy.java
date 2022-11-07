@@ -16,6 +16,7 @@ import edu.cmu.old_pact.dormin.ToolProxy;
 import edu.cmu.old_pact.objectregistry.ObjectRegistry;
 import edu.cmu.pact.BehaviorRecorder.Controller.BR_Controller;
 import edu.cmu.pact.BehaviorRecorder.Controller.SingleSessionLauncher;
+import edu.cmu.pact.Utilities.trace;
 
 public class InterfaceProxy extends ToolProxy {
 	private Agentable agent = null;
@@ -60,7 +61,7 @@ public class InterfaceProxy extends ToolProxy {
 				throw new InvalidPropertyValueException("in ShowMessage, Message must be a string or list of strings");
 		}
 		catch (MissingParameterException ex) { 
-			System.out.println("No messages in showMessage ");
+			trace.out("No messages in showMessage ");
 		}
 		Vector pointers = (Vector)(inEvent.getOptionalParameter("Pointers"));
 		if(pointers != null && pointers.size() == 0)
@@ -78,7 +79,7 @@ public class InterfaceProxy extends ToolProxy {
 			mailToProxy(inEvent, TypeNameDesc);
 		}
 		catch (DorminException e) { 
-			System.out.println("InterfaceProxy select "+e.toString()); 
+			trace.out("InterfaceProxy select "+e.toString());
 		}
 	}
 	
@@ -93,7 +94,7 @@ public class InterfaceProxy extends ToolProxy {
 			((StudentInterface)getObject()).setProperty("ProblemName", p_name);
 		}
 		catch (DorminException e) {
-			System.out.println("InterfaceProxy startProblem "+e.toString()); 
+			trace.out("InterfaceProxy startProblem "+e.toString());
 		}
 	}
 

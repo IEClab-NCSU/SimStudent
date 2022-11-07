@@ -121,7 +121,7 @@ public class CTATtoLMS{
     {
 		String status = run(args, false);
     	if(status != null && status != "") //should be empty if options want it so
-    		System.out.println(status);
+    		trace.out(status);
     }
     
 	/**
@@ -870,7 +870,7 @@ public class CTATtoLMS{
     		if(fromMenu)
     			history += "Debug: " + message + "\r\n";
     		else
-    			System.out.println(message);
+    			trace.out(message);
     }
     
     private void error(String error)
@@ -889,7 +889,7 @@ public class CTATtoLMS{
     		if(fromMenu)
     			history += "Warning: " + warning + "\r\n";
     		else
-    			System.out.println("Warning: " + warning);
+    			trace.out("Warning: " + warning);
     }
     
     private boolean checkBadString(String toCheck)

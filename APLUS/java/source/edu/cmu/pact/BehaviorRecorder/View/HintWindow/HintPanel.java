@@ -397,7 +397,7 @@ public class HintPanel extends JPanel implements ActionListener,
      * @see pact.CommWidgets.event.IncorrectActionListener#incorrectActionPerformed(pact.CommWidgets.event.IncorrectActionEvent)
      */
     public void incorrectActionPerformed(IncorrectActionEvent e) {
-        // System.out.println("inside message frame incoprrect action
+        // trace.out("inside message frame incoprrect action
         // performed");
         // if this is a dfa item then enable the hint button
         if (dfaPanel) {

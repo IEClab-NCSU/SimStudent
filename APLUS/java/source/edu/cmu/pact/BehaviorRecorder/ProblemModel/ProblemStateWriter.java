@@ -152,7 +152,7 @@ public class ProblemStateWriter {
     /************ Public Mirror for UNDO TEST 1337 ******************/
 
     public byte[] createBRDDiskImagePublic() throws Exception {
-    	System.out.println("***1337*** CREATEBRDISKIMAGEPUBLIC");
+    	trace.out("***1337*** CREATEBRDISKIMAGEPUBLIC");
     	return createBRDDiskImage();
     }
     

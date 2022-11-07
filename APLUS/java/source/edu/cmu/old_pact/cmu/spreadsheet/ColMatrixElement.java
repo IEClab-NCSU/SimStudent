@@ -39,7 +39,7 @@ public class ColMatrixElement extends DorminMatrixElement{
 			vetoableChange(evt);
 		} catch (PropertyVetoException e){
 			//if(w < width)
-			//	System.out.println("in ColMatrixElement can't setWidth to "+w+" minWidth = "+width);
+			//	trace.out("in ColMatrixElement can't setWidth to "+w+" minWidth = "+width);
 		}
 	}
 	

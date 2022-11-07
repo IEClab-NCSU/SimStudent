@@ -38,7 +38,7 @@ public class ClOracle implements Oracle {
 		int numSteps=clSolver.goToState(brController, node);
 		String message = clSolver.askNextStep();
 		String clAction = message.split(";")[1];
-		//System.out.println("Message : "+message);
+		//trace.out("Message : "+message);
 		setSelection(findSelection(brController, node, clAction));
 		setInput(findInput(message, numSteps));
 		return new Sai(getSelection(), getAction(), getInput());

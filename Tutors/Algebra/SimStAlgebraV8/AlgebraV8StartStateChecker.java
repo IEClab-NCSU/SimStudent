@@ -1,6 +1,7 @@
 package SimStAlgebraV8;
 
 
+import edu.cmu.pact.Utilities.trace;
 import edu.cmu.pact.miss.StartStateChecker;
 import edu.cmu.pact.BehaviorRecorder.Controller.BR_Controller;
 import edu.cmu.pact.Utilities.CTAT_Controller;
@@ -69,7 +70,7 @@ public class AlgebraV8StartStateChecker extends StartStateChecker {
 	
 	}
 
-System.out.println("***Trying to validate start state!!!!!  1");
+trace.out("***Trying to validate start state!!!!!  1");
 	if (brController.getMissController().getSimSt().isWebStartMode()){
 		 productionRulesFile=WebStartFileDownloader.SimStWebStartDir +"/"+ EXPERT_PRODUCTION_RULE_FILE;
 		 wmeTypesFile=WebStartFileDownloader.SimStWebStartDir +"/"+ SimSt.WME_TYPE_FILE;  
@@ -98,18 +99,18 @@ System.out.println("***Trying to validate start state!!!!!  1");
 		} catch (Exception e1) {
 			returnValue=false;
 			
-		System.out.println("***Trying to validate start state: An exception occurred!");
+		trace.out("***Trying to validate start state: An exception occurred!");
 
 		}
 		
 		
-		System.out.println("***Trying to validate start state!!!!!  5");
+		trace.out("***Trying to validate start state!!!!!  5");
 			
 		if (problem.contains("--") || problem.contains("*-") || problem.contains("++") || problem.contains("**"))
 			returnValue=false;
 		
 	
-		System.out.println("***Start state validated, outcome is " + returnValue);
+		trace.out("***Start state validated, outcome is " + returnValue);
 				
 	 return returnValue;
 	 

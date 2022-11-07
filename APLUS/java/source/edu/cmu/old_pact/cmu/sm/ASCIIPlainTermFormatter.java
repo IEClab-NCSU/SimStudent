@@ -12,7 +12,7 @@ public class ASCIIPlainTermFormatter implements ExpressionFormatter {
 	}
 	
 	public String produceOutput(Expression theExpression) {
-		//System.out.println("APTF producing output for "+theExpression.debugForm());
+		//trace.out("APTF producing output for "+theExpression.debugForm());
 		if (theExpression instanceof TermExpression) {
 			String outString="";
 			TermExpression tEx = (TermExpression)theExpression;

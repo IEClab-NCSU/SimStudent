@@ -91,10 +91,10 @@ public enum StudentInterfaceConnectionStatus {
 	 * @param args strings to try with {@link #valueOf(String)}
 	 */
 	public static void main(String[] args) {
-		System.out.println("values()\n");
+		trace.out("values()\n");
 		for(StudentInterfaceConnectionStatus s : values())
 			System.out.printf("[%d] %-17s %s\n", s.ordinal(), s, s.toString());
-		System.out.println();
+		trace.out();
 		
 		for(String arg : args) {
 			try {

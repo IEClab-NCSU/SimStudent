@@ -68,7 +68,7 @@ class TSLTListener {
 					br.close();
 					cSock.close();
 				} catch (IOException ioe) {
-					System.out.println("Exception in reading/writing (TSLT listener)");
+					trace.out("Exception in reading/writing (TSLT listener)");
 					ioe.printStackTrace();} 
 				
 			}
@@ -105,7 +105,7 @@ class TSLTListener {
  	{
  		int port;
  		if(args.length > 1){
- 			System.out.println(usage);
+ 			trace.out(usage);
  		}
  		if(args.length == 1){
  			port = Integer.parseInt(args[0]);

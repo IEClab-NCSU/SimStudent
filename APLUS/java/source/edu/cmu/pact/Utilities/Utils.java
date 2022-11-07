@@ -98,11 +98,11 @@ public class Utils {
 		Set d = new HashSet();
 		for (Iterator it = m.iterator(); it.hasNext(); ) {
 			Object elt = it.next();
-			System.out.println("elt "+elt+", in s "+s.contains(elt));
+			trace.out("elt "+elt+", in s "+s.contains(elt));
 			if (!(s.contains(elt)))
 				d.add(elt);
 		}
-		System.out.println("d "+d.toString());
+		trace.out("d "+d.toString());
 		return d;
 	}
 	
@@ -547,7 +547,7 @@ public class Utils {
 				tempStr = tempStr.replaceAll("\"", "");
 				URL url = Utils.class.getResource(tempStr);
 				if (url != null) {
-					//					System.out.println("url: " + url.toString());
+					//					trace.out("url: " + url.toString());
 					messageBuffer.replace(imgStart, end, url.toString());
 				}
 			}

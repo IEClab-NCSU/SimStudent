@@ -185,11 +185,11 @@ public class ExampleTracerGraph implements ProblemModelListener {
 	    return true;
 	}
 	/*
-	  System.out.println(traversedLinks);
-	  System.out.println(newLink);
-	  System.out.println(path);
-	  System.out.println(isOrderOK(traversedLinks, newLink, path));
-	  System.out.println();*/
+	  trace.out(traversedLinks);
+	  trace.out(newLink);
+	  trace.out(path);
+	  trace.out(isOrderOK(traversedLinks, newLink, path));
+	  trace.out();*/
 		
 	if(path.contains(newLink)
 	   && isOrderOK(traversedLinks, newLink, path)

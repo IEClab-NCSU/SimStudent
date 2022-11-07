@@ -80,7 +80,7 @@ public abstract class GridElement extends Panel implements 	PropertyChangeListen
 				String iden = (String)keys.nextElement();
 				textField.setOwnProperty(iden,cellProperties.get(iden));
 			}
-		} catch (NoSuchFieldException e) {System.out.println("in GE initTextField");e.printStackTrace(); }
+		} catch (NoSuchFieldException e) {trace.out("in GE initTextField");e.printStackTrace(); }
 	*/
 		textField.setWidth(((Integer)cellProperties.get("WIDTH")).intValue());
 		textField.setHeight(((Integer)cellProperties.get("HEIGHT")).intValue());

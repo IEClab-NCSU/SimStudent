@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 
 import java.util.Date;
 
+import edu.cmu.pact.Utilities.trace;
 import org.tiling.scheduling.Scheduler;
 import org.tiling.scheduling.SchedulerTask;
 import org.tiling.scheduling.examples.iterators.DailyIterator;
@@ -27,7 +28,7 @@ public class AlarmClock
                 soundAlarm();
             }
             private void soundAlarm() {
-                System.out.println("Wake up! " +
+                trace.out("Wake up! " +
                     "It's " + dateFormat.format(new Date()));
                 // Start a new thread to sound an alarm...
             }

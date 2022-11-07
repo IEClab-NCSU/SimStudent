@@ -403,13 +403,13 @@ public class RhsState implements Cloneable {
 
     	Vector /* of String */ seeds = (Vector)instruction.getSeeds();
 
-    	//System.out.println("instruction = " + instruction);
+    	//trace.out("instruction = " + instruction);
     	
     	int seedIndex = 0;
     	// For variable unification
     	// Hashtable unifier = new Hashtable();
     	HashMap unifier = new edu.cmu.pact.miss.HashMap();
-    	//System.out.println("seeds = " + seeds);
+    	//trace.out("seeds = " + seeds);
     	
     	// Extract the list of expressions from the state <rhs>
     	Vector /* of BindPair */ expList = getExpList();
@@ -539,7 +539,7 @@ public class RhsState implements Cloneable {
             while (values.hasNext()) {
                 String value = (String)values.next();
                 String match = (String)hashMap.get(value);
-                System.out.println(key + (match.equals("T") ? " == " : " != ") + value);
+                trace.out(key + (match.equals("T") ? " == " : " != ") + value);
             }
         }
     }

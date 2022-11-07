@@ -117,8 +117,8 @@ public class Skills implements Serializable
 		for (Skill skill : skills.getAllSkills())
 			System.out.printf("%2d. %-30s %-30s %4.2f\n",
 					++i, skill.getCategory(), skill.getName(), skill.getPKnown());
-		System.out.println();
-		System.out.println(skills.toXMLString());
+		trace.out();
+		trace.out(skills.toXMLString());
 	}
 
 	/**

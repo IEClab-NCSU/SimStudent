@@ -23,7 +23,7 @@ public abstract class CLBased extends EqFeaturePredicate {
 			//3 expands numerator and denominator
 			return parser.parse(expString, vars, settings).expand(3);
 		} catch (ParseException e) {
-		    System.out.println("expString" + expString);
+		    trace.out("expString" + expString);
 			e.printStackTrace();
 		} catch (DomainException e) {
 			e.printStackTrace();

@@ -320,7 +320,7 @@ public class DockManager extends CTATBase {
 		try {
 			FileInputStream fileInputStream = new FileInputStream(new File(
 					filename));
-			System.out.println(" File Name : "+filename);
+			trace.out(" File Name : "+filename);
 			rootWindow.read(new ObjectInputStream(fileInputStream));
 			fileInputStream.close();
 			layoutLoaded = true;
@@ -1192,7 +1192,7 @@ public class DockManager extends CTATBase {
 	// * For the present it is unused and so commented out.
 	// */
 	// public void repaintRootWindow() {
-	// System.out.println("RepaintingRootWindow");
+	// trace.out("RepaintingRootWindow");
 	// this.rootWindow.repaint();
 	// }
 }

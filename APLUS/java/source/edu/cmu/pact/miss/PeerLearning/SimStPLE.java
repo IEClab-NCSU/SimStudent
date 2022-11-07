@@ -841,7 +841,7 @@ public class SimStPLE {
 					for (int j = 0; j < allQuizProblems.size(); j++)
 						totalNumberOfProblems = totalNumberOfProblems + allQuizProblems.get(j).size();
 
-					// System.out.println(allQuizProblems);
+					// trace.out(allQuizProblems);
 					int numberOfProblemsInFinalChallenge = allQuizProblems.get(1).size();
 
 					if (currentProblem >= totalNumberOfProblems) { // if we must add a new final challenge section
@@ -1052,7 +1052,7 @@ public class SimStPLE {
 			for (int j = 0; j < allQuizProblems.size(); j++)
 				totalNumberOfProblems = totalNumberOfProblems + allQuizProblems.get(j).size();
 
-			// System.out.println(allQuizProblems);
+			// trace.out(allQuizProblems);
 			int numberOfProblemsInFinalChallenge = allQuizProblems.get(1).size();
 
 			if (currentProblem >= totalNumberOfProblems) { // if we must add a new final challenge section
@@ -1088,7 +1088,7 @@ public class SimStPLE {
 			// quizLevel = 0;
 			quizProblems = allQuizProblems.get(quizLevel);
 			quizSections = allQuizSections.get(quizLevel);
-			// System.out.println(" Quiz Sections completed : "+quizSections +" "+" Quiz
+			// trace.out(" Quiz Sections completed : "+quizSections +" "+" Quiz
 			// Level "+quizLevel);
 			currentQuizSection = new ArrayList<String>();
 			currentQuizSectionNumber = quizSections.get(currentProblem);
@@ -3185,7 +3185,7 @@ public class SimStPLE {
 			Vector<ProblemEdge> solution = simSt.getProblemAssessor().findSolutionPath(startState);
 			// solutions.add(solutions.size(), solution != null ? solution : new
 			// Vector<ProblemEdge>());
-			// System.out.println("solveQuizProblems() gotten a solution " + solution.size()
+			// trace.out("solveQuizProblems() gotten a solution " + solution.size()
 			// + "...");
 			solutions.add(solution != null ? solution : new Vector<ProblemEdge>());
 
@@ -3202,7 +3202,7 @@ public class SimStPLE {
 					"Quiz" + currentQuizSectionNumber + "." + (currentProblem + i), solutionSteps(problem, solution),
 					"", result, (int) quizQuestionDuration);
 			/*
-			 * System.out.println("SimStPLE.QuizSimSt DONE on " + problem); String[] msg =
+			 * trace.out("SimStPLE.QuizSimSt DONE on " + problem); String[] msg =
 			 * {"suspended"}; SimSt.suspendForDebug(getBrController(), "solveQuizProblems",
 			 * msg);
 			 */
@@ -3229,7 +3229,7 @@ public class SimStPLE {
 		while (keys.hasNext()) {
 			String key = (String) keys.next();
 			String property = properties.getProperty(key);
-			// System.out.println(key + " : " + property);
+			// trace.out(key + " : " + property);
 		}
 	}
 
@@ -3431,7 +3431,7 @@ public class SimStPLE {
 		// If either LHS or RHS has not been replaced already, remove it
 		solutions = solutions.replace("LHS", "");
 		solutions = solutions.replace("RHS", "");
-		// System.out.println("solutions = " + solutions);
+		// trace.out("solutions = " + solutions);
 		return solutions;
 	}
 
@@ -3501,7 +3501,7 @@ public class SimStPLE {
 		// If either LHS or RHS has not been replaced already, remove it
 		solutions = solutions.replace("LHS", "");
 		solutions = solutions.replace("RHS", "");
-		// System.out.println("solutions = " + solutions);
+		// trace.out("solutions = " + solutions);
 		return solutions;
 	}
 
@@ -3699,7 +3699,7 @@ public class SimStPLE {
 
 	public void addFoAStateListener(String element) {
 		Object widget = brController.lookupWidgetByName(element);
-		// System.out.println(" Widget "+widget.toString()+" Name : "+element);
+		// trace.out(" Widget "+widget.toString()+" Name : "+element);
 		if (widget != null && widget instanceof TableExpressionCell) {
 			TableExpressionCell cell = (TableExpressionCell) widget;
 			cell.addCaretListener(new FoAStateChangeListener(element));
@@ -4133,7 +4133,7 @@ public class SimStPLE {
 		if (isFirstTimeAPLUS()) {
 			if (this.getSimSt().isSsCogTutorMode())
 				aplus.showSplashScreen();
-			// System.out.println("do nothing");
+			// trace.out("do nothing");
 		} else if (this.getSimSt().isSsCogTutorMode() && isAplusStartUp) {
 			this.cogTutorLaunchComplete();
 			/* disable the restart button for AplusControl */
@@ -5404,14 +5404,14 @@ public class SimStPLE {
 			}
 
 		}
-		// System.out.println(" Before the Checker ");
+		// trace.out(" Before the Checker ");
 
 		if (simSt.isSsMetaTutorMode() || simSt.isSsAplusCtrlCogTutorMode()) {
 			String problemName = simSt.getSsInteractiveLearning()
 					.createName(getSimStPeerTutoringPlatform().getStudentInterface().getComponents());
 			boolean solveable = simSt.getSsInteractiveLearning().isSolvable(simSt.getProblemCheckerOracle(),
 					problemName, brController);
-			// System.out.println(" Is it solvable : "+solveable);
+			// trace.out(" Is it solvable : "+solveable);
 			if (!solveable) {
 				String message = "	Try giving solvable equation ";
 				giveDialogMessage(message);
@@ -5979,7 +5979,7 @@ public class SimStPLE {
 			// the one which
 			// acquires the lock goes ahead while the other waits.
 
-			System.out.println(" This is the quiz !!! ");
+			trace.out(" This is the quiz !!! ");
 			if (runType.equalsIgnoreCase("springboot")) {
 				return;
 			}
@@ -6556,7 +6556,7 @@ public class SimStPLE {
 			getBrController().startNewProblem(); // To set the platform for starting a new problem.
 
 			// problem = "3x+3x=0";
-			System.out.println("Problem : " + problem);
+			trace.out("Problem : " + problem);
 			getSsInteractiveLearning().createStartStateQuizProblem(problem);
 			logger.simStLog(SimStLogger.SIM_STUDENT_QUIZ, SimStLogger.QUIZ_QUESTION_GIVEN_ACTION,
 					"Quiz" + (currentQuizSectionNumber + 1) + "." + (currentProblem + i + 1), problem, "");
@@ -6590,7 +6590,7 @@ public class SimStPLE {
 
 			/*
 			 * for(int e=0 ; e<solution.size(); e++){ ProblemEdge edge = solution.get(e);
-			 * System.out.println("Edge : "+edge.getSelection()+" Action : "+edge.getAction(
+			 * trace.out("Edge : "+edge.getSelection()+" Action : "+edge.getAction(
 			 * )+" Input : "+edge.getInput()+" Result : "+edge.isCorrect()); }
 			 */
 
@@ -6802,7 +6802,7 @@ public class SimStPLE {
 
 		}
 
-		// System.out.println(" isSsMetaTutorMode : "+simSt.isSsMetaTutorMode());
+		// trace.out(" isSsMetaTutorMode : "+simSt.isSsMetaTutorMode());
 		if (simSt.isSsMetaTutorMode()) {
 
 			updateWorkingMemoryWithQuizResults(numCorrect, failedQuizProblems);
@@ -6878,12 +6878,12 @@ public class SimStPLE {
 			}
 		}
 
-		// System.out.println(" Faliure Count ");
-		// System.out.println(" All Quiz failed :
+		// trace.out(" Faliure Count ");
+		// trace.out(" All Quiz failed :
 		// "+this.getSimSt().getModelTraceWM().getAllQuizFailed());
-		// System.out.println(" No of failed :
+		// trace.out(" No of failed :
 		// "+this.getMissController().getSimSt().getModelTraceWM().getAllQuizFailCount());
-		// System.out.println(" Failed count so far :
+		// trace.out(" Failed count so far :
 		// "+this.getMissController().getSimSt().getModelTraceWM().getQuizFailCount());
 	}
 
@@ -7005,7 +7005,7 @@ public class SimStPLE {
 	 */
 	public void shutdown() {
 		int pleDuration = (int) ((Calendar.getInstance().getTimeInMillis() - startPleTime) / 1000);
-		// System.out.println( " Right place for shutting down the application ");
+		// trace.out( " Right place for shutting down the application ");
 		brController.getMissController().getSimSt().saveMTWMState();
 
 		logger.simStShortLog(SimStLogger.SIM_STUDENT_PLE, SimStLogger.PLE_CLOSED_ACTION, "", "", pleDuration);

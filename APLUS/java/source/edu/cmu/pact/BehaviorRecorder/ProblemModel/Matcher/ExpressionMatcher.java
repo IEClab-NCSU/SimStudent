@@ -244,7 +244,7 @@ public class ExpressionMatcher extends ExactMatcher {
 
     public Object interpolate(String expression, String selection, String action, String input) {
         try {
-            System.out.println("interpolating " + getInputExpression());
+            trace.out("interpolating " + getInputExpression());
             return functions.interpolate(expression, selection, action, input);
         } catch (Exception e) {
             e.printStackTrace(System.err);
@@ -288,9 +288,9 @@ public class ExpressionMatcher extends ExactMatcher {
         lastInput = comparee; //this is used in the old ExpressionMatcherPanel
         lastEvaluationTime = new Date();
         
-        //System.out.println("result: " + result);
-       // System.out.println("input: " + comparee);
-       // System.out.println("relation: " + getRelation() + "\n\n");
+        //trace.out("result: " + result);
+       // trace.out("input: " + comparee);
+       // trace.out("relation: " + getRelation() + "\n\n");
 
         try {
 			equals eq = new equals();
@@ -412,7 +412,7 @@ public class ExpressionMatcher extends ExactMatcher {
     }
 
     public boolean checkExpression() {
-        System.out.println("validating " + getInputExpression());
+        trace.out("validating " + getInputExpression());
         boolean check = functions.validate(getInputExpression());
         if (functions.getReturnType()==boolean.class)
             setRelation("boolean");

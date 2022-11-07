@@ -24,6 +24,7 @@ import edu.cmu.old_pact.html.library.AutoWrapper;
 import edu.cmu.old_pact.html.library.DraggSourceViewer;
 import edu.cmu.old_pact.html.library.HtmlDocument;
 import edu.cmu.old_pact.settings.ParameterSettings;
+import edu.cmu.pact.Utilities.trace;
 
 
 public class HtmlPanel extends Panel implements PropertyChangeListener, Viewable {
@@ -274,7 +275,7 @@ public class HtmlPanel extends Panel implements PropertyChangeListener, Viewable
 			context = context.substring(0,context.length()-2);
 			displayHtml(context);
 		}catch (IOException e) { 
-			System.out.println("HtmlPanel display "+e.toString());
+			trace.out("HtmlPanel display "+e.toString());
 		}
 	}
 	
@@ -291,7 +292,7 @@ public class HtmlPanel extends Panel implements PropertyChangeListener, Viewable
 			//trace.out (5, this, "width = " + this.getSize().width);
 			sObjMan.treatMessage(contextWithMathML);
 		}catch (IOException e) { 
-			System.out.println("HtmlPanel displayHtml "+e.toString());
+			trace.out("HtmlPanel displayHtml "+e.toString());
 		}
 	}
 	
@@ -322,7 +323,7 @@ public class HtmlPanel extends Panel implements PropertyChangeListener, Viewable
 				displayHtmlIfExists();
 			}
 		}catch(MalformedURLException e) {
-			System.out.println("HtmlPanel : Can't create URL: "+b);
+			trace.out("HtmlPanel : Can't create URL: "+b);
 		}
 	}
 	
@@ -386,7 +387,7 @@ public class HtmlPanel extends Panel implements PropertyChangeListener, Viewable
 		  endExpInd = getExprEnd(str);	
 	
 		  if (endExpInd == -1) {
-		    System.out.println("----!!! malformed Html: '</EXPRESSION>' not found !!! EXPR='"+res+str+"'");
+		    trace.out("----!!! malformed Html: '</EXPRESSION>' not found !!! EXPR='"+res+str+"'");
 		    return res + str;
 		  }	
 		  expr = str.substring(0, endExpInd);
@@ -482,7 +483,7 @@ public class HtmlPanel extends Panel implements PropertyChangeListener, Viewable
 		  	count2 = countExprLength(resultMathML);
 		  }
 			catch (BadExpressionError err) {
-				System.out.println("---- !!! SM error: can't convert to MathML... EXPR='"+str+"'");
+				trace.out("---- !!! SM error: can't convert to MathML... EXPR='"+str+"'");
 		  }	  
 		delta = count2-count1;	
 		

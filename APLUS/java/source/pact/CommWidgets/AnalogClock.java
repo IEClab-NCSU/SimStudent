@@ -45,7 +45,7 @@ implements ActionListener, Serializable {
 	// ***************************************************************************//
 	/** Creates a new instance of AnalogClock */
 	public AnalogClock() {
-		// System.out.println("AnalogClock\n");
+		// trace.out("AnalogClock\n");
 		studentMode = false;
 		initialized = false;
 		actionName = "UpdateClock";
@@ -106,7 +106,7 @@ implements ActionListener, Serializable {
 	}
 	// ***************************************************************************//
 	public MessageObject getDescriptionMessage() {
-		// System.out.println("START MessageObject\n");
+		// trace.out("START MessageObject\n");
 		if (!initialize(getController()))
 		{
 			trace.out(5, this, "Error!!!!!!!!!!!!!!!!!");
@@ -125,7 +125,7 @@ implements ActionListener, Serializable {
 		
 		if(instances != null)    mo.setProperty("jessInstances", instances);
 		serializeGraphicalProperties(mo);
-		// System.out.println("END MessageObject\n");
+		// trace.out("END MessageObject\n");
 		if (!studentMode)
 		{
 			hideConfigComponents();
@@ -135,19 +135,19 @@ implements ActionListener, Serializable {
 	// ***************************************************************************//
 	public Vector createJessDeftemplates()
 	{
-		// System.out.println("START createJessDefttemplates\n");
+		// trace.out("START createJessDefttemplates\n");
 		Vector deftemplates = new Vector();
 		String deftemplateStr =
 		"(deftemplate analogclock (slot name)"
 		+ " (slot hour) (slot minutes) (slot AMPM) (slot value))";
 		deftemplates.add(deftemplateStr);
-		// System.out.println("END createJessDeftemplates");
+		// trace.out("END createJessDeftemplates");
 		return deftemplates;
 	}
 	// ***************************************************************************//
 	public Vector createJessInstances()
 	{
-		// System.out.println("START createJessInstances\n");
+		// trace.out("START createJessInstances\n");
 		Vector instances = new Vector();
 		String instanceStr = "(assert (analogclock "
 		+ "(name " + commName + ") "
@@ -157,7 +157,7 @@ implements ActionListener, Serializable {
 		+ "(value " + clock.getHour() + "-" + clock.getMinutes()
 		+ "-" + clock.getAMPM() + ")))";
 		instances.add(instanceStr);
-		// System.out.println("END createJessInstances\n");
+		// trace.out("END createJessInstances\n");
 		return instances;
 	}
 	// ***************************************************************************//
@@ -165,26 +165,26 @@ implements ActionListener, Serializable {
 	}
 	// ***************************************************************************//
 	public void doCorrectAction(String str, String str2, String str3) {
-		// System.out.println("Do correct action\n");
+		// trace.out("Do correct action\n");
 	}
 	// ***************************************************************************//
 	public void doIncorrectAction(String str, String str1) {
-		// System.out.println("Do incorrect action\n");
+		// trace.out("Do incorrect action\n");
 	}
 	// ***************************************************************************//
 	public void doInterfaceAction(String str, String str1, String str2)
 	{
-		// System.out.println("Do interface action\n");
-		// System.out.println("Str = " + str);
-		// System.out.println("Str1 = " + str1);
-		// System.out.println("Str2 = " + str2);
-		// System.out.println("\n");
+		// trace.out("Do interface action\n");
+		// trace.out("Str = " + str);
+		// trace.out("Str1 = " + str1);
+		// trace.out("Str2 = " + str2);
+		// trace.out("\n");
 		if (str1.equals("UpdateClock"))
 		{
 			String[] values = str2.split("-");
-			// System.out.println("blah 1 = " + values[0]);
-			// System.out.println("blah 2 = " + values[1]);
-			// System.out.println("blah 3 = " + values[2]);
+			// trace.out("blah 1 = " + values[0]);
+			// trace.out("blah 2 = " + values[1]);
+			// trace.out("blah 3 = " + values[2]);
 			clock.setHour(Integer.parseInt(values[0]));
 			clock.setMinutes(Integer.parseInt(values[1]));
 			clock.setAMPM(values[2]);
@@ -194,11 +194,11 @@ implements ActionListener, Serializable {
 	}
 	// ***************************************************************************//
 	public void doLISPCheckAction(String str, String str1) {
-		// System.out.println("Do lisp check action\n");
+		// trace.out("Do lisp check action\n");
 	}
 	// ***************************************************************************//
 	public Object getValue() {
-		// System.out.println("Get value\n");
+		// trace.out("Get value\n");
 		return "" + clock.getHour()
 		+ "-"
 		+ clock.getMinutes()

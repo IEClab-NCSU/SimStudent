@@ -62,7 +62,7 @@ public class SpreadsheetPanel extends DoubleBufferedPanel // Panel
 		if(showHeaders != HEADER_NO)
 			updateView();
 			
-//System.out.println("after updateView: zeroColHeader="+zeroColHeader+" zeroRowHeader="+zeroRowHeader);
+//trace.out("after updateView: zeroColHeader="+zeroColHeader+" zeroRowHeader="+zeroRowHeader);
 	}
 	
 	public SpreadsheetPanel(CellMatrix cellMatrix, 
@@ -474,7 +474,7 @@ public class SpreadsheetPanel extends DoubleBufferedPanel // Panel
 	
 	
 //	public void update(Graphics g){
-//System.out.println("SP update");
+//trace.out("SP update");
 //		paint(g);
 //	}
 	

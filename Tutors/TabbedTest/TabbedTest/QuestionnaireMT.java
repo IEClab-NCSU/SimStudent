@@ -78,7 +78,7 @@ public class QuestionnaireMT extends javax.swing.JPanel implements DoneButton, T
 			Object value=null;
 			try {
 				value = field.get(this);	
-				System.out.println(" Field : "+value);
+				trace.out(" Field : "+value);
 			} catch (IllegalArgumentException e) {
 				e.printStackTrace();
 			} catch (IllegalAccessException e) {
@@ -91,7 +91,7 @@ public class QuestionnaireMT extends javax.swing.JPanel implements DoneButton, T
 					multipleChoice.setCommName(field.getName());	
 					interfaceElements.put(field.getName(),multipleChoice);
 				}
-				System.out.println("Key : "+field.getName()+" Value : "+interfaceElements.get(field.getName()));
+				trace.out("Key : "+field.getName()+" Value : "+interfaceElements.get(field.getName()));
 			}
 		}
 		
@@ -541,7 +541,7 @@ public class QuestionnaireMT extends javax.swing.JPanel implements DoneButton, T
 			@Override
 			public void studentActionPerformed(StudentActionEvent sae) {
 				// TODO Auto-generated method stub
-				System.out.println("Success !!");
+				trace.out("Success !!");
 				prompt(sae);
 			}
         	

@@ -1,5 +1,7 @@
 package edu.cmu.pact.miss.AplusToBRD;
 
+import edu.cmu.pact.Utilities.trace;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -440,12 +442,12 @@ public class AplusToBRDConverter {
        	
          		/*On first iteration set the user*/
          		if (getPreviousAnonID().equals("")){
-         				System.out.println("Processing user " + anonId + " ..... ");	
+         				trace.out("Processing user " + anonId + " ..... ");
          				setPreviousAnonID(anonId);
          		}
          		//if we found a new user to to student log and dump any proper residual transactions for that user.
          		if (isNewUser(anonId)){
-         			System.out.println("Processing user " + anonId + " ......");
+         			trace.out("Processing user " + anonId + " ......");
          			dumpResiduals_stud(student_br,getPreviousAnonID(),fw);
          			setPreviousAnonID(anonId);      		
          		}
@@ -883,17 +885,17 @@ public class AplusToBRDConverter {
 
 		AplusToBRDConverter logConverter = new AplusToBRDConverter("/Users/simstudent/Documents/workspace/Log2Brd/aplus_all_all1.txt","/Users/simstudent/Documents/workspace/Log2Brd/student_all.txt","/Users/simstudent/Documents/workspace/Log2Brd/output_teliki_problem1.txt");
 		//logConverter.mergeAndPreprocessLogs();
-		//System.out.println("Converting logs to BRDWriter format...");
+		//trace.out("Converting logs to BRDWriter format...");
 		//logConverter.convertToBRDWriterFormat("/Users/simstudent/Documents/workspace/Log2Brd/output_teliki_problem1.txt","/Users/simstudent/Documents/workspace/Log2Brd/outBrd.txt");
-		//System.out.println("Creating BRD files...");
+		//trace.out("Creating BRD files...");
 		AplusToBRDWriter ssBRDTest = new AplusToBRDWriter();
 		ssBRDTest.testFunc("/Users/simstudent/Documents/workspace/Log2Brd/outBrd.txt", "/Users/simstudent/Documents/workspace/Log2Brd/tmp");
 		  
 		
 		 
     /*    if (args.length != 2) {
-            System.out.println("Usage: AplusToBRDConverter <input_file> <output_file> <output_dir>");
-            System.out.println("Specify the aplus table, the student table, the output file to save all the necessary transactions from these two tables");
+            trace.out("Usage: AplusToBRDConverter <input_file> <output_file> <output_dir>");
+            trace.out("Specify the aplus table, the student table, the output file to save all the necessary transactions from these two tables");
             System.exit(-1);
         }
         
@@ -905,7 +907,7 @@ public class AplusToBRDConverter {
        	}
 		*/
 		
-		System.out.println("done!");
+		trace.out("done!");
 	
 	}
 	

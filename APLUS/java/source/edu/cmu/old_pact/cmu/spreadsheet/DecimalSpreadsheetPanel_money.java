@@ -64,8 +64,8 @@ public class DecimalSpreadsheetPanel_money extends DecimalSpreadsheetPanel {
 		numRows = cellMatrix.getNumOfRows();
 		numCols = cellMatrix.getNumOfCols();
 		
-		//System.out.println("!!!!!!! NATASHA: in DecimalSpreadsheetPanel.updateView!!!!!!!");
-		//System.out.println("numRows=  "+numRows+"  numCols=  "+numCols+"  numDigits=  "+numDigits);	
+		//trace.out("!!!!!!! NATASHA: in DecimalSpreadsheetPanel.updateView!!!!!!!");
+		//trace.out("numRows=  "+numRows+"  numCols=  "+numCols+"  numDigits=  "+numDigits);
 		
 		grids = new GridBox[numRows][numCols];
 		

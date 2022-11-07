@@ -36,7 +36,7 @@ public class TestTimeOut {
 		Set<String> keys = interfaceElements.keySet();
 		for(String key: keys){
 			
-			//System.out.println("Value of "+key+" is: "+interfaceElements.get(key));
+			//trace.out("Value of "+key+" is: "+interfaceElements.get(key));
             
             if (interfaceElements.get(key) instanceof JCommMultipleChoiceRecover){
             	JCommMultipleChoiceRecover multipleChoice = (JCommMultipleChoiceRecover) interfaceElements.get(key);

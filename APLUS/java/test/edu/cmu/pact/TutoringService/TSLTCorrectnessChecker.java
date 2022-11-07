@@ -47,11 +47,11 @@ class TSLTCorrectnessChecker {
 			testXML = builder.build(new StringReader(test));
 		} catch (JDOMException e){
 			trace.out("tslt", "Test Failed: jdom exception building doc");
-			System.out.println("Test Failed: jdom exception building doc");
+			trace.out("Test Failed: jdom exception building doc");
 			e.printStackTrace();
 		} catch (IOException e){
 			trace.out("tslt", "Test Failed: ioexception building doc");
-			System.out.println("Test Failed: ioexception building doc");
+			trace.out("Test Failed: ioexception building doc");
 			e.printStackTrace();
 		}
 		Element compRoot = compXML.getRootElement();
@@ -180,8 +180,8 @@ class TSLTCorrectnessChecker {
 			testFilePath = args[1];
 		}else{
 			trace.out("tslt", "Test Failed: improper usage");
-			System.out.println("Test Failed: improper usage");
-			System.out.println("Usage: TSLTCorrectnessChecker testFilePath [origFilePath]");
+			trace.out("Test Failed: improper usage");
+			trace.out("Usage: TSLTCorrectnessChecker testFilePath [origFilePath]");
 			return;
 		}
 		trace.out("tslt", "TSLTCorrectnessChecking " + compFilePath + " vs " + testFilePath);
@@ -201,17 +201,17 @@ class TSLTCorrectnessChecker {
 			br.close();
 		}
 		catch(Exception e){
-			System.out.println(Usage);
-			System.out.println("File reading exception of some sorts, test failed");
+			trace.out(Usage);
+			trace.out("File reading exception of some sorts, test failed");
 			trace.out("tslt", "File reading exception of some sorts, test failed");
 			return;
 		}
 		if (TSLTCC.sequentialCompareLogs(compXML, testXML)){
 			trace.out("tslt", "Test log matches the original log");
-			System.out.println("Test log matches the original log");
+			trace.out("Test log matches the original log");
 		}else{
 			trace.out("tslt", "Test Failed: log DOESN NOT MATCH original log");
-			System.out.println("Test Failed: log DOESN NOT MATCH original log");
+			trace.out("Test Failed: log DOESN NOT MATCH original log");
 		}
 	}
 }

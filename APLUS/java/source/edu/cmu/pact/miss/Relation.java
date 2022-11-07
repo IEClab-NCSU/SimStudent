@@ -482,9 +482,9 @@ public class Relation implements Serializable {
     private String applyPredicate( Vector /* String */ args ) {
 
 	/* 
-	System.out.print("args = ");
+	trace.out("args = ");
 	for (int i = 0; i < args.size(); i++) {
-	    System.out.print((String)args.get(i) + " ");
+	    trace.out((String)args.get(i) + " ");
 	}
 	*/
 

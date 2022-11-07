@@ -346,7 +346,7 @@ public class UserLogin extends JDialog implements KeyListener, WindowListener {
 
  
     void displayMessage(String msg) {
-      //  System.out.println(msg);
+      //  trace.out(msg);
     }
 
     /**

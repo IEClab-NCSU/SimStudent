@@ -309,7 +309,7 @@ public class Polynomial extends AlgExp
 	 */
 	public AlgExp evalAdd() {
 
-	    // System.out.println("evalAdd:: " + firstHalf + " | " + secondHalf);
+	    // trace.out("evalAdd:: " + firstHalf + " | " + secondHalf);
 	    AlgExp newFirst;
 	    AlgExp newSecond;
 	    if(firstHalf.isPolynomial())

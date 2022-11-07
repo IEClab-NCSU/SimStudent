@@ -152,7 +152,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
         
         if (isArithmeticExpression(expString1) && isArithmeticExpression(expString2)) {
             String negExpString2 = reverseSign(expString2);
-//            System.out.println("negExpString2 = " + negExpString2);
+//            trace.out("negExpString2 = " + negExpString2);
             subTerm = addTerm(expString1,negExpString2);
         }
         return subTerm;
@@ -178,7 +178,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 //                catch (Exception e) {
 //                }
                 AlgExp e2=AlgExp.parseExp(expString2);
-//                System.out.println("e1 = " + e1 + ", e2 = " + e2);
+//                trace.out("e1 = " + e1 + ", e2 = " + e2);
                 AlgExp result=e1.add(e2);
 
                 if (result.isPolynomial()) {
@@ -230,8 +230,8 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
             if (e1.isFraction()) {
             	AlgExp d1 = ((ComplexFraction)e1).getDenominator();
             	AlgExp n1 = ((ComplexFraction)e1).getNumerator();
-//            	System.out.println("d1 is " + d1.getClass() + ", n1 is " + n1.getClass());
-//            	System.out.println("isSimple(d1) " + d1.isSimple() + ", isSimple(n1) " + n1.isSimple());
+//            	trace.out("d1 is " + d1.getClass() + ", n1 is " + n1.getClass());
+//            	trace.out("isSimple(d1) " + d1.isSimple() + ", isSimple(n1) " + n1.isSimple());
             	if (!d1.isSimple() || !n1.isSimple()) return null;
             }
             if (e2.isFraction()) {
@@ -252,7 +252,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
             }
 
             AlgExp result = e1.mul(e2);
-            // System.out.println("result = " + result);
+            // trace.out("result = " + result);
             
             if(result instanceof ComplexTerm) {
             	mulTerm = ((ComplexTerm)result).evalMul().toString();
@@ -263,19 +263,19 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 
         } catch(ExpParseException e) {
 
-            //System.out.println("================= EXCEPTION CAUGHT ====================");
-            System.out.println("mulTerm(" + expString1 + "," + expString2 + ")");
+            //trace.out("================= EXCEPTION CAUGHT ====================");
+            trace.out("mulTerm(" + expString1 + "," + expString2 + ")");
             if (RhsGoalTest.getGoalTest() == null) {
-            	System.out.println("!! Uncomment setGoalTest at RhsState.evalExp() to read current GoalTest!!");
+            	trace.out("!! Uncomment setGoalTest at RhsState.evalExp() to read current GoalTest!!");
             } else {
-            	System.out.println(RhsGoalTest.getGoalTest());
+            	trace.out(RhsGoalTest.getGoalTest());
             }
             if (RhsGoalTest.getRhsState() == null) {
-            	System.out.println("!! Uncomment setGoalTest at RhsExhaustiveGoalTest.isGoalState() and RhsGoalTest.isGoalState to read current RhsState!!");
+            	trace.out("!! Uncomment setGoalTest at RhsExhaustiveGoalTest.isGoalState() and RhsGoalTest.isGoalState to read current RhsState!!");
             } else {
-            	System.out.println(RhsGoalTest.getRhsState());
+            	trace.out(RhsGoalTest.getRhsState());
             }
-            //System.out.println("--- STACK TRACE ---");
+            //trace.out("--- STACK TRACE ---");
             e.printStackTrace();
 
             try {
@@ -316,15 +316,15 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
             if (e1.isPolynomial()) return null;
             if (!e2.isSimple() || e2.equals(AlgExp.ZERO)) return null;
 
-            // System.out.println("divTerm:: e1 = " + e1.getClass() + ", e2 = " + e2.getClass());
+            // trace.out("divTerm:: e1 = " + e1.getClass() + ", e2 = " + e2.getClass());
             return e1.div(e2).toString();
 
         } catch(ExpParseException e) {
-            System.out.println("divTerm(" + expString1 + "," + expString2 + ")...");
+            trace.out("divTerm(" + expString1 + "," + expString2 + ")...");
             e.printStackTrace();
             return null;
         } catch (Exception e) {
-            System.out.println("divTerm(" + expString1 + "," + expString2 + ")...");
+            trace.out("divTerm(" + expString1 + "," + expString2 + ")...");
             e.printStackTrace();
             return null;
         }
@@ -392,7 +392,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
      */
     public String firstVarTerm( String expString ) {
 
-        // System.out.println("firstVarTerm(" + expString + ") ...");
+        // trace.out("firstVarTerm(" + expString + ") ...");
 
         String firstVarTerm = null;
 
@@ -414,7 +414,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
             }
         }
 
-        // System.out.println("firstVarTerm(" + expString + ") = " + firstVarTerm);
+        // trace.out("firstVarTerm(" + expString + ") = " + firstVarTerm);
 
         return firstVarTerm;
     }
@@ -488,7 +488,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
      */
     public String lastTerm( String expString ) {
 
-        // System.out.println("lastTerm(" + expString + ")");
+        // trace.out("lastTerm(" + expString + ")");
 
         String lastTerm = null;
 
@@ -498,7 +498,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
                 AlgExp exp = AlgExp.parseExp( expString );
                 // -59/x-63-59/x-63
 
-                // System.out.println("exp = " + exp);
+                // trace.out("exp = " + exp);
 
                 if(exp.isPolynomial())
                 {
@@ -777,8 +777,8 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 
             AlgExp exp=AlgExp.parseExp(expString);
             
-//            System.out.println("exp = " + exp);
-//            System.out.println("isFraction? " + exp.isFraction());
+//            trace.out("exp = " + exp);
+//            trace.out("isFraction? " + exp.isFraction());
 
             if (exp.isFraction() && !(exp instanceof SimpleTerm)) {
             	if (exp.isConstant()) {
@@ -787,7 +787,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
             	} else if (exp instanceof ComplexFraction) {
             		denominator = ((ComplexFraction)exp).getDenominator().toString(); 
             	} else {
-            		System.out.println("What about a fraction " + exp + "?");
+            		trace.out("What about a fraction " + exp + "?");
             	}
             } else if (exp instanceof SimpleTerm) {
 
@@ -817,8 +817,8 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 
             AlgExp exp=AlgExp.parseExp(expString);
             
-//            System.out.println("exp = " + exp);
-//            System.out.println("isFraction? " + exp.isFraction());
+//            trace.out("exp = " + exp);
+//            trace.out("isFraction? " + exp.isFraction());
 
             if (exp.isFraction() && !(exp instanceof SimpleTerm)) {
             	if (exp.isConstant()) {
@@ -827,7 +827,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
             	} else if (exp instanceof ComplexFraction) {
             		denominator = ((ComplexFraction)exp).getDenominator().toString(); 
             	} else {
-            		System.out.println("What about a fraction " + exp + "?");
+            		trace.out("What about a fraction " + exp + "?");
             	}
             } else if (exp instanceof SimpleTerm) {
 
@@ -1065,14 +1065,14 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 
             if (exp.isFraction()) {
                 // TODO
-                //System.out.println("invertTerm on fraction");
+                //trace.out("invertTerm on fraction");
                 inverseTerm = exp.invert().toString();
             } else if (exp.isSimple()) {
                 inverseTerm = exp.invert().toString();
-                //System.out.println("inverseTerm(" + expString + ")=" + inverseTerm);
-                //System.out.println(exp.getClass());
+                //trace.out("inverseTerm(" + expString + ")=" + inverseTerm);
+                //trace.out(exp.getClass());
             } else {
-                //System.out.println("inverseTerm(" + expString + ") gets null");
+                //trace.out("inverseTerm(" + expString + ") gets null");
             }
 
         } catch(ExpParseException e) {
@@ -1577,7 +1577,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
             {
                 AlgExp numerator=AlgExp.parseExp(numeratorString);
 
-                // System.out.println("exp = " + exp + ", numerator = " + numerator);
+                // trace.out("exp = " + exp + ", numerator = " + numerator);
                 if(exp.isConstant())
                 {
                     if(((ConstantFraction) exp).getNumerator().equals(numerator))
@@ -1823,7 +1823,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
         else {
             // Test this only when both exp1 and exp2 do not contain a space
             // E.g., "add 3x" would be excluded
-            // System.out.print("*");
+            // trace.out("*");
             try {
                 //trace.out("inputMatcher: else");
                 AlgExp algExp1 = AlgExp.parseExp(exp1).eval();
@@ -1871,7 +1871,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
 
     private static String isEqualDecimal(String decimalNum, ConstantFraction fraction) {
 
-        // System.out.println("isEqualDecimal(" + decimalNum + "," + fraction + ")");
+        // trace.out("isEqualDecimal(" + decimalNum + "," + fraction + ")");
 
         String isEqualDecimal = null;
 
@@ -1954,10 +1954,10 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
     }
 
     public String makeList(Vector v){
-        //System.out.println("entered makeList(Vector v)   v = " + v);
+        //trace.out("entered makeList(Vector v)   v = " + v);
         String[] l = new String[v.size()];
-        //System.out.println("before for");
-        //System.out.println("v.size() = " + v.size());
+        //trace.out("before for");
+        //trace.out("v.size() = " + v.size());
         for (int i=0; i<v.size(); i++){
             l[i] = v.get(i).toString();
         }
@@ -2091,7 +2091,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
         if (!"T".equals(isConstant(s)) || !isVarExpression(var))
             return null;
 
-        // System.out.println("s=" + s + ", var=" + var);
+        // trace.out("s=" + s + ", var=" + var);
 
         return s+var;
     }
@@ -2118,7 +2118,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
         if (state==1){ //i.e. if we just got out of a term string
             String termString = expString.substring(j+1,i);
             if (hasNumber(termString))
-                terms.add(termString); 		//System.out.println("adding " + termString);
+                terms.add(termString); 		//trace.out("adding " + termString);
         }	
     }
 
@@ -2376,7 +2376,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
                 if (gottenSignAlready) return null;
                 if (gottenNumberAlready) {
                     sum = sum + (num * sign);
-                    System.out.println("sum = " + sum);
+                    trace.out("sum = " + sum);
                     gottenSum = true;
                     gottenNumberAlready = false;
                 }
@@ -2390,7 +2390,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
                 num = num * 10 + (c - '0');
             } else if (gottenNumberAlready) {
                 sum = sum + (num * sign);
-                System.out.println("sum = " + sum);
+                trace.out("sum = " + sum);
                 sign = 1;
                 gottenSum = true;
                 gottenNumberAlready = false;
@@ -2399,7 +2399,7 @@ public abstract class EqFeaturePredicate extends FeaturePredicate {
         }
         if (gottenNumberAlready) { 
             sum = sum + (num * sign);
-            System.out.println("sum = " + sum);
+            trace.out("sum = " + sum);
             gottenSum = true;
         }
         

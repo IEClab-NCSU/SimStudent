@@ -25,6 +25,7 @@ import edu.cmu.old_pact.dormin.NoSuchPropertyException;
 import edu.cmu.old_pact.dormin.ObjectProxy;
 import edu.cmu.old_pact.dormin.Sharable;
 import edu.cmu.old_pact.settings.ParameterSettings;
+import edu.cmu.pact.Utilities.trace;
 
 public class DorminCheckbox extends Checkbox implements Sharable, ItemListener {
 	final int WIDTH = 10;
@@ -55,7 +56,7 @@ public class DorminCheckbox extends Checkbox implements Sharable, ItemListener {
 		try {
 			setProperty("NAME", name);
 		} catch (DorminException e) {
-			System.out.println(e.getMessage());
+			trace.out(e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -72,7 +73,7 @@ public class DorminCheckbox extends Checkbox implements Sharable, ItemListener {
 		try {
 			setProperty("NAME", name);
 		} catch (DorminException e) {
-			System.out.println(e.getMessage());
+			trace.out(e.getMessage());
 			e.printStackTrace();
 		}
 	}

@@ -390,7 +390,7 @@ public class ModelTraceWorkingMemory implements Serializable,  Cloneable {
 	}
 
 	public void setProblemBankTabClicked(String problemBankTabClicked) {
-		//System.out.println(" this : "+this+"  ProblemBankClicked : "+problemBankTabClicked);
+		//trace.out(" this : "+this+"  ProblemBankClicked : "+problemBankTabClicked);
 		this.problemBankTabClicked = problemBankTabClicked;
 	}
 

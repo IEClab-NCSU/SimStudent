@@ -53,7 +53,7 @@ public class algebraicMatches {
 		for (; i < args.length; ++i)
 			eqList.add(new String(args[i]));
 		if ("algebraicMatches".equalsIgnoreCase(testName))
-			System.out.println("Result: "+(0 == (result = algebraicMatches(eqList))));
+			trace.out("Result: "+(0 == (result = algebraicMatches(eqList))));
 		else
 			usageExit("unknown test name \""+testName+"\"");
 		return result;

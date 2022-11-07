@@ -1,5 +1,7 @@
 package edu.cmu.old_pact.cl.tutors.skillometer;
 
+import edu.cmu.pact.Utilities.trace;
+
 import java.util.Vector;
 
 public class SectionSkill {
@@ -40,7 +42,7 @@ public class SectionSkill {
         for(int i=0;i<s;i++)
         {
             ((SubSkill)subSkills.elementAt(i)).setPKnown(p_known);
-            System.out.println("in skill"+getName()+" setting subskill "+((SubSkill)(subSkills.elementAt(i))).getName()+" to "+p_known);
+            trace.out("in skill"+getName()+" setting subskill "+((SubSkill)(subSkills.elementAt(i))).getName()+" to "+p_known);
         }
         isUpdated = true;
     }
@@ -87,7 +89,7 @@ public class SectionSkill {
 	}
 	
 	public void addSubSkill(SubSkill sk){
-            System.out.println(sk.getName() + " guess = " + sk.getPGuess());
+            trace.out(sk.getName() + " guess = " + sk.getPGuess());
 		subSkills.addElement(sk);
 	}
 	

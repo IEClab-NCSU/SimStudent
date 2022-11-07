@@ -57,7 +57,7 @@ public class simplifyMixed {
 		for (i = 0; i < exprs.length && exprs[i].charAt(0) == '-'; ++i) {
 			testName = exprs[i].substring(1);
 		}
-//		System.out.println(sm.getStateDescription());
+//		trace.out(sm.getStateDescription());
 		
 		for (; i < exprs.length; ++i) {
 			try {

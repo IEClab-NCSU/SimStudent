@@ -108,8 +108,8 @@ public class SolverFrame extends DorminToolFrame implements 	Sharable,
 	public SolverFrame (String name) {
 		super(name);
 		trace.out (5, this, "new solverframe");
-        System.out.println("New SolverFrame");
-        System.out.println("Current thread: " + Thread.currentThread().getName());
+        trace.out("New SolverFrame");
+        trace.out("Current thread: " + Thread.currentThread().getName());
 		mySelf=this;
 		setLayout(new BorderLayout());
 		setBackground(stdColor);
@@ -274,7 +274,7 @@ public class SolverFrame extends DorminToolFrame implements 	Sharable,
 	}
 	
 	public void actionPerformed(ActionEvent e){
-            System.out.println("SolverFrame actionPerformed: " + e.getActionCommand());
+            trace.out("SolverFrame actionPerformed: " + e.getActionCommand());
 		String command = e.getActionCommand();
 		if(command.equalsIgnoreCase("HELP") ||
                    command.equalsIgnoreCase("HINT")){
@@ -408,10 +408,10 @@ public class SolverFrame extends DorminToolFrame implements 	Sharable,
 				}
 			}
 			catch(BadExpressionError bee){
-				System.out.println("Bad argument to " + command + " ...");
+				trace.out("Bad argument to " + command + " ...");
 			}
 			catch(NoSuchFieldException nsfe){
-				System.out.println("SolverFrame.performAction (div by zero check): " + nsfe);
+				trace.out("SolverFrame.performAction (div by zero check): " + nsfe);
 			}
 		}
 
@@ -488,7 +488,7 @@ public class SolverFrame extends DorminToolFrame implements 	Sharable,
 								}
 						}
 						else{
-							System.out.println("new equation " + msg + " is invalid");
+							trace.out("new equation " + msg + " is invalid");
 						}
 						/*this will pop up another new equation dialog
                           if the equation does not parse*/
@@ -502,7 +502,7 @@ public class SolverFrame extends DorminToolFrame implements 	Sharable,
 				updateDisplayForStep(command,msg,usermsg,newLeft,newRight);
 			}
 			catch (BadExpressionError err) {
-				System.out.println("Bad argument to add...");
+				trace.out("Bad argument to add...");
 			}
 		}
 		else if (command.equalsIgnoreCase("subtract")) {
@@ -512,7 +512,7 @@ public class SolverFrame extends DorminToolFrame implements 	Sharable,
 				updateDisplayForStep(command,msg,usermsg,newLeft,newRight);
 			}
 			catch (BadExpressionError err) {
-				System.out.println("Bad argument to subtract...");
+				trace.out("Bad argument to subtract...");
 			}
 		}
 		else if (command.equalsIgnoreCase("multiply")) {
@@ -522,7 +522,7 @@ public class SolverFrame extends DorminToolFrame implements 	Sharable,
 				updateDisplayForStep(command,msg,usermsg,newLeft,newRight);
 			}
 			catch (BadExpressionError err) {
-				System.out.println("Bad argument to multiply...");
+				trace.out("Bad argument to multiply...");
 			}
 		}
 		else if (command.equalsIgnoreCase("divide")) {
@@ -532,18 +532,18 @@ public class SolverFrame extends DorminToolFrame implements 	Sharable,
 				updateDisplayForStep(command,msg,usermsg,newLeft,newRight);
 			}
 			catch (BadExpressionError err) {
-				System.out.println("Bad argument to divide...");
+				trace.out("Bad argument to divide...");
 			}
 		}
 		else if (command.equalsIgnoreCase("squareroot")) {
 			try {
 				newLeft = sm.squareroot(currentLeft);
 				newRight = sm.squareroot(currentRight);
-		//		System.out.println("in squareroot command: "+newLeft+" "+newRight);
+		//		trace.out("in squareroot command: "+newLeft+" "+newRight);
 				updateDisplayForStep(command,msg,usermsg,newLeft,newRight);
 			}
 			catch (BadExpressionError err) {
-				System.out.println("Bad expression in squareroot...");
+				trace.out("Bad expression in squareroot...");
 			}
 		}
 		
@@ -562,29 +562,29 @@ public class SolverFrame extends DorminToolFrame implements 	Sharable,
 				}
 			}
 			catch (BadExpressionError err) {
-				System.out.println("Bad argument in cross multiply...");
+				trace.out("Bad argument in cross multiply...");
 			}
 		}
 		// end ALLEN
 
 		else if (command.equalsIgnoreCase("clt")) {
 			try {
-		//		System.out.println("combining terms on "+msg);
+		//		trace.out("combining terms on "+msg);
 				if (msg.equals("left") || msg.equals("both"))
 					newLeft = sm.combineLikeTerms(currentLeft);
 				if (msg.equals("right") || msg.equals("both"))
 					newRight = sm.combineLikeTerms(currentRight);
-		//		System.out.println("in CLT, "+newLeft+"="+newRight);
+		//		trace.out("in CLT, "+newLeft+"="+newRight);
 				updateDisplayForStep(command,msg,usermsg,newLeft,newRight);
 			}
 			catch (BadExpressionError err) {
-				System.out.println("Bad expression in CLT...");
+				trace.out("Bad expression in CLT...");
 			}
 		}
 
 		else if (command.equalsIgnoreCase("mt")) {
 			try {
-			//	System.out.println("multiplying through on "+msg);
+			//	trace.out("multiplying through on "+msg);
 				if (msg.equals("left") || msg.equals("both")){
 					if(sm.canDistribute(currentLeft))
 						newLeft = sm.distribute(currentLeft,true);
@@ -600,13 +600,13 @@ public class SolverFrame extends DorminToolFrame implements 	Sharable,
 				updateDisplayForStep(command,msg,usermsg,newLeft,newRight);
 			}
 			catch (BadExpressionError err) {
-				System.out.println("Bad expression in MT...");
+				trace.out("Bad expression in MT...");
 			}
 		}
 
 		else if (command.equalsIgnoreCase("rf")) {
 			try {
-			//	System.out.println("reducing fractions on "+msg);
+			//	trace.out("reducing fractions on "+msg);
 				if (msg.equals("left") || msg.equals("both"))
 					newLeft = sm.reduceFractions(currentLeft);
 				if (msg.equals("right") || msg.equals("both"))
@@ -614,7 +614,7 @@ public class SolverFrame extends DorminToolFrame implements 	Sharable,
 				updateDisplayForStep(command,msg,usermsg,newLeft,newRight);
 			}
 			catch (BadExpressionError err) {
-				System.out.println("Bad expression in ReduceFractions...");
+				trace.out("Bad expression in ReduceFractions...");
 			}
 		}
 
@@ -625,7 +625,7 @@ public class SolverFrame extends DorminToolFrame implements 	Sharable,
                         updateDisplayForStep(command,msg,usermsg,newLeft,newRight);
                     }
                     catch(BadExpressionError err){
-                        System.out.println("Bad expression in SubstConstants...");
+                        trace.out("Bad expression in SubstConstants...");
                     }
                 }
 
@@ -646,7 +646,7 @@ public class SolverFrame extends DorminToolFrame implements 	Sharable,
 			try {
 				String 	newLeftDisp = newLeft, 
 						newRightDisp = newRight;
-				//System.out.println("distributing on "+msg);
+				//trace.out("distributing on "+msg);
 				if (msg.equals("left") || msg.equals("both")) {
 					newLeft = sm.distribute(currentLeft,true);
 					newLeftDisp = sm.distributeOne(currentLeft,true);
@@ -661,7 +661,7 @@ public class SolverFrame extends DorminToolFrame implements 	Sharable,
 				lastEq.setInternalEquationString(currentLeft, currentRight);
 			}
 			catch (BadExpressionError err) {
-				System.out.println("Bad expression in Distribute...");
+				trace.out("Bad expression in Distribute...");
 			}
 			finally{
 				sm.setState(oldSMState);
@@ -684,7 +684,7 @@ public class SolverFrame extends DorminToolFrame implements 	Sharable,
 				updateDisplayForStep(command,msg,usermsg,newLeft,newRight);
 			}
 			catch(BadExpressionError err){
-				System.out.println("Bad expression in Factor...");
+				trace.out("Bad expression in Factor...");
 			}
 		}
 		else if (command.equalsIgnoreCase("erase")) {
@@ -708,7 +708,7 @@ public class SolverFrame extends DorminToolFrame implements 	Sharable,
 		else if (command.equalsIgnoreCase("hint")) {
 		}
 		else 
-			System.out.println("Don't understand command: "+command);
+			trace.out("Don't understand command: "+command);
 
 		if (command.equalsIgnoreCase("Left") || command.equalsIgnoreCase("Right")) 
 			trans.recordStep(command+" of "+String.valueOf(currentStepNumber),"typein",msg);
@@ -785,7 +785,7 @@ public class SolverFrame extends DorminToolFrame implements 	Sharable,
 		if (equalPos > 0) 
 			startSolvingEquation(msg.substring(0,equalPos),msg.substring(equalPos+1,semicolonPos));
 		else
-			//System.out.println("MUST GIVE EQUATION"); //should show error msg to user
+			//trace.out("MUST GIVE EQUATION"); //should show error msg to user
 			startSolvingEquation(msg.substring(0,semicolonPos),"?");
 	}
 
@@ -829,7 +829,7 @@ public class SolverFrame extends DorminToolFrame implements 	Sharable,
 			trans.startNextStep("finalizetypein");
 		}
 		catch(BadExpressionError bee){
-			System.out.println("SolverFrame.setNextEquation: error parsing equation: " + bee);
+			trace.out("SolverFrame.setNextEquation: error parsing equation: " + bee);
 		}
 	}
 	
@@ -999,7 +999,7 @@ System.gc();
 //		
 //		LastStringStartPosition=txt.lastIndexOf('\n',txt.length()-2);
 //		m_textArea.replaceText("",LastStringStartPosition+1,txt.length());
-		System.out.println("undo");
+		trace.out("undo");
 	}
 	
 	//clearProof clears all but the initial equation
@@ -1034,7 +1034,7 @@ System.gc();
 			if(lastEq.stepIsSet() )
 				lastEq.clearStep();
 			else
-				System.out.println("Can't remove only equation");
+				trace.out("Can't remove only equation");
 		}
 		else if (equations.size() > 1) {
 			EquationPlusStepPanel lastEq = (EquationPlusStepPanel)(equations.lastElement());
@@ -1075,7 +1075,7 @@ System.gc();
 		}
 		if (selectionNum >= 0)
 			step = getEquation(selectionNum);
-		//System.out.println("Getting step from *"+selection+"*:"+selectionNum+" "+step);
+		//trace.out("Getting step from *"+selection+"*:"+selectionNum+" "+step);
 		return step;
 	}
 	
@@ -1159,7 +1159,7 @@ System.gc();
 				result = new String(bo.toByteArray());
 			}
 			catch (IOException e) {
-				System.out.println("Can't serialize actions: "+e);
+				trace.out("Can't serialize actions: "+e);
 			}
 			return result;
 		}
@@ -1360,11 +1360,11 @@ System.gc();
 	}
 
 	/*public void showSizes(){
-	  System.out.println("  this.getBounds():        " + this.getBounds());
-	  System.out.println("  m_mainPanel.getBounds(): " + m_mainPanel.getBounds());
-	  System.out.println("  proofPanel.getBounds():  " + proofPanel.getBounds());
-	  System.out.println("  goalPanel.getBounds():   " + goalPanel.getBounds());
-	  //System.out.println("  showSizes temporarily disabled");
+	  trace.out("  this.getBounds():        " + this.getBounds());
+	  trace.out("  m_mainPanel.getBounds(): " + m_mainPanel.getBounds());
+	  trace.out("  proofPanel.getBounds():  " + proofPanel.getBounds());
+	  trace.out("  goalPanel.getBounds():   " + goalPanel.getBounds());
+	  //trace.out("  showSizes temporarily disabled");
 	  }*/
 
 	public void paint(Graphics g){

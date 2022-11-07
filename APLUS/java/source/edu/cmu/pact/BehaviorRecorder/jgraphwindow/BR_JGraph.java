@@ -693,14 +693,14 @@ public class BR_JGraph extends JGraph implements KeyListener, GraphModelListener
 			Object[] changes = ((GraphModelEdit)e.getChange()).getChanged();
 			boolean sourceChanged = false;
 			boolean destChanged = false;
-			//System.out.println("START");
+			//trace.out("START");
 			//int i;
-		//	System.out.println();
+		//	trace.out();
 		//	for(i = 0; i < changes.length; i++){
-		//		System.out.print(changes[i].getClass().toString()+", ");
+		//		trace.out(changes[i].getClass().toString()+", ");
 		//	}
 			if((changes.length == 1) && (changes[0] instanceof BR_JGraphEdge)){
-				//	System.out.println("bredge");
+				//	trace.out("bredge");
 					boolean resetToPrevious = false;
 					String errorMsg =null;
 					boolean addNewEdgeToCTAT = false;
@@ -745,7 +745,7 @@ public class BR_JGraph extends JGraph implements KeyListener, GraphModelListener
 						
 						if((errorMsg!=null)&&(!errorMsg.equalsIgnoreCase("ignore")))
 	            			JOptionPane.showMessageDialog(this, errorMsg);
-						System.out.println("DONE");
+						trace.out("DONE");
 						System.out.flush();
 						ignoreGraphModelEvents = true;
 						graphView.remove(edges);
@@ -762,7 +762,7 @@ public class BR_JGraph extends JGraph implements KeyListener, GraphModelListener
 			        		brController.changeEdgeSourceNode(edge.getProblemEdge(), sourceFromPort);
 			        	else
 			        		brController.changeEdgeDestNode(edge.getProblemEdge(), destFromPort);
-						System.out.println();
+						trace.out();
 					}
 			}
 			
@@ -779,7 +779,7 @@ public class BR_JGraph extends JGraph implements KeyListener, GraphModelListener
 	{
 		if (node == null)
 		{
-			System.out.println("null parameter to getLocation() in BR_JGraph");
+			trace.out("null parameter to getLocation() in BR_JGraph");
 			return new Point(0,0);
 		}
 		//Coordinates of node

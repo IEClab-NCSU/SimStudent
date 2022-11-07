@@ -191,7 +191,7 @@ public class TermExpression extends Expression implements CompoundExpression {
 	
 	public ExpressionArray getComponentArray() {
 		ExpressionArray compArray = ExpressionArray.allocate(subterms,numSubs);
-//		System.out.println("in getComponentArray, allocated EA");
+//		trace.out("in getComponentArray, allocated EA");
 		return compArray;
 	}
 
@@ -357,11 +357,11 @@ public class TermExpression extends Expression implements CompoundExpression {
 		Expression myBody = exceptUnsimplifiedCoefficient();
 		Expression otherBody = ex.exceptUnsimplifiedCoefficient();
 //			if (myBody != null && otherBody != null)
-//				System.out.println("CC with "+this.toString()+" and "+ex.toString()+":"+myBody.toString()+":"+otherBody.toString()+":"+myBody.algebraicEqual(otherBody));
+//				trace.out("CC with "+this.toString()+" and "+ex.toString()+":"+myBody.toString()+":"+otherBody.toString()+":"+myBody.algebraicEqual(otherBody));
 		if (myBody != null && otherBody != null &&         //myBody can't ever be null (but otherBody could)
 			!myBody.isEmpty() && !otherBody.isEmpty() &&   //myBody would be empty if I'm a product, e.g. 3*4
 			myBody.algebraicEqual(otherBody)) {
-//			System.out.println(myBody+" is like "+otherBody+":::"+this+":::"+ex);
+//			trace.out(myBody+" is like "+otherBody+":::"+this+":::"+ex);
 			return true;
 		}
 		else if (myBody instanceof NumericExpression && 
@@ -467,7 +467,7 @@ public class TermExpression extends Expression implements CompoundExpression {
 		NumericExpression numCoeff = null;
                 Expression otherCoeff = null;
 
-                //System.out.println(debugForm() + ".simplifiedCoefficient() ...");
+                //trace.out(debugForm() + ".simplifiedCoefficient() ...");
 		
 		for (int i=0;i<numSubs;++i) {
 			Expression subtermCoeff = ((Expression)(subterms[i])).simplifiedCoefficient();
@@ -492,8 +492,8 @@ public class TermExpression extends Expression implements CompoundExpression {
                         }
 		}
 
-                //System.out.println("\tnumCoeff == " + numCoeff);
-                //System.out.println("\totherCoeff == " + otherCoeff);
+                //trace.out("\tnumCoeff == " + numCoeff);
+                //trace.out("\totherCoeff == " + otherCoeff);
 
                 Expression total;
                 if(numCoeff == null){
@@ -514,7 +514,7 @@ public class TermExpression extends Expression implements CompoundExpression {
                 }
 
 		if (total == null){
-                    //System.out.println("TermExpression.simplifiedCoefficient(): null");
+                    //trace.out("TermExpression.simplifiedCoefficient(): null");
 			return new NumberExpression(1);
                 }
 		else{
@@ -833,8 +833,8 @@ public class TermExpression extends Expression implements CompoundExpression {
 		Vector numTerms = numeratorTerms();
 		Vector denTerms = denominatorTerms();
 		
-//		System.out.println("Num terms: "+numTerms+"::"+termString(numTerms));
-//		System.out.println("Den terms: "+denTerms+"::"+termString(denTerms));
+//		trace.out("Num terms: "+numTerms+"::"+termString(numTerms));
+//		trace.out("Den terms: "+denTerms+"::"+termString(denTerms));
 		
 		if (numTerms.size() == 0) {
 			if (denTerms.size() > 1)
@@ -941,20 +941,20 @@ public class TermExpression extends Expression implements CompoundExpression {
 	//TermExpressions sort after numbers and smaller TermExpressions
 	//but before everything else
 	public boolean termSortBefore(Expression ex) {
-		/*System.out.println(debugForm() + ".termSortBefore(" +
+		/*trace.out(debugForm() + ".termSortBefore(" +
 		  ex.debugForm() + ")");*/
 		if (ex instanceof TermExpression) {
 			TermExpression tEx = (TermExpression)ex;
 			if (numSubTerms() < tEx.numSubTerms()){
-				//System.out.println("\ttrue");
+				//trace.out("\ttrue");
 				return true;
 			}
 			else if (numSubTerms() > tEx.numSubTerms()){
-				//System.out.println("\tfalse");
+				//trace.out("\tfalse");
 				return false;
 			}
 			else{
-				//System.out.println("\tchecking subterms (" + numSubTerms() + ")");
+				//trace.out("\tchecking subterms (" + numSubTerms() + ")");
 				if (numSubTerms() > 1){
 					TermExpression thisSort = (TermExpression)sort();
 					TermExpression tExSort = (TermExpression)tEx.sort();
@@ -975,29 +975,29 @@ public class TermExpression extends Expression implements CompoundExpression {
 		}
 		else if (ex instanceof NumericExpression ||
 				 ex instanceof VariableExpression){
-			//System.out.println("\tfalse");
+			//trace.out("\tfalse");
 			return false;
 		}
 		else{
-			//System.out.println("\ttrue (default)");
+			//trace.out("\ttrue (default)");
 			return true;
 		}
 	}
 	
 	//standardizing a TermExpression means to distribute, simplify and sort it
 	public Expression standardizeWhole(int type) {
-            //System.out.println("TermExpression.standardizeWhole(): " + debugForm());
+            //trace.out("TermExpression.standardizeWhole(): " + debugForm());
 		Expression simpEx = this.distributeWhole(type);
-                //System.out.println("TermExpression.standardizeWhole(): ck 1");
+                //trace.out("TermExpression.standardizeWhole(): ck 1");
 		simpEx = simpEx.simplify();
-                //System.out.println("TermExpression.standardizeWhole(): ck 2");
+                //trace.out("TermExpression.standardizeWhole(): ck 2");
 		if (simpEx instanceof TermExpression) {
-                    //System.out.println("TermExpression.standardizeWhole(): ck 3");
+                    //trace.out("TermExpression.standardizeWhole(): ck 3");
 			TermExpression tEx = (TermExpression)simpEx;
 			return tEx.sortTerm();
 		}
 		else{
-                    //System.out.println("TermExpression.standardizeWhole(): ck 4");
+                    //trace.out("TermExpression.standardizeWhole(): ck 4");
 			return simpEx.standardize(type);
                 }
 	}
@@ -1005,11 +1005,11 @@ public class TermExpression extends Expression implements CompoundExpression {
 	//since both 2x/3 and 2/3*x are "standard" forms, we need to merge all numbers
 	//so 2/3*x [not 2*x*1/3] is the cannonical form
 	public Expression initialCannonicalize() {
-            //System.out.println("TE.initialCannonicalize: " + debugForm());
+            //trace.out("TE.initialCannonicalize: " + debugForm());
 		Vector nonNumbers = new Vector();
 		Expression numbers = getCombinedCoefficient(nonNumbers,true);
-                //System.out.println("TE.initialCannonicalize: numbers = " + numbers.debugForm());
-                //System.out.println("TE.initialCannonicalize: nunNumbers = " + nonNumbers);
+                //trace.out("TE.initialCannonicalize: numbers = " + numbers.debugForm());
+                //trace.out("TE.initialCannonicalize: nunNumbers = " + nonNumbers);
 		nonNumbers.insertElementAt(numbers,0);
 		Expression ret = uncleanBuildFromComponents(nonNumbers);
 
@@ -1029,7 +1029,7 @@ public class TermExpression extends Expression implements CompoundExpression {
 		int sepFractionCoeffPlace=0;
 		for (int i=0;i<numSubTerms();++i) {
 			Expression thisTerm = getTerm(i).unfence();
-                        //System.out.println("TE.gCC: processing term: " + thisTerm.debugForm());
+                        //trace.out("TE.gCC: processing term: " + thisTerm.debugForm());
 			if (thisTerm instanceof NumericExpression) {
 				//NumericExpression numTerm = (NumericExpression)(getTerm(i));
 				NumericExpression numTerm = (NumericExpression)(thisTerm);
@@ -1056,13 +1056,13 @@ public class TermExpression extends Expression implements CompoundExpression {
 					else
 						separatedFractionState = 4;
 				}
-                                //System.out.println("TE.gCC: processed numeric term; coefficient == " + coefficient.debugForm());
+                                //trace.out("TE.gCC: processed numeric term; coefficient == " + coefficient.debugForm());
 			}
 			else if (thisTerm instanceof TermExpression || thisTerm instanceof RatioExpression ||
 					thisTerm instanceof ExponentExpression) {
-				//System.out.println("GCC: term "+getTerm(i).toString()+ " is termExp");
+				//trace.out("GCC: term "+getTerm(i).toString()+ " is termExp");
 				NumericExpression coeffPart = thisTerm.numericSimplifiedCoefficient();
-                                //System.out.println("TE.gCC: numeric coefficient is " + coeffPart.debugForm());
+                                //trace.out("TE.gCC: numeric coefficient is " + coeffPart.debugForm());
 				coefficient = coefficient.numMultiply(coeffPart);
 				if(thisTerm.exceptSimplifiedCoefficient() != null){
 					nonNumericTerms.addElement(thisTerm.exceptSimplifiedCoefficient());
@@ -1071,14 +1071,14 @@ public class TermExpression extends Expression implements CompoundExpression {
 					separatedFractionState = 2;
 				else if (!coeffPart.isOne())
 					separatedFractionState = 4;
-                                //System.out.println("TE.gCC: processed special term; coefficient == " + coefficient.debugForm());
+                                //trace.out("TE.gCC: processed special term; coefficient == " + coefficient.debugForm());
 			}
 			else {
-//				System.out.println("term "+getTerm(i).toString()+ " is other: "+getTerm(i).expressionType());
+//				trace.out("term "+getTerm(i).toString()+ " is other: "+getTerm(i).expressionType());
 				nonNumericTerms.addElement(thisTerm);
 				if (separatedFractionState == 1)
 					separatedFractionState = 2;
-                                //System.out.println("TE.gCC: processed non-numeric term; coefficient == " + coefficient.debugForm());
+                                //trace.out("TE.gCC: processed non-numeric term; coefficient == " + coefficient.debugForm());
 			}
 		}
 		//If we found a separated fraction, and we're excluding them from the coefficient, return the whole number
@@ -1141,7 +1141,7 @@ public class TermExpression extends Expression implements CompoundExpression {
 	}
 
 	/*public Expression sortTermWhole() {
-	  System.out.println("TE.sTW: " + debugForm());
+	  trace.out("TE.sTW: " + debugForm());
 	  int numNegCount = 0;
 	  int denNegCount = 0;
 	  Vector numTerms = numeratorTerms();
@@ -1180,7 +1180,7 @@ public class TermExpression extends Expression implements CompoundExpression {
 	  denTerms.removeAllElements();
 	  denTerms = null;
 
-	  System.out.println("TE.sTW: returning: " + ret.debugForm());
+	  trace.out("TE.sTW: returning: " + ret.debugForm());
 	  return ret;
 	  }*/
 	
@@ -1203,7 +1203,7 @@ public class TermExpression extends Expression implements CompoundExpression {
 	//multiplyThroughWhole combines terms that are multiplied together
 	public Expression multiplyThroughWhole () {
 		/*level++;
-		  System.out.println("TE.mTW: " + debugForm());
+		  trace.out("TE.mTW: " + debugForm());
 		  if(level > 100){
 		  (new Exception()).printStackTrace();
 		  }*/
@@ -1214,11 +1214,11 @@ public class TermExpression extends Expression implements CompoundExpression {
 		//collect all numeric terms
 		Vector nonNumericTerms = new Vector();
 		NumericExpression coefficient = getCombinedCoefficient(nonNumericTerms,true);
-		//System.out.println("TE.mTW: Combined coeff is "+coefficient+" nonNum: "+nonNumericTerms);
+		//trace.out("TE.mTW: Combined coeff is "+coefficient+" nonNum: "+nonNumericTerms);
 		//if the coefficient combines two numbers, then this simplification did something
 		//if (nonNumericTerms.size() != numSubs-1)
-		/*System.out.println("TE.mTW: comparing: " + unsimplifiedCoefficient().debugForm());
-		  System.out.println("                   " + coefficient.debugForm());*/
+		/*trace.out("TE.mTW: comparing: " + unsimplifiedCoefficient().debugForm());
+		  trace.out("                   " + coefficient.debugForm());*/
 		if(!coefficient.exactEqual(unsimplifiedCoefficient()))
 			didMultiply=true;
 		else if (coefficient.isOne()) //we'll also do something if the coefficient is 1
@@ -1227,13 +1227,13 @@ public class TermExpression extends Expression implements CompoundExpression {
 			didMultiply=true;
 		/*else if (!coefficient.isOne() && !(getTerm(0) instanceof NumericExpression)) //if the first subterm is not a number, we'll MT (e.g. x*2 MTs to 2x)
 		  didMultiply=true;*/
-		//System.out.println("TE.mTW: didMultiply: "+didMultiply);
+		//trace.out("TE.mTW: didMultiply: "+didMultiply);
 		//Next, combine all multipliable terms
 		Expression firstTerm;
 		Vector termsToMultiply=null;
 		Vector combinedTerms = new Vector();
-		//System.out.println("TermExpression.multiplyThroughWhole(): begin while loop");
-		//System.out.println("TE.mTW: nonNumericTerms: " + nonNumericTerms);
+		//trace.out("TermExpression.multiplyThroughWhole(): begin while loop");
+		//trace.out("TE.mTW: nonNumericTerms: " + nonNumericTerms);
 		while (nonNumericTerms.size() > 0) {
 			firstTerm = (Expression)(nonNumericTerms.elementAt(0));
 			nonNumericTerms.removeElement(firstTerm);
@@ -1256,7 +1256,7 @@ public class TermExpression extends Expression implements CompoundExpression {
 			termsToMultiply.removeAllElements();
 			termsToMultiply = null;
 		}
-		//System.out.println("TE.mTW: " + debugForm() + ": combined terms: "+combinedTerms);
+		//trace.out("TE.mTW: " + debugForm() + ": combined terms: "+combinedTerms);
 		
 		Expression finalExp;
 		
@@ -1293,7 +1293,7 @@ public class TermExpression extends Expression implements CompoundExpression {
 		//or if there is a FractionExpression that is not in the first place
 		// (so term:[4,x,1/2] is converted to ratio:[4x,2])
 		if (finalExp instanceof TermExpression) {
-			//System.out.println("TE.mTW: checking for ratio: " + finalExp.debugForm());
+			//trace.out("TE.mTW: checking for ratio: " + finalExp.debugForm());
 			boolean hasRatio=false;
 			for (int i=0;i<((TermExpression)finalExp).numSubTerms()&&!hasRatio;++i) {
 				if (((TermExpression)finalExp).getTerm(i) instanceof RatioExpression)
@@ -1306,10 +1306,10 @@ public class TermExpression extends Expression implements CompoundExpression {
 				finalExp = ((TermExpression)finalExp).toRatioExpression();
 			if (finalExp instanceof RatioExpression) //if so, toRatioExpression did something...
 				didMultiply = true;
-			//System.out.println(this+" : finalExp = "+finalExp);
+			//trace.out(this+" : finalExp = "+finalExp);
 		}
 		Expression ret = finalExp.cleanExpression();
-		/*System.out.println("TE.mTW[" + level + "]: returning: " + ret.debugForm());
+		/*trace.out("TE.mTW[" + level + "]: returning: " + ret.debugForm());
 		  level--;*/
 
 		nonNumericTerms.removeAllElements();
@@ -1326,9 +1326,9 @@ public class TermExpression extends Expression implements CompoundExpression {
 		}
 
 		if(!didMultiply && ret instanceof TermExpression){
-			/*System.out.println("TE.mTW: just sorted: " + ret.debugForm());
-			  System.out.println("                     " + ret.sort().debugForm());
-			  System.out.println("                     " + debugForm());*/
+			/*trace.out("TE.mTW: just sorted: " + ret.debugForm());
+			  trace.out("                     " + ret.sort().debugForm());
+			  trace.out("                     " + debugForm());*/
 			return this;
 		}
 
@@ -1342,7 +1342,7 @@ public class TermExpression extends Expression implements CompoundExpression {
 	
 	//toRatioExpression turns the TermExpression into a RatioExpression (if it is appropriate)
 	private Expression toRatioExpression() {
-		//System.out.println("TE.tRE: " + debugForm());
+		//trace.out("TE.tRE: " + debugForm());
 		Expression ret;
 		Vector numTerms = numeratorTerms(true);
 		Vector denTerms = denominatorTerms(false);
@@ -1356,7 +1356,7 @@ public class TermExpression extends Expression implements CompoundExpression {
 		denTerms.removeAllElements();
 		denTerms = null;
 
-		//System.out.println("TE.tRE: returning: " + ret.debugForm());
+		//trace.out("TE.tRE: returning: " + ret.debugForm());
 		return ret;
 	}
 	
@@ -1599,7 +1599,7 @@ public class TermExpression extends Expression implements CompoundExpression {
 	//the subterm
 	public Expression cleanExpression() {
 		Expression ret;
-		//System.out.println("TE.cE: "+debugForm());
+		//trace.out("TE.cE: "+debugForm());
 		/*if (numericSimplifiedCoefficient().isZero()) {
 		  return new NumberExpression(0);
 		  }
@@ -1717,7 +1717,7 @@ public class TermExpression extends Expression implements CompoundExpression {
 					else
 						termSubTerms.addElement(distTerms.elementAt(j));
 				}
-//				System.out.println("item "+i+" in distributed term is "+termSubTerms);
+//				trace.out("item "+i+" in distributed term is "+termSubTerms);
 				outExpression.addElement(uncleanBuildFromComponents(termSubTerms));
 				termSubTerms.removeAllElements();
 				termSubTerms = null;

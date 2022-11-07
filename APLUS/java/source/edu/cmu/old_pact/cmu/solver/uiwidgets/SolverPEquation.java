@@ -39,7 +39,7 @@ public class SolverPEquation extends PEquation {
     	my_face = handler.getComponent().createImage(w, h);   	    	
     	my_graphics = my_face.getGraphics();
     	
-// System.out.println("from createPeImage: w=" + w +" h=" + h);
+// trace.out("from createPeImage: w=" + w +" h=" + h);
     	
     	my_graphics.setColor(handler.getBackground()); 
     	my_graphics.fillRect(0, 0, w,h); //size().width, size().height);

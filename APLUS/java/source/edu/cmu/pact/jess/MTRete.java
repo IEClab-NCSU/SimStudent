@@ -2257,7 +2257,7 @@ public class MTRete extends Rete implements Serializable, JessParser,
 				returnValue = false;
 				break;
 			}
-//			System.out.println("t1[i]: " + factId1 + " t2[i]" + factId2);
+//			trace.out("t1[i]: " + factId1 + " t2[i]" + factId2);
 		}
 		return returnValue;
 	}

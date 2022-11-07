@@ -84,7 +84,7 @@ public class PackageEnumerator {
     	Method[] methods = cls.getMethods();
     	for(int i = 0; i < methods.length; i++) {
     		Method m = methods[i];
-//    		System.out.println("cls "+clsName+", m "+m.getName());
+//    		trace.out("cls "+clsName+", m "+m.getName());
     		if((m.getModifiers() & Modifier.PUBLIC) == 0)      // public methods only
     			continue;
     		if(!wantAll && !(m.getName().equals(clsName)))     // filter on method name

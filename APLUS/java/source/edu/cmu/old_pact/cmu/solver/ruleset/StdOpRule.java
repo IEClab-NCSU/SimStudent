@@ -2,6 +2,7 @@ package edu.cmu.old_pact.cmu.solver.ruleset;
 
 import edu.cmu.old_pact.cmu.sm.BadExpressionError;
 import edu.cmu.old_pact.cmu.sm.query.Queryable;
+import edu.cmu.pact.Utilities.trace;
 
 //a StdOpRule is a rule that uses one of the standard operators
 //  (add, subtract, multiply or divide)
@@ -43,7 +44,7 @@ public class StdOpRule extends Rule {
 	
 	protected RuleMatchInfo testActionAndInput(Queryable info,String userAction,String userInput) {
 		if (isTraced())
-			System.out.println("  in TAI, stdoprule...");
+			trace.out("  in TAI, stdoprule...");
 		//first, check to see if the action and input work as given
 		RuleMatchInfo passes = super.testActionAndInput(info,userAction,userInput);
 		if (!(passes.getBoolean())) {
@@ -66,10 +67,10 @@ public class StdOpRule extends Rule {
 					newInput = sm.negate(userInput);
 			}
 			catch (BadExpressionError e) {
-				System.out.println("Bad expression checking alternate action and input in "+getName());
+				trace.out("Bad expression checking alternate action and input in "+getName());
 			}
 			if (isTraced())
-				System.out.println("  StdOpRule checking alternate action and input: "+newAction+"::"+newInput);
+				trace.out("  StdOpRule checking alternate action and input: "+newAction+"::"+newInput);
 			passes = super.testActionAndInput(info,newAction,newInput);
 		}
 		return passes;

@@ -1136,9 +1136,9 @@ public class SimStPeerTutoringPlatform extends JComponent {
 			    	getTextResponse().requestFocus();
 				    getTextResponse().validate();
 				    if(show) {
-				    	//System.out.println(getTextResponseSubmitButton().isVisible());
+				    	//trace.out(getTextResponseSubmitButton().isVisible());
 				    	//getTextResponseSubmitButton().setVisible(show);
-				    	//System.out.println(getTextResponseSubmitButton().isVisible());
+				    	//trace.out(getTextResponseSubmitButton().isVisible());
 				    	getTextResponse().setVisible(show);
 				    	getTextResponse().showPopup();
 				    }

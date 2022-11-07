@@ -30,6 +30,7 @@ import edu.cmu.old_pact.cmu.messageInterface.GridbagCon;
 import edu.cmu.old_pact.java.util.CntrlblQueueListDisplay;
 import edu.cmu.old_pact.java.util.QueueListDisplay;
 import edu.cmu.pact.BehaviorRecorder.Controller.BR_Controller;
+import edu.cmu.pact.Utilities.trace;
 
 /*This is the dialog used to control the flow of Dormin messages
  between the interface and the cognitive model.  It is based on
@@ -322,48 +323,48 @@ public class ControlledLispInterface extends Dialog {
         mesNumMismatch = false;
 
         if (vRetSize > vRet.size()) {
-            System.out.println("reorderToMatch: reported size of vRet ("
+            trace.out("reorderToMatch: reported size of vRet ("
                     + vRetSize + ") is larger than actual size (" + vRet.size()
                     + "); fixing.");
             vRetSize = vRet.size();
         }
 
         if (vStaticSize > vStatic.size()) {
-            System.out.println("reorderToMatch: reported size of vStatic ("
+            trace.out("reorderToMatch: reported size of vStatic ("
                     + vStaticSize + ") is larger than actual size ("
                     + vStatic.size() + "); fixing.");
             vStaticSize = vStatic.size();
         }
 
         /*
-         * System.out.println(">>> begin reorderToMatch");
-         * System.out.println("vRet.size() = " + vRet.size() + "; vStatic.size() = " +
+         * trace.out(">>> begin reorderToMatch");
+         * trace.out("vRet.size() = " + vRet.size() + "; vStatic.size() = " +
          * vStatic.size());
          */
         boolean changed = false;
         do {
             changed = false;
-            // System.out.println("looping ...");
+            // trace.out("looping ...");
             for (int j = 0; j < vRetSize; j++) {
-                // System.out.println(">>>>> vRet[" + j + "]");
+                // trace.out(">>>>> vRet[" + j + "]");
                 /*
                  * if((j < vStatic.size()) &&
                  * (messagesMatch((String)vRet.elementAt(j),
                  * (String)vStatic.elementAt(j), false,"") == 1)){
-                 * System.out.println("vRet[" + j + "] already matches vStatic[" +
+                 * trace.out("vRet[" + j + "] already matches vStatic[" +
                  * j + "]"); } else{
                  */
                 for (int i = 0; i < vStaticSize; i++) {
-                    // System.out.println(">>>>>>> vStatic[" + i + "]");
+                    // trace.out(">>>>>>> vStatic[" + i + "]");
                     if ((i != j)
                             && (messagesMatch((String) vRet.elementAt(j),
                                     (String) vStatic.elementAt(i), false, "") == 1)) {
-                        // System.out.println("vRet[" + j + "] matches vStatic["
+                        // trace.out("vRet[" + j + "] matches vStatic["
                         // + i + "]");
                         if (!(messagesMatch((String) vRet.elementAt(i),
                                 (String) vStatic.elementAt(i), false, "") == 1)) {
                             /*
-                             * System.out.println("swapping vRet[" + j + "] and
+                             * trace.out("swapping vRet[" + j + "] and
                              * vRet[" + i + "]");
                              */
                             swapEls(vRet, i, j);
@@ -371,26 +372,26 @@ public class ControlledLispInterface extends Dialog {
                             break;
                         }
                         /*
-                         * else{ System.out.println("but vRet[" + i + "] already
-                         * matches vStatic[" + i + "]"); System.out.println(" --
+                         * else{ trace.out("but vRet[" + i + "] already
+                         * matches vStatic[" + i + "]"); trace.out(" --
                          * not swapping"); }
                          */
                         /*
                          * vRet.insertElementAt(vRet.elementAt(j),i); if(j < i){
-                         * System.out.println("vRet[" + j + "]: " +
+                         * trace.out("vRet[" + j + "]: " +
                          * vRet.elementAt(j));
-                         * System.out.println("vRet.removeElementAt(" + j +
+                         * trace.out("vRet.removeElementAt(" + j +
                          * ")"); vRet.removeElementAt(j); } else{
-                         * System.out.println("vRet[" + j + "+1]: " +
+                         * trace.out("vRet[" + j + "+1]: " +
                          * vRet.elementAt(j+1));
-                         * System.out.println("vRet.removeElementAt(" + (j+1) +
+                         * trace.out("vRet.removeElementAt(" + (j+1) +
                          * ")"); vRet.removeElementAt(j+1); } }
                          */
                     }
                 }
             }
         } while (changed);
-        // System.out.println(">>> end reorderToMatch");
+        // trace.out(">>> end reorderToMatch");
 
         mesNumMismatch = temp;
 
@@ -443,8 +444,8 @@ public class ControlledLispInterface extends Dialog {
             return 1;
         } else {
             /*
-             * System.out.println("comparing messages:\n\t" + m1 + "\n\t" + m2);
-             * System.out.println("comparing messages:\n\t" + mes1 + "\n\t" +
+             * trace.out("comparing messages:\n\t" + m1 + "\n\t" + m2);
+             * trace.out("comparing messages:\n\t" + mes1 + "\n\t" +
              * mes2);
              */
             return 0;
@@ -555,7 +556,7 @@ public class ControlledLispInterface extends Dialog {
         String thisMessage = null;
         synchronized (messageSync) {
             if (!outgoingMessageQueue[which].empty()) {
-                // System.out.println("popping outgoing message " + which);
+                // trace.out("popping outgoing message " + which);
 
                 /*
                  * is there an expected message that needs to be compared to the
@@ -597,12 +598,12 @@ public class ControlledLispInterface extends Dialog {
                     thisMessage = (String) (outgoingMessageQueue[which].pop());
                 }
             } else {
-                System.out.println("no outgoing messages");
+                trace.out("no outgoing messages");
                 if ((which == INTTOCM) && (!fileMessageQueue[INTTOCM].empty())) {
-                    System.out.println("popping read message");
+                    trace.out("popping read message");
                     thisMessage = (String) (fileMessageQueue[INTTOCM].pop());
                 } else {
-                    System.out.println("not popping expected message");
+                    trace.out("not popping expected message");
                 }
             }
         }
@@ -631,7 +632,7 @@ public class ControlledLispInterface extends Dialog {
                 }
             }
         } catch (EmptyStackException ex) {
-            System.out.println("ControlledLispInterface sendNMessages " + which
+            trace.out("ControlledLispInterface sendNMessages " + which
                     + " " + ex.toString());
         }
     }
@@ -890,10 +891,10 @@ public class ControlledLispInterface extends Dialog {
                 setOutgoingMessages(messages[CMTOINT], CMTOINT);
                 setOutgoingMessages(messages[INTTOCM], INTTOCM);
             } catch (EOFException ex) {
-                System.out.println("ControlledLispInterface readMessageQueue "
+                trace.out("ControlledLispInterface readMessageQueue "
                         + ex.toString());
             } catch (IOException ex) {
-                System.out.println("ControlledLispInterface readMessageQueue "
+                trace.out("ControlledLispInterface readMessageQueue "
                         + ex.toString());
             }
         } catch (FileNotFoundException ex) {
@@ -906,7 +907,7 @@ public class ControlledLispInterface extends Dialog {
     /* writes messages from the messageLog queue into the specified file */
     private void writeMessageQueue(String directory, String filename) {
         if (messageLog.empty()) {
-            System.out.println("writeMessageQueue: nothing to write");
+            trace.out("writeMessageQueue: nothing to write");
             return;
         }
 
@@ -926,7 +927,7 @@ public class ControlledLispInterface extends Dialog {
                     .println("ControlledLispInterface readMessageQueue: Can't find file: "
                             + directory + filename);
         } catch (IOException ex) {
-            System.out.println("ControlledLispInterface readMessageQueue "
+            trace.out("ControlledLispInterface readMessageQueue "
                     + ex.toString());
         }
     }

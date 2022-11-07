@@ -1,6 +1,7 @@
 package edu.cmu.old_pact.cmu.solver.ruleset;
 
 import edu.cmu.old_pact.cmu.sm.Equation;
+import edu.cmu.pact.Utilities.trace;
 
 //a BugRuleSet is a list of bug rules
 
@@ -18,8 +19,8 @@ public class BugRuleSet extends RuleSet {
 		for (int i=0;i<numRules() && ruleToFire==null;++i) {
 			BugRule thisRule = (BugRule)(getRule(i));
 			if(thisRule.isTraced()){
-				System.out.println("checking bug rule "+thisRule.getName());
-				System.out.println(info.toString()+action+input+desiredAction+desiredInput);
+				trace.out("checking bug rule "+thisRule.getName());
+				trace.out(info.toString()+action+input+desiredAction+desiredInput);
 			}
 			if (thisRule.canFire(info,action,input,desiredAction,desiredInput).getBoolean())
 				ruleToFire = thisRule;

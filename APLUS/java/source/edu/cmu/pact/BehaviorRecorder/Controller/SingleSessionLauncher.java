@@ -787,7 +787,7 @@ public class SingleSessionLauncher
     private void parseArgv(String[] argv) {
     	
         for (int i = 0; i < argv.length; i++) {
-        	//System.out.println("argv[" + i + "] = " + argv[i]);
+        	//trace.out("argv[" + i + "] = " + argv[i]);
         	if(trace.getDebugCode("miss"))trace.out("miss","argv[" + i + "] = " + argv[i]);
 
             String key = argv[i];

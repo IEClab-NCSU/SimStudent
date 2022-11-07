@@ -353,7 +353,7 @@ public class OpenInterfaceDialog {
             try {
                 found = true;
                 if (trace.getDebugCode("inter")) trace.out("inter", "loading class: " + classname);
-                // System.out.println( "loading class: " + classname );
+                // trace.out( "loading class: " + classname );
                 interfaceClass = loader.loadClass(classname);
             } catch (ClassNotFoundException e1) {
                 found = false;

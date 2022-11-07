@@ -943,7 +943,7 @@ public class LinkInspectorPanel extends JPanel
      */
     private int handleSingleEdgeEvent(ProblemModelEvent Ev, boolean Updated) {
     	/*if (Ev.getSource().equals(this)){
-    		System.out.println("Successs maybe");
+    		trace.out("Successs maybe");
     		return 0;
     	}*/
     if(Ev.getSource().equals(this))

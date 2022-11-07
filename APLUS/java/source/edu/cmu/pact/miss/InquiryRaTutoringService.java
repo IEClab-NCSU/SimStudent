@@ -207,13 +207,13 @@ public class InquiryRaTutoringService {
 
     	if(trace.getDebugCode("miss"))trace.out("miss", "InquiryRaTutoringService: sending problem description for " + problemName);
         sendMsgToTutoringService(msgProblemDescription.replaceAll("PROBLEM_NAME", problemName));
-        System.out.println("passed sendMsgToTutoringService");
+        trace.out("passed sendMsgToTutoringService");
         
         // After sending a problem description, the server acknowledges by sending 
         // a bunch of messages back to the client. In order for the rest of the tasks
         // to work properly, those messages must be read off the socket
         waitMsgTypeFromTutoringService(START_STATE_END);
-        System.out.println("finished sendProblemDescription");
+        trace.out("finished sendProblemDescription");
     }
     
     String msgGoToState = "<message><verb>NotePropertySet</verb><properties><MessageType>GoToState</MessageType><StateName><value>STATE_NAME</value></StateName></properties></message>";
@@ -243,17 +243,17 @@ public class InquiryRaTutoringService {
     // 
     
     public boolean testSAI(String selection, String action, String input) {
-        System.out.println("entered testSAI");
+        trace.out("entered testSAI");
         
         boolean testSAI = false;
         
         // Send an interface action that comprises SAI
         sendInterfaceAction(selection, action, input);
-        System.out.println("passed sendInterfaceAction");
+        trace.out("passed sendInterfaceAction");
 
         // Wait for an acknowledge from the tutor
         String tutorResponse = getTutorAckOnCorrectness();
-        System.out.println("passed tutorResponse");
+        trace.out("passed tutorResponse");
         
         if (tutorResponse.equals(CORRECT)) {
             testSAI = true;
@@ -324,7 +324,7 @@ public class InquiryRaTutoringService {
             } else if (isLegalTutorResponse(getMessageType(msg))) {
                 tutorResponseRead = true;
             } else {
-                System.out.println("getMessageType(msg) = " + getMessageType(msg));
+                trace.out("getMessageType(msg) = " + getMessageType(msg));
                 new Exception("Unknown tutor responce: " + msg).printStackTrace();
             }
         }
@@ -357,9 +357,9 @@ public class InquiryRaTutoringService {
     /*
     String msgStep1 = "<message><verb>NotePropertySet</verb><properties><MessageType>InterfaceAction</MessageType><Selection><value>Term0Definition</value></Selection><Action><value>UpdateComboBox</value></Action><Input><value>Given Value</value></Input></properties></message>\0";
     private void sendStep1() {
-        System.out.println("sending step-1");
+        trace.out("sending step-1");
         out.println(msgStep1);
-        System.out.println("done");
+        trace.out("done");
     }
     */
     
@@ -382,7 +382,7 @@ public class InquiryRaTutoringService {
         // sendStep1();
 
         boolean step1 = testSAI("Term0Definition", "UpdateComboBox", "Given Value");
-        System.out.println("step1 = " + step1);
+        trace.out("step1 = " + step1);
         
         while (true) {}
         
@@ -404,7 +404,7 @@ public class InquiryRaTutoringService {
         /*
         InquiryRaTutoringService ira = new InquiryRaTutoringService();
         String xmlDoc = ira.generateXmlForSAI("@SEL@", "@ACT@", "@INPUT@");
-        System.out.println(xmlDoc);
+        trace.out(xmlDoc);
         */
         
         trace.addDebugCode("testTS");
@@ -431,11 +431,11 @@ public class InquiryRaTutoringService {
         
         public void run() {
          
-            System.out.println("waiting msg from the server...");
+            trace.out("waiting msg from the server...");
             while (true) {
                 try {
                     String msgFromServer = SocketProxy.readToEom(in, '\0');
-                    System.out.println("MSG -> " + msgFromServer);
+                    trace.out("MSG -> " + msgFromServer);
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }

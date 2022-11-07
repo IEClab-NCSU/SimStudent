@@ -111,16 +111,16 @@ public class CTATHTTPSServer extends CTATHTTPServer {
 			super.run();
 	}
 	private static void printServerSocketInfo(SSLServerSocket s) {
-		System.out.println("Server socket class: "+s.getClass());
-		System.out.println("   Socker address = "
+		trace.out("Server socket class: "+s.getClass());
+		trace.out("   Socker address = "
 				+s.getInetAddress().toString());
-		System.out.println("   Socker port = "
+		trace.out("   Socker port = "
 				+s.getLocalPort());
-		System.out.println("   Need client authentication = "
+		trace.out("   Need client authentication = "
 				+s.getNeedClientAuth());
-		System.out.println("   Want client authentication = "
+		trace.out("   Want client authentication = "
 				+s.getWantClientAuth());
-		System.out.println("   Use client mode = "
+		trace.out("   Use client mode = "
 				+s.getUseClientMode());
 	} 
 

@@ -91,13 +91,13 @@ public class TabbedTestC extends javax.swing.JPanel implements DoneButton, Tabbe
 	protected void initializeHash(){
         interfaceElements=new Hashtable();
         
-        System.out.println("Initialiing the Hash Table ");
+        trace.out("Initialiing the Hash Table ");
 		for (Field field : this.getClass().getDeclaredFields()) {
 			field.setAccessible(true); // You might want to set modifier to public first.
 			Object value=null;
 			try {
 				value = field.get(this);	
-				System.out.println(" Field : "+value);
+				trace.out(" Field : "+value);
 			} catch (IllegalArgumentException e) {
 				e.printStackTrace();
 			} catch (IllegalAccessException e) {
@@ -130,7 +130,7 @@ public class TabbedTestC extends javax.swing.JPanel implements DoneButton, Tabbe
 					comboBox.setCommName(field.getName());
 					interfaceElements.put(field.getName(),comboBox);
 				}
-				System.out.println("Key : "+field.getName()+" Value : "+interfaceElements.get(field.getName()));
+				trace.out("Key : "+field.getName()+" Value : "+interfaceElements.get(field.getName()));
 			}
 		}
 	}
@@ -1098,14 +1098,14 @@ public class TabbedTestC extends javax.swing.JPanel implements DoneButton, Tabbe
 	
 	private  void updateBrd(String str){
 		for (int i=0;i<argv1.length;i++){	
-		System.out.println("argv1[i] = " + argv1[i]);
+		trace.out("argv1[i] = " + argv1[i]);
   			if (argv1[i].contains("DProblemFileURL=")){
   				if(checkWebStart())
 					argv1[i]="-DProblemFileURL="+ codeBase+ "TabbedTest/"+str;
   				else
   					argv1[i]="-DProblemFileURL=TabbedTest/"+str;
   			
-  				System.out.println("new arg is " + argv1[i]);
+  				trace.out("new arg is " + argv1[i]);
   				break;
   			}
   		}

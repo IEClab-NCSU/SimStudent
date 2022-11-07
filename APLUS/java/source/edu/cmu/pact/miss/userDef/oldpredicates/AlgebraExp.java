@@ -231,7 +231,7 @@ public abstract class AlgebraExp {
 
     String getCoefficient_obsolete() {
 
-	// System.out.println(this + ".getCoefficient()");
+	// trace.out(this + ".getCoefficient()");
 
 	String coefficient = null;
 
@@ -277,7 +277,7 @@ public abstract class AlgebraExp {
     static public AlgebraExp parseExp( String exp ) throws ParseException {
     	
     	
-	// System.out.println("AlgebraExp( " + exp + " ) in...");
+	// trace.out("AlgebraExp( " + exp + " ) in...");
 
 	// Stack representing a finite state transition
 	Stack /* String */ parseState = new Stack();
@@ -295,7 +295,7 @@ public abstract class AlgebraExp {
 	while ( i < exp.length() ) {
 	    
 	    c = exp.charAt(i++);
-	    // System.out.println("i = " + i + ", c = " + c);
+	    // trace.out("i = " + i + ", c = " + c);
 
 	    if ( c == '(' ) {
 
@@ -330,12 +330,12 @@ public abstract class AlgebraExp {
 	    }
 	}
 
-	// System.out.println("lastOp: " + lastOp + ", lastOpIndex: " + lastOpIndex);
+	// trace.out("lastOp: " + lastOp + ", lastOpIndex: " + lastOpIndex);
 
 	if ( isParseStateAt( parseState, PARSE_POLYNOMIAL ) ) {
 
 	    // The given expression is a polynomial
-	    // System.out.println("PARSE_POLYNOMIAL");
+	    // trace.out("PARSE_POLYNOMIAL");
 	    AlgebraExp secondTerm = ( c == '+' ) ?
 		parseExp( exp.substring( i ) ) :
 		parseExp( exp.substring( i -1 ) );
@@ -350,7 +350,7 @@ public abstract class AlgebraExp {
 	    if ( lastOp != null ) {
 
 		// The given expression is a multiplication
-		// System.out.println("lastOp = " + lastOp + ", lastOpIndex = " + lastOpIndex);
+		// trace.out("lastOp = " + lastOp + ", lastOpIndex = " + lastOpIndex);
 		String firstTerm = exp.substring( 0, lastOpIndex );
 		String secondTerm = exp.substring( lastOpIndex +1 );
 		AlgebraExpPoly expPoly = 
@@ -358,12 +358,12 @@ public abstract class AlgebraExp {
 					parseExp( firstTerm ),
 					parseExp( secondTerm ) );
 
-		// System.out.println("--> " + expPoly);
+		// trace.out("--> " + expPoly);
 		return expPoly;
 
 	    } else if ( isSurroundedByParenthesis( exp ) ) {
 
-		// System.out.println(exp + " is surrounded by ( )");
+		// trace.out(exp + " is surrounded by ( )");
 		return parseExp( exp.substring( 1, exp.length() -1 ) );
 
 	    } else {
@@ -414,7 +414,7 @@ public abstract class AlgebraExp {
 		String v2 = exp.getVarName();
 
 		if ( v2 == null ) {
-		    // System.out.println(this + ".comesBefore(" + exp + ") v2 got null = = = = = = = = = = = = = = = " );
+		    // trace.out(this + ".comesBefore(" + exp + ") v2 got null = = = = = = = = = = = = = = = " );
 		}
 
 		// Const-term vs. term...
@@ -457,8 +457,8 @@ public abstract class AlgebraExp {
 	String v1 = getVarName();
 	String v2 = term.getVarName();
 
-	// System.out.println(this + ".isSameType(" + term + ")");
-	// System.out.println("v1 = " + v1 + ", v2 = " + v2);
+	// trace.out(this + ".isSameType(" + term + ")");
+	// trace.out("v1 = " + v1 + ", v2 = " + v2);
 
 	return v1.equals( v2 );
     }
@@ -474,7 +474,7 @@ public abstract class AlgebraExp {
     abstract public AlgebraExp evalArithmetic();
     /*
     {
-	System.out.println("AlgebraExp.evalArithmetic() called on " + this);
+	trace.out("AlgebraExp.evalArithmetic() called on " + this);
 	return null;
     }
     */
@@ -482,7 +482,7 @@ public abstract class AlgebraExp {
     abstract public AlgebraExp addTerm( AlgebraExp term );
     /*
       {
-	System.out.println("AlgebraExp.addTerm() called on " + this);
+	trace.out("AlgebraExp.addTerm() called on " + this);
 	return null;
     }
     */
@@ -490,7 +490,7 @@ public abstract class AlgebraExp {
     abstract public AlgebraExp multTerm( AlgebraExp term );
     /*
     {
-	System.out.println("AlgebraExp.multTerm() called on " + this);
+	trace.out("AlgebraExp.multTerm() called on " + this);
 	return null;
     }
     */
@@ -498,7 +498,7 @@ public abstract class AlgebraExp {
     abstract public AlgebraExp divTerm( AlgebraExp term );
     /*
     {
-	System.out.println("AlgebraExp.divTerm() called on " + this);
+	trace.out("AlgebraExp.divTerm() called on " + this);
 	return null;
     }
     */
@@ -556,7 +556,7 @@ public abstract class AlgebraExp {
 
 	AlgebraExp newTerm = null;
 
-	// System.out.println("evalArithmeticMult(" + t1 + "," + t2 + ")");
+	// trace.out("evalArithmeticMult(" + t1 + "," + t2 + ")");
 
 	if ( t1.isTerm() ) {
 	    newTerm = t2.multTerm( t1 );
@@ -610,7 +610,7 @@ public abstract class AlgebraExp {
 
 	if ( isPolynomial() && getOp().equals( "+" ) ) {
 
-	    // System.out.println("trem = " + term + ", 1st = " + getFirstTerm());
+	    // trace.out("trem = " + term + ", 1st = " + getFirstTerm());
 
 	    if ( getFirstTerm().equals( term ) ) {
 
@@ -633,7 +633,7 @@ public abstract class AlgebraExp {
 
     AlgebraExp inverseTerm() {
 
-	// System.out.println(this + ".inverseTerm()");
+	// trace.out(this + ".inverseTerm()");
 
 	AlgebraExpTerm termOne = new AlgebraExpTerm( "1" );
 
@@ -642,7 +642,7 @@ public abstract class AlgebraExp {
 
     AlgebraExp replaceTerm( AlgebraExp oldTerm, AlgebraExp newTerm ) {
 
-	// System.out.println(this + ".replaceTerm(" + oldTerm + "," + newTerm + ")");
+	// trace.out(this + ".replaceTerm(" + oldTerm + "," + newTerm + ")");
         if(newTerm==null)
             return this;    
 	if ( this == oldTerm ) {

@@ -27,7 +27,7 @@ public class RipCoefficient extends EqFeaturePredicate {
     }
 
     public String apply( Vector /* String */ args ) {
-	// System.out.println("RipCoefficient.apply(" + (String)args.get(0) + ")");
+	// trace.out("RipCoefficient.apply(" + (String)args.get(0) + ")");
 	return ripCoefficient( (String)args.get(0) );
     }
 }

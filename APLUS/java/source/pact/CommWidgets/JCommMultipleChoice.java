@@ -617,7 +617,7 @@ public class JCommMultipleChoice extends JCommQuestion implements ActionListener
 	 * Used to reset the commwidget
 	 */
 	public void reset (TutorController controller) {
-//		System.out.println("Reset Called: JCommMultipleChoice");
+//		trace.out("Reset Called: JCommMultipleChoice");
 		this.alreadyDone = false;
 		initialize();
 		this.setEnabled(true);

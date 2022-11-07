@@ -302,7 +302,7 @@ public class RuleActivationTree implements PropertyChangeListener{
 						    	Vector reqSAI = getReqSAI(node, false);
 						    	Vector actualSAI = getActualSAI(node, false, null);
 						    	
-//                                                        System.out.println("constructing WhyNot with rule = " + rule + ", getRuleBaseName(rule) = " + WhyNot.getRuleBaseName(rule));
+//                                                        trace.out("constructing WhyNot with rule = " + rule + ", getRuleBaseName(rule) = " + WhyNot.getRuleBaseName(rule));
 						    	// get all the rules 
 						    	WhyNot wn = new WhyNot(rule, currentState, wnRete.allRulesMap(),
 						        		wnRete.getEventLogger());
@@ -718,7 +718,7 @@ public class RuleActivationTree implements PropertyChangeListener{
 		        Vector reqSAI = getReqSAI(node, true);
 		        Vector actualSAI = getActualSAI(node, true, rule);
 
-                        System.out.println("constructing WhyNot with rule = " + rule);
+                        trace.out("constructing WhyNot with rule = " + rule);
 
 		        WhyNot wn = new WhyNot(rule, currentState, wnRete.allRulesMap(),
 		        		rete.getEventLogger());

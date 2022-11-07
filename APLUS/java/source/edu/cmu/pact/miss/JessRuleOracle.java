@@ -17,7 +17,7 @@ public class JessRuleOracle implements Oracle {
 		// TODO Auto-generated method stub
 		InquiryJessOracle jessOracle = new InquiryJessOracle(brController.getMissController().getSimSt(),brController);
 		jessOracle.init(problemName);
-		//System.out.println("Goning to state : "+node);
+		//trace.out("Goning to state : "+node);
 		jessOracle.goToState(brController,node);
 		return jessOracle.askNexStep();
 	}

@@ -98,8 +98,8 @@ public class GoToWMMessgHandlerTest extends TestCase {
 			return;
     	try {
     		if (s != null)
-    			System.out.print(s);
-    		System.out.print("> ");
+    			trace.out(s);
+    		trace.out("> ");
     		while ('\n' != System.in.read());
     	} catch (IOException ioe) {
     		ioe.printStackTrace();

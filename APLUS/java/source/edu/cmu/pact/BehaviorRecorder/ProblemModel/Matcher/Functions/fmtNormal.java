@@ -167,7 +167,7 @@ public class fmtNormal {
 			case 'D':
 				Double pD = new Double(Double.parseDouble(args[++i]));
 				Double vD = new Double(Double.parseDouble(args[++i]));
-				System.out.println("fmtNormal("+vD+", "+pD+")="+t.fmtNormal(vD, pD));
+				trace.out("fmtNormal("+vD+", "+pD+")="+t.fmtNormal(vD, pD));
 				return;
 			default:
 				System.err.println("unknown option -"+option);
@@ -175,7 +175,7 @@ public class fmtNormal {
 		}
 		for (; i < args.length; ++i) {
 			String arg = args[i];
-			System.out.println("fmtNormal("+arg+")="+t.fmtNormal(arg));
+			trace.out("fmtNormal("+arg+")="+t.fmtNormal(arg));
 		}
 	}
 	

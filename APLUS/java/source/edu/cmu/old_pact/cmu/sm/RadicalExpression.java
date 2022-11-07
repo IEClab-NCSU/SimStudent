@@ -4,6 +4,7 @@ import java.util.Vector;
 
 import edu.cmu.old_pact.cmu.sm.query.BooleanQuery;
 import edu.cmu.old_pact.cmu.sm.query.Queryable;
+import edu.cmu.pact.Utilities.trace;
 
 //RadicalExpressions
 //a RadicalExpression is an ExponentExpression that displays as a radical
@@ -37,11 +38,11 @@ public class RadicalExpression extends ExponentExpression {
 	public Expression cleanExpression() {
 		if (!((exponent instanceof FractionExpression) || 
 			  (exponent instanceof RatioExpression))) {
-			System.out.println("exponent is not fraction or ratio");
+			trace.out("exponent is not fraction or ratio");
 			return new ExponentExpression(body,exponent);
 		}
 		else if (!(exponent.numerator().isOne())) {
-			System.out.println("numerator is not one");
+			trace.out("numerator is not one");
 			return new ExponentExpression(body,exponent);
 		}
 		else

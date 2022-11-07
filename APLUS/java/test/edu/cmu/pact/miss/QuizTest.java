@@ -100,7 +100,7 @@ public class QuizTest extends TestCase{
 		//ssRete= new SimStRete(brController);
 		//currentNode = startNode;
 		//Vector activationList=gatherActivationList(currentNode,hm);
-		//System.out.println("activationList=" + activationList);
+		//trace.out("activationList=" + activationList);
 		
 	}
 	
@@ -133,10 +133,10 @@ public class QuizTest extends TestCase{
 			String problem = "3v+7=2";//brController.getMissController().getSimStPLE().getRandomizedQuizProblem(0);		
 			brController.startNewProblem(); // To set the platform for starting a new problem.
 			ssInteractivelearning.createStartStateQuizProblem(problem);
-			System.out.println("starting quiz problem "+ problem);
+			trace.out("starting quiz problem "+ problem);
 			ssInteractivelearning.startQuizProblem();
 			
-			System.out.println("ended quiz problem " +  problem);
+			trace.out("ended quiz problem " +  problem);
 			*/
 		}
 
@@ -151,9 +151,9 @@ public class QuizTest extends TestCase{
 
 		File dir1 = new File (".");
 		javaDir = dir1.getCanonicalPath(); //get CanonicalPath or AbsolutePath?
-		System.out.println("javaDir = " + javaDir);
+		trace.out("javaDir = " + javaDir);
 		projectDir = javaDir + "/test/edu/cmu/pact/miss/SimStAlgebraV8"; //-ssProjectDir can also be set with a command-line parameter
-		System.out.println("projectDir = " + projectDir);
+		trace.out("projectDir = " + projectDir);
 		SimSt.setProjectDir(projectDir);
 		
 
@@ -176,7 +176,7 @@ public class QuizTest extends TestCase{
 		String[] argv = tutorArg.split(" ");
 
 
-		System.out.println(tutorArg);
+		trace.out(tutorArg);
 		SingleSessionLauncher launcher = new CTAT_Launcher(argv).getFocusedController().getLauncher();		 
 		launcher.launch(new SimStAlgebraV8());
 

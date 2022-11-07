@@ -19,6 +19,7 @@ import javax.swing.JOptionPane;
 
 import edu.cmu.pact.Utilities.DelayedAction;
 import edu.cmu.pact.Utilities.Utils;
+import edu.cmu.pact.Utilities.trace;
 
 public  class TutorAdvance implements ActionListener {
 	
@@ -81,11 +82,11 @@ public  class TutorAdvance implements ActionListener {
 		"&admit_code=" + admitCode + 
 		"&cmd=doneNextData";
 		
-		System.out.println("user_guid = [" + userGuid + "]");
-    	System.out.println("problemName = [" + problemName + "]");
-    	System.out.println("studentProblemId = [" + studentProblemId + "]");
-    	System.out.println("advanceProblemQuery = [" + advanceProblemQuery + "]");
-    	System.out.println("urlForResponse = [" + urlForResponse + "]");
+		trace.out("user_guid = [" + userGuid + "]");
+    	trace.out("problemName = [" + problemName + "]");
+    	trace.out("studentProblemId = [" + studentProblemId + "]");
+    	trace.out("advanceProblemQuery = [" + advanceProblemQuery + "]");
+    	trace.out("urlForResponse = [" + urlForResponse + "]");
 
 		this.launcher = launcher;
 		cur_stu_int = tutor.getClass().getName();
@@ -97,8 +98,8 @@ public  class TutorAdvance implements ActionListener {
 	public void advanceProblem()
 	{
 		String path = "", parts[], temp[];
-		System.out.println("advanceProblem from " + problemName + " = " + studentProblemId);
-//		System.out.println("advancePagequery = [" + query + "]");
+		trace.out("advanceProblem from " + problemName + " = " + studentProblemId);
+//		trace.out("advancePagequery = [" + query + "]");
 		path = urlForResponse;
 		try { 
 	           // Lookup the javax.jnlp.BasicService object 
@@ -107,16 +108,16 @@ public  class TutorAdvance implements ActionListener {
 
 			   // Invoke the getCodeBase method to get the prefix of the URL.
 			   URL codeBase = bs.getCodeBase();
-			   System.out.println("showURL() codeBase is " + codeBase +
+			   trace.out("showURL() codeBase is " + codeBase +
 								  ", path is " + path + ";");
 			   if (!codeBase.getPath().endsWith("/") && !path.startsWith("/"))
 				   path = "/" + path;
 			   
 			   String bsquery = codeBase.getQuery();
 			   
-			   System.out.println("BSquery = " + bsquery);
-			   System.out.println("Host = " + codeBase.getHost());
-			   System.out.println("Path = " + codeBase.getPath());
+			   trace.out("BSquery = " + bsquery);
+			   trace.out("Host = " + codeBase.getHost());
+			   trace.out("Path = " + codeBase.getPath());
 
 			   // Form a new URL with the path appended to the codebase.
 			   
@@ -138,7 +139,7 @@ public  class TutorAdvance implements ActionListener {
 				// execute the request, and get the string response
 				URL newURL = uri.toURL();
 
-				System.out.println("newURL is " + newURL.toString());
+				trace.out("newURL is " + newURL.toString());
 
 	           // Invoke the showDocument method to launch the request
 	           bs.showDocument(newURL); 
@@ -158,7 +159,7 @@ public  class TutorAdvance implements ActionListener {
 	public void advanceProblemRepetition()
 	{
 		LinkedList<String> response = new LinkedList<String>();
-		System.out.println("advanceProblemRepetition from " + problemName + " = " +
+		trace.out("advanceProblemRepetition from " + problemName + " = " +
 				studentProblemId);
 		String path = "";
 
@@ -166,7 +167,7 @@ public  class TutorAdvance implements ActionListener {
 			BasicService bs = (BasicService) ServiceManager
 					.lookup("javax.jnlp.BasicService");
 			URL codeBase = bs.getCodeBase();
-			System.out.println("showURL() codeBase is " + codeBase
+			trace.out("showURL() codeBase is " + codeBase
 					+ ", path is " + path + ";");
 			if (!codeBase.getPath().endsWith("/") && !path.startsWith("/"))
 				path = "/" + path;
@@ -191,7 +192,7 @@ public  class TutorAdvance implements ActionListener {
 			// execute the request, and get the string response
 			URL newURL = uri.toURL();
 
-			System.out.println("newURL is " + newURL.toString());
+			trace.out("newURL is " + newURL.toString());
 
 			// execute the request, and get the string response
 
@@ -199,23 +200,23 @@ public  class TutorAdvance implements ActionListener {
 
 			URLConnection conn = newURL.openConnection();
 			conn.setUseCaches(false);
-			System.out.println("conn is " + conn);
+			trace.out("conn is " + conn);
 
 			String line = "";
 
 			BufferedReader br = new BufferedReader(new InputStreamReader(conn
 					.getInputStream()));
-			System.out.println("br =  " + br);
+			trace.out("br =  " + br);
 			while ((line = br.readLine()) != null) {
 				response.add(line);
-				System.out.println("line =" + line.toString());
+				trace.out("line =" + line.toString());
 			}
 			br.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		;
-		// System.out.println("getContent is " + resp.getClass());
+		// trace.out("getContent is " + resp.getClass());
 		// replace problem name with new problem name in args to pass on to
 		// SingleSessionLauncher
 		// this is a bit of a hack since we're parsing FlashVars for the string
@@ -246,7 +247,7 @@ public  class TutorAdvance implements ActionListener {
 
 		stu_int = stu_int.substring(stu_int.indexOf('/') + 1, stu_int.length());
 
-		System.out.println("Using interface [" + stu_int + "] (old interface = " +  cur_stu_int + ")");
+		trace.out("Using interface [" + stu_int + "] (old interface = " +  cur_stu_int + ")");
 
 		// get a new instance of the student interface we'll pass into
 		// SingleSessionLauncher
@@ -255,7 +256,7 @@ public  class TutorAdvance implements ActionListener {
 		// JComponent tutor = (JComponent)s.newInstance();
 
 		if (!stu_int.equalsIgnoreCase(cur_stu_int)) {
-			System.out.println("New student interface, so open new browser, then close this one");
+			trace.out("New student interface, so open new browser, then close this one");
 //			try { Thread.sleep(30000); } catch (InterruptedException ie) {}
 			advanceProblem();
 //			try { Thread.sleep(30000); } catch (InterruptedException ie) {}
@@ -263,7 +264,7 @@ public  class TutorAdvance implements ActionListener {
 
 		} else {
 			// launcher.getController().openBRFromURL(new_problem_name + ".brd");
-			System.out.println(" >>> From " + problemName + " = " + studentProblemId +
+			trace.out(" >>> From " + problemName + " = " + studentProblemId +
 					" advence to " + new_problem_name);
 
 			if (problemName.equalsIgnoreCase(new_problem_name)) {
@@ -276,7 +277,7 @@ public  class TutorAdvance implements ActionListener {
 			else {
 				URL url = Utils.getURL(new_problem_name + ".brd", this);
 
-				System.out.println("openBRFromURL = " + url.toString());
+				trace.out("openBRFromURL = " + url.toString());
 				launcher.getController().openBRFromURL(url.toString());
 
 				this.problemName = new_problem_name;
@@ -292,7 +293,7 @@ public  class TutorAdvance implements ActionListener {
 	 * @param evt successful done action
 	 */
 	public void actionPerformed(ActionEvent evt) {
-		System.out.println("TutorAdvance.actionPerformed("+evt+
+		trace.out("TutorAdvance.actionPerformed("+evt+
 				"): calling advanceProblem()");
 		advanceProblemRepetition();
 	}

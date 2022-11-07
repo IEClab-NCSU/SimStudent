@@ -50,7 +50,7 @@ public class ColumnTest extends TestCase {
     	ArrayList<Contents> testArray = new ArrayList<Contents>();
     	testArray.add(test);
     	AlphabetizedCustomsColumn column = new AlphabetizedCustomsColumn(testArray, new ArrayList<Contents>());
-//    	System.out.println(Arrays.toString(column.toArray()));
+//    	trace.out(Arrays.toString(column.toArray()));
     	
     	int expectedNumColumns = 4 + 1 + 3 + 5 + 1 + 5 + 1;
     	assertEquals(expectedNumColumns, column.getNumColumns());
@@ -77,7 +77,7 @@ public class ColumnTest extends TestCase {
     	ArrayList<Contents> testArray2 = new ArrayList<Contents>();
 
     	AlphabetizedCustomsColumn column = new AlphabetizedCustomsColumn(testArray, testArray2);
-//    	System.out.println(Arrays.toString(column.toArray()));
+//    	trace.out(Arrays.toString(column.toArray()));
     	assertEquals(4, (int) column.getIndex("problem_name"));
     	assertEquals(5, column.getNumColumns());
     }
@@ -100,7 +100,7 @@ public class ColumnTest extends TestCase {
     	testArray.add(test);
     	
     	AlphabetizedCustomsColumn column = new AlphabetizedCustomsColumn(testArray, Collections.<Contents>emptyList());
-//    	System.out.println(Arrays.toString(column.toArray()));
+//    	trace.out(Arrays.toString(column.toArray()));
     	
     	assertEquals(12, (int) column.getNumColumns());
     	assertEquals(6, (int) column.getIndex("selection2"));
@@ -116,7 +116,7 @@ public class ColumnTest extends TestCase {
     	testArray.add(test);
     	
     	AlphabetizedCustomsColumn column = new AlphabetizedCustomsColumn(testArray, Collections.<Contents>emptyList());
-//    	System.out.println(Arrays.toString(column.toArray()));
+//    	trace.out(Arrays.toString(column.toArray()));
     	
     	assertEquals(6, column.getNumColumns());
     	assertEquals(4, (int) column.getIndex("skill9 name"));
@@ -139,7 +139,7 @@ public class ColumnTest extends TestCase {
     	testArray.add(test);
     	
     	AlphabetizedCustomsColumn column = new AlphabetizedCustomsColumn(testArray, Collections.<Contents>emptyList());
-//    	System.out.println(Arrays.toString(column.toArray()));
+//    	trace.out(Arrays.toString(column.toArray()));
     	
     	assertEquals(4 + (5 * 4), column.getNumColumns());
     }
@@ -155,7 +155,7 @@ public class ColumnTest extends TestCase {
     	testArray.add(test);
     	
     	AlphabetizedCustomsColumn column = new AlphabetizedCustomsColumn(testArray, Collections.<Contents>emptyList());
-    	System.out.println(Arrays.toString(column.toArray()));
+    	trace.out(Arrays.toString(column.toArray()));
     	
     	assertEquals(4 + 4, column.getNumColumns());
     	assertEquals(5, (int) column.getIndex("custom_field 3"));//the name should be in the title, and they should be sorted in order.

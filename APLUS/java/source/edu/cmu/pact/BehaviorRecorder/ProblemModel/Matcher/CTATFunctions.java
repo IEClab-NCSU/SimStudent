@@ -1054,7 +1054,7 @@ public class CTATFunctions extends ReflectSemantic {
         vt.put("str", "abcdefg");
         CTATFunctions ctat = new CTATFunctions(vt, null);
         try {
-            System.out.println(input+" = "+ctat.evaluate(input));
+            trace.out(input+" = "+ctat.evaluate(input));
         } catch (Exception ex) {
             System.err.println(ex);
             ex.printStackTrace(System.err);

@@ -153,7 +153,7 @@ public class SimStNode extends ProblemNode{
                 }
                 if (path != null) {
                     path.add(0, edge);
-                    // System.out.println("findSolutionPathAlgebra() returning " + path.size() + "...");
+                    // trace.out("findSolutionPathAlgebra() returning " + path.size() + "...");
                     return path;
                 }
                 else
@@ -187,7 +187,7 @@ public class SimStNode extends ProblemNode{
             
             if (path != null) {
                 path.add(0, backupWrongAnswer);
-                // System.out.println("findSolutionPathAlgebra() returning " + path.size() + "...");
+                // trace.out("findSolutionPathAlgebra() returning " + path.size() + "...");
                 return path;
             }
             else

@@ -30,13 +30,13 @@ public class AreBothNumerators  extends FractionConstraint {
 			
 			
 			
-			//System.out.println("Def template: " + f1.getDeftemplate());
+			//trace.out("Def template: " + f1.getDeftemplate());
 			getFactParent(f1,rete);
 			//Deftemplate dt1=f1.getDeftemplate();
 		
 		
 			//Fact f=getComplexFractionFact(rete);
-			//System.out.println("**** Fact found:" + f);
+			//trace.out("**** Fact found:" + f);
 			
 		
 			return (areBothNumerators((Fact)args.get(0),(Fact)args.get(1), rete) ? "T" : null);
@@ -70,7 +70,7 @@ public class AreBothNumerators  extends FractionConstraint {
 					if (template.getSlotName(i).equals(multislotName)){
 						return true;
 					}
-							//	System.out.println("" + testFact.getName() + " has parent " + currentFact.getName());
+							//	trace.out("" + testFact.getName() + " has parent " + currentFact.getName());
 					
 				}
 			
@@ -90,7 +90,7 @@ public class AreBothNumerators  extends FractionConstraint {
     			  		
     		if (isParent(curFact,fact,rete)){
     			// yes, this template is a parent template, now check if it matches...
-    				System.out.println("Checking if " +  curFact + " is parent of " + fact.getSlotValue("name"));
+    				trace.out("Checking if " +  curFact + " is parent of " + fact.getSlotValue("name"));
     				
     				Value tableValues=curFact.getSlotValue(getMultislotName(fact));    
     				
@@ -98,7 +98,7 @@ public class AreBothNumerators  extends FractionConstraint {
 	    			
 	    			for (int i=0;i<tables.size();i++){
 	    				Fact tmpTable=tables.get(i).factValue(rete.getGlobalContext());
-	    					System.out.println(tmpTable.getSlotValue("name") + "="+fact.getSlotValue("name"));
+	    					trace.out(tmpTable.getSlotValue("name") + "="+fact.getSlotValue("name"));
 	    					if (tmpTable.getSlotValue("name").equals(fact.getSlotValue("name")))
 	    						return curFact;			
 	    			}
@@ -108,7 +108,7 @@ public class AreBothNumerators  extends FractionConstraint {
     				
     				
     			
-    				//return curFact;//System.out.println("parent is " + curFact.getName());
+    				//return curFact;//trace.out("parent is " + curFact.getName());
     			
     		}
 		  
@@ -125,10 +125,10 @@ public class AreBothNumerators  extends FractionConstraint {
 			
 			Fact curFact=(Fact)iter.next();
 			Fact parent=getFactParent(curFact,rete);
-			//System.out.println("checking for " + curFact.getName());
+			//trace.out("checking for " + curFact.getName());
 			if (parent!=null)
-				//System.out.println("parent of "+curFact.getName()+" is " + parent.getName());
-				System.out.println("parent of "+curFact +" is " + parent);
+				//trace.out("parent of "+curFact.getName()+" is " + parent.getName());
+				trace.out("parent of "+curFact +" is " + parent);
     	}
 		
 	}
@@ -159,7 +159,7 @@ public class AreBothNumerators  extends FractionConstraint {
 				}
 			}
 			synchronized(this) {
-				System.out.println("defining complex");
+				trace.out("defining complex");
 				HasLHS q = rete.findDefrule("complex-fraction");
 				if(!(q instanceof Defquery))
 					rete.eval("(defquery get-complexFraction "+

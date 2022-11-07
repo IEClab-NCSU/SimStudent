@@ -22,7 +22,7 @@ public class AskHintWebAuthoring extends AskHint{
 			brController.getMissController().getSimSt().updateSimStWorkingMemoryDirectly(sai.getS(),sai.getA(),sai.getI());
 
 	       // this.updateNodeInBR(brController, problemNode);
-	        //System.out.println("hint.node = " + this.getNode() );
+	        //trace.out("hint.node = " + this.getNode() );
 	        
 	}
 	

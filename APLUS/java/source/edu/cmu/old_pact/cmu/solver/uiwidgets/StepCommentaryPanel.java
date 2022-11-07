@@ -30,7 +30,7 @@ public class StepCommentaryPanel extends HtmlSolverPanel {
 	}
 	
 	public void setStep(String left,String right,String op,String arg) {
-		//System.out.println("SCP.sS: " + op);
+		//trace.out("SCP.sS: " + op);
 
 		// add expression tag around arg to display in the html panel
 	    String argexpr = "<expression>"+arg+"</expression>";

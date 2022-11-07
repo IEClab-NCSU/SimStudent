@@ -121,7 +121,7 @@ public class GetMTProblemSuggestion implements Userfunction, Serializable {
 			}
 			
 					
-			//System.out.println(" Cause of error : "+amt+ "   Log "+amt.getLogger().getHintLogAgent());
+			//trace.out(" Cause of error : "+amt+ "   Log "+amt.getLogger().getHintLogAgent());
 			/*Inform the log controller about the metatutor suggestion. We are sure that amt is not null, as it is initialized above*/
 			if (suggestedInput!="nil"){	
 					amt.getLogger().getHintLogAgent().updateMtStartStateElementsValues(suggestedSelection, suggestedInput);

@@ -807,8 +807,8 @@ public class LinkInspectorManager
 		else { Cp.setNext(C); }
 		
 		// Display some simple status information.
-		if (C == null) { System.out.println("End of list"); }
-		else { System.out.println(C.getView().getTitle()); }
+		if (C == null) { trace.out("End of list"); }
+		else { trace.out(C.getView().getTitle()); }
 		
 		// Clear the next for A.
 		A.setNext(null);

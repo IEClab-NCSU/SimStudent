@@ -77,13 +77,13 @@ public class GetSimilarProblem implements Userfunction, Serializable {
 				Problem abstractor = new Problem(problem);
 				String abstractedPWithSignPreserved = abstractor.getSignedAbstraction();
 				
-				//System.out.println(" Abstracted problem :  "+abstractedPWithSignPreserved);
+				//trace.out(" Abstracted problem :  "+abstractedPWithSignPreserved);
 				
 				
 				int	problemCount = ModelTraceWorkingMemory.quizProblemsTutoredListAllSections.getOrDefault(abstractedPWithSignPreserved, new Integer(0)) ;
-				//System.out.println(" Problem Count : "+problemCount+"  lastAbstractedProblemSolvedCount  : "+lastAbstractedProblemSolvedCount);
+				//trace.out(" Problem Count : "+problemCount+"  lastAbstractedProblemSolvedCount  : "+lastAbstractedProblemSolvedCount);
 				
-				//System.out.println(" Last Abstracted Problem : "+lastAbstractedProblem);
+				//trace.out(" Last Abstracted Problem : "+lastAbstractedProblem);
 				
 				if(abstractedPWithSignPreserved.equals(lastAbstractedProblem)
 						&& lastAbstractedProblemSolvedCount == problemCount ) {

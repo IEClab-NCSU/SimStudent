@@ -14,12 +14,12 @@ public class TestSM{
 	  for(i=0;i<4 && !(b[i] == '\n' || b[i] == '\r' || b[i] == '\010');b[i++] = (char)System.in.read());
 	  
 	  s = new String(b,0,i);
-	  System.out.println("TestSM: " + s);
+	  trace.out("TestSM: " + s);
 	  }while(s.length() <= 1);
 	  SM.testParse(s);
 	  }
 	  catch(IOException ioe){
-	  System.out.println("TestSM.tP: " + ioe);
+	  trace.out("TestSM.tP: " + ioe);
 	  }
 	  }*/
 

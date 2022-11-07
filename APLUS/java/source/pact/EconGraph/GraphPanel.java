@@ -94,14 +94,14 @@ public class GraphPanel extends JPanel implements Runnable  {
             newpoint = plot.convertPixel(cpoint);
         }
         
-        // System.out.println("in dragline, newpoint (the point youre going to) is: " + newpoint);
-        //  System.out.println("in dragline, pointToMove (the point youre moving from) ls" + pointToMove);
+        // trace.out("in dragline, newpoint (the point youre going to) is: " + newpoint);
+        //  trace.out("in dragline, pointToMove (the point youre moving from) ls" + pointToMove);
         
         if ((pointToMove != null) ){// && plot.pixelInGraph(cpoint)) {
             
-            // System.out.println(" in graphPanel.dragLine and the pointToMove is: " + pointToMove);
-            //   System.out.println(" in graphPanel.dragLine and the cpoint is: " + cpoint);
-            //   System.out.println(" in graphPanel.dragLine and the newPoint is: " + newpoint);
+            // trace.out(" in graphPanel.dragLine and the pointToMove is: " + pointToMove);
+            //   trace.out(" in graphPanel.dragLine and the cpoint is: " + cpoint);
+            //   trace.out(" in graphPanel.dragLine and the newPoint is: " + newpoint);
             
             //abby
             if(dragLine){
@@ -117,17 +117,17 @@ public class GraphPanel extends JPanel implements Runnable  {
                 int lineIndex=0;
                 
                 if (Xdif != 0){
-                    // System.out.println("in the Xdif loop,  so the point has been moved along the x axis.");
+                    // trace.out("in the Xdif loop,  so the point has been moved along the x axis.");
                     //send the x difference to all the points on the line
                     for(int i=0; i<line.length; i++){
-                        //      System.out.println("length of the line array: " + line.length + "line name " + pointToMove.lineName);
-                        //   System.out.println("line[i].name: " + line[i].name + "linename: " + linename);
+                        //      trace.out("length of the line array: " + line.length + "line name " + pointToMove.lineName);
+                        //   trace.out("line[i].name: " + line[i].name + "linename: " + linename);
                         if(line[i].name.equals(linename)){//find the line where the point is on
-                            //       System.out.println("hellp");
+                            //       trace.out("hellp");
                             lineIndex=i;
                             for(int j=0; j<line[i].point.length; j++){//add Xdif to each point
                                 // if(!(line[i].point[j].pointNum==pointToMove.pointNum))//dont add it to the point that you
-                                //           System.out.println("line[i].point[j].x = " + line[i].point[j].x + " i= " + i + "newpoint.x = " + newpoint.x + " Xdif " + Xdif);
+                                //           trace.out("line[i].point[j].x = " + line[i].point[j].x + " i= " + i + "newpoint.x = " + newpoint.x + " Xdif " + Xdif);
                                 line[i].point[j].x = line[i].point[j].x + Xdif;
                             }
                         }
@@ -135,11 +135,11 @@ public class GraphPanel extends JPanel implements Runnable  {
                 }
                 
                 if (Ydif != 0){
-                    //  System.out.println("the point has been moved along the y axis.");
+                    //  trace.out("the point has been moved along the y axis.");
                     //send the difference to all the points on the line
                     //send the y difference to all the points on the line
                     for(int i=0; i<line.length; i++){
-                        //    System.out.println("length of the line array: " + line.length);
+                        //    trace.out("length of the line array: " + line.length);
                         if(line[i].name.equals(linename)){//find the line where the point is on
                             for(int j=0; j<line[i].point.length; j++){//add Ydif to each point
                                 // if(!(line[i].point[j].pointNum==pointToMove.pointNum))//dont add it to the point that you
@@ -162,13 +162,13 @@ public class GraphPanel extends JPanel implements Runnable  {
             {//without else thats the old code
                 
                 // && plot.pixelInGraph(cpoint)) {
-                //System.out.println("here, so pointTomove isnt null");
+                //trace.out("here, so pointTomove isnt null");
                 //  newpoint = plot.convertPixel(cpoint);
                 
                 
                 if (plot.inBounds(newpoint) && !pointToMove.isGreen()){
-                  //  System.out.print("POint to move is green? " + pointToMove.isGreen());
-                    //  System.out.println("thenew point is in boudns");
+                  //  trace.out("POint to move is green? " + pointToMove.isGreen());
+                    //  trace.out("thenew point is in boudns");
                     pointToMove.move(newpoint);
                     
                 }
@@ -201,17 +201,17 @@ public class GraphPanel extends JPanel implements Runnable  {
                 Point downpt = new Point(x,y);
                 
                 //*******test save and restore...****remove for production
-                //System.out.println(downpt.showLabel());
+                //trace.out(downpt.showLabel());
                 /**
                  * if (downpt.getx() == 0)
                  * {
                  * temp = report();
-                 * System.out.println(temp.substring(temp.indexOf("@")));
+                 * trace.out(temp.substring(temp.indexOf("@")));
                  * }
                  * if((temp != null) && (downpt.getx() == plot.xcorner))
                  * restore(temp.substring(temp.indexOf("@")+1));
                  **/
-                //System.out.println(report());
+                //trace.out(report());
                 //*********
                 
                 if (pointToMove != null) pointToMove = null;
@@ -285,7 +285,7 @@ public class GraphPanel extends JPanel implements Runnable  {
         trace.out (5, this, "width = " + getSize().width + " height " + getSize().height);
         trace.out(5,this, "applet = " + applet);
         
-        //System.out.println("disp? " + applet.is ); //isDisplayable());
+        //trace.out("disp? " + applet.is ); //isDisplayable());
 	if (applet != null) {
 	    trace.out(5,this, "applet width: " + applet.getWidth());
 	    offim = createImage(applet.getSize().width,applet.getSize().height);
@@ -297,11 +297,11 @@ public class GraphPanel extends JPanel implements Runnable  {
 		   
 	trace.out (5, this, "this size = " + this.getSize());
 
-        // System.out.println("offim" + offim);
+        // trace.out("offim" + offim);
         offg = offim.getGraphics();
         
         
-//        System.out.println("offg" + offg);
+//        trace.out("offg" + offg);
         // Turn on anti-aliased line drawing (to make the lines look smoother).  Only in Java 1.2 or higher
         String lineAA= getParameter("lineAntiAliasing");
         String fontAA= getParameter("fontAntiAliasing");
@@ -364,7 +364,7 @@ public class GraphPanel extends JPanel implements Runnable  {
                 gp.plotPoint(g, l.point[i]);
                 //
             }
-            //System.out.println("added THIS");
+            //trace.out("added THIS");
         }
         //redo the pointToMove to make sure label is ontop
         if (pointToMove != null) {
@@ -422,9 +422,9 @@ public class GraphPanel extends JPanel implements Runnable  {
         for (int j = 0; j < 20; j++) {
             trace.out (5, "mps", "parameter = " + strs[j]);
         }
-        //System.out.println(s);
+        //trace.out(s);
         backgroundColor = Parseappletstring.makeColor(strs[0]);
-        //System.out.println(strs[2]);
+        //trace.out(strs[2]);
         if(strs[3] != null && strs[3].equalsIgnoreCase("line"))//abby
             dragLine=true;
         else
@@ -546,15 +546,15 @@ public class GraphPanel extends JPanel implements Runnable  {
         Parseappletstring.parseString(s,ints,strs);
         numberoflines = ints[0];
         
-        //System.out.println("Number of lines to restore: "+numberoflines);
+        //trace.out("Number of lines to restore: "+numberoflines);
         c = 1; //counter for keeping track where we are in the array
         for (int i = 0; i < numberoflines; i++) //grab the lines
         {
             ln = ints[c++];
             tpts = ints[c++];
-            //System.out.println("Restoring ln"+ln+" with "+tpts+" total points");
+            //trace.out("Restoring ln"+ln+" with "+tpts+" total points");
             for (int pt = 0; pt < tpts; pt++) {
-                //System.out.print("("+ints[c]+","+ints[c+1]+") ");
+                //trace.out("("+ints[c]+","+ints[c+1]+") ");
                 line[ln-1].point[pt].move(new Point(ints[c],ints[c+1]));
                 c += 2;
             }

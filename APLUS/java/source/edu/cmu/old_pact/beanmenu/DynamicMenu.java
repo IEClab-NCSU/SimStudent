@@ -10,6 +10,7 @@ import java.util.Vector;
 
 import edu.cmu.old_pact.fastbeanssupport.FastProBeansSupport;
 import edu.cmu.old_pact.objectregistry.ObjectRegistry;
+import edu.cmu.pact.Utilities.trace;
 
 public class DynamicMenu extends Menu implements PropertyChangeListener{
 	private Vector items;
@@ -156,7 +157,7 @@ public class DynamicMenu extends Menu implements PropertyChangeListener{
 		try{
 			mi = (MenuItem)items.elementAt(ind);
 		} catch (ArrayIndexOutOfBoundsException e){
-			System.out.println("DynamicMenu getMenuItem No such Label "+label);
+			trace.out("DynamicMenu getMenuItem No such Label "+label);
 		}
 		return mi;
 	}

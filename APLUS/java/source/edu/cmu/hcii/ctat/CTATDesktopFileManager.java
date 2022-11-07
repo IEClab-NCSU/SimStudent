@@ -1016,7 +1016,7 @@ public class CTATDesktopFileManager extends CTATFileManager
 	      //First check if the File Object is a Directory.
 	      //NOTE : The File object can be used to represent directories also.
 	      if(file.isDirectory())
-	    	  System.out.println(file.getPath() + " is a directory.");
+	    	  trace.out(file.getPath() + " is a directory.");
 	      else
 	      {
 	    	  //Size of the file in bytes...
@@ -1170,7 +1170,7 @@ public class CTATDesktopFileManager extends CTATFileManager
 	}
 	/*
 	 * see this How-to for a faster way to convert a byte array to a HEX string 
-	 * System.out.println(getMD5Checksum("apache-tomcat-5.5.17.exe"));
+	 * trace.out(getMD5Checksum("apache-tomcat-5.5.17.exe"));
 	 */
 	public String getMD5Checksum (String filename) throws Exception 
 	{
@@ -1361,7 +1361,7 @@ public class CTATDesktopFileManager extends CTATFileManager
 		{
 			while ((line = reader.readLine()) != null)
 			{
-			     //System.out.println(line);
+			     //trace.out(line);
 				formatter.append(line);
 				formatter.append("\n");
 			}
@@ -1457,7 +1457,7 @@ public class CTATDesktopFileManager extends CTATFileManager
 	         String name = entry.getName();
 	         long size = entry.getSize();
 	         long compressedSize = entry.getCompressedSize();
-	         //System.out.println(name + "\t" + size + "\t" + compressedSize);	         
+	         //trace.out(name + "\t" + size + "\t" + compressedSize);
 	         debug (name + "\t" + size + "\t" + compressedSize);
 		}   
 		

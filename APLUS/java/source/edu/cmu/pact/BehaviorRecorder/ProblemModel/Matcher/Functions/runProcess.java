@@ -127,11 +127,11 @@ public class runProcess {
 		runProcess rp = new runProcess();
 		if (args.length > 1) {
 			String procOutput = rp.runProcess(processToRun, args[1]);
-			System.out.println("Process "+processToRun+"("+args[1]+"):\n output: "+procOutput
+			trace.out("Process "+processToRun+"("+args[1]+"):\n output: "+procOutput
 					+"\n error: "+rp.stderr);
 		} else {
 			String procOutput = rp.runProcess(processToRun, System.in);
-			System.out.println("Process "+processToRun+"( - ):\n output: "+procOutput
+			trace.out("Process "+processToRun+"( - ):\n output: "+procOutput
 					+"\n error: "+rp.stderr);
 		}
 	}

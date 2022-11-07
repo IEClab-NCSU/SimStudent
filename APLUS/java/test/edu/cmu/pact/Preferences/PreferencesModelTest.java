@@ -182,7 +182,7 @@ public class PreferencesModelTest extends TestCase
 	 * @param  evt PropertyChangeEvent detailing change
 	 */
 	public void propertyChange(PropertyChangeEvent evt) {
-		System.out.println("Change #" + (++changeCount) + ": " +
+		trace.out("Change #" + (++changeCount) + ": " +
 						   evt.getPropertyName() +
 						   " from " + evt.getOldValue() +
 						   " to " + evt.getNewValue());
@@ -278,7 +278,7 @@ public class PreferencesModelTest extends TestCase
 
 		// commented out to avoid excess text being printed during tests
         //PreferencesWindow.GroupNode root = prefModel.getDisplayRoot();
-        //System.out.println(root.prettyPrint());
+        //trace.out(root.prettyPrint());
 		showFrame();
 		prefModel.saveToDisk(BR_PREFS_FILE);
 	}

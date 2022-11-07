@@ -23,7 +23,7 @@ public class WebStartUtils {
 
 		   // Invoke the getCodeBase method to get the prefix of the URL.
 		   URL codeBase = bs.getCodeBase();
-		   System.out.println("showURL() codeBase is " + codeBase +
+		   trace.out("showURL() codeBase is " + codeBase +
 							  ", path is " + path + ";");
 		   if (!codeBase.getPath().endsWith("/") && !path.startsWith("/"))
 			   path = "/" + path;
@@ -31,7 +31,7 @@ public class WebStartUtils {
 		   // Form a new URL with the path appended to the codebase.
 		   URL newURL = new URL(codeBase.getProtocol(), codeBase.getHost(),
 									 codeBase.getPath() + path);
-		   System.out.println("showURL() newURL is " + newURL);
+		   trace.out("showURL() newURL is " + newURL);
 
            // Invoke the showDocument method to launch the request
            return bs.showDocument(newURL); 
@@ -59,6 +59,6 @@ public class WebStartUtils {
 				throw new IllegalArgumentException("URL must be specified");
 		}
 		boolean result = wsu.showURL(urlArg);
-		System.out.println("showURL(" + urlArg + ") returns " + result);
+		trace.out("showURL(" + urlArg + ") returns " + result);
 	}
 }

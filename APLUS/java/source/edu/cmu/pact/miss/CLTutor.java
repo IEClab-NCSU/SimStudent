@@ -91,7 +91,7 @@
 //		boolean isBasicSkill = 
 //			"add".equals(action) || "subtract".equals(action) ||
 //			"multiply".equals(action) || "divide".equals(action);
-//		// System.out.println("isBasicSkill(" + action + ") = " + isBasicSkill );
+//		// trace.out("isBasicSkill(" + action + ") = " + isBasicSkill );
 //		return isBasicSkill;
 //	}
 //
@@ -374,7 +374,7 @@
 //    	int idx = clientMsg.indexOf(MSG_DELIM);
 //    	if (idx > 0) {
 //    		String clientMsgArg = clientMsg.substring(idx+1);
-//    		// System.out.println("clientMsgArg = " + clientMsgArg);
+//    		// trace.out("clientMsgArg = " + clientMsgArg);
 //    		msgArg = clientMsgArg.split(MSG_DELIM);
 //    	}
 //		return msgArg;
@@ -386,7 +386,7 @@
 //	
 //	private void dispatchClientMsg(String clientMsg) {
 //
-//		// System.out.println("dispatchClientMsg: " + clientMsg);
+//		// trace.out("dispatchClientMsg: " + clientMsg);
 //		
 //		String cmd = getMessageCmd(clientMsg);
 //		String[] arg = getMessageArg(clientMsg);
@@ -400,7 +400,7 @@
 //		else if (GET_NEXT_STEP.equals(cmd)) {
 //			getNextStep();
 //		} else {
-//			System.out.println("dispatchClientMsg: invalid msg >> " + clientMsg);
+//			trace.out("dispatchClientMsg: invalid msg >> " + clientMsg);
 //		}
 //	}	
 //
@@ -416,7 +416,7 @@
 //
 //		for (int i = 0; i < stepsSoFar.size(); i++) {
 //			SAI sai = (SAI)stepsSoFar.get(i);
-//			// System.out.println("InquirySolverTutor: doStep(" + sai + ")");
+//			// trace.out("InquirySolverTutor: doStep(" + sai + ")");
 //			try {
 //				tutor.doStep(sai);
 //			} catch (InvalidStepException e) {
@@ -580,12 +580,12 @@
 //	// - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - * - *
 //	// Perform a step given (a set of) SAI
 //	private void doStep(String selection, String action, String input) {
-//		System.out.println("doStep(" + selection + "," + action + "," + input
+//		trace.out("doStep(" + selection + "," + action + "," + input
 //				+ ")");
 //		SAI sai = generateClSAIfromCtatSAI(selection, action, input);
 //		String clAction = sai.getAction();
 //		if (!isRedundantTypein(clAction)) {
-//			// System.out.println("SAI = " + sai);
+//			// trace.out("SAI = " + sai);
 //			try {
 //				this.solverTutor.doStep(sai);
 //			} catch (InvalidStepException e) {
@@ -626,12 +626,12 @@
 //	public SAI getNextStep() {
 //		SAI nextStep = whatToDoNext();
 //		String msg = nextStep.getSelection() + ";" + nextStep.getAction() + ";" + nextStep.getInput();
-//		System.out.println("getNextStep >> " + msg);
+//		trace.out("getNextStep >> " + msg);
 //		return nextStep;
 //	}
 //
 //	private SAI whatToDoNext() {
-//		// System.out.println("whatToDoNext called ...");
+//		// trace.out("whatToDoNext called ...");
 //		SAI nextStep = null;
 //		if (isNonBasicSkillApplied()) {
 //			for (int i = 0; i < 2; i++) {
@@ -649,7 +649,7 @@
 //	}
 //
 //	public void startProblem(SolverTutor solverTutor, String problem) {
-//		System.out.println("startProblem(" + problem + ")");
+//		trace.out("startProblem(" + problem + ")");
 //		String solverProblem = problem + ";" + "solve!";
 //		solverTutor.startProblem(solverProblem);
 //		resetBasicSkillApplied();
@@ -685,7 +685,7 @@
 //			} catch (InvalidStepException e) {
 //				e.printStackTrace();
 //			}
-//			// System.out.println("isCorrectStep(" + sai + ") = " +
+//			// trace.out("isCorrectStep(" + sai + ") = " +
 //			// isCorrectStep);
 //		}
 //		return isCorrectStep;
@@ -711,7 +711,7 @@
 //	private boolean isTypeinAction(String action) {
 //		boolean isTypeinAction = "left".equals(action)
 //				|| "right".equals(action);
-//		// System.out.println("isTypeinAction(" + action + ") = " +
+//		// trace.out("isTypeinAction(" + action + ") = " +
 //		// isTypeinAction);
 //		return isTypeinAction;
 //	}
@@ -773,7 +773,7 @@
 //				// The SAI is for type-in
 //				// selection -> "commTable1_C3R1"
 //				String indexStr = getSelectionColumn();
-//				// System.out.println("selection: " + selection + ", indexStr: "
+//				// trace.out("selection: " + selection + ", indexStr: "
 //				// + indexStr);
 //				int index = Integer.parseInt(indexStr);
 //				clAction = (index == 1 ? "left" : "right");

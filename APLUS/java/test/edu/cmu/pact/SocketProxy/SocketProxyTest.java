@@ -78,7 +78,7 @@ public class SocketProxyTest extends TestCase {
 											SocketReader.readAll(inStream));
 
 					if (!suppressPrint)
-						System.out.println("\nSocketProxyTest.listener received:\n"+msg);
+						trace.out("\nSocketProxyTest.listener received:\n"+msg);
 
 					if (msg.length() < 1) {
 						if (transactionSet != null)
@@ -689,7 +689,7 @@ public class SocketProxyTest extends TestCase {
 			 * started after this process's listener has been started.
 			 */ 
 			if (nSenders < 2) {
-				System.out.println("\nStart SocketProxy, open interface and " +
+				trace.out("\nStart SocketProxy, open interface and " +
 								   "graph in the Behavior Recorder,\nand then " +
 								   "press Enter here to start sending.\n");
 				promptRdr.readLine();
@@ -699,7 +699,7 @@ public class SocketProxyTest extends TestCase {
 				if (msg.trim().length() < 1)        // skip blank lines
 					continue;
 				if (msg.trim().charAt(0) == '#') {  // just print comment lines
-					System.out.println("\nComment: " + msg + "\n");
+					trace.out("\nComment: " + msg + "\n");
 					continue;
 				}
 				trace.out("sp", "runClient waitForResponse "+waitForResponse+
@@ -709,13 +709,13 @@ public class SocketProxyTest extends TestCase {
 				else
 					sendString(host, clientPort, msg);
 				if (oneAtATime) {
-					System.out.println("\n___press Enter to send next msg");
+					trace.out("\n___press Enter to send next msg");
 					promptRdr.readLine();
 				}
 			}
 			if (nSenders < 2) {
 				do {
-					System.out.print("\n___enter 'q' to stop listener: ");
+					trace.out("\n___enter 'q' to stop listener: ");
 				} while (!promptRdr.readLine().toLowerCase().startsWith("q"));
 			}			
 			this.resetOutputStream(true);  // true=>close unconditionally
@@ -744,7 +744,7 @@ public class SocketProxyTest extends TestCase {
 		synchronized(tx) {
 			String toSend = tx.getRequestText();
 			if (!suppressPrint)
-				System.out.println("\nSocketProxyTest.sendAndWait sent:\n"+toSend);
+				trace.out("\nSocketProxyTest.sendAndWait sent:\n"+toSend);
 			sendString(host, clientPort, toSend);
 			tx.setSendTime(new Date());
 			if (tx.hasNoResponse())

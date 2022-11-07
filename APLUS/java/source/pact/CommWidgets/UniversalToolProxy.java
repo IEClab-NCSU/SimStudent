@@ -473,10 +473,10 @@ public class UniversalToolProxy implements CommMessageReceiver, CommMessageHandl
 		if (ctlr != null && ctlr.getCtatModeModel().isJessTracing()) {
 			MT mt = ctlr.getModelTracer();
 			if (mt != null) {
-				//System.out.println("#*#*#*#*#*#*#");System.out.println("#*#*#*#*#*#*#");System.out.println("#*#*#*#*#*#*#");System.out.println("#*#*#*#*#*#*#");
+				//trace.out("#*#*#*#*#*#*#");trace.out("#*#*#*#*#*#*#");trace.out("#*#*#*#*#*#*#");trace.out("#*#*#*#*#*#*#");
 				//Thread.dumpStack();
 				//trace.out("webAuth","***** trying to handle commMessage" + msg);
-				//System.out.println("#*#*#*#*#*#*#");System.out.println("#*#*#*#*#*#*#");System.out.println("#*#*#*#*#*#*#");System.out.println("#*#*#*#*#*#*#");
+				//trace.out("#*#*#*#*#*#*#");trace.out("#*#*#*#*#*#*#");trace.out("#*#*#*#*#*#*#");trace.out("#*#*#*#*#*#*#");
 				MessageObject mo = mt.handleCommMessage(msg);
 				if (mo != null)
 					ctlr.handleCommMessage(mo);

@@ -87,12 +87,12 @@ public class SimulateLearningTest extends TestCase  {
         File dir1 = new File (".");
         try{	    
             javaDir = dir1.getCanonicalPath(); //get CanonicalPath or AbsolutePath?
-            System.out.println("javaDir = " + javaDir);
+            trace.out("javaDir = " + javaDir);
             projectDir = javaDir + "/test/edu/cmu/pact/miss"; //-ssProjectDir can also be set with a command-line parameter
-            System.out.println("projectDir = " + projectDir);
+            trace.out("projectDir = " + projectDir);
             SimSt.setProjectDir(projectDir);
             BRD_PATH = dir1.getCanonicalPath() + "/test/edu/cmu/pact/miss/test-learning.brd";
-            System.out.println("BRD_PATH = " + BRD_PATH);
+            trace.out("BRD_PATH = " + BRD_PATH);
 
             //This is the main loop
             initialize();
@@ -246,20 +246,20 @@ public class SimulateLearningTest extends TestCase  {
             
             // Read a set of focus of attention
             Vector /* String[] */ foaV = simSt.readFocusOfAttentionFromBRD( BRD_PATH );
-            //System.out.println("foaV = " + foaV);
+            //trace.out("foaV = " + foaV);
             
             // Set a FoA for the current "node"
             if ( foaV != null && !foaV.isEmpty()) {
         	
                 //this is getting the foaArray corresponding to the node
-                //System.out.println("nodeNo = " + nodeNo);
+                //trace.out("nodeNo = " + nodeNo);
         		String[] foaArray = (String[])foaV.get(nodeNo++);
-                //System.out.println("foaArray = " + foaArray);
-                //System.out.println("foaArray.length = " + foaArray.length);
+                //trace.out("foaArray = " + foaArray);
+                //trace.out("foaArray.length = " + foaArray.length);
                 
                 for (int i = 0; i < foaArray.length; i++) {
                     String foaWme = foaArray[i];
-                    //System.out.println("foaWme = " + foaWme);
+                    //trace.out("foaWme = " + foaWme);
                     Object wme = brController.lookupWidgetByName( foaWme );
                     // trace.out("miss", "foaWme: " + foaWme + " got " + wme );
                     Class wmeClass = wme.getClass();
@@ -285,7 +285,7 @@ public class SimulateLearningTest extends TestCase  {
         assertEquals(action.get(0), "UpdateTable");
         assertEquals(input.get(0), "x");
                
-        System.out.println("passed 3 asserts.");
+        trace.out("passed 3 asserts.");
         
         brController.getMissController().getSimSt().stepDemonstrated( targetNode, selection, action, input, edge, null);        
     }

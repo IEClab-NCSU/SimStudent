@@ -4,7 +4,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 
 import edu.cmu.pact.BehaviorRecorder.Controller.BR_Controller;
-
+import edu.cmu.pact.Utilities.trace;
 
 
 class ClientListener extends Thread {
@@ -38,12 +38,12 @@ class ClientListener extends Thread {
 			SemanticEvent ev = new SemanticEvent("Server", "getMessage");
 			in = ev.receive(tar);
 			if (in != null)
-				System.out.println("in stream opened");
+				trace.out("in stream opened");
 
 			while (true) {
 
 				while ((msg = in.readLine()) != null) {
-					//	             	System.out.println("Mess received : "+msg);
+					//	             	trace.out("Mess received : "+msg);
 					connectTo.messageReceived(msg);
 				}
 			}

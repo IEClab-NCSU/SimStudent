@@ -1,5 +1,7 @@
 package edu.cmu.pact.miss.userDef.algebra;
 
+import edu.cmu.pact.Utilities.trace;
+
 import java.util.Vector;
 public class Denominator extends EqFeaturePredicate 
 {
@@ -19,7 +21,7 @@ public class Denominator extends EqFeaturePredicate
 		 
 		 Denominator d = new Denominator();
 		 String denom = d.denominator("2/y*y");
-		 System.out.println(denom);
+		 trace.out(denom);
 	 }
 	 
 	 

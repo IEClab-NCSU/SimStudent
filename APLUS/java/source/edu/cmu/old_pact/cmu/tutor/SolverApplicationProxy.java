@@ -10,6 +10,7 @@ import edu.cmu.old_pact.dormin.Sharable;
 import edu.cmu.old_pact.dormin.ToolProxy;
 import edu.cmu.old_pact.skillometer.SkillometerFrame;
 import edu.cmu.old_pact.skillometer.SkillometerProxy;
+import edu.cmu.pact.Utilities.trace;
 
 public class SolverApplicationProxy extends ToolProxy {
 
@@ -33,7 +34,7 @@ public class SolverApplicationProxy extends ToolProxy {
 			//((JPSolver)getObject()).showMessage(mes, image, title, pointers);
 		}
 		catch (DorminException e) { 
-			System.out.println("SolverApplicationProxy showMessage "+e.toString());
+			trace.out("SolverApplicationProxy showMessage "+e.toString());
 		}
 	}
 	

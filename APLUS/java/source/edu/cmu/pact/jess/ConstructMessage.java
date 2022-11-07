@@ -166,11 +166,11 @@ public class ConstructMessage implements Userfunction, Serializable{
 			}else {
 				returnString += tempString + " ";
 			}
-//			System.out.println(v.stringValue(context));
+//			trace.out(v.stringValue(context));
 		}
 
 		
-		//System.out.println("Return Vector: " + returnVV.toStringWithParens());
+		//trace.out("Return Vector: " + returnVV.toStringWithParens());
 		
 		returnValue = new Value(returnString,RU.STRING);
 		returnVV.add(returnValue);

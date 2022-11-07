@@ -8,6 +8,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
+import edu.cmu.pact.Utilities.trace;
 import edu.cmu.pact.miss.PeerLearning.GameShow.Connection;
 
 public class ContestOrganizer implements TimeoutRecovery {
@@ -134,7 +135,7 @@ public class ContestOrganizer implements TimeoutRecovery {
 				{
 					//As each message is received, determine message type and distribute to the
 					//correct method
-				    System.out.println("Client (organizer): " + incomingMsg);
+				    trace.out("Client (organizer): " + incomingMsg);
 				    
 				    if(!forfeited)
 				    {

@@ -232,7 +232,7 @@ public class MetaTutorAvatarComponent extends JPanel {
 		    			/*If in cogTutorMode (cogTutor control), no need to show the hint menu, just display the hint. */
 		    			if (simStudent.isSsCogTutorMode() && !simStudent.isSsAplusCtrlCogTutorMode()){
 		    				getSimStudent().getModelTraceWM().setRequestType("hint-request");
-		    				//System.out.println(" Mr Williams clicked");
+		    				//trace.out(" Mr Williams clicked");
 	     					getSimStudent().getBrController().getAmt().handleInterfaceAction(COGNITIVE_HINT_SELECTION, HINT_ACTION, HINT_INPUT);
 	     					/*keep a note that hint is given, so BTK is properly updated */
 	     					getSimStudent().getBrController().getMissController().getSimStPLE().getSsCognitiveTutor().setStepHintGiven(true);
@@ -276,8 +276,8 @@ public class MetaTutorAvatarComponent extends JPanel {
 							++count;
 						}
 						
-						//System.out.println(" FireList : "+fireList);
-						//System.out.println(" Message length : "+llist.size());
+						//trace.out(" FireList : "+fireList);
+						//trace.out(" Message length : "+llist.size());
 	
 					/*clear the list so we do not display anything*/
 					//	if (getSimStudent().isSsMetaTutorMode() && getSimStudent().getSsMetaTutorModeLevel().equals(SimSt.METACOGNITIVE) && getSimStudent().getModelTraceWM().getStudentEnteredProblem()!=null)
@@ -289,7 +289,7 @@ public class MetaTutorAvatarComponent extends JPanel {
 					//		llist.clear();
 												
 						if(count > 0 && llist.size() > 0) {
-							//System.out.println(" count : "+count);
+							//trace.out(" count : "+count);
 							if(menu != null) {
 								menu.setVisible(false);
 								menu = null;
@@ -315,7 +315,7 @@ public class MetaTutorAvatarComponent extends JPanel {
 								item.setText(getCognitiveMenuItem((llist.get(i)).get(1).trim()));
 								
 								item.addActionListener(al);
-								//System.out.println(" Adding the item ");
+								//trace.out(" Adding the item ");
 								menu.add(item);
 								menu.add(new JSeparator());
 							}
@@ -347,7 +347,7 @@ public class MetaTutorAvatarComponent extends JPanel {
 							}
 							
 							// No rule fired in the current context
-							//System.out.println(" No rule fired ! ");
+							//trace.out(" No rule fired ! ");
 							menu = new JPopupMenu();
 							menu.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 							menu.setBackground(Color.lightGray);
@@ -554,7 +554,7 @@ public class MetaTutorAvatarComponent extends JPanel {
 
 		public void actionPerformed(ActionEvent ae) {
 			String question = "";
-			//System.out.println(" Calling Mr Williams " );
+			//trace.out(" Calling Mr Williams " );
 			if(ae.getSource() instanceof JMenuItem) {
 				
 				

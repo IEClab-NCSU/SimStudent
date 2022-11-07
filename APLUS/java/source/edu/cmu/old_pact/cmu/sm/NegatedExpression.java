@@ -121,13 +121,13 @@ public class NegatedExpression extends TermExpression{
 	}
 
 	public TermExpression insert(Expression ex){
-		/*System.out.println("NE.i: " + debugForm() + "; " + ex.debugForm());
+		/*trace.out("NE.i: " + debugForm() + "; " + ex.debugForm());
 		  return super.insert(ex);*/
 		return new TermExpression(this,ex);
 	}
 
 	public String toASCII(String openParen,String closeParen){
-		//System.out.println("NE.tA: " + debugForm());
+		//trace.out("NE.tA: " + debugForm());
 		//(new Exception()).printStackTrace();
 		StringBuffer ret = new StringBuffer(64);
 		boolean finishEnclose = false;
@@ -143,7 +143,7 @@ public class NegatedExpression extends TermExpression{
 			ret.append(closeParen);
 		}
 
-		//System.out.println("       " + ret);
+		//trace.out("       " + ret);
 		return ret.toString();
 	}
 

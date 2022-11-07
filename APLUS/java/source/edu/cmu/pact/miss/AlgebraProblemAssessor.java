@@ -220,7 +220,7 @@ public class AlgebraProblemAssessor extends ProblemAssessor {
         else
         {
         	for (ProblemEdge edge : solutionPath) {
-        		//System.out.println("Selection : "+edge.getSelection() +" Action : "+edge.getAction()+" Input : "+edge.getInput());
+        		//trace.out("Selection : "+edge.getSelection() +" Action : "+edge.getAction()+" Input : "+edge.getInput());
         		if(edge.getSelection().equalsIgnoreCase(Rule.DONE_NAME))
         		{
         			//A completed answer ends with done, with the equation before it having one side containing

@@ -355,7 +355,7 @@ public class Logger implements AsyncStreamLogger.Listener, LogContext, PropertyC
         try {
             if (doDisk && diskLogger != null) {
                 diskResult = diskLogger.logActionLog(alog);
-               // System.out.println("--------------------- The end of this log ");
+               // trace.out("--------------------- The end of this log ");
 //                trace.out("log", "disk log result " + diskResult
 //                        + ", last error " + diskLogger.getLastError());
                 if (!diskResult.booleanValue())
@@ -1628,7 +1628,7 @@ public class Logger implements AsyncStreamLogger.Listener, LogContext, PropertyC
 		
 
 		if (trace.getDebugCode("miss")) trace.out("miss", "Logging it with a Message obj+++++++++++++++"+dsMsg.toString());
-		System.out.println(" The following is logged at LogIt : "+dsMsg.toString());
+		trace.out(" The following is logged at LogIt : "+dsMsg.toString());
 		StreamLogger sLogger = getOLILogger();
 		DiskLogger dLogger = getDiskLogger();
 		boolean result = true;

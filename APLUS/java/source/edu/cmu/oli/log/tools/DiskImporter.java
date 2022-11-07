@@ -4,6 +4,8 @@
  * Copyright (c) 2002-2003 Carnegie Mellon University. 
  */ 
 package edu.cmu.oli.log.tools;
+import edu.cmu.pact.Utilities.trace;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.FileReader;
@@ -58,20 +60,20 @@ public class DiskImporter
 
     public static void main(String[] args) throws IOException {
 	if ( (args.length == 1) & (args[0].equals("--help")) ) {
-	    System.out.println("Usage: DiskImporter [infile [url]]");
+	    trace.out("Usage: DiskImporter [infile [url]]");
 	    return;
 	}
 	DiskImporter dI = new DiskImporter();
 	if (args.length > 0) {
-	    System.out.println("Using file     : " + args[0]);
+	    trace.out("Using file     : " + args[0]);
 	    dI.setInfile(args[0]);
 	}
 	if (args.length > 1) {
-	    System.out.println("Sending to URL : " + args[1]);
+	    trace.out("Sending to URL : " + args[1]);
 	    dI.setURL(args[1]);
 	}
 	dI.send();
-	System.out.println(dI.getLastError());
+	trace.out(dI.getLastError().toString());
     }
 
     /**
@@ -126,11 +128,11 @@ public class DiskImporter
 	    }
 	} catch (IOException ex){lastException=ex; return Boolean.FALSE;}
 	String[] xmlDocs = toSend.split("<\\?xml");
-	//System.out.println("FILE:\n" + toSend);
-	System.out.print("Sending "+xmlDocs.length+" documents ");
+	//trace.out("FILE:\n" + toSend);
+	trace.out("Sending "+xmlDocs.length+" documents ");
 	for(int i=1; i<xmlDocs.length; i++) {
             xmlDocs[i] = "<?xml" + xmlDocs[i];
-	    //System.out.println(xmlDocs[i]);
+	    //trace.out(xmlDocs[i]);
 	   
 	    InputStream is;
 	    OutputStream os;
@@ -143,7 +145,7 @@ public class DiskImporter
 	    try {
 		os = conn.getOutputStream();
 	    }catch(IOException ex){lastException=ex;return Boolean.FALSE;} 
-	    //System.out.println("\n" + xmlDocs[i]);
+	    //trace.out("\n" + xmlDocs[i]);
 	    try {
 		os.write(xmlDocs[i].getBytes("ISO-8859-1"));
 		os.flush();
@@ -152,7 +154,7 @@ public class DiskImporter
 		for(int c = -1; 0 <= (c = is.read()); baos.write(c));
 		String response = new String(baos.toByteArray());
 		if(response != null && response.toLowerCase().contains("success"))
-			System.out.print(".");
+			trace.out(".");
 		else
 			throw new IOException("Unsuccessful response from server: \""+response+"\"");
 		conn.disconnect();
@@ -164,7 +166,7 @@ public class DiskImporter
 	    	return Boolean.FALSE;	    	
 	    }
 	}
-	System.out.println();
+	trace.out();
 	return Boolean.TRUE;
     }
 

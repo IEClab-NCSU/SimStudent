@@ -422,7 +422,7 @@ public class HelpSuccessPanel extends JDialog implements ActionListener
 			ActionEvent ae = new ActionEvent(this, 0, "Edit Hint and Success Messages");
 			controller.getUndoPacket().getCheckpointAction().actionPerformed(ae);
 			if (trace.getDebugCode("undo"))
-				System.out.println("Checkpoint: Change Hint/Success (1)");
+				trace.out("Checkpoint: Change Hint/Success (1)");
         }
 	}
 

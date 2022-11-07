@@ -1,11 +1,13 @@
 package edu.cmu.old_pact.cmu.sm;
 
+import edu.cmu.pact.Utilities.trace;
+
 public class Debug {
 	static boolean printDebugging=false;
 	
 	static void println (String output) {
 		if (printDebugging) {
-			System.out.println(output);
+			trace.out(output);
 		}
 	}
 	

@@ -58,8 +58,8 @@ public class InputCapsule {
 	
 	public InputCapsule(String inputLine, String header) throws Exception {
 		
-	    //System.out.println("header: " + header);
-	    //System.out.println("inputLine: " + inputLine);
+	    //trace.out("header: " + header);
+	    //trace.out("inputLine: " + inputLine);
 	    
 	    
 		StringTokenizer headerTk = new StringTokenizer(header, "\t");
@@ -67,8 +67,8 @@ public class InputCapsule {
 		StringTokenizer inputTk = new StringTokenizer(inputLine, "\t", true);
 
 		/*
-		System.out.println("header has " + headerTk.countTokens() + " tokens.");
-		System.out.println("input  has " + inputTk.countTokens() + " tokens.");
+		trace.out("header has " + headerTk.countTokens() + " tokens.");
+		trace.out("input  has " + inputTk.countTokens() + " tokens.");
 		
 		if (inputTk.countTokens() != headerTk.countTokens()) {
 			throw new Exception("incompatible input: " + inputLine);
@@ -88,7 +88,7 @@ public class InputCapsule {
 				if (inputTk.hasMoreTokens())
 					inputTk.nextToken();
 			}
-			// System.out.println("InputCapsule reading <" + label + ", " + value + ">");
+			// trace.out("InputCapsule reading <" + label + ", " + value + ">");
 			
 			values.put(label, value);
 		}

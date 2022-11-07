@@ -226,7 +226,7 @@ public class ProblemStateReader {
      * @param authorMode authorMode to enter after loading
      */
     public boolean openBRDiagramFile1337(InputStream inputStream, String authorMode) {
-    	System.out.println("***1337*** OPENBRDIAGRAMFILE");
+    	trace.out("***1337*** OPENBRDIAGRAMFILE");
         ProblemModelEvent event = new NewProblemEvent(controller,
         		controller.getPreferencesModel().getBooleanValue(BR_Controller.COMMUTATIVITY));
         getProblemModel().fireProblemModelEvent(event);

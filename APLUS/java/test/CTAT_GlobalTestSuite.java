@@ -60,7 +60,7 @@ public class CTAT_GlobalTestSuite {
     				trace.addDebugCodes(args[++i]);
     			break;
     		case 'h':
-    			System.out.print(usageMsg);
+    			trace.out(usageMsg);
     			return;
     		case 'n':
     			noexecute = true;

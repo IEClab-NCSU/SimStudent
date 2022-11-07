@@ -1,6 +1,7 @@
 package edu.cmu.old_pact.cmu.solver.ruleset;
 
 import edu.cmu.old_pact.cmu.sm.Equation;
+import edu.cmu.pact.Utilities.trace;
 
 //a SkillRuleSet is just a list of SkillRules
 
@@ -22,16 +23,16 @@ public class SkillRuleSet {
 
 	public SkillRule findRuleToFire(Equation info,String rulename) {
 		SkillRule ruleToFire = null;
-//		System.out.println("Looking for skill rule, info is "+info+" rule is "+rulename+" "+rules.length+" rules");
+//		trace.out("Looking for skill rule, info is "+info+" rule is "+rulename+" "+rules.length+" rules");
 		for (int i=0;i<rules.length && ruleToFire==null;++i) {
 			if (Rule.allRulesTraced())
-				System.out.println("checking skill rule number "+i);
+				trace.out("checking skill rule number "+i);
 			if (rules[i].canFire(rulename,info))
 				ruleToFire = rules[i];
 		}
 		//Can't find skill, so just make one up with same name as rulename
 //		if (ruleToFire == null) {
-			//System.out.println("rule to fire is null");
+			//trace.out("rule to fire is null");
 //			ruleToFire = new SkillRule(rulename);
 //			addRule(ruleToFire);
 //		}
@@ -46,7 +47,7 @@ public class SkillRuleSet {
 				matchedRules[numSkillsFound++] = rules[i];
 		}
 		if (numSkillsFound > 0) {
-			//System.out.println("in findAllRules..., "+numSkillsFound+" skills");
+			//trace.out("in findAllRules..., "+numSkillsFound+" skills");
 			SkillRule finalRules[] = new SkillRule[numSkillsFound];
 			for (int i=0;i<numSkillsFound;++i)
 				finalRules[i] = matchedRules[i];

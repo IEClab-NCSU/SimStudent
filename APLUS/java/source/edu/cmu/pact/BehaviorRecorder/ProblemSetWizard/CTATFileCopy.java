@@ -37,6 +37,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import edu.cmu.hcii.ctat.CTATBase;
+import edu.cmu.pact.Utilities.trace;
 
 /**
 *
@@ -69,7 +70,7 @@ public class CTATFileCopy extends CTATBase
 		  
 			in.close();
 			out.close();
-			System.out.println("File copied.");
+			trace.out("File copied.");
 		}	  
 		catch(FileNotFoundException ex)
 		{
@@ -92,13 +93,13 @@ public class CTATFileCopy extends CTATBase
 	{
 		switch(args.length)
 		{
-	  		case 0:	System.out.println("File has not mentioned.");
+	  		case 0:	trace.out("File has not mentioned.");
 	  				System.exit(0);
-	  		case 1: System.out.println("Destination file has not mentioned.");
+	  		case 1: trace.out("Destination file has not mentioned.");
 	  				System.exit(0);
 	  		case 2: copyfile(args[0],args[1]);
 	  				System.exit(0);
-	  		default : System.out.println("Multiple files are not allow.");
+	  		default : trace.out("Multiple files are not allow.");
 	 				System.exit(0);
 		}
 	}

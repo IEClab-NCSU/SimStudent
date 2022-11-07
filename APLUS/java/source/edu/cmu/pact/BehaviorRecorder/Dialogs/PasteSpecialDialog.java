@@ -24,6 +24,7 @@ import edu.cmu.pact.BehaviorRecorder.ProblemModel.Graph.EdgeData;
 import edu.cmu.pact.BehaviorRecorder.ProblemModel.Graph.ProblemEdge;
 import edu.cmu.pact.BehaviorRecorder.ProblemModel.Matcher.ExactMatcher;
 import edu.cmu.pact.BehaviorRecorder.View.BRPanel;
+import edu.cmu.pact.Utilities.trace;
 
 public class PasteSpecialDialog extends JDialog implements ActionListener {
 
@@ -275,7 +276,7 @@ public class PasteSpecialDialog extends JDialog implements ActionListener {
 			case SKILLS:
 				
 				Vector<String> skills = (Vector<String>) ed.getRuleNames().clone();
-				System.out.println("Skills from the original edge: " + skills.toString());
+				trace.out("Skills from the original edge: " + skills.toString());
 				for (String s : skills)
 				{
 					ed.removeRuleName(s);
@@ -284,7 +285,7 @@ public class PasteSpecialDialog extends JDialog implements ActionListener {
 				try
 				{
 					 newSkills = (Vector<String>)value;
-					 System.out.println("New skills " + newSkills);
+					 trace.out("New skills " + newSkills);
 				}
 				catch (Exception ex)
 				{
@@ -293,7 +294,7 @@ public class PasteSpecialDialog extends JDialog implements ActionListener {
 				
 				for (String s : newSkills)
 				{
-					System.out.println("Adding the following skill: " + s);
+					trace.out("Adding the following skill: " + s);
 					ed.addRuleName(s);
 				}
 				break;

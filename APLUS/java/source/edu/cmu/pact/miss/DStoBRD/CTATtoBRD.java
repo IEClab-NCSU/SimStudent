@@ -6,6 +6,8 @@
 
 package edu.cmu.pact.miss.DStoBRD;
 
+import edu.cmu.pact.Utilities.trace;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -95,14 +97,14 @@ public class CTATtoBRD{
             String outcome = tokens[7];
             
             /*
-            System.out.println(id);
-            System.out.println(student);
-            System.out.println(problem);
-            System.out.println(skill);
-            System.out.println(selection);
-            System.out.println(input);
-            System.out.println(subgoal);
-            System.out.println(outcome);
+            trace.out(id);
+            trace.out(student);
+            trace.out(problem);
+            trace.out(skill);
+            trace.out(selection);
+            trace.out(input);
+            trace.out(subgoal);
+            trace.out(outcome);
 			*/
                         
             if (skillRequiresInput(skill)) {
@@ -116,7 +118,7 @@ public class CTATtoBRD{
             transList.add(item);
         }
 
-        System.out.println(transList.size() + " transactions found.");
+        trace.out(transList.size() + " transactions found.");
 
         return transList;
     }
@@ -193,8 +195,8 @@ public class CTATtoBRD{
         }
 
         out.close();
-        System.out.println(getNumCtatTransactions() + " CTAT transactions read.");
-        System.out.println(getNumBrdTransactions() + " BRD transactions wrote.");
+        trace.out(getNumCtatTransactions() + " CTAT transactions read.");
+        trace.out(getNumBrdTransactions() + " BRD transactions wrote.");
     }
     
     private void writeToFile(BufferedWriter out, String id, 
@@ -217,8 +219,8 @@ public class CTATtoBRD{
     public static void main(String[] args) {
 
         if(args.length != 2){
-            System.out.println("Please specify input file and output file names.");
-            System.out.println("CTATtoBRD <input_file> <output_rule>");
+            trace.out("Please specify input file and output file names.");
+            trace.out("CTATtoBRD <input_file> <output_rule>");
             System.exit(-1);
         }
 
@@ -331,7 +333,7 @@ public class CTATtoBRD{
 //      newItem = new BrdTransaction(item.studentName , problemName, selection,
 //              action, item.input, item.skill, item.outcome);
 //
-//      //System.out.println(probName + " " + selection + " " + action + " "
+//      //trace.out(probName + " " + selection + " " + action + " "
 //      //              + item.skill);
 //      newList.add(newItem);
 //  }else

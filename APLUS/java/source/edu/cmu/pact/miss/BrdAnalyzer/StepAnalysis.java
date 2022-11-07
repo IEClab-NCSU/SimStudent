@@ -117,7 +117,7 @@ public class StepAnalysis {
 
     		//	    if (correctness!=null && correctness.equals("Buggy Action")){
     		//	        buggyEdgeCount++;
-    		//	        System.out.println("Buggy step ID = " + actionLabel.getChild("uniqueID").getValue());
+    		//	        trace.out("Buggy step ID = " + actionLabel.getChild("uniqueID").getValue());
     		//	    }
 
     		// this code is assuming that sourceID never decreases
@@ -193,7 +193,7 @@ public class StepAnalysis {
             else if (e.getName().equalsIgnoreCase("startNodeMessages"))
                 problemName = getProblemName(e);
         }
-        //System.out.println("edges.size() = " + edges.size());
+        //trace.out("edges.size() = " + edges.size());
         
         return problemName;
     }
@@ -229,7 +229,7 @@ public class StepAnalysis {
         }
         catch(Exception e){
             handleBadBrdException(e);
-            //System.out.println("error parsing XML file");
+            //trace.out("error parsing XML file");
         }
         return doc;
     }

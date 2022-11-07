@@ -723,7 +723,7 @@ public class CTATHTTPExchange extends CTATBase
 			if(key.contains("Cookie"))
 				debug("Sending Cookie directive:\n  "+thisLine);
 			
-			//System.out.println("Writing: " + thisLine.toString());
+			//trace.out("Writing: " + thisLine.toString());
 			
 			try 
 			{

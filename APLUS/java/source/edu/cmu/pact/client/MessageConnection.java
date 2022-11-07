@@ -311,7 +311,7 @@ public class MessageConnection {
 		MessageConnection mc = new MessageConnection(host, port);
 		mc.addMessageEventListener(new MessageEventListener() {
 			public void messageEventOccurred(MessageEvent msgEvt) {
-				System.out.println(msgEvt);
+				trace.out(msgEvt.toString());
 			}
 		});
 		mc.openConnection();

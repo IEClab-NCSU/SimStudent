@@ -1093,14 +1093,14 @@ public class FPTest extends TestCase {
 		argV.add( args[j] );
 	    }
 	    String value = FeaturePredicate.testUserDefSymbols( (String) test[i][0], argV);
-	    //System.out.println("value = " + value);
+	    //trace.out("value = " + value);
 	    
 	    //if the operator is meant to return null, do an assertNull
 	    if (test[i][2]==null){
 	    	assertNull("test["+i+"]", value);
 	    }
 	    else { //otherwise, do assertEquals
-	    	System.out.println("["+i+"] value = " + value + "   test[i][2] = " + test[i][2]);
+	    	trace.out("["+i+"] value = " + value + "   test[i][2] = " + test[i][2]);
 	    	assertEquals("test["+i+"]", test[i][2], value);
 	    }	    
 	}		
@@ -1111,7 +1111,7 @@ public class FPTest extends TestCase {
 	fpTest();
 	
     }
-	//System.out.println("testGus");
+	//trace.out("testGus");
 
 /*
 	

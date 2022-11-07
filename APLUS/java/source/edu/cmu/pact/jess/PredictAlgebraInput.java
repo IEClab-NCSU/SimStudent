@@ -64,7 +64,7 @@ public class PredictAlgebraInput extends PredictObservableAction {
 	 * @see jess.Userfunction#call(jess.ValueVector, jess.Context)
 	 */	public Value call(ValueVector vv, Context context) throws JessException {
 		
-//                 System.out.println("entered PredictAlgebraInput.call()");
+//                 trace.out("entered PredictAlgebraInput.call()");
              
 		this.context = context;
 		

@@ -383,7 +383,7 @@ public class WhyNot extends JFrame implements ListSelectionListener, ActionListe
                 currentState.add(fi.next());
 
         String rule = ran.getName();
-//        System.out.println("constructing WhyNot with rule = " + rule + ", getRuleBaseName(rule) = " + getRuleBaseName(rule));
+//        trace.out("constructing WhyNot with rule = " + rule + ", getRuleBaseName(rule) = " + getRuleBaseName(rule));
         WhyNot wn = new WhyNot(rule, currentState, wnRete.allRulesMap(),
                 wnRete.getEventLogger());     
         
@@ -632,7 +632,7 @@ public class WhyNot extends JFrame implements ListSelectionListener, ActionListe
      */
     public void getPatterns(Defrule rule){
 		ConditionalElement ce;
-                System.out.println("getPatterns: rule = " + rule);
+                trace.out("getPatterns: rule = " + rule);
 		ce  = (ConditionalElement) rule.getConditionalElements();
 		addPattern(ce);
     }

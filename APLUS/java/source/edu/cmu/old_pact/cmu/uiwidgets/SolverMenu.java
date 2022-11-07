@@ -10,6 +10,7 @@ import edu.cmu.old_pact.dormin.ObjectProxy;
 import edu.cmu.old_pact.dormin.menu.DorminMenu;
 import edu.cmu.old_pact.dormin.menu.DorminMenuItem;
 import edu.cmu.old_pact.toolframe.ToolFrame;
+import edu.cmu.pact.Utilities.trace;
 
 
 public class SolverMenu extends DorminMenu{
@@ -207,7 +208,7 @@ public class SolverMenu extends DorminMenu{
 			if(toret[2].equals(""))
 				toret[2] = defPrompt;
 		}catch (ArrayIndexOutOfBoundsException e){
-			System.out.println("in SolverMenu can't find "+n);
+			trace.out("in SolverMenu can't find "+n);
 		}
 		return toret;
 	}
@@ -216,7 +217,7 @@ public class SolverMenu extends DorminMenu{
 		for(int i=0;i<names.length;i++){
 			if(name.equalsIgnoreCase(names[i])){
 				if(i >= smOpName.length){
-					System.out.println("SM.gSO: ERROR: array index out of bounds getting SM op for " + name);
+					trace.out("SM.gSO: ERROR: array index out of bounds getting SM op for " + name);
 					return null;
 				}
 				else{

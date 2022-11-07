@@ -626,7 +626,7 @@ public class JCommTable extends JCommWidget implements FocusListener,
      * @return
      */
     public Vector createJessInstances() {
-        // System.out.println("createJessInstance: " + getCommName());
+        // trace.out("createJessInstance: " + getCommName());
         Vector instances = new Vector();
         // columns contains list of variables for the columns
         String columns = "";
@@ -738,7 +738,7 @@ public class JCommTable extends JCommWidget implements FocusListener,
 			} else {
 				// Fri Oct 07 22:37:55 2005:: Noboru
 				// Just for debugging...
-				// System.out.println("doCorrectAction: Cell [" + row + "][" +
+				// trace.out("doCorrectAction: Cell [" + row + "][" +
 				// col +
 				// "] must be LOCKED!!");
 			}
@@ -788,7 +788,7 @@ public class JCommTable extends JCommWidget implements FocusListener,
         // cell makes the 1st cell focus lost). Therefore,
         // this statement must be conditioned.
         if (getController().isSimStudentMode()) {
-            // System.out.println("doIncorrectAction: Cell[" + row + "][" + col+
+            // trace.out("doIncorrectAction: Cell[" + row + "][" + col+
             // "] LOCKED!! @@@@@@@@@");
             ((JCommDocument) cells[row][col].getDocument()).locked = true;
         } else {
@@ -931,7 +931,7 @@ public class JCommTable extends JCommWidget implements FocusListener,
            		 if (getController().getMissController().getSimStPLE()!=null && getController().getMissController().getSimStPLE().getSsCognitiveTutor()!=null){
            			AplusPlatform aplus =  (AplusPlatform)getController().getMissController().getSimStPLE().getSimStPeerTutoringPlatform();
            			 if(aplus.getAplusTabs().getSelectedIndex() == 5){
-           				// System.out.println(" Gonna remove : "+cell.getCommName());
+           				// trace.out(" Gonna remove : "+cell.getCommName());
                			 getController().getMissController().getSimStPLE().getSsCognitiveTutor().removeQuizStep(cell.getCommName());
 
            			 }
@@ -1340,8 +1340,8 @@ public class JCommTable extends JCommWidget implements FocusListener,
 
         /*
          * String cellName = commName + "_C" + (cell.row + 1) + "R" +
-         * (cell.column + 1); System.out.println("cell: " + cellName);
-         * System.out.println("Row: " + cell.row + ", Col: " + cell.column);
+         * (cell.column + 1); trace.out("cell: " + cellName);
+         * trace.out("Row: " + cell.row + ", Col: " + cell.column);
          */
 
         // Following two actions are toggled-actions, i.e., the first
@@ -1417,7 +1417,7 @@ public class JCommTable extends JCommWidget implements FocusListener,
                 // Sat May 21 21:41:17 2005: Noboru
                 // Patch to trap a mouse click when Sim. Student is active...
             	if (getController().isSimStudentMode()) {
-                    // System.out.println("JCommTable:
+                    // trace.out("JCommTable:
                     // mouseDoubleClickedWhenMissActive()");
                     mouseDoubleClickedWhenMissActive(me);
                 }
@@ -1448,8 +1448,8 @@ public class JCommTable extends JCommWidget implements FocusListener,
 
             /*
              * String cellName = commName + "_C" + (cell.row + 1) + "R" +
-             * (cell.column + 1); System.out.println("cell: " + cellName);
-             * System.out.println("Row: " + cell.row + ", Col: " + cell.column);
+             * (cell.column + 1); trace.out("cell: " + cellName);
+             * trace.out("Row: " + cell.row + ", Col: " + cell.column);
              */
 
             // Following two actions are toggled-actions, i.e., the first

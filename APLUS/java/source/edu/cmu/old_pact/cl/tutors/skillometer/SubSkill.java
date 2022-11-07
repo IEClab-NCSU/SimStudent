@@ -1,5 +1,7 @@
 package edu.cmu.old_pact.cl.tutors.skillometer;
 
+import edu.cmu.pact.Utilities.trace;
+
 public class SubSkill extends SkillCalculator{
 	private String id;
 	private SectionSkill sectionSkill;
@@ -54,9 +56,9 @@ public class SubSkill extends SkillCalculator{
                //     if (new_k>=1)
                //         new_k = 0.999;
 
-                    System.out.println("!DEBUG! Updating Skill: " + sectionSkill.getName());
-                    System.out.println("  Old value: " + old_sub_k);
-                    System.out.println("  New value: " + new_k);
+                    trace.out("!DEBUG! Updating Skill: " + sectionSkill.getName());
+                    trace.out("  Old value: " + old_sub_k);
+                    trace.out("  New value: " + new_k);
                     sectionSkill.setPKnown((float)(new_k));
 
                     return (float)new_k;

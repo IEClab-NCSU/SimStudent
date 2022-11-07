@@ -130,7 +130,7 @@ public class ProcessRunner extends CTATBase
 						if("error".equalsIgnoreCase(label))
 							System.err.println(label + line);
 						else
-							System.out.println(label + line);    
+							trace.out(label + line);
 					} else {
 						outBuf.append(line);
 						outBuf.append('\n');

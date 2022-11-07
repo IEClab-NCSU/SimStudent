@@ -98,9 +98,9 @@ public class Equation implements Queryable {
                                     rightEx = sm.parse(rightString,vars);
                                 }
                                 else{
-                                    //	System.out.println("about to parse: "+leftString);
+                                    //	trace.out("about to parse: "+leftString);
                                     leftEx = sm.parse(leftString);
-                                    //	System.out.println("about to parse: "+rightString);
+                                    //	trace.out("about to parse: "+rightString);
                                     rightEx = sm.parse(rightString);
                                 }
 				initialize(leftEx,rightEx);
@@ -149,7 +149,7 @@ public class Equation implements Queryable {
 		varBindings = new Vector();
 		currentLetter = "a"; //needs to be before "getBindings"
 		leftside = left;
-                //System.out.println("Equation init:           leftside = " + leftside.debugForm());
+                //trace.out("Equation init:           leftside = " + leftside.debugForm());
 		rightside = right;
 		//Olga
 		left = left.sort();
@@ -157,11 +157,11 @@ public class Equation implements Queryable {
 			right = right.sort();
 		//end Olga
 		addVariableBindings();
-                //System.out.println("Equation init:      left[.sort()] = " + left.debugForm());
+                //trace.out("Equation init:      left[.sort()] = " + left.debugForm());
 		boundLeft = left.getBindings(this);
-                //System.out.println("Equation init: left.getBindings() = " + boundLeft.debugForm());
+                //trace.out("Equation init: left.getBindings() = " + boundLeft.debugForm());
                 boundLeft = boundLeft.sort();
-                //System.out.println("Equation init:          boundLeft = " + boundLeft.debugForm());
+                //trace.out("Equation init:          boundLeft = " + boundLeft.debugForm());
 		if (right != null)
 			boundRight = right.getBindings(this).sort();
 		else

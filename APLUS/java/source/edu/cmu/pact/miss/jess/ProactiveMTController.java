@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import edu.cmu.pact.Utilities.CTAT_Controller;
 import edu.cmu.pact.BehaviorRecorder.Controller.BR_Controller;
+import edu.cmu.pact.Utilities.trace;
 import edu.cmu.pact.miss.Rule;
 
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ public class ProactiveMTController {
 		else{
 			int val=occurenceCount.get(rulename);
 			val=val+1;
-			System.out.println("val is " + val);
+			trace.out("val is " + val);
 			occurenceCount.put(rulename,val++);
 		}
 		

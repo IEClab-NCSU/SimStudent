@@ -169,7 +169,7 @@ public class WorkSheet extends DorminToolFrame{
 	}
   /* 
    	public void focusGained(FocusEvent evt){
-  System.out.println("WS focusGained");
+  trace.out("WS focusGained");
    		try{
    		sp.requestFocus();
    		} catch (NullPointerException e) { }

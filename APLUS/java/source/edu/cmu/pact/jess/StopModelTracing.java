@@ -4,6 +4,8 @@
  */
 package edu.cmu.pact.jess;
 
+import edu.cmu.pact.Utilities.trace;
+
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -34,7 +36,7 @@ public class StopModelTracing extends Thread{
 		panel.add(cancelBtn);
 		cancelBtn.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("STOP Clicked.");
+				trace.out("STOP Clicked.");
 				MTRete.stopModelTracing = true;
 				
 			}

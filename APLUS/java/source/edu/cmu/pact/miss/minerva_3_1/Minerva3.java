@@ -6,6 +6,8 @@
  */
 package edu.cmu.pact.miss.minerva_3_1;
 
+import edu.cmu.pact.Utilities.trace;
+
 import java.io.*;
 import java.util.*;
 
@@ -100,10 +102,10 @@ public class Minerva3 {
             String outputLine = inputLine;
             
             InputCapsule capsule = new InputCapsule(inputLine, header);
-            // System.out.println("inputLine = " + capsule);
+            // trace.out("inputLine = " + capsule);
 
             String problemName = capsule.getValue("Problem Name");
-            // System.out.println("problemName: " + problemName);
+            // trace.out("problemName: " + problemName);
             // stores new problem in map if not previously detected
 
             if (isValidEquation(problemName)) {
@@ -173,7 +175,7 @@ public class Minerva3 {
 
     private String getSideAbstraction(String expression) {
       /*  String abstExp = sideAbstraction.get(expression);
-        System.out.println(abstExp);
+        trace.out(abstExp);
         if (abstExp == null) {
             abstExp = sideAbstraction.get(reverseSide(expression));
         }
@@ -193,7 +195,7 @@ public class Minerva3 {
         if (expression != null) {
         	
             idx = expression.indexOf("=");
-            //System.out.println("assigning index"+ idx);
+            //trace.out("assigning index"+ idx);
         }
         /*
         
@@ -237,9 +239,9 @@ public class Minerva3 {
         // processFile("exportData94_w.txt", "data94_output.Simplified.txt");
         String inputFile = Args[0];
         String outputFile = Args[1];
-        System.out.println("Minerva V3: InputFile " + inputFile
+        trace.out("Minerva V3: InputFile " + inputFile
                 + ", OutputFile: " + outputFile);
-        System.out.println("Current dir: " + new File(".").getAbsolutePath());
+        trace.out("Current dir: " + new File(".").getAbsolutePath());
 
         new Minerva3().processFile(inputFile, outputFile);
     }

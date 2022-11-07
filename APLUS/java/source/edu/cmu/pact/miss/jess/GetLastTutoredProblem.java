@@ -62,7 +62,7 @@ public class GetLastTutoredProblem implements Userfunction, Serializable {
 			}
 			
 			
-			//System.out.println(amt.getController().getMissController().getSimSt().getModelTraceWM().allTutoredProblemList);
+			//trace.out(amt.getController().getMissController().getSimSt().getModelTraceWM().allTutoredProblemList);
 			String lastP=ModelTraceWorkingMemory.allTutoredProblemList.peek();
 			
 			return new Value(lastP, RU.STRING);

@@ -90,6 +90,7 @@ import java.net.URLConnection;
 import javax.swing.JProgressBar;
 
 import edu.cmu.hcii.ctat.CTATContentCache.UI;
+import edu.cmu.pact.Utilities.trace;
 
 public class CTATURLFetch extends CTATBase implements PropertyChangeListener 
 {
@@ -188,7 +189,7 @@ public class CTATURLFetch extends CTATBase implements PropertyChangeListener
 
 			while ((inputLine = in.readLine()) != null)
 			{
-				System.out.println(inputLine);
+				trace.out(inputLine);
 				total.append(inputLine);
 				
 				blocks++;
@@ -246,7 +247,7 @@ public class CTATURLFetch extends CTATBase implements PropertyChangeListener
 
    			while ((inputLine = in.readLine()) != null)
    			{
-   				//System.out.println(inputLine);
+   				//trace.out(inputLine);
    				total.append(inputLine);
    			}
        	
@@ -410,11 +411,11 @@ public class CTATURLFetch extends CTATBase implements PropertyChangeListener
 
 	    	UI.setVisualProgress( (offset*100)/contentLength );
 		    
-	    	System.out.print(".");
+	    	trace.out(".");
 
 	    }
 	    
-	    System.out.print("\n");
+	    trace.out("\n");
 	    
 	    try 
 	    {

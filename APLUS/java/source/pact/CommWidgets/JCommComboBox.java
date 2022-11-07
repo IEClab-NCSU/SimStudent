@@ -506,7 +506,7 @@ public class JCommComboBox extends JCommWidget implements ActionListener, MouseL
 		String action,
 		String input) {
 		
-		System.out.println("EEEEEEP0");
+		trace.out("EEEEEEP0");
 		
     	if (action.equalsIgnoreCase(UPDATE_INVISIBLE)) {
 			if (trace.getDebugCode("inter")) trace.out("inter", "Set InVisible: "+input);
@@ -523,7 +523,7 @@ public class JCommComboBox extends JCommWidget implements ActionListener, MouseL
 			return;
 		}
 
-		System.out.println("EEEEEEP1");
+		trace.out("EEEEEEP1");
     	actionFromBR = true;
 
 		previousValue = input;
@@ -536,7 +536,7 @@ public class JCommComboBox extends JCommWidget implements ActionListener, MouseL
                 moveFocus();
                 
 		comboBox.repaint();
-		System.out.println("EEEEEEP2");
+		trace.out("EEEEEEP2");
 		// This is a hack to prevent this object from sending another comm message
 		// saying that this widget was changed, since that should only happen when the
 		// user changes it directly.

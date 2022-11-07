@@ -14,9 +14,9 @@ public class EvalArithmetic extends EqFeaturePredicate
     
     public String apply(Vector args) 
     {
-//        System.out.println("EvalArithmetic(" + (String)args.get(0) + ")");
+//        trace.out("EvalArithmetic(" + (String)args.get(0) + ")");
         String value = evalArithmetic((String)args.get(0));
-//        System.out.println("EvalArithmetic returning: " + value);
+//        trace.out("EvalArithmetic returning: " + value);
 	return value; 
     }
     

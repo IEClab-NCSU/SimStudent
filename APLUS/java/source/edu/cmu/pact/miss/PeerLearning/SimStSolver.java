@@ -295,7 +295,7 @@ public class SimStSolver {
 		void printSolution(Vector<Sai> saiVec, HashMap agendaMap){
 
 			for (int i=0;i<saiVec.size();i++){
-				System.out.println(saiVec.get(i));
+				trace.out(saiVec.get(i).toString());
 				Vector<String> agenda=(Vector<String>) agendaMap.get(saiVec.get(i).getS());
 
 				for (int j=0;j<agenda.size();j++)

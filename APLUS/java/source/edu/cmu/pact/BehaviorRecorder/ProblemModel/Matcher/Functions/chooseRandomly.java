@@ -1,5 +1,7 @@
 package edu.cmu.pact.BehaviorRecorder.ProblemModel.Matcher.Functions;
 
+import edu.cmu.pact.Utilities.trace;
+
 import java.util.Random;
 
 /**
@@ -22,12 +24,12 @@ public class chooseRandomly {
         chooseRandomly chooser = new chooseRandomly();
 
         for (int i=0; i<100; i++)
-            System.out.println("chose " + chooser.chooseRandomly("a", "b", "c", "d"));
+            trace.out("chose " + chooser.chooseRandomly("a", "b", "c", "d"));
 
         for (int i=0; i<10; i++)
-            System.out.println("chose " + chooser.chooseRandomly("a"));
+            trace.out("chose " + chooser.chooseRandomly("a"));
 
         for (int i=0; i<10; i++)
-            System.out.println("chose " + chooser.chooseRandomly());
+            trace.out("chose " + chooser.chooseRandomly());
     }    
 }

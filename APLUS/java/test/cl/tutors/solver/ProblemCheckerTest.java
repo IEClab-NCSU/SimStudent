@@ -21,11 +21,11 @@ public class ProblemCheckerTest extends TestCase {
 		
 		
 		// instiatinate the SImSt object 
-		System.out.println("setup");
+		trace.out("setup");
 	}
 	
 	public void testCalculate() {
-		System.out.println("Successfully called");
+		trace.out("Successfully called");
 	}
 	public void testIsSolvable() { 
 		String tutorArg="";
@@ -36,7 +36,7 @@ public class ProblemCheckerTest extends TestCase {
 		launcher = new CTAT_Launcher(argv);
 	
         launcher.getFocusedController().initializeSimSt();
-    	//System.out.println(" Reason  : "+launcher.getFocusedController().getMissController().getSimSt());
+    	//trace.out(" Reason  : "+launcher.getFocusedController().getMissController().getSimSt());
 		//assertEquals("Is 3x+3=12 solvable ? ",true,launcher.getFocusedController().getMissController().getSimSt().isSolvable("ClOracle","3x+3_12", launcher.getFocusedController()));
 		//assertEquals("Is 3x+3=3x+12 solvable ? ",false,launcher.getFocusedController().getMissController().getSimSt().isSolvable("ClOracle","3x+3_3x+12", launcher.getFocusedController()));
 		

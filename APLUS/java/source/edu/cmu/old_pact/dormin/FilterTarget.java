@@ -1,4 +1,6 @@
 package edu.cmu.old_pact.dormin;
+import edu.cmu.pact.Utilities.trace;
+
 import java.io.PrintStream;
 
 public class FilterTarget extends StreamTarget{
@@ -12,7 +14,7 @@ public class FilterTarget extends StreamTarget{
 	
 	public void transmitEvent(MessageObject inEvent){
 		String toSend = myTranslator.toDestination(inEvent);
-	System.out.println("FilterTarget to send "+toSend);
+	trace.out("FilterTarget to send "+toSend);
 		synchronized (outputStream) {
 			outputStream.println(toSend);
 			outputStream.flush();

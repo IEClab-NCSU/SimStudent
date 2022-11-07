@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import edu.cmu.old_pact.cmu.messageInterface.GridbagCon;
+import edu.cmu.pact.Utilities.trace;
 
 /*a pop-up a dialog asking the user whether the given messages are "the same"*/
 
@@ -111,7 +112,7 @@ public class messagesMatchDialog extends Dialog{
         this.setModal(true);
        setVisible(true);
 
-        System.out.println("returning " + answer);
+        trace.out("returning " + answer);
         return answer;
     }
 }

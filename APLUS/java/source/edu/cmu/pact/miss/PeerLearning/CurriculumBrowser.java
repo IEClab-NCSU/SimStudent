@@ -347,7 +347,7 @@ public class CurriculumBrowser {
     	    }
     public void setHtmlSource(String src)
     {
-    	//System.out.println("trust me");
+    	//trace.out("trust me");
     	if(trace.getDebugCode("miss"))trace.out("miss", "Inside setHtmlSource with fileName: " + src);
     	try
     	{
@@ -365,7 +365,7 @@ public class CurriculumBrowser {
    
     		curriculum_file_doc = Jsoup.parse(curriculum_file, "ISO-8859-1");
     		//cbView.getBrowserPane().setText(curriculum_file_doc.html());
-    		//System.out.println(curriculum_file_doc.wholeText());
+    		//trace.out(curriculum_file_doc.wholeText());
         	
     	}
     	catch(IOException e)

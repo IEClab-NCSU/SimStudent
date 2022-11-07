@@ -241,7 +241,7 @@ public class SimStPLEActionListener implements ActionListener, ChangeListener {
 				
 			  JTabbedPane tabPane = (JTabbedPane) event.getSource();
 		
-        	//System.out.println(" Tab Clicked , is Model Tracer enabled : "+brController.getMissController().getSimStPLE().isModelTracer());
+        	//trace.out(" Tab Clicked , is Model Tracer enabled : "+brController.getMissController().getSimStPLE().isModelTracer());
 
 			//If there wasn't a previously viewed tab, say it was the first tab
 			if(lastTabViewed.length() == 0)
@@ -257,7 +257,7 @@ public class SimStPLEActionListener implements ActionListener, ChangeListener {
 				 brController.getMissController().getSimSt().getModelTraceWM().setExampleProblemViewed(false);
 			 }
 			 
-			// System.out.println(" Tab Start time : "+lastTabViewStart);
+			// trace.out(" Tab Start time : "+lastTabViewStart);
 			int duration = (int) ((Calendar.getInstance().getTimeInMillis() - lastTabViewStart)/1000);
 	        lastTabViewStart = Calendar.getInstance().getTimeInMillis(); 
 
@@ -268,7 +268,7 @@ public class SimStPLEActionListener implements ActionListener, ChangeListener {
 	        	if(brController.getAmt() != null && brController.getMissController().getSimSt().isSsMetaTutorMode() && brController.getMissController().getSimStPLE().isModelTracer()) {
 	      
 	        		String tabText = tabPane.getTitleAt(tabPane.getSelectedIndex()).replaceAll("\\s+", "");
-	        		//System.out.println("Calling Model Tracer");
+	        		//trace.out("Calling Model Tracer");
         			brController.getAmt().handleInterfaceAction(tabText, "TabClicked", "-1");
 	        	}
 	        }
@@ -369,7 +369,7 @@ public class SimStPLEActionListener implements ActionListener, ChangeListener {
 	          	}
 				/*tell cogTutor that its ok to expect student to give problem next time we come back on tutoring tab*/
 				getMissController().getSimStPLE().getSsCognitiveTutor().lockProblemEntering=false;
-				System.out.println(" Clearing the interface in the Aplus Control  : "+tabPane.getTitleAt(tabPane.getSelectedIndex()));
+				trace.out(" Clearing the interface in the Aplus Control  : "+tabPane.getTitleAt(tabPane.getSelectedIndex()));
 				/*clear tutoring interface so next time we come back its ready*/
 				getMissController().getSimStPLE().requestEnterNewProblem();
 				
@@ -492,14 +492,14 @@ public class SimStPLEActionListener implements ActionListener, ChangeListener {
 	{
 		if(quizTitle.length() > 0)
     	{
-			//System.out.println("Quiz Start time : "+quizStartTime);
+			//trace.out("Quiz Start time : "+quizStartTime);
     		long quizDuration = (Calendar.getInstance().getTimeInMillis() - quizStartTime)/1000;
     		logger.simStLog(SimStLogger.SIM_STUDENT_ACTION_LISTENER, SimStLogger.QUIZ_VIEW_END, 
     				"", quizTitle, "", (int) quizDuration);
     	}
     	quizTitle = newQuizTitle;
     	quizStartTime = Calendar.getInstance().getTimeInMillis();
-    	//System.out.println(" Setting the Start for quiz : "+quizStartTime);
+    	//trace.out(" Setting the Start for quiz : "+quizStartTime);
 
 		logger.simStLog(SimStLogger.SIM_STUDENT_ACTION_LISTENER, SimStLogger.QUIZ_VIEW, newQuizTitle);
 	}
@@ -509,7 +509,7 @@ public class SimStPLEActionListener implements ActionListener, ChangeListener {
     	//New quiz, start these over
     	quizTitle = "";
     	quizStartTime = 0;
-    	//System.out.println(" The start time for quiz : "+quizStartTime);
+    	//trace.out(" The start time for quiz : "+quizStartTime);
     	//the current problem is not complete
     	if(brController.getCurrentNode()!= null && !brController.getCurrentNode().isDoneState())
     	{

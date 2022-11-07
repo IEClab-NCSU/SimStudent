@@ -169,7 +169,7 @@ public class PredictedSAI implements Userfunction, Serializable {
 					
 					// Set the global SAI values for the rule selection,action,input
 					SimStRete ssRete = (SimStRete) context.getEngine();
-					//System.out.println("Expected SAI "+predictedSelection+","+predictedAction+","+predictedInput);
+					//trace.out("Expected SAI "+predictedSelection+","+predictedAction+","+predictedInput);
 					ssRete.eval("(bind ?*ruleSelection* " + Utils.escapeString(predictedSelection) + ")");
 					ssRete.eval("(bind ?*ruleAction* " + Utils.escapeString(predictedAction) + ")");
 					ssRete.eval("(bind ?*ruleInput* " +  Utils.escapeString(predictedInput) + ")");

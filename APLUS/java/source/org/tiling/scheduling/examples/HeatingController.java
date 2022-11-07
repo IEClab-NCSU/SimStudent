@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import edu.cmu.pact.Utilities.trace;
 import org.tiling.scheduling.ScheduleIterator;
 import org.tiling.scheduling.Scheduler;
 import org.tiling.scheduling.SchedulerTask;
@@ -52,7 +53,7 @@ public class HeatingController {
 				switchHeatingOn();
 			}
 			private void switchHeatingOn() {
-				System.out.println("Switch heating on at " +
+				trace.out("Switch heating on at " +
 					dateFormat.format(new Date()));
 				// Start a new thread to switch the heating on...
 			}

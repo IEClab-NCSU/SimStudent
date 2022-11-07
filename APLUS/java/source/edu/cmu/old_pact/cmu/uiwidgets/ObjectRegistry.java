@@ -1,4 +1,6 @@
 package edu.cmu.old_pact.cmu.uiwidgets;
+import edu.cmu.pact.Utilities.trace;
+
 import java.util.Hashtable;
 
 class ObjectRegistry {
@@ -15,9 +17,9 @@ class ObjectRegistry {
 	}
 	
 	static synchronized public Object getRegisteredObject (String name) {
-		System.out.println("getting object "+name);
+		trace.out("getting object "+name);
 		Object theObj = knownObjects.hashtable.get(name);
-		System.out.println("found obj");
+		trace.out("found obj");
 		return theObj;
 	}
 }

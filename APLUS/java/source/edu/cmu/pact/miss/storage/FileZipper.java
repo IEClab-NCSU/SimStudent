@@ -115,7 +115,7 @@ public class FileZipper {
 	private static void visitAllFiles(String path, File dir, ZipOutputStream zos)
 			throws IOException {
 
-		// System.out.println("Enter visitAllFiles path: " + path + " dir: " +
+		// trace.out("Enter visitAllFiles path: " + path + " dir: " +
 		// dir + " dirName: " + dir.getName());
 		if (dir != null && dir.list() != null && dir.list().length == 0) {
 			zos.putNextEntry(new ZipEntry(path + FILE_SEPARATOR + dir.getName() + "/"));
@@ -124,7 +124,7 @@ public class FileZipper {
 
 		if (dir != null && dir.list() != null) {
 			for (String fileName : dir.list()) {
-				// System.out.println("fileName: " + fileName);
+				// trace.out("fileName: " + fileName);
 				if (path.equals("")) {
 					addFileToZip(dir.getName(), dir.getAbsolutePath() + FILE_SEPARATOR + fileName, zos);
 				} else {
@@ -137,7 +137,7 @@ public class FileZipper {
 	private static void addFileToZip(String path, String srcFile,
 			ZipOutputStream zos) throws IOException {
 
-		// System.out.println("Enter addFileToZip path: " + path + " srcFile: "
+		// trace.out("Enter addFileToZip path: " + path + " srcFile: "
 		// + srcFile);
 		File file = new File(srcFile);
 		if (file.isDirectory()) {
@@ -147,7 +147,7 @@ public class FileZipper {
 			byte[] buf = new byte[1024];
 			int len;
 			FileInputStream in = new FileInputStream(srcFile);
-			// System.out.println("Adding the zip entry: " + (path + "\\" +
+			// trace.out("Adding the zip entry: " + (path + "\\" +
 			// file.getName()));
 			zos.putNextEntry(new ZipEntry(path + FILE_SEPARATOR + file.getName()));
 			while ((len = in.read(buf)) > 0) {
@@ -178,7 +178,7 @@ public class FileZipper {
 			visitAllFiles("", f, zos);
 		}
 
-		System.out.println("CheckSum: " + checksum.getChecksum().getValue()
+		trace.out("CheckSum: " + checksum.getChecksum().getValue()
 				+ " duration: " + (System.currentTimeMillis() - startTime));
 		zos.flush();
 		zos.close();

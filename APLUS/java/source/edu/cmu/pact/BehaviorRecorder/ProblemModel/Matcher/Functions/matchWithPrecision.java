@@ -1,5 +1,7 @@
 package edu.cmu.pact.BehaviorRecorder.ProblemModel.Matcher.Functions;
 
+import edu.cmu.pact.Utilities.trace;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -50,13 +52,13 @@ public class matchWithPrecision {
     private void printMatches(String input, String label) {
         Matcher m = fpPattern.matcher(input);
 
-        System.out.println(input);
+        trace.out(input);
         if (m.matches()) {
-            System.out.println(input + " double value = " + Double.valueOf(input));
-            System.out.println(input + " significant digits = " + significantDigits(m));
+            trace.out(input + " double value = " + Double.valueOf(input));
+            trace.out(input + " significant digits = " + significantDigits(m));
         } else
-            System.out.println("no " + label + " match found");
-        System.out.println("\n\n\n");
+            trace.out("no " + label + " match found");
+        trace.out("\n\n\n");
     }
 
     private int significantDigits(Matcher m) {
@@ -125,7 +127,7 @@ public class matchWithPrecision {
         
     public void checkMatch(String input, String number) {
         boolean check = matchWithPrecision(input, number);
-        System.out.println("matchWithPrecision(" + input + ", " + number + ") = " + check);
+        trace.out("matchWithPrecision(" + input + ", " + number + ") = " + check);
     }
 
     public static void main(String [] args) throws Exception {

@@ -34,14 +34,14 @@ public class TSLTServer{
 				port += (int)dislikevista.charAt(i);
 			}
 			InetSocketAddress address = new InetSocketAddress("localhost", port);
-			System.out.println("Address = "+ address.toString());
+			trace.out("Address = "+ address.toString());
 			HttpServer server = HttpServer.create(address, 0);
 			server.createContext("/",new TSLTHandler());
 			server.start();
-			System.out.println("TSLTServer open and listenning on " + address.getHostName() + address.getPort());
+			trace.out("TSLTServer open and listenning on " + address.getHostName() + address.getPort());
 		}
 		catch (Exception uhe) { 
-			System.out.println("Failed to open TSLT server on localhost:" + port);
+			trace.out("Failed to open TSLT server on localhost:" + port);
 		}
 	}
 	
@@ -63,12 +63,12 @@ class TSLTHandler implements HttpHandler{
 		String requestMethod = arg0.getRequestMethod();
 		String fileURI = arg0.getRequestURI().toString();
 		byte[] buffer = new byte[1024];
-		System.out.println("Bytes cast as chars from requestbody");
+		trace.out("Bytes cast as chars from requestbody");
 		while(arg0.getRequestBody().available() > 0){
-			System.out.print((char)arg0.getRequestBody().read());
+			trace.out((char)arg0.getRequestBody().read());
 		}
-		System.out.println("END Request body");
-		System.out.println("FileURI: " + fileURI);
+		trace.out("END Request body");
+		trace.out("FileURI: " + fileURI);
 		if(requestMethod.equalsIgnoreCase("get")){
 		    String response = "";
 		    /*Crossdomain.xml Requested.
@@ -78,23 +78,23 @@ class TSLTHandler implements HttpHandler{
 		     *"application/xml" is accepted by flash 8.0..
 		     */
 		    if(fileURI.equalsIgnoreCase("/crossdomain.xml")){
-		    	System.out.println("Writing back the crossdomain policy...");
-		    	System.out.println("Trying to open crossdomain.xml");
+		    	trace.out("Writing back the crossdomain policy...");
+		    	trace.out("Trying to open crossdomain.xml");
 		    	try{
 			    	BufferedReader br = new BufferedReader(new FileReader(TutoringServiceURI + "\\crossdomain.xml"));
 			    	while(br.ready()){
 		    			response += br.readLine();
 		    		}
 			    	br.close();
-		    		System.out.println(response);
+		    		trace.out(response);
 		    		arg0.getResponseHeaders().add("Content-Type", "application/xml");
 		    		arg0.sendResponseHeaders(200, response.getBytes().length);
 		    		arg0.getResponseBody().write(response.getBytes());
-		    		System.out.println("Wrote back Crossdomain.xml..");
+		    		trace.out("Wrote back Crossdomain.xml..");
 		    		arg0.close();
-			    	System.out.println("closed httpexchange");
+			    	trace.out("closed httpexchange");
 		    	}catch(Exception e){
-		    		System.out.println(e.toString() + "Exception in trying to write back response or opening crossdomain.xml");
+		    		trace.out(e.toString() + "Exception in trying to write back response or opening crossdomain.xml");
 		    	}
 		    }
 		    /*Some other "fileuri" is  Requested.
@@ -106,10 +106,10 @@ class TSLTHandler implements HttpHandler{
 		     */
 		    else{
 		    	fileURI = TutoringServiceURI+fileURI;
-		    	System.out.println("Trying to open " + fileURI);
+		    	trace.out("Trying to open " + fileURI);
 		    	try{
 		    		BufferedReader br = new BufferedReader(new FileReader(fileURI));
-		    		System.out.println("opened file..");
+		    		trace.out("opened file..");
 		    		while(br.ready()){
 		    			int temp = br.read();
 		    			if(temp!=-1)
@@ -117,16 +117,16 @@ class TSLTHandler implements HttpHandler{
 		    			else break;
 		    		}
 		    		br.close();
-		    		System.out.println("read file of length : " + response.length());
-		    		System.out.print(response);
+		    		trace.out("read file of length : " + response.length());
+		    		trace.out(response);
 		    		arg0.getResponseHeaders().add("Content-Type", "text/*");
 		    		arg0.sendResponseHeaders(200, response.getBytes().length);
 		    		arg0.getResponseBody().write(response.getBytes());
-		    		System.out.println("Wrote back crap from a file..");
+		    		trace.out("Wrote back crap from a file..");
 		    		arg0.close();
-				    System.out.println("closed..");
+				    trace.out("closed..");
 		    	}catch(Exception e){
-		    		System.out.println(e.toString() + "Exception in trying to write back response or opening requested URI");
+		    		trace.out(e.toString() + "Exception in trying to write back response or opening requested URI");
 		    	}
 		    } 
 		}

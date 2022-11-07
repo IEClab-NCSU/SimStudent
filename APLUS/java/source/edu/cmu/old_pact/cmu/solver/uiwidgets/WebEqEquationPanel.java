@@ -1,6 +1,7 @@
 package edu.cmu.old_pact.cmu.solver.uiwidgets;
 import java.awt.Panel;
 
+import edu.cmu.pact.Utilities.trace;
 import webeq3.fonts.FontBroker;
 import webeq3.parser.Parser;
 import webeq3.util.ErrorHandler;
@@ -55,7 +56,7 @@ public class WebEqEquationPanel extends StandardEquationPanel {
 			throw new UninitializedError("can't set equation on WebEQEquationPanel until panel is added to container");
 
 		//parse the left and right sides into MathML
-		//System.out.println("left side is "+left);
+		//trace.out("left side is "+left);
 
 		try {
 			leftMathML = sm.noOp(left);
@@ -64,7 +65,7 @@ public class WebEqEquationPanel extends StandardEquationPanel {
 		}
 		catch (BadExpressionError err) {
 			//hmm -- should be a better way to deal with unparsable equations...
-			//System.out.println("Can't parse equation: "+err);
+			//trace.out("Can't parse equation: "+err);
 			//leftMathML = "<mtext>bad</mtext>";
 			//rightMathML = "<mtext>equation</mtext>";
 			String solverDisplay = "bad equation";
@@ -91,12 +92,12 @@ rightMathML = "<mfrac><mfrac><mn>5</mn><mn>3</mn></mfrac><mn>4</mn></mfrac>";
     	myHandler.setParameters(myEquation,(String [])null);
 		
 		String equationML = WebEqHelper.getEquationML(leftMathML,rightMathML,myFont,myForeColor);
-//System.out.println("|| in WebEqEquationPanel equationML = "+equationML);
+//trace.out("|| in WebEqEquationPanel equationML = "+equationML);
 		try{
 			theParser.parse(equationML, "", myEquation.root, err);
 		}
 		catch(Exception e) {
-			System.out.println("Error parsing: "+e);
+			trace.out("Error parsing: "+e);
 			e.printStackTrace();
    		}
 		this.add(myEquation);
@@ -110,9 +111,9 @@ rightMathML = "<mfrac><mfrac><mn>5</mn><mn>3</mn></mfrac><mn>4</mn></mfrac>";
 
 /*
 	public void paint(Graphics g) {
-	 	System.out.println("myEquation = "+myEquation);
+	 	trace.out("myEquation = "+myEquation);
 	 	if(myEquation != null)
-	 	   System.out.println("getSize = "+getSize()+" myEquation.getSize() = "+myEquation.getSize());
+	 	   trace.out("getSize = "+getSize()+" myEquation.getSize() = "+myEquation.getSize());
 	 	if(myEquation != null && getSize().width < myEquation.getSize().width){
 	 		LayoutManager layout=getLayout();
  			if (layout!=null) {
@@ -170,7 +171,7 @@ rightMathML = "<mfrac><mfrac><mn>5</mn><mn>3</mn></mfrac><mn>4</mn></mfrac>";
 					theParser.parse(exprML,"",expression.root,err);
 				}
 				catch(Exception e){
-					System.out.println("Error parsing: " + e);
+					trace.out("Error parsing: " + e);
 				}
 
 				add(expression,componentNum);

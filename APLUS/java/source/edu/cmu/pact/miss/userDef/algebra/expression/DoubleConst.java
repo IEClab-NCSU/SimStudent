@@ -57,7 +57,7 @@ public class DoubleConst extends Constant {
 				
 		double result = dresult.doubleValue(); //doubleValue() + d2.doubleValue());
 		
-		//System.out.println("add result = " + result);//gustavo		
+		//trace.out("add result = " + result);//gustavo
 		if(result==Math.floor(result))
 			return new IntConst((int)result);
 		return new DoubleConst(result);

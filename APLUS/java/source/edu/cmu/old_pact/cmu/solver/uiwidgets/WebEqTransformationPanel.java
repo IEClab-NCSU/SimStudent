@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.Label;
 
+import edu.cmu.pact.Utilities.trace;
 import webeq3.constants.AttributeConstants;
 import webeq3.parser.Parser;
 import webeq3.util.ErrorHandler;
@@ -127,7 +128,7 @@ public class WebEqTransformationPanel extends TransformationPanel {
 			theParser.parse(equationML, "", transformEquation.root,err);
 		}
 		catch(Exception e) {
-			System.out.println("Error parsing: "+e);
+			trace.out("Error parsing: "+e);
 			e.printStackTrace();
    		}		
 		add("Center",transformEquation);
@@ -138,14 +139,14 @@ public class WebEqTransformationPanel extends TransformationPanel {
 	private void setAddOrSubtractStep(String left,String right,String op,String arg) {
 		String[] leftSides = WebEqHelper.getAlignedExpressions(arg,left,op);
 		String[] rightSides = WebEqHelper.getAlignedExpressions(arg,right,op);
-		//System.out.println("in WETP leftSides = "+leftSides[0]+"::"+leftSides[1]);
-		//System.out.println("in WETP rightSides = "+rightSides[0]+"::"+rightSides[1]);
+		//trace.out("in WETP leftSides = "+leftSides[0]+"::"+leftSides[1]);
+		//trace.out("in WETP rightSides = "+rightSides[0]+"::"+rightSides[1]);
 		String operatorML =  WebEqHelper.getEquationML(leftSides[0],rightSides[0],myFont,myForeColor,"<mphantom><mo>=</mo></mphantom>");
 	 	String equationML =  WebEqHelper.getEquationML(leftSides[1],rightSides[1],myFont,myForeColor);
 		
 //		fullML = "<mstyle fontcolor='#cccc66'><mrow><mphantom><mrow> <mn>3</mn> <mi>x</mi> </mrow></mphantom><mo form=infix>-</mo><mn>4</mn></mrow><mo>=</mo><mo>-</mo><mn>4</mn></mstyle>";
-		//System.out.println("---from setAddOrSubtractStep: operator ML is "+operatorML);
-		//System.out.println("equation ML is "+equationML);
+		//trace.out("---from setAddOrSubtractStep: operator ML is "+operatorML);
+		//trace.out("equation ML is "+equationML);
 		
 		addEquationToPanel(operatorML); //add the operator equation to the transformation panel    	
 //    	resetEquation(equationML);
@@ -181,15 +182,15 @@ public class WebEqTransformationPanel extends TransformationPanel {
 			String newLeft = firstWrap+oldLeftML+lastWrap;
 			String newRight = firstWrap+oldRightML+lastWrap;
 			equationML = WebEqHelper.getEquationML(newLeft,newRight,myFont,myForeColor);
-//System.out.println("in setRootStep	equationML = "+equationML);		
+//trace.out("in setRootStep	equationML = "+equationML);		
 		}
 		catch (BadExpressionError err) {
 			equationML = "<mtext>"+action+" of "+arg+"</mtext>";
-			System.out.println("ERROR parsing arg or equation: "+left+":"+right+":"+arg);
+			trace.out("ERROR parsing arg or equation: "+left+":"+right+":"+arg);
 		}
 		catch (NoSuchFieldException err) {
 			equationML = "<mtext>"+action+" of "+arg+"</mtext>";
-			System.out.println("ERROR getting terms: "+left+":"+right+":"+arg);
+			trace.out("ERROR getting terms: "+left+":"+right+":"+arg);
 		}
 
 		addEquationToPanel(equationML);
@@ -246,11 +247,11 @@ public class WebEqTransformationPanel extends TransformationPanel {
 			}
 			catch (BadExpressionError err) {
 				equationML = "<mtext>"+action+" by "+arg+"</mtext>";
-				System.out.println("ERROR parsing arg or equation: "+left+":"+right+":"+arg);
+				trace.out("ERROR parsing arg or equation: "+left+":"+right+":"+arg);
 			}
 			catch (NoSuchFieldException err) {
 				equationML = "<mtext>"+action+" by "+arg+"</mtext>";
-				System.out.println("ERROR getting terms: "+left+":"+right+":"+arg);
+				trace.out("ERROR getting terms: "+left+":"+right+":"+arg);
 			}
 		}
 		equationML = WebEqHelper.getEquationML(newLeft,newRight,myFont,myForeColor);
@@ -321,15 +322,15 @@ public class WebEqTransformationPanel extends TransformationPanel {
 			String newLeft = oldLeftML+opML+argML;
 			String newRight = oldRightML+opML+argML;
 			equationML = WebEqHelper.getEquationML(newLeft,newRight,myFont,myForeColor);
-//System.out.println("in WETP equationML (MULTIPLY) = "+equationML);
+//trace.out("in WETP equationML (MULTIPLY) = "+equationML);
 		}
 		catch (BadExpressionError err) {
 			equationML = "<mtext>"+action+" by "+arg+"</mtext>";
-			System.out.println("ERROR parsing arg or equation: "+left+":"+right+":"+arg);
+			trace.out("ERROR parsing arg or equation: "+left+":"+right+":"+arg);
 		}
 		catch (NoSuchFieldException err) {
 			equationML = "<mtext>"+action+" by "+arg+"</mtext>";
-			System.out.println("ERROR getting terms: "+left+":"+right+":"+arg);
+			trace.out("ERROR getting terms: "+left+":"+right+":"+arg);
 		}
 		return equationML;
 	}
@@ -341,7 +342,7 @@ public class WebEqTransformationPanel extends TransformationPanel {
 		String equationML;
 		
 		String fractionStr = reverseArg(arg);
-		//System.out.println("WETP.sDS: reverseArg(" + arg + ") = " + fractionStr);
+		//trace.out("WETP.sDS: reverseArg(" + arg + ") = " + fractionStr);
 			//add <expression> tag around arg - to be handled by HtmlPanel
 		String displayArg = "<expression>"+arg+"</expression>";
 		String displayFraction = "<expression>"+fractionStr+"</expression>";
@@ -375,11 +376,11 @@ public class WebEqTransformationPanel extends TransformationPanel {
 			}
 			catch (BadExpressionError err) {
 				equationML = "<mtext>"+action+" by "+arg+"</mtext>";
-				System.out.println("ERROR parsing arg or equation: "+left+":"+right+":"+arg);
+				trace.out("ERROR parsing arg or equation: "+left+":"+right+":"+arg);
 			}
 			catch (NoSuchFieldException err) {
 				equationML = "<mtext>"+action+" by "+arg+"</mtext>";
-				System.out.println("ERROR getting terms: "+left+":"+right+":"+arg);
+				trace.out("ERROR getting terms: "+left+":"+right+":"+arg);
 			}
 			
 		} // if(fractionStr == null)

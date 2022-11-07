@@ -17,7 +17,7 @@ public class TutorThread extends Thread {
 	}
 	
 	public void run() {
-		//System.out.println("in threadRUN: "+selection+" "+action+" "+input);
+		//trace.out("in threadRUN: "+selection+" "+action+" "+input);
 		tutor.checkStudentAction(selection,action,input);
 		tutor.getTranslator().responseCompleted(currentEvent);
 	}

@@ -194,13 +194,13 @@ public class EquationPlusStepPanel extends Panel {
 		}
 		catch (BadExpressionError err) {
 			//hmm -- should be a better way to deal with unparsable equations...
-			System.out.println("Can't parse expression: "+newLeft);
+			trace.out("Can't parse expression: "+newLeft);
 		}
 		try {
 			theParser.parse(getEquationML(leftMathML,rightMathML), "", myEquation.root, err);
 		}
 		catch(Exception e) {
-			System.out.println("Error parsing: "+e);
+			trace.out("Error parsing: "+e);
 			e.printStackTrace();
    		}
 	}
@@ -212,13 +212,13 @@ public class EquationPlusStepPanel extends Panel {
 		}
 		catch (BadExpressionError err) {
 			//hmm -- should be a better way to deal with unparsable equations...
-			System.out.println("Can't parse expression: "+newRight);
+			trace.out("Can't parse expression: "+newRight);
 		}
 		try {
 			theParser.parse(getEquationML(leftMathML,rightMathML), "", myEquation.root, err);
 		}
 		catch(Exception e) {
-			System.out.println("Error parsing: "+e);
+			trace.out("Error parsing: "+e);
 			e.printStackTrace();
    		}
 	}

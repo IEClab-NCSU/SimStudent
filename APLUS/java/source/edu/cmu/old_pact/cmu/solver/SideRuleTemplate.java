@@ -2,6 +2,7 @@ package edu.cmu.old_pact.cmu.solver;
 
 import edu.cmu.old_pact.cmu.tutor.TranslatorProxy;
 import edu.cmu.old_pact.dormin.NoSuchPropertyException;
+import edu.cmu.pact.Utilities.trace;
 
 public class SideRuleTemplate{
 	private String[] messages;
@@ -12,7 +13,7 @@ public class SideRuleTemplate{
 			action = trans.getProperty("Tool", "current action formatted");
 		} catch (NoSuchPropertyException err) {
 			try{
-				System.out.println("SRT: no such property current action formatted");
+				trace.out("SRT: no such property current action formatted");
 				action = trans.getProperty("Tool", "current action");
 			}
 			catch (NoSuchPropertyException err2){ }

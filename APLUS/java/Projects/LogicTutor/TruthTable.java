@@ -4922,7 +4922,7 @@ public class TruthTable extends JPanel
 
     private void startoverclick(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startoverclick
 
-    //	System.out.println("From Truthtable -> goToStartState");
+    //	trace.out("From Truthtable -> goToStartState");
         controller.goToStartState();
 
 

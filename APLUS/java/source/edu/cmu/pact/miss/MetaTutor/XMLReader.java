@@ -113,9 +113,9 @@ public class XMLReader {
 	 * @return
 	 */
 	public void parseXMLFile(String ruleName, ArrayList<ArrayList<String>> list) {
-		//System.out.println(" Rule Name : "+ruleName);
+		//trace.out(" Rule Name : "+ruleName);
 		NodeList messageSet = doc.getElementsByTagName("message-set");
-		//System.out.println(messageSet.getLength());
+		//trace.out(messageSet.getLength());
 		for(int i=0; i < messageSet.getLength(); i++) {
 			
 			Node node = messageSet.item(i);
@@ -152,7 +152,7 @@ public class XMLReader {
 	
 	
 	private void setMenuOptionMessage(String msg, ArrayList<ArrayList<String>> list) {
-		//System.out.println(" Message : "+msg);
+		//trace.out(" Message : "+msg);
 		if(msg != null)
 			msg = msg.trim();
 		if(msg.length() > 0) {

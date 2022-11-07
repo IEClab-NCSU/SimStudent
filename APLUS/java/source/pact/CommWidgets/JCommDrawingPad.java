@@ -469,7 +469,7 @@ public class JCommDrawingPad extends JCommWidget  implements FocusListener, Acti
 
     public boolean resetStartStateLock(boolean startStateLock) {
 //        if (!DrawingPad.getText().equals(resetValue)) {
-// //       	System.out.println("Reset TextField [" + commName + "] - " + DrawingPad.getText() + startStateLock);
+// //       	trace.out("Reset TextField [" + commName + "] - " + DrawingPad.getText() + startStateLock);
 //            ((JCommDocument) DrawingPad.getDocument()).locked = startStateLock;
 //            DrawingPad.setHighlighter(null);
 //            setFocusable(!startStateLock);
@@ -596,7 +596,7 @@ public class JCommDrawingPad extends JCommWidget  implements FocusListener, Acti
 
 		  /** Draw all the saved lines of the scribble, in the appropriate colors */
 //		  public void paint(Graphics g) {
-//			  System.out.println("paint = " + backgroundNormalColor);
+//			  trace.out("paint = " + backgroundNormalColor);
 ////			  DrawingPad.setBackground(backgroundNormalColor);
 //
 //		    for(int i = 0; i < lines.size(); i++) {
@@ -723,8 +723,8 @@ public class JCommDrawingPad extends JCommWidget  implements FocusListener, Acti
 			 studentFolderName = getController().getLogger().getStudentName();//add later to logcontext/datashoptracer... maybe logger.
 			 problemFile = getController().getLogger().getProblemName();
 			}
-			System.out.println("studentFolderName =" + studentFolderName);
-			System.out.println("problemFile =" + problemFile);
+			trace.out("studentFolderName =" + studentFolderName);
+			trace.out("problemFile =" + problemFile);
 			String	currentDir = defaultMappingDiskName + "/" + studentFolderName;  // "L:/CCWTemp/"
 			
 		    // Create multiple directories
@@ -732,11 +732,11 @@ public class JCommDrawingPad extends JCommWidget  implements FocusListener, Acti
 	  	  boolean success = (new File(currentDir)).mkdirs();
 	  	    if (success) {
 
-	  	       System.out.println("Remote Disk Directories: " + currentDir + " created");
+	  	       trace.out("Remote Disk Directories: " + currentDir + " created");
 	  	    }
 	  	    else {
 	  	    	currentDir = System.getProperty("user.dir");
-	  			System.out.println("currentDir =" + currentDir);
+	  			trace.out("currentDir =" + currentDir);
 	  			new File(currentDir);
 	  	    }
 
@@ -902,7 +902,7 @@ class Scribble extends Component implements ActionListener {
    
 
     if (e.getID() == MouseEvent.MOUSE_DRAGGED) {
-//    	System.out.println("MOUSE_DRAGGED");
+//    	trace.out("MOUSE_DRAGGED");
        g = getGraphics();                     // Object to draw with.
  //     g.setColor(current_color);                      // Set the current color.
        g.setColor(Color.BLACK);
@@ -1193,7 +1193,7 @@ class Scribble extends Component implements ActionListener {
 		}
 
 		String filename = f.getName(); // Get the user's response
-		System.out.println("Load filename = " + filename);
+		trace.out("Load filename = " + filename);
 		if (filename != null) {
 			int thumbWidth = 125, thumbHeight = 125;
 
@@ -1201,7 +1201,7 @@ class Scribble extends Component implements ActionListener {
 
 		    g = this.getGraphics();	    
 		    boolean display  = g.drawImage(image, 125, 125, DrawingPad);
-		    System.out.println("display = " + display);
+		    trace.out("display = " + display);
 			DrawingPad.repaint();   
 		}
 	}*/
@@ -1212,13 +1212,13 @@ class Scribble extends Component implements ActionListener {
 		Date lastEvaluationTime = new Date();
 		
 
-        System.out.println("FileNameHeader =" + FileNameHeader);
+        trace.out("FileNameHeader =" + FileNameHeader);
 		String FileNameIndex = FileNameHeader + "_" +
 							   Integer.toString(lastEvaluationTime.getDate()) + "_" +
 							   Integer.toString(lastEvaluationTime.getHours()) + "_" +
 							   Integer.toString(lastEvaluationTime.getMinutes()) +  "_" +
 							   Integer.toString(lastEvaluationTime.getSeconds()); //  + ".jpeg";
-		System.out.println("FileNameIndex =" + FileNameIndex);
+		trace.out("FileNameIndex =" + FileNameIndex);
 		return  FileNameIndex ; // getImageFileNameIndex() 
 	}
 
@@ -1246,8 +1246,8 @@ class Scribble extends Component implements ActionListener {
 		 studentFolderName = controller.getLogger().getStudentName();
 		 problemFile = controller.getLogger().getProblemName();
 		}
-		System.out.println("studentFolderName =" + studentFolderName);
-		System.out.println("problemFile =" + problemFile);
+		trace.out("studentFolderName =" + studentFolderName);
+		trace.out("problemFile =" + problemFile);
 		String	currentDir = defaultMappingDiskName + "/" + studentFolderName;  // "L:/CCWTemp/"
 		
 	    // Create multiple directories
@@ -1259,11 +1259,11 @@ class Scribble extends Component implements ActionListener {
 			if (success) {
  // 	    	directoryCreated = true;
  // 	    	fileSavingDirectory = currentDir;
-  	       System.out.println("Remote Disk Directories: " + fileSavingDirectory + " created");
+  	       trace.out("Remote Disk Directories: " + fileSavingDirectory + " created");
 			}
 //  	    else {
 //  	    	currentDir = System.getProperty("user.dir");
-//  			System.out.println("currentDir =" + currentDir);
+//  			trace.out("currentDir =" + currentDir);
 //  			new File(currentDir);
 //  	    	 }
 			}

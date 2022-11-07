@@ -402,7 +402,7 @@ public class JUndo
 				try {
 					undo.redo();
 				} catch (CannotRedoException ex) {
-					System.out.println("Unable to redo: " + ex);
+					trace.out("Unable to redo: " + ex);
 					// ex.printStackTrace();
 				}
 				updateRedoAction();
@@ -942,7 +942,7 @@ public class JUndo
 				try {
 					undo.redo();
 				} catch (CannotRedoException ex) {
-					System.out.println("Unable to redo: " + ex);
+					trace.out("Unable to redo: " + ex);
 					// ex.printStackTrace();
 				}
 				updateRedoAction();
@@ -994,14 +994,14 @@ public class JUndo
 
 			private void printError(String s)
 			{
-				System.out.println("*********************************************");
-				System.out.println("****************  "+s+" ERROR  ********************");
-				System.out.println("*********************************************");
+				trace.out("*********************************************");
+				trace.out("****************  "+s+" ERROR  ********************");
+				trace.out("*********************************************");
 			}
 
 			private void printSuccess()
 			{
-				System.out.println("++++++++++++ VALIDATION SUCCESSFULL +++++++++++");
+				trace.out("++++++++++++ VALIDATION SUCCESSFULL +++++++++++");
 			}
 		}
 	}

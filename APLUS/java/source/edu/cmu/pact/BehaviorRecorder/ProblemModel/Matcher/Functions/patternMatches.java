@@ -9,6 +9,7 @@ import java.util.List;
 
 import cl.utilities.sm.SMParserSettings;
 import edu.cmu.pact.Utilities.VersionInformation;
+import edu.cmu.pact.Utilities.trace;
 
 /**
  * @author sewall
@@ -52,7 +53,7 @@ public class patternMatches {
 		List<String> exprList = Arrays.asList(args);
 		int result = 2;  // error status
 		result = patternMatches(exprList.get(0), exprList.subList(1, exprList.size()));
-        System.out.println(result);
+        trace.out(result);
 		return result;
 	}
 	

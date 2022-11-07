@@ -18,13 +18,13 @@ public class ServerTarget extends NetworkTarget {
 	
 	public ServerTarget(Applet theApplet,String name,int portNumber) throws IOException, UnknownHostException {
 		super(name,new Socket(theApplet.getCodeBase().getHost(),portNumber));
-//		System.out.println("in ServerTarget (Applet, name, portNumber) after SUPER");
+//		trace.out("in ServerTarget (Applet, name, portNumber) after SUPER");
 		Target.publicizeTarget(this);
 	}
 	
 	public ServerTarget(String name,Socket sock) {
 		super(name,sock);
-//		System.out.println("in ServerTarget (name sock) after SUPER");
+//		trace.out("in ServerTarget (name sock) after SUPER");
 		Target.publicizeTarget(this); //IS THIS ALLOWED UNDER WINDOWS??
 	}
 	

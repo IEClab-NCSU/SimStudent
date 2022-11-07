@@ -51,6 +51,7 @@ import com.sleepycat.je.DatabaseConfig;
 import com.sleepycat.je.Environment;
 
 import edu.cmu.hcii.ctat.CTATBase;
+import edu.cmu.pact.Utilities.trace;
 
 /**
 *
@@ -303,7 +304,7 @@ public class CTATBerkeleyDBInstance extends CTATBase
             @SuppressWarnings("unused")
 			Map.Entry<Long, String> entry = iter.next();
             //debug (entry.getKey().toString() + ' ' +  entry.getValue());
-            System.out.print(".");
+            trace.out(".");
         }
         
         System.out.println (" done");

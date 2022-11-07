@@ -15,7 +15,7 @@ public class ExpressionArray {
 	private ExpressionArray() {
 		expressions = new Expression[50];
 		ownsExpressions = true;
-//		System.out.println("***created ExpressionArray");
+//		trace.out("***created ExpressionArray");
 	}
 	
 	//when given an array of expressions, we copy the array
@@ -57,7 +57,7 @@ public class ExpressionArray {
 			theArray.setSize(0);
 			arrays[arrayIndex++] = theArray;
 //			if (arrayIndex > 1)
-//				System.out.println("dealloc>1, index is now "+arrayIndex);
+//				trace.out("dealloc>1, index is now "+arrayIndex);
 		}
 		else {
 			theArray.loseExpressions();

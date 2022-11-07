@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.Vector;
 import java.util.*;
 
+import edu.cmu.pact.Utilities.trace;
 import edu.cmu.pact.miss.userDef.algebra.IsEquivalent;
 
 /**
@@ -207,23 +208,23 @@ public class DStoCTAT {
                         denyFirstTransactionInProblem();
                     }
 
-                    // System.out.println("==>> " + currentTransaction);
+                    // trace.out("==>> " + currentTransaction);
                     if (currentTransaction.hasSelection()) {
                         
                         // If the selection was filled (i.e., the transaction is about non-typein"
                         // then use its "step-name", which represents a current equation, and 
                         // identify the selections of the queued transactions...
                         if (updateSelection(currentTransaction, incompletes)) {
-                            // System.out.println("Writing incompletes...");
+                            // trace.out("Writing incompletes...");
                         		writeCtatTransactionToFile(out, incompletes);
                         } else {
-                            //System.out.println("= = = = = = = = = = = = = = = = = = = = = = = =");
-                            //System.out.println("A complete CTAT transaction " + currentTransaction);
-                            //System.out.println("couldn't resolve incompletes in the queue:");
+                            //trace.out("= = = = = = = = = = = = = = = = = = = = = = = =");
+                            //trace.out("A complete CTAT transaction " + currentTransaction);
+                            //trace.out("couldn't resolve incompletes in the queue:");
                             //for (int i = 0; i < incompletes.size(); i++) {
-                            //    System.out.println((CtatTransaction)incompletes.get(i));
+                            //    trace.out((CtatTransaction)incompletes.get(i));
                             //}
-                            //System.out.println("clearing the incompletes to invoke auto-typein");
+                            //trace.out("clearing the incompletes to invoke auto-typein");
                             incompletes.clear();
                         }
                         // If there is a step(s) that was filled automatically by the Tutor, 
@@ -246,7 +247,7 @@ public class DStoCTAT {
                         // can be determined).
                         incompletes.add(currentTransaction);
                     } else {
-                	// System.out.println("No skill: " + ctatTransaction);
+                	// trace.out("No skill: " + ctatTransaction);
                     }
                     
                     previousTransaction = currentTransaction;  
@@ -256,8 +257,8 @@ public class DStoCTAT {
         
         in.close();
         out.close();
-        System.out.println(getNumDsTransactions() + " DS transactions read.");
-        System.out.println(getNumCtatTransactions() + " CTAT transactions wrote.");
+        trace.out(getNumDsTransactions() + " DS transactions read.");
+        trace.out(getNumCtatTransactions() + " CTAT transactions wrote.");
     }
 
     private boolean hasDifferentProblemName(CtatTransaction previousTransaction, CtatTransaction ctatTransaction) {
@@ -272,18 +273,18 @@ public class DStoCTAT {
                                                   CtatTransaction previousTransaction, Vector incompletes) 
     throws IOException {
         if (isFirstTransactionInProblem()) {
-            //System.out.println("writeAutoTypeinTransactionToFile: 1st trans. in problem " + previousTransaction);
+            //trace.out("writeAutoTypeinTransactionToFile: 1st trans. in problem " + previousTransaction);
             return;
         }
         
         if (!isOK(previousTransaction.outcome)) {
-            //System.out.println("writeAutoTypeinTransactionToFile: not OK " + previousTransaction);
+            //trace.out("writeAutoTypeinTransactionToFile: not OK " + previousTransaction);
             return;
         }
         
         if (!isTypedIn(LHS_SELECTION, incompletes)) {
-            // System.out.println("writeAutoFillTransactionToFile for " + previousTransaction);
-            // System.out.println("... with " + incompletes.size() + " incomplete(s)");
+            // trace.out("writeAutoFillTransactionToFile for " + previousTransaction);
+            // trace.out("... with " + incompletes.size() + " incomplete(s)");
             CtatTransaction autoFillTransaction = 
                 createCtatTransactionAutoFill(LHS_SELECTION, previousTransaction, equation);
             writeCtatTransactionToFile(out, autoFillTransaction);
@@ -315,15 +316,15 @@ public class DStoCTAT {
     	String outcome = currentTransaction.outcome;
     	
     	/*
-    	System.out.println();	
-    	System.out.println(id);
-    	System.out.println(student);
-    	System.out.println(problem);
-    	System.out.println(skill);
-    	System.out.println(selection);
-    	System.out.println(input);
-    	System.out.println(step);
-    	System.out.println(outcome);
+    	trace.out();
+    	trace.out(id);
+    	trace.out(student);
+    	trace.out(problem);
+    	trace.out(skill);
+    	trace.out(selection);
+    	trace.out(input);
+    	trace.out(step);
+    	trace.out(outcome);
     	*/
     	
     	CtatTransaction typeinTransaction = 
@@ -362,7 +363,7 @@ public class DStoCTAT {
         String input = null;
         
         if (LHS_SELECTION.equalsIgnoreCase(side)) {
-        	//System.out.println("LHS " + sides[0]);
+        	//trace.out("LHS " + sides[0]);
             input = sides[0];
             /*
             if (input.charAt(input.length()-1) == ' ') {
@@ -370,7 +371,7 @@ public class DStoCTAT {
             }
             */
         } else if (RHS_SELECTION.equalsIgnoreCase(side)) {
-            //System.out.println("RHS " + sides[1]);
+            //trace.out("RHS " + sides[1]);
         	input = sides[1];
             /*
             if (input.charAt(0) == ' ') {
@@ -442,8 +443,8 @@ public class DStoCTAT {
                 }
                 
             } else { // transaction.outcome == "OK"
-                // System.out.print("transaction.input = [" + transaction.input + "] ");
-                // System.out.println("LHS = [" + sides[0] + "], RHS = [" + sides[1] + "]");
+                // trace.out("transaction.input = [" + transaction.input + "] ");
+                // trace.out("LHS = [" + sides[0] + "], RHS = [" + sides[1] + "]");
                 String selection = null;
                 if (equalsIgnoreSpaceCase(transaction.input, lhsStr)) {
                     selection = "LHS";
@@ -477,7 +478,7 @@ public class DStoCTAT {
                         // Hit the "OK" transaction twice, but they both have the same selection,
                         // which shouldn't happen
                         updateSelection = false;
-                        System.out.println("selection mismatch: " + transaction);
+                        trace.out("selection mismatch: " + transaction);
                         break;
                     }
                 }
@@ -489,7 +490,7 @@ public class DStoCTAT {
     IsEquivalent isEquivalent = new IsEquivalent();
     private boolean isEquivalent(String exp1, String exp2) {
         String result = isEquivalent.inputMatcher(exp1, exp2);
-        // System.out.println("isEquivalent: result = " + result);
+        // trace.out("isEquivalent: result = " + result);
         return  result != null;
     }
     
@@ -511,7 +512,7 @@ public class DStoCTAT {
                 }
             } else {
                 String equation = getStepEquation(transaction);
-                // System.out.println("updateSelectionLastStep @ " + transaction.id + ", equation = " + equation);
+                // trace.out("updateSelectionLastStep @ " + transaction.id + ", equation = " + equation);
                 String[] sides = equation.split("=");
                 if (sides[0].indexOf(transaction.input) != -1) {
                     selection = "LHS";
@@ -528,23 +529,24 @@ public class DStoCTAT {
 
     private void updateSelectionErrorTrouble(CtatTransaction ctatTransaction, Vector incompletes, 
             CtatTransaction transaction) {
-        System.out.println("updateSelection had trouble identify selection for ");
-        System.out.println(transaction);
-        System.out.println("ctatTransaction:");
-        System.out.println(ctatTransaction);
-        System.out.println("incompletes:");
+        trace.out("updateSelection had trouble identify selection for ");
+        trace.out(transaction.toString());
+        trace.out("ctatTransaction:");
+        trace.out(ctatTransaction.toString());
+        trace.out("incompletes:");
         for (int j = 0; j < incompletes.size(); j++) {
-            System.out.println((CtatTransaction)incompletes.get(j));
+            trace.out(((CtatTransaction)incompletes.get(j)).toString());
         }
     }
 
     private void updateSelectionEndNonOk(CtatTransaction ctatTransaction, Vector incompletes) {
-        System.out.println("updateSelection gotten transactions ending with non-OK outcome");
-        System.out.println("ctatTransaction:");
-        System.out.println(ctatTransaction);
-        System.out.println("incompletes:");
+        trace.out("updateSelection gotten transactions ending with non-OK outcome");
+        trace.out("ctatTransaction:");
+        trace.out(ctatTransaction.toString());
+        trace.out("incompletes:");
         for (int j = 0; j < incompletes.size(); j++) {
-            System.out.println((CtatTransaction)incompletes.get(j));
+            CtatTransaction transaction = (CtatTransaction)incompletes.get(j);
+            trace.out((transaction.toString()));
         }
     }
 
@@ -575,7 +577,7 @@ public class DStoCTAT {
         transaction += ctatTransaction.step + "\t";
         transaction += ctatTransaction.outcome + "\n";
 
-        // System.out.println("writing " + transaction);
+        // trace.out("writing " + transaction);
         
         out.write(transaction);
         incNumCtatTransactions();
@@ -664,14 +666,14 @@ public class DStoCTAT {
         String outcome = tokens[14];
         
         /*
-        System.out.println(id);
-        System.out.println(student);
-        System.out.println(skill);
-        System.out.println(selection);
-        System.out.println(input);
-        System.out.println(step);
-        System.out.println(problem);
-        System.out.println(outcome);
+        trace.out(id);
+        trace.out(student);
+        trace.out(skill);
+        trace.out(selection);
+        trace.out(input);
+        trace.out(step);
+        trace.out(problem);
+        trace.out(outcome);
         */
                 
         if (isHint(outcome)) {
@@ -687,7 +689,7 @@ public class DStoCTAT {
      * @return
      */
     private String reformInputString(String stepName) {
-	// System.out.println("stepName = |" + stepName + "|");
+	// trace.out("stepName = |" + stepName + "|");
 	return stepName.replaceAll("\"", "").replaceAll(",", "");
     }
     
@@ -779,8 +781,8 @@ public class DStoCTAT {
     public static void main(String[] args) {
 
         if (args.length != 2) {
-            System.out.println("DStoCTAT <input_file> <output_file>");
-            System.out.println("You must specify two arguments for the file names.");
+            trace.out("DStoCTAT <input_file> <output_file>");
+            trace.out("You must specify two arguments for the file names.");
             System.exit(-1);
         }
         

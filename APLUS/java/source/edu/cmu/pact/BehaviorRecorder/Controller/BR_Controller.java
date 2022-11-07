@@ -458,7 +458,7 @@ public class BR_Controller extends TutorController implements PropertyChangeList
         ProblemModel model = new ProblemModel(this);
         this.problemModelManager = new ProblemModelManager(model, this);
     	if (!Utils.isRuntime()) { // if not in tutoring service (author time)
-    		//System.out.println(" Tab Number for this mode :  "+tabNumber);
+    		//trace.out(" Tab Number for this mode :  "+tabNumber);
     		this.graphPanel = new JGraphPanel(getServer(), this, tabNumber);
 		}
     	
@@ -1090,14 +1090,14 @@ public class BR_Controller extends TutorController implements PropertyChangeList
             fireCtatModeEvent(CtatModeEvent.REPAINT);
         }
         Vector<ProblemEdge> vec = new Vector<ProblemEdge>();
-       // System.out.println("Path Taken to state " + newCurrentNode.getName());
+       // trace.out("Path Taken to state " + newCurrentNode.getName());
         if (pathToNode != null) {
         	for(ExampleTracerLink link : pathToNode){
-        		//System.out.print(link.getEdge().getName() + ", ");
+        		//trace.out(link.getEdge().getName() + ", ");
         		vec.add(link.getEdge().getEdge());
         	}
         }
-        //System.out.println("------------------------------");
+        //trace.out("------------------------------");
         return vec;
     }
 
@@ -1565,7 +1565,7 @@ public class BR_Controller extends TutorController implements PropertyChangeList
             handleCreateStartStateMessage(o);
         } else if (messageType.equalsIgnoreCase("Quit")) {
             getLoggingSupport().oliLog(o, false); 
-            System.out.println(" It is called ");
+            trace.out(" It is called ");
             handleQuitMessage();
         } else if (messageType.equalsIgnoreCase("QuitWithoutSave")) {
             getLoggingSupport().oliLog(o, false); 
@@ -4595,7 +4595,7 @@ public class BR_Controller extends TutorController implements PropertyChangeList
 
 	public boolean openBRDFileAndSendStartStateAux(InputStream bais,
 			Skills skills) {
-		System.out.println("*** Aux-Load Called ***");
+		trace.out("*** Aux-Load Called ***");
 		long sts = System.currentTimeMillis();
 		ProblemModel pm = getProblemModel();
 		String problemName = (pm == null ? null : pm.getProblemName());
@@ -5209,7 +5209,7 @@ public class BR_Controller extends TutorController implements PropertyChangeList
     		List<ProblemModelEvent> addToMe = fireMe.getSubevents();
     		addToMe.addAll(new ArrayList(events.subList(1, events.size())));
     		getProblemModel().fireProblemModelEvent(fireMe);
-    		System.out.println("***END:DELETE:2***");
+    		trace.out("***END:DELETE:2***");
     		
     		//Undo checkpoint for deleting node ID: 1337
     		ActionEvent ae = new ActionEvent(this, 0, "Delete state "+deleteNode.getName());
@@ -5229,7 +5229,7 @@ public class BR_Controller extends TutorController implements PropertyChangeList
     	}
     	getProblemModel().fireProblemModelEvent(fireMe);
     	
-    	System.out.println("***END:DELETE:1***");
+    	trace.out("***END:DELETE:1***");
     	
     	//Undo checkpoint for deleting node ID: 1337
     	ActionEvent ae = new ActionEvent(this, 0, "Delete subgraph at state "+deleteNode.getName());
@@ -6048,7 +6048,7 @@ public class BR_Controller extends TutorController implements PropertyChangeList
         setPreference(COMMUTATIVITY, model.getValue(COMMUTATIVITY));
         setPreference(SUPPRESS_STUDENT_FEEDBACK, model.getValue(SUPPRESS_STUDENT_FEEDBACK));
         setPreference(HINT_POLICY, model.getValue(HINT_POLICY));
-        //System.out.println(ALLOW_TOOL+" "+model.setValue());
+        //trace.out(ALLOW_TOOL+" "+model.setValue());
         setPreference(ALLOW_TOOL_REPORTED_ACTIONS, model.getValue(ALLOW_TOOL_REPORTED_ACTIONS));
         setPreference(MAX_STUDENT,new Integer(1));
         // setPreference(MAX_STUDENT, model.getValue(MAX_STUDENT));
@@ -6113,7 +6113,7 @@ public class BR_Controller extends TutorController implements PropertyChangeList
         	if (trace.getDebugCode("log")) trace.out("log", "Max # of Students is now: " +nv);
             // EJ: actions to be added soon
         }else if (name.equalsIgnoreCase(ALLOW_TOOL_REPORTED_ACTIONS)) {
-        	//System.out.println("new value "+ newValue);
+        	//trace.out("new value "+ newValue);
 //        	Boolean nv = (Boolean) newValue;
         	if (trace.getDebugCode("log")) trace.out("log", "Tool actions are now allowed");
             // EJ: actions to be added soon
@@ -6445,7 +6445,7 @@ public class BR_Controller extends TutorController implements PropertyChangeList
 	if (this.missController == null) {
 	    initializeSimSt();
 	}
-	*/ // System.out.println("MissControllerExternal : "+getLauncher().getMissController());
+	*/ // trace.out("MissControllerExternal : "+getLauncher().getMissController());
         return getLauncher().getMissController();
     }
 

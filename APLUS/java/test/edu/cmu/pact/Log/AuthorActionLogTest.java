@@ -236,8 +236,8 @@ public class AuthorActionLogTest extends TestCase {
 		Element e = new Element(AuthorActionLog.MsgProperty.ELEMENT);
 		e.setAttribute("name", "mp1name");
 		e.setText("mp1value");
-		// System.out.println(e.getAttribute("name").getParent());
-		// System.out.println(mp.getElement().getAttribute("name").getParent());
+		// trace.out(e.getAttribute("name").getParent());
+		// trace.out(mp.getElement().getAttribute("name").getParent());
 		assertEquals(e.toString(), mp.getElement().toString());
 		// for some reason, the two elements weren't comparing as equal, even
 		// though they were. So a toString comparison is the closest accurate
@@ -366,15 +366,15 @@ public class AuthorActionLogTest extends TestCase {
 	 
 	/** a helper function. prints out a DOM tree of the root element. */
 	/*private*/ static void printTree(Element root) {
-		System.out.print(root + " ");
+		trace.out(root + " ");
 		List l2 = root.getAttributes();
 		for (int i = 0; i < l2.size(); i++)
-			System.out.print(l2.get(i) + " ");
-		System.out.println(root.getValue());
+			trace.out(l2.get(i) + " ");
+		trace.out(root.getValue());
 
 		List l = root.getChildren();
 		for (int i = 0; i < l.size(); i++) {
-			System.out.print("  ");
+			trace.out("  ");
 			printTree((Element) (l.get(i)));
 		}
 	}

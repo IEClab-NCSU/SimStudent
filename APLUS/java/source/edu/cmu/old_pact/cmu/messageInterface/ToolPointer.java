@@ -49,7 +49,7 @@ public class ToolPointer extends edu.cmu.old_pact.cmu.messageInterface.Pointer{
     	else if (objDesc == null) {
     	} //don't worry about null destinations for pointers.
     	else {//should throw error
-    		//System.out.println("in sendToObject for ToolPointer, objDesc is '"+objDesc+"'");
+    		//trace.out("in sendToObject for ToolPointer, objDesc is '"+objDesc+"'");
     	}
     }
     

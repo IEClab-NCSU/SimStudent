@@ -85,7 +85,7 @@ public class fmtDecimal {
 			case 'D':
 				Double pD = new Double(Double.parseDouble(args[++i]));
 				Double vD = new Double(Double.parseDouble(args[++i]));
-				System.out.println("fmtDecimal("+vD+", "+pD+")="+t.fmtDecimal(vD, pD));
+				trace.out("fmtDecimal("+vD+", "+pD+")="+t.fmtDecimal(vD, pD));
 				return;
 			default:
 				System.err.println("unknown option -"+option);
@@ -93,7 +93,7 @@ public class fmtDecimal {
 		}
 		for (; i < args.length; ++i) {
 			String arg = args[i];
-			System.out.println("fmtDecimal("+arg+", "+prec+")="+t.fmtDecimal(arg, prec));
+			trace.out("fmtDecimal("+arg+", "+prec+")="+t.fmtDecimal(arg, prec));
 		}
 	}
 

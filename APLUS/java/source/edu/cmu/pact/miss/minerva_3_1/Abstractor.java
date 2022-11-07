@@ -130,7 +130,7 @@ public class Abstractor {
 				newEquation += (equation.charAt(i));
 			}
 		}
-		// System.out.println("newEquation: " + newEquation);
+		// trace.out("newEquation: " + newEquation);
 		return newEquation;
 	}
 }

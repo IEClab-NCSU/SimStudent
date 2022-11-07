@@ -72,15 +72,15 @@ public class ExampleTracerTracerTest extends TestCase {
     
     private void printPaths(ExampleTracerGraph graph) {
     	Set<ExampleTracerPath> paths = graph.findAllPaths();
-    	System.out.println("Number of paths : "+paths.size());
+    	trace.out("Number of paths : "+paths.size());
     	graph.redoLinkDepths();
     	for (ExampleTracerPath path : paths) {
     		ArrayList<ExampleTracerLink> pathLinks = new ArrayList<ExampleTracerLink>(path.getLinks());
     		Collections.sort(pathLinks, new LinkComparator());
 			for (ExampleTracerLink link : pathLinks) {
-				System.out.print(link.getUniqueID()+"-->");
+				trace.out(link.getUniqueID()+"-->");
 			}
-			System.out.println("done");
+			trace.out("done");
     	}    	
     }
     
@@ -157,15 +157,15 @@ public class ExampleTracerTracerTest extends TestCase {
     	node.getOutLinks().add(link);
     	graph.addNode(node);    	
     	graph.getGroupModel().setGroupOrdered(graph.getGroupModel().getTopLevelGroup(), true);
-    	System.out.println("One Link Graph");
+    	trace.out("One Link Graph");
 
        	ExampleTracerSAI studentSAI1 = new ExampleTracerSAI("Selection","Action","Input");
        	ExampleTracerSAI studentSAI2 = new ExampleTracerSAI("Selection1","Action1","Input1");
-       	System.out.println("Evaluate 1");
+       	trace.out("Evaluate 1");
     	assertFalse(tracer.evaluate(studentSAI2));
-       	System.out.println("Evaluate 2");
+       	trace.out("Evaluate 2");
     	assertTrue(tracer.evaluate(studentSAI1));
-    	System.out.println("Evaluate 3");
+    	trace.out("Evaluate 3");
     	assertFalse(tracer.evaluate(studentSAI2));
     	/*
     	ExampleTracerSAI studentSAI2 = new ExampleTracerSAI("Selection1","Action1","Input1");
@@ -240,7 +240,7 @@ public class ExampleTracerTracerTest extends TestCase {
     	graph.addNode(node2);
     	tracer = graph.getExampleTracer();tracer.resetTracer();
     	graph.getGroupModel().setGroupOrdered(graph.getGroupModel().getTopLevelGroup(), true);
-    	System.out.println("Two Link Graph");
+    	trace.out("Two Link Graph");
     	printPaths(graph);
     	
     	ExampleTracerSAI studentSAI1 = new ExampleTracerSAI("Selection1","Action1","Input1");
@@ -287,7 +287,7 @@ public class ExampleTracerTracerTest extends TestCase {
     	graph.addNode(node1);
     	graph.addNode(node2);
     	tracer = graph.getExampleTracer();tracer.resetTracer();
-    	System.out.println("Two Link Graph");
+    	trace.out("Two Link Graph");
     	printPaths(graph);
     	
     	ExampleTracerSAI studentSAI1 = new ExampleTracerSAI("Selection1","Action1","Input1");
@@ -337,7 +337,7 @@ public class ExampleTracerTracerTest extends TestCase {
     	graph.addNode(node2);
     	tracer = graph.getExampleTracer();tracer.resetTracer();
     	graph.getGroupModel().setGroupOrdered(graph.getGroupModel().getTopLevelGroup(), false);
-    	System.out.println("Two Link Graph");
+    	trace.out("Two Link Graph");
     	printPaths(graph);
     	
     	ExampleTracerSAI studentSAI1 = new ExampleTracerSAI("Selection","Action","Input");
@@ -701,26 +701,26 @@ public class ExampleTracerTracerTest extends TestCase {
     	ExampleTracerSAI studentSAI5 = new ExampleTracerSAI("Selection5","Action5","Input5");
     	ExampleTracerSAI studentSAI = new ExampleTracerSAI("Selection","Action","Input");
     	
-    	System.out.println("EVALUATE1");
+    	trace.out("EVALUATE1");
     	assertEquals(false,tracer.evaluate(studentSAI));
     	
-    	System.out.println("EVALUATE2");
+    	trace.out("EVALUATE2");
     	assertEquals(true,tracer.evaluate(studentSAI1));
     	
-    	System.out.println("EVALUATE3");
+    	trace.out("EVALUATE3");
     	assertEquals(true,tracer.evaluate(studentSAI3));
     	
-    	System.out.println("EVALUATE4");
+    	trace.out("EVALUATE4");
     	assertEquals(false,tracer.evaluate(studentSAI2));
     	assertEquals(false,tracer.evaluate(studentSAI5));
-    	System.out.println("EVALUATE7");
+    	trace.out("EVALUATE7");
     	assertEquals(true,tracer.evaluate(studentSAI4));
         
     	assertEquals(false,tracer.evaluate(studentSAI));
     	
     	assertEquals(false,tracer.evaluate(studentSAI1));
     	assertEquals(true,tracer.evaluate(studentSAI5));
-    	System.out.println("EVALUATE 10");
+    	trace.out("EVALUATE 10");
     	assertEquals(true,tracer.evaluate(studentSAI2));
     	
     	assertEquals(false,tracer.evaluate(studentSAI3));
@@ -821,7 +821,7 @@ public class ExampleTracerTracerTest extends TestCase {
     	ExampleTracerSAI studentSAI6 = new ExampleTracerSAI("Selection6","Action6","Input6");
     	ExampleTracerSAI studentSAI = new ExampleTracerSAI("Selection","Action","Input");
     	
-    	//System.out.println("EVALUATE1");
+    	//trace.out("EVALUATE1");
     	assertEquals(false,tracer.evaluate(studentSAI));
     	assertEquals(false,tracer.evaluate(studentSAI2));
     	assertEquals(false,tracer.evaluate(studentSAI3));
@@ -964,7 +964,7 @@ public class ExampleTracerTracerTest extends TestCase {
     	ExampleTracerSAI studentSAI6 = new ExampleTracerSAI("Selection6","Action6","Input6");
     	ExampleTracerSAI studentSAI = new ExampleTracerSAI("Selection","Action","Input");
     	
-    	//System.out.println("EVALUATE1");
+    	//trace.out("EVALUATE1");
     	assertEquals(false,tracer.evaluate(studentSAI));
     	assertEquals(false,tracer.evaluate(studentSAI3));
     	assertEquals(false,tracer.evaluate(studentSAI4));
@@ -1620,7 +1620,7 @@ public class ExampleTracerTracerTest extends TestCase {
     	graph.addNode(node1);
     	graph.addNode(node2);
     	tracer = graph.getExampleTracer();tracer.resetTracer();
-    	System.out.println("Two Link Graph");
+    	trace.out("Two Link Graph");
     	printPaths(graph);
     	
     	ExampleTracerSAI studentSAI1 = new ExampleTracerSAI("Selection","Action","Input");
@@ -1693,7 +1693,7 @@ public class ExampleTracerTracerTest extends TestCase {
     	graph.addNode(node4);
     	tracer = graph.getExampleTracer();tracer.resetTracer();
     	graph.getGroupModel().setGroupOrdered(graph.getGroupModel().getTopLevelGroup(), false);
-    	System.out.println("Two Link Graph");
+    	trace.out("Two Link Graph");
     	printPaths(graph);
     	
     	ExampleTracerSAI studentSAI1 = new ExampleTracerSAI("Selection1","Action1","Input1");
@@ -1771,7 +1771,7 @@ public class ExampleTracerTracerTest extends TestCase {
     	graph.addNode(node3);
     	graph.addNode(node4);
     	tracer = graph.getExampleTracer();tracer.resetTracer();
-    	System.out.println("Two Link Graph");
+    	trace.out("Two Link Graph");
     	printPaths(graph);
     	
     	ExampleTracerSAI studentSAI1 = new ExampleTracerSAI("Selection1","Action1","Input1");
@@ -1859,7 +1859,7 @@ public class ExampleTracerTracerTest extends TestCase {
     	group1.add(link4);
     	graph.getGroupModel().addGroup("Group 1", false, group1);
 
-    	System.out.println("Two Link Graph");
+    	trace.out("Two Link Graph");
     	printPaths(graph);    	
     	
     	ExampleTracerSAI studentSAI1 = new ExampleTracerSAI("Selection1","Action1","Input1");
@@ -1909,7 +1909,7 @@ public class ExampleTracerTracerTest extends TestCase {
     	graph.addLink(link2);
     	graph.addNode(node1);
     	tracer = graph.getExampleTracer();tracer.resetTracer();
-    	System.out.println("Two Link Graph");
+    	trace.out("Two Link Graph");
     	printPaths(graph);
     	
     	ExampleTracerSAI studentSAI1 = new ExampleTracerSAI("Selection1","Action1","Input1");
@@ -1918,7 +1918,7 @@ public class ExampleTracerTracerTest extends TestCase {
     	assertEquals(false,tracer.evaluate(studentSAI));
     	assertEquals(true,tracer.evaluate(studentSAI1));
     	assertEquals(1,tracer.getInterpretations().size());
-    	System.out.println("EVALUATE TWO EVALUATE TWO");
+    	trace.out("EVALUATE TWO EVALUATE TWO");
     	assertEquals(false,tracer.evaluate(studentSAI2));
     	assertEquals(false,tracer.evaluate(studentSAI1));
     	assertEquals(false,tracer.evaluate(studentSAI));
@@ -1960,7 +1960,7 @@ public class ExampleTracerTracerTest extends TestCase {
     	graph.addNode(node1);
     	tracer = graph.getExampleTracer();tracer.resetTracer();
     	graph.getGroupModel().setGroupOrdered(graph.getGroupModel().getTopLevelGroup(), true);
-    	System.out.println("Two Link Graph");
+    	trace.out("Two Link Graph");
     	printPaths(graph);
     	
     	ExampleTracerSAI studentSAI1 = new ExampleTracerSAI("Selection1","Action1","Input1");
@@ -2043,7 +2043,7 @@ public class ExampleTracerTracerTest extends TestCase {
     	graph.addNode(node3);
     	graph.addNode(node4);
     	tracer = graph.getExampleTracer();tracer.resetTracer();
-    	System.out.println("Two Link Graph");
+    	trace.out("Two Link Graph");
     	printPaths(graph);
     	
     	ExampleTracerSAI studentSAI1 = new ExampleTracerSAI("Selection1","Action1","Input1");
@@ -2163,7 +2163,7 @@ public class ExampleTracerTracerTest extends TestCase {
     	tracer = graph.getExampleTracer();tracer.resetTracer();
     	graph.getGroupModel().setGroupOrdered(graph.getGroupModel().getTopLevelGroup(), false);
     	
-    	System.out.println("Five Link Graph");
+    	trace.out("Five Link Graph");
     	printPaths(graph);
     	
     	ExampleTracerSAI studentSAI1 = new ExampleTracerSAI("Selection1","Action1","Input1");
@@ -3574,9 +3574,9 @@ public class ExampleTracerTracerTest extends TestCase {
     	assertEquals(false,tracer.evaluate(studentSAI4));
     	assertEquals(false,tracer.evaluate(studentSAI6));
     	assertEquals(ExampleTracerTracer.INCORRECT_ACTION,tracer.getResult().getResult());
-    	System.out.println("");
-    	System.out.println("");
-    	System.out.println("");
+    	trace.out("");
+    	trace.out("");
+    	trace.out("");
     	assertEquals(false,tracer.evaluate(studentSAI6));
     	assertEquals(ExampleTracerTracer.INCORRECT_ACTION,tracer.getResult().getResult());
     	tracer.initialize(null);
@@ -3890,7 +3890,7 @@ public class ExampleTracerTracerTest extends TestCase {
     	ExampleTracerSAI studentSAI7 = new ExampleTracerSAI("Selection7","Action7","Input7");
     	ExampleTracerSAI studentSAI8 = new ExampleTracerSAI("Selection8","Action8","Input8");    	
     	
-    	//System.out.println("EVALUATE1");
+    	//trace.out("EVALUATE1");
     	assertEquals(true,tracer.evaluate(studentSAI1));
        	assertEquals(true,tracer.evaluate(studentSAI2));
     	assertEquals(true,tracer.evaluate(studentSAI3));
@@ -4056,7 +4056,7 @@ public class ExampleTracerTracerTest extends TestCase {
     	ExampleTracerSAI studentSAI7 = new ExampleTracerSAI("Selection7","Action7","Input7");
     	ExampleTracerSAI studentSAI8 = new ExampleTracerSAI("Selection8","Action8","Input8");    	
     	
-    	//System.out.println("EVALUATE1");
+    	//trace.out("EVALUATE1");
     	assertEquals(true,tracer.evaluate(studentSAI1));
        	assertEquals(true,tracer.evaluate(studentSAI2));
     	assertEquals(true,tracer.evaluate(studentSAI3));
@@ -4221,7 +4221,7 @@ public class ExampleTracerTracerTest extends TestCase {
     	ExampleTracerSAI studentSAI8 = new ExampleTracerSAI("Selection8","Action8","Input8");
     	ExampleTracerSAI studentSAI9 = new ExampleTracerSAI("Selection9","Action9","Input9"); 
     	
-    	//System.out.println("EVALUATE1");
+    	//trace.out("EVALUATE1");
     	assertEquals(true,tracer.evaluate(studentSAI1));
        	assertEquals(true,tracer.evaluate(studentSAI2));
     	assertEquals(true,tracer.evaluate(studentSAI3));    	

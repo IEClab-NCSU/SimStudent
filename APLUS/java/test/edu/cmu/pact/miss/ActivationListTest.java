@@ -113,7 +113,7 @@ public class ActivationListTest extends TestCase {
         SingleSessionLauncher ctatLauncher = initializeCtat(javaDir, projectDir, brdPath);
         ctatLauncher.launch(new EquationTutor());
 
-        System.out.println("copying " + projectDir+"/productionRules.pr-ActivationListTest to" + prPath);
+        trace.out("copying " + projectDir+"/productionRules.pr-ActivationListTest to" + prPath);
 
         //the PR file SHOULD BE copied right after the dialog fails to appear
         copyFile(projectDir+"/productionRules.pr-ActivationListTest", prPath);
@@ -143,13 +143,13 @@ public class ActivationListTest extends TestCase {
     }
     
     public void copyFile(File inFile, File outFile) throws Exception {
-//        System.out.println("entered copyFile(File inFile, File outFile)");
+//        trace.out("entered copyFile(File inFile, File outFile)");
         FileInputStream fis  = new FileInputStream(inFile);
         FileOutputStream fos = new FileOutputStream(outFile);
         byte[] buffer = new byte[1024];
         int bufferLength;
         while((bufferLength=fis.read(buffer))!=-1) {
-//            System.out.println("writing: " + buffer);
+//            trace.out("writing: " + buffer);
 
             fos.write(buffer, 0, bufferLength);
         }
@@ -204,7 +204,7 @@ public class ActivationListTest extends TestCase {
         tutorArg+=" -ssTestRuleFiringLogged";
         tutorArg+=" -ssRuleActivationTestMethod humanOracle";//-ssRuleActivationResultCheckingMethod humanOracle";
 
-        System.out.println("tutorArg = " + tutorArg );
+        trace.out("tutorArg = " + tutorArg );
         
         String[] argv = tutorArg.split(" ");
 
@@ -222,20 +222,20 @@ public class ActivationListTest extends TestCase {
         ProblemNode startNode = brController.getProblemModel().getStartNode();
         
         
-        System.out.println("startNode = " + startNode);
-        System.out.println("brController.getCurrentNode() = " + brController.getCurrentNode());
+        trace.out("startNode = " + startNode);
+        trace.out("brController.getCurrentNode() = " + brController.getCurrentNode());
 
         //simSt.switchToSimStMode();
 //        brController.getCtatModeModel().setAuthorMode(CtatModeModel.TESTING_TUTOR);
         
 //        ProblemNode doneNode = startNode.getDeadEnd();
-//        System.out.println("doneNode = " + doneNode);
+//        trace.out("doneNode = " + doneNode);
 //        brController.setCurrentNode2( doneNode );
 //        
 //        String doneStr = doneNode.getName();
 //        MessageObject response = brController.getGoToWMStateResponse(doneStr);  
 //        CheckLinksList clList = CheckLinksList.getCheckedLinksList(response);
-//        System.out.println("clList = " + clList);
+//        trace.out("clList = " + clList);
         
         //@Rohan: If the activationList has duplicate activations the duplicates are removed before sending it back
         // to the caller. The testSet is modified to reflect the activation list without duplicates. 
@@ -263,9 +263,9 @@ public class ActivationListTest extends TestCase {
         ProblemNode currentNode = startNode;
 
         
-        System.out.println("before for");
+        trace.out("before for");
         for (int i=0; i<testSet.length; i++){
-            //System.out.println("currentNode = " + currentNode);
+            //trace.out("currentNode = " + currentNode);
             Vector activationList = simSt.gatherActivationList(currentNode);
             String[] state = testSet[i];
             int nRules = state.length/NUMBER_ATTRIBUTES; //the length will always be a multiple of NUMBER_ATTRIBUTES
@@ -275,30 +275,30 @@ public class ActivationListTest extends TestCase {
             for (int ind=0;ind<nRules; ind++){
                 rulesExpected += " "+state[NUMBER_ATTRIBUTES*ind];
             }
-            System.out.println("expecting " + nRules + " rules, namely: " + rulesExpected);            
+            trace.out("expecting " + nRules + " rules, namely: " + rulesExpected);
             
             String rulesInActivationList = "";
             for (int ind=0;ind<activationList.size(); ind++){
                 rulesInActivationList += " "+activationList.get(ind);
             }
-            System.out.println("got " + activationList.size()+ " rules, namely: " + rulesInActivationList);
+            trace.out("got " + activationList.size()+ " rules, namely: " + rulesInActivationList);
             
 
             assertEquals(nRules, activationList.size());
-            System.out.println("currentNode = " + currentNode);
+            trace.out("currentNode = " + currentNode);
             for (int j=0; j<nRules; j++){
                 RuleActivationNode ran = (RuleActivationNode) activationList.get(j);
-                System.out.println(j+ "th rule for "+ currentNode + ":");
-                System.out.println("ran.getName() = " + ran.getName());                
-                System.out.println("ran.getActualSelection() = " + ran.getActualSelection());                
-                System.out.println("ran.getActualAction() = " + ran.getActualAction());
-                System.out.println("ran.getActualInput() = " + ran.getActualInput());    
+                trace.out(j+ "th rule for "+ currentNode + ":");
+                trace.out("ran.getName() = " + ran.getName());
+                trace.out("ran.getActualSelection() = " + ran.getActualSelection());
+                trace.out("ran.getActualAction() = " + ran.getActualAction());
+                trace.out("ran.getActualInput() = " + ran.getActualInput());
                 
                 assertEquals(state[NUMBER_ATTRIBUTES*j], ran.getName());
                 assertEquals(state[NUMBER_ATTRIBUTES*j+1], ran.getActualSelection());                
                 assertEquals(state[NUMBER_ATTRIBUTES*j+2], ran.getActualAction());                
                 assertEquals(state[NUMBER_ATTRIBUTES*j+3], ran.getActualInput());                
-                System.out.println(j+ "th rule for "+ currentNode + " passed!");
+                trace.out(j+ "th rule for "+ currentNode + " passed!");
 
             }                
             currentNode = (ProblemNode) currentNode.getChildren().get(0); //first child

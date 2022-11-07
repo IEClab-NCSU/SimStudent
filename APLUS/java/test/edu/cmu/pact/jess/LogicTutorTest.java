@@ -289,7 +289,7 @@ public class LogicTutorTest extends TestCase {
 			new BufferedReader(new InputStreamReader(System.in));
 		for (currTest = 0; currTest < tests.length; currTest++) {
 			if (oneAtATime) {
-				System.out.println("\n___press Enter to run next test step___");
+				trace.out("\n___press Enter to run next test step___");
 				try {
 					promptRdr.readLine();
 				} catch (IOException ioe) {}

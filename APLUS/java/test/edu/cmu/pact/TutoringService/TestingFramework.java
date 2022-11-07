@@ -52,19 +52,19 @@ public class TestingFramework {
 			}
 			br.close();
 			String ms = LogFormatUtils.unescape(s);
-			System.out.println("unescape[1,250]: " + ms.substring(0,249));
+			trace.out("unescape[1,250]: " + ms.substring(0,249));
 			ms = ms.replace("&amp;lt;","<").replace("&amp;gt;", ">");
-			System.out.println("unamp[1,250]: " + ms.substring(0,249));
+			trace.out("unamp[1,250]: " + ms.substring(0,249));
 			String temp[] = ms.split(".brd");
 			String filePath = temp[0].split(">")[temp[0].split(">").length - 1] + ".brd";
 			filePath = (filePath.split("\\\\")[filePath.split("\\\\").length - 1]);
 			if (!filePath.contains(".brd"))
-				System.out.println(filePath + ": Log does not contain .brd file path");
+				trace.out(filePath + ": Log does not contain .brd file path");
 			else
-				System.out.println("filePath: " + filePath);
+				trace.out("filePath: " + filePath);
 			
 			html = html.replace("tutors/convstackcg1-7_v4.brd", filePath);
-			System.out.println("myLogFileName = " + logFile+tag);
+			trace.out("myLogFileName = " + logFile+tag);
 			html = html.replace("myLogFileName", logFile+tag);
 			
 			StringBuffer f = new StringBuffer("<?xml version=\"1.0\" standalone=\"yes\"?>\n<tool_messages>");
@@ -72,7 +72,7 @@ public class TestingFramework {
 			for (int i = 1; i < a.length; i++)
 			{
 				String nextToolMsg = "<tool" + a[i].split("</tool")[0] + "</tool_message>"; 
-				//System.out.println("tool_message["+i+"]: " + nextToolMsg);
+				//trace.out("tool_message["+i+"]: " + nextToolMsg);
 				if (nextToolMsg == null || nextToolMsg.toLowerCase().contains("tutor-performed"))
 					continue;  // sewall 2/1/08: skip tutor-performed msgs
 				f.append(nextToolMsg);

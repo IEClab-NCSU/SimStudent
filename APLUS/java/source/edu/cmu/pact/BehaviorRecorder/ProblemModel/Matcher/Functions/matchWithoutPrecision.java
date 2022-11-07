@@ -146,7 +146,7 @@ public class matchWithoutPrecision {
         
     public void checkMatch(String input, String number) {
         boolean check = matchWithoutPrecision(input, number);
-        System.out.println("matchWithoutPrecision(" + input + ", " + number + ") = " + check);
+        trace.out("matchWithoutPrecision(" + input + ", " + number + ") = " + check);
     }
 
     public static void main(String [] args) throws Exception {

@@ -1089,7 +1089,7 @@ public class TabbedTestAcopy extends javax.swing.JPanel implements DoneButton, T
 		argv1=argv;
 	
 			for (int i=0;i<argv.length;i++){		
-					System.out.println("i=" + argv[i]);
+					trace.out("i=" + argv[i]);
 		
 				}
 				
@@ -1100,7 +1100,7 @@ public class TabbedTestAcopy extends javax.swing.JPanel implements DoneButton, T
 		for (int i=0;i<argv1.length;i++){		
   			if (argv1[i].contains("DProblemFileURL=jar:http://10.16.0.133:2401/studyTests/lib_nb/tabbedtest.jar!/")){
   				argv1[i]="-DProblemFileURL=jar:http://10.16.0.133:2401/studyTests/lib_nb/tabbedtest.jar!/TabbedTest/"+str;
-  				System.out.println("new arg is " + argv1[i]);
+  				trace.out("new arg is " + argv1[i]);
   				break;
   			}
   		}
@@ -1109,19 +1109,19 @@ public class TabbedTestAcopy extends javax.swing.JPanel implements DoneButton, T
 	private static String getCondition(){
 		String condition="";
 		for (int i=0;i<argv1.length;i++){		
-		System.out.println("checking for " + argv1[i]);
+		trace.out("checking for " + argv1[i]);
   			if(argv1[i].contains(PRETEST_STEM)){
-  				System.out.println("its " + PRETEST_STEM);
+  				trace.out("its " + PRETEST_STEM);
   				condition=PRETEST_STEM;
   				break;
   			}
   			else if (argv1[i].contains(POSTTEST_STEM)){
-  				System.out.println("its " + POSTTEST_STEM);
+  				trace.out("its " + POSTTEST_STEM);
   				condition=POSTTEST_STEM;
   				break;
   			}
   			else{
-  				System.out.println("its " + DELAYEDTEST_STEM);
+  				trace.out("its " + DELAYEDTEST_STEM);
   				condition=DELAYEDTEST_STEM;
   			}
   		}
@@ -1132,7 +1132,7 @@ public class TabbedTestAcopy extends javax.swing.JPanel implements DoneButton, T
         // TODO add your handling code here:
 
         promptSuccess.setText("Congratulations! You've completed the Test!");
-        System.out.println("condition found is  " + POSTTEST_STEM);
+        trace.out("condition found is  " + POSTTEST_STEM);
         String condition=getCondition();
 		brController.closeStudentInterface();
 		
@@ -1147,7 +1147,7 @@ public class TabbedTestAcopy extends javax.swing.JPanel implements DoneButton, T
 				CTAT_Launcher launch1 = new CTAT_Launcher(argv1);
 				
 				for (int i=0;i<argv1.length;i++){		
-					System.out.println("i=" + argv1[i]);
+					trace.out("i=" + argv1[i]);
 		
 				}
 				launch1.getController().getLogger().setUnitName("Questionnaire");

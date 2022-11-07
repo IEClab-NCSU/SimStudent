@@ -408,7 +408,7 @@ public class StudentAvatarDesigner extends JPanel implements ActionListener {
 	}
     public void setup()
     {
-    	//System.out.println(" background Index : "+backgroundIndex+"  hairIndex : "+hairIndex+"  ShirtIndex : "+shirtIndex);
+    	//trace.out(" background Index : "+backgroundIndex+"  hairIndex : "+hairIndex+"  ShirtIndex : "+shirtIndex);
     	startTime = Calendar.getInstance().getTimeInMillis();
     	setLayout(new GridLayout(1,2)); 
     	setBorder(new EmptyBorder(30, 40, 10, 5));
@@ -529,7 +529,7 @@ public class StudentAvatarDesigner extends JPanel implements ActionListener {
 
     protected void randomize()
     {
-    	//System.out.println(" Random button called ");
+    	//trace.out(" Random button called ");
 		backgroundIndex = (int) (Math.random()*silhouettes.length);
 		hairIndex = (int) (Math.random()*hairdos.length);
 		//expressionIndex = (int) (Math.random()*expressions.length);
@@ -547,9 +547,9 @@ public class StudentAvatarDesigner extends JPanel implements ActionListener {
         		//saveString += expressions[expressionIndex]+"%";
        		//saveString += noses[noseIndex]+"%";
         		saveString += shirts[shirtIndex];
-			//System.out.println(saveString);
+			//trace.out(saveString);
         	SimStPLE.STUDENT_IMAGE = saveString;
-        	//System.out.println(" Avatar : "+SimStPLE.STUDENT_IMAGE);
+        	//trace.out(" Avatar : "+SimStPLE.STUDENT_IMAGE);
         	if(gui != null && gui.getSimStAvatarLayerIcon() != null)
         		gui.setImage(saveString);
         	if(name.getText().length() > 0)

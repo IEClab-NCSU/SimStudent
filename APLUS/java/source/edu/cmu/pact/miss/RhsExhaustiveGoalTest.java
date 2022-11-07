@@ -118,7 +118,7 @@ public class RhsExhaustiveGoalTest extends RhsGoalTest {
 	    
 	    }
 	    	    	    
-	   // System.out.println(isGoalState + " " + useAllFOAs);
+	   // trace.out(isGoalState + " " + useAllFOAs);
 		// if useAllFOAs is true, each foa must be used in sequence of instructions
     	if(isGoalState && useAllFOAs) {
     		boolean[] foaUsed = new boolean[getInstruction().numFocusOfAttention()-1];
@@ -129,7 +129,7 @@ public class RhsExhaustiveGoalTest extends RhsGoalTest {
     			{
     				List<String> args = e.getExp().getArgs();
     			
-    				//System.out.println(args.toString());
+    				//trace.out(args.toString());
     				
     				for(String s: args) {
     					int index = Integer.parseInt(s.substring(4));
@@ -141,9 +141,9 @@ public class RhsExhaustiveGoalTest extends RhsGoalTest {
     		}
     		
     		/*
-    		System.out.println(expList.toString());
-    		System.out.println(Arrays.toString(foaUsed));
-    		System.out.println();
+    		trace.out(expList.toString());
+    		trace.out(Arrays.toString(foaUsed));
+    		trace.out();
     		*/
     		
     		for(int i = 0; i < foaUsed.length; i++)

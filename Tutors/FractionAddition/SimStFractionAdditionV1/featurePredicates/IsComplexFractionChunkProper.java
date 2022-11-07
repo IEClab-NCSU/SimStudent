@@ -18,7 +18,7 @@ public class IsComplexFractionChunkProper extends EqFeaturePredicate{
 	{
 		String expString1 = (String)args.get(0);				
 	
-	//	System.out.println("Chunk value is " + expString1); 
+	//	trace.out("Chunk value is " + expString1); 
 		if (!expString1.contains("["))
 			return null;
 			
@@ -36,7 +36,7 @@ public class IsComplexFractionChunkProper extends EqFeaturePredicate{
 		int numerator = Integer.parseInt(numeratorString);
 		int denominator = Integer.parseInt(denominatorString);
 
-		//System.out.println("numerator = " + numerator + ", denominator = " + denominator);
+		//trace.out("numerator = " + numerator + ", denominator = " + denominator);
 		if (numerator<denominator){
 			return "T";
 		}

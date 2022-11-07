@@ -2117,7 +2117,7 @@ public class ProblemModel implements Serializable {
     public boolean matchStates(EdgeData edge, Vector selectionP,
             Vector actionP, Vector inputP, String actorP) {
 
-    	//System.out.println("entered matchStates");	        	
+    	//trace.out("entered matchStates");
     	
         edge.getMatcher().setUseAlgebraicEquivalence(isUseCommWidgetFlag());
         edge.getMatcher().setCaseInsensitive(isCaseInsensitive());
@@ -2132,11 +2132,11 @@ public class ProblemModel implements Serializable {
         	
 	        if (edge.getMatcher().getMatcherType().equals("Exact Match"))
 	        {
-	        	//System.out.println(" Exact Match         REMOVE THIS");	        	
+	        	//trace.out(" Exact Match         REMOVE THIS");
 	        	match = edge.getMatcher().match(selectionP,actionP, inputP, actorP);
 	        }
 	        else {
-	        	//System.out.println(" NOT Exact Match         REMOVE THIS");	        	
+	        	//trace.out(" NOT Exact Match         REMOVE THIS");
 	        	match= edge.getMatcher().match(selectionP, actionP, inputP);	
 	        }
         
@@ -2473,9 +2473,9 @@ public class ProblemModel implements Serializable {
 //										ProblemModelEvent.SET_ALLOW_TOOL_MODE,
 //										new Boolean (toolMode), 
 //										new Boolean (toolMode));
-	//	System.out.println("AllowToolMode:"+toolMode);
+	//	trace.out("AllowToolMode:"+toolMode);
         controller.getPreferencesModel().setBooleanValue(BR_Controller.ALLOW_TOOL_REPORTED_ACTIONS, new Boolean (toolMode));
-      //  System.out.println(controller.getPreferencesModel().getValue(BR_Controller.ALLOW_TOOL));
+      //  trace.out(controller.getPreferencesModel().getValue(BR_Controller.ALLOW_TOOL));
 //		fireProblemModelEvent(evt);
     }
   public void setMaxStudents(int num) {
@@ -2688,8 +2688,8 @@ public class ProblemModel implements Serializable {
      * @param e event to send
      */
     public void fireProblemModelEvent (ProblemModelEvent e) {
-    	//System.out.println("Firing event");
-    	//System.out.println(e.toString());
+    	//trace.out("Firing event");
+    	//trace.out(e.toString());
     	//if(exampleTracerGraph!=null)
         //	exampleTracerGraph.problemModelEventOccurred(e);
     	try {

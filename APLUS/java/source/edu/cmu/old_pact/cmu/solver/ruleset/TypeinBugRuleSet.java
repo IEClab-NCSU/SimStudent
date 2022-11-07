@@ -1,6 +1,7 @@
 package edu.cmu.old_pact.cmu.solver.ruleset;
 
 import edu.cmu.old_pact.cmu.sm.Equation;
+import edu.cmu.pact.Utilities.trace;
 
 public class TypeinBugRuleSet extends RuleSet{
 	public TypeinBugRuleSet(TypeinBugRule[] theRules){
@@ -17,7 +18,7 @@ public class TypeinBugRuleSet extends RuleSet{
 		int len = numRules();
 		for (int i=0;i<len && foundrule == false;++i) {
 			if (Rule.allRulesTraced())
-				System.out.println("checking rule number "+i);
+				trace.out("checking rule number "+i);
 			ruleToFire = ((TypeinBugRule)getRule(i)).canFire(info,action,input,typeinInput,expectedInput);
 			if (ruleToFire!=null && ruleToFire.getBoolean()==true) {
 				foundrule = true;

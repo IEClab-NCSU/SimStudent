@@ -55,6 +55,7 @@ import com.sleepycat.je.Environment;
 import com.sleepycat.je.EnvironmentConfig;
 
 import edu.cmu.hcii.ctat.CTATBase;
+import edu.cmu.pact.Utilities.trace;
 
 /**
 *
@@ -356,6 +357,6 @@ public class CTATBerkeleyDB extends CTATBase implements TransactionWorker
     {
     	debug ("dumpDB ()");
     	
-        System.out.print(env.getStats(null).toString());    	    	
+        trace.out(env.getStats(null).toString());
     }
 }

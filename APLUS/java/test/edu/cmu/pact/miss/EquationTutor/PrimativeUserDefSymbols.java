@@ -64,7 +64,7 @@ public class PrimativeUserDefSymbols implements Userpackage {
      */
     public final void add(final Rete rete) {
 
-	// System.out.println("UserDefSymbols for Equation Tutor......");
+	// trace.out("UserDefSymbols for Equation Tutor......");
 
 	// Feature predicates
 	rete.addUserfunction( new edu.cmu.pact.miss.userDef.algebra.IsVariable() );

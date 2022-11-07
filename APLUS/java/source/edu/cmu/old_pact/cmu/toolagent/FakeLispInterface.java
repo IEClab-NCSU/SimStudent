@@ -24,6 +24,7 @@ import java.util.Stack;
 import java.util.Vector;
 
 import edu.cmu.old_pact.cmu.messageInterface.GridbagCon;
+import edu.cmu.pact.Utilities.trace;
 
 public class FakeLispInterface extends Dialog {
 	private TextArea messageQueueArea;
@@ -131,12 +132,12 @@ public class FakeLispInterface extends Dialog {
 					Thread.sleep(wait);
 				}
 				catch (InterruptedException e) {
-					System.out.println("FakeLispInterface sendNMessages "+e.toString());
+					trace.out("FakeLispInterface sendNMessages "+e.toString());
 				}
 			}
 		}
 		} catch (EmptyStackException ex) { 
-			System.out.println("FakeLispInterface sendNMessages "+ex.toString());
+			trace.out("FakeLispInterface sendNMessages "+ex.toString());
 		}
 	}
 	

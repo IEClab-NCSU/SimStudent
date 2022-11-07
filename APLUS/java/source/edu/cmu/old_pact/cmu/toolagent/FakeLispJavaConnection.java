@@ -66,7 +66,7 @@ public class FakeLispJavaConnection  extends LispJavaConnection{
     }
 	
 	public void messageReceived(String mess){
-		//System.out.println("in FakeLJC, received message "+mess);
+		//trace.out("in FakeLJC, received message "+mess);
 		toolCommunicator.handleMessage(mess);
 	}
 	

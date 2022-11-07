@@ -34,7 +34,7 @@ public class InquiryTestableTutor {
 //		} catch (InvalidStepException e) {
 //			e.printStackTrace();
 //		}
-//		System.out.println(hintMsg);
+//		trace.out(hintMsg);
 	}
 
 	/**

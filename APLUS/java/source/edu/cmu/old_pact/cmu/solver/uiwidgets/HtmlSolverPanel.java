@@ -25,7 +25,7 @@ public class HtmlSolverPanel extends SolverPanel implements ComponentListener{
 		if(htmlPanel != null){
 			Dimension d = getSize();
 			d.width -= widthBuffer;
-			//System.out.println("  HSP.sP: setting html size: " + d);
+			//trace.out("  HSP.sP: setting html size: " + d);
 			htmlPanel.setSize(d);
 		}
 	}
@@ -40,12 +40,12 @@ public class HtmlSolverPanel extends SolverPanel implements ComponentListener{
 			d = super.getPreferredSize();
 		}
 
-		/*System.out.println("  HSP.gPS: returning: " + d);
+		/*trace.out("  HSP.gPS: returning: " + d);
 		  if(htmlPanel != null){
-		  System.out.println("                     from htmlPanel");
+		  trace.out("                     from htmlPanel");
 		  }
 		  else{
-		  System.out.println("                     from super");
+		  trace.out("                     from super");
 		  }*/
 		return d;
 	}
@@ -67,16 +67,16 @@ public class HtmlSolverPanel extends SolverPanel implements ComponentListener{
 		super.setSize(d);
 		if(htmlPanel != null){
 			d.width -= widthBuffer;
-			//System.out.println("  HSP.sS: setting html size: " + d);
+			//trace.out("  HSP.sS: setting html size: " + d);
 			htmlPanel.setSize(d);
 		}
 		else{
-			//System.out.println("  HSP.sS: htmlPanel is null");
+			//trace.out("  HSP.sS: htmlPanel is null");
 		}
 	}
 
 	public void paint(Graphics g){
-		//System.out.println("  IP.paint: " + g);
+		//trace.out("  IP.paint: " + g);
 		if(htmlPanel != null){
 			htmlPanel.paint(g);
 		}
@@ -84,15 +84,15 @@ public class HtmlSolverPanel extends SolverPanel implements ComponentListener{
 	}
 
 	public void componentResized(ComponentEvent e){
-		/*System.out.println("HSP.cR: " + e);
-		  System.out.println("        sizes: this: " + getBounds());
-		  System.out.println("               html: " + htmlPanel.getBounds());*/
-		//System.out.println("              inner: " + htmlPanel.htmlViewer.getBounds());
+		/*trace.out("HSP.cR: " + e);
+		  trace.out("        sizes: this: " + getBounds());
+		  trace.out("               html: " + htmlPanel.getBounds());*/
+		//trace.out("              inner: " + htmlPanel.htmlViewer.getBounds());
 		redraw();
-		/*System.out.println("HSP.cR: end");
-		  System.out.println("        sizes: this: " + getBounds());
-		  System.out.println("               html: " + htmlPanel.getBounds());*/
-		//System.out.println("              inner: " + htmlPanel.htmlViewer.getBounds());
+		/*trace.out("HSP.cR: end");
+		  trace.out("        sizes: this: " + getBounds());
+		  trace.out("               html: " + htmlPanel.getBounds());*/
+		//trace.out("              inner: " + htmlPanel.htmlViewer.getBounds());
 	}
 
 	/*based on the redraw method in Diagram.java (in the geometry
@@ -102,26 +102,26 @@ public class HtmlSolverPanel extends SolverPanel implements ComponentListener{
 			//Dimension dim = m_ScrollPanel.getSize();
 			Dimension dim = getSize();
 			Dimension html_dim = htmlPanel.preferredSize();
-			//System.out.println("HSP.r: sizes: " + dim);
-			//System.out.println("              " + html_dim);
+			//trace.out("HSP.r: sizes: " + dim);
+			//trace.out("              " + html_dim);
 			htmlPanel.setHtmlWidth(dim.width);
-			//System.out.println("HSP.r: calling HP.sW");
+			//trace.out("HSP.r: calling HP.sW");
 			htmlPanel.setWidth(dim.width);
-			//System.out.println("HSP.r: calling HP.sH");
+			//trace.out("HSP.r: calling HP.sH");
 			htmlPanel.setHeight(htmlPanel.getHtmlHeight());
-			//System.out.println("HSP.r: calling HP.layout");
+			//trace.out("HSP.r: calling HP.layout");
 			htmlPanel.layout();
-			//System.out.println("HSP.r: calling HP.pS");
+			//trace.out("HSP.r: calling HP.pS");
 			Dimension cur_dim = htmlPanel.preferredSize();
-			//System.out.println("HSP.r: HP.pS: " + cur_dim);
+			//trace.out("HSP.r: HP.pS: " + cur_dim);
 			/*if(	Math.abs(html_dim.width-cur_dim.width)>1 ||
 				Math.abs(html_dim.height-cur_dim.height)>1)
 				firstRedraw = true;
 			if(firstRedraw){
 				firstRedraw = false;
 				Dimension d = getSize();
-				System.out.println("HSP.r: current size: " + d);
-				System.out.println("HSP.r: changing to : " +
+				trace.out("HSP.r: current size: " + d);
+				trace.out("HSP.r: changing to : " +
 								   new Dimension(d.width,d.height+delta));
 				setSize(d.width, d.height+delta);
 				delta = (-1)*delta;

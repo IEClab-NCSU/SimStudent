@@ -114,8 +114,8 @@ public class CTATWebTools extends CTATBase
 	 * Set<String> keys = map.keySet();  
 	 * for (String key : keys)  
 	 * {  
-	 *     System.out.println("Name=" + key);  
-	 *     System.out.println("Value=" + map.get(key));  
+	 *     trace.out("Name=" + key);
+	 *     trace.out("Value=" + map.get(key));
 	 *  }  
 	 */	
 	public Map<String, String> getQueryMap( String query)  

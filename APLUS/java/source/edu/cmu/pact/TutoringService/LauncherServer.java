@@ -238,7 +238,7 @@ public class LauncherServer extends TSLauncherServer implements Runnable, Exitab
 	public void sendIdentificationRequest(Socket sock)
 	{
 		String toSend = "<message><verb>NotePropertySet</verb><properties><MessageType>InterfaceIdentificationRequest</MessageType></properties></message>";
-		System.out.println("Sending XML msg via remote port#" + sock.getPort() + " and local port# " + sock.getLocalPort() + ":\n" + toSend);
+		trace.out("Sending XML msg via remote port#" + sock.getPort() + " and local port# " + sock.getLocalPort() + ":\n" + toSend);
 		try {
 			PrintWriter pw = new PrintWriter(sock.getOutputStream());
 			pw.write(toSend);
@@ -404,7 +404,7 @@ public class LauncherServer extends TSLauncherServer implements Runnable, Exitab
 	 * 
 	 */
 	public void run() {
-        System.out.println("LauncherServer : entered run");
+        trace.out("LauncherServer : entered run");
 
         Thread lsThread = new Thread(logServlet, "LogServlet");
         lsThread.start(); otherServers.add(logServlet);
@@ -514,7 +514,7 @@ public class LauncherServer extends TSLauncherServer implements Runnable, Exitab
 			public void run()
 			{
 				try {
-					System.out.println("Received a policy connection on "+pSock.getLocalPort()+"\n");
+					trace.out("Received a policy connection on "+pSock.getLocalPort()+"\n");
 					PrintWriter pw = new PrintWriter(pSock.getOutputStream());
 					pw.write(policyContent);
 					pw.close();
@@ -540,7 +540,7 @@ public class LauncherServer extends TSLauncherServer implements Runnable, Exitab
 				policySocket = new ServerSocket(this.policyPort);
 				while (!nowExiting)
 				{
-                    System.out.println("waiting for a policy connection...");
+                    trace.out("waiting for a policy connection...");
 					Socket ps = policySocket.accept();
 					PolicyThreadConsumer ptc = new PolicyThreadConsumer(ps);
 					ptc.start();

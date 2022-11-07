@@ -31,8 +31,8 @@ public class DecimalWorkSheet extends WorkSheet {
 	
 		super(numOfRows, numOfCols, ws_obj, myName);
 		
-//System.out.println("!!!!!!! NATASHA: in DecimalWorksheet AFTER SUPER!!!!!!!");
-//System.out.println("numOfRows=  "+numOfRows+"  numOfCols=  "+numOfCols+"  numOfDigits=  "
+//trace.out("!!!!!!! NATASHA: in DecimalWorksheet AFTER SUPER!!!!!!!");
+//trace.out("numOfRows=  "+numOfRows+"  numOfCols=  "+numOfCols+"  numOfDigits=  "
 //+numOfDigits+"  about to call setProp 'NUMBERofDIGITS'");		
 		try{
 			setProperty("numberOfDigits", new Integer(numOfDigits));

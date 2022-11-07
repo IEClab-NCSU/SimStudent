@@ -778,12 +778,12 @@ public class ProblemStateReaderTest extends TestCase {
      * @param elt XML element to dump
      */
     private static void parseSpecial(Element elt, int indent) {
-    	System.out.println(spaces(indent) + elt.toString());
+    	trace.out(spaces(indent) + elt.toString());
     	List attrs = elt.getAttributes();
     	for (Iterator it = attrs.iterator(); it.hasNext(); ) {
-    		System.out.println(spaces(indent)+" "+((Attribute) it.next()).toString());
+    		trace.out(spaces(indent)+" "+((Attribute) it.next()).toString());
     	}
-    	System.out.println(spaces(indent)+" "+elt.getText());
+    	trace.out(spaces(indent)+" "+elt.getText());
         List elts = elt.getChildren();
     	for (Iterator it = elts.iterator(); it.hasNext(); ) {
     		parseSpecial(((Element) it.next()), indent+2);

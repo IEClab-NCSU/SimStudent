@@ -238,7 +238,7 @@ public class CollaboratorsTest extends TestCase {
 				Thread t = new Thread(new create(setPrefsMsgs[i], userid, i+1), "create-"+i+"-"+userid);
 				threads.add(t);
 				t.start();
-//				System.out.print("\nEnter to continue...\n");   uncomment to prompt at start of each thread
+//				trace.out("\nEnter to continue...\n");   uncomment to prompt at start of each thread
 //				try { System.in.read(); } catch (IOException e) {}
 			}				
 		}

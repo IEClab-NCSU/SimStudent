@@ -1,5 +1,7 @@
 package edu.cmu.pact.BehaviorRecorder.ProblemModel.Matcher.Functions;
 
+import edu.cmu.pact.Utilities.trace;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +55,7 @@ public class expressionMatches {
 			result = expressionMatches(exprList);
 		else
 			usageExit("unknown test name \""+testName+"\"");
-        System.out.println(result);
+        trace.out(result);
 		return result;
 	}
 	

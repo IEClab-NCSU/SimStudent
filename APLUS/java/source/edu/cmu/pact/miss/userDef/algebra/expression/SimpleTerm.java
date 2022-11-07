@@ -125,8 +125,8 @@ public AlgExp mul(SimpleTerm t)
 }
 
 public AlgExp div(IntConst c) {
-    // System.out.println("SimpleTerm.div(IntConst " + c + ") on " + this);
-    // System.out.println("constant = " + constant + ", variable = " + variable);
+    // trace.out("SimpleTerm.div(IntConst " + c + ") on " + this);
+    // trace.out("constant = " + constant + ", variable = " + variable);
     
     AlgExp constantResult=constant.div(c);
     if(constantResult.equals(AlgExp.ZERO))
@@ -239,10 +239,10 @@ public AlgExp invert()
 
 public boolean equals(SimpleTerm t)
 {
-//    System.out.println("entered SimpleTerm.equals():");
-//    System.out.println("t.getConstant() = " + t.getConstant());
-//    System.out.println("constant = " + constant + "; constant.getClass() = " + constant.getClass());
-//    System.out.println("t.getConstant().equals(constant) = " + t.getConstant().equals(constant) +
+//    trace.out("entered SimpleTerm.equals():");
+//    trace.out("t.getConstant() = " + t.getConstant());
+//    trace.out("constant = " + constant + "; constant.getClass() = " + constant.getClass());
+//    trace.out("t.getConstant().equals(constant) = " + t.getConstant().equals(constant) +
 //            "; t.getConstant().getClass() =" + t.getConstant().getClass());    
     return t.getConstant().equals(constant) && t.getVariable().equals(variable);
 }

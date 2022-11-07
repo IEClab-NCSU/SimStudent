@@ -652,15 +652,15 @@ public class InquiryClAlgebraTutor {
             for (int i = 0; i < 1000000000; i++) {
                 j += i;
             }
-            System.out.println("j = " + j);
+            trace.out("j = " + j);
             InputStream stdin = bash.getErrorStream();
             InputStreamReader isr = new InputStreamReader(stdin);
             BufferedReader br = new BufferedReader(isr);
             String line = null;
-            System.out.println("<OUTPUT>");
+            trace.out("<OUTPUT>");
             while ( (line = br.readLine()) != null)
-                System.out.println(line);
-            System.out.println("</OUTPUT>");
+                trace.out(line);
+            trace.out("</OUTPUT>");
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

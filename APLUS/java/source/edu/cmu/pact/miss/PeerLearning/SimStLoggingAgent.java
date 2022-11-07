@@ -10,6 +10,7 @@ import java.util.Set;
 
 import edu.cmu.pact.BehaviorRecorder.Controller.BR_Controller;
 import edu.cmu.pact.BehaviorRecorder.ProblemModel.Graph.ProblemNode;
+import edu.cmu.pact.Utilities.trace;
 import edu.cmu.pact.miss.Sai;
 import edu.cmu.pact.miss.minerva_3_1.StepAbstractor;
 //import edu.cmu.pact.miss.PeerLearning.SimStLogger.LogEntry;
@@ -204,7 +205,7 @@ public class SimStLoggingAgent {
 	 * */
 	public String resovleHint(String feedback, String result){
 		
-		//System.out.println(feedback + " - " + result);
+		//trace.out(feedback + " - " + result);
 
 		if (result.contains(HINT_REQUEST) || result.contains("quiz") || result.contains("resource")){
 			if (feedback.contains("Quiz button")) return this.QUIZ;
@@ -314,7 +315,7 @@ public class SimStLoggingAgent {
 	
 		if (action == SimStLogger.METATUTOR_HINT_REQUESTED){
 			this.setRequestType((String) resultDetails);
-			System.out.println("We have a hint request of type "+resultDetails+" , just logging it...");
+			trace.out("We have a hint request of type "+resultDetails+" , just logging it...");
 			if (hintLogEntryRequest==null) {  hintLogEntryRequest= new LogEntry(); }
 			else hintLogEntryRequest.clear();
 			this.hintLogEntryRequest.fill(actionType, action, step, result,feedback , sai, node, correctness, expSelection, expAction, expInput, duration, (String) resultDetails, opponent, info, myRating, event_time); 
@@ -344,7 +345,7 @@ public class SimStLoggingAgent {
  	
     		if (!getHintGiven()){ 	//If no hint was given in the past
     			if (resovleHint(feedback,result) == QUIZ){   //If the hint is "Take QUIZ"
-    							//System.out.println("We have a Quiz, waiting for quiz button...");
+    							//trace.out("We have a Quiz, waiting for quiz button...");
     							setHintType(QUIZ);
     							setHintGiven(true);	
     							setTimeToLogHint(false);
@@ -355,7 +356,7 @@ public class SimStLoggingAgent {
     			}
     			else if(resovleHint(feedback,result) == FEEDBACK){ 
     							// return TRUE; 
-    							//System.out.println("We have a Feedback hint... just log it");
+    							//trace.out("We have a Feedback hint... just log it");
     							setFeedbackSuggestion(getFeedbackSuggestion(feedback));
         						setHintType(FEEDBACK);	
         						setTimeToLogHint(true);
@@ -368,7 +369,7 @@ public class SimStLoggingAgent {
     			else if(resovleHint(feedback,result) == RESOURCE){	//this might not be necessary as now I have a new function to handle cognitive and metacognitive hints
 					//SAI is empty so how should I now what Mr Williams wants ? 
     				setAnticipatedResource(result);
-					//System.out.println("We have a resource usage hint ... waiting for "+ getAnticipatedResource() +" tab...");
+					//trace.out("We have a resource usage hint ... waiting for "+ getAnticipatedResource() +" tab...");
 					setFeedbackSuggestion(getFeedbackSuggestion(feedback));
 					setHintType(RESOURCE);	
 					setTimeToLogHint(false);
@@ -381,7 +382,7 @@ public class SimStLoggingAgent {
     			}
     			else if(resovleHint(feedback,result) == COG_HINT){	//this might not be necessary as now I have a new function to handle cognitive and metacognitive hints
     					//SAI is empty so how should I now what Mr Williams wants ? 
-    					//System.out.println("We have a demonstration hint ... just log it");
+    					//trace.out("We have a demonstration hint ... just log it");
     					setFeedbackSuggestion(getFeedbackSuggestion(feedback));
     					setHintType(COG_HINT);	
     					setTimeToLogHint(true);
@@ -392,7 +393,7 @@ public class SimStLoggingAgent {
 		
     			}
     			else{
-    						//System.out.println("We have a Problem, waiting for yes button.... ");
+    						//trace.out("We have a Problem, waiting for yes button.... ");
     			
     						setHintType(resovleHint(feedback, result));  			
     						//copy_mtElementValuesHash();  	//safely store Mr Williams suggestion 
@@ -419,7 +420,7 @@ public class SimStLoggingAgent {
     		}
     		else{	//Student clicked again on Mr Williams so we have a repeated hint. 
     				
-    				//	System.out.println("We have a Repeated hint... just log it");
+    				//	trace.out("We have a Repeated hint... just log it");
 						setHintType(getHintType());	
 						setIsHintRepeated(true);
 						setTimeToLogHint(true);
@@ -434,7 +435,7 @@ public class SimStLoggingAgent {
     	
     	
     	if (getHintGiven()){
-    		//System.out.println(action);
+    		//trace.out(action);
     			/*If Student clicked yes or no button then */
     			if (isYesNoButtonClicked(actionType,action,sai)){
     				/*If student clicked yes button AND we are in problem hint mode*/
@@ -462,7 +463,7 @@ public class SimStLoggingAgent {
     			if (sai.getA().equals("TabClicked")){	
     				if (getHintType()==RESOURCE){ //this should be activated ONLY if a resource hint is given and only then. E.g. if a quiz hint is given and student goes through the tabs, then it is not 
     											 //considered as not followed.
-    					System.out.println(anticipatedResource + "=" + sai.getS());
+    					trace.out(anticipatedResource + "=" + sai.getS());
     					if (sai.getS().contains(this.anticipatedResource)){	
     						hintFollowed=true; 	}
     					else {
@@ -527,7 +528,7 @@ public class SimStLoggingAgent {
 		     String value1= (String) entry1.getValue(); 
 		     
 		     abstracted1 = abstractor.signedAbstraction(value1);
-		     //System.out.println("Abstraction:["+value1 + "] --> [" + abstracted1+"]");
+		     //trace.out("Abstraction:["+value1 + "] --> [" + abstracted1+"]");
 		     
 		     mtElementValuesHash.put(key1, abstracted1 );
 		 } 
@@ -623,7 +624,7 @@ public class SimStLoggingAgent {
 					   		this.logBuffer.clear();
 				
 					if (feedback.equals("Me: Yes") || doesFeedbackIndicateStartTopic){		
-						//System.out.println("Storing:" + feedback);
+						//trace.out("Storing:" + feedback);
 				   		LogEntry logTemp=new LogEntry(actionType, action, step, result, resultDetails, sai, node, correctness, expSelection, expAction, expInput, duration, feedback, opponent, info, myRating);
 			    		getLogBuffer().add(logTemp);
 						return true;
@@ -639,7 +640,7 @@ public class SimStLoggingAgent {
 	
 	public void reinstateDialogMessagesFromBuffer(String actionType, String action, Sai sai, SimStLogger logger){
 		
-    	//System.out.println(sai);
+    	//trace.out(sai);
 		if (actionType==SimStLogger.SIM_STUDENT_METATUTOR && action==SimStLogger.METATUTOR_MODEL_TRACING_ACTION){
     		//If action is "yes button clicked" then log an previously stored messages first//
     		if (sai.getS()=="yes" && sai.getA()=="ButtonPressed"){
@@ -648,7 +649,7 @@ public class SimStLoggingAgent {
 								LogEntry tmp=(LogEntry) it.next();
 						//		logger.simStLogBufferedEntry(tmp.actionType, tmp.action, tmp.step, tmp.result, tmp.resultDetails, tmp.sai, tmp.node, tmp.correctness, tmp.expSelection, tmp.expAction, tmp.expInput, tmp.duration, tmp.feedback, tmp.opponent, tmp.info, tmp.myRating,null,null,null);
 								it.remove();
-								//System.out.println("popping out "+ tmp.feedback);
+								//trace.out("popping out "+ tmp.feedback);
 						}				
     		}
     		
@@ -721,7 +722,7 @@ public class SimStLoggingAgent {
 					populate_ssElements();
 			
 			ssElementValues.put(selection, input);	
-			//System.out.println(ssElementValues);
+			//trace.out(ssElementValues);
 	}
 	
 	

@@ -82,7 +82,7 @@ public class AsyncStreamLogger extends StreamLogger
 
 		while (null != (msg = dequeue())) {
 			Boolean result = new Boolean(false);
-			System.out.println("" + Thread.currentThread().getName() +
+			trace.out("" + Thread.currentThread().getName() +
 					  " dequeued:\n" + msg + "\n");
 
 			if (msg instanceof ActionLog)

@@ -110,7 +110,7 @@ public class JCommGeoSelectionDiagram extends JCommWidget implements ActionListe
 		/*if (getController() != null) {
 			getController().addCtatModeListener(this);
 			ctatModeEventOccured(null);
-			System.out.println("Zhounds!");
+			trace.out("Zhounds!");
 		}*/
 	}
 	
@@ -593,9 +593,9 @@ public class JCommGeoSelectionDiagram extends JCommWidget implements ActionListe
 			String s2 = "";
 			
 			for (PointsListing list : pointListings) {
-				//System.out.println(list.type + " | " + list.points);
+				//trace.out(list.type + " | " + list.points);
 				if (list.type.equalsIgnoreCase("LINE") && list.points.contains(vertex) && list.points.contains(p1)) {
-					//System.out.println("p1 : " + list.points);
+					//trace.out("p1 : " + list.points);
 					String halves[] = list.points.split(vertex);
 					int index = halves[0].contains(p1) ? 0 : 1;
 					s1 = p1;
@@ -606,7 +606,7 @@ public class JCommGeoSelectionDiagram extends JCommWidget implements ActionListe
 					} 
 				}
 				else if (list.type.equalsIgnoreCase("LINE") && list.points.contains(vertex) && list.points.contains(p2)) {
-					//System.out.println("p2 : " + list.points);
+					//trace.out("p2 : " + list.points);
 					String halves[] = list.points.split(vertex);
 					int index = halves[0].contains(p2) ? 0 : 1;
 					s2 = p2;
@@ -627,7 +627,7 @@ public class JCommGeoSelectionDiagram extends JCommWidget implements ActionListe
 			buff.append(vertex);
 			buff.append(newp2);
 		
-			//System.out.println(selection + " | " + buff.toString());
+			//trace.out(selection + " | " + buff.toString());
 			return buff.toString();
 		}
 		
@@ -657,13 +657,13 @@ public class JCommGeoSelectionDiagram extends JCommWidget implements ActionListe
 				toAppend.append(sections[1].charAt(0));
 				toAppend.append(sections[2]);
 				toAppend.append(sections[3].charAt(0));
-			} else {System.out.println("ERROR PARSING: " + selection); }
+			} else {trace.out("ERROR PARSING: " + selection); }
 			
 			buff.append(parts[0]);
 			buff.append(" ");
 			buff.append(toAppend);
 			
-			//System.out.println(selection + " | " + buff.toString());
+			//trace.out(selection + " | " + buff.toString());
 			return buff.toString();
 		}
 		
@@ -741,8 +741,8 @@ public class JCommGeoSelectionDiagram extends JCommWidget implements ActionListe
 					String selection = selections[i];
 						
 					// Canonical naming has some... issues.. with the BRD moving between states.
-					//System.out.println("----------");
-					//System.out.println("mpn: " + getController() + " " + getController().getCtatModeModel().isDemonstratingSolution());
+					//trace.out("----------");
+					//trace.out("mpn: " + getController() + " " + getController().getCtatModeModel().isDemonstratingSolution());
 					if (getController() != null && getController().isDemonstratingSolution())
 						selection = canonicallyName(selection);
 						

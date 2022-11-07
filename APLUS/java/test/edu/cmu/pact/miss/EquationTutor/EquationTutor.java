@@ -113,7 +113,7 @@ public class EquationTutor extends JPanel {
     public static void main(String args[]) {
 
 	for (int i = 0; i < args.length; i++) {
-	    System.out.println("args[" + i + "] = " + args[i]);
+	    trace.out("args[" + i + "] = " + args[i]);
 	}
 
 	SingleSessionLauncher tutor = new SingleSessionLauncher( args );

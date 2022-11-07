@@ -877,7 +877,7 @@ public abstract class Matcher implements Cloneable, Serializable {
 			} catch (ClassCastException e) {
 			}
 		}
-		//System.out.println("Compare i = " + i + " j = " + j);
+		//trace.out("Compare i = " + i + " j = " + j);
 		if (i < j)
 			return 1;
 		else if (i > j)

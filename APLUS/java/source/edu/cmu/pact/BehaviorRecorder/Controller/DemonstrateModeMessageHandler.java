@@ -273,7 +273,7 @@ public class DemonstrateModeMessageHandler {
                     // Sun May 22 21:57:20 2005: Noboru
                     // Inform Sim. St. about the new problem node
                     if (controller.getCtatModeModel().isSimStudentMode()) {
-                        // System.out.println("##### sizeOfMatch(1): " +
+                        // trace.out("##### sizeOfMatch(1): " +
                         // newNode);
                         MissControllerExternal mc = controller.getMissController();
                         if (AskHintHumanOracle.isWaitingForSai) //InteractiveLearning suppresses this call 
@@ -288,9 +288,9 @@ public class DemonstrateModeMessageHandler {
                         
 //                        //if isInteractiveLearning, set waitingForDemonstration semaphor to false
 //                        Vector[] sai = {selection, action, input};
-//                        System.out.println("doOneMatchedNode: before, mc.getSimSt().getSai()[0] = " + mc.getSimSt().getSai()[0]);
+//                        trace.out("doOneMatchedNode: before, mc.getSimSt().getSai()[0] = " + mc.getSimSt().getSai()[0]);
 //                        mc.getSimSt().setSai(sai);
-//                        System.out.println("doOneMatchedNode: after, mc.getSimSt().getSai()[0] = " + mc.getSimSt().getSai()[0]);
+//                        trace.out("doOneMatchedNode: after, mc.getSimSt().getSai()[0] = " + mc.getSimSt().getSai()[0]);
 //                        mc.getSimSt().getSai().notifyAll();
                     }
                 }

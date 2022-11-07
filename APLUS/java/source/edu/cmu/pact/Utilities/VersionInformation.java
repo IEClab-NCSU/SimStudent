@@ -16,7 +16,7 @@ public class VersionInformation {
     }
 
     public static void main(String[] args) {
-        System.out.println(getReleaseString());
+        trace.out(getReleaseString());
     }
 
     /**

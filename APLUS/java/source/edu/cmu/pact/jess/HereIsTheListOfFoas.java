@@ -56,7 +56,7 @@ public class HereIsTheListOfFoas extends PredictObservableAction {
      * calls jmt.addRuleFoas
      */
     public Value call(ValueVector vv, Context context) throws JessException {
-        //System.out.println("entered HereIsTheListOfFoas.call()");
+        //trace.out("entered HereIsTheListOfFoas.call()");
         
         this.context = context;
 
@@ -82,7 +82,7 @@ public class HereIsTheListOfFoas extends PredictObservableAction {
 
         jmt.addRuleFoas(foas);
 
-//        System.out.println("HereIsTheListOfFoas.call(): returning Funcall.TRUE");
+//        trace.out("HereIsTheListOfFoas.call(): returning Funcall.TRUE");
         return Funcall.TRUE;
     }
 }

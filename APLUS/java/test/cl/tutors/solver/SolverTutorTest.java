@@ -551,7 +551,7 @@ public class SolverTutorTest extends TestCase {
 	private static void usage(String s) {
 		if (s != null && s.length() > 0)
 			System.out.printf("%s. ", s);
-		System.out.println("Usage:\n"+
+		trace.out("Usage:\n"+
 				"  "+SolverTutorTest.class.getName()+" [-h][-o] \"equation\"\n"+
 				"where--\n"+
 				"  -h   prints this help message;\n"+
@@ -588,7 +588,7 @@ public class SolverTutorTest extends TestCase {
 		SolverTutorTest stt = new SolverTutorTest();
 		if (testsEntered.size()-i < 1) {
 			stt.solve(new String[] {"3x+4=5", "x", "solve for x"}, null);
-			System.out.println();
+			trace.out();
 			stt.solve(new String[] {"3y+4=5", "y", "solve for y"}, three_y_plus_4_eq_5);
 			return;
 		}
@@ -598,7 +598,7 @@ public class SolverTutorTest extends TestCase {
 				System.err.printf("Bad argument[%d] \"%s\"-- need 2 commas: \"eq,var,instr\"\n", i, oneTest);
 			else
 				stt.solve(spec, null);
-			System.out.println();         // blank line between tests
+			trace.out();         // blank line between tests
 		}
 	}
 
@@ -630,7 +630,7 @@ public class SolverTutorTest extends TestCase {
 		testListName = listName;
 		if (trace.getDebugCode("table")) {
 			System.out.printf("<br><b>Test: %s</b>\n<table border=\"1\" cellpadding=\"2\">\n", listName);
-			System.out.println("<tr><th>From</th><th>MessageType</th><th>Selection</th><th>Action</th><th>Input</th><th>Prompt</th><th>BuggyMsg or SuccessMsg</th></tr>");
+			trace.out("<tr><th>From</th><th>MessageType</th><th>Selection</th><th>Action</th><th>Input</th><th>Prompt</th><th>BuggyMsg or SuccessMsg</th></tr>");
 		}
 		final String blankRowFmt = "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>\n";
 		final String rowFmt = "<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>\n";
@@ -1061,7 +1061,7 @@ public class SolverTutorTest extends TestCase {
     						}
     					}
     				}
-    				System.out.println();
+    				trace.out();
     			}
                 System.out.printf("after steps[%d]: isDone() %b\n",
                 		steps.length, tt.isDone("Solver"));

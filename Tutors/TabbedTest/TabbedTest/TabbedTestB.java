@@ -1113,7 +1113,7 @@ public class TabbedTestB extends javax.swing.JPanel implements DoneButton, Tabbe
 	public URL codeBase;
 	private  void updateBrd(String str){
 		for (int i=0;i<argv1.length;i++){	
-			System.out.println("argv1[i] = " + argv1[i]);
+			trace.out("argv1[i] = " + argv1[i]);
 			
   			if (argv1[i].contains("DProblemFileURL=")){
   				if(checkWebStart())
@@ -1121,7 +1121,7 @@ public class TabbedTestB extends javax.swing.JPanel implements DoneButton, Tabbe
   				else
   					argv1[i]="-DProblemFileURL=TabbedTest/"+str;
 
-  				System.out.println("new arg is " + argv1[i]);
+  				trace.out("new arg is " + argv1[i]);
   				break;
   			}
   		}
@@ -1142,7 +1142,7 @@ public class TabbedTestB extends javax.swing.JPanel implements DoneButton, Tabbe
   				condition=DELAYEDTEST_STEM;
   			}
   		}
-		System.out.println(" Condition " +condition);
+		trace.out(" Condition " +condition);
 		return condition;
 	}
 	
@@ -1185,13 +1185,13 @@ public class TabbedTestB extends javax.swing.JPanel implements DoneButton, Tabbe
 		if (condition.equals(POSTTEST_STEM)){
 
 		//	int dialogResult = JOptionPane.showConfirmDialog (null, "Congratulations, you have completed the quiz! \nWould you like to take a questionaire about your experience in the SimStudent study?","SimStudent Online Test",JOptionPane.YES_NO_OPTION);						
-			//System.out.println(" Finished Post test");
+			//trace.out(" Finished Post test");
 			AfterTestDialog dialog = new AfterTestDialog();
 			int dialogResult=dialog.showDialog();
 			
 			if(dialogResult == AfterTestDialog.YES_OPTION){
 				
-					//System.out.println(" Web STart "+brController.getMissController().getSimSt().isWebStartMode());
+					//trace.out(" Web STart "+brController.getMissController().getSimSt().isWebStartMode());
 				updateBrd(QUESTIONNAIRE_BRD);
 
 				CTAT_Launcher launch1 = new CTAT_Launcher(argv1);

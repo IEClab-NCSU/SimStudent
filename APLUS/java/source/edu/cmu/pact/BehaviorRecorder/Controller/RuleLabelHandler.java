@@ -269,7 +269,7 @@ public class RuleLabelHandler extends MouseInputAdapter implements ActionListene
 			// Do nothing when "CANCELED"
 			if ( selectedValue != 2 ) {
 	
-			    // System.out.println("???");
+			    // trace.out("???");
 			    RuleLabel newRuleLabel = new RuleLabel("r" + ruleLabels.size(), controller);
 			    controller.checkAddRuleName(newRuleLabel.getText(), "");
 			    

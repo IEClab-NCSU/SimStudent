@@ -141,7 +141,7 @@ public class ToolAgent extends Applet implements Startable, Agentable{
 			toret = new URL(dir);
 		}
 		catch (MalformedURLException e){
-			System.out.println("ToolAgent getDocBase "+e.toString());
+			trace.out("ToolAgent getDocBase "+e.toString());
 		}
 		return toret;
 	}
@@ -187,7 +187,7 @@ public class ToolAgent extends Applet implements Startable, Agentable{
     			return url;
     		}
     		catch (MalformedURLException e) {
-    			System.out.println("ToolAgent getDocumentBase "+e); 
+    			trace.out("ToolAgent getDocumentBase "+e);
     		}
     	}
     	return toret;

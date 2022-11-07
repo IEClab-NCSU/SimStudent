@@ -1,5 +1,7 @@
 package edu.cmu.pact.miss.minerva_3_1;
 
+import edu.cmu.pact.Utilities.trace;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -245,9 +247,9 @@ public class Test {
 		test.signedAbstractionConstants = test.abstractionConstantsWithSign(problem_Name, test.signedAbstractionConstants);
 		test.noSignAbstractionConstants = test.abstractionConstantsWithNoSign(problem_Name, test.noSignAbstractionConstants);
 		signedContextStepAbs = test.signedContextStepAbstraction(step_Name, test.noSignAbstractionConstants);
-		System.out.println("signedContextStepAbs :" + signedContextStepAbs);
+		trace.out("signedContextStepAbs :" + signedContextStepAbs);
 		noSignContextStepAbs = test.noSignContextStepAbstraction(step_Name, test.signedAbstractionConstants);
-		System.out.println("noSignContextStepAbs :" + noSignContextStepAbs);
+		trace.out("noSignContextStepAbs :" + noSignContextStepAbs);
 	}
 	
 	
@@ -275,21 +277,21 @@ public class Test {
 				newEquation += (equation.charAt(i));
 			}
 		}
-		System.out.println("newEquation: " + newEquation);
+		trace.out("newEquation: " + newEquation);
 		return newEquation;
 	}
 	
 	public static void main(String[] args) {
 		
 		if(validate(-4.1)) {
-			System.out.println("Number is a decimal");
+			trace.out("Number is a decimal");
 		} else {
-			System.out.println("Number is not a decimal");
+			trace.out("Number is not a decimal");
 		}
 		
 		String equation = "Av+B  =  Cv+(D)";
-		System.out.println(removeNegatives(equation));		
-		System.out.println("4.1x-2=10".indexOf('.'));
+		trace.out(removeNegatives(equation));
+		trace.out("4.1x-2=10".indexOf('.'));
 	}
 */
 }

@@ -51,7 +51,7 @@ public class CheckLinksList extends Vector {
 	public static CheckLinksList getCheckedLinksList(MessageObject mo) {
 		Vector checkedLinksList =
 			(Vector) mo.getProperty(PROPERTYNAME);
-		//System.out.println("checkedLinksList = " + checkedLinksList);
+		//trace.out("checkedLinksList = " + checkedLinksList);
 		
 		if (checkedLinksList == null)
 			return null;

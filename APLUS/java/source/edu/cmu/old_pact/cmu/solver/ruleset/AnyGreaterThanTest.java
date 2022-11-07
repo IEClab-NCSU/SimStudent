@@ -21,19 +21,19 @@ public class AnyGreaterThanTest extends Test {
 
 	public boolean passes(Queryable info) {
 		try {
-			/*System.out.println("AGTT.p(" + info + ")");
-			  System.out.println("AGTT.p: set = " + set + "; comparison = " + comparison);*/
+			/*trace.out("AGTT.p(" + info + ")");
+			  trace.out("AGTT.p: set = " + set + "; comparison = " + comparison);*/
 			boolean OK = false;
 			Vector values = new Vector();
 			Queryable q1 = info.evalQuery(propertyString);
 			/*if(q1 instanceof ArrayQuery){
-			  System.out.println("AGTT.p: q1 = " + ((ArrayQuery)q1).debugString());
+			  trace.out("AGTT.p: q1 = " + ((ArrayQuery)q1).debugString());
 			  }
 			  else if(q1 instanceof NumberQuery){
-			  System.out.println("AGTT.p: q1 = " + q1.getNumberValue());
+			  trace.out("AGTT.p: q1 = " + q1.getNumberValue());
 			  }
 			  else{
-			  System.out.println("AGTT.p: q1 = " + q1);
+			  trace.out("AGTT.p: q1 = " + q1);
 			  }*/
 			Queryable[] q = q1.getArrayValue();
 			for(int i=0;i<q.length;i++){
@@ -52,7 +52,7 @@ public class AnyGreaterThanTest extends Test {
 					}
 				}
 			}
-			//System.out.println("AGTT.p: values(" + values.size() + "): " + values);
+			//trace.out("AGTT.p: values(" + values.size() + "): " + values);
 			for (int i=0;i<values.size()&&!OK;++i) {
 				Number thisEx = ((Queryable)values.elementAt(i)).getNumberValue();
 				if (thisEx.doubleValue() > comparison)

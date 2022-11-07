@@ -77,8 +77,8 @@ public class ActivationList implements	Comparator<RuleActivationNode>,SortedSet<
 	
 	public void printList()
 	{
-		System.out.println("--------------------------------------------");
-		System.out.println("Activation List");
+		trace.out("--------------------------------------------");
+		trace.out("Activation List");
 		Iterator<RuleActivationNode> iterator = iterator();
 		//Iterator<RuleActivationNode> iterator = activationListUnsort.iterator();
 		while(iterator.hasNext())
@@ -91,10 +91,10 @@ public class ActivationList implements	Comparator<RuleActivationNode>,SortedSet<
 			int recencyValue = Rule.count;
 			recencyValue -= (rule.identity+rule.getAcceptedUses());
 			double ruleRating = rule.getAcceptedRatio()+rule.getSelectionAcceptRatio(ran.getRuleFoas());
-			System.out.println(ruleName+": "+ruleRating+" ("+rule.getAcceptedRatio()+"+"+
+			trace.out(ruleName+": "+ruleRating+" ("+rule.getAcceptedRatio()+"+"+
 					rule.getSelectionAcceptRatio(ran.getRuleFoas())+") "+rule.getAcceptedUses() + " ["+recencyValue+"]");
 		}
-		System.out.println("--------------------------------------------");
+		trace.out("--------------------------------------------");
 	}
 
 	@Override

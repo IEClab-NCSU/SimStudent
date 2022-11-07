@@ -341,14 +341,14 @@ public  class ObjectProxy extends ObjectSpecifier {
 	public void mailToProxy(MessageObject mo, Vector description) throws DorminException{ 
 	// description consists of type, 		format, 	format value 
 	//						  "Worksheet", "POSITION", "3"
-//		System.out.println("top of mailToProxy (objectProxy)");
+//		trace.out("top of mailToProxy (objectProxy)");
 		int size = 0;
 		if(description != null)
 			size = description.size();
-//		System.out.println("Description is *"+description+"*"+description.size());
+//		trace.out("Description is *"+description+"*"+description.size());
 		if(size == 0) {
 			try{
-//				System.out.println("about to call treatMessage");
+//				trace.out("about to call treatMessage");
 				treatMessage(mo, mo.extractVerb());
 			} catch(DorminException e) { 
 				throw e;
@@ -1270,7 +1270,7 @@ public  class ObjectProxy extends ObjectSpecifier {
 						// may be not attached to any real object!
 						/*
 						else
-							System.out.println(" NOOOOO! Some programmer forgot to call ObjectProxy.setRealObject() of "+this);
+							trace.out(" NOOOOO! Some programmer forgot to call ObjectProxy.setRealObject() of "+this);
 						*/
 					//} catch (NoSuchFieldException es) {
 						//throw new NoSuchPropertyException("Object '"+type+"' doesn't have property "+es.getMessage()+"'."); 

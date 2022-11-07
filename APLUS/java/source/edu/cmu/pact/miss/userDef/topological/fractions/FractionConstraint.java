@@ -158,10 +158,10 @@ public abstract class FractionConstraint extends TableConstraint  {
 	    					}
 	    			}
 	    		}
-	    		//System.out.println("ok, all cheks are complete, moving on....");
+	    		//trace.out("ok, all cheks are complete, moving on....");
 	    	}	
 	    			
-			//System.out.println("perase!!");
+			//trace.out("perase!!");
 	    		return null;
 		}
 		
@@ -300,15 +300,15 @@ public abstract class FractionConstraint extends TableConstraint  {
 			 
 				Value f1Name=f1.getSlotValue("name");
 			 	Value f2Name=f2.getSlotValue("name");
-			 //	System.out.println("**** samePosition : " + f1Name + " and " + f2Name + "");
+			 //	trace.out("**** samePosition : " + f1Name + " and " + f2Name + "");
 			 	
 			 	
-			 	// System.out.println(getFactParentRecursive(f1,rete));
+			 	// trace.out(getFactParentRecursive(f1,rete));
 			 	int f1_position=getFractionPosition( rete,f1 );
 			 	int f2_position=getFractionPosition( rete,f2 );
 			 	//Value f1Name=f1.getSlotValue("name");
 			 	//Value f2Name=f2.getSlotValue("name");
-			 	//System.out.println("****" + f1Name + " is in " + f1_position + " and " + f2Name + " is in " + f2_position );
+			 	//trace.out("****" + f1Name + " is in " + f1_position + " and " + f2Name + " is in " + f2_position );
 			 	
 			    return (f1_position == f2_position && f1_position!=-1 &&  f2_position!=-1) ? "T" : null;
 		 }
@@ -358,7 +358,7 @@ public abstract class FractionConstraint extends TableConstraint  {
 			 				boolean is2den=isDenominator(rete,f2);
 
 			 				if (is1den && is2den) 
-			 					System.out.println("" + f1Name + " and " + f2Name + " are both denominators of 1st fraction");
+			 					trace.out("" + f1Name + " and " + f2Name + " are both denominators of 1st fraction");
 			 				*/
 			 				
 			 				return (isNumerator(rete,f1) && isNumerator(rete,f2)) ? true : false;
@@ -438,7 +438,7 @@ public abstract class FractionConstraint extends TableConstraint  {
 				
 				Value f1Name=f1.getSlotValue("name");
 			 	Value f2Name=f2.getSlotValue("name");
-			 	System.out.println("**** isSameRow : " + f1Name + " and " + f2Name + "");
+			 	trace.out("**** isSameRow : " + f1Name + " and " + f2Name + "");
 			 	
 			 	
 				
@@ -481,7 +481,7 @@ public abstract class FractionConstraint extends TableConstraint  {
 				if (complexFraction1Row+1==complexFraction2Row)
 					trace.out("**** 		CONSECUTIVE ROW DETECTED!");
 					
-			//	System.out.println(fact1CF.getSlotValue("name") + " is on row " + complexFraction1Row + " and " + fact2CF.getSlotValue("name") + " is on row " + complexFraction2Row);
+			//	trace.out(fact1CF.getSlotValue("name") + " is on row " + complexFraction1Row + " and " + fact2CF.getSlotValue("name") + " is on row " + complexFraction2Row);
 				
 				
 				//trace.out("miss", "***row : " + complexFraction1Row + " and " + complexFraction2Row);
@@ -505,7 +505,7 @@ public abstract class FractionConstraint extends TableConstraint  {
 							if (template.getSlotName(i).equals(multislotName)){
 								return true;
 							}
-									//	System.out.println("" + testFact.getName() + " has parent " + currentFact.getName());
+									//	trace.out("" + testFact.getName() + " has parent " + currentFact.getName());
 							
 						}
 					
@@ -526,7 +526,7 @@ public abstract class FractionConstraint extends TableConstraint  {
 		    			  		
 		    		if (isParent(curFact,fact,rete)){
 		    			// yes, this template is a parent template, now check if it matches...
-		    				//System.out.println("Checking if " +  curFact + " is parent of " + fact.getSlotValue("name"));
+		    				//trace.out("Checking if " +  curFact + " is parent of " + fact.getSlotValue("name"));
 		    				
 		    				Value tableValues=curFact.getSlotValue(getMultislotName(fact));    
 		    				
@@ -536,12 +536,12 @@ public abstract class FractionConstraint extends TableConstraint  {
 			    				Fact tmpTable=tables.get(i).factValue(rete.getGlobalContext());
 			    					
 			    					if (tmpTable.getSlotValue("name").equals(fact.getSlotValue("name"))){
-			    						//System.out.println("FOUND: " + tmpTable.getSlotValue("name") + "="+fact.getSlotValue("name"));
+			    						//trace.out("FOUND: " + tmpTable.getSlotValue("name") + "="+fact.getSlotValue("name"));
 			    						return curFact;			
 			    					}
 			    			}
 		    				 			
-		    				//return curFact;//System.out.println("parent is " + curFact.getName());
+		    				//return curFact;//trace.out("parent is " + curFact.getName());
 		    			
 		    		}
 				  
@@ -562,7 +562,7 @@ public abstract class FractionConstraint extends TableConstraint  {
 				 				boolean is2den=isDenominator(rete,f2);
 
 				 				if (is1den && is2den) 
-				 					System.out.println("" + f1Name + " and " + f2Name + " are both denominators of 1st fraction");
+				 					trace.out("" + f1Name + " and " + f2Name + " are both denominators of 1st fraction");
 				 				*/
 				 				
 				 				return (isDenominator(rete,f1) && isDenominator(rete,f2)) ? true : false;

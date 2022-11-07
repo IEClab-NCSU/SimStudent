@@ -124,10 +124,10 @@ public class LabelRecognizer extends TreeBuilderSemantic {
 					boolean ok = parser.parse(lexer, new LabelRecognizer());
 					System.out.printf("%5b <= [%2d] %s\n", ok, i, input);
 					if (!ok && explainErrors)
-						System.out.println(baos.toString());
+						trace.out(baos.toString());
 					if (verbose) {
 						Node result = (Node) parser.getResult();
-						System.out.println(" result:\n"+
+						trace.out(" result:\n"+
 							   (result == null ? "null" : result.toString(1)));
 					}
 				}

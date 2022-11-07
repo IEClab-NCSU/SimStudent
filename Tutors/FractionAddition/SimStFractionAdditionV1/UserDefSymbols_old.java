@@ -35,7 +35,7 @@ public class UserDefSymbols implements Userpackage {
      */
     public final void add(final Rete rete) {
 
-// System.out.println("UserDefSymbols for Equation Tutor......");
+// trace.out("UserDefSymbols for Equation Tutor......");
 
 	// Feature predicates
 	//

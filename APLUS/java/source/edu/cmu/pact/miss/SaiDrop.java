@@ -37,7 +37,7 @@ public class SaiDrop {
 
 //        while (!isEmpty()) {
 //            try { 
-//                System.out.println("put: SAI is not empty. Waiting for a space to put " + saiIn);
+//                trace.out("put: SAI is not empty. Waiting for a space to put " + saiIn);
 //                wait();
 //            } catch (InterruptedException e) {}
 //        }

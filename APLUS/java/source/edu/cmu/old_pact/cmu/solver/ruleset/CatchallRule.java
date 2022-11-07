@@ -2,6 +2,7 @@ package edu.cmu.old_pact.cmu.solver.ruleset;
 
 import edu.cmu.old_pact.cmu.sm.BadExpressionError;
 import edu.cmu.old_pact.cmu.sm.query.Queryable;
+import edu.cmu.pact.Utilities.trace;
 
 
 //A CatchallRule is a rule that discovers solutions that it cannot produce
@@ -30,7 +31,7 @@ public class CatchallRule extends Rule {
 				String oldLeft = sm.simplify(info.getProperty("left").getStringValue());
 				String oldRight = sm.simplify(info.getProperty("right").getStringValue());
 				String leftQuery = "["+userAction+"]"+" ['"+oldLeft+"']"+" ['"+userInput+"']";
-//				System.out.println("left Query is "+leftQuery);
+//				trace.out("left Query is "+leftQuery);
 				Queryable leftQresult = info.evalQuery(leftQuery);
 				String rightQuery = "["+userAction+"]"+" ['"+oldRight+"']"+" ['"+userInput+"']";
 				Queryable rightQresult = info.evalQuery(rightQuery);
@@ -42,10 +43,10 @@ public class CatchallRule extends Rule {
 					int oldRightComplexity = sm.complexity(oldRight);
 					int newRightComplexity = sm.complexity(newRight);
 					if(isTraced()){
-						System.out.println("CR.cF: testing action " + userAction);
-						System.out.println("CR.cF: left : " + oldLeft + " [" + oldLeftComplexity + "] ==> " +
+						trace.out("CR.cF: testing action " + userAction);
+						trace.out("CR.cF: left : " + oldLeft + " [" + oldLeftComplexity + "] ==> " +
 										   newLeft + " [" + newLeftComplexity + "]");
-						System.out.println("CR.cF: right: " + oldRight + " [" + oldRightComplexity + "] ==> " +
+						trace.out("CR.cF: right: " + oldRight + " [" + oldRightComplexity + "] ==> " +
 										   newRight + " [" + newRightComplexity + "]");
 					}
 					if (newLeftComplexity < oldLeftComplexity &&

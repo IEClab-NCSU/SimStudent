@@ -962,10 +962,10 @@ public abstract class JCommWidget extends JPanel implements FocusListener, Mouse
         if (trace.getDebugCode("dw")) trace.out("dw", "Inside fireStudentAction: "+e);
         Object[] listeners = studentActionListeners.getListenerList();
         for (int i = 0; i < listeners.length; i++) {
-            // System.out.println("studentListener: " + i + " :" +
+            // trace.out("studentListener: " + i + " :" +
             // listeners[i]);
             if (listeners[i] == StudentActionListener.class) {
-                // System.out.println("calling studentActionPerformed:
+                // trace.out("calling studentActionPerformed:
                 // JCommQuestion.java");
                 ((StudentActionListener) listeners[i + 1])
                         .studentActionPerformed(e);

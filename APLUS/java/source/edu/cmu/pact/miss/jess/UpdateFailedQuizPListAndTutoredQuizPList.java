@@ -2,6 +2,7 @@ package edu.cmu.pact.miss.jess;
 
 import java.io.Serializable;
 
+import edu.cmu.pact.Utilities.trace;
 import jess.Context;
 import jess.Fact;
 import jess.Funcall;
@@ -94,7 +95,7 @@ public class UpdateFailedQuizPListAndTutoredQuizPList implements Userfunction, S
 				
 				String tutoredProblemList = f.getSlotValue(slotNameForTutoredQPList).stringValue(context);
 				
-				System.out.println(" Problem to remove : "+problemToRemove+"  TutoredProblemList  : "+tutoredProblemList);
+				trace.out(" Problem to remove : "+problemToRemove+"  TutoredProblemList  : "+tutoredProblemList);
 				Problem studentP = new Problem(problemToRemove);
 				String abstractedStudentP = studentP.getSignedAbstraction();
 				

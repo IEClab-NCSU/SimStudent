@@ -5,6 +5,7 @@ package edu.cmu.pact.miss.jess;
 import java.io.Serializable;
 import java.util.Vector;
 
+import edu.cmu.pact.Utilities.trace;
 import jess.Context;
 import jess.Funcall;
 import jess.JessException;
@@ -106,7 +107,7 @@ public class CanSolveProblem implements Userfunction, Serializable {
 					e1.printStackTrace();
 				}
 	
-				System.out.println("solution is " + solution);
+				trace.out("solution is " + solution);
 				SimStProblemGraph solutionGraph = null;
 				String safeProblemName = SimSt.convertToSafeProblemName(problem);
 				solutionGraph = new SimStProblemGraph();

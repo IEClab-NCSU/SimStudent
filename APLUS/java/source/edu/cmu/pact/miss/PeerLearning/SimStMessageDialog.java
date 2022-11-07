@@ -30,6 +30,7 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.html.HTMLDocument;
 
+import edu.cmu.pact.Utilities.trace;
 import pact.CommWidgets.JCommWidget;
 import edu.cmu.pact.miss.MetaTutor.APlusHintDialog;
 
@@ -291,7 +292,7 @@ public class SimStMessageDialog extends JDialog implements ActionListener{
 	        addWindowListener(new java.awt.event.WindowAdapter() {
 	        	public void windowClosing(java.awt.event.WindowEvent e) {
 	        		long endTime = (new Date()).getTime();
-	        		System.out.println(" Open Time : "+openTime+"  end Time : "+endTime);
+	        		trace.out(" Open Time : "+openTime+"  end Time : "+endTime);
 	                int duration = (int) ((endTime - openTime)/1000);
 	                String leavingMessage = hintsJEditorPane.getText();
 	        		leavingMessage = leavingMessage.replaceAll("\\<.*?>","");
@@ -354,7 +355,7 @@ public class SimStMessageDialog extends JDialog implements ActionListener{
 
 			//JButton selectedButton = (JButton) ae.getSource();
 			
-			//System.out.println(" Action Listener called : ");
+			//trace.out(" Action Listener called : ");
 			if (ae.getSource() instanceof JCheckBox){
 				logger.brController.getMissController().getSimStPLE().setShowPopupAtExamples(!dontShowThisAgain.isSelected());
 				return;

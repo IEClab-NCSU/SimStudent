@@ -117,12 +117,12 @@ import edu.cmu.pact.ctat.TutorController;
 		 * 
 		 */
 		private void createQuestionPanel() {
-//			System.out.println("removing question components");
+//			trace.out("removing question components");
 			this.removeAll();
 
 			// set the layout of the panel
 			// if pair layout is set to horizontal then use flow layout
-//			System.out.println("setting the layout");
+//			trace.out("setting the layout");
 			
 			if(this.questionLayout == 1){
 				this.setLayout(new FlowLayout());
@@ -144,7 +144,7 @@ import edu.cmu.pact.ctat.TutorController;
 				}
 				// add the component to the main panel
 				this.add(component);
-//				System.out.println("adding a new question component");
+//				trace.out("adding a new question component");
 			}
 		
 			// add the extra label after the end of the combobox
@@ -155,7 +155,7 @@ import edu.cmu.pact.ctat.TutorController;
 			// button
 			if(this.nComponents > 1){
 				if(this.submitBtn == null){
-//					System.out.println("adding the submit button");
+//					trace.out("adding the submit button");
 					submitBtn = new JButton("Submit");
 					submitBtn.addActionListener(this);
 				}
@@ -189,7 +189,7 @@ import edu.cmu.pact.ctat.TutorController;
 		 * @return
 		 */
 		private void separateQuestionList() {
-//			System.out.println("separating the question texts");
+//			trace.out("separating the question texts");
 			StringTokenizer st = new StringTokenizer(this.questionText, ",");
 			int i = 0;
 			while(st.hasMoreTokens() && i < this.nComponents){
@@ -213,7 +213,7 @@ import edu.cmu.pact.ctat.TutorController;
 		 * @return
 		 */
 		private void separateTextList() {
-//			System.out.println("separating the choices list");
+//			trace.out("separating the choices list");
 			StringBuffer sb = new StringBuffer(this.choicesText);
 			int startIndex = 0, endIndex, i = 0;
 			do{

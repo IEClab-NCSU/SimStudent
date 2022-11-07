@@ -611,7 +611,7 @@ public class JCommTextField extends JCommWidget implements FocusListener, MouseL
     
     public boolean resetStartStateLock(boolean startStateLock) {
         if (!textField.getText().equals(resetValue)) {
-        	System.out.println("Reset TextField [" + commName + "] - " + textField.getText() + startStateLock);
+        	trace.out("Reset TextField [" + commName + "] - " + textField.getText() + startStateLock);
             ((JCommDocument) textField.getDocument()).locked = startStateLock;
             textField.setHighlighter(null);
             setFocusable(!startStateLock);

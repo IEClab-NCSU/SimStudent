@@ -8,6 +8,8 @@ package edu.cmu.old_pact.cmu.solver.ruleset;
   initialize the rule sets asynchronously, so that startup is
   faster.*/
 
+import edu.cmu.pact.Utilities.trace;
+
 public class RuleDefiner implements Runnable{
 	private static Object mutex = new Object();
 	private static RuleSet strategicRules = null;
@@ -172,14 +174,14 @@ public class RuleDefiner implements Runnable{
 
 	/*just calls each of the define*Rules in turn*/
 	public void run(){
-		/*System.out.println("RD.r: sleeping ...");
+		/*trace.out("RD.r: sleeping ...");
 		  try{
 		  Thread.sleep(7000);
 		  }
 		  catch(Exception e){}*/
 
 		if(Rule.debug()){
-			System.out.println("RD.r: defining rules ...");
+			trace.out("RD.r: defining rules ...");
 		}
 		RuleSet temp;
 		temp = defineStrategicRules();
@@ -187,7 +189,7 @@ public class RuleDefiner implements Runnable{
 			strategicRules = temp;
 		}
 		if(Rule.debug()){
-			System.out.println("      strategic: " + temp.numRules());
+			trace.out("      strategic: " + temp.numRules());
 		}
 
 		temp = defineStrategicBugRules();
@@ -195,7 +197,7 @@ public class RuleDefiner implements Runnable{
 			strategicBugRules = (BugRuleSet)temp;
 		}
 		if(Rule.debug()){
-			System.out.println("      bug: " + temp.numRules());
+			trace.out("      bug: " + temp.numRules());
 		}
 
 		temp = defineTypeinBugRules();
@@ -203,7 +205,7 @@ public class RuleDefiner implements Runnable{
 			typeinBugRules = (TypeinBugRuleSet)temp;
 		}
 		if(Rule.debug()){
-			System.out.println("      typein bug: " + temp.numRules());
+			trace.out("      typein bug: " + temp.numRules());
 		}
 
 		SkillRuleSet t2;
@@ -212,7 +214,7 @@ public class RuleDefiner implements Runnable{
 			skillRules = t2;
 		}
 		if(Rule.debug()){
-			System.out.println("      skill: " + t2.numRules());
+			trace.out("      skill: " + t2.numRules());
 		}
 
 		t2 = defineTypeinSkillRules();
@@ -221,8 +223,8 @@ public class RuleDefiner implements Runnable{
 			mutex.notifyAll();
 		}
 		if(Rule.debug()){
-			System.out.println("      typein skill: " + t2.numRules());
-			System.out.println("RD.r: finished defining rules");
+			trace.out("      typein skill: " + t2.numRules());
+			trace.out("RD.r: finished defining rules");
 		}
 	}
 
@@ -1185,7 +1187,7 @@ public class RuleDefiner implements Runnable{
 		allRules[i-1].setCanEncapsulateVar(false);
 		allRules[i++] = new CatchallRule("CatchAll");
 
-		//System.out.println("defined "+(i-1)+" strategic rules");
+		//trace.out("defined "+(i-1)+" strategic rules");
 		RuleSet theRules = new RuleSet(allRules,i);
 												  
 		return theRules;

@@ -47,7 +47,7 @@ public class polyTermsEqual {
 		List<String> exprList = Arrays.asList(args);
 		int result = 2;  // error status
 		result = polyTermsEqual(exprList.get(0), exprList.subList(1, exprList.size()));
-        System.out.println(result);
+        trace.out(result);
 		return result;
 	}
 	

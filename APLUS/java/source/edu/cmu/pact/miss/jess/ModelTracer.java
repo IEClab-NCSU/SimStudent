@@ -235,7 +235,7 @@ public class ModelTracer {
 	public void setMatchedNode(RuleActivationNode node){
 		matchedNode = node;
 		/*if(matchedNode != null)
-		System.out.println(" This node taken : "+matchedNode.getDisplayName());*/
+		trace.out(" This node taken : "+matchedNode.getDisplayName());*/
 	}
 	
 	
@@ -454,7 +454,7 @@ public class ModelTracer {
 
 		iterativeDeepening(ssRete.getMaxDepth(), selection, action, input);
 				
-	//  System.out.println(ssRete.findDefrule());
+	//  trace.out(ssRete.findDefrule());
 		if(nodeSeq.size() > 0  && !isNodeSeqBuggy(nodeSeq)/*&& isHint || isCLHint*/ && !containsHelperProductionRule()) {
 			//if(isHint || isCLHint)
 				setMatchedNode((RuleActivationNode)(nodeSeq.get(0)));
@@ -518,7 +518,7 @@ public class ModelTracer {
         BufferedReader br = new BufferedReader(isr);
         
         try {
-        	System.out.println("Reading the file ");
+        	trace.out("Reading the file ");
 			while((line=br.readLine()) != null)
 				names.add(line);
  		} catch (IOException e) {
@@ -687,7 +687,7 @@ public class ModelTracer {
 							String ruleName = child.getName().replaceAll("MAIN::", "");
 							/*get the first ran that did not match, and keep it to give proactive message*/
 							if (!isHint && !isCLHint && !nonMatchingMetaCogNodeFound && child.getHintMessages().size()>0){
-								//System.out.println(" Proactive Message to be shown ");
+								//trace.out(" Proactive Message to be shown ");
 								setNotMatchedMetaCogNode(child);
 								this.getController().getMissController().getSimStPLE().getSimStPeerTutoringPlatform().setTargetWindow (ssRete.findDefrule(child.getName()).getDocstring());
 								//addIncorrectFiring(child.getName());

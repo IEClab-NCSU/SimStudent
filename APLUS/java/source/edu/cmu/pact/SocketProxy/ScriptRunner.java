@@ -25,6 +25,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import edu.cmu.pact.Utilities.SocketReader;
+import edu.cmu.pact.Utilities.trace;
 
 public class ScriptRunner {
 
@@ -52,22 +53,22 @@ public class ScriptRunner {
 				in = new BufferedReader(new InputStreamReader(sock.getInputStream(), "UTF-8"));
 				int i = 0;
 				while (!isStopping()) {
-					System.out.println("\nListener call #"+(++i)+" to readToEom()");
+					trace.out("\nListener call #"+(++i)+" to readToEom()");
 					String msg = SocketReader.readToEom(in, eom);
 					if (verbose)
-						System.out.println("\nListener received:\n" +msg);
+						trace.out("\nListener received:\n" +msg);
 					if (msg.length() < 1)     // empty message => socket closed
 						stopClient(client);
 					else
 						client.nReceived++;
 				}
 			} catch (Exception e) {
-				System.out.println("error from input reader: "+e);
+				trace.out("error from input reader: "+e);
 				e.printStackTrace(System.out);
 				try { if (in != null) in.close();
-				} catch (IOException ioe) { System.out.println("error closing input reader: "+ioe); }
+				} catch (IOException ioe) { trace.out("error closing input reader: "+ioe); }
 				try { if (sock != null) sock.close();
-				} catch (IOException ioe) { System.out.println("error closing socket: "+ioe); }
+				} catch (IOException ioe) { trace.out("error closing socket: "+ioe); }
 			}
 		}
 	}
@@ -119,7 +120,7 @@ public class ScriptRunner {
 			try {
 				init();
 			} catch (Exception e) {
-				System.out.println("error creating client for host "+h+", port "+p+": "+e);
+				trace.out("error creating client for host "+h+", port "+p+": "+e);
 			};
 			if (substituteAttributePattern != null)
 				substValue = "S"+(new UID()).toString();  // ensure leading character is alphabetic
@@ -164,7 +165,7 @@ public class ScriptRunner {
 				}
 				scriptFinished();
 			} catch (IOException ioe) {
-				System.out.println("Error on file "+scriptName);
+				trace.out("Error on file "+scriptName);
 				ioe.printStackTrace(System.out);
 			}
 		}

@@ -1,5 +1,7 @@
 package edu.cmu.old_pact.cmu.sm.query;
 
+import edu.cmu.pact.Utilities.trace;
+
 import java.util.Vector;
 
 //aa ArrayQuery is just a wrapper around an array of Queryables
@@ -44,7 +46,7 @@ public class ArrayQuery extends PrimitiveValueQuery {
 	
 	public Queryable getProperty(String prop) throws NoSuchFieldException {
 		Queryable result=null;
-		//System.out.println("AQ.gP(" + prop + "): " + getStringValue());
+		//trace.out("AQ.gP(" + prop + "): " + getStringValue());
 		/*first we try to apply the property to each item in the array*/
 		if(qArray == null || qArray.length == 0){
 			if(prop.equalsIgnoreCase("length")){
@@ -55,7 +57,7 @@ public class ArrayQuery extends PrimitiveValueQuery {
 			}
 		}
 		try{
-			//System.out.println("AQ.gP: passing down to elements");
+			//trace.out("AQ.gP: passing down to elements");
 			Vector results = new Vector();
 			for (int i=0;i<qArray.length;++i) {
 				Queryable thisValue = qArray[i].getProperty(prop);
@@ -64,7 +66,7 @@ public class ArrayQuery extends PrimitiveValueQuery {
 			result = new ArrayQuery(results);
 		}
 		catch(NoSuchFieldException nsfe){
-			//System.out.println("AQ.gP: caught exception");
+			//trace.out("AQ.gP: caught exception");
 			/*if that fails, try to apply the property to the array itself*/
 			if (prop.equalsIgnoreCase("Length")) {
 				if (isEmpty)
@@ -108,18 +110,18 @@ public class ArrayQuery extends PrimitiveValueQuery {
 				return makeList("or",true);
 			}
 			else {
-				/*System.out.println("AQ.gP: passing down to elements");
+				/*trace.out("AQ.gP: passing down to elements");
 				  Vector results = new Vector();
 				  for (int i=0;i<qArray.length;++i) {
 				  Queryable thisValue = qArray[i].getProperty(prop);
 				  results.addElement(thisValue);
 				  }
 				  result = new ArrayQuery(results);*/
-				//System.out.println("AQ.gP: re-throwing exception");
+				//trace.out("AQ.gP: re-throwing exception");
 				throw nsfe;
 			}
 		}
-		//System.out.println("AQ.gP: returning: " + result.getStringValue());
+		//trace.out("AQ.gP: returning: " + result.getStringValue());
 		return result;
 	}
 
@@ -193,7 +195,7 @@ public class ArrayQuery extends PrimitiveValueQuery {
 	}
 
 	public boolean getBooleanValue(){
-		System.out.println("AQ.gBV: calling super");
+		trace.out("AQ.gBV: calling super");
 		return super.getBooleanValue();
 	}
 

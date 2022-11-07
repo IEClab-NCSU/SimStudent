@@ -228,7 +228,7 @@ public abstract class AlgExp
 //	since all the subclasses implement 'add', why don't we just delete this function? Gustavo 20Sep2006
 //	except in the case of a zero, this function casts e to the same type as 'this', before adding it.
         public AlgExp add(AlgExp e) 	{
-        //System.out.println("e.getClass() = " + e.getClass());
+        //trace.out("e.getClass() = " + e.getClass());
 		if(e.equals(AlgExp.ZERO))
 			return eval();
 		if(e.getClass().equals(Constant.class))
@@ -298,8 +298,8 @@ public abstract class AlgExp
 
         public AlgExp divDecimal(AlgExp divident) {
             /*
-            System.out.println("divisor class is " + getClass());
-            System.out.println("divident class is " + divident.getClass());
+            trace.out("divisor class is " + getClass());
+            trace.out("divident class is " + divident.getClass());
             try {
                 System.in.read();
             } catch (IOException e) {
@@ -311,7 +311,7 @@ public abstract class AlgExp
         
 	public AlgExp div(AlgExp e) {
 	    
-            // System.out.println("AlgExp.div(" + e.getClass() + " on " + getClass());
+            // trace.out("AlgExp.div(" + e.getClass() + " on " + getClass());
             
 	    if(e.equals(AlgExp.ONE))
 	        return this;

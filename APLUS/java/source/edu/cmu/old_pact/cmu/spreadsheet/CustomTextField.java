@@ -538,7 +538,7 @@ public class CustomTextField extends AltTextField {
 		try{
 			super.paint(g);
 		} catch (NullPointerException e) {
-			//System.out.println("in CustomTF paint: "+e); 
+			//trace.out("in CustomTF paint: "+e);
 		}
 		
 	}

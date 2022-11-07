@@ -612,7 +612,7 @@ public class BKT {
 			int consecutive = 0;
 			int students = 1;
 			for (int i = start; i <= end; i++) {
-				// System.out.println(SSR);
+				// trace.out(SSR);
 				if (!students_.get(i).equals(prevstudent)) {
 					students++;
 					prevL = Lzero;
@@ -677,8 +677,8 @@ public class BKT {
 						for (double S = 0.01; S <= topS; S = S + 0.01) {
 							SSR = findGOOF(startact, endact, Lzero, trans, G, S);
 							/**
-							 * System.out.print(Lzero); System.out.print("\t");
-							 * System.out.println(trans);
+							 * trace.out(Lzero); trace.out("\t");
+							 * trace.out(trans);
 							 */
 							if (SSR < BestSSR) {
 								BestSSR = SSR;
@@ -692,7 +692,7 @@ public class BKT {
 				}
 				count ++;
 				if (count == 7) {
-					System.out.print(".");
+					trace.out(".");
 					count = 0;
 				}
 			}
@@ -721,7 +721,7 @@ public class BKT {
 				}
 				count ++;
 				if (count == 7) {
-					System.out.print(".");
+					trace.out(".");
 					count = 0;
 				}
 			}
@@ -733,7 +733,7 @@ public class BKT {
 			vals.get(currSkill)[3] = besttrans;
 			
 			bkt_vals.put(currSkill, new BKTEntry(bestLzero,bestG,bestS,besttrans,""));
-			System.out.println("Training params for " + curskill+ ": ["+bestLzero+" " + bestG + " " + bestS + " " + besttrans + "]");
+			trace.out("Training params for " + curskill+ ": ["+bestLzero+" " + bestG + " " + bestS + " " + besttrans + "]");
 		}
 		
 		

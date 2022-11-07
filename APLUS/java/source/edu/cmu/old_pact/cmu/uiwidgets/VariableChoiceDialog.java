@@ -16,6 +16,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import edu.cmu.old_pact.cmu.messageInterface.GridbagCon;
+import edu.cmu.pact.Utilities.trace;
 
 /*when the user enters an equation with more than one variable, we pop
   up one of these dialogs to let the user specify which variable s/he
@@ -102,13 +103,13 @@ public class VariableChoiceDialog extends Dialog{
         
         Container parent = getParent();
         Rectangle parentLoc = parent.getBounds();
-        //System.out.println("VCD: parent location: " + parentLoc);
+        //trace.out("VCD: parent location: " + parentLoc);
 
         float myY = parentLoc.y + parentLoc.height;
         float myX = parentLoc.x;
         setLocation((int)myX,(int)myY);
 
-        System.out.println("VCD: my location: " + getBounds());
+        trace.out("VCD: my location: " + getBounds());
 
         super.show();
     }

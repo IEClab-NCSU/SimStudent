@@ -397,7 +397,7 @@ public class JCommTextArea extends JCommWidget implements FocusListener, MouseLi
 
     public boolean resetStartStateLock(boolean startStateLock) {
         if (!textArea.getText().equals(resetValue)) {
- //       	System.out.println("Reset TextField [" + commName + "] - " + textArea.getText() + startStateLock);
+ //       	trace.out("Reset TextField [" + commName + "] - " + textArea.getText() + startStateLock);
             ((JCommDocument) textArea.getDocument()).locked = startStateLock;
             textArea.setHighlighter(null);
             setFocusable(!startStateLock);

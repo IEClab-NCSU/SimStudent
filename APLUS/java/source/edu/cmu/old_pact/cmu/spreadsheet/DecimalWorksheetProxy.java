@@ -22,8 +22,8 @@ public class DecimalWorksheetProxy extends WorksheetProxy {
 	}
 	
 	public DecimalWorkSheet createWorkSheet(int numRows, int numCols, int numDigits){
-	//System.out.println("!!!!!!! NATASHA: in DecimalWorksheetProxy.createWorkSheet !!!!!!!");
-	//System.out.println("numRows=  "+numRows+"  numCols=  "+numCols+"  numDigits=  "+numDigits);	
+	//trace.out("!!!!!!! NATASHA: in DecimalWorksheetProxy.createWorkSheet !!!!!!!");
+	//trace.out("numRows=  "+numRows+"  numCols=  "+numCols+"  numDigits=  "+numDigits);
 		return new DecimalWorkSheet(numRows, numCols, numDigits, this, "DecimalArithTool_no_labels");
 	}
 	

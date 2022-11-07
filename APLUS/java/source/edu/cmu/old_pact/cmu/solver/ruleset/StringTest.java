@@ -1,6 +1,7 @@
 package edu.cmu.old_pact.cmu.solver.ruleset;
 
 import edu.cmu.old_pact.cmu.sm.query.Queryable;
+import edu.cmu.pact.Utilities.trace;
 
 public class StringTest extends Test {
 	String comparison;
@@ -24,7 +25,7 @@ public class StringTest extends Test {
 		}
 		catch (NoSuchFieldException err) {
 			if(Rule.debug()){
-				System.out.println("Error resolving test:"+err+" info = "+info.getStringValue()+" class = "+getClass());
+				trace.out("Error resolving test:"+err+" info = "+info.getStringValue()+" class = "+getClass());
 			}
 			return false;
 		}

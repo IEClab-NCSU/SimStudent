@@ -28,13 +28,13 @@ public class Problem extends LinkedList<Step> {
 	public Problem(String problem_Name) {
 
 		this.problem_Name = problem_Name;
-		// System.out.println("Problem: original problem_name = |" + problem_Name + "|");
+		// trace.out("Problem: original problem_name = |" + problem_Name + "|");
 		String[] str = problem_Name.split(" ");
 		problem_Name = "";
 		for(int i=1; i<str.length; i++) {
 			problem_Name += str[i];
 		}
-		// System.out.println("Problem: trimmed problem_name = |" + problem_Name + "|");
+		// trace.out("Problem: trimmed problem_name = |" + problem_Name + "|");
 		
 		
 		signedAbstraction = stepAbstractor.signedAbstraction(problem_Name);
@@ -42,11 +42,11 @@ public class Problem extends LinkedList<Step> {
 		
 		signedNoContext = p.abstractEquationAbsolute(problem_Name);
 		signedAbstractionConstants = abstractionConstantsWithSign(problem_Name, signedAbstractionConstants);
-		// System.out.println("SignedNoContext: " + signedNoContext);
+		// trace.out("SignedNoContext: " + signedNoContext);
 
 		noSignNoContext = p.abstractEquationSimple(problem_Name);
 		noSignAbstractionConstants = abstractionConstantsWithNoSign(problem_Name, noSignAbstractionConstants);
-		// System.out.println("NoSignNoContext: " + noSignNoContext);
+		// trace.out("NoSignNoContext: " + noSignNoContext);
 
 		abstractionContext = p.abstractEquationContext(problem_Name /*problem_Name.substring(5)*/, abstractionConstants, (char)nextConstant);
 		//abstractionAbsolute = p.abstractEquationAbsolute(problem_Name /*problem_Name.substring(5)*/);
@@ -132,18 +132,18 @@ public class Problem extends LinkedList<Step> {
 
         for (int i = 0; i < equation.length(); i++) {
 
-            System.out.println(i);
+            trace.out(i);
             while (i < equation.length() && Character.isDigit(equation.charAt(i))) {
                 value += equation.charAt(i);
                 ++i;
-                System.out.println("Inside while: " + i);
+                trace.out("Inside while: " + i);
             }
 
             if (i < equation.length() && equation.charAt(i) == '-' && Character.isDigit(equation.charAt(i + 1))) {
                 while (i < equation.length() && Character.isDigit(equation.charAt(++i))) {
                     value += equation.charAt(i);
                     ++i;
-                    System.out.println("Inside while: " + i);
+                    trace.out("Inside while: " + i);
                 }
             }
             
@@ -172,11 +172,11 @@ public class Problem extends LinkedList<Step> {
 		boolean flag = false;
 
 		for (int i = 0; i < equation.length(); i++) {
-			// System.out.println(i);
+			// trace.out(i);
 			while(i < equation.length() && Character.isDigit(equation.charAt(i))) {
 				value +=  equation.charAt(i);
 				++i;
-				// System.out.println("Inside while: " + i);
+				// trace.out("Inside while: " + i);
 			}
 			if(value != "") {
 				constantized += (char)this.nextConstant;

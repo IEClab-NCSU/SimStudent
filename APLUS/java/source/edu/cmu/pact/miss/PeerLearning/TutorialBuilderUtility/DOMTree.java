@@ -24,6 +24,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
 import edu.cmu.pact.BehaviorRecorder.ProblemModel.Matcher.Functions.integerInRange;
+import edu.cmu.pact.Utilities.trace;
 
 //Document Object Model Tree
 public class DOMTree implements TreeSelectionListener, ComponentListener
@@ -235,8 +236,8 @@ public class DOMTree implements TreeSelectionListener, ComponentListener
 	protected void output(DOMNode current, int tabCount) //straight to out stream
 	{
 		for(int x = 0; x < tabCount; x++)
-			System.out.print("\t");
-		System.out.println(current);
+			trace.out("\t");
+		trace.out(current.toString());
 
 		++tabCount;
 

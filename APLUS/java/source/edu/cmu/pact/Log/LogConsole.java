@@ -599,7 +599,7 @@ implements MessagePlayerListener, ProblemModelListener {
 			button = new JButton(SEND_ROW);
 			button.setActionCommand(SEND_ROW);
 			button.addActionListener(this);
-			System.out.println( "RowSendBtnEditor constructor" );
+			trace.out( "RowSendBtnEditor constructor" );
 		}
 
 		/**
@@ -607,13 +607,13 @@ implements MessagePlayerListener, ProblemModelListener {
 		 * the dialog's OK button.
 		 */
 		public void actionPerformed(ActionEvent e) {
-			System.out.println( "RowSendBtnEditor.actionPerformed" );
+			trace.out( "RowSendBtnEditor.actionPerformed" );
 			sendRow( lastPressedSendRowBtn );
 		}
 
 		//Implement the one CellEditor method that AbstractCellEditor doesn't.
 		public Object getCellEditorValue() {
-			System.out.println( "RowSendBtnEditor.getCellEditorValue" );
+			trace.out( "RowSendBtnEditor.getCellEditorValue" );
 			return button;
 		}
 
@@ -623,7 +623,7 @@ implements MessagePlayerListener, ProblemModelListener {
 				boolean isSelected,
 				int row,
 				int column) {
-			System.out.println( "RowSendBtnEditor.getTableCellEditorComponent row = " + row + " column = " + column);
+			trace.out( "RowSendBtnEditor.getTableCellEditorComponent row = " + row + " column = " + column);
 			lastPressedSendRowBtn = row;
 			return button;
 		}
@@ -633,7 +633,7 @@ implements MessagePlayerListener, ProblemModelListener {
 		public RowSendBtnRenderer() {
 			this.setText("Send");
 			setOpaque(true); //MUST do this for background to show up.
-			System.out.println( "RowSendBtnEditor constructor" );
+			trace.out( "RowSendBtnEditor constructor" );
 		}
 
 		public Component getTableCellRendererComponent(
@@ -642,7 +642,7 @@ implements MessagePlayerListener, ProblemModelListener {
 				boolean isSelected, 
 				boolean hasFocus,
 				int row, int column) {
-			//System.out.println( "RowSendBtnRenderer.getTableCellRendererComponent" );
+			//trace.out( "RowSendBtnRenderer.getTableCellRendererComponent" );
 			return this;
 		}
 	}

@@ -1,5 +1,7 @@
 package edu.cmu.pact.miss.storage;
 
+import edu.cmu.pact.Utilities.trace;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -22,7 +24,7 @@ public class FileUnZipper {
          
 			while((entry = zis.getNextEntry()) != null) {
 
-				System.out.println("Extracting: " +entry);
+				trace.out("Extracting: " +entry);
 	            int count;
 	            byte data[] = new byte[BUFFER];
       
@@ -42,7 +44,7 @@ public class FileUnZipper {
 			}
 			
 			zis.close();         
-			System.out.println("Checksum: "+checksum.getChecksum().getValue());
+			trace.out("Checksum: "+checksum.getChecksum().getValue());
 			
       } catch(Exception e) {
          e.printStackTrace();

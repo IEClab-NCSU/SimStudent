@@ -18,7 +18,7 @@ public class IsGoalComplex extends EqFeaturePredicate{
 		String expString1 = (String)args.get(0);
 				
 				
-		//System.out.println("*** Checking for complex fraction in " + expString1 + " and this is " + expString1.equals("ComplexFraction"));
+		//trace.out("*** Checking for complex fraction in " + expString1 + " and this is " + expString1.equals("ComplexFraction"));
 				
 		if (expString1.equals("Conversion")) return "T";
 		else return null;

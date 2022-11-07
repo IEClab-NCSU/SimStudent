@@ -16,6 +16,6 @@ public class LogDecoder {
 		BufferedReader rdr = new BufferedReader(new InputStreamReader(System.in));
 		String line;
 		while ((line = rdr.readLine()) != null)
-			System.out.println(URLDecoder.decode(line, "ISO-8859-1"));
+			trace.out(URLDecoder.decode(line, "ISO-8859-1"));
 	}
 }

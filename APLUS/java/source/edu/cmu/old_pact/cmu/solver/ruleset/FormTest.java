@@ -34,7 +34,7 @@ public class FormTest extends Test {
 		//result = matchForm.patternMatches((Equation)info);
 		if(info instanceof Equation){
 			result = equationsPatternMatches(matchForm, (Equation)info);
-			//System.out.println("in FT myForm = "+myForm+" matchForm = "+matchForm+" eq = "+((Equation)info)+" result = "+result);
+			//trace.out("in FT myForm = "+myForm+" matchForm = "+matchForm+" eq = "+((Equation)info)+" result = "+result);
 		}
 		else if(info instanceof Expression){
 			result = equationsPatternMatches(matchForm, (Expression)info);
@@ -66,8 +66,8 @@ public class FormTest extends Test {
 			userEq = VarEncapsulation.tryEncapsulateVar(userEq);
 		Expression user_left = userEq.getBoundLeft();
 		Expression user_right = userEq.getBoundRight();
-//System.out.println("FormTest patterns formEq = "+formEq+" userEq = "+userEq);
-//System.out.println("FormTest patterns form_left = "+form_left+" form_right = "+form_right+" user_left = "+user_left+" user_right = "+user_right);
+//trace.out("FormTest patterns formEq = "+formEq+" userEq = "+userEq);
+//trace.out("FormTest patterns form_left = "+form_left+" form_right = "+form_right+" user_left = "+user_left+" user_right = "+user_right);
 		
 		boolean leftmatches = safeExactMatch(form_left,user_left);
 		boolean rightmatches = safeExactMatch(form_right,user_right);

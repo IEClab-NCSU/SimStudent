@@ -1,6 +1,7 @@
 package edu.cmu.old_pact.cmu.solver.ruleset;
 
 import edu.cmu.old_pact.cmu.sm.Equation;
+import edu.cmu.pact.Utilities.trace;
 
 //a SkillRule is a rule that determines which skill is involved in a particular user action
 //SkillRules always have one condition that tests the name of the tracing rule that fired
@@ -68,11 +69,11 @@ public class SkillRule {
 				if (ruleName.equalsIgnoreCase(traceRules[i]))
 					OK=true;
 				if (isTraced())
-					System.out.println("checking skill rule *"+traceRules[i]+"* against *"+ruleName+"*: "+OK);
+					trace.out("checking skill rule *"+traceRules[i]+"* against *"+ruleName+"*: "+OK);
 			}
 		}
 		if (isTraced() && !multipleTraceRules) {
-			System.out.println("Strategic rule *"+ruleName+"* matches skill rule named*"+name+"*: "+OK);
+			trace.out("Strategic rule *"+ruleName+"* matches skill rule named*"+name+"*: "+OK);
 		}
 		if (conditions != null) {
 			for (int i=0;i<conditions.length && OK;++i) {
@@ -81,7 +82,7 @@ public class SkillRule {
 			}
 		}
 		if (isTraced()) {
-			System.out.println("Skill rule "+getName()+" (skill is "+subskillName+") passes conditions: "+OK);
+			trace.out("Skill rule "+getName()+" (skill is "+subskillName+") passes conditions: "+OK);
 		}
 		return OK;
 	}

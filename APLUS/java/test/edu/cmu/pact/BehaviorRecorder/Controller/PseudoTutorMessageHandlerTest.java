@@ -1293,11 +1293,11 @@ public class PseudoTutorMessageHandlerTest extends TestCase {
 	}
 	
 	public void testRandomNumberGenerator() {
-		System.out.println("testRandomNumberGenerator():");
+		trace.out("testRandomNumberGenerator():");
 		int n = 10;
 		for (int i = 0; i < n; ++i)
 			System.out.printf(" %.7f", Math.random());
-		System.out.println();
+		trace.out();
 
 		int seed = 42;
 		for (int s = 0; s < 2; s++) {
@@ -1307,10 +1307,10 @@ public class PseudoTutorMessageHandlerTest extends TestCase {
 				int[] ro = controller.randomOrder(n); 
 				for (int i = 0; i < n; ++i)
 					System.out.printf(" %2d", ro[i]);
-				System.out.println();
+				trace.out();
 			}
 			if (s < 1)
-				System.out.println("Now setting seed to "+seed+" each time...");
+				trace.out("Now setting seed to "+seed+" each time...");
 		}
 	}
 
@@ -1425,7 +1425,7 @@ public class PseudoTutorMessageHandlerTest extends TestCase {
 			new BufferedReader(new InputStreamReader(System.in));
 		for (currTest = 0; currTest < tests.length; currTest++) {
 			if (oneAtATime) {
-				System.out.println("\n___press Enter to run next test step___");
+				trace.out("\n___press Enter to run next test step___");
 				try {
 					promptRdr.readLine();
 				} catch (IOException ioe) {}

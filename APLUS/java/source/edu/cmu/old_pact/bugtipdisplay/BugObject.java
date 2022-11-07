@@ -16,6 +16,7 @@ import edu.cmu.old_pact.cmu.messageInterface.ToolPointerVector;
 import edu.cmu.old_pact.cmu.messageInterface.UserMessage;
 import edu.cmu.old_pact.dormin.DorminException;
 import edu.cmu.old_pact.dormin.MessageObject;
+import edu.cmu.pact.Utilities.trace;
 
 
 public class BugObject implements PropertyChangeListener, ComponentListener {
@@ -97,7 +98,7 @@ public class BugObject implements PropertyChangeListener, ComponentListener {
 			setMessage(userMessage, thisBase);
 		}
 		catch (DorminException e) { 
-			System.out.println("BugObject storeMessage "+e.toString());
+			trace.out("BugObject storeMessage "+e.toString());
 		}
 	}	
 	

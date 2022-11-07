@@ -63,7 +63,7 @@ public class SimStTutalk {
 		    tutalkState = TUTALK_STATE_DONE;
 		    return false;
 		}
-		//System.out.println("The file loaded"+scFilename);
+		//trace.out("The file loaded"+scFilename);
 		// scFilename contains the xml file that will be loaded as scenario.
 		// scfilename = pScenario + ".xml" -> scFilename = "why_right_dialog" + ".xml"
 		// The file is searched inside ⁨GitHub⁩ ▸ ⁨SimStudent⁩ ▸ ⁨Tutors⁩ ▸ ⁨Algebra⁩ ▸ ⁨SimStAlgebraV8⁩
@@ -98,7 +98,7 @@ public class SimStTutalk {
 	            	/*if(turns.get(i).trim().length()>=1) {
 	                	finalQuestion = ((i==0) ? "" : finalQuestion + "\n") + turns.get(i);
 	            	}*/
-	            	System.out.println("printing final q "+finalQuestion);
+	            	trace.out("printing final q "+finalQuestion);
 	            }
 	            //trace.out("sstt", "Current Concept: "+ttClient.getLastConcept().getLabel());
 
@@ -125,7 +125,7 @@ public class SimStTutalk {
 	            }
 	            // block ends here.
 	            List<Response> expected = ttClient.getState().getExpected();
-	            //System.out.println("The expected size is "+ expected.size());
+	            //trace.out("The expected size is "+ expected.size());
 	            if (expected.size() == 0) {
 	            	if(trace.getDebugCode("sstt"))trace.out("sstt", "\tExpectedSize = 0; gonna break out!");
 					// Need to display the "bye, thank you" message.
@@ -137,7 +137,7 @@ public class SimStTutalk {
 
 	            if(finalQuestion.length() == 0)
 	            {
-	            	System.out.println("final question is 0");
+	            	trace.out("final question is 0");
 	            	if(trace.getDebugCode("sstt"))trace.out("sstt", "\tQuestion length = 0; gonna break out!");
 					// Need to display the "bye, thank you" message.
 					interactiveActivity.getSimSt().displayMessage("",FINAL_OKAY);
@@ -164,11 +164,11 @@ public class SimStTutalk {
 		            	interactiveActivity.getSimSt().getMissController().getSimStPLE().setAvatarThinking();
 		            }
 
-	                //System.out.println("Evaluating: " + input.trim());
+	                //trace.out("Evaluating: " + input.trim());
 	                matchingConcepts = ttClient.evaluateTuteeTurn(input);
 	            }
 
-	            //System.out.println("Matched Concept " + matchingConcepts.get(0).getLabel());
+	            //trace.out("Matched Concept " + matchingConcepts.get(0).getLabel());
 
 	            // changed the following line -> turns = ttClient.progress(matchingConcepts.get(0)) -> to the next two lines below -> by Tasmia;
 	            //turns = ttClient.progress(matchingConcepts.get(0));
@@ -285,7 +285,7 @@ public class SimStTutalk {
 
 		// Debug code
 		for(int i=0;i<describableFeatures.size();i++) {
-	            System.out.println("sstt: Description #"+i+": "+(describableFeatures.get(i)).getFeatureName() + " -> " + (describableFeatures.get(i)).getDescriptions());
+	            trace.out("sstt: Description #"+i+": "+(describableFeatures.get(i)).getFeatureName() + " -> " + (describableFeatures.get(i)).getDescriptions());
         }
 
         // Get all unlearned concepts

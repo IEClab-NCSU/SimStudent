@@ -16,7 +16,7 @@ public class LiteralExpression extends VariableExpression {
 	}
 	
         public Expression simplifiedCoefficient(){
-            //System.out.println(debugForm() + ".simplifiedCoefficient(): returning this");
+            //trace.out(debugForm() + ".simplifiedCoefficient(): returning this");
             return this;
         }
 
@@ -53,33 +53,33 @@ public class LiteralExpression extends VariableExpression {
         //Literals sort before other literals, if their string is less
 	//Literals sort after numeric expressions (and before everything else)
 	public boolean termSortBefore(Expression ex) {
-		/*System.out.println(debugForm() + ".termSortBefore(" +
+		/*trace.out(debugForm() + ".termSortBefore(" +
 		  ex.debugForm() + ")");*/
 		if (ex instanceof LiteralExpression) {
 			LiteralExpression vEx = (LiteralExpression)ex;
 			if (getString().compareTo(vEx.getString()) < 0){
-				//System.out.println("\ttrue");
+				//trace.out("\ttrue");
 				return true;
 			}
 			else{
-				//System.out.println("\tfalse");
+				//trace.out("\tfalse");
 				return false;
 			}
 		}
 		/*else if (ex instanceof VariableExpression){
-		  System.out.println("\ttrue");
+		  trace.out("\ttrue");
 		  return true;
 		  }
 		  else if (ex instanceof PolyExpression){
-		  System.out.println("\ttrue");
+		  trace.out("\ttrue");
 		  return true;
 		  }*/
 		else if (ex instanceof NumericExpression){
-			//System.out.println("\tfalse");
+			//trace.out("\tfalse");
 			return false;
 		}
 		else{
-			//System.out.println("\ttrue");
+			//trace.out("\ttrue");
 			return true;
 		}
 	}
@@ -122,7 +122,7 @@ public class LiteralExpression extends VariableExpression {
 	}
 
 	public Queryable getProperty(String prop) throws NoSuchFieldException {
-            //System.out.println("getProperty (literal): "+prop);
+            //trace.out("getProperty (literal): "+prop);
             Queryable result=null;
             if (prop.equalsIgnoreCase("isLiteral")) {
                 result = new BooleanQuery(true);

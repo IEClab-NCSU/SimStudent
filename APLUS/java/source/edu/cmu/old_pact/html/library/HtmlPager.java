@@ -272,7 +272,7 @@ class HtmlPager
       
       this.selectable = new DragObject();
       this.selectable.startLine = lines.size() - 1;
- //System.out.println("start : heights[lines.size() - 1] = "+heights[lines.size() - 1]);
+ //trace.out("start : heights[lines.size() - 1] = "+heights[lines.size() - 1]);
       this.selectable.startOffset = offset;
       this.selectable.text = select;
       this.selectable.font = font;
@@ -307,7 +307,7 @@ class HtmlPager
     {
       if (draggable){
 		selectable.endLine = lines.size() - 1;
-//System.out.println("end : heights[lines.size() - 1] = "+heights[lines.size() - 1]);
+//trace.out("end : heights[lines.size() - 1] = "+heights[lines.size() - 1]);
 		selectable.endOffset = offset;
 		selectables.addElement(selectable);
 		

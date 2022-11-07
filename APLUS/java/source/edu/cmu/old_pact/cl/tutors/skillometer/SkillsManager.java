@@ -6,6 +6,7 @@ import java.util.Vector;
 
 import edu.cmu.old_pact.dormin.MessageObject;
 import edu.cmu.old_pact.dormin.ObjectProxy;
+import edu.cmu.pact.Utilities.trace;
 
 public class SkillsManager  {
 	private Hashtable allSkills;
@@ -174,7 +175,7 @@ public class SkillsManager  {
                                     return sc;
                                 }
 			}
-			System.out.println("SkillsManager: getSkill : SectionSkills don't have a subskill with a name : '"+skillName+"'");
+			trace.out("SkillsManager: getSkill : SectionSkills don't have a subskill with a name : '"+skillName+"'");
 		}
 		else{
 			sc = (SkillCalculator)allSkills.get(skillName);

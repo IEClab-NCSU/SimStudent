@@ -701,7 +701,7 @@ public Vector findPathDepthFirst_forJessOracle(ProblemNode /*SimStNode*/ startNo
             
             if (path != null) {
                 path.add(0, backupWrongAnswer);
-                // System.out.println("findSolutionPathAlgebra() returning " + path.size() + "...");
+                // trace.out("findSolutionPathAlgebra() returning " + path.size() + "...");
                 return path;
             }
             else

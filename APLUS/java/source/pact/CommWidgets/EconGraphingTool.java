@@ -53,7 +53,7 @@ public class EconGraphingTool extends JCommWidget implements PointListener, Para
      */
     //////////////////////////////////////////////////////
     public String getCommNameToSend() {
-        //System.out.println(" in getCommNameToSend.  the commName is : " + commName + " the last Line is : " + lastLine + "and the last pointnum is" + lastPointNum);
+        //trace.out(" in getCommNameToSend.  the commName is : " + commName + " the last Line is : " + lastLine + "and the last pointnum is" + lastPointNum);
         return new String(commName + "_" + lastLine + "_" + lastPointNum);
     }
     
@@ -153,7 +153,7 @@ public class EconGraphingTool extends JCommWidget implements PointListener, Para
         //trace.out(5, this, "doCorrectAction: line name = " + line + " point num = " + point + " x = " + x + " y = " + y);
         //trace.out(5, this, "doCorrectAction: line =" + l );
         //trace.out(5, this, "point = " + l.point[point] );
-        //        System.out.println("from the brd side: x, y is: " + x + ", " + y + "l.point[point] is: " + l.point[point]);
+        //        trace.out("from the brd side: x, y is: " + x + ", " + y + "l.point[point] is: " + l.point[point]);
         trace.out(5, this, "selection = " + selection);
         trace.out(5, this, "input = " + input);
         trace.out(5, this, "line l = " + l);
@@ -161,14 +161,14 @@ public class EconGraphingTool extends JCommWidget implements PointListener, Para
         trace.out(5, this, "oldPoint" + oldPoint);
         oldPoint.setName(line);
                 oldPoint.isCorrect=true;
-        // System.out.println("the selection " + selection);
-        // System.out.println("l.point[point].getName(): " + l.point[point].getName());
-        // System.out.println("the line name youre on: " + line);
-        // System.out.println("the line name youre sending: " + oldPoint.getName());
+        // trace.out("the selection " + selection);
+        // trace.out("l.point[point].getName(): " + l.point[point].getName());
+        // trace.out("the line name youre on: " + line);
+        // trace.out("the line name youre sending: " + oldPoint.getName());
         
         if(graphPanel.getDragLine()){
             //       l.color=correctColor;
-//            System.out.println("in here, the color is" + correctColor);
+//            trace.out("in here, the color is" + correctColor);
             for(int a=0; a<l.point.length; a++)
                 l.point[a].color=correctColor;
             graphPanel.dragLine((new Point(x, y)), l.point[point], true);
@@ -199,7 +199,7 @@ public class EconGraphingTool extends JCommWidget implements PointListener, Para
         //trace.out(5, this, "doCorrectAction: line name = " + line + " point num = " + point + " x = " + x + " y = " + y);
         //trace.out(5, this, "doCorrectAction: line =" + l );
         //trace.out(5, this, "point = " + l.point[point] );
-        //        System.out.println("from the brd side: x, y is: " + x + ", " + y + "l.point[point] is: " + l.point[point]);
+        //        trace.out("from the brd side: x, y is: " + x + ", " + y + "l.point[point] is: " + l.point[point]);
         
         
         
@@ -207,10 +207,10 @@ public class EconGraphingTool extends JCommWidget implements PointListener, Para
         
         oldPoint.setName(line);
         oldPoint.isCorrect=false;
-        // System.out.println("the selection " + selection);
-        // System.out.println("l.point[point].getName(): " + l.point[point].getName());
-        // System.out.println("the line name youre on: " + line);
-        // System.out.println("the line name youre sending: " + oldPoint.getName());
+        // trace.out("the selection " + selection);
+        // trace.out("l.point[point].getName(): " + l.point[point].getName());
+        // trace.out("the line name youre on: " + line);
+        // trace.out("the line name youre sending: " + oldPoint.getName());
         
         
         if(graphPanel.getDragLine()){
@@ -313,9 +313,9 @@ public class EconGraphingTool extends JCommWidget implements PointListener, Para
         trace.out(5,this,"b " + tokenizer.countTokens());
 
 //        for (int a=0; a<parameters.length; a++)
-//        System.out.println(parameters[a]);
+//        trace.out(parameters[a]);
 //        
-//        System.out.println("klength" + parameters.length);
+//        trace.out("klength" + parameters.length);
         
            while(tokenizer.hasMoreTokens() )
                  for(int k=0;k<parameters.length; k++){
@@ -325,7 +325,7 @@ public class EconGraphingTool extends JCommWidget implements PointListener, Para
            }
                 
        
-        System.out.print(parameters.length);
+        trace.out(parameters.length);
         for (int i = 0; i < parameters.length-1; i=i+2) {
             trace.out(5, this, "adding paramter " + parameters[i] + ", " + parameters[i+1]);
             parameterTable.put(parameters[i], parameters[i+1]);
@@ -379,7 +379,7 @@ public class EconGraphingTool extends JCommWidget implements PointListener, Para
      */
     //////////////////////////////////////////////////////
     public Object getValue() {
-        //        System.out.println("get value, and last x is " + lastX + " and last y is : " + lastY);
+        //        trace.out("get value, and last x is " + lastX + " and last y is : " + lastY);
         
         return new String("" + lastX + ", " + lastY +  ": " + oldColor);
     }
@@ -391,7 +391,7 @@ public class EconGraphingTool extends JCommWidget implements PointListener, Para
      */
     //////////////////////////////////////////////////////
     public Vector getCurrentState() {
-        //        System.out.println("in getcurrentstate");
+        //        trace.out("in getcurrentstate");
         
         Vector v = new Vector();
         
@@ -401,14 +401,14 @@ public class EconGraphingTool extends JCommWidget implements PointListener, Para
                 
                 if (graphPanel.line[i].point[j].hasBeenMoved) {
                     graphPanel.line[i].point[j].useTemp=false;
-                    //System.out.println("PREUPDATE in getCurrentState.  the lastX is : " + lastX + " and the last y is: " + lastY +
+                    //trace.out("PREUPDATE in getCurrentState.  the lastX is : " + lastX + " and the last y is: " + lastY +
                     //                    " and the lastLine is: " + lastLine + " and the lastPointNum is " + lastPointNum);
                     lastX=graphPanel.line[i].point[j].x;
                     lastY=graphPanel.line[i].point[j].y;
                     lastLine=graphPanel.line[i].name;
                     lastPointNum=j;
                     v.addElement(getCurrentStateMessage());
-                    //                                        System.out.println("AFTER METHOD in getCurrentState.  the lastX is : " + lastX + " and the last y is: " + lastY +
+                    //                                        trace.out("AFTER METHOD in getCurrentState.  the lastX is : " + lastX + " and the last y is: " + lastY +
                     //                                        " and the lastLine is: " + lastLine + " and the lastPointNum is " + lastPointNum);
                     break;
                 }

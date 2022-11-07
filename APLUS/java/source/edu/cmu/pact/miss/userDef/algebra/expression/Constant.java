@@ -34,7 +34,7 @@ public abstract class Constant extends AlgExp {
 	public AlgExp div(SimpleTerm t) {
 
 	    AlgExp coefficient = div(t.getConstant());
-            // System.out.println("coefficient = " + coefficient);
+            // trace.out("coefficient = " + coefficient);
             return coefficient.mul(t.getVariable().invert());
             // return mul(t.invert());
 	}

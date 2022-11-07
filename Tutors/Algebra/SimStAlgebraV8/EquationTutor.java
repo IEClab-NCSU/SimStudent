@@ -12,8 +12,9 @@ import javax.swing.JPanel;
 import java.awt.*;
 import java.lang.reflect.Field;
 
+import edu.cmu.pact.Utilities.trace;
 import pact.DorminWidgets.*;
-import edu.wpi.trg.assistments.jess.logActions.*;
+//import edu.wpi.trg.assistments.jess.logActions.*;
 import edu.cmu.pact.BehaviorRecorder.Controller.*;
 
 /**
@@ -109,7 +110,7 @@ public class EquationTutor extends JPanel {
     public static void main(String args[]) {
 
 	for (int i = 0; i < args.length; i++) {
-	    System.out.println("args[" + i + "] = " + args[i]);
+	    trace.out("args[" + i + "] = " + args[i]);
 	}
 
 	CTAT_Launcher tutor = new CTAT_Launcher( args );

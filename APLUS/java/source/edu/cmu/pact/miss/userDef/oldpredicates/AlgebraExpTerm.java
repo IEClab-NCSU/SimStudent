@@ -48,7 +48,7 @@ public class AlgebraExpTerm extends AlgebraExp {
     String getVarName() {
 
 	String exp = getExp();
-	// System.out.println("getVarName: exp = " + exp);
+	// trace.out("getVarName: exp = " + exp);
 	char v =
 	    (exp != null) ? exp.toUpperCase().charAt( getExp().length() -1 ) :
 	    ' ';
@@ -60,14 +60,14 @@ public class AlgebraExpTerm extends AlgebraExp {
 
     String getCoefficient() {
 
-	// System.out.println(this + ".getCoefficient()");
+	// trace.out(this + ".getCoefficient()");
 
 	String coefficient = null;
 
 	if ( isTerm() ) {
-	    // System.out.println("isTerm() clear...");
+	    // trace.out("isTerm() clear...");
 	    if ( !getVarName().equals( "" ) ) {
-		// System.out.println("getVarName() clear...");
+		// trace.out("getVarName() clear...");
 		coefficient = getExp().substring( 0, getExp().length() -1 );
 	    
 		if ( coefficient.equals("") ) {
@@ -77,7 +77,7 @@ public class AlgebraExpTerm extends AlgebraExp {
 		}
 	    }
 	}
-	// System.out.println(this + ".getCoefficient() = " + coefficient);
+	// trace.out(this + ".getCoefficient() = " + coefficient);
 	return coefficient;
     }
 
@@ -116,7 +116,7 @@ public class AlgebraExpTerm extends AlgebraExp {
 	    String expBody = getExp().substring(2,getExp().length()-1);
 	
 	
-	    // System.out.println("AlgebraExpTerm: evalArithmetic.expBody = " + expBody);
+	    // trace.out("AlgebraExpTerm: evalArithmetic.expBody = " + expBody);
 	    AlgebraExp exp = null;
 	    try {
 		exp = AlgebraExp.parseExp(expBody);
@@ -284,7 +284,7 @@ public class AlgebraExpTerm extends AlgebraExp {
 		else
 			c = "" + (Integer.parseInt( c1 ) * Integer.parseInt( c2 ));
 
-		// System.out.println("c = " + c);
+		// trace.out("c = " + c);
 
 		if ( !v.equals("") && c.equals("1") ) {
 		    c = "";
@@ -303,8 +303,8 @@ public class AlgebraExpTerm extends AlgebraExp {
 
 	/*
 	if ( multTerm.toString().toUpperCase().indexOf("XX") != -1 ) {
-	    System.out.println(this + ".AlgebraExpTerm.multTerm(" + term + ")");
-	    System.out.println(" ==> " + multTerm);
+	    trace.out(this + ".AlgebraExpTerm.multTerm(" + term + ")");
+	    trace.out(" ==> " + multTerm);
 	}
 	*/
 	
@@ -332,7 +332,7 @@ public class AlgebraExpTerm extends AlgebraExp {
     	term = term.evalArithmetic();
     	
     	
-    	// System.out.println(this + ".AlgebraExpTerm.divTerm(" + term + ")");
+    	// trace.out(this + ".AlgebraExpTerm.divTerm(" + term + ")");
     	if(this.isDecimal()||term.isDecimal())
     		return divTermDec(term);
     	if ( term.isZero() ) {
@@ -342,7 +342,7 @@ public class AlgebraExpTerm extends AlgebraExp {
     	} else if ( term.isFraction() ) {
 
     	    if ( !term.getNumerator().isZero() ) {
-    		// System.out.println(term + " is a fraction...");
+    		// trace.out(term + " is a fraction...");
     		return multTerm( new AlgebraExpPoly( "/",
     						     term.getDenominator(),
     						     term.getNumerator() ) );
@@ -376,9 +376,9 @@ public class AlgebraExpTerm extends AlgebraExp {
     	    }
 
     	    /*
-    	    System.out.println("dividend = " + dividend );
-    	    System.out.println("divisor = " + divisor );
-    	    System.out.println("quatient = " + quatient);
+    	    trace.out("dividend = " + dividend );
+    	    trace.out("divisor = " + divisor );
+    	    trace.out("quatient = " + quatient);
     	    */
 
     	    // The quatient must have a variable in it...

@@ -88,7 +88,7 @@ public class AlgebraV8InputChecker extends InputChecker {
 					returnValue=false;
 					}
 				else
-					System.out.println(lhs.getText()+"="+rhs.getText());
+					trace.out(lhs.getText()+"="+rhs.getText());
 			}
 			else if (row>1){
 				TableExpressionCell transformation=getTableCell(controller, row-1, 3);
@@ -97,7 +97,7 @@ public class AlgebraV8InputChecker extends InputChecker {
 					returnValue=false;
 					}
 				//else
-					//System.out.println("transformation is " + transformation.getText());
+					//trace.out("transformation is " + transformation.getText());
 					
 			}
 			
@@ -114,7 +114,7 @@ public class AlgebraV8InputChecker extends InputChecker {
 		char column = selection.charAt("dorminTable".length());
 		
 		if (!checkSkipStep(selection)){
-			//System.out.println("A step has been skipped....");
+			//trace.out("A step has been skipped....");
 		 	return false;
 		 }
 		 

@@ -128,7 +128,7 @@ public class VersionInfoGenerator {
 			"    }\n"+
 			"\n" +
 			"    public static void main(String[] args) {\n" +
-			"        System.out.println(getReleaseString());\n" +
+			"        trace.out(getReleaseString());\n" +
 			"    }\n");
 		result.append("\n").append(genIncludePredicates());
 		result.append("\n").append(genRunningSimSt());
@@ -136,7 +136,7 @@ public class VersionInfoGenerator {
 		result.append("\n").append(genGetMenuItem());
 		result.append("\n").append(genGetFileReferenceString());
 		result.append("}\n");
-		System.out.print(result.toString());
+		trace.out(result.toString());
 	}
 
 	/**

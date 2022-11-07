@@ -1,6 +1,7 @@
 package edu.cmu.old_pact.cmu.solver.ruleset;
 
 import edu.cmu.old_pact.cmu.sm.query.Queryable;
+import edu.cmu.pact.Utilities.trace;
 
 //GreaterThanTest tests that all numbers are greater than the given value
 
@@ -73,7 +74,7 @@ public class GreaterThanTest extends Test {
 			}
 			catch (NoSuchFieldException err) {
 				if(Rule.debug()){
-					System.out.println("Error resolving test:"+err+" info = "+info.getStringValue()+" class = "+getClass());
+					trace.out("Error resolving test:"+err+" info = "+info.getStringValue()+" class = "+getClass());
 				}
 				return false;
 			}
@@ -91,7 +92,7 @@ public class GreaterThanTest extends Test {
 			}
 			catch (NoSuchFieldException err) {
 				if(Rule.debug()){
-					System.out.println("Error resolving test:"+err+" info = "+info.getStringValue()+" class = "+getClass());
+					trace.out("Error resolving test:"+err+" info = "+info.getStringValue()+" class = "+getClass());
 				}
 				return false;
 			}

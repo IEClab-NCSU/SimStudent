@@ -1212,10 +1212,10 @@ the codes for them are.  Another level of independence, I hope.*/
 				pos += 21; //length of "IGNOREERRORCLASSES=L:"
 				ParseResult classes = parseListResult(messageString,pos);
 				addParameterToVectors("IGNOREERRORCLASSES",classes.getParsedValue(),"L");
-//				System.out.println("parseIgnorableErrors found: "+classes.getParsedValue());
+//				trace.out("parseIgnorableErrors found: "+classes.getParsedValue());
 			}
 			catch (DorminException e) {
-				System.out.println("DorminException trying to interpret IGNOREERRORCLASSES");
+				trace.out("DorminException trying to interpret IGNOREERRORCLASSES");
 			} //ignore DorminException -- this means we can't interpret IGNOREERRORCLASSES
 		}
 	}			
@@ -1247,7 +1247,7 @@ the codes for them are.  Another level of independence, I hope.*/
 	}
 	
 	private ParseResult parseParameter (String message,int pos) throws DorminException {
-//		System.out.println("parsing parameter starting at "+message.substring(pos,pos+5)+"...");
+//		trace.out("parsing parameter starting at "+message.substring(pos,pos+5)+"...");
 		currentPos = pos; //increment stored position, in case a parse error occurs
 		char parameterType = message.charAt(pos);
 		switch (parameterType) {
@@ -1296,12 +1296,12 @@ the codes for them are.  Another level of independence, I hope.*/
 		int intLength = -1;
 		try {
 			int lengthEnd = message.indexOf(':',pos);
-//			System.out.println("about to parse int in "+message.substring(pos,lengthEnd));
+//			trace.out("about to parse int in "+message.substring(pos,lengthEnd));
 			intLength = parseInt(message,pos,lengthEnd);
-//			System.out.println("intlength is "+intLength);
-//			System.out.println("second int in "+message.substring(lengthEnd+1,lengthEnd+1+intLength));
+//			trace.out("intlength is "+intLength);
+//			trace.out("second int in "+message.substring(lengthEnd+1,lengthEnd+1+intLength));
 			Integer val = Integer.valueOf(String.valueOf(parseInt(message,lengthEnd+1,lengthEnd+1+intLength)));
-//			System.out.println("Integer parameter is "+val);
+//			trace.out("Integer parameter is "+val);
 			return new ParseResult(val,lengthEnd+1+intLength,'I');
 		}
 		catch (StringIndexOutOfBoundsException e) {
@@ -1325,14 +1325,14 @@ the codes for them are.  Another level of independence, I hope.*/
 			int boolLength = -1;
 			boolLength = parseInt(message,pos,lengthEnd);
 			char firstChar = message.charAt(lengthEnd+1);
-//			System.out.println("firstchar is "+firstChar);
+//			trace.out("firstchar is "+firstChar);
 			if (firstChar == 'T' || firstChar == 't' || firstChar == '1')
 				value = Boolean.valueOf("true");
 			else if (firstChar == 'F' || firstChar == 'f' || firstChar == '0')
 				value = Boolean.valueOf("false");
 			else	
 				throw new DataFormatException("Illegal Boolean value: "+message.substring(lengthEnd,boolLength));
-//			System.out.println("Got boolean: "+" will start parsing at "+message.substring(lengthEnd+1+boolLength,lengthEnd+boolLength+10));
+//			trace.out("Got boolean: "+" will start parsing at "+message.substring(lengthEnd+1+boolLength,lengthEnd+boolLength+10));
 			return new ParseResult(value,lengthEnd+1+boolLength,'B');
 		}
 		catch (StringIndexOutOfBoundsException e) {
@@ -1349,9 +1349,9 @@ the codes for them are.  Another level of independence, I hope.*/
 			int lengthEnd = message.indexOf(':',pos);
 			int stringLength = -1;
 			stringLength = parseInt(message,pos,lengthEnd);
-//			System.out.println("in parseStringResult, string length is "+stringLength);
+//			trace.out("in parseStringResult, string length is "+stringLength);
 			value = message.substring(lengthEnd+1,lengthEnd+1+stringLength);
-//			System.out.println("string value is "+value);
+//			trace.out("string value is "+value);
 			return new ParseResult(value,lengthEnd+1+stringLength,'S');
 		}
 		catch (StringIndexOutOfBoundsException e) {
@@ -1397,7 +1397,7 @@ the codes for them are.  Another level of independence, I hope.*/
 				typeResult=null;
 				formResult=null;
 				dataResult=null;
-//				System.out.println("current object is "+currentObject);
+//				trace.out("current object is "+currentObject);
 				typeResult = parseParameter(message,objectPos);
 				String type = (String)(typeResult.getParsedValue());
 				objectPos = typeResult.getNewPosition()+1;
@@ -1410,7 +1410,7 @@ the codes for them are.  Another level of independence, I hope.*/
 				Object data = dataResult.getParsedValue();
 				objectPos = dataResult.getNewPosition()+1;
 
-//				System.out.println("type: "+type+" form: "+form+" data: "+data);
+//				trace.out("type: "+type+" form: "+form+" data: "+data);
 				
 				//don't bother with getContainedObjectBy for the application object
 				//(normally, this is explicitly specified, but it doesn't have to be)
@@ -1435,7 +1435,7 @@ the codes for them are.  Another level of independence, I hope.*/
 					throw new NoSuchObjectException("Can't find object '"+type+","+form+","+data+"' in container '"+currentObject+"'");
 				currentObject = nextObject;
 			}
-//			System.out.println("parsed object: "+currentObject);
+//			trace.out("parsed object: "+currentObject);
 			return new ParseResult(currentObject,objectPos-1,'O');
 		}
 		catch (ClassCastException e) {
@@ -1469,7 +1469,7 @@ the codes for them are.  Another level of independence, I hope.*/
 		
 /*			boolean foundLastObject = false;
 			while (!foundLastObject) {
-//				System.out.println("current object is "+currentObject);
+//				trace.out("current object is "+currentObject);
 				int endOfType = message.indexOf(',',pos);
 				String type = message.substring(pos,endOfType);
 				int endOfForm = message.indexOf(',',endOfType+1);
@@ -1495,7 +1495,7 @@ the codes for them are.  Another level of independence, I hope.*/
 					}
 				}
 				String data = message.substring(endOfForm+1,dataEndPos-1);
-//				System.out.println("type: "+type+" form: "+form+" data: "+data+" found last: "+foundLastObject);
+//				trace.out("type: "+type+" form: "+form+" data: "+data+" found last: "+foundLastObject);
 				//don't bother with getContainedObjectBy for the application object
 				//(normally, this is explicitly specified, but it doesn't have to be)
 				ObjectProxy nextObject = null;
@@ -1508,7 +1508,7 @@ the codes for them are.  Another level of independence, I hope.*/
 				currentObject = nextObject;
 				pos = dataEndPos;
 			}
-//			System.out.println("parsed object: "+currentObject);
+//			trace.out("parsed object: "+currentObject);
 			return new ParseResult(currentObject,pos-1,'O');
 		}
 		catch (StringIndexOutOfBoundsException e) {
@@ -1658,7 +1658,7 @@ the codes for them are.  Another level of independence, I hope.*/
 	//Interprets the String val_rep as the appropriate string form, and pushes the
 	//right values onto the stack
 
-//System.out.println("in MO addStringForm "+val_name + " of type " + val_type +" and value " + val_rep);
+//trace.out("in MO addStringForm "+val_name + " of type " + val_type +" and value " + val_rep);
 	if(val_name.equals("VERB")){
 			myVerb = val_rep;
 		} 
@@ -1701,7 +1701,7 @@ the codes for them are.  Another level of independence, I hope.*/
 	
 	private Object parseObject(char val_type, String val_rep) throws DorminException{
 		Object objValue = null;
-//System.out.println("in parseObject val_type = "+val_type+" val_rep = *"+val_rep+"*"+" len = "+val_rep.length());
+//trace.out("in parseObject val_type = "+val_type+" val_rep = *"+val_rep+"*"+" len = "+val_rep.length());
 		try{
 		switch(val_type){
 			case 'F':	Float tfloat = Float.valueOf(val_rep);
@@ -1739,7 +1739,7 @@ the codes for them are.  Another level of independence, I hope.*/
 
 	public Vector parseList(String inList) throws DorminException{
 	// Example: LIST=L:3:[I:2:44,O:App,POSITION,1,Worksheet,NAME,foobar,S:5:hello]
-//System.out.println("in parlseList inList = "+inList);
+//trace.out("in parlseList inList = "+inList);
 		boolean listAdded = false;
 		if(inList.startsWith("L:"))
 			inList = inList.substring(2);
@@ -1748,7 +1748,7 @@ the codes for them are.  Another level of independence, I hope.*/
 		int listSize = Integer.parseInt(inList.substring(0, colonPos));
 		int currSize = 0;
 		String listString = inList.substring(colonPos+2,inList.length()-1);
-//System.out.println("in parlseList listString = "+listString);
+//trace.out("in parlseList listString = "+listString);
 		int maxPos = listString.length();
 		int i=0,colon=0;
 		int nextcolon = 0;
@@ -1869,7 +1869,7 @@ the codes for them are.  Another level of independence, I hope.*/
 			i = colon+1;
 			value = inSpec.substring(0,colon);
 			returnee = new ObjectSpecifier(value);
-	//		//System.out.println(value);
+	//		//trace.out(value);
 			try{
 				while(i<(inSpec.length()-1)){
 					int typecolon = inSpec.indexOf(":",i+1);
@@ -1884,7 +1884,7 @@ the codes for them are.  Another level of independence, I hope.*/
 			} catch (StringIndexOutOfBoundsException a){};
 		}
 		else returnee = new ObjectSpecifier(inSpec);	
-	//	//System.out.println(returnee.toString());	
+	//	//trace.out(returnee.toString());	
 		return returnee;
 	}
 	
@@ -1932,7 +1932,7 @@ the codes for them are.  Another level of independence, I hope.*/
 				}
 						
 			} catch (ArrayIndexOutOfBoundsException e){
-			//	//System.out.println("Search Error encountered in MessageOBject:addParameterToVectors");
+			//	//trace.out("Search Error encountered in MessageOBject:addParameterToVectors");
 			};
 		}
 		else {
@@ -2030,7 +2030,7 @@ the codes for them are.  Another level of independence, I hope.*/
 		try {
 			temp =(Vector) Values.elementAt(Index);
 		} catch (ArrayIndexOutOfBoundsException a){
-			//System.out.println("in DORMIN.MessageObject can't getListValue "+a.toString());
+			//trace.out("in DORMIN.MessageObject can't getListValue "+a.toString());
 		}
 		return temp;
 	}

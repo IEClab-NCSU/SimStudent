@@ -6,6 +6,7 @@ import java.util.Vector;
 
 import edu.cmu.old_pact.cmu.sm.query.ArrayQuery;
 import edu.cmu.old_pact.cmu.sm.query.Queryable;
+import edu.cmu.pact.Utilities.trace;
 
 public class PolyExpression extends Expression implements CompoundExpression {
 	private Expression terms[] = new Expression[10]; //terms can be any type of expression
@@ -111,7 +112,7 @@ public class PolyExpression extends Expression implements CompoundExpression {
 	}
 
 	public Expression removeRedundantFencesWhole(){
-		//System.out.println("PE.rRFW:     begin: " + debugForm());
+		//trace.out("PE.rRFW:     begin: " + debugForm());
 		Expression unfenced = (new PolyExpression(terms,signs,numTerms)).cleanExpression();
 		/*loop over the subterms, looking for a fencedexpression.
           each time we find one, unfence it and see if the parens
@@ -126,33 +127,33 @@ public class PolyExpression extends Expression implements CompoundExpression {
 				comps.setExpressionAt((comps.expressionAt(i)).unfence(),i);
 				unfenced = (new PolyExpression(comps.getExpressions(),signs,comps.size())).cleanExpression();
 				/*check if we've broken the parenthesization*/
-				/*System.out.println("PE.rRFW: unfenced comp " + i + "; comparing: " + oldExp +
+				/*trace.out("PE.rRFW: unfenced comp " + i + "; comparing: " + oldExp +
 				  " =?= " + unfenced.toASCII("(",")"));*/
 				if(!oldExp.equals(unfenced.toASCII("(",")"))){
 					/*we did; put it back in the fences*/
 					comps.setExpressionAt(new FencedExpression(comps.expressionAt(i)),i);
 					unfenced = (new PolyExpression(comps.getExpressions(),signs,comps.size())).cleanExpression();
-					//System.out.println("PE.rRFW: comparison failed, returned to: " + unfenced.toASCII("(",")"));
+					//trace.out("PE.rRFW: comparison failed, returned to: " + unfenced.toASCII("(",")"));
 				}
 			}
 		}
 
 		ExpressionArray.deallocate(comps);
 
-		//System.out.println("PE.rRFW: returning: " + unfenced.debugForm());
+		//trace.out("PE.rRFW: returning: " + unfenced.debugForm());
 		return unfenced;
 	}
 
 	protected Expression buildFromComponents(Vector components) {
 		//should throw some error
-		System.out.println("ERROR: polynomial always needs to build with component info");
+		trace.out("ERROR: polynomial always needs to build with component info");
 		Expression ex = new PolyExpression(components);
 		return ex.cleanExpression();
 	}
 	
 	protected Expression buildFromComponents(ExpressionArray components) {
 		//should throw some error
-		System.out.println("ERROR: polynomial always needs to build with component info");
+		trace.out("ERROR: polynomial always needs to build with component info");
 		Expression ex = new PolyExpression(components.getExpressions(),signs,components.size());
 		return ex.cleanExpression();
 	}
@@ -222,10 +223,10 @@ public class PolyExpression extends Expression implements CompoundExpression {
 	
 	//Internal add to poly
 	public void insert(Expression ex,int sign) {
-//		System.out.println("about to addElement to terms\n");
+//		trace.out("about to addElement to terms\n");
 //		terms[numTerms] = ex;
 		terms = Expression.addToArray(ex,terms,numTerms);
-//		System.out.println("after addElement to terms\n");
+//		trace.out("after addElement to terms\n");
 		signs = Expression.addToIntArray(sign,signs,numTerms++);
 //		signs[numTerms++] = sign;
 	}
@@ -306,9 +307,9 @@ public class PolyExpression extends Expression implements CompoundExpression {
 		Vector termsToRemove = new Vector();
 		for (int i=0;i<numTerms;++i) {
 			Expression thisTerm = getTermAt(i);
-			//System.out.println("PE.rCT: checking "+thisTerm.debugForm()+" against "+comparison.debugForm());
+			//trace.out("PE.rCT: checking "+thisTerm.debugForm()+" against "+comparison.debugForm());
 			if (comparison.isLike(thisTerm)) {
-				//System.out.println("        removing");
+				//trace.out("        removing");
 //				if (signs[i] == NEGATIVE)
 //					thisTerm = thisTerm.negate();//make sure this simplifies...
 				result.addElement(thisTerm);
@@ -317,7 +318,7 @@ public class PolyExpression extends Expression implements CompoundExpression {
 		}
 		//now, remove all the combinable terms
 		for (int i=0;i<termsToRemove.size();++i) {
-			//System.out.println("Asking to remove term at "+((Integer)(termsToRemove.elementAt(i))).intValue());
+			//trace.out("Asking to remove term at "+((Integer)(termsToRemove.elementAt(i))).intValue());
 			this.removeTermAt(((Integer)(termsToRemove.elementAt(i))).intValue());
 		}
 
@@ -345,7 +346,7 @@ public class PolyExpression extends Expression implements CompoundExpression {
 	}
 	
 	public Queryable getProperty(String prop) throws NoSuchFieldException {
-//		System.out.println("in getProperty for Poly: "+prop);
+//		trace.out("in getProperty for Poly: "+prop);
 		if (prop.equalsIgnoreCase("terms")) {
 			Vector comp = new Vector();
 			for (int i=0;i<numTerms;++i)
@@ -400,7 +401,7 @@ public class PolyExpression extends Expression implements CompoundExpression {
 				comp = null;
 			}
 			catch (BadExpressionError err) {
-				System.out.println("bad expression in term matching: "+prop.substring(14));
+				trace.out("bad expression in term matching: "+prop.substring(14));
 			}
 			if (found == null)
 				throw new NoSuchFieldException("No term matching "+prop.substring(14)+" in "+this);
@@ -413,7 +414,7 @@ public class PolyExpression extends Expression implements CompoundExpression {
 			int signNum = Integer.parseInt(prop.substring(9));
 			if (signNum < numTerms) {
 				int sign = signs[signNum];
-	//			System.out.println("sign "+signNum+" is "+sign);
+	//			trace.out("sign "+signNum+" is "+sign);
 				String signString;
 				if (sign == NEGATIVE)
 					signString = "-";
@@ -500,7 +501,7 @@ public class PolyExpression extends Expression implements CompoundExpression {
 	
 	//setProperty allows the operator of a term to be changed
 	public void setProperty (String prop, String value) throws NoSuchFieldException {
-//		System.out.println("in setProperty of PolyExpression: "+prop+"::"+value);
+//		trace.out("in setProperty of PolyExpression: "+prop+"::"+value);
 		if (prop.length() > 8 && prop.substring(0,8).equalsIgnoreCase("operator")) {
 			int signNum = Integer.parseInt(prop.substring(9));
 			if (value.equals("+"))
@@ -527,7 +528,7 @@ public class PolyExpression extends Expression implements CompoundExpression {
 		
 		
 	public Expression combineLikeTermsWhole() {
-		//System.out.println("PE.cLTW: " + debugForm());
+		//trace.out("PE.cLTW: " + debugForm());
 		Expression firstTerm;
 		Vector termsToCombine;
 		PolyExpression newExp;
@@ -540,13 +541,13 @@ public class PolyExpression extends Expression implements CompoundExpression {
 			termsToCombine = newExp.removeCombinableTerms(firstTerm);
 			for (int i=0;i<termsToCombine.size();++i) {
 				Expression thisEx = (Expression)(termsToCombine.elementAt(i));
-				//System.out.println("PE.cLTW: Combining "+thisEx.toString()+" with "+firstTerm.toString());
+				//trace.out("PE.cLTW: Combining "+thisEx.toString()+" with "+firstTerm.toString());
 				firstTerm = firstTerm.addLikeTerms(thisEx);
 			}
 			if (!(firstTerm.isZero() ||
 				  firstTerm.numericSimplifiedCoefficient().isZero()))
 				finalExp.insertSimpleSign(firstTerm);
-			//System.out.println("PE.cLTW: inserted "+firstTerm.toString()+" final exp is now "+finalExp.toString());
+			//trace.out("PE.cLTW: inserted "+firstTerm.toString()+" final exp is now "+finalExp.toString());
 			termsToCombine.removeAllElements();
 			termsToCombine = null;
 		}
@@ -587,16 +588,16 @@ public class PolyExpression extends Expression implements CompoundExpression {
 
 	//PolyExpressions defines standardizeWhole to sort the terms
 	public Expression standardizeWhole(int type) {
-            //System.out.println("PolyExpression.standardizeWhole(): " + debugForm());
+            //trace.out("PolyExpression.standardizeWhole(): " + debugForm());
 		Expression simpEx = this.simplify();
-                //System.out.println("PolyExpression.standardizeWhole(): ck 1");
+                //trace.out("PolyExpression.standardizeWhole(): ck 1");
 		if (simpEx instanceof PolyExpression) {
 			PolyExpression pEx = (PolyExpression)simpEx;
-                        //System.out.println("PolyExpression.standardizeWhole(): ck 2");
+                        //trace.out("PolyExpression.standardizeWhole(): ck 2");
 			return pEx.sortPoly();
 		}
 		else{
-                    //System.out.println("PolyExpression.standardizeWhole(): ck 3");
+                    //trace.out("PolyExpression.standardizeWhole(): ck 3");
 			return simpEx.standardize(type);
                 }
 	}
@@ -655,7 +656,7 @@ public class PolyExpression extends Expression implements CompoundExpression {
 
 	//mmmBUG: should implement this at some point
 	public String whyNotSimilar(Expression ex){
-		System.out.println("PE.wNS: warning: not implemented");
+		trace.out("PE.wNS: warning: not implemented");
 		return super.whyNotSimilar(ex);
 	}
 
@@ -691,11 +692,11 @@ public class PolyExpression extends Expression implements CompoundExpression {
 	protected Expression sortPolyWhole(){
 		//used to be sortPolyWhole(false), but that was generating odd patterns
 		Expression ret;
-		/*System.out.println("sortPolyWhole(): start level " + level);
+		/*trace.out("sortPolyWhole(): start level " + level);
 		  level++;*/
 		ret = sortPolyWhole(true);
 		/*level--;
-              System.out.println("sortPolyWhole():  end  level " + level);*/
+              trace.out("sortPolyWhole():  end  level " + level);*/
 		return ret;
 	}
 
@@ -707,8 +708,8 @@ public class PolyExpression extends Expression implements CompoundExpression {
 		Vector outterms = new Vector();
 		Vector outsigns = new Vector();
 		Expression temp;
-		/*System.out.println(debugForm() + ".sortPolyWhole(): begin");
-		  System.out.println("      sPW: processing term " + getTermAt(0).debugForm());*/
+		/*trace.out(debugForm() + ".sortPolyWhole(): begin");
+		  trace.out("      sPW: processing term " + getTermAt(0).debugForm());*/
 		if(sepsigns){
 			if(getTermNoSign(0).isNegative() &&
 			   getSign(0) == POSITIVE){
@@ -716,13 +717,13 @@ public class PolyExpression extends Expression implements CompoundExpression {
 				   !((RatioExpression)getTermNoSign(0)).numerator().isNegative()){
 					/*special handling of expressions like x/-y,
                       because negating that gives -x/-y, not x/y*/
-					//System.out.println("PE.sPW: not negating initial ratio w/ positive numerator: " + getTermNoSign(0).debugForm());
+					//trace.out("PE.sPW: not negating initial ratio w/ positive numerator: " + getTermNoSign(0).debugForm());
 					outterms.addElement(getTermNoSign(0));
 					outsigns.addElement(new Integer(getSign(0)));
 				}
 				else{
 					outterms.addElement(getTermNoSign(0).negate());
-					/*System.out.println("PE.sPW: negating first term: " + getTermNoSign(0).debugForm()
+					/*trace.out("PE.sPW: negating first term: " + getTermNoSign(0).debugForm()
 					  + " --> " + getTermNoSign(0).negate().debugForm());*/
 					outsigns.addElement(new Integer(NEGATIVE));
 				}
@@ -735,18 +736,18 @@ public class PolyExpression extends Expression implements CompoundExpression {
 		else{
 			outterms.addElement(getTermAt(0));
 		}
-		//System.out.println("           inserted at: " + 0);
+		//trace.out("           inserted at: " + 0);
 		for (int i=1;i<numberOfTerms();++i) {
 			boolean inserted=false;
 			temp = (Expression)(getTermAt(i));
 			if(sepsigns){
 				temp = (Expression)(getTermNoSign(i));
 			}
-			/*System.out.println("      sPW: processing term " + temp.debugForm());
-			  if(sepsigns) System.out.println("           which has the sign: " + getSign(i));*/
+			/*trace.out("      sPW: processing term " + temp.debugForm());
+			  if(sepsigns) trace.out("           which has the sign: " + getSign(i));*/
 			for (int j=0;j<outterms.size() && !inserted;++j) {
-				/*System.out.println("           comparing to term:  " + outterms.elementAt(j));
-				  if(sepsigns) System.out.println("           which has the sign: " + outsigns.elementAt(j));*/
+				/*trace.out("           comparing to term:  " + outterms.elementAt(j));
+				  if(sepsigns) trace.out("           which has the sign: " + outsigns.elementAt(j));*/
 				/*if (sepsigns ? 
 				  (temp.polySortBefore(tempj)) :
 				  (temp.polySortBefore((Expression)(outterms.elementAt(j))))){*/
@@ -756,29 +757,29 @@ public class PolyExpression extends Expression implements CompoundExpression {
                           true.  For equal terms, we sort the positive
                           ones before the negative ones: x-x, not
                           -x+x*/
-						/*System.out.println("           equality check: " + temp.debugForm());
-						  System.out.println("                           " + ((Expression)outterms.elementAt(j)).debugForm());*/
+						/*trace.out("           equality check: " + temp.debugForm());
+						  trace.out("                           " + ((Expression)outterms.elementAt(j)).debugForm());*/
 						if(temp.exactEqual((Expression)outterms.elementAt(j))){
-							//System.out.println("           equal: checking signs");
+							//trace.out("           equal: checking signs");
 							if(getSign(i) == POSITIVE ||
 							   ((Integer)outsigns.elementAt(j)).intValue() == NEGATIVE){
 								outterms.insertElementAt(getTermNoSign(i),j);
 								outsigns.insertElementAt(new Integer(getSign(i)),j);
 								inserted=true;
-								//System.out.println("           inserted at: " + j);
+								//trace.out("           inserted at: " + j);
 							}
 						}
 						else{
 							outterms.insertElementAt(getTermNoSign(i),j);
 							outsigns.insertElementAt(new Integer(getSign(i)),j);
 							inserted=true;
-							//System.out.println("           inserted at: " + j);
+							//trace.out("           inserted at: " + j);
 						}
 					}
 					else{
 						outterms.insertElementAt(getTermAt(i),j);
 						inserted=true;
-						//System.out.println("           inserted at: " + j);
+						//trace.out("           inserted at: " + j);
 					}
 				}
 			}
@@ -790,14 +791,14 @@ public class PolyExpression extends Expression implements CompoundExpression {
 				else{
 					outterms.addElement(getTermAt(i));
 				}
-				//System.out.println("           inserted at (fallthru): " + i);
+				//trace.out("           inserted at (fallthru): " + i);
 			}
 		}
 
 		PolyExpression ret;
 		if(sepsigns){
 			/*PolyExpression ret = new PolyExpression(outterms,outsigns);
-			  System.out.println("      PE.sPW: returning: " + ret.debugForm());*/
+			  trace.out("      PE.sPW: returning: " + ret.debugForm());*/
 			ret = new PolyExpression(outterms,outsigns);
 		}
 		else{
@@ -810,7 +811,7 @@ public class PolyExpression extends Expression implements CompoundExpression {
 		outsigns.removeAllElements();
 		outsigns = null;
 
-		//System.out.println("      PE.sPW: returning: " + ret.debugForm());
+		//trace.out("      PE.sPW: returning: " + ret.debugForm());
 		return ret;
 	}
 	
@@ -867,33 +868,33 @@ public class PolyExpression extends Expression implements CompoundExpression {
 	}
 
 //	public Expression substitute(String var,Expression newVal) {
-//		System.out.println("substituting in "+toString());
+//		trace.out("substituting in "+toString());
 //		PolyExpression outExpression = new PolyExpression();
 //		for (int i=0;i<numberOfTerms();++i) {
 //			Expression thisExp = getTermAt(i);
 //			Expression subEx = thisExp.substitute(var,newVal);
-//			System.out.println("  "+thisExp.toString()+" becomes "+subEx.toString());
+//			trace.out("  "+thisExp.toString()+" becomes "+subEx.toString());
 //			outExpression.insertSimpleSign(subEx);
 //		}
-//		System.out.println("after substitution: "+outExpression.toString());
+//		trace.out("after substitution: "+outExpression.toString());
 //		return outExpression;
 //	}
 	
 	//factor pulls the given expression out of each term in the PolyExpression
 	public Expression factor(Expression fact) {
-		//System.out.println("PolyExpression: factor(): " + debugForm());
+		//trace.out("PolyExpression: factor(): " + debugForm());
 		PolyExpression outExpression = new PolyExpression();
 		for (int i=0;i<numberOfTerms();++i) {
 			Expression thisTerm = getTermAt(i);
 			Expression newTerm = thisTerm.divide(fact).reduceFractions().multiplyThrough();
 			outExpression.insertSimpleSign(newTerm);
 		}
-		//System.out.println("PolyExpression: factor(): returning " + fact.debugForm() + " * " + outExpression.debugForm());
+		//trace.out("PolyExpression: factor(): returning " + fact.debugForm() + " * " + outExpression.debugForm());
 		return fact.multiply(outExpression);
 	}
 	
 	public Expression factorPiecemeal(Expression fact){
-		//System.out.println("PolyExpression: factorPM(" + fact.debugForm() + "): " + debugForm());
+		//trace.out("PolyExpression: factorPM(" + fact.debugForm() + "): " + debugForm());
 		PolyExpression factoredTerms = new PolyExpression();
 		PolyExpression otherTerms = new PolyExpression();
 		int oTcount = 0;
@@ -919,7 +920,7 @@ public class PolyExpression extends Expression implements CompoundExpression {
 	}
 
 	public boolean canFactorPiecemeal(Expression fact){
-		//System.out.println("PolyExpression: canFactorPM(" + fact.debugForm() + "): " + debugForm());
+		//trace.out("PolyExpression: canFactorPM(" + fact.debugForm() + "): " + debugForm());
 		boolean canFactor = false;
 		for(int i=0;i<numberOfTerms() && !canFactor;i++){
 			Expression thisTerm = getTermAt(i);
@@ -979,8 +980,8 @@ public class PolyExpression extends Expression implements CompoundExpression {
 		Vector firstExp = first.getExpandedForm();
 		Vector secondExp = second.getExpandedForm();
 		
-//		System.out.println("expanded form of "+first+" is "+firstExp);
-//		System.out.println("expanded form of "+second+" is "+secondExp);
+//		trace.out("expanded form of "+first+" is "+firstExp);
+//		trace.out("expanded form of "+second+" is "+secondExp);
 		Vector commonTerms = new Vector();
 		for (int i=0;i<firstExp.size();++i) {
 			boolean foundMatch = false;
@@ -996,7 +997,7 @@ public class PolyExpression extends Expression implements CompoundExpression {
 		}
 		if (commonTerms.size() > 0) {
 			Expression commonTerm = new TermExpression(commonTerms).simplify();
-//			System.out.println("common term between "+first+" and "+second+" is "+commonTerm);
+//			trace.out("common term between "+first+" and "+second+" is "+commonTerm);
 			ret = commonTerm;
 		}
 
@@ -1090,12 +1091,12 @@ public class PolyExpression extends Expression implements CompoundExpression {
 	  factor(3) and get 3(x+4x/3).*/
 	public boolean canFactor(Expression fact){
 		//Expression f = factor();
-		//System.out.println("PE.cF: " + debugForm());
-		//System.out.println("       " + f.debugForm());
-		//System.out.println("PE.cF: " + fact.debugForm());
+		//trace.out("PE.cF: " + debugForm());
+		//trace.out("       " + f.debugForm());
+		//trace.out("PE.cF: " + fact.debugForm());
 		for(int i=0;i<numTerms;i++){
 			Expression div = getTermAt(i).divide(fact).simplify();
-			//System.out.println("PE.cF: div: " + div.debugForm());
+			//trace.out("PE.cF: div: " + div.debugForm());
 			if(div instanceof RatioExpression ||
 			   div instanceof FractionExpression){
 				return false;
@@ -1197,7 +1198,7 @@ public class PolyExpression extends Expression implements CompoundExpression {
 				finalString.append("NULL");
 		}
 
-		//System.out.println(debugForm() + ".toASCII(): " + finalString);
+		//trace.out(debugForm() + ".toASCII(): " + finalString);
 		return finalString.toString();
 	}
 	

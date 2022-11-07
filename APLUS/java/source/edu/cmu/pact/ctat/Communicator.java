@@ -60,7 +60,7 @@ public class Communicator extends ExternalObject implements Communicable {
 	}
 	
 	public void sendErrorMessage(Exception e, MessageObject msgParsed, String moString){
-//		System.out.println("sending error message for "+moString);
+//		trace.out("sending error message for "+moString);
 		MessageObject mo = MessageObject.create("sendErrorMessage");
 		mo.setVerb("NoteError");
 		int messageNum = -1;
@@ -82,7 +82,7 @@ public class Communicator extends ExternalObject implements Communicable {
 		if(doSendError)
 			topProxy.send(mo);	
 		else if(MessageObject.showMessage)
-			System.out.println("ERROR "+mo.toString());	
+			trace.out("ERROR "+mo.toString());
 	}
 	
 	protected boolean isIgnorable(MessageObject mo, String exceptionName){

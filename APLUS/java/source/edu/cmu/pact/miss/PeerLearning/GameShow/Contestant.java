@@ -445,7 +445,7 @@ public class Contestant implements ActionListener, ListSelectionListener, Change
 					{
 						//As each message is received, determine message type and distribute to the
 						//correct method
-					    System.out.println("Server: " + incomingMsg);
+					    trace.out("Server: " + incomingMsg);
 					    if(incomingMsg.startsWith(ContestServer.LIST))
 					    	listParticipants(incomingMsg);
 					    if(incomingMsg.startsWith(ContestServer.START_CONTEST))

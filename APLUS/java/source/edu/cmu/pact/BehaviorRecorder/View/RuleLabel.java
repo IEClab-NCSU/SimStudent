@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import edu.cmu.pact.Utilities.trace;
 import org.jdom.Element;
 
 import edu.cmu.pact.BehaviorRecorder.Controller.BR_Controller;
@@ -167,7 +168,7 @@ public class RuleLabel extends BR_Label implements MarathonElement {
 		} catch (java.lang.NullPointerException npe) {
 			System.out.println("Marathon threw NPE getting text style for rule label");
 		}
-		System.out.println("Couldn't get text style for "+getMarathonIdentifier()+"; return 0 instead");
+		trace.out("Couldn't get text style for "+getMarathonIdentifier()+"; return 0 instead");
 		return 0;
 	}
 

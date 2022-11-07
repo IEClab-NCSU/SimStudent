@@ -274,7 +274,7 @@ public class ProdSysCheckMessgHandler extends MessageHandler {
 					String actionString = "";
 					
 //					if(actionList.size() < 2){
-//						System.out.println("***ERROR *** There is no Previous focus. Help not available. ***");
+//						trace.out("***ERROR *** There is no Previous focus. Help not available. ***");
 //						return null;
 //					}
 					if(actionList.size() > 1) {

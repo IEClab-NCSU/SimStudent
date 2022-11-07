@@ -7,6 +7,7 @@ import java.lang.reflect.Modifier;
 import java.util.Vector;
 
 import edu.cmu.old_pact.cmu.sm.query.Queryable;
+import edu.cmu.pact.Utilities.trace;
 
 public class SymbolManipulator {
 	public boolean autoSimplify = false;  //if true, simplifies [RF,CLT & MT]
@@ -133,12 +134,12 @@ public class SymbolManipulator {
             Expression e;
 
             if(maintainVarList && varList != null){
-                //System.out.println("SM: using stored variable list");
+                //trace.out("SM: using stored variable list");
                 return myParser.parse(theExpression,varList);
             }
             else{
                 e = myParser.parse(theExpression);
-                //System.out.println("SM: parsed \"" + theExpression + "\" with no variables.");
+                //trace.out("SM: parsed \"" + theExpression + "\" with no variables.");
                 return e;
             }
 	}
@@ -149,7 +150,7 @@ public class SymbolManipulator {
                 varList = vars;
             }
             e = myParser.parse(theExpression,vars);
-            /*System.out.println("SM: parsed \"" + theExpression + "\" with variables " +
+            /*trace.out("SM: parsed \"" + theExpression + "\" with variables " +
               vars + "\n    " + e.debugForm());*/
             return e;
         }
@@ -199,14 +200,14 @@ public class SymbolManipulator {
 	private Expression doAuto(Expression ex) {
 		Expression result = ex;
 		if (autoStandardize){
-			//System.out.println("SM: doAuto: about to standardize: " + ex.debugForm());
+			//trace.out("SM: doAuto: about to standardize: " + ex.debugForm());
 			if(distributeDenominator){
 				result = ex.standardize(Expression.DISTBOTH);
 			}
 			else{
 				result = ex.standardize(Expression.DISTNUM);
 			}
-			//System.out.println("SM: doAuto: standardized: " + result.debugForm());
+			//trace.out("SM: doAuto: standardized: " + result.debugForm());
 		}
 		else {
 			Expression prevResult;
@@ -215,9 +216,9 @@ public class SymbolManipulator {
 				prevResult = result;
 				loopcount++;
 				if (autoSimplify) {
-					//System.out.println("SM.dA: about to simplify: " + result.debugForm());
+					//trace.out("SM.dA: about to simplify: " + result.debugForm());
 					result = result.simplify();
-					//System.out.println("SM.dA: simplified: " + result.debugForm());
+					//trace.out("SM.dA: simplified: " + result.debugForm());
 				}
 				else { //(maybe) do individual simplifications
 					if (!allowExtraParens)
@@ -244,11 +245,11 @@ public class SymbolManipulator {
 				else if(distributeDenominator){
 					result = result.distribute(Expression.DISTDEN);
 				}
-				/*System.out.println("SM.doAuto: end of simp loop: " + result.debugForm());
-				  System.out.println("                             " + prevResult.debugForm());*/
+				/*trace.out("SM.doAuto: end of simp loop: " + result.debugForm());
+				  trace.out("                             " + prevResult.debugForm());*/
 			}while(!result.exactEqual(prevResult) && loopcount <= 10);
 			if(loopcount > 10){
-				System.out.println("SM.doAuto: simplification loop for " + result);
+				trace.out("SM.doAuto: simplification loop for " + result);
 			}
 		}
 		if (autoSort){
@@ -261,14 +262,14 @@ public class SymbolManipulator {
 	//automatic settings
 	//This includes doing full or partial simplification or standardization
 	private String finalizeExpression(Expression ex) {
-		//System.out.println("SM: finalizeExpression of: "+ex.toString());
+		//trace.out("SM: finalizeExpression of: "+ex.toString());
 		Expression result = doAuto(ex);
-		//System.out.println("SM: after finalize: "+result.toString());
+		//trace.out("SM: after finalize: "+result.toString());
 		return convertOutput(result);
 	}
 	
 	private String convertOutput(Expression result) {
-		//System.out.println("SM convertOutput result = "+result.debugForm()+" outputType = "+outputType);
+		//trace.out("SM convertOutput result = "+result.debugForm()+" outputType = "+outputType);
 		if (outputType == asciiOutput)
 			return result.toString();
 		else if (outputType == intermediateOutput)
@@ -293,7 +294,7 @@ public class SymbolManipulator {
 		else if (outputType == customOutput && outputFormatter != null)
 			return outputFormatter.produceOutput(result);
 		else {
-			System.out.println("Don't support output type "+outputType+" will use ascii");
+			trace.out("Don't support output type "+outputType+" will use ascii");
 			return result.toString();
 		}
 	}
@@ -305,7 +306,7 @@ public class SymbolManipulator {
 			ok = true;
 		}
 		catch (ParseException err) {
-//			System.out.println("Found parse error for "+potentialExp);
+//			trace.out("Found parse error for "+potentialExp);
 		}
 		catch (TokenMgrError err) {
 		}
@@ -333,12 +334,12 @@ public class SymbolManipulator {
 			Expression oneEx = parse(one);
 			Expression twoEx = parse(two);
 			
-			//System.out.println("Cannon 1: "+oneEx.cannonicalize().toString());
-			//System.out.println("Cannon 1: "+oneEx.cannonicalize().debugForm());
-			//System.out.println("Cannon 2: "+twoEx.cannonicalize().toString());
-			//System.out.println("Cannon 2: "+twoEx.cannonicalize().debugForm());
+			//trace.out("Cannon 1: "+oneEx.cannonicalize().toString());
+			//trace.out("Cannon 1: "+oneEx.cannonicalize().debugForm());
+			//trace.out("Cannon 2: "+twoEx.cannonicalize().toString());
+			//trace.out("Cannon 2: "+twoEx.cannonicalize().debugForm());
 
-			//System.out.println("SM: algebraicEqual: " + oneEx + ".(" + twoEx + ")");
+			//trace.out("SM: algebraicEqual: " + oneEx + ".(" + twoEx + ")");
 			boolean result = oneEx.algebraicEqual(twoEx);
 			return result;
 		}
@@ -384,9 +385,9 @@ public class SymbolManipulator {
 			Expression twoEx = parse(two);
 			
 			boolean result = oneEx.similar(twoEx);
-			/*System.out.println("SM.similar(" + oneEx + "," + twoEx + "): " + result);
+			/*trace.out("SM.similar(" + oneEx + "," + twoEx + "): " + result);
 			  if(!result){
-			  System.out.println("reason: " + oneEx.whyNotSimilar(twoEx));
+			  trace.out("reason: " + oneEx.whyNotSimilar(twoEx));
 			  }*/
 			return result;
 		}
@@ -717,9 +718,9 @@ public class SymbolManipulator {
 			if(dd){
 				type |= Expression.DISTDEN;
 			}
-			//System.out.println("SM.distribute: " + ex.debugForm());
+			//trace.out("SM.distribute: " + ex.debugForm());
 			Expression result = ex.distribute(type);
-			//System.out.println("SM.distribute: about to finalize: " + result.debugForm());
+			//trace.out("SM.distribute: about to finalize: " + result.debugForm());
 			return finalizeExpression(result);
 		}
 		catch (ParseException err) {
@@ -980,25 +981,25 @@ public class SymbolManipulator {
 	public boolean hasConstantAfterVar(String expString) throws BadExpressionError{
 		try{
 			Expression ex = parse(expString);
-			//System.out.println("SM.hCAV: " + expString + ": " + ex.debugForm());
+			//trace.out("SM.hCAV: " + expString + ": " + ex.debugForm());
 
 			boolean reversed = false;
 			ExpressionArray terms = termComponents(ex);
 			if(terms != null){
 				for(int i=0;i<terms.size() && !reversed;i++){
 					TermExpression term = (TermExpression)terms.expressionAt(i);
-					//System.out.println(" SM.hCAV: processing term " + i + ": " + term);
+					//trace.out(" SM.hCAV: processing term " + i + ": " + term);
 					int factors = term.evalQuery("length of factors").getNumberValue().intValue();
 					boolean foundVar = false;
 					for(int j=1;j<=factors && !reversed;j++){
-						//System.out.println("  SM.hCAV: processing factor " + j + " [" + foundVar + "]");
+						//trace.out("  SM.hCAV: processing factor " + j + " [" + foundVar + "]");
 						if(foundVar){
 							if(term.evalQuery("isNumber of item " + j + " of factors").getBooleanValue()){
 								/*we've got a number after a variable.
                                   now we have to check to see if they
                                   also forgot the '*'.*/
 								reversed = hasTermNoAsterisk(expString,term,j-1);
-								//System.out.println("   SM.hCAV: reversed=" + reversed);
+								//trace.out("   SM.hCAV: reversed=" + reversed);
 							}
 						}
 						else if(!term.evalQuery("isNumber of item " + j + " of factors").getBooleanValue()){
@@ -1051,7 +1052,7 @@ public class SymbolManipulator {
 	/*returns true if the term te appears in exp with no asterisk
       after the specified factor (first factor is 1)*/
 	private static boolean hasTermNoAsterisk(String exp,TermExpression te,int afterfactor){
-		//System.out.println("SM.hTNA(" + exp + "," + te + "," + afterfactor + ")");
+		//trace.out("SM.hTNA(" + exp + "," + te + "," + afterfactor + ")");
 		Vector comps = te.getComponents();
 		int i = 0;
 		while((i=exp.indexOf(comps.elementAt(0).toString(),i)) != -1){
@@ -1364,7 +1365,7 @@ public class SymbolManipulator {
 		try {
 			Expression oneEx = parse(exp);
 			Expression simplified = doAuto(oneEx);
-			//System.out.println("SM.format: " + exp + " => " + oneEx.debugForm()  + " => " + simplified.debugForm());
+			//trace.out("SM.format: " + exp + " => " + oneEx.debugForm()  + " => " + simplified.debugForm());
 			for (int i=0;i<accessor.length;++i) {
 				Queryable element = simplified.evalQuery(accessor[i]);
 				element.setProperty(attribute[i],value[i]);
@@ -1503,10 +1504,10 @@ public class SymbolManipulator {
 			Expression twoEx = parse(two);
 
 			Expression result;
-			//System.out.println("SM: multiplying: " + oneEx + " * " + twoEx);
+			//trace.out("SM: multiplying: " + oneEx + " * " + twoEx);
 			result = oneEx.multiply(twoEx);
-			//System.out.println("SM: multiplied; finalizing: " + result.debugForm());
-//			System.out.println("mult before finalize: "+result);
+			//trace.out("SM: multiplied; finalizing: " + result.debugForm());
+//			trace.out("mult before finalize: "+result);
 			return finalizeExpression(result);
 		}
 		catch (ParseException err) {
@@ -1529,11 +1530,11 @@ public class SymbolManipulator {
 			Expression twoEx = parse(two);
 
 			Expression result;
-			//System.out.println("SM: dividing: " + oneEx + " / " + twoEx);
+			//trace.out("SM: dividing: " + oneEx + " / " + twoEx);
 			result = oneEx.divide(twoEx);
-			//System.out.println("SM: divided; finalizing: " + result.debugForm());
-//			System.out.println("divisor: "+twoEx.debugForm());
-//			System.out.println("Divide before clean: "+result.debugForm());
+			//trace.out("SM: divided; finalizing: " + result.debugForm());
+//			trace.out("divisor: "+twoEx.debugForm());
+//			trace.out("Divide before clean: "+result.debugForm());
 			return finalizeExpression(result);
 		}
 		catch (ParseException err) {
@@ -1580,7 +1581,7 @@ public class SymbolManipulator {
 
 			Expression result;
 			result = oneEx.squareroot();
-			//System.out.println("squareroot of "+ex+" is "+result);
+			//trace.out("squareroot of "+ex+" is "+result);
 			
 			return finalizeExpression(result);
 		}
@@ -1711,7 +1712,7 @@ public class SymbolManipulator {
 	}
 	
 	private String solveForInternal(String left,String right,String var,int count) throws BadExpressionError {
-//		System.out.println("SolveForInternal: "+left+" = "+right+"  "+count);
+//		trace.out("SolveForInternal: "+left+" = "+right+"  "+count);
 		if (count > 10)
 			return ""; //cop out if we don't solve in < 10 steps
 		try {
@@ -1899,13 +1900,13 @@ public class SymbolManipulator {
 		int equalPos = equation.indexOf('=');
 		String left = equation.substring(0,equalPos);
 		String right = equation.substring(equalPos+1);
-//		System.out.println("Left is "+left);
-//		System.out.println("Right is "+right);
+//		trace.out("Left is "+left);
+//		trace.out("Right is "+right);
 		try {
 			Expression leftEx = parse(left);
 			Expression rightEx = parse(right);
 			Equation form = new Equation(leftEx,rightEx);
-//			System.out.println("Expression pattern is: "+form.getPattern());
+//			trace.out("Expression pattern is: "+form.getPattern());
 			return form;
 		}
 		catch (ParseException err) {
@@ -2082,15 +2083,15 @@ public class SymbolManipulator {
 			}
 		}
 		catch (ClassNotFoundException err) {
-			System.out.println(err);
+			trace.out(err);
 			return expString;
 		}
 		catch (NoSuchMethodException err) {
-			System.out.println(err);
+			trace.out(err);
 			return expString;
 		}
 		catch (IllegalAccessException err) {
-			System.out.println(err);
+			trace.out(err);
 			return expString;
 		}
 		catch (InvocationTargetException err) {
@@ -2100,7 +2101,7 @@ public class SymbolManipulator {
 			else if (exception instanceof TokenMgrError)
 				throw new BadExpressionError(expString);
 			else {
-				System.out.println(err+exception.toString());
+				trace.out(err+exception.toString());
 				return expString;
 			}
 		}			

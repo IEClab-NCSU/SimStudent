@@ -585,7 +585,7 @@ public class Monitor extends Thread implements ExitableServer
 		String clsName = new Monitor(-1).getClass().getName();
 		if (errMsg != null)
 			System.out.printf("%s ", errMsg);
-		System.out.println("Usage:\n"+
+		trace.out("Usage:\n"+
 				"  java -cp ... "+clsName+" [-h host] [-p port] [-t timeToWait] request\n"+
 				"where--\n"+
 				"  host       is the Tutoring Service host to connect to (default "+REMOTE_HOST+");\n"+
