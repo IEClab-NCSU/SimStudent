@@ -12,9 +12,9 @@ What's a good problem to try now? If you're not sure, maybe you can ask Mr. Will
 AFTER_PROBLEM_COG_TUTOR
 Congratulations, you solved the problem. Keep going! Remember that eventually your goal is to pass the Quiz.
 Great, you completed this problem. Keep up the good work! Remember that eventually your goal is to solve the quiz problems.
-Cool, you solved the problem. Keep going! Don't forget that your goal is to solve all the Quiz problems. 
+Cool, you solved the problem. Keep going! Don't forget that your goal is to solve all the Quiz problems.
 Great, the problem is solved. Keep going! Don't forget that your goal is to pass the Quiz.
-Okay, done. You solved the problem correctly. Keep up the good work! Remember that eventually your goal is to pass the Quiz.  
+Okay, done. You solved the problem correctly. Keep up the good work! Remember that eventually your goal is to pass the Quiz.
 Cool, you solved the problem. Keep going! Don't forget your goal is to pass the Quiz.
 
 
@@ -25,9 +25,9 @@ Congratulations, you completed all the problems on <level>. Now you proceed to t
 NEW_PROBLEM_COG_TUTOR
 Congratulations, you solved the problem. Keep going! Remember that eventually your goal is to pass the Quiz.
 Great, you completed this problem. Keep up the good work! Remember that eventually your goal is to solve the quiz problems.
-Cool, you solved the problem. Keep going! Don't forget that your goal is to solve all the Quiz problems. 
+Cool, you solved the problem. Keep going! Don't forget that your goal is to solve all the Quiz problems.
 Great, the problem is solved. Keep going! Don't forget that your goal is to pass the Quiz.
-Okay, done. You solved the problem correctly. Keep up the good work! Remember that eventually your goal is to pass the Quiz.  
+Okay, done. You solved the problem correctly. Keep up the good work! Remember that eventually your goal is to pass the Quiz.
 Cool, you solved the problem. Keep going! Don't forget your goal is to pass the Quiz.
 
 
@@ -42,21 +42,21 @@ To start practicing, type a problem.
 
 QUIZ_COG_TUTOR
 Done!  Maybe its a good idea to try a quiz now.
-Great! The problem is solved! Maybe you can try a quiz now. 
-Finished that one!  Maybe you can try a quiz now. 
-Great, finished!  Maybe you can try a quiz now. 
+Great! The problem is solved! Maybe you can try a quiz now.
+Finished that one!  Maybe you can try a quiz now.
+Great, finished!  Maybe you can try a quiz now.
 Okay, done!  I think you're ready to try the quiz now.  What do you think?
 Cool!  you completed the problem!   I think you're ready to take the quiz now.  What do you think?
 
 
 ALL_QUIZ_FAILED
-Oh, I know I did badly on the quiz, but I need to know how to solve <section>... 
+Oh, I know I did badly on the quiz, but I need to know how to solve <section>...
 
 
 APLUS_CONTROL_QUIZ_SECTION_PASSED
 After reviewing the examples on <level> you can click on the [Practice] tab to practice, or click on the [Quiz] tab to try the quiz.
 Let's take a look at some examples on <level>. After reviewing the examples click on the [Practice] tab to practice or click on the [Quiz] tab to try the quiz.
-Now you can review the examples on <level>. Click on the [Practice] tab to practice, or click the [Quiz] tab to try the quiz.  
+Now you can review the examples on <level>. Click on the [Practice] tab to practice, or click the [Quiz] tab to try the quiz.
 
 COG_TUTOR_SECTION_PASSED_EXAMPLES
 Let's take a look at some examples on <level>. After reviewing the examples click on the [Practice] tab to resume practicing.
@@ -65,18 +65,18 @@ COG_TUTOR_SECTION_PASSED_EXAMPLES_START
 Let's take a look at some examples on <level>. After reviewing the examples click on the [Practice] tab to start practicing.
 
 COG_TUTOR_SECTION_PASSED
-Congratulations, you have mastered all skills for <level>. <br><br> Before you proceed to the next section, <nextLevel>, its a good idea to review some examples. 
+Congratulations, you have mastered all skills for <level>. <br><br> Before you proceed to the next section, <nextLevel>, its a good idea to review some examples.
 
 COG_TUTOR_QUIZ_CORRECT
 Your solved the problem correctly. Keep going!
-Great work! The problem is solved correctly. Keep going. 
-Great, you solved the problem correctly. Keep up the good work! 
-Congratulations, you solved the problem correctly. Keep going! 
+Great work! The problem is solved correctly. Keep going.
+Great, you solved the problem correctly. Keep up the good work!
+Congratulations, you solved the problem correctly. Keep going!
 
 
 START_PROBLEM
 Can I start working on this problem?
-Is this how you wanted the problem? 
+Is this how you wanted the problem?
 Are you ready for me to try this problem?
 Should I go ahead and start working on this problem?
 Will this problem help me do better on the quiz next time? <MT><ERR><Q>
@@ -95,15 +95,15 @@ DONE_FEEDBACK
 Is that the solution to the problem?
 Can I click the problem is solved button now?
 Is it alright to say that the problem is solved here?
-Is it okay to say that the problem is solved here? 
-I clicked the Problem is Solved button. Do you think that's right?  
+Is it okay to say that the problem is solved here?
+I clicked the Problem is Solved button. Do you think that's right?
 I said that the problem is solved. Do you think that was right?
 I think I've finished the problem. Is that right?
 I think I've solved the problem. Is that right?
 
 
 FEEDBACK
-I <sai>. Do you think that's right? 
+I <sai>. Do you think that's right?
 Would it be good to <sai>?
 I think it's a good move to <sai>. Do you agree?
 Is it ok to <sai> here?
@@ -112,7 +112,7 @@ Can I <sai> here?
 Is it alright to <sai> now?
 Is it okay to <sai> now? <BD>
 I thought it would be good to <sai>. Does that sound okay?
-I think the next step should be to <sai>. Do you think I'm right? 
+I think the next step should be to <sai>. Do you think I'm right?
 Well, what about if I <sai>? Is that a good move? <A2>
 Okay, then, what about if I <sai>?  Does this sound good? <A2>
 Hmm, then I'll <sai>. Is this a good move?  <A2>
@@ -126,12 +126,12 @@ I think I made a mistake on this on the quiz. What about if I entered <i> <s>? A
 I think I made mistake on this on the quiz, I'm stuck. Can you tell me what to do next? <BD>
 
 SOLVED
-...and done!  Maybe we can try a quiz now. 
-Finished that one!  Maybe we can try a quiz now. 
-Great, finished!  Maybe we can try a quiz now. 
-Cool!  We completed the problem!    Maybe we can try a quiz now. 
-Okay, done!    Maybe we can try a quiz now. 
-Great! The problem is solved!!   Maybe we can try a quiz now. 
+...and done!  Maybe we can try a quiz now.
+Finished that one!  Maybe we can try a quiz now.
+Great, finished!  Maybe we can try a quiz now.
+Cool!  We completed the problem!    Maybe we can try a quiz now.
+Okay, done!    Maybe we can try a quiz now.
+Great! The problem is solved!!   Maybe we can try a quiz now.
 ...and done!   Should I take the quiz now or try another problem?
 Finished that one!   Should I take the quiz now or try another problem?
 Great, finished!   Should I take the quiz now or try another problem?
@@ -171,12 +171,12 @@ I'm completely puzzled. Please show me what to do next.
 I'm not sure how to move on from here. I'm stuck. Please show me what to do.
 Can you tell me what I should do now? I'm stuck!
 Can you show me what to do here? I'm stuck.
-Can you help me out here? I'm stuck, I don't know what I need to do.  
+Can you help me out here? I'm stuck, I don't know what I need to do.
 I'm stuck. Can you tell me what to do next?<BD>
 
 
 TYPEIN_HINT
-I'm stuck. Can you show me how to <o>? 
+I'm stuck. Can you show me how to <o>?
 I'm stuck. Please show me what to do.
 Can you demonstrate how to <o>? I'm stuck, I don't know how to do it.
 Can you show me how to <o>? I'm stuck.
@@ -198,7 +198,7 @@ Thanks for the explanation, but I still don't get it. Could you please show me w
 
 FAIL_TO_LEARN_GIVE_UP_TOPIC
 I still don't get it. Can you give me a new problem?
-I'm confused and I don't think I'm making any progress. Should we try a different problem?  
+I'm confused and I don't think I'm making any progress. Should we try a different problem?
 I've been trying to figure this out, but I just don't get it. Should we move on to another problem?
 I'm lost. Maybe Mr. Williams has a suggestion of what we could do. <MT><ERR>
 I'm confused.  Should we ask Mr. Williams what we should do now? <MT><ERR>
@@ -206,7 +206,7 @@ I don't still get it.  Should we ask Mr. Williams for suggestions? <MT><ERR>
 
 START_PROBLEM_NO
 Okay. Click 'Yes' when you've entered the right problem.
-Alright, enter a problem you like and click 'Yes'. 
+Alright, enter a problem you like and click 'Yes'.
 Okay. Maybe Mr. Williams has a suggestion for what we should be working on? <MT>
 Okay. Should we ask Mr. Williams what kind of problem we should work on? <MT>
 
@@ -276,7 +276,7 @@ Moving on then.
 ACKNOWLEDGING_SUMMARIZATION
 Great!
 Perfect!
-Sounds good to me! 
+Sounds good to me!
 Thanks for that review!
 Thanks for that review. It helped.
 
@@ -307,10 +307,10 @@ Okay, then I'm still confused.  Let's move on to another problem.
 
 FEEDBACK_NEGATIVE
 Oh, I understand <i> is wrong here.
-Oh, not <i>. 
-Ok, my bad! 
+Oh, not <i>.
+Ok, my bad!
 Oops! Okay, so <i> is wrong.
-So <i> won't work here. 
+So <i> won't work here.
 
 FEEDBACK_NEGATIVE_DONE
 Oh, I understand clicking the problem is solved button is wrong here. Let me think!
@@ -336,7 +336,7 @@ it looks wrong to me.
 
 
 MR_WILLIAMS_SUGGESTION
-You should consider <ruleNickName> here. 
+You should consider <ruleNickName> here.
 I think you should consider <ruleNickName> here.
 
 THANK_MR_WILLIAMS
@@ -358,31 +358,31 @@ Can you please explain your reasoning behind the demonstrated step?
 Can you review the reasoning to me that led you to demonstrate this step?
 
 ON_PAPER_EXPLAIN
-How would <i> look like if I was solving this equation on paper?
-What would applying <i> be like on a piece of paper?
-If we were solving this equation on paper, how would <i> look like?
+So, <i> was entered in the transformation box. How do you mention <i> on paper when asked to show your work?
+So, <i> was entered in the transformation box. How would you mention <i> on paper when asked to show your work?
+So, <i> was entered in the transformation box. How would you mention <i> on paper when asked to show your work?
+When you show your work on paper, how do you mention <i> there?
 
 BOTH_STUCK
 It looks like we are both stuck. Can you find out and show me what to do next?
-My brain is also jammed. Can you find out and show me what to do next? 
+My brain is also jammed. Can you find out and show me what to do next?
 I also don't know what to do here, I'm stuck. Could you find out and please show me?
 This doesn't look familiar to me as well. Can you show me what I'm supposed to do next?
 I'm also stuck. Please show me what to do next.
 I'm also confused about how to move on from here. Please show me what to do.
 Can you tell me what I should do now? I'm puzzled as well!
 Can you show me what to do here? I'm completely at-a-loss.
-Can you help me out here? I'm also stuck, I don't know what I need to do.  
+Can you help me out here? I'm also stuck, I don't know what I need to do.
 I'm also stumped. Please show me what to do next?
 
 WHY_WAS_INCORRECT_TUTOR_TRANSFORMATION
-Earlier when I had <problem>, I applied <pi> and you said it was wrong. How did you know that <pi> was incorrect? 
+Earlier when I had <problem>, I applied <pi> and you said it was wrong. How did you know that <pi> was incorrect?
 
 WHY_WAS_INCORRECT_TUTOR_TYPEIN
-Earlier when I had <op> and I applied <o> on it, I got <pi>, but you said it was wrong. How did you know that <pi> was incorrect? 
+Earlier when I had <op> and I applied <o> on it, I got <pi>, but you said it was wrong. How did you know that <pi> was incorrect?
 
 WHY_WAS_INCORRECT_METATUTOR_TRANSFORMATION
-In the quiz, when I had <problem>, I applied <pi> but Mr. Williams graded that as incorrect. Why did Mr. Williams grade <pi> as incorrect here? 
+In the quiz, when I had <problem>, I applied <pi> but Mr. Williams graded that as incorrect. Why did Mr. Williams grade <pi> as incorrect here?
 
 WHY_WAS_INCORRECT_METATUTOR_TYPEIN
 In the quiz, when I had <op> and I applied <o> on it, I got <pi>, but Mr. Williams graded that as incorrect. Why did Mr. William grade <pi> as incorrect here?
-

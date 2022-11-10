@@ -4,6 +4,8 @@ package edu.cmu.pact.miss.SimStAlgebraV8.LucyWeakPK;
 import java.lang.*;
 import java.util.*;
 
+import edu.cmu.pact.Utilities.trace;
+
 public class TermGrabber
 {
 	public static void main(String Args[])

@@ -2,6 +2,7 @@ package edu;
 
 import cl.tutors.solver.ProblemCheckerTest;
 import edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher;
+import edu.cmu.pact.Utilities.trace;
 import edu.cmu.pact.miss.ProblemAssessor;
 import junit.framework.TestCase;
 

@@ -20,6 +20,7 @@ import edu.cmu.pact.BehaviorRecorder.ProblemModel.Graph.EdgeData;
 import edu.cmu.pact.BehaviorRecorder.ProblemModel.Graph.ProblemEdge;
 import edu.cmu.pact.BehaviorRecorder.ProblemModel.Graph.ProblemNode;
 import edu.cmu.pact.Log.AuthorActionLog;
+import edu.cmu.pact.Utilities.trace;
 import edu.cmu.pact.ctat.model.CtatModeModel;
 import edu.cmu.pact.miss.EquationTutor.EquationTutor;
 import edu.cmu.pact.miss.console.controller.MissController;

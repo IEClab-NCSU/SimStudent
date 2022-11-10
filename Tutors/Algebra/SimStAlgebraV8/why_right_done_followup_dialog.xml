@@ -28,20 +28,24 @@
 
 	<concept label="R2&amp;Y" model="coded&amp;key_term_adhoc" />
 	<concept label="R2Y-response-simst">
-   <phrase>Fantastic! Thanks!</phrase>
-	 <phrase>That's a helpful response. Thanks!</phrase>
-	 <phrase>Perfect! You are one of the best teachers I had so far!</phrase>
-	 <phrase>Makes perfect sense to me. Thank you!</phrase>
-	 <phrase>Genius! That helped a lot!</phrase>
-	 <phrase>Sweet! Explanation right on spot!</phrase>
-	 <phrase>Thanks for explaining using the key terms. That’s very helpful!</phrase>
+	 <phrase>Fantastic! Thanks!</phrase>
+ 	 <phrase>That's a helpful response. Thanks!</phrase>
+ 	 <phrase>Perfect! You are one of the best teachers I had so far!</phrase>
+ 	 <phrase>You're a fantastic teacher!</phrase>
+ 	 <phrase>Makes perfect sense to me. Thank you!</phrase>
+ 	 <phrase>Genius! That helped a lot!</phrase>
+ 	 <phrase>Sweet! Explanation right on spot!</phrase>
+ 	 <phrase>Thanks for explaining using the key terms. That’s very helpful!</phrase>
+ 	 <phrase>What a smart teacher I have! Thanks for explaining it so clearly!</phrase>
+ 	 <phrase>You are really good at explaining things to me!</phrase>
+	 <phrase>Thanks for caring about my learning. Your explanations are quite helpful!</phrase>
   </concept>
 
 	<concept label="R2&amp;N" model="coded&amp;key_term_adhoc" />
 	<concept label="R2N-response-simst">
-   <phrase>I am looking for an in-depth answer. How can we ensure that the problem is solved correctly?</phrase>
-	 <phrase>I am trying to understand in-depth. What features of this current equation indicate that the problem is solved?</phrase>
-	 <phrase>Looking back at your suggested step, I was wondering what features of this current equation indicate that the problem is solved?</phrase>
+   <phrase>I understand what you said, but for this equation only. How can we ensure that the problem is solved correctly for any equation? Please explain using the key terms from the Unit Overview tab.</phrase>
+	 <phrase>What you said looks very specific to the current equation only. What features indicate that an equation is solved? Please explain using the key terms from the Unit Overview tab.</phrase>
+	 <phrase>I was wondering what features indicate that the problem is solved? Please explain using the key terms from the Unit Overview tab.</phrase>
   </concept>
 
 	<concept label="R1&amp;Y" model="coded&amp;key_term_adhoc" />
@@ -53,34 +57,41 @@
   </concept>
 	<concept label="R1&amp;N" model="coded&amp;key_term_adhoc" />
 	<concept label="R1N-response-simst">
-	 <phrase>Please explain what went wrong using key terms in the Unit Overview section.</phrase>
- 	 <phrase>How did you figure out that something went wrong? Please explain using key terms in the Unit Overview section.</phrase>
- 	 <phrase>Please explain what went wrong using key terms from the Unit Overview section.</phrase>
- 	 <phrase>Please describe what went wrong using key terms from the Unit Overview section.</phrase>
+	 <phrase>Please explain what went wrong using the key terms mentioned in the Unit Overview tab.</phrase>
+ 	 <phrase>How did you figure out that something went wrong? Please explain using the key terms from the Unit Overview tab.</phrase>
+ 	 <phrase>Please explain what went wrong using the key terms from the Unit Overview tab.</phrase>
+ 	 <phrase>Please describe what went wrong using the key terms from the Unit Overview tab.</phrase>
   </concept>
 
 	<concept label="R0" model="coded" />
 	<concept label="R0-response-simst">
-   <phrase>I am trying to understand when to say a problem is solved. Would you please explain?</phrase>
-	 <phrase>I attempt to learn from your explanation. How can we ensure that our solution is the correct one?</phrase>
-	 <phrase>I want to strengthen my basic understanding. What features of the equation inspired you to say that the problem is solved here?</phrase>
+   <phrase>I am trying to understand when to say a problem is solved. Would you please explain using the key terms mentioned in the Unit Overview tab?</phrase>
+	 <phrase>Using the key terms mentioned in the Unit Overview tab, please explain how to ensure that our solution is the correct one?</phrase>
+	 <phrase>What features of the equation inspired you to say that the problem is solved here? Please explain using the key terms mentioned in the Unit Overview tab</phrase>
   </concept>
 
 	<concept label="R0-response-simst-2">
-	 <phrase>Can you explain why you said the problem is solved?</phrase>
-	 <phrase>Today is my day to learn from you. What part of the equation inspired you to say "the problem is solved"?</phrase>
-	 <phrase>Please shed some light on your decision making process. Why did you say the problem is solved at this point?</phrase>
+	 <phrase>Can you explain why you said the problem is solved using the key terms mentioned in the Unit Overview tab?</phrase>
+	 <phrase>Today is my day to learn from you. What part of the equation inspired you to say "the problem is solved"? Please explain using the key terms mentioned in the Unit Overview tab?</phrase>
+	 <phrase>Using the key terms mentioned in the Unit Overview tab, please explain why did you say the problem is solved at this point?</phrase>
   </concept>
 
 	<concept label="move-on">
-   <phrase>Hmm...I did not fully understand your statement, but let’s move on!</phrase>
-	 <phrase>Umm...although I am not entirely sure, let’s move on!</phrase>
-	 <phrase>Although I am not sure what you meant, let’s move on!</phrase>
-	 <phrase>Okay! Let’s move on although I’m still confused.</phrase>
+	 <phrase>Hmm...I will get back to it later again. Let’s move on for now!</phrase>
+ 	 <phrase>Umm...I am not very sure if I understand your explanation correctly. I will get back to it later again. Let’s move on now!</phrase>
+ 	 <phrase>Although I am not convinced yet, let’s move on for now!</phrase>
+ 	 <phrase>Hmm..I still have some confusions, I will get back to it later again. Let’s move on for now!</phrase>
+ 	 <phrase>Umm..I did not quite get what you said but let me move on for now! I will get back to it later again.</phrase>
+  </concept>
+	<concept label="rephrase">
+   <phrase>I did not get that. Can you please rephrase what you said?</phrase>
+	 <phrase>That was hard to understand. Can you please rephrase what you said?</phrase>
+	 <phrase>I'm afraid I don't follow you. Can you please rephrase what you said?</phrase>
+	 <phrase>Sorry, I didn't catch that. Would you mind rephrasing what you said?</phrase>
+	 <phrase>That was all Greek to me. Can you please rephrase what you said?</phrase>
   </concept>
 	<concept label="unanticipated-response">
-   <phrase>Okay!</phrase>
-	 <phrase>Alright!</phrase>
+   <phrase>anything else</phrase>
   </concept>
 </concepts>
 
@@ -96,7 +107,7 @@
 	 <response say="R2Y-response-simst">R2&amp;Y</response>
    <response push="R1N-response-action">R1&amp;N</response>
 	 <response push="R2N-response-action">R2&amp;N</response>
-	 <response say="move-on">unanticipated-response</response>
+	 <response push="rephrase-action">unanticipated-response</response>
   </step>
  </goal>
 
@@ -146,6 +157,17 @@
 	 <response say="move-on">R2&amp;N</response>
 	 <response say="move-on">unanticipated-response</response>
 	</step>
+ </goal>
+ <goal name="rephrase-action">
+  <step>
+   <initiation>rephrase</initiation>
+   <response push="R0-response-action-2">R0</response>
+	 <response say="R1Y-response-simst">R1&amp;Y</response>
+	 <response say="R2Y-response-simst">R2&amp;Y</response>
+	 <response push="R1N-response-action">R1&amp;N</response>
+	 <response push="R2N-response-action">R2&amp;N</response>
+	 <response say="move-on">unanticipated-response</response>
+  </step>
  </goal>
 
 

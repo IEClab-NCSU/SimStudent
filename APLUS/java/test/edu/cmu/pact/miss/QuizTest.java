@@ -17,6 +17,7 @@ import edu.cmu.pact.BehaviorRecorder.Controller.BR_Controller;
 import edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher;
 import edu.cmu.pact.BehaviorRecorder.Controller.SingleSessionLauncher;
 import edu.cmu.pact.BehaviorRecorder.Dialogs.LoadFileDialog;
+import edu.cmu.pact.Utilities.trace;
 import edu.cmu.pact.ctat.model.CtatModeModel;
 import edu.cmu.pact.jess.JessModelTracing;
 import edu.cmu.pact.jess.RuleActivationNode;

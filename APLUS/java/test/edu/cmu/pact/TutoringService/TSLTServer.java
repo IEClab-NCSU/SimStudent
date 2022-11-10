@@ -24,6 +24,8 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
+import edu.cmu.pact.Utilities.trace;
+
 public class TSLTServer{
 	private static String dislikevista = "dislikevista";
 	private static int port;

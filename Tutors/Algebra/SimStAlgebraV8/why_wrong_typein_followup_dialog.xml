@@ -19,37 +19,24 @@
 	<concept label="first-question">
 	 <!--<phrase>%Q%</phrase>-->
 	 <!--<phrase>I remember in the past, when I had "%prev_problem%", I did "%prev_i%" (see Figure A).  Now, I see "%current_problem%" so I thought "%current_i%" would work here (see Figure B). Why is this different? Please explain your reasoning in the box below.</phrase>-->
-	 <phrase>In the &lt;font color="blue"&gt;past&lt;/font&gt;, I did the transformation &lt;font color="blue"&gt;"%prev_foa2%"&lt;/font&gt; when I had &lt;font color="blue"&gt;"%prev_foa1%"&lt;/font&gt; and got &lt;font color="blue"&gt;"%prev_i%"&lt;/font&gt; (see &lt;font color="blue"&gt;Figure A&lt;/font&gt;).
-		 &lt;font color="red"&gt;Now&lt;/font&gt;, I thought performing &lt;font color="red"&gt;"%current_foa2%"&lt;/font&gt; with &lt;font color="blue"&gt;"%current_foa1%"&lt;/font&gt; would result in &lt;font color="red"&gt;"%current_i%"&lt;/font&gt; (see &lt;font color="red"&gt;Figure B&lt;/font&gt;). Why is this different? Please explain your reasoning in the box below.</phrase>
+	 <phrase>In the &lt;font color="blue"&gt;past&lt;/font&gt;, I did the transformation &lt;font color="blue"&gt;"%prev_foa2%"&lt;/font&gt; when I had &lt;font color="blue"&gt;"%prev_foa1%"&lt;/font&gt; and got &lt;font color="blue"&gt;"%prev_i%"&lt;/font&gt;, and you said it was correct. (see &lt;font color="blue"&gt;Figure A&lt;/font&gt;).
+		 &lt;font color="red"&gt;Now&lt;/font&gt;, I thought performing &lt;font color="red"&gt;"%current_foa2%"&lt;/font&gt; with &lt;font color="red"&gt;"%current_foa1%"&lt;/font&gt; would result in &lt;font color="red"&gt;"%current_i%"&lt;/font&gt;, but you said that is incorrect. (see &lt;font color="red"&gt;Figure B&lt;/font&gt;). Why? Please explain your reasoning in the box below.</phrase>
 	</concept>
 
 	<concept label="R2" model="coded" />
 	<concept label="R2-response-simst">
-		<phrase>Fantastic! Thanks!</phrase>
+		<phrase>Got it! Thanks!</phrase>
 		<phrase>That's a helpful response. Thanks!</phrase>
- 	 	<phrase>Perfect! You are one of the best teachers I had so far!</phrase>
- 	 	<phrase>Makes perfect sense to me. Thank you!</phrase>
+ 	 	<phrase>Makes sense to me. Thank you!</phrase>
+		<phrase>Makes sense. Thank you!</phrase>
+		<phrase>That's fair to say. Thank you!</phrase>
  	 	<phrase>Genius! That helped a lot!</phrase>
- 	 	<phrase>Sweet! Explanation right on spot!</phrase>
- 	 	<phrase>Thanks for explaining using the key terms. That’s very helpful!</phrase>
+ 	 	<phrase>Sweet! Got it!</phrase>
   </concept>
-	<!--<concept label="R2&amp;N" model="coded&amp;key_term_adhoc" />
-	<concept label="R2N-response-simst">
-   <phrase>I am looking for an in-depth answer. Please explain why performing &lt;font color="red"&gt;"%current_foa2%"&lt;/font&gt; with &lt;font color="blue"&gt;"%current_foa1%"&lt;/font&gt; would not result in &lt;font color="red"&gt;"%current_i%"&lt;/font&gt;?</phrase>
-	 <phrase>I am trying to understand in-depth. Can you explain why performing &lt;font color="red"&gt;"%current_foa2%"&lt;/font&gt; with &lt;font color="blue"&gt;"%current_foa1%"&lt;/font&gt; would not result in &lt;font color="red"&gt;"%current_i%"&lt;/font&gt;?</phrase>
-	 <phrase>I am thinking deeply about what you just said, but I need more information. Please explain why performing &lt;font color="red"&gt;"%current_foa2%"&lt;/font&gt; with &lt;font color="blue"&gt;"%current_foa1%"&lt;/font&gt; would not result in &lt;font color="red"&gt;"%current_i%"&lt;/font&gt;?</phrase>
- </concept>-->
 
-	<!--<concept label="R1&amp;Y" model="coded&amp;key_term_adhoc" />
-	<concept label="R1Y-response-simst">
-		<phrase>Thanks for describing it so thoughtfully!</phrase>
-  	<phrase>Thanks for the witty response!</phrase>
-  	<phrase>Thanks for explaining it to me so wisely!</phrase>
-  	<phrase>Your explanation was right on spot!</phrase>
-  </concept>-->
 	<concept label="R1" model="coded" />
 	<concept label="R1-response-simst">
-		<phrase>I see! Please explain what went wrong.</phrase>
+		<phrase>I see! Please explain what went wrong?</phrase>
   	<phrase>How did you figure out that something went wrong?</phrase>
   	<phrase>Oh! I see! What inspired you to say that something is wrong?</phrase>
 		<phrase>Got it! By the way, how did you figure out that something went wrong?</phrase>
@@ -57,15 +44,15 @@
 
 	<concept label="R0" model="coded" />
 	<concept label="R0-response-simst">
-   <phrase>I am trying to understand why performing &lt;font color="red"&gt;"%current_foa2%"&lt;/font&gt; with &lt;font color="blue"&gt;"%current_foa1%"&lt;/font&gt; would not result in &lt;font color="red"&gt;"%current_i%"&lt;/font&gt;?</phrase>
-	 <phrase>I feel like I am missing some crucial information. Can you explain why &lt;font color="red"&gt;"%current_foa2%"&lt;/font&gt; with &lt;font color="blue"&gt;"%current_foa1%"&lt;/font&gt; would not result in &lt;font color="red"&gt;"%current_i%"&lt;/font&gt;?</phrase>
-	 <phrase>I attempt to learn things deeply. How did you know that performing &lt;font color="red"&gt;"%current_foa2%"&lt;/font&gt; with &lt;font color="blue"&gt;"%current_foa1%"&lt;/font&gt; would not result in &lt;font color="red"&gt;"%current_i%"&lt;/font&gt;?</phrase>
-	 <phrase>I want to solidify my basics. I failed to see why performing &lt;font color="red"&gt;"%current_foa2%"&lt;/font&gt; with &lt;font color="blue"&gt;"%current_foa1%"&lt;/font&gt; would not result in &lt;font color="red"&gt;"%current_i%"&lt;/font&gt;. Can you explain it to me?</phrase>
-	 <phrase>I want to strengthen my basic understanding. How did you know that performing &lt;font color="red"&gt;"%current_foa2%"&lt;/font&gt; with &lt;font color="blue"&gt;"%current_foa1%"&lt;/font&gt; would not result in &lt;font color="red"&gt;"%current_i%"&lt;/font&gt;?</phrase>
+   <phrase>I am trying to understand why performing &lt;font color="red"&gt;"%current_foa2%"&lt;/font&gt; with &lt;font color="red"&gt;"%current_foa1%"&lt;/font&gt; would not result in &lt;font color="red"&gt;"%current_i%"&lt;/font&gt;?</phrase>
+	 <phrase>I feel like I am missing some crucial information. Can you explain why &lt;font color="red"&gt;"%current_foa2%"&lt;/font&gt; with &lt;font color="red"&gt;"%current_foa1%"&lt;/font&gt; would not result in &lt;font color="red"&gt;"%current_i%"&lt;/font&gt;?</phrase>
+	 <phrase>I attempt to learn things deeply. How did you know that performing &lt;font color="red"&gt;"%current_foa2%"&lt;/font&gt; with &lt;font color="red"&gt;"%current_foa1%"&lt;/font&gt; would not result in &lt;font color="red"&gt;"%current_i%"&lt;/font&gt;?</phrase>
+	 <phrase>I want to solidify my basics. I failed to see why performing &lt;font color="red"&gt;"%current_foa2%"&lt;/font&gt; with &lt;font color="red"&gt;"%current_foa1%"&lt;/font&gt; would not result in &lt;font color="red"&gt;"%current_i%"&lt;/font&gt;. Can you explain it to me?</phrase>
+	 <phrase>I want to strengthen my basic understanding. How did you know that performing &lt;font color="red"&gt;"%current_foa2%"&lt;/font&gt; with &lt;font color="red"&gt;"%current_foa1%"&lt;/font&gt; would not result in &lt;font color="red"&gt;"%current_i%"&lt;/font&gt;?</phrase>
   </concept>
 	<concept label="R0-response-simst-2">
-   <phrase>Still no luck for me! Would you try one more time to explain why performing &lt;font color="red"&gt;"%current_foa2%"&lt;/font&gt; with &lt;font color="blue"&gt;"%current_foa1%"&lt;/font&gt; would not result in &lt;font color="red"&gt;"%current_i%"&lt;/font&gt;?</phrase>
-	 <phrase>I am still in doubt! Please explain why performing &lt;font color="red"&gt;"%current_foa2%"&lt;/font&gt; with &lt;font color="blue"&gt;"%current_foa1%"&lt;/font&gt; would not result in &lt;font color="red"&gt;"%current_i%"&lt;/font&gt;?</phrase>
+   <phrase>Still no luck for me! Would you try one more time to explain why performing &lt;font color="red"&gt;"%current_foa2%"&lt;/font&gt; with &lt;font color="red"&gt;"%current_foa1%"&lt;/font&gt; would not result in &lt;font color="red"&gt;"%current_i%"&lt;/font&gt;?</phrase>
+	 <phrase>I am still in doubt! Please explain why performing &lt;font color="red"&gt;"%current_foa2%"&lt;/font&gt; with &lt;font color="red"&gt;"%current_foa1%"&lt;/font&gt; would not result in &lt;font color="red"&gt;"%current_i%"&lt;/font&gt;?</phrase>
   </concept>
 
 	<concept label="move-on">

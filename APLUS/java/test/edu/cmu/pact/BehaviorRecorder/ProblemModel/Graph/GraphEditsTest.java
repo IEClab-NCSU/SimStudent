@@ -25,6 +25,7 @@ import edu.cmu.pact.BehaviorRecorder.ProblemModel.Matcher.Matcher;
 import edu.cmu.pact.BehaviorRecorder.Tab.CTATTabManager;
 import edu.cmu.pact.BehaviorRecorder.jgraphwindow.BR_JGraph;
 import edu.cmu.pact.BehaviorRecorder.jgraphwindow.JGraphController;
+import edu.cmu.pact.Utilities.trace;
 import edu.cmu.pact.ctat.model.CtatModeModel;
 /**
  * Note: This test is dependent on some functions in pseudotutormessagehandlertest

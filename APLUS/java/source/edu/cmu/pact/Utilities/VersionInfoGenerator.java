@@ -136,7 +136,8 @@ public class VersionInfoGenerator {
 		result.append("\n").append(genGetMenuItem());
 		result.append("\n").append(genGetFileReferenceString());
 		result.append("}\n");
-		trace.out(result.toString());
+		System.out.print(result.toString());
+		//trace.out(String.valueOf(result));
 	}
 
 	/**

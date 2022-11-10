@@ -11,6 +11,7 @@ import edu.cmu.pact.Log.LogDifferences.Content.NameContent;
 import edu.cmu.pact.Log.LogDifferences.Content.SAIContent;
 import edu.cmu.pact.Log.LogDifferences.Content.SkillContent;
 import edu.cmu.pact.Log.LogDifferences.Content.TutorAdviceContent;
+import edu.cmu.pact.Utilities.trace;
 
 public class ColumnTest extends TestCase {
 	MockTestingContents test = null;

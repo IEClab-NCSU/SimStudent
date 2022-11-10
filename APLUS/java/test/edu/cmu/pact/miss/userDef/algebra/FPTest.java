@@ -5,6 +5,7 @@ import java.util.Vector;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import edu.cmu.pact.Utilities.trace;
 import edu.cmu.pact.miss.FeaturePredicate;
 
 public class FPTest extends TestCase {

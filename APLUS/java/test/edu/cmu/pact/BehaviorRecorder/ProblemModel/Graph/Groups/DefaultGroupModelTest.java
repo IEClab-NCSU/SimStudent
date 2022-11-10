@@ -82,7 +82,7 @@ public class DefaultGroupModelTest extends TestCase {
 			groups.add(new Group(groupElt));
 		System.out.printf("\n%d topLevel groups\n", groups.size());
 		for (Group group : groups)
-			trace.out(group);
+			trace.out(String.valueOf(group));
 		Set<Integer> allLinks = new LinkedHashSet<Integer>();
 		for (Group group : groups)
 			group.linkCheck(allLinks, group.Indent);

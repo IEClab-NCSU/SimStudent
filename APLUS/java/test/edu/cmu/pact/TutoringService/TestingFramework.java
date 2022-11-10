@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 
 import edu.cmu.pact.Log.LogFormatUtils;
+import edu.cmu.pact.Utilities.trace;
 
 public class TestingFramework {
 	

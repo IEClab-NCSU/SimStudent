@@ -9,6 +9,7 @@ package edu.cmu.pact.miss.EquationTutor;
 import javax.swing.JPanel;
 
 import edu.cmu.pact.BehaviorRecorder.Controller.SingleSessionLauncher;
+import edu.cmu.pact.Utilities.trace;
 
 /**
  *

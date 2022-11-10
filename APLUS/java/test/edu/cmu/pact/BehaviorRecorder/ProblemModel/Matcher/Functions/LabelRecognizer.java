@@ -9,6 +9,7 @@ import java.io.PrintStream;
 import java.io.Reader;
 import java.util.List;
 
+import edu.cmu.pact.Utilities.trace;
 import fri.patterns.interpreter.parsergenerator.Lexer;
 import fri.patterns.interpreter.parsergenerator.Parser;
 import fri.patterns.interpreter.parsergenerator.ParserTables;

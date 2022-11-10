@@ -19,6 +19,7 @@ import org.xml.sax.SAXException;
 import edu.cmu.oli.log.client.DiskLogger;
 import edu.cmu.oli.log.client.SessionLog;
 import edu.cmu.oli.log.client.StreamLogger;
+import edu.cmu.pact.Utilities.trace;
 
 /**
  * @version       $Revision: 13682 $ $Date: 2012-05-16 22:22:05 -0400 (Wed, 16 May 2012) $

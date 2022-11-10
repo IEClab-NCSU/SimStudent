@@ -11,6 +11,8 @@ import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
+import edu.cmu.pact.Utilities.trace;
+
 /**
  * Call URLDecode on stdin.
  */

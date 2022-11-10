@@ -17,6 +17,7 @@ import org.jdom.output.XMLOutputter;
 import edu.cmu.pact.BehaviorRecorder.Dialogs.MergeMassProductionDialogTest;
 import edu.cmu.pact.BehaviorRecorder.StartStateEditor.CTATComponent;
 import edu.cmu.pact.BehaviorRecorder.StartStateEditor.CTATSerializable;
+import edu.cmu.pact.Utilities.trace;
 import edu.cmu.pact.ctat.MessageObject;
 import edu.cmu.pact.ctat.MsgType;
 

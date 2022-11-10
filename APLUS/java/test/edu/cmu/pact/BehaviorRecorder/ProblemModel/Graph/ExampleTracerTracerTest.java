@@ -17,6 +17,7 @@ import edu.cmu.pact.BehaviorRecorder.Controller.SingleSessionLauncher;
 import edu.cmu.pact.BehaviorRecorder.ProblemModel.ProblemModel;
 import edu.cmu.pact.BehaviorRecorder.ProblemModel.Matcher.ExactMatcher;
 import edu.cmu.pact.BehaviorRecorder.View.ActionLabel;
+import edu.cmu.pact.Utilities.trace;
 
 /*
  * Created on June 8, 2006

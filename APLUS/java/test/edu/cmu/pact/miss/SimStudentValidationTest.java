@@ -13,6 +13,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
+import edu.cmu.pact.Utilities.trace;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
