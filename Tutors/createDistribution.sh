@@ -21,7 +21,7 @@ function show_usage() {
   exit 0
 }
 case $1 in
---number | -n)
+--name | -n)
   shift
   name="$1"
   shift
