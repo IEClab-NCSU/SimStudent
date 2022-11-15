@@ -45,7 +45,7 @@ command ant -version
 printf "\nDistribution name - $name"
 cd "../APLUS/java/"
 
-echo "Creating ctat.jar..."
+printf "\nCreating ctat.jar..."
 if [[ "$verbose" = "Y" ]]; then
   ant clean #remove previous ctat.jar
   ant  #Create new ctat.jar
@@ -55,7 +55,7 @@ else
 fi
 
 cd "../../Tutors/Algebra/SimStAlgebraV8"
-echo "Compiling tutors..."
+printf "\nCompiling tutors..."
 
 if [[ "$verbose" = "Y" ]]; then
   command "./compileTutor.sh"
@@ -72,7 +72,7 @@ fi
 
 mkdir "$name"
 printf "\nCopying content of ./Algebra/ folder to ./$name/ folder..."
-cp -a "./Algebra/." "$name/" #copying content of Algebra to distribution
+cp -a "./Algebra/." "$name/"
 
 printf "\nCopying jars..."
 rm "./$name/lib/ctat.jar"
@@ -80,8 +80,18 @@ cp "../APLUS/java/lib/ctat.jar" "./$name/lib/"
 cp "../APLUS/java/lib/jsoup-1.15.3.jar" "./$name/lib/"
 cp -a "../SIDE&SLIM jars/." "./$name/lib/"
 
-printf "\nCopying lightside server files..."
-cp -a "../Lightside/lightside/" "./$name/"
+printf "\nCompiling lightside files..."
+if [[ "$verbose" = "Y" ]]; then
+  command "ant clean"
+  command "ant"
+else
+  command "ant clean" 1>/dev/null 2>&1
+  command "ant" 1>/dev/null 2>&1
+fi
+
+
+printf "\nCopying lightside files..."
+cp -a "../Lightside/lightside" "./$name/"
 
 
 printf "\nDistribution - '$name' created successfully.\n"
