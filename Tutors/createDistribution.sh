@@ -63,7 +63,7 @@ else
   command "./compileTutor.sh" 1>/dev/null 2>&1
 fi
 
-cd "../../Tutors"
+cd "../../"
 
 if [ -d "./$name" ]; then
   printf "\nDistribution name $name already exists and will be deleted to create new distribution.\n"
