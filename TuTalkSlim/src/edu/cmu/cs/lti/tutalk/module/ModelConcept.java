@@ -114,20 +114,20 @@ public class ModelConcept extends Concept
 	        		String prediction = split_label[i].split("-")[1];
 	        		Double pred = Double.parseDouble(prediction);
 	        		if(pred == 1.0) {
-	        			label_text = keyTermAnnotator.hasKeyTerm(instance);
-	        			split_label = label_text.split(",");
-	        	        for(int j=0; j<split_label.length; j++) {
-	        	        	if(split_label[j].indexOf(labels[1])!= -1) {
-	        	        		prediction = split_label[j].split("-")[1];
+	        			String key_term_text = keyTermAnnotator.hasKeyTerm(instance);
+	        			String[] key_term_label = key_term_text.split(",");
+	        	        for(int j=0; j<key_term_label.length; j++) {
+	        	        	if(key_term_label[j].indexOf(labels[1])!= -1) {
+	        	        		prediction = key_term_label[j].split("-")[1];
 	        	        		return Double.parseDouble(prediction);
 	        	        	}
-	        	        	else
-	        	        		return 0.0;
+	        	        	//else
+	        	        		//return 0.0;
 	        	        }
 	        			
 	        		}
-	        		else
-	        			return 0.0;
+	        		//else
+	        			//return 0.0;
 	        	}
 	        }
     	}

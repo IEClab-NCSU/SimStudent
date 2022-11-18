@@ -23,36 +23,35 @@
 	<concept label="first-question">
    <phrase>Why did you do "%i%" here?</phrase>
 	 <phrase>Why did you perform "%i%" here?</phrase>
-	 <phrase>Please explain why you applied "%i%" here?</phrase>
-	 <phrase>What part of the equation made you apply "%i%" now?</phrase>
-	 <phrase>What part of the equation inspired you to apply "%i%" here?</phrase>
+	 <phrase>Why do you think I need to perform "%i%" next?</phrase>
+	 <phrase>Please explain why did you apply "%i%" here?</phrase>
 	 <phrase>What made you choose "%i%" as the correct step?</phrase>
 	 <phrase>Among subtract/add/divide/multiply, why did you choose "%i_opr%" here?</phrase>
-	 <phrase>How did you know we should %i_opr% "%i_op%" and not something else?</phrase>
+	 <phrase>How did you know we should %i_opr% with &lt;strong&gt;"%i_op%"&lt;/strong&gt;?</phrase>
 	</concept>
 
 	<concept label="R2&amp;Y" model="coded&amp;key_term_adhoc" />
 	<concept label="R2Y-response-simst">
    <phrase>Fantastic! Thanks!</phrase>
 	 <phrase>That's a helpful response. Thanks!</phrase>
-	 <phrase>Perfect! You are one of the best teachers I had so far!</phrase>
+	 <phrase>Perfect! You are one of the best teachers I have had so far!</phrase>
 	 <phrase>You're a fantastic teacher!</phrase>
 	 <phrase>Makes perfect sense to me. Thank you!</phrase>
 	 <phrase>Genius! That helped a lot!</phrase>
-	 <phrase>Sweet! Explanation right on spot!</phrase>
+	 <phrase>Sweet! Explanation right on the spot!</phrase>
 	 <phrase>Thanks for explaining using the key terms. That’s very helpful!</phrase>
 	 <phrase>What a smart teacher I have! Thanks for explaining it so clearly!</phrase>
-	 <phrase>You are really good at explaining things to me!</phrase>
+	 <phrase>You are tremendously good at explaining things to me!</phrase>
 	 <phrase>Thanks for caring about my learning. Your explanations are quite helpful!</phrase>
   </concept>
 
 	<concept label="R2&amp;N" model="coded&amp;key_term_adhoc" />
 	<concept label="R2N-response-simst">
 	 <phrase>Using the key terms in the Unit Overview tab, can you explain why you %i_opr%ed "%i_op%" here and not something else?</phrase>
-	 <phrase>I understand what you said, but for this equation only. Can you explain when does %i% work in general using the key terms from the Unit Overview tab?</phrase>
-	 <phrase>Can you explain what features in an equation make "%i_opr%" as the best way to go using the key terms from the Unit Overview tab?</phrase>
-	 <phrase>What you said looks very specific to the current equation only. I was wondering if you can explain when "%i_opr%" is the best way to go in general using the key terms from the Unit Overview tab?</phrase>
-	 <phrase>I understand what you meant, but for this equation only. Can you explain why "%i%" works in general using the key terms in the Unit Overview tab?</phrase>
+	 <phrase>I understand what you said, but for this equation only. Can you explain when %i% work, in general, using the key terms from the Unit Overview tab?</phrase>
+	 <phrase>Can you explain what features in an equation make "%i_opr%" the best way to go using the key terms from the Unit Overview tab?</phrase>
+	 <phrase>What you said looks very specific to the current equation only. I was wondering if you could explain when "%i_opr%" is the best way to go in general using the key terms from the Unit Overview tab?</phrase>
+	 <phrase>I understand what you meant, but for this equation only. Can you explain why "%i%" works, in general, using the key terms in the Unit Overview tab?</phrase>
 	</concept>
 
 	<concept label="R1&amp;Y" model="coded&amp;key_term_adhoc" />
@@ -60,7 +59,7 @@
 	 <phrase>Thanks for describing it so thoughtfully!</phrase>
  	 <phrase>Thanks for the witty response!</phrase>
  	 <phrase>Thanks for explaining it to me so wisely!</phrase>
- 	 <phrase>Your explanation was right on spot!</phrase>
+ 	 <phrase>Your explanation was right on the spot!</phrase>
   </concept>
 	<concept label="R1&amp;N" model="coded&amp;key_term_adhoc" />
 	<concept label="R1N-response-simst">
@@ -70,41 +69,55 @@
  	 <phrase>Please describe what went wrong using the key terms from the Unit Overview tab.</phrase>
   </concept>
 
-	<concept label="R0" model="coded" />
-	<concept label="R0-response-simst">
-   <phrase>I am trying to understand what makes "%i%" correct in depth. Would you please explain using the key terms mentioned in the Unit Overview tab?</phrase>
-	 <phrase>Using the key terms mentioned in the Unit Overview tab, explain why you chose "%i_opr%" and not any other transformations?</phrase>
-	 <phrase>I attempt to learn things deeply so that I can solve any equation. Using the key terms mentioned in the Unit Overview tab, explain what makes "%i%" correct at this point of equation?</phrase>
-	 <phrase>I want to strengthen my basic understanding. What motivated you to demonstrate "%i%"? Please explain using the key terms mentioned in the Unit Overview tab.</phrase>
-	 <phrase>Using the key terms mentioned in the Unit Overview tab, explain what motivated you to demonstrate "%i%"?</phrase>
-	 <phrase>Using the key terms mentioned in the Unit Overview tab, explain why did you perform "%i%" here?</phrase>
+	<concept label="R0&amp;Y" model="coded&amp;key_term_adhoc" />
+	<concept label="R0Y-response-simst">
+   <phrase>Your explanation is resourceful but very short for me to understand properly. Please add a little more information with that to teach me what motivated you to demonstrate "%i%"?</phrase>
+	 <phrase>Your explanation using the key terms is helpful but too brief for me. Please add a little more information to teach me why you performed "%i%" here?</phrase>
+	 <phrase>Your explanation using the key terms is helpful for my learning but too short for me to understand properly. Please elaborate more on why "%i%" is correct?</phrase>
   </concept>
 
-	<concept label="R0-response-simst-2">
+	<concept label="R0Y-response-simst-2">
+	 <phrase>Your explanation is still very brief. Please add more information on how did you know "%i%" is the correct step to apply?</phrase>
+	 <phrase>Your explanation is still too short for me to understand properly. Please add more information on why you performed "%i%" here?</phrase>
+	</concept>
+
+	<concept label="R0&amp;N" model="coded&amp;key_term_adhoc" />
+	<concept label="R0N-response-simst">
+   <phrase>I am trying to understand what makes "%i%" correct in depth. Would you please explain using the key terms mentioned in the Unit Overview tab?</phrase>
+	 <phrase>Using the key terms mentioned in the Unit Overview tab, explain why you chose "%i_opr%" and not any other transformations?</phrase>
+	 <phrase>I attempt to learn things deeply to solve any equation. Using the key terms mentioned in the Unit Overview tab, explain why "%i%" is correct?</phrase>
+	 <phrase>I want to strengthen my basic understanding. What motivated you to demonstrate "%i%"? Please explain using the key terms mentioned in the Unit Overview tab.</phrase>
+	 <phrase>Using the key terms mentioned in the Unit Overview tab, explain what motivated you to demonstrate "%i%"?</phrase>
+	 <phrase>Using the key terms mentioned in the Unit Overview tab, explain why you performed "%i%" here?</phrase>
+  </concept>
+
+	<concept label="R0N-response-simst-2">
 	 <phrase>Can you explain why "%i%" is your first guess using the key terms mentioned in the Unit Overview tab?</phrase>
 	 <phrase>Today is my day to learn from you. Can you explain why "%i%" is your first guess using the key terms mentioned in the Unit Overview tab?</phrase>
   </concept>
+	<concept label="R0" model="coded" />
 
 	<concept label="move-on">
-   <phrase>Hmm...I will get back to it later again. Let’s move on for now!</phrase>
-	 <phrase>Umm...I am not very sure if I understand your explanation correctly. I will get back to it later again. Let’s move on now!</phrase>
+		<phrase>Tough luck, but let’s move on for now!</phrase>
+	 <phrase>Hmm...I will get back to it again later. Let’s move on for now!</phrase>
+	 <phrase>Umm...I am not very sure what you meant. I will get back to it again later. Let’s move on now!</phrase>
 	 <phrase>Although I am not convinced yet, let’s move on for now!</phrase>
-	 <phrase>Hmm..I still have some confusions, I will get back to it later again. Let’s move on for now!</phrase>
+	 <phrase>Hmm..I am still confused; I will get back to it later. Let’s move on for now!</phrase>
 	 <phrase>Umm..I did not quite get what you said but let me move on for now! I will get back to it later again.</phrase>
   </concept>
 	<concept label="rephrase">
-   <phrase>I did not get that. Can you please rephrase what you said?</phrase>
-	 <phrase>That was hard to understand. Can you please rephrase what you said?</phrase>
-	 <phrase>I'm afraid I don't follow you. Can you please rephrase what you said?</phrase>
-	 <phrase>Sorry, I didn't catch that. Would you mind rephrasing what you said?</phrase>
-	 <phrase>That was all Greek to me. Can you please rephrase what you said?</phrase>
+   <phrase>I did not get that. Please try again to explain why "%i%" is the correct step here.</phrase>
+	 <phrase>That was hard to understand. Can you explain again why you applied "%i%" here?</phrase>
+	 <phrase>I'm afraid I don't follow you. Let's try one more time. Among subtract/add/divide/multiply, why did you choose "%i_opr%" here?</phrase>
+	 <phrase>Sorry, I didn't catch that. Let's try one more time. How did you know we should %i_opr% with &lt;strong&gt;"%i_op%"&lt;/strong&gt;?</phrase>
+	 <phrase>That went way over my head. Can you explain again why you applied "%i%" here?</phrase>
   </concept>
 	<concept label="unanticipated-response">
    <phrase>anything else</phrase>
   </concept>
 </concepts>
 
-<script>
+<!--<script>
  <goal name="start">
   <step><subgoal>reasons</subgoal></step>
  </goal>
@@ -179,6 +192,112 @@
 	 <response say="move-on">unanticipated-response</response>
   </step>
  </goal>
+
+</script>-->
+
+<script>
+ <goal name="start">
+  <step><subgoal>reasons</subgoal></step>
+ </goal>
+ <goal name="reasons">
+  <step>
+   <initiation>first-question</initiation>
+   <response push="R0N-response-action">R0&amp;N</response>
+	 <response push="R0Y-response-action">R0&amp;Y</response>
+	 <response say="R1Y-response-simst">R1&amp;Y</response>
+	 <response say="R2Y-response-simst">R2&amp;Y</response>
+   <response push="R1N-response-action">R1&amp;N</response>
+	 <response push="R2N-response-action">R2&amp;N</response>
+	 <response push="rephrase-action">unanticipated-response</response>
+  </step>
+ </goal>
+
+ <goal name="R0N-response-action">
+  <step>
+   <initiation>R0N-response-simst</initiation>
+	 <response push="R0N-response-action-2">R0&amp;N</response>
+	 <response push="R0Y-response-action-2">R0&amp;Y</response>
+	 <response say="R1Y-response-simst">R1&amp;Y</response>
+	 <response say="R2Y-response-simst">R2&amp;Y</response>
+   <response push="R1N-response-action">R1&amp;N</response>
+	 <response push="R2N-response-action">R2&amp;N</response>
+	 <response say="move-on">unanticipated-response</response>
+  </step>
+ </goal>
+
+ <goal name="R0N-response-action-2">
+  <step>
+   <initiation>R0N-response-simst-2</initiation>
+   <response say="move-on">R0</response>
+	 <response say="R1Y-response-simst">R1&amp;Y</response>
+	 <response say="R2Y-response-simst">R2&amp;Y</response>
+   <response push="R1N-response-action">R1&amp;N</response>
+	 <response push="R2N-response-action">R2&amp;N</response>
+	 <response say="move-on">unanticipated-response</response>
+  </step>
+ </goal>
+
+ <goal name="R0Y-response-action">
+  <step>
+   <initiation>R0Y-response-simst</initiation>
+	 <response push="R0N-response-action-2">R0&amp;N</response>
+	 <response push="R0Y-response-action-2">R0&amp;Y</response>
+	 <response say="R1Y-response-simst">R1&amp;Y</response>
+	 <response say="R2Y-response-simst">R2&amp;Y</response>
+   <response push="R1N-response-action">R1&amp;N</response>
+	 <response push="R2N-response-action">R2&amp;N</response>
+	 <response say="move-on">unanticipated-response</response>
+  </step>
+ </goal>
+
+ <goal name="R0Y-response-action-2">
+  <step>
+   <initiation>R0Y-response-simst-2</initiation>
+   <response say="move-on">R0</response>
+	 <response say="R1Y-response-simst">R1&amp;Y</response>
+	 <response say="R2Y-response-simst">R2&amp;Y</response>
+   <response push="R1N-response-action">R1&amp;N</response>
+	 <response push="R2N-response-action">R2&amp;N</response>
+	 <response say="move-on">unanticipated-response</response>
+  </step>
+ </goal>
+
+ <goal name="R1N-response-action">
+  <step>
+   <initiation>R1N-response-simst</initiation>
+   <response say="move-on">R0</response>
+	 <response say="R1Y-response-simst">R1&amp;Y</response>
+	 <response say="R2Y-response-simst">R2&amp;Y</response>
+   <response say="move-on">R1&amp;N</response>
+	 <response say="move-on">R2&amp;N</response>
+	 <response say="move-on">unanticipated-response</response>
+  </step>
+ </goal>
+
+ <goal name="R2N-response-action">
+	<step>
+	 <initiation>R2N-response-simst</initiation>
+	 <response say="move-on">R0</response>
+	 <response say="R1Y-response-simst">R1&amp;Y</response>
+	 <response say="R2Y-response-simst">R2&amp;Y</response>
+   <response say="move-on">R1&amp;N</response>
+	 <response say="move-on">R2&amp;N</response>
+	 <response say="move-on">unanticipated-response</response>
+	</step>
+ </goal>
+ <goal name="rephrase-action">
+  <step>
+   <initiation>rephrase</initiation>
+   <response push="R0Y-response-action-2">R0&amp;Y</response>
+	 <response push="R0N-response-action-2">R0&amp;N</response>
+	 <response say="R1Y-response-simst">R1&amp;Y</response>
+	 <response say="R2Y-response-simst">R2&amp;Y</response>
+	 <response push="R1N-response-action">R1&amp;N</response>
+	 <response push="R2N-response-action">R2&amp;N</response>
+	 <response say="move-on">unanticipated-response</response>
+  </step>
+ </goal>
+
 
 </script>
 </scenario>

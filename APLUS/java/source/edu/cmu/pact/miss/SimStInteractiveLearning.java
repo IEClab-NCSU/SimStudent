@@ -2614,7 +2614,7 @@ public void fillInQuizProblem(String problemName) {
 							setLastSkillExplained(getFirstRanStudentSaidNo().getName());
 						//if(!runType.equals("springBoot") && !simSt.isCTIFollowupInquiryMode()) explainWhyWrong(getFirstRanStudentSaidNo());
 						//else if(!runType.equals("springBoot") && simSt.isCTIFollowupInquiryMode()) explainWhyWrongCTI(getFirstRanStudentSaidNo());
-						explainWhyWrong(getFirstRanStudentSaidNo());
+						explainWhyWrong(getFirstRanStudentSaidNo(), currentNode);
 						// TODO handle explain why queries for spring boot
 					}
 			}
@@ -3082,7 +3082,7 @@ public void fillInQuizProblem(String problemName) {
 	}
 
 
-	public void explainWhyWrong(RuleActivationNode ran) {
+	public void explainWhyWrong(RuleActivationNode ran, ProblemNode currentNode) {
 
 		if (simSt.isSelfExplainMode()) {
 
@@ -3096,6 +3096,10 @@ public void fillInQuizProblem(String problemName) {
 								+ ";" + sai.getI());
 
 			String step = simSt.getProblemStepString();
+			
+			AskHintJessOracle jess_hint = new AskHintJessOracle(getBrController(getSimSt()),currentNode);
+			String jess_hint_ruleName = jess_hint.getRuleName();
+			
 
 			String question = "Why shouldn't I put " + sai.getI() + "?";
 			if (sai.getS().equalsIgnoreCase(Rule.DONE_NAME)) {
@@ -3250,6 +3254,7 @@ public void fillInQuizProblem(String problemName) {
 						//stepCV = "\"" + current_foa2 + "\" and \"" + stepCV + "\"";
 					} 
 					else {
+						contextVariables.addVariable("%rulename%", ruleName);
 						contextVariables.addVariable("%prev_problem%", simSt.getPastProblem());
 					}
 					stepCV = SimSt.convertFromSafeProblemName(stepCV);
@@ -3259,10 +3264,26 @@ public void fillInQuizProblem(String problemName) {
 					
 					String xml_script_name;
 					if (sai.getS().equalsIgnoreCase(Rule.DONE_NAME) && !step.contains("[")) {
-						xml_script_name = "why_wrong_done_followup_dialog";
+						//xml_script_name = "why_wrong_done_followup_dialog";
+						Random random_n = new Random();
+						int x = random_n.nextInt(9);
+						if(x%2 == 0)
+							xml_script_name =  "why_wrong_done_followup_dialog_red";
+						else
+							xml_script_name =  "why_wrong_done_followup_dialog_blue";
 						
 					} else if(!step.contains("[")) {
-						xml_script_name = "why_wrong_followup_dialog";
+						//xml_script_name = "why_wrong_followup_dialog";
+						if(jess_hint_ruleName.equalsIgnoreCase(Rule.DONE_NAME))
+							xml_script_name = "why_wrong_followup_dialog_blue";
+						else {
+							Random random_n = new Random();
+							int x = random_n.nextInt(9);
+							if(x%2 == 0)
+								xml_script_name =  "why_wrong_followup_dialog_red";
+							else
+								xml_script_name =  "why_wrong_followup_dialog_blue";
+						}
 						//contextVariables.addVariable("%prev_i%", simSt.getPastInput());
 					}
 					else {

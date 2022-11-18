@@ -19,7 +19,7 @@
 	<concept label="first-question">
 	 <!--<phrase>%Q%</phrase>-->
 	 <!--<phrase>I remember in the past, when I had "%prev_problem%", I did "%prev_i%" (see Figure A).  Now, I see "%current_problem%" so I thought "%current_i%" would work here (see Figure B). Why is this different? Please explain your reasoning in the box below.</phrase>-->
-	 <phrase>In the &lt;font color="blue"&gt;past&lt;/font&gt;, I did the transformation &lt;font color="blue"&gt;"%prev_foa2%"&lt;/font&gt; when I had &lt;font color="blue"&gt;"%prev_foa1%"&lt;/font&gt; and got &lt;font color="blue"&gt;"%prev_i%"&lt;/font&gt;, and you said it was correct. (see &lt;font color="blue"&gt;Figure A&lt;/font&gt;).
+	 <phrase>In the &lt;font color="blue"&gt;past&lt;/font&gt;, applying the transformation &lt;font color="blue"&gt;"%prev_foa2%"&lt;/font&gt; on &lt;font color="blue"&gt;"%prev_foa1%"&lt;/font&gt; resulted in &lt;font color="blue"&gt;"%prev_i%"&lt;/font&gt;, and it was acknowledged as correct. (see &lt;font color="blue"&gt;Figure A&lt;/font&gt;).
 		 &lt;font color="red"&gt;Now&lt;/font&gt;, I thought performing &lt;font color="red"&gt;"%current_foa2%"&lt;/font&gt; with &lt;font color="red"&gt;"%current_foa1%"&lt;/font&gt; would result in &lt;font color="red"&gt;"%current_i%"&lt;/font&gt;, but you said that is incorrect. (see &lt;font color="red"&gt;Figure B&lt;/font&gt;). Why? Please explain your reasoning in the box below.</phrase>
 	</concept>
 
@@ -56,11 +56,16 @@
   </concept>
 
 	<concept label="move-on">
-	 <phrase>Tough luck! Let’s move on!</phrase>
- 	 <phrase>Umm...although I am not entirely sure, let’s move on!</phrase>
-	 <phrase>Umm...okay, let’s move on for now!</phrase>
- 	 <phrase>Although I am not sure what you meant, let’s move on!</phrase>
- 	 <phrase>Okay! Let’s move on although I’m still confused.</phrase>
+		<phrase>Umm...although I am not entirely sure, let’s move on!</phrase>
+ 	  <phrase>Umm...okay, let’s move on for now!</phrase>
+  	<phrase>Although I am not sure what you meant, let’s move on!</phrase>
+  	<phrase>Okay! Let’s move on, although I’m still confused.</phrase>
+		<phrase>Tough luck, but let’s move on for now!</phrase>
+		<phrase>Hmm...I will get back to it again later. Let’s move on for now!</phrase>
+		<phrase>Umm...I am not very sure what you meant. I will get back to it again later. Let’s move on now!</phrase>
+		<phrase>Although I am not convinced yet, let’s move on for now!</phrase>
+		<phrase>Hmm..I am still confused; I will get back to it later. Let’s move on for now!</phrase>
+		<phrase>Umm..I did not quite get what you said but let me move on for now! I will get back to it later again.</phrase>
   </concept>
 	<concept label="unanticipated-response">
    <phrase>anything else</phrase>

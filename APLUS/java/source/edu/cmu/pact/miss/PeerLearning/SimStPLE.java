@@ -231,7 +231,8 @@ public class SimStPLE {
 	public static final String DONE_CAPTION_ENABLED = "Problem is Solved";
 	public static final String DONE_CAPTION_DISABLED = "Press enter to complete a step";
 
-	public static final String EXAMPLE_COMM_TEXT = "You can use the examples on the right for practice. Select an example problem and use the buttons above to view solution steps!";
+	//public static final String EXAMPLE_COMM_TEXT = "You can use the examples on the right for practice. Select an example problem and use the buttons above to view solution steps!";
+	public static final String EXAMPLE_COMM_TEXT = "Click on any of the examples listed on the right. You can then use the right or left button to see how your selected example problem can be solved step by step.";
 
 	public static final String OTHER_OPTION = "Other - Type Your Own Explanation";
 	public static final String SELECT_OPTION = "Please Select One";

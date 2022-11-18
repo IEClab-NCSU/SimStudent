@@ -231,7 +231,7 @@ public class AlgebraV8AdhocFoaGetter extends FoaGetter {
 		
 		if(((String) inst.getFocusOfAttention().get(0)).contains("done"))
 		{
-			str = "that the problem is solved";
+			str = "the problem is solved";
 		}
 		else
 		{
@@ -297,8 +297,15 @@ public class AlgebraV8AdhocFoaGetter extends FoaGetter {
 		
 		if(col1 < 3 && col2 < 3)
 		{
-		
-			newStr=" when I had <font color=\"blue\">"+foa1+"="+foa2+"</font>, I did the transformation <font color=\"blue\">"+str+"</font>";
+			
+			if(((String) inst.getFocusOfAttention().get(0)).contains("done"))
+			{
+				newStr=" for <font color=\"blue\">"+foa1+"="+foa2+"</font>, the next step was to click <font color=\"blue\">"+str+"</font> button";
+
+			}
+			else {
+				newStr=" for <font color=\"blue\">"+foa1+"="+foa2+"</font>, the transformation was <font color=\"blue\">"+str+"</font>";
+			}
 		
 		//	str += " for '"+foa1+"="+foa2+"'";
 			
@@ -308,7 +315,7 @@ public class AlgebraV8AdhocFoaGetter extends FoaGetter {
 		else
 		{
 			//str += " for the result of '"+foa2+"' and '"+foa1+"'";
-			newStr=" I did the transformation <font color=\"blue\">"+foa2+"</font> when I had <font color=\"blue\">"+foa1+"</font> and got <font color=\"blue\">"+str+"</font>";
+			newStr=" applying the transformation <font color=\"blue\">"+foa2+"</font> on <font color=\"blue\">"+foa1+"</font> resulted in <font color=\"blue\">"+str+"</font>";
 		}
 		
 		

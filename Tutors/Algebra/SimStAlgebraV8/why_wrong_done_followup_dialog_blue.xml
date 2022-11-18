@@ -21,77 +21,73 @@
 
 <concepts>
 	<concept label="first-question">
-   <phrase>How did you know that "%problemStepString%" is the solution?</phrase>
-	 <phrase>How did you know that the problem is solved?</phrase>
-	 <phrase>How can we ensure that we have solved this problem correctly?</phrase>
+	 <!--<phrase>%Q%</phrase>-->
+	 <phrase>But in the &lt;font color="blue"&gt;past&lt;/font&gt;, for &lt;font color="blue"&gt;"%prev_problem%"&lt;/font&gt;, the next step was to click the &lt;font color="blue"&gt;"problem is solved"&lt;/font&gt; button, and it was acknowledged as correct. To me, &lt;font color="red"&gt;"%current_problem%"&lt;/font&gt; looks the same, but you said it is not. Why is the problem not solved yet?</phrase>
 	</concept>
 
 	<concept label="R2&amp;Y" model="coded&amp;key_term_adhoc" />
 	<concept label="R2Y-response-simst">
-	 <phrase>Fantastic! Thanks!</phrase>
- 	 <phrase>That's a helpful response. Thanks!</phrase>
- 	 <phrase>Perfect! You are one of the best teachers I had so far!</phrase>
- 	 <phrase>You're a fantastic teacher!</phrase>
- 	 <phrase>Makes perfect sense to me. Thank you!</phrase>
- 	 <phrase>Genius! That helped a lot!</phrase>
- 	 <phrase>Sweet! Explanation right on the spot!</phrase>
- 	 <phrase>Thanks for explaining using the key terms. That’s very helpful!</phrase>
- 	 <phrase>What a smart teacher I have! Thanks for explaining it so clearly!</phrase>
- 	 <phrase>You are tremendously good at explaining things to me!</phrase>
-	 <phrase>Thanks for caring about my learning. Your explanations are quite helpful!</phrase>
+		<phrase>Fantastic! Thanks!</phrase>
+		<phrase>That's a helpful response. Thanks!</phrase>
+		<phrase>Perfect! You are one of the best teachers I have had so far!</phrase>
+		<phrase>You're a fantastic teacher!</phrase>
+		<phrase>Makes perfect sense to me. Thank you!</phrase>
+		<phrase>Genius! That helped a lot!</phrase>
+		<phrase>Sweet! Explanation right on the spot!</phrase>
+		<phrase>Thanks for explaining using the key terms. That’s very helpful!</phrase>
+		<phrase>What a smart teacher I have! Thanks for explaining it so clearly!</phrase>
+		<phrase>You are really good at explaining things to me!</phrase>
+		<phrase>Thanks for caring about my learning. Your explanations are quite helpful!</phrase>
   </concept>
-
 	<concept label="R2&amp;N" model="coded&amp;key_term_adhoc" />
 	<concept label="R2N-response-simst">
-   <phrase>I understand what you said, but for this equation only. How can we ensure that the problem is solved correctly for any equation? Please explain using the key terms from the Unit Overview tab.</phrase>
-	 <phrase>What you said looks very specific to the current equation only. What features indicate that an equation is solved? Please explain using the key terms from the Unit Overview tab.</phrase>
-	 <phrase> What features indicate that the problem is solved? Please explain using the key terms from the Unit Overview tab.</phrase>
+   <phrase>Using the key terms mentioned in the Unit Overview tab, please explain why I could say "problem is solved" for &lt;font color="blue"&gt;"%prev_problem%"&lt;/font&gt;?</phrase>
+	 <phrase>I am trying to learn a generalized rule. Please explain using the key terms mentioned in the Unit Overview tab; when can I click the "problem is solved" button for an equation?</phrase>
+	 <phrase>I need more information to apply what you said for any equation. When do we know that a problem is solved? Please explain using the key terms mentioned in the Unit Overview tab.</phrase>
   </concept>
 
 	<concept label="R1&amp;Y" model="coded&amp;key_term_adhoc" />
 	<concept label="R1Y-response-simst">
-	 <phrase>Thanks for describing it so thoughtfully!</phrase>
- 	 <phrase>Thanks for the witty response!</phrase>
- 	 <phrase>Thanks for explaining it to me so wisely!</phrase>
- 	 <phrase>Your explanation was right on the spot!</phrase>
+		<phrase>Thanks for describing it so thoughtfully!</phrase>
+  	<phrase>Thanks for the witty response!</phrase>
+  	<phrase>Thanks for explaining it to me so wisely!</phrase>
+  	<phrase>Your explanation was right on the spot!</phrase>
   </concept>
 	<concept label="R1&amp;N" model="coded&amp;key_term_adhoc" />
 	<concept label="R1N-response-simst">
-	 <phrase>Please explain what went wrong using the key terms mentioned in the Unit Overview tab.</phrase>
- 	 <phrase>How did you figure out that something went wrong? Please explain using the key terms from the Unit Overview tab.</phrase>
- 	 <phrase>Please explain what went wrong using the key terms from the Unit Overview tab.</phrase>
- 	 <phrase>Please describe what went wrong using the key terms from the Unit Overview tab.</phrase>
+		<phrase>I see! Please explain what went wrong using the key terms in the Unit Overview tab.</phrase>
+  	<phrase>How did you figure out that something went wrong? Please explain using the key terms in the Unit Overview tab.</phrase>
+  	<phrase>Please explain what went wrong using the key terms from the Unit Overview tab.</phrase>
+  	<phrase>Please describe what went wrong using the key terms in the Unit Overview tab.</phrase>
   </concept>
-
 
 	<concept label="R0&amp;Y" model="coded&amp;key_term_adhoc" />
 	<concept label="R0Y-response-simst">
-   <phrase>Your explanation is resourceful but very short for me to understand properly. Please add a little more information with that to teach me when to say a problem is solved?</phrase>
-	 <phrase>Your explanation using the key terms is helpful but too brief for me. Please add a little more information with that to teach me how I can ensure that my solution is the correct one?</phrase>
-	 <phrase>Your explanation using the key terms is helpful for my learning but too short for me to understand properly. Please elaborate more on when to say a problem is solved?</phrase>
+   <phrase>Your explanation is resourceful but very short for me to understand properly. Please add a little more information to explain when it is correct to say a problem is solved?</phrase>
+	 <phrase>Your explanation using the key terms is helpful but too brief for me. Please add a little more information to teach me when to say a problem is solved?</phrase>
+	 <phrase>Your explanation using the key terms is helpful for my learning but too short for me to understand properly. Please elaborate more on how to know if it is time to click the "problem is solved" button in an equation.</phrase>
   </concept>
 
 	<concept label="R0Y-response-simst-2">
-	 <phrase>Your explanation is still very brief. Please add more information on how did you know the problem was solved?</phrase>
-	 <phrase>Your explanation is still too short for me to understand properly. Please add more information on how did you know the problem was solved?</phrase>
+	 <phrase>Your explanation is still very brief. Please add more information on how to know if it is time to click the "problem is solved" button in an equation.</phrase>
+	 <phrase>Your explanation is still too short for me to understand properly. Please add more information on when it is correct to say a problem is solved?</phrase>
 	</concept>
 
 	<concept label="R0&amp;N" model="coded&amp;key_term_adhoc" />
 	<concept label="R0N-response-simst">
-   <phrase>I am trying to understand when to say a problem is solved. Would you please explain using the key terms mentioned in the Unit Overview tab?</phrase>
-	 <phrase>Using the key terms mentioned in the Unit Overview tab, please explain how to ensure that our solution is the correct one?</phrase>
-	 <phrase>What features of the equation inspired you to say that the problem is solved here? Please explain using the key terms mentioned in the Unit Overview tab</phrase>
+   <phrase>Looks like I do not understand when to click the "problem is solved" button in an equation. Please explain when we can click that using the key terms in the Unit Overview tab?</phrase>
+	 <phrase> I do not understand when to click the "problem is solved" button in an equation. Please explain when we can click that using the key terms in the Unit Overview tab?</phrase>
+	 <phrase>It feels like I have a misconception regarding when to click the "problem is solved" button in an equation. Please explain when we can click that using the key terms in the Unit Overview tab?</phrase>
   </concept>
-
 	<concept label="R0N-response-simst-2">
-	 <phrase>Can you explain why you said the problem is solved using the key terms mentioned in the Unit Overview tab?</phrase>
-	 <phrase>Today is my day to learn from you. What inspired you to say, "the problem is solved"? Please explain using the key terms mentioned in the Unit Overview tab?</phrase>
-	 <phrase>Using the key terms mentioned in the Unit Overview tab, please explain why you said the problem is solved?</phrase>
-  </concept>
+   <phrase>Still no luck for me! Would you please try again to explain when I can say "the problem is solved"? Please explain using the key terms mentioned in the Unit Overview tab.</phrase>
+	 <phrase>I don't understand when an equation is solved. Would you please try one more time to explain using the key terms mentioned in the Unit Overview tab.</phrase>
+	 <phrase>I am still confused about when to say an equation is solved. Would you please try one more time to explain using the key terms mentioned in the Unit Overview tab.</phrase>
+	</concept>
 	<concept label="R0" model="coded" />
 
 	<concept label="move-on">
-	 <phrase>Tough luck, but let’s move on for now!</phrase>
+		<phrase>Tough luck, but let’s move on for now!</phrase>
 	 <phrase>Hmm...I will get back to it again later. Let’s move on for now!</phrase>
 	 <phrase>Umm...I am not very sure what you meant. I will get back to it again later. Let’s move on now!</phrase>
 	 <phrase>Although I am not convinced yet, let’s move on for now!</phrase>
@@ -99,17 +95,16 @@
 	 <phrase>Umm..I did not quite get what you said but let me move on for now! I will get back to it later again.</phrase>
   </concept>
 	<concept label="rephrase">
-   <phrase>I did not get that. Can you please explain how to ensure that we have solved a problem correctly?</phrase>
-	 <phrase>I did not get that. Can you please explain how to know that we do not need to perform any further steps?</phrase>
-	 <phrase>That was hard to understand. Can you please explain when can I click the problem is solved button?</phrase>
-	 <phrase>That was hard to understand. Can you please explain how to confirm if "%problemStepString%" is the correct solution of the equation?</phrase>
-	 <phrase>I'm afraid I don't follow you. Can you please explain why do you think that the problem is solved here?</phrase>
-	 <phrase>Sorry, I didn't catch that. Would you mind explaining why you thought the problem was solved already?</phrase>
-	 <phrase>That went way over my head. How did you know that the problem is solved?</phrase>
-  </concept>
+	 <phrase>I did not get that. Can you please explain again when to say an equation is solved?</phrase>
+	 <phrase>That was pretty hard to understand. Can you please explain when I can say an equation is solved?</phrase>
+	 <phrase>I'm afraid I don't follow you. Can you please explain when I can say an equation is solved?</phrase>
+	 <phrase>Sorry, I didn't catch that. Would you mind explaining when it is right to click the "problem is solved" button?</phrase>
+	 <phrase>That went way over my head. Can you please explain when it is right to click the "problem is solved" button?</phrase>
+	</concept>
 	<concept label="unanticipated-response">
    <phrase>anything else</phrase>
   </concept>
+
 </concepts>
 
 <script>
@@ -214,7 +209,5 @@
 	 <response say="move-on">unanticipated-response</response>
   </step>
  </goal>
-
-
 </script>
 </scenario>
