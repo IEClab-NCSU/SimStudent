@@ -4945,6 +4945,11 @@ public class SimStPLE {
 		LinkedBlockingQueue<String> bucket = new LinkedBlockingQueue<String>();
 
 		this.setAvatarAsking();
+		getSimStPeerTutoringPlatform().setRestartButtonEnabled(false);
+		getSimStPeerTutoringPlatform().setQuizButtonEnabled(false);
+		getSimStPeerTutoringPlatform().setNextProblemButtonEnabled(false);
+		JCommButton doneButton = (JCommButton) (getBrController().lookupWidgetByName("Done"));
+		doneButton.setEnabled(false);
 
 		getSimStPeerTutoringPlatform().appendSpeech(message, getSimStName());
 		getSimStPeerTutoringPlatform().showTextResponse(true);
@@ -4971,7 +4976,10 @@ public class SimStPLE {
 
 		getSimStPeerTutoringPlatform().showTextResponse(false);
 		this.setAvatarNormal();
-
+		getSimStPeerTutoringPlatform().setRestartButtonEnabled(true);
+		getSimStPeerTutoringPlatform().setQuizButtonEnabled(true);
+		getSimStPeerTutoringPlatform().setNextProblemButtonEnabled(true);
+		doneButton.setEnabled(true);
 		return response;
 
 	}
