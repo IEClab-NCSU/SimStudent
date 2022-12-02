@@ -21,7 +21,7 @@ function show_usage() {
   exit 0
 }
 case $1 in
---number | -n)
+--name | -n)
   shift
   name="$1"
   shift
@@ -34,25 +34,28 @@ case $1 in
   shift
   show_usage
   ;;
-*)
-  ;;
+*) ;;
+
 esac
+printf "\nUsing java version: "
+command java -version
+printf "\nUsing ant version: "
+command ant -version
 
-
-echo "Distribution name - $name"
+printf "\nDistribution name - $name"
 cd "../APLUS/java/"
 
-echo "Creating ctat.jar..."
+printf "\nCreating ctat.jar..."
 if [[ "$verbose" = "Y" ]]; then
   ant clean #remove previous ctat.jar
-  ant  #Create new ctat.jar
+  ant       #Create new ctat.jar
 else
   ant clean 1>/dev/null 2>&1
   ant 1>/dev/null 2>&1
 fi
 
 cd "../../Tutors/Algebra/SimStAlgebraV8"
-echo "Compiling tutors..."
+printf "\nCompiling tutors..."
 
 if [[ "$verbose" = "Y" ]]; then
   command "./compileTutor.sh"
@@ -63,18 +66,32 @@ fi
 cd "../../"
 
 if [ -d "./$name" ]; then
-  echo "\nDistribution name $name already exists and will be deleted to create new distribution.\n"
-  rm -rf "$name"
+  printf "\nDistribution name $name already exists and will be deleted to create new distribution.\n"
+  rm -rf "./$name"
 fi
 
 mkdir "$name"
-echo "\nCopying content of /Algebra folder to $name/ folder."
-cp -a "./Algebra/." "$name/" #copying content of Algebra to distribution
+printf "\nCopying content of ./Algebra/ folder to ./$name/ folder..."
+cp -a "./Algebra/." "$name/"
 
-echo "\nCopying jars"
+printf "\nCopying jars..."
 rm "./$name/lib/ctat.jar"
 cp "../APLUS/java/lib/ctat.jar" "./$name/lib/"
 cp "../APLUS/java/lib/jsoup-1.15.3.jar" "./$name/lib/"
 cp -a "../SIDE&SLIM jars/." "./$name/lib/"
 
-echo "\nDistribution - '$name' created successfully.\n"
+printf "\nCompiling lightside files..."
+cd "../LightSide/lightside/"
+if [[ "$verbose" = "Y" ]]; then
+  ant clean
+  ant
+else
+  ant clean 1>/dev/null 2>&1
+  ant 1>/dev/null 2>&1
+fi
+cd "../../Tutors"
+
+printf "\nCopying lightside files..."
+cp -a "../Lightside/lightside" "./$name/"
+
+printf "\nDistribution - '$name' created successfully.\n"

@@ -59,8 +59,9 @@ public class  QuizPane extends JXTaskPane
 		{	
 			if(locked)
 				return;
-			
-			if(!hasResults && !collapsed && !brController.getMissController().getSimSt().isSsCogTutorMode())
+
+			boolean isQuizButtonEnable = brController.getMissController().getSimStPLE().getSimStPeerTutoringPlatform().getQuizButton().isEnabled();
+			if(!hasResults && !collapsed && !brController.getMissController().getSimSt().isSsCogTutorMode() && isQuizButtonEnable )
 			{
 				
 				int result = JOptionPane.showConfirmDialog(null, "This quiz has not yet been taken.  Do you want "+SimSt.getSimStName()+" to take it now?",

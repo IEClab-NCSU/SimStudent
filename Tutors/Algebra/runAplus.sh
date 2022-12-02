@@ -157,7 +157,7 @@ echo "COMMAND LINE ARGUMENTS : ${AddArgs}";
 VmOption="-cp ${CPATH} -Xmx512m -DssFoilBase=../FOIL6 -DappRunType=shellscript"
 #fi
 # CTAT options
-TutorArg="-traceLevel 3"
+TutorArg="-traceLevel 0"
 if [ -z ${PLE} ];
 then
 	TutorArg="${TutorArg} -ssRunInPLE ";
