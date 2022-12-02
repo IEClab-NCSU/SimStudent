@@ -35,6 +35,7 @@ import jess.JessException;
 import jess.Node1RTLTest;
 import jess.Rete;
 import jess.Value;
+import pact.CommWidgets.JCommButton;
 import pact.CommWidgets.JCommComboBox;
 import pact.CommWidgets.JCommTable;
 import pact.CommWidgets.JCommTable.TableCell;
@@ -1914,13 +1915,17 @@ public void fillInQuizProblem(String problemName) {
 						followupAfterMrWTrigger(currentNode, rule_not_applied_logic, ruleNickName, true);
 					}
 				}*/
-
+				if (hintReceived) 
+					explainHowOnPaper(nextCurrentNode);
 				if (!askedExplanation && hintReceived)
 				//if (hintReceived) 
 				{
-					if(simSt.isCTIFollowupInquiryMode())
+					//if(simSt.isCTIFollowupInquiryMode())
+					String skillName = explainWhyRight(nextCurrentNode);
+					if(simSt.isCTIFollowupInquiryMode() && skillName != "" && explainedWhyRightSkills.contains(skillName)) {
 						explainHowOnPaper(nextCurrentNode);
-					explainWhyRight(nextCurrentNode);
+					}
+					
 				}
 
 				// update currentNode
@@ -2789,15 +2794,15 @@ public void fillInQuizProblem(String problemName) {
 	
 
 
-	public void explainWhyRight(ProblemNode node) {
+	public String explainWhyRight(ProblemNode node) {
 
 
 		ProblemEdge edge = null;
 		if (node.getInDegree() <= 0)
-			return;
+			return "";
 		edge = (ProblemEdge) node.getIncomingEdges().get(0);
 		if (edge.getEdgeData().getRuleNames().size() <= 0)
-			return;
+			return "";
 		String skillName = (String) edge.getEdgeData().getRuleNames()
 				.get(edge.getEdgeData().getRuleNames().size() - 1);
 
@@ -2880,7 +2885,7 @@ public void fillInQuizProblem(String problemName) {
 				// However, if you need something to be done after
 				// self-explaining,
 				// change this if to if-else and remove this return.
-				return;
+				return "";
 			}
 			if (simSt.isCTIFollowupInquiryMode()) {
 				String xml_script_name;
@@ -2931,7 +2936,7 @@ public void fillInQuizProblem(String problemName) {
 				}
 				
 				
-				return;
+				return "";
 			}
 
 			String explanation = "";
@@ -2977,6 +2982,7 @@ public void fillInQuizProblem(String problemName) {
 						explainDuration, question);
 			}
 		}
+		return skillName;
 	}
 	
 	
@@ -2999,58 +3005,80 @@ public void fillInQuizProblem(String problemName) {
 
 		Random r = new Random();
 	    int probability = r.nextInt(100);
-		if (simSt.isSelfExplainMode() && isSelectionValidForSelfExplanation(edge.getSelection()) && !explainedHowOnPaperSkills.contains(skillName)
-				&& probability <= CHANCE && !explainedSelectionSkillsOnPaper.contains(edge.getSelection()))
+		//if (simSt.isSelfExplainMode() && isSelectionValidForSelfExplanation(edge.getSelection()) && !explainedHowOnPaperSkills.contains(skillName)
+		//		&& probability <= CHANCE && !explainedSelectionSkillsOnPaper.contains(edge.getSelection()))
 		{
-
-			explainedHowOnPaperSkills.add(skillName);
-			explainedSelectionSkillsOnPaper.add(edge.getSelection());
-
-			step = simSt.getProblemStepString();
-			//String question = "Can you explain how "+ sai.getI() + " would be like if I had done that on a piece of paper?";
-			String question = getBrController(getSimSt()).getMissController().getSimStPLE().getConversation().getMessage(SimStConversation.ON_PAPER_EXPLAIN_TOPIC, sai.getI(), "", "");
-			String explanation = "";
-			//setExplanationGiven(true);
-			if (getBrController(getSimSt()).getMissController().getSimSt().isSsMetaTutorMode())
-				getBrController(getSimSt()).getAmt().handleInterfaceAction("selfExp", "implicit", "-1");
-
-			long explainRequestTime = Calendar.getInstance().getTimeInMillis();
-			if (getBrController(getSimSt()).getMissController().getSimStPLE() == null) {
-				explanation = JOptionPane.showInputDialog(null, question,
-						"Please Provide an Explanation",
-						JOptionPane.PLAIN_MESSAGE);
-			} else {
-				SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();
-				
-				if(runType.equals("springBoot")) {
-					explanation = getHintInformation();
-				} else {
-					explanation = ple.giveMessageFreeTextResponse(question);
+			SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();
+			boolean checked_example = false;
+			if(ple.hasSeenExamples) {
+				// Tutor has checked example tab before
+				checked_example = true;
+			}
+			else {
+				//for(int i=0; i<2; i++) 
+				{
+					int has_seen_example_tab = getSimSt().displayConfirmMessage("haveSeenOnPaper?", "The Example tab shows what every step entered in the transformation box looks like on paper. Please go to the Example Tab. Click on any problem listed on the right.<br>" + 
+							"<strong>Did you notice how a step in the transformation box can be written on paper in the Example Tab?</strong>");
+					if (has_seen_example_tab == JOptionPane.YES_OPTION) {
+						ple.giveMessage("Thanks for checking it out.");
+						checked_example = true;
+						//break;
+					} else {
+						ple.giveMessage("Okay! But you will be able to understand my next question better if you check the Example Tab.");	
+					}
+					
 				}
+			}
+				explainedHowOnPaperSkills.add(skillName);
+				explainedSelectionSkillsOnPaper.add(edge.getSelection());
+	
+				step = simSt.getProblemStepString();
+				//String question = "Can you explain how "+ sai.getI() + " would be like if I had done that on a piece of paper?";
+				String question = getBrController(getSimSt()).getMissController().getSimStPLE().getConversation().getMessage(SimStConversation.ON_PAPER_EXPLAIN_TOPIC, sai.getI(), "", "");
+				String explanation = "";
+				//setExplanationGiven(true);
+				if (getBrController(getSimSt()).getMissController().getSimSt().isSsMetaTutorMode())
+					getBrController(getSimSt()).getAmt().handleInterfaceAction("selfExp", "implicit", "-1");
+	
+				long explainRequestTime = Calendar.getInstance().getTimeInMillis();
+				if (getBrController(getSimSt()).getMissController().getSimStPLE() == null) {
+					explanation = JOptionPane.showInputDialog(null, question,
+							"Please Provide an Explanation",
+							JOptionPane.PLAIN_MESSAGE);
+				} else {
+					
+					
+					if(runType.equals("springBoot")) {
+						explanation = getHintInformation();
+					} else {
+						explanation = ple.giveMessageFreeTextResponse(question, true);
+					}
+					if (explanation != null && explanation.length() > 0) {
+						ple.giveMessage(ple.getConversation().getMessage(
+								SimStConversation.CONFIRM_TOPIC));
+					} else {
+						ple.giveMessage(ple.getConversation().getMessage(
+								SimStConversation.SKIPPED_TOPIC));
+					}
+				}
+	
+	
+				int explainDuration = (int) (Calendar.getInstance()
+						.getTimeInMillis() - explainRequestTime);
+				step = getBrController(getSimSt()).getMissController().getSimSt()
+						.getProblemStepString();
 				if (explanation != null && explanation.length() > 0) {
-					ple.giveMessage(ple.getConversation().getMessage(
-							SimStConversation.CONFIRM_TOPIC));
+					logger.simStLog(SimStLogger.SIM_STUDENT_EXPLANATION,
+							SimStLogger.ON_PAPER_EXPLAIN_ACTION, step, explanation,
+							question, sai, explainDuration, question);
 				} else {
-					ple.giveMessage(ple.getConversation().getMessage(
-							SimStConversation.SKIPPED_TOPIC));
+					logger.simStLog(SimStLogger.SIM_STUDENT_EXPLANATION,
+							SimStLogger.ON_PAPER_EXPLAIN_ACTION, step,
+							SimStLogger.NO_EXPLAIN_ACTION, question, sai,
+							explainDuration, question);
 				}
-			}
-
-
-			int explainDuration = (int) (Calendar.getInstance()
-					.getTimeInMillis() - explainRequestTime);
-			step = getBrController(getSimSt()).getMissController().getSimSt()
-					.getProblemStepString();
-			if (explanation != null && explanation.length() > 0) {
-				logger.simStLog(SimStLogger.SIM_STUDENT_EXPLANATION,
-						SimStLogger.ON_PAPER_EXPLAIN_ACTION, step, explanation,
-						question, sai, explainDuration, question);
-			} else {
-				logger.simStLog(SimStLogger.SIM_STUDENT_EXPLANATION,
-						SimStLogger.ON_PAPER_EXPLAIN_ACTION, step,
-						SimStLogger.NO_EXPLAIN_ACTION, question, sai,
-						explainDuration, question);
-			}
+			
+		
 		}
 	}
 	
@@ -3085,10 +3113,18 @@ public void fillInQuizProblem(String problemName) {
 	public void explainWhyWrong(RuleActivationNode ran, ProblemNode currentNode) {
 
 		if (simSt.isSelfExplainMode()) {
+			
+			getBrController(getSimSt()).getMissController().getSimStPLE().getSimStPeerTutoringPlatform().setUndoButtonEnabled(false);
+			getBrController(getSimSt()).getMissController().getSimStPLE().getSimStPeerTutoringPlatform().setRestartButtonEnabled(false);
+			getBrController(getSimSt()).getMissController().getSimStPLE().getSimStPeerTutoringPlatform().setQuizButtonEnabled(false);
+			getBrController(getSimSt()).getMissController().getSimStPLE().getSimStPeerTutoringPlatform().setNextProblemButtonEnabled(false);
+			JCommButton doneButton = (JCommButton) (getBrController(getSimSt()).lookupWidgetByName("Done"));
+			doneButton.setEnabled(false);
 
 			Sai sai = new Sai(ran.getActualSelection(), ran.getActualAction(),
 					ran.getActualInput());
 			String ruleName = ran.getName().replaceAll("MAIN::", "");
+			
 			if (trace.getDebugCode("sstt"))
 				trace.out("sstt",
 						"Why wrong TutalkI Trace skillName: " + ran.getName()
@@ -3097,8 +3133,8 @@ public void fillInQuizProblem(String problemName) {
 
 			String step = simSt.getProblemStepString();
 			
-			AskHintJessOracle jess_hint = new AskHintJessOracle(getBrController(getSimSt()),currentNode);
-			String jess_hint_ruleName = jess_hint.getRuleName();
+			//AskHintJessOracle jess_hint = new AskHintJessOracle(getBrController(getSimSt()),currentNode);
+			//String jess_hint_ruleName = jess_hint.getRuleName();
 			
 
 			String question = "Why shouldn't I put " + sai.getI() + "?";
@@ -3254,7 +3290,12 @@ public void fillInQuizProblem(String problemName) {
 						//stepCV = "\"" + current_foa2 + "\" and \"" + stepCV + "\"";
 					} 
 					else {
-						contextVariables.addVariable("%rulename%", ruleName);
+						String skillNickName = ple.getSkillNickName(ruleName);
+						if(skillNickName != null)
+							contextVariables.addVariable("%rulename%", skillNickName.trim());
+						else
+							contextVariables.addVariable("%rulename%", ruleName);
+
 						contextVariables.addVariable("%prev_problem%", simSt.getPastProblem());
 					}
 					stepCV = SimSt.convertFromSafeProblemName(stepCV);
@@ -3262,7 +3303,8 @@ public void fillInQuizProblem(String problemName) {
 					contextVariables.addVariable("%current_problem%", stepCV);
 					
 					
-					String xml_script_name;
+					String xml_script_name = null;
+					Concept c_first = null;
 					if (sai.getS().equalsIgnoreCase(Rule.DONE_NAME) && !step.contains("[")) {
 						//xml_script_name = "why_wrong_done_followup_dialog";
 						Random random_n = new Random();
@@ -3273,10 +3315,22 @@ public void fillInQuizProblem(String problemName) {
 							xml_script_name =  "why_wrong_done_followup_dialog_blue";
 						
 					} else if(!step.contains("[")) {
-						//xml_script_name = "why_wrong_followup_dialog";
-						if(jess_hint_ruleName.equalsIgnoreCase(Rule.DONE_NAME))
-							xml_script_name = "why_wrong_followup_dialog_blue";
-						else {
+						// Asking question first;
+						//explanation = ple.giveMessageFreeTextResponse(question);
+						tutalkBridge.connect("why_wrong_followup_basis",
+								contextVariables,
+								SimStLogger.INPUT_WRONG_EXPLAIN_ACTION);
+						while (tutalkBridge.getState() != SimStTutalk.TUTALK_STATE_DONE) {
+							try {
+								Thread.sleep(250);
+							} catch (java.lang.InterruptedException e) {
+								// Nothing we can do here.
+							}
+						}
+						c_first = tutalkBridge.getLastStatementLabel();
+						//if(isTutorAcknowledgingProblemIsSolved(explanation.toLowerCase(), ple)) 
+						if(c_first.getLabel().contains("NOTDONE") || c_first.getLabel().contains("unanticipated-response")) {
+							ple.giveMessage("Hmm...Let me think!");
 							Random random_n = new Random();
 							int x = random_n.nextInt(9);
 							if(x%2 == 0)
@@ -3284,6 +3338,46 @@ public void fillInQuizProblem(String problemName) {
 							else
 								xml_script_name =  "why_wrong_followup_dialog_blue";
 						}
+						else if(c_first.getLabel().contains("DONE"))
+						{
+							int is_done = getSimSt().displayConfirmMessage("isDone?", "Oh! Do you mean the problem is solved?");
+							if (is_done == JOptionPane.YES_OPTION) {
+								ple.giveMessage("I see! I should have clicked the \"problem is solved button\" now. But I need some clarification about the blue equation on the left.");
+								xml_script_name = "why_wrong_followup_dialog_blue";
+							} else {
+								//
+								ple.giveMessage("Got it. My bad!");
+								Random random_n = new Random();
+								int x = random_n.nextInt(9);
+								if(x%2 == 0)
+									xml_script_name =  "why_wrong_followup_dialog_red";
+								else
+									xml_script_name =  "why_wrong_followup_dialog_blue";
+								
+							}
+							
+						}
+						/*if (explanation != null && explanation.length() > 0) {
+							ple.giveMessage(ple.getConversation().getMessage(
+									SimStConversation.CONFIRM_TOPIC));
+						} else {
+							ple.giveMessage(ple.getConversation().getMessage(
+									SimStConversation.SKIPPED_TOPIC));
+						}*/
+						
+						//xml_script_name = "why_wrong_followup_dialog";
+						/*if(jess_hint_ruleName.equalsIgnoreCase(Rule.DONE_NAME)) 
+						{
+							xml_script_name = "why_wrong_followup_dialog_blue";
+						}
+						else {
+							Random random_n = new Random();
+							int x = random_n.nextInt(9);
+							if(x%2 == 0)
+								xml_script_name =  "why_wrong_followup_dialog_red";
+							else
+								xml_script_name =  "why_wrong_followup_dialog_blue";
+						}*/
 						//contextVariables.addVariable("%prev_i%", simSt.getPastInput());
 					}
 					else {
@@ -3293,37 +3387,39 @@ public void fillInQuizProblem(String problemName) {
 					
 					
 					//if(logic_found) contextVariables.addVariable("%logic%", logic);
-					tutalkBridge.connect(xml_script_name,
-							contextVariables,
-							SimStLogger.INPUT_WRONG_EXPLAIN_ACTION);
-					while (tutalkBridge.getState() != SimStTutalk.TUTALK_STATE_DONE) {
-						try {
-							Thread.sleep(250);
-						} catch (java.lang.InterruptedException e) {
-							// Nothing we can do here.
+					if(c_first==null || !c_first.getLabel().equals("R2&Y")) {
+						tutalkBridge.connect(xml_script_name,
+								contextVariables,
+								SimStLogger.INPUT_WRONG_EXPLAIN_ACTION);
+						while (tutalkBridge.getState() != SimStTutalk.TUTALK_STATE_DONE) {
+							try {
+								Thread.sleep(250);
+							} catch (java.lang.InterruptedException e) {
+								// Nothing we can do here.
+							}
 						}
-					}
-					Concept c = tutalkBridge.getLastStatementLabel();
-					if (!step.contains("[") && simSt.isResponseSatisfactoryGetterClassDefined()) {
-						IsResponseSatisfactory resp_satisfaction = getSimSt().getResponseSatisfactoryGetter();
-						if(resp_satisfaction.isResponseSatosfactoryGetter(c.getLabel())) {
+						Concept c = tutalkBridge.getLastStatementLabel();
+						if (!step.contains("[") && simSt.isResponseSatisfactoryGetterClassDefined()) {
+							IsResponseSatisfactory resp_satisfaction = getSimSt().getResponseSatisfactoryGetter();
+							if(resp_satisfaction.isResponseSatosfactoryGetter(c.getLabel())) {
+								explainedSelectionSkills.add(sai.getS());
+								setAskedExplanation(true);
+								setExplanationGiven(true);
+								setLastSkillExplained(getFirstRanStudentSaidNo().getName());
+							}
+						}
+						else if(!step.contains("[")) {
 							explainedSelectionSkills.add(sai.getS());
 							setAskedExplanation(true);
 							setExplanationGiven(true);
 							setLastSkillExplained(getFirstRanStudentSaidNo().getName());
 						}
-					}
-					else if(!step.contains("[")) {
-						explainedSelectionSkills.add(sai.getS());
-						setAskedExplanation(true);
-						setExplanationGiven(true);
-						setLastSkillExplained(getFirstRanStudentSaidNo().getName());
-					}
-					else if(step.contains("[") && (c.getLabel().equals("R2")||c.getLabel().equals("R1"))){
-						explainedSelectionSkills.add(sai.getS());
-						setAskedExplanation(true);
-						setExplanationGiven(true);
-						setLastSkillExplained(getFirstRanStudentSaidNo().getName());
+						else if(step.contains("[") && (c.getLabel().equals("R2")||c.getLabel().equals("R1"))){
+							explainedSelectionSkills.add(sai.getS());
+							setAskedExplanation(true);
+							setExplanationGiven(true);
+							setLastSkillExplained(getFirstRanStudentSaidNo().getName());
+						}
 					}
 				}
 				
@@ -3352,6 +3448,12 @@ public void fillInQuizProblem(String problemName) {
 				// The pop up comparison window disappears after receiving response from tutor.
 				whyNotDlg.setVisible(false);
 				
+				getBrController(getSimSt()).getMissController().getSimStPLE().getSimStPeerTutoringPlatform().setUndoButtonEnabled(true);
+				getBrController(getSimSt()).getMissController().getSimStPLE().getSimStPeerTutoringPlatform().setQuizButtonEnabled(true);
+				getBrController(getSimSt()).getMissController().getSimStPLE().getSimStPeerTutoringPlatform().setRestartButtonEnabled(true);
+				getBrController(getSimSt()).getMissController().getSimStPLE().getSimStPeerTutoringPlatform().setNextProblemButtonEnabled(true);
+				doneButton.setEnabled(true);
+				
 			}
 
 			if (getBrController(getSimSt()).lookupWidgetByName(sai.getS()) != null) {
@@ -3376,7 +3478,6 @@ public void fillInQuizProblem(String problemName) {
 			}
 		}
 	}
-	
 	
 		// This function lets the tutee agent to speak out the rationale behind why a production rule was not fired
 		// using the feature predicates

@@ -18,6 +18,7 @@ public class AlgebraV8StartStateChecker extends StartStateChecker {
  	 public final static String EXPERT_PRODUCTION_RULE_FILE = "productionRulesExpert.pr";
 
 	private static char[] invalidVariables = {'d', 'e', 'f', 'l', 'D', 'E', 'F', 'L'};
+	private char[] validSymbols = {'+','-','*','/','(',')','.'};
 
 	 
 	 public boolean checkStartState(String problem, BR_Controller brController){
@@ -67,6 +68,37 @@ public class AlgebraV8StartStateChecker extends StartStateChecker {
 			}
 		}
 	
+	
+	}
+	
+	/*Check if problem has no variable at all*/
+	boolean all_numbers_lhs = true, all_numbers_rhs = true; 
+	int is_equal = 0;
+	if (problem!=null ){
+		for(int i=0;i<problem.length();i++)
+		{
+			char current = problem.charAt(i);
+			//if(new String(validSymbols).indexOf(current) > 0) continue;
+			int is_valid_symbol = 0;
+			for(int j = 0; j < validSymbols.length; j++) 
+			{
+				if(current == validSymbols[j]) 
+				{
+					is_valid_symbol = 1;
+					break;///formatInvalidVariableUsedMessage();
+				}
+			}
+			if(is_valid_symbol == 1) continue;
+			if(current=='=') {
+				is_equal = 1;
+				continue;
+			}
+			
+			if(!Character.isDigit(current) && is_equal==0) all_numbers_lhs = false;
+			if(!Character.isDigit(current) && is_equal==1) all_numbers_rhs = false;
+			
+		}
+		if(all_numbers_lhs && all_numbers_rhs) return false;
 	
 	}
 

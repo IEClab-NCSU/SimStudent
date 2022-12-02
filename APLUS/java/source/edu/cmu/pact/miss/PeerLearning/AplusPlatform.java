@@ -3200,7 +3200,8 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
 			{
 				/* When in examples tab, we don't want the whole solution to be visible */
 				// This is where the example tab gets infiltrated once clicked on a problem. How to hide or unhide image layover.
-			
+					//System.out.println("I am clicked example");
+					simStPLE.hasSeenExamples = true;
 					exampleTemp=example;
 					currentStep=example.getMinimumStep();
 				 

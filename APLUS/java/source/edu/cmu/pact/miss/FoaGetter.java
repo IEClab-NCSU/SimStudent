@@ -11,6 +11,7 @@ import pact.CommWidgets.JCommWidget;
 import pact.CommWidgets.JCommTable.TableCell;
 import edu.cmu.pact.BehaviorRecorder.Controller.BR_Controller;
 import edu.cmu.pact.Utilities.trace;
+import edu.cmu.pact.miss.PeerLearning.SimStPLE;
 
 /**
  * @author mazda
@@ -22,6 +23,7 @@ public class FoaGetter {
      * maintains the history of calls to FoaGetter, i.e. steps learned
      */
     static Vector history;
+    public List<String> componentOrder;
 
     /**
      * must be overridden
@@ -145,6 +147,9 @@ public class FoaGetter {
     	return "enter "+ input + " in the " + brController.getMissController().getSimStPLE().getComponentName(selection);
     }
     
+    public void setcomponentOrder(List<String> list) {
+    	this.componentOrder = list;
+    }
     
     //Override this method to provide different word description of the FOA for an instruction
 	public String foaDescription(Instruction inst)
@@ -177,6 +182,7 @@ public class FoaGetter {
 		
 		
 	}
+	
 	
 	public String foaStepDescription(Instruction inst)
 	{

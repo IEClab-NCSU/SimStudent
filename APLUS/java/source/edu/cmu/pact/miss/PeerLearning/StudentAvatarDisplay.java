@@ -141,13 +141,13 @@ public class StudentAvatarDisplay extends JLayeredPane {
             faceLabel.setIcon(icon6);
     	}
     }
-	
-
+    
     public void setExpression(String expression)
     {
         final ImageIcon icon = createImageIcon(expression);
         faceLabel.setIcon(icon);
         this.expression = expression;
+        
     }
     
     /** Returns an ImageIcon, or null if the path was invalid. */

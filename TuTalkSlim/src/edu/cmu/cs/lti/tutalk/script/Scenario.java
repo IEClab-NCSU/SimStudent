@@ -31,6 +31,7 @@
  */
 package edu.cmu.cs.lti.tutalk.script;
 
+import edu.cmu.cs.lti.tutalk.module.DoneStepAnnotator;
 import edu.cmu.cs.lti.tutalk.module.KeyTermAnnotator;
 import edu.cmu.cs.lti.tutalk.module.ModelConcept;
 import edu.cmu.cs.lti.tutalk.module.ModelConcept.Predictor;
@@ -117,6 +118,7 @@ public class Scenario
 
 		Map<String, LightSideMessageAnnotator> predictors = new HashMap<String, LightSideMessageAnnotator>();
 		Map<String, KeyTermAnnotator> key_term_predictors = new HashMap<String, KeyTermAnnotator>();
+		Map<String, DoneStepAnnotator> done_step_predictors = new HashMap<String, DoneStepAnnotator>();
 
 
 		try
@@ -184,9 +186,13 @@ public class Scenario
 									LightSideMessageAnnotator pete = new LightSideMessageAnnotator(paramDict.get("pathToModel"),paramDict.get("modelName"),paramDict.get("modelNickname"),paramDict.get("predictionCommand"),paramDict.get("classificationString"));
 									predictors.put(name, pete);
 								}
-								else {
+								else if(classname.contains("KeyTermAnnotator")) {
 									KeyTermAnnotator kete = new KeyTermAnnotator(paramDict.get("fileName"));
 									key_term_predictors.put(name, kete);
+								}
+								else {
+									DoneStepAnnotator dete = new DoneStepAnnotator(paramDict.get("fileName"));
+									done_step_predictors.put(name, dete);
 								}
 							}
 						}
@@ -215,14 +221,27 @@ public class Scenario
 								String condition = conceptElement.getAttribute("model");
 								if(condition.contains("&")) {
 									String[] conds = condition.split("&");
-									c = new ModelConcept(label, predictors.get(conds[0]),key_term_predictors.get(conds[1]));
+									if(conds.length==2) {
+										if(conds[1].contains("key_term"))
+											c = new ModelConcept(label, predictors.get(conds[0]),key_term_predictors.get(conds[1]));
+										else
+											c = new ModelConcept(label, predictors.get(conds[0]),done_step_predictors.get(conds[1]));
+									}
+									else {
+										c = new ModelConcept(label, predictors.get(conds[0]),key_term_predictors.get(conds[1]), done_step_predictors.get(conds[2])); 
+									}
+
 								}
 								else {
 								
 									if(predictors.containsKey(conceptElement.getAttribute("model")))
 										c = new ModelConcept(label, predictors.get(conceptElement.getAttribute("model")));
-									else
+									else if(key_term_predictors.containsKey(conceptElement.getAttribute("model"))) {
 										c = new ModelConcept(label, key_term_predictors.get(conceptElement.getAttribute("model")));
+									}
+									else
+										c = new ModelConcept(label, done_step_predictors.get(conceptElement.getAttribute("model")));
+
 								}
 
 							}

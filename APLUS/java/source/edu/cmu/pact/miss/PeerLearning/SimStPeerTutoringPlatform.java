@@ -789,6 +789,7 @@ public class SimStPeerTutoringPlatform extends JComponent {
     	this.tutoringAvatarPanel=tutoringAvatarPanel;
     }
     
+  
     
     public void setExpression(String expression)
     {

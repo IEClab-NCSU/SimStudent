@@ -138,7 +138,7 @@ public class SimStLogger {
    public static final String UNDO_ACTION = "Step Undone";
    public static final String AVATAR_CONFIGURE_BUTTON_ACTION = "Avatar Configure Button Clicked";
    public static final String AVATAR_SAVE_ACTION = "Avatar Image Saved";
-   public static final String RANDOMIZE_ACTION =" Roll a die Button Clicked";
+   public static final String RANDOMIZE_ACTION =" Roll a dice Button Clicked";
    public static final String SKILLOMETER_UPDATE_ACTION = "Skillometer Updated";
    public static final String CHAT_DIALOG_ACTION = "Chat Dialog Entered";
    public static final String QUIZ_VIEW = "Quiz Solution Viewed";

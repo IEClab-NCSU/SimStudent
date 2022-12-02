@@ -26,6 +26,7 @@ import jess.ValueVector;
 import edu.cmu.pact.BehaviorRecorder.ProblemModel.Graph.ProblemEdge;
 import edu.cmu.pact.BehaviorRecorder.ProblemModel.Graph.ProblemNode;
 import edu.cmu.pact.miss.Sai;
+import edu.cmu.pact.miss.PeerLearning.SimStPLE;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -246,11 +247,15 @@ public class AlgebraV8AdhocFoaGetter extends FoaGetter {
 		if(inst.getFocusOfAttention().size() < 3)
 			return null;
 		String foa1 = ((String) inst.getFocusOfAttention().get(1));
+		String cell_name_1 = foa1.split("\\|")[1];
 		foa1 = foa1.substring(foa1.lastIndexOf('|')+1);
 		String foa2 = ((String) inst.getFocusOfAttention().get(2));
+		String cell_name_2 = foa2.split("\\|")[1];
 		foa2 = foa2.substring(foa2.lastIndexOf('|')+1);
-		return foa1+"="+foa2;
-		
+		if(!isInOrder(cell_name_1, cell_name_2))
+			return foa2+"="+foa1;
+		else
+			return foa1+"="+foa2;
 	}
 	
 	public ArrayList<String> getComparablePastFoas(Instruction inst){
@@ -289,10 +294,12 @@ public class AlgebraV8AdhocFoaGetter extends FoaGetter {
         String foa1 = ((String) inst.getFocusOfAttention().get(1));
 		char c = foa1.charAt(foa1.indexOf(DORMIN_TABLE_STEM)+DORMIN_TABLE_STEM.length());
         int col1 = c - '1' +1;
+        String cell_name_1 = foa1.split("\\|")[1];
 		foa1 = foa1.substring(foa1.lastIndexOf('|')+1);
         String foa2 = ((String) inst.getFocusOfAttention().get(2));
 		c = foa2.charAt(foa2.indexOf(DORMIN_TABLE_STEM)+DORMIN_TABLE_STEM.length());
         int col2 = c - '1' +1;
+        String cell_name_2 = foa2.split("\\|")[1];
 		foa2 = foa2.substring(foa2.lastIndexOf('|')+1);
 		
 		if(col1 < 3 && col2 < 3)
@@ -300,11 +307,19 @@ public class AlgebraV8AdhocFoaGetter extends FoaGetter {
 			
 			if(((String) inst.getFocusOfAttention().get(0)).contains("done"))
 			{
-				newStr=" for <font color=\"blue\">"+foa1+"="+foa2+"</font>, the next step was to click <font color=\"blue\">"+str+"</font> button";
+				if(!isInOrder(cell_name_1, cell_name_2))
+					newStr=" for <font color=\"blue\">"+foa2+"="+foa1+"</font>, the next step was to click <font color=\"blue\">"+str+"</font> button";
+				else
+					newStr=" for <font color=\"blue\">"+foa1+"="+foa2+"</font>, the next step was to click <font color=\"blue\">"+str+"</font> button";
+
 
 			}
 			else {
-				newStr=" for <font color=\"blue\">"+foa1+"="+foa2+"</font>, the transformation was <font color=\"blue\">"+str+"</font>";
+				if(!isInOrder(cell_name_1, cell_name_2))
+					newStr=" for <font color=\"blue\">"+foa2+"="+foa1+"</font>, the transformation was <font color=\"blue\">"+str+"</font>";
+				else
+					newStr=" for <font color=\"blue\">"+foa1+"="+foa2+"</font>, the transformation was <font color=\"blue\">"+str+"</font>";
+
 			}
 		
 		//	str += " for '"+foa1+"="+foa2+"'";
@@ -323,6 +338,12 @@ public class AlgebraV8AdhocFoaGetter extends FoaGetter {
 		
 		return newStr;
 		//return str;
+	}
+	
+	public boolean isInOrder(String foa1, String foa2) {
+		List<String> components = super.componentOrder;
+		if(components!=null && components.indexOf(foa1) > components.indexOf(foa2)) return false;
+		return true;
 	}
 	
 	public String foaStepDescription(Instruction inst)

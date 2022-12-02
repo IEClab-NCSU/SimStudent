@@ -246,6 +246,8 @@ skillNickName
 combine: combine
 subtract: subtract
 subtract-1: subtract
+subtract-2: subtract
+subtract-3: subtract
 add:add
 add-1: add
 add-2: add

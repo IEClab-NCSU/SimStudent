@@ -258,6 +258,7 @@ public class SimStPLE {
 	public static final String ASK_EXPRESSION = "img/face5.png";
 	public static final String SAD_EXPRESSION = "img/face3.png";
 	public static final String CONFUSE_EXPRESSION = "img/face3.png";
+	public static final String PAPER_EXAMPLE = "img/E30.png";
 	public static final String UNDOCK_ICON_IMAGE = "img/Undock_Icon.png";
 	public static String METATUTOR_EMPTY_DESK = "img/metatutor_empty.png";
 	public static String METATUTOR_IMAGE = "img/metatutor.png";
@@ -293,6 +294,7 @@ public class SimStPLE {
 
 	public SimStMessageDialog messageDialog;
 	public boolean hasExamples = false;
+	public boolean hasSeenExamples = false;
 
 	/** Thread pool with MAX_THREAD_COUNT available threads at any point of time. */
 	private static ExecutorService quizThreadPool = Executors.newFixedThreadPool(MAX_THREAD_COUNT);
@@ -304,6 +306,7 @@ public class SimStPLE {
 	public static Object quizLock = new Object();
 
 	private List<String> components = new ArrayList<String>();
+	private List<String> foa_components_order = new ArrayList<String>();
 	
 	private String avatarExpressions = NORMAL_EXPRESSION;
 	
@@ -317,6 +320,9 @@ public class SimStPLE {
 
 	public List<String> getComponents() {
 		return components;
+	}
+	public List<String> getOrderedComponents() {
+		return foa_components_order;
 	}
 
 	public void setComponents(List<String> components) {
@@ -1289,7 +1295,7 @@ public class SimStPLE {
 				}
 				else if (line.equals(SKILL_NICKNAMES)) {
 					configSkillNickNames(reader);
-				} 
+				}
 				// ended edits by Tasmia
 				else if (line.equals(SECTIONS_HEADER)) {
 					configSections(reader);
@@ -1328,6 +1334,7 @@ public class SimStPLE {
 				if (!runType.equalsIgnoreCase("springBoot")) {
 					addStartStateListener(line);
 				}
+				foa_components_order.add(line);
 				line = reader.readLine();
 			}
 		} catch (Exception e) {
@@ -1349,6 +1356,7 @@ public class SimStPLE {
 				} else {
 					components.add(line);
 				}
+				foa_components_order.add(line);
 				line = br.readLine();
 			}
 			components.add("done");
@@ -2208,7 +2216,7 @@ public class SimStPLE {
 	public String getSkillNickName(String ruleName) {
 		return skillNickNames.get(ruleName);
 	}
-
+	
 	public String messageComposer(String template, String selection, String action, String input) {
 		String returnValue = template;
 
@@ -4420,6 +4428,18 @@ public class SimStPLE {
 		getSimStPeerTutoringPlatform().setRestartButtonEnabled(true);
 		getSimStPeerTutoringPlatform().setWait(false);
 	}
+	
+	// Displays that the on_paper_image instead of avatar image
+		public void setAvatarOnPaper() {
+			status = ASK_STATUS;
+			blockInput(true);
+			startStatus = false;
+			// getSimStPeerTutoringPlatform().setImage(STUDENT_THINK_IMAGE);
+			getSimStPeerTutoringPlatform().setExpression(PAPER_EXAMPLE);
+			getSimStPeerTutoringPlatform().setUndoButtonEnabled(false);
+			getSimStPeerTutoringPlatform().setRestartButtonEnabled(true);
+			getSimStPeerTutoringPlatform().setWait(false);
+		}
 
 	public void setAvatarConfused(boolean confusion) {
 		// TODO Elaborate!
@@ -4941,11 +4961,18 @@ public class SimStPLE {
 		getSimStPeerTutoringPlatform().getNoResponseButton().setActionCommand("" + JOptionPane.NO_OPTION);
 
 	}
-
+	
 	public String giveMessageFreeTextResponse(String message) {
+		return giveMessageFreeTextResponse(message, false);
+	}
+
+	public String giveMessageFreeTextResponse(String message,  boolean on_paper) {
 		LinkedBlockingQueue<String> bucket = new LinkedBlockingQueue<String>();
 
-		this.setAvatarAsking();
+		if(!on_paper)
+			this.setAvatarAsking();
+		else
+			this.setAvatarOnPaper();
 
 		getSimStPeerTutoringPlatform().appendSpeech(message, getSimStName());
 		getSimStPeerTutoringPlatform().showTextResponse(true);

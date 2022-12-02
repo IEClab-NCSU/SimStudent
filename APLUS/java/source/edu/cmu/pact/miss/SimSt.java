@@ -10540,6 +10540,7 @@ public final class SimSt implements Serializable {
  		String foaDesc = "";
    	if(foaGetter != null)
    	{
+   		foaGetter.setcomponentOrder(getMissController().getSimStPLE().getOrderedComponents());
    		foaDesc = foaGetter.foaDescription(inst);
    		if(isCTIFollowupInquiryMode()) {
    			setPastProblem(foaGetter.getComparablePastProblem(inst));
@@ -10591,7 +10592,8 @@ public final class SimSt implements Serializable {
 
    	String foaDesc="";
 
-	for (int i=0;i<foas.size();i++){
+	//for (int i=0;i<foas.size();i++){
+	for (int i=foas.size()-1;i>=0;i--){
 		String foaInput="";
 		String foaName="";
 

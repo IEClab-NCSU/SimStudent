@@ -187,14 +187,14 @@ I don't know what I get when I <o> here. I'm stuck. Can you show me?
 I know I'm supposed to <o> here, but I don't know how. I'm stuck. Please show me what to do. <BD>
 
 TRANSFORMATION_EXPLANATION_HINT
-Thanks for the explanation, but I still don't get it. Could you please show me what to do?
+Thanks for the explanation, but I still don't know how to proceed. Could you please show me what to do?
 Thanks for the explanation, but I am stuck. Can you show me what to do next?
 Thanks for the explanation, but I still don't know how to proceed. Can you tell me what should I do?
 
 TYPEIN_EXPLANATION_HINT
 Thanks for the explanation, but I still don't know how to <o>. Can you tell me what should I do?
 Thanks for the explanation, but I am stuck. Can you show me what to do next?
-Thanks for the explanation, but I still don't get it. Could you please show me what to do?
+Thanks for the explanation, but I still don't know how to <o>. Could you please show me what to do?
 
 FAIL_TO_LEARN_GIVE_UP_TOPIC
 I still don't get it. Can you give me a new problem?
@@ -358,9 +358,8 @@ Can you please explain your reasoning behind the demonstrated step?
 Can you review the reasoning to me that led you to demonstrate this step?
 
 ON_PAPER_EXPLAIN
-So, <i> was entered in the transformation box. How do you mention <i> on paper when asked to show your work?
-So, <i> was entered in the transformation box. How would you mention <i> on paper when asked to show your work?
-So, <i> was entered in the transformation box. How would you mention <i> on paper when asked to show your work?
+So, <i> was entered in the transformation box. How do you mention <i> when you show your work on paper?
+So, <i> was entered in the transformation box. How would you mention <i> when you show your work on paper?
 When you show your work on paper, how do you mention <i> there?
 
 BOTH_STUCK

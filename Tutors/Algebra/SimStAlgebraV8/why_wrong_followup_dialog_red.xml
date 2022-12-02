@@ -21,10 +21,14 @@
 
 <concepts>
 	<concept label="first-question">
-	 <!--<phrase>%Q%</phrase>-->
-	 <!--<phrase>I remember in the past, when I had "%prev_problem%", I did "%prev_i%" (see Figure A).  Now, I see "%current_problem%" so I thought "%current_i%" would work here (see Figure B). Why is this different? Please explain your reasoning in the box below.</phrase>-->
-	 <phrase>I remember in the &lt;font color="blue"&gt;past&lt;/font&gt;, for &lt;font color="blue"&gt;"%prev_problem%"&lt;/font&gt; the transformation was &lt;font color="blue"&gt;"%prev_i%"&lt;/font&gt; and it was acknowledged as correct. (see &lt;font color="blue"&gt;Figure A&lt;/font&gt;). &lt;font color="red"&gt;Now&lt;/font&gt;, I see &lt;font color="red"&gt;"%current_problem%"&lt;/font&gt;
-		so I thought &lt;font color="red"&gt;"%current_i%"&lt;/font&gt; would work here, but you said that is incorrect. (see &lt;font color="red"&gt;Figure B&lt;/font&gt;) . Why? Please explain your reasoning in the box below.</phrase>
+	 <!--<phrase>I remember in the &lt;font color="blue"&gt;past&lt;/font&gt;, for &lt;font color="blue"&gt;"%prev_problem%"&lt;/font&gt; the transformation was &lt;font color="blue"&gt;"%prev_i%"&lt;/font&gt; and it was acknowledged as correct. (see &lt;font color="blue"&gt;Figure A&lt;/font&gt;). &lt;font color="red"&gt;Now&lt;/font&gt;, I see &lt;font color="red"&gt;"%current_problem%"&lt;/font&gt;
+		so I thought &lt;font color="red"&gt;"%current_i%"&lt;/font&gt; would work here, but you said that is incorrect. (see &lt;font color="red"&gt;Figure B&lt;/font&gt;) . Why? Please explain your reasoning in the box below.</phrase>-->
+	 <phrase>Why applying &lt;font color="red"&gt;"%current_i%"&lt;/font&gt; is incorrect for &lt;font color="red"&gt;"%current_problem%"&lt;/font&gt;? Please explain using the key terms from the Unit Overview tab.</phrase>
+	 <phrase>Why &lt;font color="red"&gt;"%current_i%"&lt;/font&gt; is wrong when the equation is &lt;font color="red"&gt;"%current_problem%"&lt;/font&gt;? Please explain using the key terms from the Unit Overview tab.</phrase>
+	 <phrase>When applying "%rulename%" in an equation is wrong? Please explain using the key terms in the Unit Overview tab.</phrase>
+	 <phrase>When applying "%rulename%" in an equation is incorrect? Please explain using the key terms in the Unit Overview tab.</phrase>
+	 <phrase>There might be some other correct transformation to apply here. But, how do you know &lt;font color="red"&gt;"%current_i%"&lt;/font&gt; is a wrong one? Please explain using the key terms in the Unit Overview tab.</phrase>
+	 <phrase>There might be alternative correct actions but that does not justify "%rulename%" is incorrect. Can you explain when applying "%rulename%" in an equation is wrong using the key terms in the Unit Overview tab?</phrase>
 	</concept>
 
 	<concept label="R2&amp;Y" model="coded&amp;key_term_adhoc" />
@@ -43,7 +47,7 @@
   </concept>
 	<concept label="R2&amp;N" model="coded&amp;key_term_adhoc" />
 	<concept label="R2N-response-simst">
-   <phrase>Your explanation was too specific. Using the key terms in Unit Overview tab, please explain when "%rulename%" cannot be applied??</phrase>
+   <phrase>Your explanation was too specific. Using the key terms in Unit Overview tab, please explain when "%rulename%" cannot be applied?</phrase>
 	 <phrase>I am trying to understand a generalized rule of when NOT to apply "%rulename%". Using the key terms in Unit Overview tab, please explain when applying "%rulename%" is incorrect?</phrase>
 	 <phrase>Your explanation was too specific. Using the key terms in Unit Overview tab, please explain when applying "%rulename%" is wrong?</phrase>
 	 <phrase>I need more information to understand your explanation for other similar equations. Using the key terms in the Unit Overview tab, please explain when applying "%rulename%" is wrong?</phrase>
@@ -67,9 +71,9 @@
 
 	<concept label="R0&amp;Y" model="coded&amp;key_term_adhoc" />
 	<concept label="R0Y-response-simst">
-   <phrase>Your explanation is resourceful but very short for me to understand properly. Please add a little more information to explain why applying &lt;font color="red"&gt;"%current_i%"&lt;/font&gt; is incorrect for &lt;font color="red"&gt;"%current_problem%"&lt;/font&gt;.</phrase>
-	 <phrase>Your explanation using the key terms is helpful but too brief for me. Please add a little more information to teach me when applying "%rulename%" is wrong in an equation.</phrase>
-	 <phrase>Your explanation using the key terms is helpful for my learning but too short for me to understand properly. Please elaborate more on when it is wrong to apply "%rulename%" in an equation.</phrase>
+   <phrase>I see you mentioned about a key term. However, it is not informative enough for me. Please add a little more information to explain why applying &lt;font color="red"&gt;"%current_i%"&lt;/font&gt; is incorrect for &lt;font color="red"&gt;"%current_problem%"&lt;/font&gt;.</phrase>
+	 <phrase>I see you mentioned about a key term. However, it is not informative enough for me. Please add a little more information to teach me when applying "%rulename%" is wrong in an equation.</phrase>
+	 <phrase>I see you mentioned about a key term. However, it is not informative enough for me. Please elaborate more on when it is wrong to apply "%rulename%" in an equation.</phrase>
   </concept>
 
 	<concept label="R0Y-response-simst-2">

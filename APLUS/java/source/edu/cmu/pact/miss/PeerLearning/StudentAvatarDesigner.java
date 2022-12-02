@@ -195,7 +195,7 @@ public class StudentAvatarDesigner extends JPanel implements ActionListener {
         //instructionPanel.setLayout(new)
       
     	//instructionPanel.add(Box.createHorizontalGlue());
-    	JLabel task = new JLabel("<html>Your first task is to configure your peer. Select a skin color, hair, and shirt for the peer. Click on the 'Roll a die' button to make the peer randomly. Name your peer and click the save button.</html>");
+    	JLabel task = new JLabel("<html>Your first task is to configure your peer. Select a skin color, hair, and shirt for the peer. Click on the 'Roll a dice' button to make the peer randomly. Name your peer and click the save button.</html>");
     	task.setHorizontalAlignment(JLabel.LEFT);
     	task.setVerticalAlignment(JLabel.CENTER);
         task.setFont(new Font("Comic Sans MS", Font.PLAIN, 17));
@@ -306,7 +306,7 @@ public class StudentAvatarDesigner extends JPanel implements ActionListener {
         randomize.add(getLayeredImage());
         
        // randomize();
-        random = new JButton("Roll a die");
+        random = new JButton("Roll a dice");
         random.setBounds(160, 65, 109, 29);
         random.addActionListener(this);
         randomize.add(random);

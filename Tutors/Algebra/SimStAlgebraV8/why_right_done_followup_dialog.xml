@@ -66,9 +66,9 @@
 
 	<concept label="R0&amp;Y" model="coded&amp;key_term_adhoc" />
 	<concept label="R0Y-response-simst">
-   <phrase>Your explanation is resourceful but very short for me to understand properly. Please add a little more information with that to teach me when to say a problem is solved?</phrase>
-	 <phrase>Your explanation using the key terms is helpful but too brief for me. Please add a little more information with that to teach me how I can ensure that my solution is the correct one?</phrase>
-	 <phrase>Your explanation using the key terms is helpful for my learning but too short for me to understand properly. Please elaborate more on when to say a problem is solved?</phrase>
+   <phrase>I see you mentioned about a key term. However, it is not informative enough for me. Please add a little more information with that to teach me when to say a problem is solved?</phrase>
+	 <phrase>I see you mentioned about a key term. However, it is not informative enough for me. Please add a little more information with that to teach me how I can ensure that my solution is the correct one?</phrase>
+	 <phrase>I see you mentioned about a key term. However, it is not informative enough for me. Please elaborate more on when to say a problem is solved?</phrase>
   </concept>
 
 	<concept label="R0Y-response-simst-2">
