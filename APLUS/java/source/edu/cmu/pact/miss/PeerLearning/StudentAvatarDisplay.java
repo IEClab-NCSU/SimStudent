@@ -1,6 +1,7 @@
 package edu.cmu.pact.miss.PeerLearning;
 
 import java.awt.Dimension;
+import java.awt.Image;
 import java.net.URL;
 
 import javax.swing.Icon;
@@ -109,6 +110,16 @@ public class StudentAvatarDisplay extends JLayeredPane {
         //noseLabel.setVisible(!isStatic);
         shirtLabel.setVisible(!isStatic);
         faceLabel.setVisible(!isStatic);
+	}
+	
+	public void setImage(String img, boolean on_paper) {
+		Icon icon = createImageIcon(img);
+		staticGraphic.setIcon(new ImageIcon(((ImageIcon) icon).getImage().getScaledInstance(130, 140, Image.SCALE_AREA_AVERAGING)));
+		setStaticVisible(true);
+	}
+	
+	public void setStaticVisible(boolean isVisible) {
+		staticGraphic.setVisible(isVisible);
 	}
     
     public void setImage(String img)

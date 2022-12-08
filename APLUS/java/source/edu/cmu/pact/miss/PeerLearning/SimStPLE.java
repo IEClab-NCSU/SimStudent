@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -53,6 +54,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import javax.swing.BorderFactory;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -60,6 +62,7 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -258,7 +261,7 @@ public class SimStPLE {
 	public static final String ASK_EXPRESSION = "img/face5.png";
 	public static final String SAD_EXPRESSION = "img/face3.png";
 	public static final String CONFUSE_EXPRESSION = "img/face3.png";
-	public static final String PAPER_EXAMPLE = "img/E30.png";
+	public static final String PAPER_EXAMPLE = "img/on_paper_trigger.png";
 	public static final String UNDOCK_ICON_IMAGE = "img/Undock_Icon.png";
 	public static String METATUTOR_EMPTY_DESK = "img/metatutor_empty.png";
 	public static String METATUTOR_IMAGE = "img/metatutor.png";
@@ -284,9 +287,11 @@ public class SimStPLE {
 	public static final String FINISHED_STATUS = "FINISHED";
 	public static final String THINK_STATUS = "THINK";
 	public static final String ASK_STATUS = "ASK";
+	public static final String ASKING_RESPONSE_Q = "ASKING_RESPONSE_Q";
 	public static final String QUIZ_STATUS = "QUIZ";
 	private String status = NORMAL_STATUS;
-
+	private String QA_status = "";
+	
 	private static final int BORDER_WIDTH = 5;
 
 	public static final int QUIZ_COMPLETED_EXIT = 104;
@@ -4425,21 +4430,25 @@ public class SimStPLE {
 		// getSimStPeerTutoringPlatform().setImage(STUDENT_THINK_IMAGE);
 		getSimStPeerTutoringPlatform().setExpression(ASK_EXPRESSION);
 		getSimStPeerTutoringPlatform().setUndoButtonEnabled(false);
-		getSimStPeerTutoringPlatform().setRestartButtonEnabled(true);
+		//getSimStPeerTutoringPlatform().setRestartButtonEnabled(true);
 		getSimStPeerTutoringPlatform().setWait(false);
 	}
 
 	// Displays that the on_paper_image instead of avatar image
 		public void setAvatarOnPaper() {
-			status = ASK_STATUS;
-			blockInput(true);
-			startStatus = false;
-			// getSimStPeerTutoringPlatform().setImage(STUDENT_THINK_IMAGE);
-			getSimStPeerTutoringPlatform().setExpression(PAPER_EXAMPLE);
-			getSimStPeerTutoringPlatform().setUndoButtonEnabled(false);
-			getSimStPeerTutoringPlatform().setRestartButtonEnabled(true);
-			getSimStPeerTutoringPlatform().setWait(false);
+			//status = ASK_STATUS;
+			//blockInput(true);
+			//startStatus = false;
+			StudentAvatarDisplay tutoringAvatar = (StudentAvatarDisplay) getSimStPeerTutoringPlatform().getSimStAvatarLayerIcon();
+			String file = "img/on_paper_trigger.png";
+			tutoringAvatar.setImage(file, true);
+			
 		}
+	// Undo the on_paper Display
+	public void undoAvatarOnPaper() {
+		StudentAvatarDisplay tutoringAvatar = (StudentAvatarDisplay) getSimStPeerTutoringPlatform().getSimStAvatarLayerIcon();
+		tutoringAvatar.setStaticVisible(false);
+	}
 
 	public void setAvatarConfused(boolean confusion) {
 		// TODO Elaborate!
@@ -4965,16 +4974,37 @@ public class SimStPLE {
 	public String giveMessageFreeTextResponse(String message) {
 		return giveMessageFreeTextResponse(message, false);
 	}
-
-	public String giveMessageFreeTextResponse(String message,  boolean on_paper) {
-		LinkedBlockingQueue<String> bucket = new LinkedBlockingQueue<String>();
-
-		this.setAvatarAsking();
+	
+	public String giveMessageFreeTextResponse(String message, int is_disabled_required, boolean on_paper) {
+		
 		getSimStPeerTutoringPlatform().setRestartButtonEnabled(false);
 		getSimStPeerTutoringPlatform().setQuizButtonEnabled(false);
 		getSimStPeerTutoringPlatform().setNextProblemButtonEnabled(false);
 		JCommButton doneButton = (JCommButton) (getBrController().lookupWidgetByName("Done"));
 		doneButton.setEnabled(false);
+		QA_status = ASKING_RESPONSE_Q;
+		
+		String response =  giveMessageFreeTextResponse(message, on_paper);
+		
+		getSimStPeerTutoringPlatform().setRestartButtonEnabled(true);
+		getSimStPeerTutoringPlatform().setQuizButtonEnabled(true);
+		getSimStPeerTutoringPlatform().setNextProblemButtonEnabled(true);
+		doneButton.setEnabled(true);
+		
+		return response;
+	}
+
+	public String giveMessageFreeTextResponse(String message,  boolean on_paper) {
+		LinkedBlockingQueue<String> bucket = new LinkedBlockingQueue<String>();
+
+		this.setAvatarAsking();
+		if(on_paper) this.setAvatarOnPaper();
+		// SUBODH
+		/*getSimStPeerTutoringPlatform().setRestartButtonEnabled(false);
+		getSimStPeerTutoringPlatform().setQuizButtonEnabled(false);
+		getSimStPeerTutoringPlatform().setNextProblemButtonEnabled(false);
+		JCommButton doneButton = (JCommButton) (getBrController().lookupWidgetByName("Done"));
+		doneButton.setEnabled(false);*/
 
 		getSimStPeerTutoringPlatform().appendSpeech(message, getSimStName());
 		getSimStPeerTutoringPlatform().showTextResponse(true);
@@ -5001,10 +5031,11 @@ public class SimStPLE {
 
 		getSimStPeerTutoringPlatform().showTextResponse(false);
 		this.setAvatarNormal();
-		getSimStPeerTutoringPlatform().setRestartButtonEnabled(true);
+		if(on_paper) this.undoAvatarOnPaper();
+		/*getSimStPeerTutoringPlatform().setRestartButtonEnabled(true);
 		getSimStPeerTutoringPlatform().setQuizButtonEnabled(true);
 		getSimStPeerTutoringPlatform().setNextProblemButtonEnabled(true);
-		doneButton.setEnabled(true);
+		doneButton.setEnabled(true);*/
 		return response;
 
 	}

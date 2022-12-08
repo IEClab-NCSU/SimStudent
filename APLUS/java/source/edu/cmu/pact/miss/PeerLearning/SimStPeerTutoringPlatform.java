@@ -606,6 +606,7 @@ public class SimStPeerTutoringPlatform extends JComponent {
     }
     
     JLabel backgroundLabel,hairLabel,eyeLabel,noseLabel,shirtLabel,faceLabel;
+    
     protected void setUpLayeredIcon()
     {
         //layeredIcon = new JLayeredPane();

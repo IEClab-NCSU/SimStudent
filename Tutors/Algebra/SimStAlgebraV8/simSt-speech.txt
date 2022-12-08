@@ -362,6 +362,9 @@ So, <i> was entered in the transformation box. How do you mention <i> when you s
 So, <i> was entered in the transformation box. How would you mention <i> when you show your work on paper?
 When you show your work on paper, how do you mention <i> there?
 
+ON_PAPER_MEMORY
+The Example tab shows what every step entered in the transformation box looks like on paper. (GoToExampleTab)
+
 BOTH_STUCK
 It looks like we are both stuck. Can you find out and show me what to do next?
 My brain is also jammed. Can you find out and show me what to do next?

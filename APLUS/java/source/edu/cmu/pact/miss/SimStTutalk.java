@@ -318,7 +318,7 @@ public class SimStTutalk {
 			"Please Provide an Explanation",
 			JOptionPane.PLAIN_MESSAGE );
 		} else {
-			explanation = interactiveActivity.getSimSt().getMissController().getSimStPLE().giveMessageFreeTextResponse(question);
+			explanation = interactiveActivity.getSimSt().getMissController().getSimStPLE().giveMessageFreeTextResponse(question,1,false);
 		}
 
 		int explainDuration = (int) (Calendar.getInstance().getTimeInMillis() - explainRequestTime);

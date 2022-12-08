@@ -19,8 +19,8 @@
 	<concept label="first-question">
 	 <!--<phrase>%Q%</phrase>-->
 	 <!--<phrase>I remember in the past, when I had "%prev_problem%", I did "%prev_i%" (see Figure A).  Now, I see "%current_problem%" so I thought "%current_i%" would work here (see Figure B). Why is this different? Please explain your reasoning in the box below.</phrase>-->
-	 <phrase>In the &lt;font color="blue"&gt;past&lt;/font&gt;, applying the transformation &lt;font color="blue"&gt;"%prev_foa2%"&lt;/font&gt; on &lt;font color="blue"&gt;"%prev_foa1%"&lt;/font&gt; resulted in &lt;font color="blue"&gt;"%prev_i%"&lt;/font&gt;, and it was acknowledged as correct. (see &lt;font color="blue"&gt;Figure A&lt;/font&gt;).
-		 &lt;font color="red"&gt;Now&lt;/font&gt;, I thought performing &lt;font color="red"&gt;"%current_foa2%"&lt;/font&gt; with &lt;font color="red"&gt;"%current_foa1%"&lt;/font&gt; would result in &lt;font color="red"&gt;"%current_i%"&lt;/font&gt;, but you said that is incorrect. (see &lt;font color="red"&gt;Figure B&lt;/font&gt;). Why? Please explain your reasoning in the box below.</phrase>
+	 <phrase>In the &lt;font color="blue"&gt;past&lt;/font&gt;, &lt;font color="blue"&gt;"%prev_foa2%"&lt;/font&gt; and &lt;font color="blue"&gt;"%prev_foa1%"&lt;/font&gt; resulted in &lt;font color="blue"&gt;"%prev_i%"&lt;/font&gt;, and it was acknowledged as correct. (see &lt;font color="blue"&gt;Figure A&lt;/font&gt;).
+		 &lt;font color="red"&gt;Now&lt;/font&gt;, I thought &lt;font color="red"&gt;"%current_foa2%"&lt;/font&gt; and &lt;font color="red"&gt;"%current_foa1%"&lt;/font&gt; would result in &lt;font color="red"&gt;"%current_i%"&lt;/font&gt;, but you said that is incorrect. (see &lt;font color="red"&gt;Figure B&lt;/font&gt;). Why? Please explain your reasoning in the box below.</phrase>
 	</concept>
 
 	<concept label="R2" model="coded" />
@@ -44,15 +44,15 @@
 
 	<concept label="R0" model="coded" />
 	<concept label="R0-response-simst">
-   <phrase>I am trying to understand why performing &lt;font color="red"&gt;"%current_foa2%"&lt;/font&gt; with &lt;font color="red"&gt;"%current_foa1%"&lt;/font&gt; would not result in &lt;font color="red"&gt;"%current_i%"&lt;/font&gt;?</phrase>
-	 <phrase>I feel like I am missing some crucial information. Can you explain why &lt;font color="red"&gt;"%current_foa2%"&lt;/font&gt; with &lt;font color="red"&gt;"%current_foa1%"&lt;/font&gt; would not result in &lt;font color="red"&gt;"%current_i%"&lt;/font&gt;?</phrase>
-	 <phrase>I attempt to learn things deeply. How did you know that performing &lt;font color="red"&gt;"%current_foa2%"&lt;/font&gt; with &lt;font color="red"&gt;"%current_foa1%"&lt;/font&gt; would not result in &lt;font color="red"&gt;"%current_i%"&lt;/font&gt;?</phrase>
-	 <phrase>I want to solidify my basics. I failed to see why performing &lt;font color="red"&gt;"%current_foa2%"&lt;/font&gt; with &lt;font color="red"&gt;"%current_foa1%"&lt;/font&gt; would not result in &lt;font color="red"&gt;"%current_i%"&lt;/font&gt;. Can you explain it to me?</phrase>
-	 <phrase>I want to strengthen my basic understanding. How did you know that performing &lt;font color="red"&gt;"%current_foa2%"&lt;/font&gt; with &lt;font color="red"&gt;"%current_foa1%"&lt;/font&gt; would not result in &lt;font color="red"&gt;"%current_i%"&lt;/font&gt;?</phrase>
+   <phrase>I am trying to understand why &lt;font color="red"&gt;"%current_foa2%"&lt;/font&gt; and &lt;font color="red"&gt;"%current_foa1%"&lt;/font&gt; would not result in &lt;font color="red"&gt;"%current_i%"&lt;/font&gt;?</phrase>
+	 <phrase>I feel like I am missing some crucial information. Can you explain why &lt;font color="red"&gt;"%current_foa2%"&lt;/font&gt; and &lt;font color="red"&gt;"%current_foa1%"&lt;/font&gt; would not result in &lt;font color="red"&gt;"%current_i%"&lt;/font&gt;?</phrase>
+	 <phrase>I attempt to learn things deeply. How did you know that &lt;font color="red"&gt;"%current_foa2%"&lt;/font&gt; and &lt;font color="red"&gt;"%current_foa1%"&lt;/font&gt; would not result in &lt;font color="red"&gt;"%current_i%"&lt;/font&gt;?</phrase>
+	 <phrase>I want to solidify my basics. I failed to see why &lt;font color="red"&gt;"%current_foa2%"&lt;/font&gt; and &lt;font color="red"&gt;"%current_foa1%"&lt;/font&gt; would not result in &lt;font color="red"&gt;"%current_i%"&lt;/font&gt;. Can you explain it to me?</phrase>
+	 <phrase>I want to strengthen my basic understanding. How did you know that &lt;font color="red"&gt;"%current_foa2%"&lt;/font&gt; and &lt;font color="red"&gt;"%current_foa1%"&lt;/font&gt; would not result in &lt;font color="red"&gt;"%current_i%"&lt;/font&gt;?</phrase>
   </concept>
 	<concept label="R0-response-simst-2">
-   <phrase>Still no luck for me! Would you try one more time to explain why performing &lt;font color="red"&gt;"%current_foa2%"&lt;/font&gt; with &lt;font color="red"&gt;"%current_foa1%"&lt;/font&gt; would not result in &lt;font color="red"&gt;"%current_i%"&lt;/font&gt;?</phrase>
-	 <phrase>I am still in doubt! Please explain why performing &lt;font color="red"&gt;"%current_foa2%"&lt;/font&gt; with &lt;font color="red"&gt;"%current_foa1%"&lt;/font&gt; would not result in &lt;font color="red"&gt;"%current_i%"&lt;/font&gt;?</phrase>
+   <phrase>Still no luck for me! Would you try one more time to explain why &lt;font color="red"&gt;"%current_foa2%"&lt;/font&gt; and &lt;font color="red"&gt;"%current_foa1%"&lt;/font&gt; would not result in &lt;font color="red"&gt;"%current_i%"&lt;/font&gt;?</phrase>
+	 <phrase>I am still in doubt! Please explain why &lt;font color="red"&gt;"%current_foa2%"&lt;/font&gt; and &lt;font color="red"&gt;"%current_foa1%"&lt;/font&gt; would not result in &lt;font color="red"&gt;"%current_i%"&lt;/font&gt;?</phrase>
   </concept>
 
 	<concept label="move-on">

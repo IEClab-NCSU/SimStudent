@@ -330,7 +330,7 @@ public class AlgebraV8AdhocFoaGetter extends FoaGetter {
 		else
 		{
 			//str += " for the result of '"+foa2+"' and '"+foa1+"'";
-			newStr=" applying the transformation <font color=\"blue\">"+foa2+"</font> on <font color=\"blue\">"+foa1+"</font> resulted in <font color=\"blue\">"+str+"</font>";
+			newStr="<font color=\"blue\">"+foa2+"</font> and <font color=\"blue\">"+foa1+"</font> resulted in <font color=\"blue\">"+str+"</font>";
 		}
 		
 		

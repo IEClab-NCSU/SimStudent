@@ -4051,6 +4051,13 @@ public class AplusPlatform extends SimStPeerTutoringPlatform implements ChangeLi
     	tutoringAvatar.setImage(img);
     }
     
+    public void setImage(String img, boolean on_paper) {
+    	tutoringAvatar.setImage(img, on_paper);
+	}
+    public void setStaticVisible(boolean isVisible) {
+    	tutoringAvatar.setVisible(isVisible);
+    }
+    
 
     public void setName(String name)
     {
