@@ -2956,7 +2956,7 @@ public void fillInQuizProblem(String problemName) {
 					explanation = getHintInformation();
 				} else {
 					//explanation = ple.giveMessageFreeTextResponse(question);
-					explanation = ple.giveMessageFreeTextResponse(question, 1, false);
+					explanation = ple.giveMessageFreeTextResponse(question,false);
 				}
 				if (explanation != null && explanation.length() > 0) {
 					ple.giveMessage(ple.getConversation().getMessage(
@@ -3046,7 +3046,7 @@ public void fillInQuizProblem(String problemName) {
 						explanation = getHintInformation();
 					} else {
 						//explanation = ple.giveMessageFreeTextResponse(question, true);
-						explanation = ple.giveMessageFreeTextResponse(question, 1, true);
+						explanation = ple.giveMessageFreeTextResponse(question,true);
 					}
 					if (explanation != null && explanation.length() > 0) {
 						ple.giveMessage(ple.getConversation().getMessage(
@@ -3406,7 +3406,7 @@ public void fillInQuizProblem(String problemName) {
 					if(!runType.equals("springBoot")) {
 						
 						//explanation = ple.giveMessageFreeTextResponse(question);
-						explanation = ple.giveMessageFreeTextResponse(question,1,false);
+						explanation = ple.giveMessageFreeTextResponse(question, false);
 					}
 					
 					if (explanation != null && explanation.length() > 0) {

@@ -4975,24 +4975,24 @@ public class SimStPLE {
 		return giveMessageFreeTextResponse(message, false);
 	}
 	
-	public String giveMessageFreeTextResponse(String message, int is_disabled_required, boolean on_paper) {
-		
-		getSimStPeerTutoringPlatform().setRestartButtonEnabled(false);
-		getSimStPeerTutoringPlatform().setQuizButtonEnabled(false);
-		getSimStPeerTutoringPlatform().setNextProblemButtonEnabled(false);
-		JCommButton doneButton = (JCommButton) (getBrController().lookupWidgetByName("Done"));
-		doneButton.setEnabled(false);
-		QA_status = ASKING_RESPONSE_Q;
-		
-		String response =  giveMessageFreeTextResponse(message, on_paper);
-		
-		getSimStPeerTutoringPlatform().setRestartButtonEnabled(true);
-		getSimStPeerTutoringPlatform().setQuizButtonEnabled(true);
-		getSimStPeerTutoringPlatform().setNextProblemButtonEnabled(true);
-		doneButton.setEnabled(true);
-		
-		return response;
-	}
+//	public String giveMessageFreeTextResponse(String message, int is_disabled_required, boolean on_paper) {
+//
+//		getSimStPeerTutoringPlatform().setRestartButtonEnabled(false);
+//		getSimStPeerTutoringPlatform().setQuizButtonEnabled(false);
+//		getSimStPeerTutoringPlatform().setNextProblemButtonEnabled(false);
+//		JCommButton doneButton = (JCommButton) (getBrController().lookupWidgetByName("Done"));
+//		doneButton.setEnabled(false);
+//		QA_status = ASKING_RESPONSE_Q;
+//
+//		String response =  giveMessageFreeTextResponse(message, on_paper);
+//
+//		getSimStPeerTutoringPlatform().setRestartButtonEnabled(true);
+//		getSimStPeerTutoringPlatform().setQuizButtonEnabled(true);
+//		getSimStPeerTutoringPlatform().setNextProblemButtonEnabled(true);
+//		doneButton.setEnabled(true);
+//
+//		return response;
+//	}
 
 	public String giveMessageFreeTextResponse(String message,  boolean on_paper) {
 		LinkedBlockingQueue<String> bucket = new LinkedBlockingQueue<String>();
@@ -5000,11 +5000,7 @@ public class SimStPLE {
 		this.setAvatarAsking();
 		if(on_paper) this.setAvatarOnPaper();
 		// SUBODH
-		/*getSimStPeerTutoringPlatform().setRestartButtonEnabled(false);
-		getSimStPeerTutoringPlatform().setQuizButtonEnabled(false);
-		getSimStPeerTutoringPlatform().setNextProblemButtonEnabled(false);
-		JCommButton doneButton = (JCommButton) (getBrController().lookupWidgetByName("Done"));
-		doneButton.setEnabled(false);*/
+		setButtonsStateTo(false);
 
 		getSimStPeerTutoringPlatform().appendSpeech(message, getSimStName());
 		getSimStPeerTutoringPlatform().showTextResponse(true);
@@ -5032,12 +5028,17 @@ public class SimStPLE {
 		getSimStPeerTutoringPlatform().showTextResponse(false);
 		this.setAvatarNormal();
 		if(on_paper) this.undoAvatarOnPaper();
-		/*getSimStPeerTutoringPlatform().setRestartButtonEnabled(true);
-		getSimStPeerTutoringPlatform().setQuizButtonEnabled(true);
-		getSimStPeerTutoringPlatform().setNextProblemButtonEnabled(true);
-		doneButton.setEnabled(true);*/
+		setButtonsStateTo(true);
 		return response;
 
+	}
+
+	public void setButtonsStateTo(boolean state){
+		getSimStPeerTutoringPlatform().setRestartButtonEnabled(state);
+		getSimStPeerTutoringPlatform().setQuizButtonEnabled(state);
+		getSimStPeerTutoringPlatform().setNextProblemButtonEnabled(state);
+		JCommButton doneButton = (JCommButton) (getBrController().lookupWidgetByName("Done"));
+		doneButton.setEnabled(state);
 	}
 
 	public String giveMessageSelectableResponse(String message, List<String> selections) {
