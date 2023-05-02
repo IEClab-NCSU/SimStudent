@@ -10,4 +10,4 @@ Students learn by teaching a teachable agent, a phenomenon called tutor learning
 APLUS is a learning by teaching environment where middle school students act as tutors to teach a synthetic tutee named SimStudent. In our current work, SimStudent is taught how to solve linear algebraic equations. SimStudent often ask questions regarding solution steps demonstrated to it by the tutors.
 The "tutor_response.csv" contains 2676 human tutor responses collected over years and categorized by two human coders into three main classes mentioned in the paper. R0 class represents the ill-formed or irrelevant responses and responses that are relevant but not why informative, R1 class represents the response where tutors acknowledges their mistakes and finally R2 class represents relevant descriptive why informative responses. Based on Cohen’s Kappa coefficient, the inter-coder reliability for this coding showed κ = 0.81. Disagreements were resolved through discussion.
 
-# How to train a model using the tutor response data using LightSide
+## How to use the 
