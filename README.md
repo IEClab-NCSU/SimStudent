@@ -10,4 +10,15 @@ Students learn by teaching a teachable agent, a phenomenon called tutor learning
 APLUS is a learning by teaching environment where middle school students act as tutors to teach a synthetic tutee named SimStudent. In our current work, SimStudent is taught how to solve linear algebraic equations. SimStudent often ask questions regarding solution steps demonstrated to it by the tutors.
 The "tutor_response.csv" contains 2676 human tutor responses collected over years and categorized by two human coders into three main classes mentioned in the paper. R0 class represents the ill-formed or irrelevant responses and responses that are relevant but not why informative, R1 class represents the response where tutors acknowledges their mistakes and finally R2 class represents relevant descriptive why informative responses. Based on Cohen’s Kappa coefficient, the inter-coder reliability for this coding showed κ = 0.81. Disagreements were resolved through discussion.
 
-## How to use the 
+
+## How to train own LightSide model using provided response data
+
+1. Download LightSide: https://www.cs.cmu.edu/~cprose/LightSIDE.html
+2. LightSide provides convenient GUI to upload the .csv format dataset to be used as the input data.
+3. Follow the LightSide guidelines to extract feature and build the model. For the best accuracy, I applied all the provided features except ignoring all stopwords and stetchy patterns and trained a SVM model using cross validations.
+4. Once the model is trained, you can export the model in .xml format. LightSide provides APIs to upload the trained model and start a server that can take appropriate inputs and consult with the trained model to generate the label of that input.
+
+
+## How to use the Response Classifier model
+
+You may use our provided model "response_classifier_svm_f.model" trained on the response dataset (accuracy: 93%). Follow step 4 of the previous section to be able to use this model in your application.
