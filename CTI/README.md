@@ -1,6 +1,8 @@
 
 # Constructive Tutee Inquiry
 
+## Tutor Response Model
+
 ## Publication
 
 Shahriar, T., & Matsuda, N. What and how you explain matters: Inquisitive Teachable Agent Scaffolds Knowledge-building for Tutor Learning. In N. Wang, G. Rebolledo-Mendez, O. C. Santos, V. Dimitrova & N. Matsuda (Eds.), Proceedings of the International Conference on Artificial Intelligence in Education 2023: Springer.
