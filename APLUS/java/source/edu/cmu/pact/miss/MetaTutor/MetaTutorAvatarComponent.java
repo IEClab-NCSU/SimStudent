@@ -12,10 +12,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Random;
-import java.util.Vector;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -83,8 +80,9 @@ public class MetaTutorAvatarComponent extends JPanel {
 	private static final String HINT_ACTION = "MetaTutorClicked";
 	private static final String HINT_INPUT = "-1";
 	private static final int MAX_THREAD_COUNT = 1;
-	
-	
+
+	private String runType = System.getProperty("appRunType");
+
 	/**	Thread pool with MAX_THREAD_COUNT available threads at any point of time. */
 	private static ExecutorService metatutorThreadPool = Executors.newFixedThreadPool(MAX_THREAD_COUNT);
 	
@@ -208,7 +206,204 @@ public class MetaTutorAvatarComponent extends JPanel {
     	super.paint(g);
     	g.drawImage(img, 0,0, this);
     }
-    	
+	public ArrayList<ArrayList<String>> handleMouseClickEvent(MouseEvent e){
+		if (getSimStudent().isSsAplusCtrlCogTutorMode() && getSimStudent().getModelTraceWM().getStudentEnteredProblem()!=null){
+			getSimStudent().getModelTraceWM().setRequestType("hint-request");
+		}
+
+
+		/*If in cogTutorMode (cogTutor control), no need to show the hint menu, just display the hint. */
+		if (simStudent.isSsCogTutorMode() && !simStudent.isSsAplusCtrlCogTutorMode()){
+			getSimStudent().getModelTraceWM().setRequestType("hint-request");
+			trace.out(" Mr Williams clicked");
+			getSimStudent().getBrController().getAmt().handleInterfaceAction(COGNITIVE_HINT_SELECTION, HINT_ACTION, HINT_INPUT);
+			/*keep a note that hint is given, so BTK is properly updated */
+			getSimStudent().getBrController().getMissController().getSimStPLE().getSsCognitiveTutor().setStepHintGiven(true);
+
+
+
+			return new ArrayList<ArrayList<String>>();
+		}
+
+
+		ArrayList<ArrayList<String>> llist = new ArrayList<ArrayList<String>>();
+		int count = 0;
+
+		if(menu != null && menu.isVisible()) {
+			menu.setEnabled(false);
+		}
+
+		aListDrop = new ActivationListDrop();
+		isWaitingForActivationList = true;
+		simStudent.getBrController().getAmt().handleInterfaceAction("activations", "MetaTutorClicked", "-1");
+		ArrayList activations = aListDrop.take();
+		//trace.err("activations are : " + activations);
+		isWaitingForActivationList = false;
+
+		String message = "";
+		String fired = "";
+		String fireList = "";
+
+		Iterator itr = activations.iterator();
+
+		while(itr.hasNext()) {
+
+			Activation act = (Activation) itr.next();
+			String ruleName = act.getRule().getName();
+			if(fired.length() == 0)	fired = ruleName;
+			fireList += ruleName+";";
+
+			if(count < 1) { // Include the menu-option for only the most high-priority rule
+				reader.parseXMLFile(ruleName, llist);
+			}
+			++count;
+		}
+
+		//trace.out(" FireList : "+fireList);
+		//trace.out(" Message length : "+llist.size());
+
+		/*clear the list so we do not display anything*/
+		//	if (getSimStudent().isSsMetaTutorMode() && getSimStudent().getSsMetaTutorModeLevel().equals(SimSt.METACOGNITIVE) && getSimStudent().getModelTraceWM().getStudentEnteredProblem()!=null)
+		//		llist.clear();
+		//	else if (getSimStudent().isSsMetaTutorMode() && getSimStudent().getSsMetaTutorModeLevel().equals(SimSt.COGNITIVE) && getSimStudent().getModelTraceWM().getStudentEnteredProblem()==null)
+		//		llist.clear();
+
+		//	if (!getSimStudent().isSsCogTutorMode() && getSimStudent().isSsMetaTutorMode() && getSimStudent().getModelTraceWM().getStudentEnteredProblem()!=null)
+		//		llist.clear();
+
+
+		if(count > 0 && llist.size() > 0) {
+			//trace.out(" count : "+count);
+			if(menu != null) {
+				menu.setVisible(false);
+				menu = null;
+			}
+
+			menu = new JPopupMenu();
+			menu.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+			menu.setBackground(Color.lightGray);
+
+			JLabel label = new JLabel(ASK_MR_WILLIAMS_MSG);
+			label.setFont(new Font(Font.DIALOG, Font.BOLD, 14));
+			label.setBackground(Color.lightGray);
+			menu.add(label);
+			menu.add(new JSeparator());
+
+			ActionListener al = new PopUpMenuListListener();
+
+			for(int i=0; i< llist.size(); i++) {
+				JMenuItem item = new JMenuItem();
+				item.setHorizontalAlignment(SwingConstants.LEFT);
+				item.setActionCommand((llist.get(i)).get(0).trim());
+				//item.setActionCommand(simStudent.getHintType((llist.get(i)).get(1).trim()));
+				item.setText(getCognitiveMenuItem((llist.get(i)).get(1).trim()));
+
+				item.addActionListener(al);
+				//trace.out(" Adding the item ");
+				menu.add(item);
+				menu.add(new JSeparator());
+			}
+			menu.addPopupMenuListener(new PopUpMenuListListener());
+
+
+			// Position the menu to avoid the menu exceed the parent window
+			int componentWidth = e.getComponent().getWidth();
+			int menuWidth = (int) menu.getPreferredSize().getWidth();
+			int offset = 38;
+			int heightOffset = 5;
+
+			// If menuWidth > (componentWidth + 50) then set OFFSET = (componentWidth+50)-menuWidth
+			if(menuWidth > (componentWidth + 50))
+				offset = ((componentWidth + 50) - menuWidth);
+
+			menu.show(e.getComponent(), offset , -((int)menu.getPreferredSize().getHeight()) + heightOffset);
+			menu.repaint();
+
+			String step = simStudent.getProblemStepString();
+			logger.simStInfoLog(SimStLogger.SIM_STUDENT_METATUTOR_AL, SimStLogger.METATUTOR_CLICK_ACTION, step, fired, fireList);
+
+
+		} else {
+
+			if(menu != null) {
+				menu.setVisible(false);
+				menu = null;
+			}
+
+			// No rule fired in the current context
+			//trace.out(" No rule fired ! ");
+			menu = new JPopupMenu();
+			menu.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+			menu.setBackground(Color.lightGray);
+			menu.addPopupMenuListener(new PopUpMenuListListener());
+
+
+
+
+
+
+			JLabel label1 = new JLabel(MR_WILLIAMS_SAYS_MSG);
+			label1.setBackground(Color.lightGray);
+			label1.setFont(new Font(Font.DIALOG, Font.BOLD, 14));
+			menu.add(label1);
+			menu.add(new JSeparator());
+
+			Random generator = new Random();
+			int arrayIndex = generator.nextInt(METATUTOR_NO_HINT_MSG.length); // random no. between 0 and n-1
+
+			JLabel label2 = new JLabel(METATUTOR_NO_HINT_MSG[arrayIndex].replace("SimStName", SimSt.SimStName));
+			label2.setFont(new Font(Font.DIALOG, Font.BOLD, 12));
+			label2.setBackground(Color.white);
+			menu.add(label2);
+
+			if(e != null || runType == null || !runType.equals("springBoot")) {
+
+				// Position the menu to avoid the menu exceed the parent window
+				int componentWidth = e.getComponent().getWidth();
+				int menuWidth = (int) menu.getPreferredSize().getWidth();
+				int offset = 38;
+				int heightOffset = 5;
+
+				// If menuWidth > (componentWidth + 50) then set OFFSET = (componentWidth+50)-menuWidth
+				if (menuWidth > (componentWidth + 50))
+					offset = ((componentWidth + 50) - menuWidth);
+
+				menu.show(e.getComponent(), offset, -((int) menu.getPreferredSize().getHeight()) + heightOffset);
+				menu.repaint();
+			}
+
+			String step = simStudent.getProblemStepString();
+			logger.simStInfoLog(SimStLogger.SIM_STUDENT_METATUTOR_AL, SimStLogger.METATUTOR_CLICK_ACTION, step, "NoHint", "");
+
+		}
+		return llist;
+	}
+
+	public List<String> hintClickHandlerSpringBoot(String actionCommand, String hintText){
+		String question = "";
+		Vector<String> messages = new Vector<String>();
+		if(META_COGNITIVE_HINT.equalsIgnoreCase(actionCommand)) {
+
+			messages = getSimStudent().getBrController().getAmt().handleInterfaceActionSpringBoot(META_COGNITIVE_HINT_SELECTION, HINT_ACTION, HINT_INPUT);
+
+			//logger.simStLog(SimStLogger.SIM_STUDENT_METATUTOR_AL, SimStLogger.METATUTOR_HINT_REQUESTED, source.getText(), META_COGNITIVE_HINT, logger.getCurrentTime());
+			logger.simStLog(SimStLogger.SIM_STUDENT_METATUTOR_AL, SimStLogger.METATUTOR_HINT_REQUESTED, hintText, "" , logger.getCurrentTime(), null , null , "" , "" ,
+					"" , "" , 0, "" , "" , question , 0,false, META_COGNITIVE_HINT , null , logger.getCurrentTime());
+
+
+		} else if(COGNITIVE_HINT.equalsIgnoreCase(actionCommand)) {
+
+			// Ask the Cognitive class to provide the hint message
+			messages = getSimStudent().getBrController().getAmt().handleInterfaceActionSpringBoot(COGNITIVE_HINT_SELECTION, HINT_ACTION, HINT_INPUT);
+
+			//logger.simStLog(SimStLogger.SIM_STUDENT_METATUTOR_AL, SimStLogger.METATUTOR_HINT_REQUESTED, source.getText(), COGNITIVE_HINT, logger.getCurrentTime());
+			logger.simStLog(SimStLogger.SIM_STUDENT_METATUTOR_AL, SimStLogger.METATUTOR_HINT_REQUESTED, hintText, "" , logger.getCurrentTime(), null , null , "" , "" ,
+					"" , "" , 0, "" , "" , question , 0, false, COGNITIVE_HINT, null , logger.getCurrentTime());
+
+		}
+		return messages;
+	}
+
 	/**
 	   Listener to listen for mouse events when the meta tutor image is clicked
 	 */
@@ -221,173 +416,7 @@ public class MetaTutorAvatarComponent extends JPanel {
 				@Override
 				public void run() {
 		    		synchronized (metaTutorLock) {
-		    			
-		    			
-		    			if (getSimStudent().isSsAplusCtrlCogTutorMode() && getSimStudent().getModelTraceWM().getStudentEnteredProblem()!=null){
-	     					getSimStudent().getModelTraceWM().setRequestType("hint-request");
-	     				}
-		    			
-		    				
-		    			/*If in cogTutorMode (cogTutor control), no need to show the hint menu, just display the hint. */
-		    			if (simStudent.isSsCogTutorMode() && !simStudent.isSsAplusCtrlCogTutorMode()){
-		    				getSimStudent().getModelTraceWM().setRequestType("hint-request");
-		    				//System.out.println(" Mr Williams clicked");
-	     					getSimStudent().getBrController().getAmt().handleInterfaceAction(COGNITIVE_HINT_SELECTION, HINT_ACTION, HINT_INPUT);
-	     					/*keep a note that hint is given, so BTK is properly updated */
-	     					getSimStudent().getBrController().getMissController().getSimStPLE().getSsCognitiveTutor().setStepHintGiven(true);
-	     				
-	     					
-	     					
-		     				return;
-		    			}
-		    			
-		    			
-						ArrayList<ArrayList<String>> llist = new ArrayList<ArrayList<String>>();
-						int count = 0;
-	
-						if(menu != null && menu.isVisible()) {
-							menu.setEnabled(false);
-						}
-
-						aListDrop = new ActivationListDrop();
-						isWaitingForActivationList = true;
-						simStudent.getBrController().getAmt().handleInterfaceAction("activations", "MetaTutorClicked", "-1");
-						ArrayList activations = aListDrop.take();
-						//trace.err("activations are : " + activations);
-						isWaitingForActivationList = false;
-										
-						String message = "";
-						String fired = "";
-						String fireList = "";
-						
-						Iterator itr = activations.iterator();
-						
-						while(itr.hasNext()) {
-							
-							Activation act = (Activation) itr.next();
-							String ruleName = act.getRule().getName();
-							if(fired.length() == 0)	fired = ruleName;
-							fireList += ruleName+";";
-							
-							if(count < 1) { // Include the menu-option for only the most high-priority rule
-								reader.parseXMLFile(ruleName, llist);
-							}
-							++count;
-						}
-						
-						//System.out.println(" FireList : "+fireList);
-						//System.out.println(" Message length : "+llist.size());
-	
-					/*clear the list so we do not display anything*/
-					//	if (getSimStudent().isSsMetaTutorMode() && getSimStudent().getSsMetaTutorModeLevel().equals(SimSt.METACOGNITIVE) && getSimStudent().getModelTraceWM().getStudentEnteredProblem()!=null)
-					//		llist.clear();
-					//	else if (getSimStudent().isSsMetaTutorMode() && getSimStudent().getSsMetaTutorModeLevel().equals(SimSt.COGNITIVE) && getSimStudent().getModelTraceWM().getStudentEnteredProblem()==null)
-					//		llist.clear();
-						
-					//	if (!getSimStudent().isSsCogTutorMode() && getSimStudent().isSsMetaTutorMode() && getSimStudent().getModelTraceWM().getStudentEnteredProblem()!=null)
-					//		llist.clear();
-												
-						if(count > 0 && llist.size() > 0) {
-							//System.out.println(" count : "+count);
-							if(menu != null) {
-								menu.setVisible(false);
-								menu = null;
-							}
-									
-							menu = new JPopupMenu();
-							menu.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-							menu.setBackground(Color.lightGray);
-							
-							JLabel label = new JLabel(ASK_MR_WILLIAMS_MSG);
-							label.setFont(new Font(Font.DIALOG, Font.BOLD, 14));
-							label.setBackground(Color.lightGray);
-							menu.add(label);
-							menu.add(new JSeparator());
-								
-							ActionListener al = new PopUpMenuListListener();
-							
-							for(int i=0; i< llist.size(); i++) {
-								JMenuItem item = new JMenuItem();
-								item.setHorizontalAlignment(SwingConstants.LEFT);
-								item.setActionCommand((llist.get(i)).get(0).trim());
-								//item.setActionCommand(simStudent.getHintType((llist.get(i)).get(1).trim()));
-								item.setText(getCognitiveMenuItem((llist.get(i)).get(1).trim()));
-								
-								item.addActionListener(al);
-								//System.out.println(" Adding the item ");
-								menu.add(item);
-								menu.add(new JSeparator());
-							}
-							menu.addPopupMenuListener(new PopUpMenuListListener());
-							
-							
-							// Position the menu to avoid the menu exceed the parent window
-							int componentWidth = e.getComponent().getWidth();
-							int menuWidth = (int) menu.getPreferredSize().getWidth();
-							int offset = 38;
-							int heightOffset = 5;
-							
-							// If menuWidth > (componentWidth + 50) then set OFFSET = (componentWidth+50)-menuWidth
-							if(menuWidth > (componentWidth + 50))
-								offset = ((componentWidth + 50) - menuWidth);
-							
-							menu.show(e.getComponent(), offset , -((int)menu.getPreferredSize().getHeight()) + heightOffset);
-							menu.repaint();
-							
-							String step = simStudent.getProblemStepString();
-							logger.simStInfoLog(SimStLogger.SIM_STUDENT_METATUTOR_AL, SimStLogger.METATUTOR_CLICK_ACTION, step, fired, fireList);
-
-							
-						} else {
-							
-							if(menu != null) {
-								menu.setVisible(false);
-								menu = null;
-							}
-							
-							// No rule fired in the current context
-							//System.out.println(" No rule fired ! ");
-							menu = new JPopupMenu();
-							menu.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-							menu.setBackground(Color.lightGray);
-							menu.addPopupMenuListener(new PopUpMenuListListener());
-							
-							
-							
-							
-							
-							
-							JLabel label1 = new JLabel(MR_WILLIAMS_SAYS_MSG);
-							label1.setBackground(Color.lightGray);
-							label1.setFont(new Font(Font.DIALOG, Font.BOLD, 14));
-							menu.add(label1);
-							menu.add(new JSeparator());
-							
-							Random generator = new Random();
-							int arrayIndex = generator.nextInt(METATUTOR_NO_HINT_MSG.length); // random no. between 0 and n-1
-							
-							JLabel label2 = new JLabel(METATUTOR_NO_HINT_MSG[arrayIndex].replace("SimStName", SimSt.SimStName));
-							label2.setFont(new Font(Font.DIALOG, Font.BOLD, 12));
-							label2.setBackground(Color.white);
-							menu.add(label2);
-							
-							// Position the menu to avoid the menu exceed the parent window
-							int componentWidth = e.getComponent().getWidth();
-							int menuWidth = (int) menu.getPreferredSize().getWidth();
-							int offset = 38;
-							int heightOffset = 5;
-
-							// If menuWidth > (componentWidth + 50) then set OFFSET = (componentWidth+50)-menuWidth
-							if(menuWidth > (componentWidth + 50))
-								offset = ((componentWidth + 50) - menuWidth);
-							
-							menu.show(e.getComponent(), offset , -((int)menu.getPreferredSize().getHeight()) + heightOffset);
-							menu.repaint();
-							
-							String step = simStudent.getProblemStepString();
-							logger.simStInfoLog(SimStLogger.SIM_STUDENT_METATUTOR_AL, SimStLogger.METATUTOR_CLICK_ACTION, step, "NoHint", "");
-							
-						}
+						handleMouseClickEvent(e);
 					}								
 				}
 			};

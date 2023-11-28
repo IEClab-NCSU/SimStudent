@@ -148,8 +148,11 @@ public class MetaTutorModelTracingSAIHandler extends SAIHandler {
 		}
 		return "";
 	}
-	
-	
+
+	public Vector<String> getMessages(){
+		return this.messages == null ? new Vector<String>() : this.messages;
+	}
+
 	private Vector messages;
 	@Override
 	public void sendResult() {
