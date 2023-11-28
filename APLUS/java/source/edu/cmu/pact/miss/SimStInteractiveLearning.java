@@ -1755,24 +1755,18 @@ public void fillInQuizProblem(String problemName) {
 				
 				// Tasmia added code starts here
 				//if(simSt.isCTIInitialInquiryMode()) 
-				{
-					// Ask if tutor knows what to do next so that there opens an opportunity 
-					// for the tutee to ask initial tutee inquiry when tutor is also stuck.
+				/*{
+					
 					String title = SimStConversation.ASKING_IF_TUTOR_KNOWS_STEP_TOPIC;
-					//String message = "I am stuck. Do you know what step to perform next?";
 					SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();
 					String message = ple.getConversation().getMessage(SimStConversation.ASKING_IF_TUTOR_KNOWS_STEP_TOPIC);
 					int oracle = getSimSt().displayConfirmMessage(title,message);
-					// setting avatar to normal mode.
 					getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
 					if (oracle == JOptionPane.YES_OPTION) {
-						// ask for the demonstration of the step.
 						nextCurrentNode = askWhatToDoNext(currentNode);
 						hintReceived = true;
 			       	}
 					else {
-						// Tutor is  confused and don't know what to do next.
-						// Ask the initial tutee inquiry when tutor does not know what to do next.
 						if(getSimSt().isNearSimilarProblemsGetterDefined()) {
 							 NearSimilarProblemsGetter nspg = getSimSt().getNearSimilarProblemsGetter();
 							 ArrayList<String> similar_problems = nspg.nearSimilarProblemsGetter(currentNode);       
@@ -1788,15 +1782,12 @@ public void fillInQuizProblem(String problemName) {
 												askBrainstormingQuestion(logic, false);
 											}
 											else {
-												// we would need the explanation to check for transformation for further followup
 												Sai s_a_i = getSai(ran); // dorminTable3_C1R1, UpdateTable, divide 3
 												String problem_name = similarNode.getName().replace("_", "=");
 												String msg = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_QUESTION_TOPIC,s_a_i.getI(),problem_name,logic);
 												String explanation = askBrainstormingQuestion(msg, true);
 											}
-											// Need to implement listener for nextNode just like askWhatToDoNext. 
 											currentNode.setName(problem);
-											//nextCurrentNode = brainstormWhatToDoNext(currentNode);
 											nextCurrentNode = askWhatToDoNext(currentNode);
 											hintReceived = true;
 											if (trace.getDebugCode("ss"))
@@ -1823,17 +1814,16 @@ public void fillInQuizProblem(String problemName) {
 						
 						
 					}
-				}
+				}*/
 				
-				
-				/*// Previous code intact start
+				// Previous code intact start
 				nextCurrentNode = askWhatToDoNext(currentNode);
 				hintReceived = true;
 				if (trace.getDebugCode("ss"))
 					trace.out("ss", "Calling askWhatToDoNext  "
 							+ "currentNode: " + currentNode
 							+ " nextCurrentNode: " + nextCurrentNode);
-				// Previous code ends */
+				// Previous code ends 
 				
 			}
 
@@ -1841,8 +1831,12 @@ public void fillInQuizProblem(String problemName) {
 			// initiated a new problem			
 			if (nextCurrentNode != null) {
 
-				if (!askedExplanation && hintReceived)
+				//if (!askedExplanation && hintReceived) 
+				{
+					
 					explainWhyRight(nextCurrentNode);
+					
+				}
 
 				// update currentNode
 				currentNode = nextCurrentNode;
@@ -2521,7 +2515,11 @@ public void fillInQuizProblem(String problemName) {
 		
 	public void explainWhyRight(ProblemNode node) {
 		
-		
+		String stepName = node.getProblemModel().getProblemName().replace("_", "=");
+		String QType = "WR";
+		//String Sol = "click \"problem is solved\" button";
+		//String first_question = "Why am I wrong?";
+		//String correctness = "incorrect";
 		ProblemEdge edge = null;
 		if (node.getInDegree() <= 0)
 			return;
@@ -2531,7 +2529,7 @@ public void fillInQuizProblem(String problemName) {
 		String skillName = (String) edge.getEdgeData().getRuleNames()
 				.get(edge.getEdgeData().getRuleNames().size() - 1);
 
-	
+		System.out.println("SSS:: stepname--"+stepName+" sol_step "+skillName);
 		if (trace.getDebugCode("sstt"))
 			trace.out("sstt", "Why right TutalkI Trace skillName:" + skillName
 					+ "SAI = " + edge.getSai().getS() + ";"
