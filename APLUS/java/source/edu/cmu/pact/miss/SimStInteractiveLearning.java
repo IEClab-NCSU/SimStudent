@@ -2635,6 +2635,8 @@ public void fillInQuizProblem(String problemName) {
 					explanation = getHintInformation();
 				} else {
 					explanation = ple.giveMessageFreeTextResponse(question);
+					String response = executeScript();
+					explanation = ple.giveMessageFreeTextResponse(response);
 				}
 				if (explanation != null && explanation.length() > 0) {
 					ple.giveMessage(ple.getConversation().getMessage(
@@ -2663,7 +2665,59 @@ public void fillInQuizProblem(String problemName) {
 		}
 	}
 
+	public String executeScript() {
+		String scriptPath = simSt.getProjectDir() + "/chat_interface.py" ;
+		String stepName = "4=4y";
+		String QType = "WW";
+		String Sol = "click \"problem is solved\" button";
+		String first_question = "Why am I wrong?";
+		String correctness = "incorrect";
+		String conv_history =
+				"Student:Why am I wrong?" + "\n" +
+						"Teacher:you need to get the varible on its own" + "\n" +
+						"Student:It feels like I have a misconception regarding when NOT to click the \"problem is solved\" button in an equation. Please explain when it is incorrect to click that using the key terms in the Unit Overview tab?" + "\n" +
+						"Teacher:You haven't solved the problem all the way" + "\n" +
+						"Student:Still no luck for me! Would you please try one more time to explain when it is incorrect to say the \"problem is solved\"? Please explain using the key terms mentioned in the Unit Overview tab." + "\n" +
+						"Teacher:You need to add one more step" ;
 
+		String scriptOutput = runPythonScript(scriptPath, stepName, QType, Sol, first_question, correctness, conv_history);
+
+		return scriptOutput != null ? scriptOutput : "";
+	}
+	public String runPythonScript(String scriptPath, String... arguments) {
+		try {
+			// Construct the command to run the Python script with arguments
+			String[] command = new String[arguments.length + 2];
+			command[0] = "python";
+			command[1] = scriptPath;
+			System.arraycopy(arguments, 0, command, 2, arguments.length);
+//            command[1 + arguments.length] = scriptPath;
+
+			ProcessBuilder processBuilder = new ProcessBuilder(command);
+			Process process = processBuilder.start();
+
+			// Read script output
+			BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+			StringBuilder output = new StringBuilder();
+			String line;
+			while ((line = reader.readLine()) != null) {
+				output.append(line).append("\n");
+			}
+
+			int exitCode = process.waitFor();
+
+			if (exitCode == 0) {
+				return output.toString();
+			} else {
+				System.err.println("Error: Python script exited with non-zero status");
+				return null;
+			}
+
+		} catch (IOException | InterruptedException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 	public String askBrainstormingQuestion(String question, boolean requireResponse) {
 		
 		String explanation = "";
