@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.FocusEvent;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
@@ -2515,8 +2516,7 @@ public void fillInQuizProblem(String problemName) {
 		
 	public void explainWhyRight(ProblemNode node) {
 		
-		String stepName = node.getProblemModel().getProblemName().replace("_", "=");
-		String QType = "WR";
+		String stepName = node.getProblemModel().getProblemName();
 		//String Sol = "click \"problem is solved\" button";
 		//String first_question = "Why am I wrong?";
 		//String correctness = "incorrect";
@@ -2529,24 +2529,31 @@ public void fillInQuizProblem(String problemName) {
 		String skillName = (String) edge.getEdgeData().getRuleNames()
 				.get(edge.getEdgeData().getRuleNames().size() - 1);
 
-		System.out.println("SSS:: stepname--"+stepName+" sol_step "+skillName);
+		//System.out.println("SSS:: stepname--"+stepName+" sol_step "+skillName);
 		if (trace.getDebugCode("sstt"))
 			trace.out("sstt", "Why right TutalkI Trace skillName:" + skillName
 					+ "SAI = " + edge.getSai().getS() + ";"
 					+ edge.getSai().getA() + ";" + edge.getSai().getI());
 		
 		
-		
+		System.out.println("Am I right"+edge.isCorrect());
 		if (explainedWhyRightSkills==null)
 			explainedWhyRightSkills = new HashSet<String>();
 		
+	    String correctness = logger.checkCorrectness("Hint Received", edge.getSai(), stepName, "", node, "");
+	    if(edge.isCorrect() == true) correctness = "correct";
+	    else correctness = "incorrect";
+	    stepName = stepName.replace("_", "=");
 		Random r = new Random();
 	    int probability = r.nextInt(100);
 		
 		//if (simSt.isSelfExplainMode() && !skillName.contains("typein") && !skillName.contains("unnamed")) {
 		//10/06/2014: now selection is the one that defines if SimStudent should ask for self explanation
-		if (simSt.isSelfExplainMode() && isSelectionValidForSelfExplanation(edge.getSelection()) && !explainedWhyRightSkills.contains(skillName) 
-			&& probability <= CHANCE && !explainedSelectionSkills.contains(edge.getSelection())){
+		//if (simSt.isSelfExplainMode() && isSelectionValidForSelfExplanation(edge.getSelection()) 
+		//		&& !explainedWhyRightSkills.contains(skillName) 
+		//	&& probability <= CHANCE && !explainedSelectionSkills.contains(edge.getSelection()))
+		if (simSt.isSelfExplainMode() && isSelectionValidForSelfExplanation(edge.getSelection()))
+		{
 			
 			explainedWhyRightSkills.add(skillName);
 			explainedSelectionSkills.add(edge.getSelection());
@@ -2562,6 +2569,7 @@ public void fillInQuizProblem(String problemName) {
 			}
 
 			if (simSt.getTutalkEnabled()) {
+				System.out.println(" TT ENABLED");
 				// Hand over the context of the problem to the tutalk engine
 				tutalkBridge.setProblemName(getBrController(getSimSt()).getMissController()
 						.getSimSt().getProblemStepString());
@@ -2632,9 +2640,32 @@ public void fillInQuizProblem(String problemName) {
 				if(runType.equals("springBoot")) {
 					explanation = getHintInformation();
 				} else {
-					explanation = ple.giveMessageFreeTextResponse(question);
-					String response = executeScript();
-					explanation = ple.giveMessageFreeTextResponse(response);
+					explanation = ple.giveMessageFreeTextResponse(question); // response to first ITI
+					if(simSt.isCTIFollowupInquiryLLMMode()) {
+						int q_count = 1;
+						if (getBrController(getSimSt()).getMissController().isPLEon()) 
+							getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarThinking();
+						LLMScript script;
+						if (simSt.useResponseLLMMode())
+							script=new LLMScript("chat_interface_resQ.py");
+						else
+							script=new LLMScript("");
+						String conv_history = "Student:"+question+"\nTeacher:"+explanation;
+						String response = script.executeScript(simSt.getProjectDir(), stepName, "WR", sai.getI(), question, correctness, conv_history,"");
+						String LLM_question = script.processQ(response);
+						script.processResponseLLMOutput(response);
+						if (getBrController(getSimSt()).getMissController().isPLEon()) 
+							getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
+						while(LLM_question != "" && q_count <= 3) {
+							System.out.println("COnv history so far "+conv_history);
+							explanation = ple.giveMessageFreeTextResponse(LLM_question);
+							conv_history += "\n Student:"+LLM_question+"\nTeacher:"+explanation;
+							q_count++;
+							
+							response = script.executeScript(simSt.getProjectDir(), stepName, "WR", sai.getI(), question, correctness, conv_history,"exp");
+							LLM_question = script.processQ(response);
+						}
+					}
 				}
 				if (explanation != null && explanation.length() > 0) {
 					ple.giveMessage(ple.getConversation().getMessage(
@@ -2662,60 +2693,8 @@ public void fillInQuizProblem(String problemName) {
 			}
 		}
 	}
-
-	public String executeScript() {
-		String scriptPath = simSt.getProjectDir() + "/chat_interface.py" ;
-		String stepName = "4=4y";
-		String QType = "WW";
-		String Sol = "click \"problem is solved\" button";
-		String first_question = "Why am I wrong?";
-		String correctness = "incorrect";
-		String conv_history =
-				"Student:Why am I wrong?" + "\n" +
-						"Teacher:you need to get the varible on its own" + "\n" +
-						"Student:It feels like I have a misconception regarding when NOT to click the \"problem is solved\" button in an equation. Please explain when it is incorrect to click that using the key terms in the Unit Overview tab?" + "\n" +
-						"Teacher:You haven't solved the problem all the way" + "\n" +
-						"Student:Still no luck for me! Would you please try one more time to explain when it is incorrect to say the \"problem is solved\"? Please explain using the key terms mentioned in the Unit Overview tab." + "\n" +
-						"Teacher:You need to add one more step" ;
-
-		String scriptOutput = runPythonScript(scriptPath, stepName, QType, Sol, first_question, correctness, conv_history);
-
-		return scriptOutput != null ? scriptOutput : "";
-	}
-	public String runPythonScript(String scriptPath, String... arguments) {
-		try {
-			// Construct the command to run the Python script with arguments
-			String[] command = new String[arguments.length + 2];
-			command[0] = "python";
-			command[1] = scriptPath;
-			System.arraycopy(arguments, 0, command, 2, arguments.length);
-//            command[1 + arguments.length] = scriptPath;
-
-			ProcessBuilder processBuilder = new ProcessBuilder(command);
-			Process process = processBuilder.start();
-
-			// Read script output
-			BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-			StringBuilder output = new StringBuilder();
-			String line;
-			while ((line = reader.readLine()) != null) {
-				output.append(line).append("\n");
-			}
-
-			int exitCode = process.waitFor();
-
-			if (exitCode == 0) {
-				return output.toString();
-			} else {
-				System.err.println("Error: Python script exited with non-zero status");
-				return null;
-			}
-
-		} catch (IOException | InterruptedException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
+	
+	
 	public String askBrainstormingQuestion(String question, boolean requireResponse) {
 		
 		String explanation = "";

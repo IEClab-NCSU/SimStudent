@@ -330,7 +330,7 @@ public class AskHintHumanOracle extends AskHint {
   		
   		      	int hintDuration = (int) ((Calendar.getInstance().getTimeInMillis() - hintRequestTime)/1000);
   		      	step = brController.getMissController().getSimSt().getProblemStepString();
-  		      	
+  		      	//String correctness = logger.checkCorrectness("Hint Received", saiAndSkillName.sai, step, "", node, "");
   		      	logger.simStLog(SimStLogger.SIM_STUDENT_INFO_RECEIVED, SimStLogger.HINT_RECEIVED, 
   		    		  step,"","",saiAndSkillName.sai,parentNode, hint.getSelection(),
   		    		  hint.getAction(), hint.getInput(), hintDuration,message);

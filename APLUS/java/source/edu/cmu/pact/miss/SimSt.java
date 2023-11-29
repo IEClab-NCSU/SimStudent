@@ -336,6 +336,8 @@ public final class SimSt implements Serializable {
 
    private boolean selfExplainMode = false;
    private boolean selfCTI_FTI_Mode = false;
+   private boolean CTI_LLM_Mode = false;
+   private boolean useResponseLLM = false;
    public void setSSSelfExplainMode(boolean explainMode)
    {
    	this.selfExplainMode = explainMode;
@@ -345,6 +347,11 @@ public final class SimSt implements Serializable {
    {
    	this.selfCTI_FTI_Mode = CTIMode;
    }
+   
+   public void setSsConstructiveTuteeInquiryLLM(boolean CTILLMMode, boolean useResponseLLM) {
+	   this.CTI_LLM_Mode = CTILLMMode;
+	   this.useResponseLLM = useResponseLLM;
+   }
    public boolean isSelfExplainMode()
    {
    	return selfExplainMode;
@@ -353,6 +360,15 @@ public final class SimSt implements Serializable {
    {
    	return selfCTI_FTI_Mode;
    }
+   public boolean isCTIFollowupInquiryLLMMode()
+   {
+   	return CTI_LLM_Mode;
+   }
+   public boolean useResponseLLMMode()
+   {
+   	return useResponseLLM;
+   }
+
 
   private transient ProblemAssessor problemAssessor = new AlgebraProblemAssessor();
    public void setProblemAssessor(ProblemAssessor pa)

@@ -815,13 +815,7 @@ public class SingleSessionLauncher
                         setUseNewExampleTracer(false);
                         
                     } 
-                    /*else if(keyStem.equalsIgnoreCase("ssMetaTutorMode")){
-                    	setSsMetaTutorMode(true);
-                    
-                    } else if(keyStem.equalsIgnoreCase("ssQuizProblemAbstractor")) {
-                    	setSsQuizProblemAbstractorClass(parameter[0]);
-                    	
-                    }*/ else if (keyStem.equalsIgnoreCase("traceLevel")) {
+                    else if (keyStem.equalsIgnoreCase("traceLevel")) {
                         setTraceLevel(parameter[0]);
 
                     } else if (keyStem.equalsIgnoreCase(DEBUG_CODES)) {
@@ -833,66 +827,7 @@ public class SingleSessionLauncher
                     } else if (keyStem.equalsIgnoreCase(USE_JS_BRIDGE)) {
                     	configureJSBridge();
             		
-            		}/* else if (keyStem.equalsIgnoreCase("ssBatchMode")) {
-
-                    	setSsBatchMode(true);
-                    } else if(keyStem.equalsIgnoreCase("ssFixedLearningMode")) {
-                    	
-                    	setSsFixedLearningMode(true);
-                    } else if (keyStem.equalsIgnoreCase("ssContest")) {
-                      	setSsContest(true);
-                    } else if (keyStem.equalsIgnoreCase("ssInteractiveLearning")) {
-                        setSsInteractiveLearning(true);
-//                  } else if (keyStem.equalsIgnoreCase("ssILBatchMode")) {
-//                        setSsIlBatchMode(true);
-                    } else if (keyStem.equalsIgnoreCase("ssNonInteractiveLearning")) {
-                    	setSsNonInteractiveLearning(true);
-                    } else if (keyStem.equalsIgnoreCase("ssIlSignalNegative")) {
-                        setSsIlSignalNegative(parameter[0]);
-                        
-                    } else if (keyStem.equalsIgnoreCase("ssIlSignalPositive")) {
-                        setSsIlSignalPositive(parameter[0]);
-                        
-                    } else if (keyStem.equalsIgnoreCase("ssCondition")) {
-                        setSsCondition(parameter[0]);
-
-                    } else if (keyStem.equalsIgnoreCase("ssConstraintFile")) {
-                        setSSConstraintFile(parameter[0]);
-                        
-                    } else if (keyStem.equalsIgnoreCase("ssDecomposerFile")) {
-                        setSSDecomposerFile(parameter[0]);
-
-                    } else if (keyStem.equalsIgnoreCase("ssDecomposeInput")) {
-                        ssUseDecomposition();
-
-                    } else if (keyStem.equalsIgnoreCase("ssDoNotSaveRules")) {
-                        ssDoNotSaveRules();
-
-//                    } else if (keyStem.equalsIgnoreCase("ssExternalRuleActivationTest")) {
-//                        ssUseExternalRuleActivationTest();
-                        
-                    } else if (keyStem.equalsIgnoreCase("ssFeaturePredicateFile")) {
-                        setSsFeaturePredicateFile(parameter[0]);
-
-                    } else if (keyStem.equalsIgnoreCase("ssFoaGetterClass")) {
-                        setSsFoaGetterClass(parameter[0]);
-                    
-                    } else if (keyStem.equalsIgnoreCase("ssSelectionOrderGetterClass")) {
-                        setSsSelectionOrderGetterClass(parameter[0]);
-                    
-                    } else if(keyStem.equalsIgnoreCase("ssClSolverTutorSAIConverter")) {
-                    	setSsSaiConverterClass(parameter[0]);
-                    
-                    } else if(keyStem.equalsIgnoreCase("ssInterfaceElementGetterClass")) {
-                    	setSsInterfaceElementGetterClass(parameter[0]);
-                    
-                    } else if(keyStem.equalsIgnoreCase("ssFoaClickDisabled")) {
-                    	setSsFoaClickDisabled(true);
-                    
-                    } else if (keyStem.equalsIgnoreCase("ssInputCheckerClass")) {
-                        setSsInputCheckerClass(parameter[0]);
-                    }
-                    
+            		}
                     /* @author: jinyul, skillNameGetter is an ad-hoc method to identify
                      * skill name based on current selection. */
                    /* else if (keyStem.equalsIgnoreCase("ssSkillNameGetterClass")) {
@@ -1017,97 +952,7 @@ public class SingleSessionLauncher
                     }*/ else if (keyStem.equalsIgnoreCase("reduced")) {
                         setReducedMode(true);
                         
-                    } /*else if (keyStem.equalsIgnoreCase("ssNoAutoOrderFOA")) {
-                        ssAutoOrderFOAOff();
-                        
-                    } else if (keyStem.equalsIgnoreCase("ssLearnNoLabel")) {
-                    	if (trace.getDebugCode("ss")) trace.out("ss", "Setting ssLearnNoLabel in SingleSessionLauncher");
-                        setSsLearnNoLabel();
-                        
-                    } else if (keyStem.equalsIgnoreCase("ssLogAgendaRuleFiring")) {
-                        ssLogAgendaRuleFiring();
-                        
-                    } else if (keyStem.equalsIgnoreCase("ssLogPriorRuleActivationsOnTraining")) {
-                        ssLogPriorRuleActivationsOnTraining();
-                        
-                    } else if (keyStem.equalsIgnoreCase("ssTestOnLastTrainingOnly")) {
-                    	ssTestOnLastTrainingOnly();
-                        
-                    } else if (keyStem.equalsIgnoreCase("ssCheckWilkinsburgBadBrd")) {
-                    	ssCheckWilkinsburgBadBrd();
-                	
-                    } else if (keyStem.equalsIgnoreCase("ssSetMaxNumTraining")) {
-                    	ssSetMaxNumTraining(parameter[0]);
-                        
-                    } else if (keyStem.equalsIgnoreCase("ssSetMaxNumTest")) {
-                    	ssSetMaxNumTest(parameter[0]);
-                	
-                    } else if (keyStem.equalsIgnoreCase("ssSwitchLearningStrategyAfter")) {
-                        ssSwitchLearningStrategyAfter(parameter[0]);
-                        
-                    } else if (keyStem.equalsIgnoreCase("ssTestProductionModelNoTest")) {
-                    	ssSetTestProductionModelNoTest(true);
-                	
-                    } else if (keyStem.equalsIgnoreCase("ssAnalysisOfFitnessWilkinsburg")) {
-                    	ssAnalysisOfFitnessWilkinsburg();
-                	
-                    } else if (keyStem.equalsIgnoreCase("ssLogStudentsLearning")) {
-                    	ssLogStudentsLearning();
-                        
-                    } else if (keyStem.equalsIgnoreCase("ssValidateStepsInBRD")) {
-                        setSsValidateStepsInBRD();
-                	
-                    } else if (keyStem.equalsIgnoreCase("ssDontShowAllRaWhenTutored")) {
-                    	ssDontShowAllRaWhenTutored();
-                    
-                    } else if (keyStem.equalsIgnoreCase("ssClSolverTutorHost")) {
-                    	ssSetClSolverTutorHost(parameter[0]);
-                    	
-                    } else if (keyStem.equalsIgnoreCase("ssRunInPLE")) {
-                        setSimStPleOn(true);
-                    } else if (keyStem.equalsIgnoreCase("ssLogging")) {
-                        setSimStLogging(true);
-                    } else if (keyStem.equalsIgnoreCase("ssLocalLogging")) {
-                        setSimStLocalLogging(true);
-                    } else if (keyStem.equalsIgnoreCase("ssDummyContest")) {
-                        setSimStDummyContest(true);
-                    } else if (keyStem.equalsIgnoreCase("ssContestServer")) {
-                        setSimStContestServer(parameter[0]);
-                    } else if (keyStem.equalsIgnoreCase("ssContestPort")) {
-                        setSimStContestPort(parameter[0]);
-                    } else if(keyStem.equalsIgnoreCase("ssUserID")) {
-                    	setSimStUserId(parameter[0]);
-                    } else if(keyStem.equalsIgnoreCase("ssSimStName")) {
-                    	setSimStName(parameter[0]);
-                    } else if(keyStem.equalsIgnoreCase("ssSimStImage")) {
-                    	setSimStImage(parameter[0]);
-                    } else if(keyStem.equalsIgnoreCase("ssProblemsPerQuizSection")) {
-                    	setSimStProblemsPerQuizSection(parameter[0]);
-                    } else if(keyStem.equalsIgnoreCase("ssLogURL")) {
-                    	setSimStLogURL(parameter[0]);
-                    } else if(keyStem.equalsIgnoreCase("ssCLQuizReqMode")) {
-                    	setSsCLQuizReqMode();
-                    } else if(keyStem.equalsIgnoreCase("ssSelfExplainMode")) {
-                    	setSsSelfExplainMode();
-                    } else if(keyStem.equalsIgnoreCase("ssIntroVideo")) {
-                    	setSsIntroVideo(parameter[0]);
-                    } else if(keyStem.equalsIgnoreCase("ssLoadPrefsFile")) {
-                    	setSsPrefsFile(parameter[0]);
-                    } else if(keyStem.equalsIgnoreCase("ssOverviewPage")) {
-                    	setSsOverview(parameter[0]);
-                    } else if(keyStem.equalsIgnoreCase("ssActivationList")) {
-                    	setSsActivationList(parameter[0]);
-                    } else if(keyStem.equalsIgnoreCase("ssTutalkParams")) {
-                    	// @author Huan Truong
-                    	// This flag enables Tutalk dialog mode and sets ctatLauncher parameters
-                    	// Param: flag := experimenter@ctatLauncher[:[opt1,opt2,...,optn]]
-                    	setSsTutalkParams(parameter[0]);
-                    } else if(keyStem.equalsIgnoreCase("ssGeneralWMEPaths")){
-                    	// @author samanz  
-                    	// This flag will switch simstudent to not learn any specific wmepaths
-                    	// Which will create rules to only have multivariable WME path selectors
-                    	setSsGeneralWmePaths();
-                    } */ else if(keyStem.equalsIgnoreCase(USE_HTTP)){
+                    } else if(keyStem.equalsIgnoreCase(USE_HTTP)){
                     	controller.setStudentInterfaceLocal(false);
                     } else if(keyStem.equalsIgnoreCase(USE_JS_BRIDGE)){
                     	;  // just don't complain
