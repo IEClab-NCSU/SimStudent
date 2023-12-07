@@ -626,7 +626,7 @@ public class SimStLogger {
 	 *  @param correctness - any correction information passed into the logger
 	 *  @return TRUE if the SAI is correct or FALSE if the SAI is incorrect or the previous value of correctness
 	 */
-	private String checkCorrectness(String action, Sai sai, String problemName, String result, ProblemNode node, String correctness)
+	public String checkCorrectness(String action, Sai sai, String problemName, String result, ProblemNode node, String correctness)
 	{
 		
 	

@@ -141,7 +141,13 @@ public class AplusController implements ModelTracingListener{
 		
 			prodSysSAIHandlerQ.add(selection, action, input, aPlusModelTracing, controller);
 	}
-	
+
+	public Vector handleInterfaceActionSpringBoot(String selection, String action, String input){
+		MetaTutorModelTracingSAIHandler handler = null;
+		handler = new MetaTutorModelTracingSAIHandler(selection, action, input, aPlusModelTracing, controller);
+		handler.processSAI();
+		return handler.getMessages();
+	}
 	
 	public AplusController(CTAT_Controller controller) {
 		

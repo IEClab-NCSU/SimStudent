@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.FocusEvent;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
@@ -1232,7 +1233,7 @@ public void fillInQuizProblem(String problemName) {
 	}
 
 	/**
-	 * Starts to solve the quiz problem
+	 * Starts to solve the quiz problem (MAIN)
 	 * Deprecated method, used to be startQuizProblem, replaced by {@link #startQuizProblem}
 	 */
 	public void startQuizProblem() {
@@ -1767,93 +1768,50 @@ public void fillInQuizProblem(String problemName) {
 					getBrController(getSimSt()).getMissController().getSimStPLE().checkForQuizTutoringBehaviourDiscrepency(brController.getProblemName(),null);
 
 				// Tasmia added code starts here
-				// block starts
-				/*
-				if(getSimSt().isCTIFollowupInquiryMode())
-				{
-					// Ask if tutor knows what to do next so that there opens an opportunity
-					// for the tutee to ask initial tutee inquiry when tutor is also stuck.
-					//String title = SimStConversation.ASKING_IF_TUTOR_KNOWS_STEP_TOPIC;
+				//if(simSt.isCTIInitialInquiryMode()) 
+				/*{
 					
-					// QuestionAnswers qa asks how confident tutor is while demonstrating a step. We no longer ask that. If if you want to then comment out
-					// the following block:
-					
-					HashMap rulesDeepCopy = (HashMap) SerializationUtils.clone(getSimSt().getRules());
-
-					QuestionAnswers qa = ple.getMatchingConfidenceChoiceExplanation();
-					String explanation = ple.giveMessageSelectableResponse(qa.getQuestion(), qa.getAnswers());
-					boolean is_tutor_stuck = false;
-					
-					if(!runType.equals("springBoot")) {
-						if (getBrController(getSimSt()).getMissController().isPLEon() && !isTakingQuiz())
-							ple.setAvatarAsking();
-					}
-
-					if(explanation.contains("K1"))
-					{
-						if (getBrController(getSimSt()).getMissController().isPLEon() && !isTakingQuiz())
-							getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
-						ple.blockInput(false);
-						is_tutor_stuck = false;
+					String title = SimStConversation.ASKING_IF_TUTOR_KNOWS_STEP_TOPIC;
+					SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();
+					String message = ple.getConversation().getMessage(SimStConversation.ASKING_IF_TUTOR_KNOWS_STEP_TOPIC);
+					int oracle = getSimSt().displayConfirmMessage(title,message);
+					getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
+					if (oracle == JOptionPane.YES_OPTION) {
 						nextCurrentNode = askWhatToDoNext(currentNode);
 						hintReceived = true;
 			       	}
 					else {
-						if(simSt.isCTIFollowupInquiryMode()){
-							is_tutor_stuck = true;
-							bq_scope = true;
-							String brainstorming_thinking = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_THINKING_TOPIC);
-							if(!runType.equals("springBoot")) {
-								if (getBrController(getSimSt()).getMissController().isPLEon() && !isTakingQuiz())
-									getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarThinking(brainstorming_thinking);
-							}
-							String ruleNickName = null, ruleName = null;
-							while(ruleNickName == null) {
-								AskHintJessOracle mr_w_hint = new AskHintJessOracle(brController,currentNode);
-								ruleName = mr_w_hint.getRuleName();
-								ruleNickName = ple.getSkillNickName(ruleName);
-								String mr_w_suggestion = ple.getConversation().getMessage(SimStConversation.MR_WILLIAMS_SUGGESTION_TOPIC);
-								mr_w_suggestion = mr_w_suggestion.replace("<ruleNickName>", ruleNickName);
-								ple.giveMessageRequiringAttention("[ Press the Continue button to continue ]");
-								ple.giveMessage(mr_w_suggestion, "Mr. Williams");
-								ple.giveMessageRequiringAttention("[ Press the Continue button to continue ]");
-							}
-							getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
-							String show_next_after_hint = ple.getConversation().getMessage(SimStConversation.SHOW_NEXT_AFTER_HINT);
-							nextCurrentNode = askWhatToDoNext(currentNode, show_next_after_hint);
-							hintReceived = true;
-							handleDemonstratedHintAfterTutorStuck(ple, ruleName, ruleNickName, rulesDeepCopy);
-							askedExplanation = true;
-							
-						}
-						else {
-							ple.blockInput(false);
-							String stuck_msg = ple.getConversation().getMessage(SimStConversation.BOTH_STUCK_TOPIC);
-							nextCurrentNode = askWhatToDoNext(currentNode, stuck_msg);
-							hintReceived = true;
-						}
-
-					}
-					
-					if(!is_tutor_stuck) {
-						String skillname = hint.skillName;
-						String selection = hint.getSai().getS();
-						String input = hint.getSai().getI();
-						Vector foas = getSimSt().getCurrentFoa();
-						String q_mw_flagged = getSimSt().checkIfStepsAlreadyNegated(skillname, selection, input, foas, 0);
-						String q_tutor_flagged = "";
-						AskHint hh = hint;
-						String why_flagged_explanation = "";
-						if(q_mw_flagged.length() < 2) {
-							q_tutor_flagged = getSimSt().checkIfStepsAlreadyNegated(skillname, selection, input, foas, 1);
-							if(q_tutor_flagged.length() > 2 && !q_tutor_flagged.contains("Flag")) {
-								why_flagged_explanation = ple.giveMessageFreeTextResponse(q_tutor_flagged);
-								askedExplanation = true;
-							}
-							else {
-								if (hintHasContradiction(hint.skillName, rulesDeepCopy)) {
-									String rule_not_applied_logic = ruleNotApplicationLogic(currentNode,hint.skillName, foas, rulesDeepCopy);
-									boolean is_feature_predicate_found = true;
+						if(getSimSt().isNearSimilarProblemsGetterDefined()) {
+							 NearSimilarProblemsGetter nspg = getSimSt().getNearSimilarProblemsGetter();
+							 ArrayList<String> similar_problems = nspg.nearSimilarProblemsGetter(currentNode);       
+							 for(int i=0; i<similar_problems.size(); i++) {
+									ProblemNode similarNode = currentNode;
+									similarNode.setName(similar_problems.get(i));
+									Collection<RuleActivationNode> activList_2=getActivations(similarNode, true);
+									if(activList_2 != null) {
+										for (RuleActivationNode ran : activList_2) {
+											String logic = ruleApplicationLogic(similarNode,ran); // need to make this domain independent by using getter
+											if(logic == "") {
+												logic = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_QUESTION_WHEN_NO_FEATURE_FOUND_TOPIC);
+												askBrainstormingQuestion(logic, false);
+											}
+											else {
+												Sai s_a_i = getSai(ran); // dorminTable3_C1R1, UpdateTable, divide 3
+												String problem_name = similarNode.getName().replace("_", "=");
+												String msg = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_QUESTION_TOPIC,s_a_i.getI(),problem_name,logic);
+												String explanation = askBrainstormingQuestion(msg, true);
+											}
+											currentNode.setName(problem);
+											nextCurrentNode = askWhatToDoNext(currentNode);
+											hintReceived = true;
+											if (trace.getDebugCode("ss"))
+												trace.out("ss", "CallingbrainstormWhatToDoNext  "
+														+ "currentNode: " + currentNode
+														+ " nextCurrentNode: " + nextCurrentNode);
+										}
+										break;
+									}
+									
 									
 									if(rule_not_applied_logic != "") {
 										followupAfterMrWTrigger(currentNode, rule_not_applied_logic, hint.skillName.trim(), is_feature_predicate_found, false);
@@ -1867,64 +1825,27 @@ public void fillInQuizProblem(String problemName) {
 	               			askedExplanation = true;
 						}
 					}
-					
-					
-					nextCurrentNode = askWhatToDoNext(currentNode);
-					hintReceived = true;
-					if (trace.getDebugCode("ss"))
-						trace.out("ss", "Calling askWhatToDoNext  "
-							+ "currentNode: " + currentNode
-							+ " nextCurrentNode: " + nextCurrentNode);
-					
-					
-					
-				}
-				else 
-				// block ends
-					*/
-				{
-					//Previous code
-					nextCurrentNode = askWhatToDoNext(currentNode);
-					hintReceived = true;
-					if (trace.getDebugCode("ss"))
-						trace.out("ss", "Calling askWhatToDoNext  "
-							+ "currentNode: " + currentNode
-							+ " nextCurrentNode: " + nextCurrentNode);
-					// Previous code ends */
-				}
+				}*/
 				
+				// Previous code intact start
+				nextCurrentNode = askWhatToDoNext(currentNode);
+				hintReceived = true;
+				if (trace.getDebugCode("ss"))
+					trace.out("ss", "Calling askWhatToDoNext  "
+							+ "currentNode: " + currentNode
+							+ " nextCurrentNode: " + nextCurrentNode);
+				// Previous code ends 
 				
 			}
-			
-			// only the first step of activations can be skipped
-			activations = true;
 
 			// Null nextCurrentNode after the Oracle inquiry means that the user
-			// initiated a new problem
+			// initiated a new problem			
 			if (nextCurrentNode != null) {
-				
-				// check if rule already was there but SimSt did not perform that
-				/*if(hintHasContradiction(hint) && getSimSt().isCTIFollowupInquiryMode()) {
-					String rule_not_applied_logic = ruleNotApplicationLogic(currentNode,hint.skillName, getSimSt().getCurrentFoa());
-					String ruleNickName = ple.getSkillNickName(hint.skillName);
-					if(rule_not_applied_logic == "") {
-						rule_not_applied_logic = ple.getConversation().getMessage(SimStConversation.BRAINSTORMING_LOGIC_WHEN_NO_FEATURE_FOUND_TOPIC);
-						followupAfterMrWTrigger(currentNode, rule_not_applied_logic, ruleNickName, false);
-					}
-					else {
-						followupAfterMrWTrigger(currentNode, rule_not_applied_logic, ruleNickName, true);
-					}
-				}*/
-				//if (hintReceived) 
-					//explainHowOnPaper(nextCurrentNode);
-				if (!askedExplanation && hintReceived)
-				//if (hintReceived) 
+
+				//if (!askedExplanation && hintReceived) 
 				{
-					//if(simSt.isCTIFollowupInquiryMode())
-					String skillName = explainWhyRight(nextCurrentNode);
-					if(simSt.isCTIFollowupInquiryMode() && skillName != "" && explainedWhyRightSkills.contains(skillName)) {
-						explainHowOnPaper(nextCurrentNode);
-					}
+					
+					explainWhyRight(nextCurrentNode);
 					
 				}
 
@@ -2718,85 +2639,13 @@ public void fillInQuizProblem(String problemName) {
 	private boolean isSelectionValidForSelfExplanation(String selection){
 		return simSt.getBrController().getMissController().getSimStPLE().getValidSelections()!=null && simSt.getBrController().getMissController().getSimStPLE().getValidSelections().contains(selection);
 	}
-
-	
-	private boolean isSelectionValidForBrainstormingQuestions(String selection){
-		return simSt.getBrController().getMissController().getSimStPLE().getValidSelectionsBQ()!=null && simSt.getBrController().getMissController().getSimStPLE().getValidSelectionsBQ().contains(selection);
-	}
-	
-	
-	private boolean isSelectionValidForBothAgreeQuestions(String selection){
-		return simSt.getBrController().getMissController().getSimStPLE().getValidSelectionsBAQ()!=null && simSt.getBrController().getMissController().getSimStPLE().getValidSelectionsBAQ().contains(selection);
-	}
-
-	public boolean followupWhenStuck(ProblemNode currentNode, String logic, String i) {
-
-		String problemStepString = getBrController(getSimSt()).getMissController()
-				.getSimSt().getProblemStepString();
-		tutalkBridge.setProblemName(problemStepString);
-		contextVariables.clear();
-		contextVariables.addVariable("%logic%", logic);
-		contextVariables.addVariable("%i%", i);
-		tutalkBridge.connect("both_stuck_contradiction",
-				contextVariables,
-				SimStLogger.INPUT_WRONG_EXPLAIN_ACTION);
-		while (tutalkBridge.getState() != SimStTutalk.TUTALK_STATE_DONE) {
-			try {
-				Thread.sleep(250);
-			} catch (java.lang.InterruptedException e) {
-				// Nothing we can do here.
-			}
-		}
-		Concept c = tutalkBridge.getLastStatementLabel();
-		if(getSimSt().getMissController().isPLEon() && !c.getLabel().equals("R1"))
-        {
-			this.askStudentToSummarize();
-			this.askedExplanation = true;
-        	getSimSt().getMissController().getSimStPLE().setAvatarNormal();
-        	return false;
-        }
-		else {
-			getSimSt().getMissController().getSimStPLE().setAvatarNormal();
-			return true;
-		}
-	}
-	
-	public void followupAfterMrWTrigger(ProblemNode currentNode, String logic, String i, boolean logic_found, boolean same_skill_as_sug_mw) {
-
-		String xml_script_name = "";
-		if(same_skill_as_sug_mw && logic_found) xml_script_name = "tutee_knew_sug_skill_earlier";
-		else if (same_skill_as_sug_mw && !logic_found) xml_script_name = "tutee_knew_sug_skill_earlier_nfp"; 
-		else if(!same_skill_as_sug_mw && logic_found) xml_script_name = "tutee_knew_demon_skill_earlier";
-		else if (!same_skill_as_sug_mw && !logic_found) xml_script_name = "tutee_knew_demon_skill_earlier_nfp"; 
-		String problemStepString = getBrController(getSimSt()).getMissController()
-				.getSimSt().getProblemStepString();
-		tutalkBridge.setProblemName(problemStepString);
-		contextVariables.clear();
-		contextVariables.addVariable("%i%", i);
-		if(logic_found) contextVariables.addVariable("%logic%", logic);
-		tutalkBridge.connect(xml_script_name,
-				contextVariables,
-				SimStLogger.INPUT_WRONG_EXPLAIN_ACTION);
-		while (tutalkBridge.getState() != SimStTutalk.TUTALK_STATE_DONE) {
-			try {
-				Thread.sleep(250);
-			} catch (java.lang.InterruptedException e) {
-				// Nothing we can do here.
-			}
-		}
-	}
-
-	public String askStudentToSummarize() {
-		String message = getSimSt().getMissController().getSimStPLE().getConversation().getMessage(SimStConversation.BRAINSTORMING_SUMMARIZE_CONVERSATION);
-		String summary = getSimSt().getMissController().getSimStPLE().giveMessageFreeTextResponse(message);
-		return summary;
-	}
-	
-
-
-	public String explainWhyRight(ProblemNode node) {
-
-
+		
+	public void explainWhyRight(ProblemNode node) {
+		
+		String stepName = node.getProblemModel().getProblemName();
+		//String Sol = "click \"problem is solved\" button";
+		//String first_question = "Why am I wrong?";
+		//String correctness = "incorrect";
 		ProblemEdge edge = null;
 		if (node.getInDegree() <= 0)
 			return "";
@@ -2806,25 +2655,34 @@ public void fillInQuizProblem(String problemName) {
 		String skillName = (String) edge.getEdgeData().getRuleNames()
 				.get(edge.getEdgeData().getRuleNames().size() - 1);
 
-
+		//System.out.println("SSS:: stepname--"+stepName+" sol_step "+skillName);
 		if (trace.getDebugCode("sstt"))
 			trace.out("sstt", "Why right TutalkI Trace skillName:" + skillName
 					+ "SAI = " + edge.getSai().getS() + ";"
 					+ edge.getSai().getA() + ";" + edge.getSai().getI());
-
-
-
+		
+		
+		System.out.println("Am I right"+edge.isCorrect());
 		if (explainedWhyRightSkills==null)
 			explainedWhyRightSkills = new HashSet<String>();
-
+		
+	    String correctness = logger.checkCorrectness("Hint Received", edge.getSai(), stepName, "", node, "");
+	    if(edge.isCorrect() == true) correctness = "correct";
+	    else correctness = "incorrect";
+	    stepName = stepName.replace("_", "=");
 		Random r = new Random();
 	    int probability = r.nextInt(100);
 	    //trace.out(edge.getSelection());
 		//if (simSt.isSelfExplainMode() && !skillName.contains("typein") && !skillName.contains("unnamed")) {
 		//10/06/2014: now selection is the one that defines if SimStudent should ask for self explanation
-		if (simSt.isSelfExplainMode() && isSelectionValidForSelfExplanation(edge.getSelection()) && !explainedWhyRightSkills.contains(skillName)
-			&& probability <= CHANCE && !explainedSelectionSkills.contains(edge.getSelection()))
+		//if (simSt.isSelfExplainMode() && isSelectionValidForSelfExplanation(edge.getSelection()) 
+		//		&& !explainedWhyRightSkills.contains(skillName) 
+		//	&& probability <= CHANCE && !explainedSelectionSkills.contains(edge.getSelection()))
+		if (simSt.isSelfExplainMode() && isSelectionValidForSelfExplanation(edge.getSelection()))
 		{
+			
+			explainedWhyRightSkills.add(skillName);
+			explainedSelectionSkills.add(edge.getSelection());
 			
 			if (!simSt.isCTIFollowupInquiryMode() && !simSt.isResponseSatisfactoryGetterClassDefined()) {
 				explainedWhyRightSkills.add(skillName);
@@ -2842,6 +2700,7 @@ public void fillInQuizProblem(String problemName) {
 			}
 
 			if (simSt.getTutalkEnabled()) {
+				System.out.println(" TT ENABLED");
 				// Hand over the context of the problem to the tutalk engine
 				tutalkBridge.setProblemName(getBrController(getSimSt()).getMissController()
 						.getSimSt().getProblemStepString());
@@ -2955,8 +2814,32 @@ public void fillInQuizProblem(String problemName) {
 				if(runType.equals("springBoot")) {
 					explanation = getHintInformation();
 				} else {
-					//explanation = ple.giveMessageFreeTextResponse(question);
-					explanation = ple.giveMessageFreeTextResponse(question,false);
+					explanation = ple.giveMessageFreeTextResponse(question); // response to first ITI
+					if(simSt.isCTIFollowupInquiryLLMMode()) {
+						int q_count = 1;
+						if (getBrController(getSimSt()).getMissController().isPLEon()) 
+							getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarThinking();
+						LLMScript script;
+						if (simSt.useResponseLLMMode())
+							script=new LLMScript("chat_interface_resQ.py");
+						else
+							script=new LLMScript("");
+						String conv_history = "Student:"+question+"\nTeacher:"+explanation;
+						String response = script.executeScript(simSt.getProjectDir(), stepName, "WR", sai.getI(), question, correctness, conv_history,"");
+						String LLM_question = script.processQ(response);
+						script.processResponseLLMOutput(response);
+						if (getBrController(getSimSt()).getMissController().isPLEon()) 
+							getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
+						while(LLM_question != "" && q_count <= 3) {
+							//System.out.println("COnv history so far "+conv_history);
+							explanation = ple.giveMessageFreeTextResponse(LLM_question);
+							conv_history += "\n Student:"+LLM_question+"\nTeacher:"+explanation;
+							q_count++;
+							
+							response = script.executeScript(simSt.getProjectDir(), stepName, "WR", sai.getI(), question, correctness, conv_history,"exp");
+							LLM_question = script.processQ(response);
+						}
+					}
 				}
 				if (explanation != null && explanation.length() > 0) {
 					ple.giveMessage(ple.getConversation().getMessage(
