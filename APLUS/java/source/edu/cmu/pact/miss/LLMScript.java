@@ -39,6 +39,8 @@ public class LLMScript {
 				//System.out.println("JAVA KBR "+expected_response_KBR);
 				scriptOutput = runPythonScript(scriptPath, stepName, QType, Sol, first_question, correctness, conv_history, expected_response_KBR);
 			}
+			System.out.println("Entire Script Output: "+scriptOutput);
+			System.out.println("END");
 			return scriptOutput != null ? scriptOutput : "";
 		}
 		return "";
@@ -85,7 +87,7 @@ public class LLMScript {
 	}
 	
 	public void processResponseLLMOutput(String script_output) {
-		String regexPattern = "The expected response--(.*?)the q is---";
+		String regexPattern = "The expected response--(.*?)KBR is";
 
         // Create a Pattern object
         Pattern pattern = Pattern.compile(regexPattern, Pattern.DOTALL);
@@ -97,6 +99,8 @@ public class LLMScript {
         if (matcher.find()) {
             // Extract the text between "The expected response--" and "the q is---"
             String extractedText = matcher.group(1);
+            System.out.println("The extracted response text is, "+extractedText);
+            System.out.println("END");
             expected_response_KBR = extractedText.replace("\"", "");
 
         } else {
@@ -114,6 +118,8 @@ public class LLMScript {
 	        if (matcher.find()) {
 	            // Extract the text after "Therefore, the question is,"
 	            String extractedText = matcher.group(1);
+	            System.out.println("The extracted Q text is, "+extractedText);
+	            System.out.println("END");
 	            return extractedText.replace("\"", "");
 
 	            // Print the extracted text

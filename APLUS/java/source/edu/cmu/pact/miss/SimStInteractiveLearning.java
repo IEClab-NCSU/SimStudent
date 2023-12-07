@@ -1212,7 +1212,7 @@ public void fillInQuizProblem(String problemName) {
 	}
 	
 	/**
-	 * Starts to solve the quiz problem
+	 * Starts to solve the quiz problem (MAIN)
 	 * Deprecated method, used to be startQuizProblem, replaced by {@link #startQuizProblem}
 	 */
 	public void startQuizProblem() {
@@ -2657,7 +2657,7 @@ public void fillInQuizProblem(String problemName) {
 						if (getBrController(getSimSt()).getMissController().isPLEon()) 
 							getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
 						while(LLM_question != "" && q_count <= 3) {
-							System.out.println("COnv history so far "+conv_history);
+							//System.out.println("COnv history so far "+conv_history);
 							explanation = ple.giveMessageFreeTextResponse(LLM_question);
 							conv_history += "\n Student:"+LLM_question+"\nTeacher:"+explanation;
 							q_count++;

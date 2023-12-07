@@ -71,12 +71,12 @@ if sys_args == 0:
 
 ## OpenAPI call
 openai.api_key  ='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'
-def get_completion(prompt, model="gpt-3.5-turbo"):
+def get_completion(prompt, temperature, model="gpt-3.5-turbo"):
     messages = [{"role": "user", "content": prompt}]
     response = openai.ChatCompletion.create(
         model=model,
         messages=messages,
-        temperature=0, # this is the degree of randomness of the model's output
+        temperature=temperature, # this is the degree of randomness of the model's output
     )
     return response.choices[0].message["content"]
 
@@ -165,7 +165,7 @@ for i in Response_GPT_context_options_negative:
 # In[31]:
 
 
-def make_scene(StepName,Qtype, Sol, first_question,correctness):
+def make_scene_R(StepName,Qtype, Sol, first_question,correctness):
     scene = "A teacher and a student are working on the equation "
     scene = scene + StepName +"."
     supporting_scenario = ""
@@ -175,6 +175,17 @@ def make_scene(StepName,Qtype, Sol, first_question,correctness):
         supporting_scenario = " The teacher suggested to perform "+ Sol+"."
     scene = scene + supporting_scenario+" Student asked, \""+first_question+"\""
     scene = scene +" "+Sol+" is "+ correctness+" step here. "
+    return scene
+
+def make_scene_Q(StepName,Qtype, Sol):
+    scene = "A teacher and a student are working on the equation "
+    scene = scene + StepName +"."
+    supporting_scenario = ""
+    if Qtype == "WW":
+        supporting_scenario = " The student suggested to perform "+ Sol+". The teacher disagreed."        
+    else:
+        supporting_scenario = " The teacher suggested to perform "+ Sol+"."
+    scene = scene + supporting_scenario+"This action activated the following conversation:\n"
     return scene
 
 # In[41]:
@@ -192,7 +203,7 @@ A few examples of your responses are provided below delimited by triple quotes.
 {completed_scene}
 """
     #print(response_prompt)
-    return get_completion(response_prompt)
+    return get_completion(response_prompt, 0)
 
 # In[39]:
 
@@ -230,14 +241,14 @@ Student: "Your explanation was too specific. Please explain when 'divide' can be
 Teacher: "We are not simplifying yet."
 In this scenario, an ideal teacher would reply, "since there are two variable terms in the equation, we must combine these two variables first. Since -9c is already isolated on one side of the equation, we can perform subtract 7c on both sides to combine the variable terms. -9c and 7c can be combined as they are like terms because they share the same variable c. Subtract 7c would result in -9c-7c = 7c-2."
 question:
-To generate a question, we must find out a statement in the ideal teacher reply that was not conveyed by the teacher during the conversation. The teacher did not mention the sentence, "since there are two variable terms in the equation, we must combine these two variables first". Therefore, the question is, "How do equations 16=-4y and -9c=7c-2 differ from each other in terms of the number of variable terms present in them?"   
+To generate a question, we must find out a statement in the ideal teacher reply that was not conveyed by the teacher during the conversation. The teacher did not mention the sentence, "since there are two variable terms in the equation, we must combine these two variables first". Therefore, the question is, "What you said so far makes sense. But, how do equations 16=-4y and -9c=7c-2 differ from each other in terms of the number of variable terms present in them?"   
 
 context: A teacher and a student are working on the equation 10c-5=-6. The teacher suggested to perform add 5. This action activated the following conversation: 
 Student: "Why are we adding 5 here?" 	
 Teacher: "there is subtraction symbol"
 In this scenario, an ideal teacher would reply, "because our goal is to isolate the variable 10c and 5 is subtracted from 10c. The opposite of -5 is +5. So we must add 5 to isolate 10c on its own. This will result in 10c-5+5 = -6+5.
 question: 
-To generate a question, we must find out a statement in the ideal teacher reply that was not conveyed by the teacher during the conversation. The teacher did not mention the sentence, "because our goal is to isolate the variable 10c and 5 is subtracted from 10c". Therefore, the question is, "There are two subtraction symbols in the equation -6 and -5. How do we know which one would help us isolate the variable term 10c?"
+To generate a question, we must find out a statement in the ideal teacher reply that was not conveyed by the teacher during the conversation. The teacher did not mention the sentence, "because our goal is to isolate the variable 10c and 5 is subtracted from 10c". Therefore, the question is, "Got it, but I have a confusion. There are two subtraction symbols in the equation -6 and -5. How do we know which one would help us isolate the variable term 10c?"
 
 context: A teacher and a student are working on the equation -1+v=1. The teacher suggested to perform add 1. This action activated the following conversation:  
 Student: "Why are we adding 1 here?"	 
@@ -246,7 +257,7 @@ Student:I want to strengthen my basic understanding. What motivated you to demon
 Teacher:in adding one you eliminate -1 which leves you with v=2
 In this scenario, an ideal teacher would reply, "because our goal is to isolate the variable v. 1 is subtracted from v in this equation. We can say 1 is subtracted because there is a negative sign on the left of 1. The negative sign on the left of a term belongs to that term. We could even rewrite the equation as v-1 = 1. They both have the same meaning. Now to under the impact of -1 on v, we should perform the opposite operation. The opposite of -1 is +1. So we must add 1 to isolate v on its own. This will result in -1+v = 1+1.
 question: 
-To generate a question, we must find out a statement in the ideal teacher reply that was not conveyed by the teacher during the conversation. The teacher did not mention the sentence, "We could even rewrite the equation as v-1 = 1. They both have the same meaning.". Therefore, the question is, "Can you rewrite the equation in such a way so that the v comes at the beginning and the rewritten equation means the same equation as -1+v=1?"
+To generate a question, we must find out a statement in the ideal teacher reply that was not conveyed by the teacher during the conversation. The teacher did not mention the sentence, "We could even rewrite the equation as v-1 = 1. They both have the same meaning.". Therefore, the question is, "I see! Can you rewrite the equation in such a way so that the v comes at the beginning and the rewritten equation means the same equation as -1+v=1?"
 
 context: A teacher and a student are working on the equation -6-4y=10. The student performed add 6, but the teacher disagreed. This action activated the following conversation:
 Student:Why am I wrong?
@@ -271,7 +282,7 @@ Student:I am trying to understand what makes "subtract 4" correct in depth. Woul
 Teacher:You need to get the variable on its own so you can finish the problem
 In this scenario, an ideal teacher would reply, "Sorry, subtract 4 is incorrect. If the equation was 4+y = 16, subtract 4 would have been accurate. In this equation, 4 is multiplied with y, so we want to do the opposite of multiplication, which is division. So, we must divide both sides of the equation by 4 to isolate y on its own. This will result in 4y/4 = 16/4."
 question: 
-To generate a question, we must find out a statement in the ideal teacher reply that was not conveyed by the teacher during the conversation. The teacher did not mention the sentence, "In this equation, 4 is multiplied with y, so we want to do the opposite of multiplication, which is division". Therefore, the question is, "Can you look at the equation and tell me what is the operation that is taking place between 4 and y? Is 4 being added with y or multiplied with y?
+To generate a question, we must find out a statement in the ideal teacher reply that was not conveyed by the teacher during the conversation. The teacher did not mention the sentence, "In this equation, 4 is multiplied with y, so we want to do the opposite of multiplication, which is division". Therefore, the question is, "I understand! Can you look at the equation and tell me what is the operation that is taking place between 4 and y? Is 4 being added with y or multiplied with y?
 
 context: A teacher and a student are working on the equation x=3. The teacher suggested to perform divide x. This action activated the following conversation:
 Student:Why did you do "divide x" here?
@@ -282,7 +293,7 @@ Student:Can you explain why "divide x" works, in general?
 Teacher:whats a unit overlab"
 In this scenario, an ideal teacher would reply, "Sorry, I made a mistake. We cannot divide by x in this case. Since x is already isolated on one side, we don't need to perform any additional steps. The equation x=3 means that x is already equal to 3, so there is no need for further manipulation."
 question: 
-To generate a question, we must find out a statement in the ideal teacher reply that was not conveyed by the teacher during the conversation. The teacher did not mention the sentence, "The equation x=3 means that x is already equal to 3, so there is no need for further manipulation.". Therefore, the question is, "In this current nstate of the equation, can you tell me what x equals to?"
+To generate a question, we must find out a statement in the ideal teacher reply that was not conveyed by the teacher during the conversation. The teacher did not mention the sentence, "The equation x=3 means that x is already equal to 3, so there is no need for further manipulation.". Therefore, the question is, "I still don't have a full understanding. In this current state of the equation, can you tell me what x equals to?"
 
 context: A teacher and a student are working on the equation 9x+2=x+8. The student performed divide 9, but the teacher disagreed. This action activated the following conversation:
 Student:Why am I wrong?
@@ -293,7 +304,7 @@ Student:I am trying to understand a generalized rule of when to apply "divide". 
 Teacher:I just told you
 In this scenario, an ideal teacher would reply, "Divide 9 is incorrect here because we divide when there is only one variable term in the entire equation. we have two variable terms in this equation 9x and x. So, in order to simplify this equation, we should combine these two variable terms together. Note that, we can only combine 9x and x together because they are like terms, they both have the same variable letter x. We can subtract x as it is a positive term. Subtract x on both sides will isolate 8 on the right side This will result in 9x - x = x + 8 - x." 
 question: 
-To generate a question, we must find out a statement in the ideal teacher reply that was not conveyed by the teacher during the conversation. The teacher did not mention the sentence, "Note that, we can only combine 9x and x together because they are like terms, they both have the same variable letter x". Therefore, the question is, "How do we know if two variable terms are like terms with each other?"
+To generate a question, we must find out a statement in the ideal teacher reply that was not conveyed by the teacher during the conversation. The teacher did not mention the sentence, "Note that, we can only combine 9x and x together because they are like terms, they both have the same variable letter x". Therefore, the question is, "Thanks for being so patient with my questions. I am still confused. How do we know if two variable terms are like terms with each other?"
 
 context: A teacher and a student are working on the equation 16=-4y. The student performed divide 16, but the teacher disagreed. This action activated the following conversation:
 Student:Why am I wrong?
@@ -302,7 +313,7 @@ Student:There might be alternative correct actions but that does not justify "di
 Teacher:because you only divide by a variable term
 In this scenario, an ideal teacher would reply, "Divide 16 is incorrect here because we must divide by the number that is multiplied with the variable. This number is also called the coefficient. In other word, we always divide by the coefficient. -4 is the coefficient here, not 16. Therefore, to isolate the variable y, we need to divide by -4 as divide is the opposite operation of multiplication. This will result in 16/-4 = -4y/-4."
 question: 
-To generate a question, we must find out a statement in the ideal teacher reply that was not conveyed by the teacher during the conversation. The teacher did not mention the sentence, "Divide 16 is incorrect here because we must divide by the number that is multiplied with the variable. This number is also called the coefficient." Therefore, the question is, "What do we call those numbers that are multiplied with a variable?"
+To generate a question, we must find out a statement in the ideal teacher reply that was not conveyed by the teacher during the conversation. The teacher did not mention the sentence, "Divide 16 is incorrect here because we must divide by the number that is multiplied with the variable. This number is also called the coefficient." Therefore, the question is, "I see! What do we call those numbers that are multiplied with a variable?"
 """
 #instruction history:
 # Your task is to formulate a question by comparing a teacher reply and an ideal teacher reply given in a context. You will formulate a question from the sentences that the teacher did not state 
@@ -314,8 +325,9 @@ Given a context, your goal is to generate a question by analysing the teacher's 
 Note that, teacher's reply may contain grammatical or spelling errors. You must try your best to make sense of the teacher's reply with respect to the provided equation.
 Once you understand teacher's reply, you must apply the rules given below delimited by triple backticks to formulate your question. 
 You must never repeat or rephrase the same question asked by the student once in the given context.
-Your should never ask a question that has been already answered by the teacher in the conversation. You must always generate a question that encourage new reply from the teacher.   
-
+Your should never ask a question that has been already answered by the teacher in the conversation. You must always generate a question that encourage new reply from the teacher.  
+Make sure your start the question with some acknowledgement relevant to the teacher's reply in the conversation.
+Always include "Therefore, the question is," in your question.
 A few examples are provided below delimited by triple quotes.
 '''{question_contextual_text}'''
 
@@ -330,9 +342,10 @@ Here are the rules for generating questions:
 - Rule 2: If the teacher reply contradicts with the context, you must point it out and then generate a question.
 - Rule 3: If the teacher reply does not contain any calculation error and does not contradict, then you must pick a sentence from the ideal teacher reply that is missing in the conversation between teacher and student. Once you find out a sentence, ask question about that sentence.
 - Rule 4: To pick the sentence from the ideal teacher reply that is missing in the conversation between teacher and student, you must go in order. Between two missing sentences, pick the one that comes first. Do not pick multiple sentences.
+- Rule 5: If the question that is in your mind has already been asked in the conversation by "Student:", then you must think of another question using Rule 4.
 ```
 """
-    response = get_completion(prompt)
+    response = get_completion(prompt, .5)
     return response
 
 # In[37]:
@@ -341,14 +354,15 @@ Here are the rules for generating questions:
 ## main function that prepares the necessary components for question LLM
 ##___ Main function ____
 def generate_question(StepName,Qtype, Sol, first_question,correctness,conversation_hist):
-    scene = make_scene(StepName,Qtype, Sol, first_question,correctness)
+    scene = make_scene_R(StepName,Qtype, Sol, first_question,correctness)
     exp_r = ""
     if expected_response == "":
         exp_r = generate_expected_response(scene)
     else:
         exp_r = expected_response
     print("KBR is ",exp_r)
-
+    scene = make_scene_Q(StepName,Qtype, Sol)
+    print("Scene is ", scene, conversation_hist)
     if len(str(exp_r)) > 1:
         q = generate_question_(scene, exp_r, conversation_hist)
         print("the q is---",q) # Must keep this print prefix fixed as it is used for regex map in the java code
