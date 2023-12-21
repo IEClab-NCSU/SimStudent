@@ -371,6 +371,7 @@ public final class SimSt implements Serializable {
    }
    public void setSsSimStStrategyRevealMode(boolean simst_strategy_reveal_Mode) {
 	   this.simst_strategy_reveal_Mode = simst_strategy_reveal_Mode;
+   }
    
    public void setSsConstructiveTuteeInquiryLLM(boolean CTILLMMode, boolean useResponseLLM) {
 	   this.CTI_LLM_Mode = CTILLMMode;
@@ -9023,6 +9024,7 @@ public final class SimSt implements Serializable {
 
    public transient Vector<RuleActivationNode> altSug=null;
 
+   // This is being called when SimStudent is finding a Input to perform
    public String verifyStep(String problemName, ProblemNode problemNode,
                                        String selection, String action, String input)
    {

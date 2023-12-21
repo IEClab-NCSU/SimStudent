@@ -221,6 +221,7 @@ public class SimStLogger {
    public static final String PROBLEM_ENTERED_EXPLAIN_ACTION = "New Problem Explained";
    public static final String NO_EXPLAIN_ACTION = "Explanation Not Given";
    public static final String EXPLANATION_CATEGORIZE_ACTION = "Categorize Explanation";
+   public static final String EXPECTED_KBR = "Expected Knowledge-building response";
 
    public static final String PROBLEM_ENTERED_EXPLAIN_TYPE = "ProblemEntered";
    public static final String INPUT_WRONG_EXPLAIN_TYPE = "InputWrong";

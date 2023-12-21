@@ -18,7 +18,7 @@ public class LLMScript {
 		return scriptName;
 	}
 	
-	public String executeScript(String projectPath, String stepName, String QType, String Sol, String first_question, String correctness, String conv_history, String expected_response) {
+	public String executeScript(String pythonPath,String projectPath,  String stepName, String QType, String Sol, String first_question, String correctness, String conv_history, String expected_response) {
 		//System.out.println("script_execute");
 		if(scriptName != "") {
 			String scriptPath = projectPath + "/"+scriptName ;
@@ -34,23 +34,25 @@ public class LLMScript {
 	
 			String scriptOutput;
 			if(expected_response=="") 
-				scriptOutput = runPythonScript(scriptPath, stepName, QType, Sol, first_question, correctness, conv_history);
+				scriptOutput = runPythonScript(pythonPath, scriptPath, stepName, QType, Sol, first_question, correctness, conv_history);
 			else {
 				//System.out.println("JAVA KBR "+expected_response_KBR);
-				scriptOutput = runPythonScript(scriptPath, stepName, QType, Sol, first_question, correctness, conv_history, expected_response_KBR);
+				scriptOutput = runPythonScript(pythonPath, scriptPath, stepName, QType, Sol, first_question, correctness, conv_history, expected_response_KBR);
 			}
-			System.out.println("Entire Script Output: "+scriptOutput);
-			System.out.println("END");
+			//System.out.println("Entire Script Output: "+scriptOutput);
+			//System.out.println("END");
 			return scriptOutput != null ? scriptOutput : "";
 		}
 		return "";
 	}
-	public String runPythonScript(String scriptPath, String... arguments) {
+	public String runPythonScript(String pythonPath, String scriptPath, String... arguments) {
 		try {
 			// Construct the command to run the Python script with arguments
 			String[] command = new String[arguments.length + 2];
 			//command[0] = "python";
-			command[0] = "/Users/tasmiashahriar/opt/anaconda3/bin/python3.8";
+			//command[0] = "/Users/tasmiashahriar/opt/anaconda3/bin/python3.8";
+			command[0] = pythonPath;
+			//System.out.println(command[0]);
 			// I had to set the pythonpath like this, ask subodh how he did it.
 			command[1] = scriptPath;
 			System.arraycopy(arguments, 0, command, 2, arguments.length);
@@ -86,7 +88,7 @@ public class LLMScript {
 		}
 	}
 	
-	public void processResponseLLMOutput(String script_output) {
+	public String processResponseLLMOutput(String script_output) {
 		String regexPattern = "The expected response--(.*?)KBR is";
 
         // Create a Pattern object
@@ -106,6 +108,7 @@ public class LLMScript {
         } else {
         	expected_response_KBR = "";
         }
+        return expected_response_KBR;
 	}
 
 	public String processQ(String script_output) {
@@ -126,7 +129,7 @@ public class LLMScript {
 	            //System.out.println(extractedText);
 	        } else {
 	            //System.out.println("Pattern not found in the input text.");
-	        	return "";
+	        	return "No question";
 	        }
 	        
 	}

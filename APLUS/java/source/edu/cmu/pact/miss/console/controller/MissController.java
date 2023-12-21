@@ -910,6 +910,7 @@ public class MissController implements MissControllerExternal {
 		{
 			getSimSt().setSsSimStStrategyRevealMode(true);
 		}
+	}
 		
 	
 	// Added by Tasmia for CTI using LLM

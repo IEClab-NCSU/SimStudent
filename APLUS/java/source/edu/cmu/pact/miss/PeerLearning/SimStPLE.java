@@ -276,6 +276,8 @@ public class SimStPLE {
 	public static final String no_preview_image = "img/DefaultOnPaper.png";
 	//public static final String E13 = ON_PAPER_IMAGE_LOCATION+"/E13.png";
 	public static final String PAPER_CLOSE = "img/paperClose.png";
+	// adding the python script path for LLM CTI
+	public static String PYTHON_SCRIPT_PATH = "";
 
 	public static final String BOARD_IMAGE = "img/board.png";
 	public static final String NEXT_EXAMPLE_IMAGE = "img/next.png";
@@ -1204,8 +1206,14 @@ public class SimStPLE {
 		return returnValue;
 
 	}
+	
+	public String getPythonScriptPath() {
+		return PYTHON_SCRIPT_PATH;
+	}
 
 	public void config() {
+		PYTHON_SCRIPT_PATH = System.getProperty("pythonScriptPath");
+		System.out.println(PYTHON_SCRIPT_PATH);
 		componentNames = new RegexHashtable();
 		startStateElements = new ArrayList<String>();
 		examples = new ArrayList<SimStExample>();
