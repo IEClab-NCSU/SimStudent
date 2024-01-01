@@ -388,3 +388,25 @@ In the quiz, when I had <problem>, I applied <pi> but Mr. Williams graded that a
 
 WHY_WAS_INCORRECT_METATUTOR_TYPEIN
 In the quiz, when I had <op> and I applied <o> on it, I got <pi>, but Mr. Williams graded that as incorrect. Why did Mr. William grade <pi> as incorrect here?
+
+KBR_ACKNOWLEDGEMENT
+Fantastic! Thanks!
+Incredibly helpful. Thanks for your guidance!
+That's a helpful response. Thanks!
+You're an outstanding teacher – among the best I've had!
+You're a fantastic teacher!
+Your explanation makes perfect sense. Thank you!
+Makes perfect sense to me. Thank you!
+Genius! That helped a lot!
+Sweet! Explanation right on the spot!
+Thank you for your dedication to my learning.
+What a smart teacher! Thanks for explaining it so clearly!
+You are tremendously good at explaining things to me!
+Thanks for caring about my learning. Your explanations are quite helpful!
+
+KTR_ACKNOWLEDGEMENT
+I'll revisit it later. Let's move forward for now!
+I'm not entirely sure, but I'll come back to it later. For now, let's move ahead!
+Though I'm not fully convinced, let's proceed for now!
+I'm still a bit puzzled, but I'll circle back to it later. Let's move on for now!
+I didn't quite catch that, but I'll revisit it later. Let's move forward for now!

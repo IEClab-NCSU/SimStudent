@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import edu.cmu.pact.miss.PeerLearning.SimStLogger;
+
 public class LLMScript {
 	private static String scriptName;
 	private String expected_response_KBR = "";
@@ -18,7 +20,7 @@ public class LLMScript {
 		return scriptName;
 	}
 	
-	public String executeScript(String pythonPath,String projectPath,  String stepName, String QType, String Sol, String first_question, String correctness, String conv_history, String expected_response) {
+	public String executeScript(String pythonPath,String projectPath,  String stepName, String QType, String Sol, String first_question, String correctness, String conv_history, String expected_response, SimStLogger logger) {
 		//System.out.println("script_execute");
 		if(scriptName != "") {
 			String scriptPath = projectPath + "/"+scriptName ;
@@ -31,7 +33,7 @@ public class LLMScript {
 			//String conv_history =
 			//		"Student:Why am I wrong?" + "\n" +
 			//				"Teacher:you need to get the varible on its own" + "\n" ;
-	
+			System.out.println(pythonPath+" "+scriptPath);
 			String scriptOutput;
 			if(expected_response=="") 
 				scriptOutput = runPythonScript(pythonPath, scriptPath, stepName, QType, Sol, first_question, correctness, conv_history);
@@ -39,8 +41,11 @@ public class LLMScript {
 				//System.out.println("JAVA KBR "+expected_response_KBR);
 				scriptOutput = runPythonScript(pythonPath, scriptPath, stepName, QType, Sol, first_question, correctness, conv_history, expected_response_KBR);
 			}
+			//System.out.println("START");
 			//System.out.println("Entire Script Output: "+scriptOutput);
 			//System.out.println("END");
+			logger.simStLog(SimStLogger.SIM_STUDENT_EXPLANATION, SimStLogger.SCRIPT_OUTPUT,
+					stepName, scriptOutput, Sol, 0, "");
 			return scriptOutput != null ? scriptOutput : "";
 		}
 		return "";
@@ -89,7 +94,7 @@ public class LLMScript {
 	}
 	
 	public String processResponseLLMOutput(String script_output) {
-		String regexPattern = "The expected response--(.*?)KBR is";
+		String regexPattern = "KBR is (.*)the alignment is----";
 
         // Create a Pattern object
         Pattern pattern = Pattern.compile(regexPattern, Pattern.DOTALL);
@@ -101,8 +106,10 @@ public class LLMScript {
         if (matcher.find()) {
             // Extract the text between "The expected response--" and "the q is---"
             String extractedText = matcher.group(1);
-            System.out.println("The extracted response text is, "+extractedText);
-            System.out.println("END");
+            extractedText = extractedText.trim();
+            
+            //System.out.println("The extracted response text is, "+extractedText);
+            //System.out.println("END");
             expected_response_KBR = extractedText.replace("\"", "");
 
         } else {
@@ -121,13 +128,33 @@ public class LLMScript {
 	        if (matcher.find()) {
 	            // Extract the text after "Therefore, the question is,"
 	            String extractedText = matcher.group(1);
-	            System.out.println("The extracted Q text is, "+extractedText);
-	            System.out.println("END");
-	            return extractedText.replace("\"", "");
+	            //System.out.println("The extracted Q text is, "+extractedText);
+	            //System.out.println("END");
+	            if(extractedText.contains("?")) 
+	            	return extractedText.replace("\"", "");
+	            else return "No question";
+	            	
 
 	            // Print the extracted text
 	            //System.out.println(extractedText);
-	        } else {
+	        } else if(script_output.contains("?")) {
+	            //System.out.println("Pattern not found in the input text.");
+	        	regexPattern ="the q is---(.*)";
+	        	pattern = Pattern.compile(regexPattern);
+		        matcher = pattern.matcher(script_output);
+
+		        // Check if the pattern matches
+		        if (matcher.find()) {
+		            // Extract the text after "Therefore, the question is,"
+		            String extractedText = matcher.group(1);
+		            //System.out.println("The second extracted Q text is, "+extractedText);
+		            return extractedText.replace("\"", "");
+		        }
+		        else 
+		        	return "No question";
+	        	//return script_output;
+	        }
+	        else {
 	            //System.out.println("Pattern not found in the input text.");
 	        	return "No question";
 	        }

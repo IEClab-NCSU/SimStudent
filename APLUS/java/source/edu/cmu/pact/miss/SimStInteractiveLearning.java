@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
@@ -85,6 +86,7 @@ import edu.cmu.pact.miss.ProblemModel.Graph.SimStNode;
 import edu.cmu.pact.miss.ProblemModel.Graph.SimStProblemGraph;
 import edu.cmu.pact.miss.jess.WorkingMemoryConstants;
 import edu.cmu.pact.miss.userDef.algebra.EqFeaturePredicate;
+
 
 public class SimStInteractiveLearning implements Runnable {
 
@@ -391,7 +393,7 @@ public class SimStInteractiveLearning implements Runnable {
 		// call interactive learning on it
 		runInteractiveLearning();
 	}
-
+	
 
 	/**
 	 * Create a new graph for the quizProblem, make a new node using the name of
@@ -2543,7 +2545,7 @@ public void fillInQuizProblem(String problemName) {
 					}
 					if ((firstStategy==ASK_IMMEDIATELY || (firstStategy==ASK_AFTER_SECOND_NO && ruleQueryCounter==2)) && secondStrategyToAskSelfExplQ(ran))
 					{
-						if(!simSt.isCTIFollowupInquiryMode())
+						if(!simSt.isCTIFollowupInquiryMode() && !simSt.isCTIFollowupInquiryLLMMode())
 							setLastSkillExplained(getFirstRanStudentSaidNo().getName());
 						//if(!runType.equals("springBoot") && !simSt.isCTIFollowupInquiryMode()) explainWhyWrong(getFirstRanStudentSaidNo());
 						//else if(!runType.equals("springBoot") && simSt.isCTIFollowupInquiryMode()) explainWhyWrongCTI(getFirstRanStudentSaidNo());
@@ -2647,8 +2649,53 @@ public void fillInQuizProblem(String problemName) {
 		return simSt.getBrController().getMissController().getSimStPLE().getValidSelections()!=null && simSt.getBrController().getMissController().getSimStPLE().getValidSelections().contains(selection);
 	}
 	
-	public void askLLMQuestions(String question, String explanation, String stepName, Sai sai, String correctness, SimStPLE ple, boolean hint_explained) {
-		int max_q = 3;
+	public boolean processLightsideLabel(SimStPLE ple, String explanation) {
+		
+		String label_text = ple.getMessageAnnotator().annotateText(explanation);
+		//if (Arrays.stream(ple.key_terms).anyMatch(predicate)
+		//if 
+		//explanation.containsAny(ple.key_terms);
+		
+		//List<String> inputStringList = Arrays.asList(explanation.split(" "));
+		//System.out.println()
+	    List<String> wordsList = Arrays.asList(ple.key_terms);
+	    boolean has_key_terms = false;
+	    for (String term : wordsList) {
+	    	//System.out.println(term);
+	    	if (explanation.toLowerCase().contains(term)) {
+	    		has_key_terms = true;
+	    		break;
+	    	}
+	    }
+	    //inputStringList.contains(wordsList);
+
+	    //return inputStringList.containsAll(wordsList);
+		
+		//oolean has_key_terms =b inputStringList.contains(wordsList);
+				//Arrays.stream(ple.key_terms).anyMatch(explanation.toLowerCase()::contains);
+		//System.out.println("YAY" +has_key_terms);
+		if (label_text != null) {
+			
+			String[] split_label = label_text.split(",");
+	        for(int i=0; i<split_label.length; i++) {
+	        	if(split_label[i].contains("1.0")) 
+	        	{
+	        		String prediction = split_label[i].split("-")[0];
+	        		if (prediction.contains("R2") && has_key_terms) return true;
+	        		else return false;
+	        	}
+	        }
+	        return false;
+			
+		}
+		return false;
+		
+	}
+	
+	public String askLLMQuestions(String question, String explanation, String stepName, Sai sai, String correctness, SimStPLE ple, boolean hint_explained) {
+		boolean last_KB = false;
+		boolean any_KB = false;
+		int max_q = 2;
 		int q_count = 1;
 		if (getBrController(getSimSt()).getMissController().isPLEon()) 
 			ple.setAvatarThinking();
@@ -2659,18 +2706,28 @@ public void fillInQuizProblem(String problemName) {
 			script=new LLMScript("");
 		String conv_history = "\nStudent:"+question+"\nTeacher:"+explanation;
 		String response = "";
+		String skill_INPUT = sai.getI();
+		if (sai.getS().equalsIgnoreCase(Rule.DONE_NAME)) {
+			skill_INPUT = "click \"problem is solved\" button";
+		}
+		
 		if (hint_explained)
-			response = script.executeScript(ple.getPythonScriptPath(), simSt.getProjectDir(), stepName, "WR", sai.getI(), question, correctness, conv_history,"");
+			response = script.executeScript(ple.getPythonScriptPath(), simSt.getProjectDir(), stepName, "WR", skill_INPUT, question, correctness, conv_history,"",logger);
 		else
-			response = script.executeScript(ple.getPythonScriptPath(), simSt.getProjectDir(), stepName, "WW", sai.getI(), question, correctness, conv_history,"");
+			response = script.executeScript(ple.getPythonScriptPath(), simSt.getProjectDir(), stepName, "WW", skill_INPUT, question, correctness, conv_history,"",logger);
 		String LLM_question = script.processQ(response);
+		//if (LLM_question != "" || LLM_question.trim().contains("No question")) 
+		{
+			last_KB = processLightsideLabel(ple,explanation);
+			if (last_KB == true && any_KB == false) any_KB = true;
+		}
 		String exp_resp = script.processResponseLLMOutput(response);
-		String context = stepName+"::"+sai.getI()+"::"+correctness;
+		String context = stepName+"::"+skill_INPUT+"::"+correctness+"::"+exp_resp;
 		logger.simStLog(SimStLogger.SIM_STUDENT_EXPLANATION, SimStLogger.EXPECTED_KBR,
 				stepName, context, exp_resp, 0, "");
 		if (getBrController(getSimSt()).getMissController().isPLEon()) 
 			ple.setAvatarNormal();
-		while(LLM_question != "" && q_count <= max_q && LLM_question.trim() != "No question") {
+		while(LLM_question != "" && q_count <= max_q && !LLM_question.trim().contains("No question")) {
 			//System.out.println("COnv history so far "+conv_history);
 			
 			explanation = ple.giveMessageFreeTextResponse(LLM_question);
@@ -2681,6 +2738,9 @@ public void fillInQuizProblem(String problemName) {
 			step = getBrController(getSimSt()).getMissController().getSimSt()
 					.getProblemStepString();
 			if (explanation != null && explanation.length() > 0) {
+				//if (KB == false) 
+				last_KB = processLightsideLabel(ple,explanation);
+				if (last_KB == true && any_KB == false) any_KB = true;
 				conv_history += "\nStudent:"+LLM_question+"\nTeacher:"+explanation;
 				if(hint_explained)
 					logger.simStLog(SimStLogger.SIM_STUDENT_EXPLANATION,
@@ -2693,6 +2753,7 @@ public void fillInQuizProblem(String problemName) {
 						
 					
 			} else {
+				last_KB = false;
 				conv_history += "\nStudent:"+LLM_question+"\nTeacher: no explanation given";
 				if(hint_explained)
 					logger.simStLog(SimStLogger.SIM_STUDENT_EXPLANATION,
@@ -2710,17 +2771,18 @@ public void fillInQuizProblem(String problemName) {
 			//response = script.executeScript(simSt.getProjectDir(), stepName, "WR", sai.getI(), question, correctness, conv_history,"exp");
 			if (q_count <= max_q) {
 				if (hint_explained)
-					response = script.executeScript(ple.getPythonScriptPath(), simSt.getProjectDir(), stepName, "WR", sai.getI(), question, correctness, conv_history,"exp");
+					response = script.executeScript(ple.getPythonScriptPath(), simSt.getProjectDir(), stepName, "WR", skill_INPUT, question, correctness, conv_history,"exp",logger);
 				else
-					response = script.executeScript(ple.getPythonScriptPath(), simSt.getProjectDir(), stepName, "WW", sai.getI(), question, correctness, conv_history,"exp");
+					response = script.executeScript(ple.getPythonScriptPath(), simSt.getProjectDir(), stepName, "WW", skill_INPUT, question, correctness, conv_history,"exp",logger);
 				LLM_question = script.processQ(response);
 			}
 		}
 		if(ple != null ) ple.setAvatarNormal();
+		return any_KB+"_"+last_KB;
 	}
 		
 	public void explainWhyRight(ProblemNode curnode, ProblemNode node) {
-		int skill_q_asked_count = -1;
+		
 		String stepName = node.getProblemModel().getProblemName();
 		ProblemEdge edge = null;
 		//String name = simSt.getProblemStepString();
@@ -2742,22 +2804,22 @@ public void fillInQuizProblem(String problemName) {
 		//System.out.println("Am I right"+edge.isCorrect());
 		if (explainedWhyRightSkills==null)
 			explainedWhyRightSkills = new HashSet<String>();
-		else {
-			skill_q_asked_count = Collections.frequency(explainedWhyRightSkills, skillName);
-			//System.out.println(count);
-		}
+		
 
 		Random r = new Random();
 	    int probability = r.nextInt(100);
 	    //trace.out(edge.getSelection());
 		//if (simSt.isSelfExplainMode() && !skillName.contains("typein") && !skillName.contains("unnamed")) {
 		//10/06/2014: now selection is the one that defines if SimStudent should ask for self explanation
-		//if (simSt.isSelfExplainMode() && isSelectionValidForSelfExplanation(edge.getSelection()) 
-		//		&& !explainedWhyRightSkills.contains(skillName) 
-	//		&& probability <= CHANCE && !explainedSelectionSkills.contains(edge.getSelection()))
-		if (simSt.isSelfExplainMode() && isSelectionValidForSelfExplanation(edge.getSelection())
-				&& skill_q_asked_count <= 2 
-				&& probability <= CHANCE && !explainedSelectionSkills.contains(edge.getSelection()))
+		if (simSt.isSelfExplainMode() && isSelectionValidForSelfExplanation(edge.getSelection()) 
+				&& !explainedWhyRightSkills.contains(skillName) 
+			&& !explainedSelectionSkills.contains(edge.getSelection()))
+		//if (simSt.isSelfExplainMode() && isSelectionValidForSelfExplanation(edge.getSelection())
+				//&& skill_q_asked_count <= 2 
+		//		&& probability <= CHANCE && !explainedSelectionSkills.contains(edge.getSelection()))
+			//if (simSt.isSelfExplainMode() && isSelectionValidForSelfExplanation(edge.getSelection())
+			//		&& skill_q_asked_count <= 2 
+			//		&& !explainedSelectionSkills.contains(edge.getSelection()))
 		{
 			// Checking if the demonstrated step is correct for response LLM
 			String problemName = curnode.getProblemModel().getProblemName();
@@ -2771,10 +2833,10 @@ public void fillInQuizProblem(String problemName) {
 		    else correctness = "incorrect";
 		    stepName = problemName.replace("_", "=");
 			
-			explainedWhyRightSkills.add(skillName);
-			explainedSelectionSkills.add(edge.getSelection());
+			//explainedWhyRightSkills.add(skillName);
+			//explainedSelectionSkills.add(edge.getSelection());
 			
-			if (!simSt.isCTIFollowupInquiryMode() && !simSt.isResponseSatisfactoryGetterClassDefined()) {
+			if (!simSt.isCTIFollowupInquiryMode() && !simSt.isResponseSatisfactoryGetterClassDefined() && !simSt.isCTIFollowupInquiryLLMMode()) {
 				explainedWhyRightSkills.add(skillName);
 				explainedSelectionSkills.add(edge.getSelection());
 			}
@@ -2921,15 +2983,31 @@ public void fillInQuizProblem(String problemName) {
 					}
 					// LLM question asking
 					if(simSt.isCTIFollowupInquiryLLMMode()) {
-						askLLMQuestions(question, explanation, stepName, sai ,correctness,ple, true);
+						String KB = askLLMQuestions(question, explanation, stepName, sai ,correctness,ple, true);
+						String[] KBs = KB.split("_");
+						if (Boolean.valueOf(KBs[1]) == false) {
+							ple.giveMessage(ple.getConversation().getMessage(
+									SimStConversation.KTR_ACKNOWLEDGEMENT_TOPIC));
+						}
+						else {
+							ple.giveMessage(ple.getConversation().getMessage(
+									SimStConversation.KBR_ACKNOWLEDGEMENT_TOPIC));
+						}
+						if (Boolean.valueOf(KBs[0]) == true) {
+							explainedWhyRightSkills.add(skillName);
+							explainedSelectionSkills.add(edge.getSelection());
+						}
 					}
 				}
-				if (explanation != null && explanation.length() > 0) {
-					ple.giveMessage(ple.getConversation().getMessage(
-							SimStConversation.CONFIRM_TOPIC));
-				} else {
-					ple.giveMessage(ple.getConversation().getMessage(
-							SimStConversation.SKIPPED_TOPIC));
+
+				if(!simSt.isCTIFollowupInquiryLLMMode()) {
+					if (explanation != null && explanation.length() > 0) {
+						ple.giveMessage(ple.getConversation().getMessage(
+								SimStConversation.CONFIRM_TOPIC));
+					} else {
+						ple.giveMessage(ple.getConversation().getMessage(
+								SimStConversation.SKIPPED_TOPIC));
+					}
 				}
 			}
 
@@ -3075,14 +3153,6 @@ public void fillInQuizProblem(String problemName) {
 		
 		if (simSt.isSelfExplainMode()) {
 			
-			/*getBrController(getSimSt()).getMissController().getSimStPLE().getSimStPeerTutoringPlatform().setUndoButtonEnabled(false);
-			getBrController(getSimSt()).getMissController().getSimStPLE().getSimStPeerTutoringPlatform().setRestartButtonEnabled(false);
-			getBrController(getSimSt()).getMissController().getSimStPLE().getSimStPeerTutoringPlatform().setQuizButtonEnabled(false);
-			getBrController(getSimSt()).getMissController().getSimStPLE().getSimStPeerTutoringPlatform().setNextProblemButtonEnabled(false);
-			JCommButton doneButton = (JCommButton) (getBrController(getSimSt()).lookupWidgetByName("Done"));
-			doneButton.setEnabled(false);*/
-			
-
 			Sai sai = new Sai(ran.getActualSelection(), ran.getActualAction(),
 					ran.getActualInput());
 			String ruleName = ran.getName().replaceAll("MAIN::", "");
@@ -3094,10 +3164,6 @@ public void fillInQuizProblem(String problemName) {
 								+ ";" + sai.getI());
 
 			String step = simSt.getProblemStepString();
-			
-			//AskHintJessOracle jess_hint = new AskHintJessOracle(getBrController(getSimSt()),currentNode);
-			//String jess_hint_ruleName = jess_hint.getRuleName();
-			
 
 			String question = "Why shouldn't I put " + sai.getI() + "?";
 			if (sai.getS().equalsIgnoreCase(Rule.DONE_NAME)) {
@@ -3146,16 +3212,13 @@ public void fillInQuizProblem(String problemName) {
 					return;
 				}
 				
-			    
-				
-				if(!simSt.isCTIFollowupInquiryMode())
-					explainedSelectionSkills.add(sai.getS());
 				Instruction inst=getBrController(getSimSt()).getMissController().getSimSt().getWhyNotInstruction();
 				if (inst.getPreviousID()==null)
 					return;
 
 				// In cti mode, we only consider a explanation was provided if it was tagged satisfactory as per the current dialog structure.
-				if(!simSt.isCTIFollowupInquiryMode()) {
+				if(!simSt.isCTIFollowupInquiryMode() && !simSt.isCTIFollowupInquiryLLMMode()) {
+					explainedSelectionSkills.add(sai.getS());
 					setAskedExplanation(true);
 					setExplanationGiven(true);
 				}
@@ -3167,7 +3230,6 @@ public void fillInQuizProblem(String problemName) {
 				
 				// This part is responsible for showing the contrasting interface prompt as a popup.
 				// The last variable needs to be true if you want to show only see comparison window as a popup and rest other chat in the usual module.
-				//ple.setAvatarAsking();
 				SimStExplainWhyNotDlg whyNotDlg=new SimStExplainWhyNotDlg(getBrController(getSimSt()).getMissController().getSimStPLE().getSimStPeerTutoringPlatform().getStudentInterface() ,brController,sai,inst,question, true);
 				//explanation = ple.giveMessageSelectableResponse(question, qa.getAnswers());
 				// gives options
@@ -3401,22 +3463,46 @@ public void fillInQuizProblem(String problemName) {
 				        if(mtStatus == "Correct Action") correctness = "correct";
 					    else correctness = "incorrect";
 					    String stepName = problemName.replace("_", "=");
-					    System.out.println("CONFIRMED "+correctness);
+					    //System.out.println("CONFIRMED "+correctness);
 					    // LLM question asking
 						if(simSt.isCTIFollowupInquiryLLMMode()) {
-							askLLMQuestions("why am I wrong?", explanation, stepName, sai ,correctness,ple, false);
+							String KB = askLLMQuestions("why am I wrong?", explanation, stepName, sai ,correctness,ple, false);
+							String[] KBs = KB.split("_");
+							if (Boolean.valueOf(KBs[1]) == false) {
+								ple.giveMessage(ple.getConversation().getMessage(
+										SimStConversation.KTR_ACKNOWLEDGEMENT_TOPIC));
+							}
+							else {
+								ple.giveMessage(ple.getConversation().getMessage(
+										SimStConversation.KBR_ACKNOWLEDGEMENT_TOPIC));
+							}
+							if (Boolean.valueOf(KBs[0]) == true) {
+								explainedSelectionSkills.add(sai.getS());
+								setAskedExplanation(true);
+								setExplanationGiven(true);
+								setLastSkillExplained(getFirstRanStudentSaidNo().getName());
+							}
 						}
 					    
 					}
 					
+					if (simSt.isCTIFollowupInquiryLLMMode() && step.contains("[")) {
+						// typeIN
+						explainedSelectionSkills.add(sai.getS());
+						setAskedExplanation(true);
+						setExplanationGiven(true);
+						setLastSkillExplained(getFirstRanStudentSaidNo().getName());
+					}
 					
+					if(!simSt.isCTIFollowupInquiryLLMMode() || step.contains("[")) {
 					
-					if (explanation != null && explanation.length() > 0) {
-						ple.giveMessage(ple.getConversation().getMessage(
-								SimStConversation.CONFIRM_TOPIC));
-					} else {
-						ple.giveMessage(ple.getConversation().getMessage(
-								SimStConversation.SKIPPED_TOPIC));
+						if (explanation != null && explanation.length() > 0) {
+							ple.giveMessage(ple.getConversation().getMessage(
+									SimStConversation.CONFIRM_TOPIC));
+						} else {
+							ple.giveMessage(ple.getConversation().getMessage(
+									SimStConversation.SKIPPED_TOPIC));
+						}
 					}
 					
 				}

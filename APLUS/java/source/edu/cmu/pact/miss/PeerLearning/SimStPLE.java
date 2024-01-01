@@ -76,6 +76,7 @@ import javax.swing.border.Border;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 
+import basilica2.side.listeners.LightSideMessageAnnotator;
 import jess.JessException;
 import jess.Userfunction;
 import jess.Value;
@@ -171,6 +172,7 @@ public class SimStPLE {
 	private static final String SKILL_NICKNAMES = "skillNickName";
 	private static final String ASKING_IF_TUTOR_KNOWS_STEP_TOPIC_OPTIONS = "confidenceDemonstration";
 	private static final String CONFIDENCE_DEMONSTRATION_HEADER = "confidenceDemonstration";
+	private LightSideMessageAnnotator sideMessageAnnotator;
 	//private static final String MISTAKE_EXPLANATION_CTI_HEADER = "mistakeExplanationsCTI";
 
 
@@ -1210,10 +1212,46 @@ public class SimStPLE {
 	public String getPythonScriptPath() {
 		return PYTHON_SCRIPT_PATH;
 	}
+	
+	public String[] key_terms;
+	public void setupLightSideClassifier() {
+		String path = simSt.getProjectDirectory();
+		String pathToModel = path+"⁨LightSide/lightside/models/both_stuck_model_svm_f.model.xml";
+		String modelName = "both_stuck_model_svm_f.model.xml";
+		String modelNickname = "both_stuck_model_f";
+		String predictionCommand = path+"⁨LightSide/lightside/scripts/prediction_server.sh";
+		String classificationString = "R0,70,R1,70,R2,70";
+		
+		sideMessageAnnotator = new LightSideMessageAnnotator(pathToModel,modelName,modelNickname,predictionCommand,classificationString);
+		// Reading the key terms
+		String file = path+"/key_terms.txt";
+		//key_terms = new String[];
+		BufferedReader reader = null;
+		try {
+			reader = new BufferedReader(new FileReader(file));
+			String line = reader.readLine();
+			//key_terms = new ArrayList<String>(Arrays.asList(line.split(",")));
+			key_terms = line.split(",");
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				reader.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		//System.out.println("key "+key_terms);
+	}
+	
+	public LightSideMessageAnnotator getMessageAnnotator() {
+		return sideMessageAnnotator;
+	}
 
 	public void config() {
 		PYTHON_SCRIPT_PATH = System.getProperty("pythonScriptPath");
-		System.out.println(PYTHON_SCRIPT_PATH);
+		//System.out.println(PYTHON_SCRIPT_PATH);
 		componentNames = new RegexHashtable();
 		startStateElements = new ArrayList<String>();
 		examples = new ArrayList<SimStExample>();
@@ -1234,6 +1272,10 @@ public class SimStPLE {
 		// add -ssBothAgreeSpeechGetterClass SimStAlgebraV8.SimStBothAgreeSpeech in the program arguements.
 		if(getSimSt().isCTIFollowupInquiryMode() && getSimSt().isbothAgreeSpeechGetterClassDefined())
 			conversation.processBothAgreeSpeechFile("simSt-both-agree-speech.txt");
+		
+		if(getSimSt().isCTIFollowupInquiryLLMMode())
+			setupLightSideClassifier();
+			
 	}
 
 	// Reads the configuration file and applies the items in it to their categories
