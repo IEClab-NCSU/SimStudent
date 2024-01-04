@@ -405,7 +405,7 @@ Teacher:There it is not incorrect; here it is because we are not trying to simpl
 <conversation ends>
 In this scenario, an ideal response from teacher would be, "since there are two variable terms in the equation, we must combine these two variables first. Since -9c is already isolated on one side of the equation, we can perform subtract 7c on both sides to combine the variable terms. -9c and 7c can be combined as they are like terms because they share the same variable c. Subtract 7c would result in -9c-7c = 7c-2."
 question:
-To generate a question, we must find out a statement in the ideal response that was not conveyed by the teacher during the conversation. The teacher did not mention the sentence, "there are two variable terms in the equation". Therefore, the question is, "What you said makes sense. How do equations 16=-4y and -9c=7c-2 differ from each other in terms of the number of variable terms present in them?"   
+To generate a question, we must find out a statement in the ideal response that was not conveyed by the teacher during the conversation. The teacher did not mention the sentence, "there are two variable terms in the equation". Therefore, the question is, "What you said makes sense. How do equations 16=-4y and -9c=7c-2 differ from each other in terms of the number of variable terms present in them? How do we identify variable terms?"   
 
 context:A teacher and a student are working on the equation 10c-5=-6. The student could not figure out the correct step to perform. The teacher suggested to perform add 5. This action activated the following conversation: 
 <conversation starts>
@@ -414,7 +414,7 @@ Teacher:there is subtraction symbol
 <conversation ends>
 In this scenario, an ideal response from teacher would be, "because our goal is to isolate the variable 10c and 5 is subtracted from 10c. The opposite of -5 is +5. So we must add 5 to isolate 10c on its own. This will result in 10c-5+5 = -6+5."
 question: 
-To generate a question, we must find out a statement in the ideal teacher reply that was not conveyed by the teacher during the conversation. The teacher did not mention the sentence, "our goal is to isolate the variable 10c". Therefore, the question is, "Got it! What is the goal that we want to achieve by performing add 5?"
+Since teacher mentioned a statement "there is a subtraction symbol" and in the equation there are two numbers with subtraction symbol -5 and -6. Therefore, a contradiction appears between what teacher said and the equation itself, we must point it out in the question. Therefore, the question is, "I am confused! Both 5 and 6 have a subtraction symbol. Why do we add 5 but not add 6? Can you resolve this confusion?"
 
 context:A teacher and a student are working on the equation -1+v=1. The student could not figure out the correct step to perform. The teacher suggested to perform add 1. This action activated the following conversation:  
 <conversation starts>
@@ -425,7 +425,7 @@ Teacher:in adding one you eliminate -1 which leves you with v=2
 <conversation ends>
 In this scenario, an ideal response from teacher would be, "because our goal is to isolate the variable v. 1 is subtracted from v in this equation. We can say 1 is subtracted because there is a negative sign on the left of 1. The negative sign on the left of a term belongs to that term. We could even rewrite the equation as v-1 = 1. They both have the same meaning. Now to under the impact of -1 on v, we should perform the opposite operation. The opposite of -1 is +1. So we must add 1 to isolate v on its own. This will result in -1+v = 1+1."
 question: 
-To generate a question, we must find out a statement in the ideal teacher reply that was not conveyed by the teacher during the conversation. The teacher did not mention the sentence, "We can say 1 is subtracted because there is a negative sign on the left of 1". Therefore, the question is, "Got it! How can we say if 1 is subtracted or added with the variable v here?"
+To generate a question, we must find out a statement in the ideal teacher reply that was not conveyed by the teacher during the conversation. The teacher did not mention the sentence, "We can say 1 is subtracted because there is a negative sign on the left of 1". Therefore, the question is, "Got it! How can we say if 1 is subtracted or 1 is added with the variable v here?"
 
 context:A teacher and a student are working on the equation -6-4y=10. The student performed add 6, but the teacher disagreed. This action activated the following conversation:
 <conversation starts>
@@ -458,16 +458,6 @@ In this scenario, an ideal response from teacher would be, "Sorry, subtract 4 is
 question: 
 To generate a question, we must find out a statement in the ideal teacher reply that was not conveyed by the teacher during the conversation. The teacher did not mention the sentence, "4 is multiplied with y". Therefore, the question is, "I understand! Can you look at the equation and tell me what is the operation that is taking place between 4 and y? Is 4 being added with y or multiplied with y?
 
-context:A teacher and a student are working on the equation x=3. The student could not figure out the correct step to perform. The teacher suggested to perform divide x. This action activated the following conversation:
-Student:Why did you do divide x here?
-Teacher:because you have to divide the variable on both sides
-Student:I'm curious—Please elaborate more on why divide x is correct?
-Teacher:it is correct because when you get to the last two numbers you divide by the varieble
-<conversation ends>
-In this scenario, an ideal response from teacher would be, "Sorry, I made a mistake. We cannot divide by x in this case. Since x is already isolated on one side, we don't need to perform any additional steps. The equation x=3 means that x is already equal to 3, so there is no need for further manipulation."
-question: 
-To generate a question, we must find out a statement in the ideal teacher reply that was not conveyed by the teacher during the conversation. The teacher did not mention the sentence, "The equation x=3 means that x is already equal to 3". Therefore, the question is, "I am still confused. In this current state of the equation, can you tell me what x equals to?"
-
 context:A teacher and a student are working on the equation 9x+2=x+8. The student performed divide 9, but the teacher disagreed. This action activated the following conversation:
 <conversation starts>
 Student:Why am I wrong?
@@ -477,7 +467,7 @@ Teacher:we apply the divide operation when we are isolating the vaiable, not any
 <conversation ends>
 In this scenario, an ideal response from teacher would be, "Divide 9 is incorrect here because we divide when there is only one variable term in the entire equation. we have two variable terms in this equation 9x and x. So, in order to simplify this equation, we should combine these two variable terms together. Note that, we can only combine 9x and x together because they are like terms, they both have the same variable letter x. We can subtract x as it is a positive term. Subtract x on both sides will isolate 8 on the right side This will result in 9x - x = x + 8 - x." 
 question: 
-To generate a question, we must find out a statement in the ideal teacher reply that was not conveyed by the teacher during the conversation. The teacher did not mention the sentence, "because they are like terms, they both have the same variable letter x". Therefore, the question is, "Thanks for being so patient with my questions. I have one more confusion. How do we know if two variable terms are like terms with each other?"
+To generate a question, we must find out a statement in the ideal teacher reply that was not conveyed by the teacher during the conversation. The teacher did not mention the sentence, "because they are like terms, they both have the same variable letter x". Therefore, the question is, "I have one more confusion. How do we know if two terms are like terms with each other?"
 
 context:A teacher and a student are working on the equation 16=-4y. The student performed divide 16, but the teacher disagreed. This action activated the following conversation:
 <conversation starts>
@@ -493,16 +483,36 @@ To generate a question, we must find out a statement in the ideal teacher reply 
 # Your task is to formulate a question by comparing a teacher reply and an ideal teacher reply given in a context. You will formulate a question from the sentences that the teacher did not state 
 # but is present in the ideal teacher reply. Be aware that teacher reply may contain grammatical or spelling errors. You must try to make sense of the teacher reply. If teacher is repeating the same sentences, then you must change your questioning angle. 
 ### LLM for question generation from missing info: P2
+#Rule 1: If the teacher's reply contains any calculation error, point it out and then generate a question.
+#Rule 2: If the teacher's reply contradicts the context, point it out and then generate a question.
+#Rule 3: If the teacher's reply is calculation error free and aligns with the context, select a sentence from the ideal teacher reply that is missing in the conversation. Ask a question about that sentence.
+#Rule 4: You never ask the exact same question that is present in the conversation.
+#Rule 5: If you've previously asked a question about a missing sentence and the teacher didn't respond as expected, focus on another missing sentence and ask question about it.
+#Rule 6: You must never say "why <step mentioned in an ideal response> is correct?" unless the teacher mentioned that step during conversation.
+#Rule 7: If you've asked questions about every possible missing sentences from the ideal teacher, say, "no question."
 def generate_question_(scene, expected, conversation_hist):
     print("question module 2")
     prompt = f"""
-    You are a student who is being taught how to solve an equation by a teacher. You always ask clever question to your teacher. 
+    You are a student who is being taught how to solve an equation by a teacher. You always ask thought-provoking question to your teacher.
+    You must incorporate relevant information from the conversation history in your question so that teacher needs to think deeply to answer your question. 
     You have a knowledge about how an ideal response from a teacher would look like and you seek that response from the teacher by asking questions.
     You must look for a sentence in an ideal response that was not conveyed by the teacher during the conversation and formulate a question from that missing sentence.
     Note that, teacher's reply may contain grammatical or spelling errors. You must try your best to make sense of the teacher's reply with respect to the provided equation.
     You should never ask the same question that you have already asked during the conversation.
     You may rephrase the same question using some key concepts of the algebra domain from your knowledge of the ideal response.
     Always include "Therefore, the question is," before generating your final question.
+
+Here are the rules for generating questions:
+```
+Rule 1: If the teacher's reply contains any calculation error, point it out and then generate a question.
+Rule 2: If the teacher's reply contradicts the context, point it out and then generate a question.
+Rule 3: If the teacher's reply is calculation error free and aligns with the context, select a sentence from the ideal teacher reply that is missing in the conversation. Ask a question about that sentence.
+Rule 4: You never ask the exact same question that is present in the conversation.
+Rule 5: If you've previously asked a question about a missing sentence and the teacher didn't respond as expected, focus on another missing sentence and ask question about it.
+Rule 6: You must never say "why <step mentioned in an ideal response> is correct?" unless the teacher mentioned that step during conversation.
+Rule 7: You must never say "in the ideal response" as teacher has no clue that there is an ideal response from which you are formulating the question.
+Rule 8: If you've asked questions about every possible missing sentences from the ideal teacher, say, "no question."
+```
 
 A few examples are provided below delimited by triple quotes.
 '''{question_contextual_text}'''
@@ -513,17 +523,6 @@ context:{scene}.
 <conversation ends>
 In this scenario, an ideal response from teacher would be, "{expected}"
 <generate>
-
-Here are the rules for generating questions:
-```
-Rule 1: If the teacher's reply contains any calculation error, point it out and then generate a question.
-Rule 2: If the teacher's reply contradicts the context, point it out and then generate a question.
-Rule 3: If the teacher's reply is calculation error free and aligns with the context, select a sentence from the ideal teacher reply that is missing in the conversation. Ask a question about that sentence.
-Rule 4: You never ask the exact same question that is present in the conversation.
-Rule 5: If you've previously asked a question about a missing sentence and the teacher didn't respond as expected, focus on another missing sentence and ask question about it.
-Rule 6: You must never say "why <step mentioned in an ideal response> is correct?" unless the teacher mentioned that step during conversation.
-Rule 7: If you've asked questions about every possible missing sentences from the ideal teacher, say, "no question."
-```
 """
     response = get_completion(prompt, .5)
     return response
@@ -547,8 +546,10 @@ def generate_question(StepName,Qtype, Sol, first_question,correctness,conversati
         answers = conversation_hist.split("Teacher:")
         contradicts = response_alignment(cont_scene, exp_r, answers[len(answers)-1])
         print("the alignment is----",contradicts)
-        if "no contradiction" in contradicts:
+        if "no contradiction" in contradicts.lower():
             q = generate_question_(scene, exp_r, conversation_hist)
+            if "no question" not in q.lower() and "?" not in q:
+                q = generate_question_(scene, exp_r, conversation_hist)
             print("the q is---",q) # Must keep this print prefix fixed as it is used for regex map in the java code
             q = "the q is---"+q
             return q
