@@ -308,9 +308,18 @@ def response_alignment(context, expected, answers):
     #print(" response alignment ")
     prompt = f"""
 Your task is to identify if any contradiction exist between response 1 and response 2. You must consider about the consequence of the step thoroughly to judge whether response 1 and 2 contradicts with one another.
-Two sentences contradict if one sentence mentions a step will not achieve the goal if another sentence mentions the step will achieve the goal.
+You must be extremely cautious to decide if two sentences truly contradicts or not.
+Response 1 may sometimes talk about two different equation using figure A and figure B. Here figure B is relevant to the current scenario and you must consider only the sentences related to figure B while deciding for contradiction.
+Two sentences contradict if one sentence mentions a step "will not" achieve the goal but another sentence mentions the same step "will" achieve the same goal.
 Two sentences do not contradict if one sentence mentions a step will achieve a goal and another sentence mentions the step will achieve a different goal but that goal is along the similar line as the goal mentioned by the other sentence.
-Two sentences do not contradict if both indicate further steps needed but one sentence did not mention which step but the other sentence did.     
+Two sentences do not contradict if both indicate further steps needed but one sentence did not mention which step but the other sentence did.
+Two sentences do not contradict if one sentence mentions a step will achieve the goal and another sentence mentions another step will achieve the goal. There can be multiple correct steps that may achieve the same goal.
+Two sentences do not contradict if one sentence mentions a step will achieve a goal and another sentence mentioned that the same step may achieve another goal. It is possible that both the goals are achievable as long as they are about the same step.
+A few algebraic domain equivalent sentences are:
+- equation is already solved means no need to perform any further steps.
+- A step does not do anything or a step is unnecessary is equivalent to saying a step is incorrect.
+- A step will simplify the equation or a step will reduce one term is equivalent to saying a step is correct.
+- A variable is not multiplied or added or divided or subtracted by a number is equivalent to saying variable is isolated.
 A few examples are provided below delimited by triple quotes.
 '''{contradiction_contextual_text}'''
 

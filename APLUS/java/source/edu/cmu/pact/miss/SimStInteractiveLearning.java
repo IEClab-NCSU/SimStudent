@@ -2808,12 +2808,15 @@ public void fillInQuizProblem(String problemName) {
 
 		Random r = new Random();
 	    int probability = r.nextInt(100);
+	    
 	    //trace.out(edge.getSelection());
 		//if (simSt.isSelfExplainMode() && !skillName.contains("typein") && !skillName.contains("unnamed")) {
 		//10/06/2014: now selection is the one that defines if SimStudent should ask for self explanation
-		if (simSt.isSelfExplainMode() && isSelectionValidForSelfExplanation(edge.getSelection()) 
+		if ((simSt.isSelfExplainMode() && isSelectionValidForSelfExplanation(edge.getSelection()) 
 				&& !explainedWhyRightSkills.contains(skillName) 
-			&& !explainedSelectionSkills.contains(edge.getSelection()))
+			&& !explainedSelectionSkills.contains(edge.getSelection())) || 
+				(probability <= CHANCE && explainedWhyRightSkills.contains(skillName) && explainedSelectionSkills.contains(edge.getSelection()) && simSt.isSelfExplainMode() && isSelectionValidForSelfExplanation(edge.getSelection()))
+				)
 		//if (simSt.isSelfExplainMode() && isSelectionValidForSelfExplanation(edge.getSelection())
 				//&& skill_q_asked_count <= 2 
 		//		&& probability <= CHANCE && !explainedSelectionSkills.contains(edge.getSelection()))
@@ -2837,8 +2840,10 @@ public void fillInQuizProblem(String problemName) {
 			//explainedSelectionSkills.add(edge.getSelection());
 			
 			if (!simSt.isCTIFollowupInquiryMode() && !simSt.isResponseSatisfactoryGetterClassDefined() && !simSt.isCTIFollowupInquiryLLMMode()) {
-				explainedWhyRightSkills.add(skillName);
-				explainedSelectionSkills.add(edge.getSelection());
+				if(!explainedWhyRightSkills.contains(skillName) && !explainedWhyRightSkills.contains(skillName)) {
+					explainedWhyRightSkills.add(skillName);
+					explainedSelectionSkills.add(edge.getSelection());
+				}
 			}
 
 			Sai sai = edge.getSai();
@@ -2994,8 +2999,10 @@ public void fillInQuizProblem(String problemName) {
 									SimStConversation.KBR_ACKNOWLEDGEMENT_TOPIC));
 						}
 						if (Boolean.valueOf(KBs[0]) == true) {
-							explainedWhyRightSkills.add(skillName);
-							explainedSelectionSkills.add(edge.getSelection());
+							if(!explainedWhyRightSkills.contains(skillName) && !explainedWhyRightSkills.contains(skillName)) {
+								explainedWhyRightSkills.add(skillName);
+								explainedSelectionSkills.add(edge.getSelection());
+							}
 						}
 					}
 				}

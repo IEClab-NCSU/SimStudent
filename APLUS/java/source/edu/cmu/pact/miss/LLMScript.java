@@ -22,6 +22,10 @@ public class LLMScript {
 	
 	public String executeScript(String pythonPath,String projectPath,  String stepName, String QType, String Sol, String first_question, String correctness, String conv_history, String expected_response, SimStLogger logger) {
 		//System.out.println("script_execute");
+		//System.out.println("stepname "+stepName+" QTYPE "+QType+" Sol "+Sol+" correctness "+correctness);
+		//System.out.println(" first_question "+first_question+" conv history "+conv_history);
+		//System.out.println(" exp "+expected_response);
+		//System.out.println();
 		if(scriptName != "") {
 			String scriptPath = projectPath + "/"+scriptName ;
 			//String scriptPath ="/Users/tasmiashahriar/Documents/GitHub/APLUS_CTI/SimStudent/Tutors/Algebra/SimStAlgebraV8"+"/chat_interface.py" ;
@@ -33,7 +37,7 @@ public class LLMScript {
 			//String conv_history =
 			//		"Student:Why am I wrong?" + "\n" +
 			//				"Teacher:you need to get the varible on its own" + "\n" ;
-			System.out.println(pythonPath+" "+scriptPath);
+			//System.out.println(pythonPath+" "+scriptPath);
 			String scriptOutput;
 			if(expected_response=="") 
 				scriptOutput = runPythonScript(pythonPath, scriptPath, stepName, QType, Sol, first_question, correctness, conv_history);
