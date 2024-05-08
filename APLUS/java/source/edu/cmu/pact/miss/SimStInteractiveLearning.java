@@ -2702,9 +2702,10 @@ public void fillInQuizProblem(String problemName) {
 		LLMScript script;
 		if (simSt.useResponseLLMMode())
 			script=new LLMScript("chat_interface_resQ.py");
+			//script=new LLMScript("chat_interface_resQ.py");
 		else
 			script=new LLMScript("");
-		String conv_history = "\nStudent:"+question+"\nTeacher:"+explanation;
+		String conv_history = "\nYou:"+question+"\nTeacher:"+explanation;
 		String response = "";
 		String skill_INPUT = sai.getI();
 		if (sai.getS().equalsIgnoreCase(Rule.DONE_NAME)) {
@@ -2741,7 +2742,7 @@ public void fillInQuizProblem(String problemName) {
 				//if (KB == false) 
 				last_KB = processLightsideLabel(ple,explanation);
 				if (last_KB == true && any_KB == false) any_KB = true;
-				conv_history += "\nStudent:"+LLM_question+"\nTeacher:"+explanation;
+				conv_history += "\nYou:"+LLM_question+"\nTeacher:"+explanation;
 				if(hint_explained)
 					logger.simStLog(SimStLogger.SIM_STUDENT_EXPLANATION,
 						SimStLogger.HINT_EXPLAIN_ACTION+SimStLogger.FOLLOW_UP_EXPLAIN_SUFFIX, step, explanation,
@@ -2754,7 +2755,7 @@ public void fillInQuizProblem(String problemName) {
 					
 			} else {
 				last_KB = false;
-				conv_history += "\nStudent:"+LLM_question+"\nTeacher: no explanation given";
+				conv_history += "\nYou:"+LLM_question+"\nTeacher: no explanation given";
 				if(hint_explained)
 					logger.simStLog(SimStLogger.SIM_STUDENT_EXPLANATION,
 						SimStLogger.HINT_EXPLAIN_ACTION+SimStLogger.FOLLOW_UP_EXPLAIN_SUFFIX, step,

@@ -48,8 +48,12 @@ public class LLMScript {
 			//System.out.println("START");
 			//System.out.println("Entire Script Output: "+scriptOutput);
 			//System.out.println("END");
-			logger.simStLog(SimStLogger.SIM_STUDENT_EXPLANATION, SimStLogger.SCRIPT_OUTPUT,
+			if (scriptOutput != null)
+				logger.simStLog(SimStLogger.SIM_STUDENT_EXPLANATION, SimStLogger.SCRIPT_OUTPUT,
 					stepName, scriptOutput, Sol, 0, "");
+			else
+				logger.simStLog(SimStLogger.SIM_STUDENT_EXPLANATION, SimStLogger.SCRIPT_OUTPUT,
+					stepName, "Script error", Sol, 0, "");
 			return scriptOutput != null ? scriptOutput : "";
 		}
 		return "";
@@ -154,8 +158,21 @@ public class LLMScript {
 		            //System.out.println("The second extracted Q text is, "+extractedText);
 		            return extractedText.replace("\"", "");
 		        }
-		        else 
-		        	return "No question";
+		        else {
+		        	regexPattern ="the question is, (.*)";
+		        	pattern = Pattern.compile(regexPattern);
+			        matcher = pattern.matcher(script_output);
+
+			        // Check if the pattern matches
+			        if (matcher.find()) {
+			            // Extract the text after "Therefore, the question is,"
+			            String extractedText = matcher.group(1);
+			            //System.out.println("The second extracted Q text is, "+extractedText);
+			            return extractedText.replace("\"", "");
+			        }
+			        else
+			        	return "No question";
+		        }
 	        	//return script_output;
 	        }
 	        else {
