@@ -1,17 +1,5 @@
 # %%
 import openai
-import os 
-from nltk.corpus import stopwords 
-from nltk.tokenize import word_tokenize
-from sklearn.feature_extraction.text import CountVectorizer
-import pandas as pd
-from sklearn.metrics.pairwise import cosine_similarity
-import numpy as np
-## Reading the excel file
-import io
-import pandas as pd
-import nltk
-import re
 import sys
 
 # %%
@@ -83,32 +71,18 @@ def get_completion(prompt, temperature, model="gpt-3.5-turbo"):
         return "No question:: API ERROR"+{e}
 
 
-# %%
-fixed_in_context_examples = [
- 'You and your student are working on the equation j-6=-9. You suggested to add 6. Student asked, "why do we add 6 here?". Add 6 is correct step here. You replied, "because our goal is to isolate the variable j and 6 is subtracted from j. The opposite of -6 is +6. So we must add 6 to isolate j on its own. This will result in j-6+6 = -9+6."',
- 'You and your student are working on the equation -2y=8. You suggested to divide -2. Student asked, "why do we divide -2 here?". Divide -2 is correct step here. You replied, "Our goal is to isolate the variable y and -2 is multiplied with y. Therefore, we should divide by -2. Here -2 is also called the coefficient. Coefficient is the number that is multiplied with variable. As a thumb rule, we can remember that we always divide by the coefficient. Divide -2 will result in -2y/-2=8/-2"',
- 'You and your student are working on the equation 2=4-z. The student suggested to subtract 4. You disagreed. Student asked, "why am I wrong?". Subtract 4 is correct step here. You replied, "My bad! subtract 4 is accurate because 4 is added with variable -z term. We can also rewrite the equation as 2=-z+4 which is the same equation as 2=4-z.This is because the sign on the left of a term belongs to that term and no sign on the left means a positive term. Therefore, to isolate -z from the added 4, we must perform the opposite of +4 which is -4 or subtract 4. This would result in 2-4=4-z-4"',
- 'You and your student are working on the equation 10v+9=14. The student suggested to add -9. You disagreed. Student asked, "why am I wrong?". Add -9 is correct step here. You replied, "My bad! Add -9 is correct. Adding a negative number is equivalent to subtracting that number. Subtract 9 is accurate because our goal is to isolate 10v. To do that, we must undo the 9 added with 10v by performing subtract 9 or add -9. This will result in 10v+9-9=14-9"',
- 'You and your student are working on the equation y=8-2y. You suggested to add 2. Student asked, \"why do we add 2 here?\". Add 2 is incorrect step here. You replied, \"Sorry I made a mistake. Adding 2 will not help us get rid of -2y as -2y and 2 are not like terms of each other because -2y has y in it but 2 does not have y in it. We can add 2y which is opposite of -2y to get rid of -2y on the right and combine the variable terms together on the left side. Adding 2y would result in y+2y = 8-2y+2y.\"',
- 'You and your student are working on the equation -2y=8. You suggested to divide 2. Student asked, "why do we divide 2 here?". Divide 2 is incorrect step here. You replied, "Sorry I made a mistake. It should be divide by -2. If we had a positive 2 multiplied with y for instance, 2y=8, divide 2 would make sense. But in this situation, -2 is multiplied with y not 2. Therefore, we should divide by -2 not just 2. Here -2 is also called the coefficient. Coefficient is the number that is multiplied with variable. This will result in -2y/-2=8/-2"',
- 'You and your student are working on the equation -3=v+9. The student suggested to click "problem is solved" button. You disagreed. Student asked, "why am I wrong?". Click "problem is solved" button is incorrect step here. You replied, "because variable v is still not completely isolated. If the equation was -3=v instead, clicking problem is solved button would make sense. But here, there is 9 added with v. We must undo that effect by subtracting 9 from both sides. This would result in -3-9=v+9-9"',
- 'You and your student are working on the equation 5+9y=3y-15. The student suggested to subtract 3. You disagreed. Student asked, "why am I wrong?". Subtract 3 is incorrect step here. You replied, "because if we want to get rid of the positibe variable term 3y, we must perform the subtract operation with a variable term because subtract work for like terms only. Therefore, if we perform subtract 3y, it would result in 5+9y-3y=3y-15-3y which would cancel out the +3y and -3y by making it 0."',
-]
-
-# %%
-## Final
+## drafting 2
 fixed_in_context_examples = [
  'You and your student are working on the equation j-6=-9. You suggested to add 6. Student asked, "why do we add 6 here?". Add 6 is correct step here. You replied, "because our goal is to isolate the variable j and 6 is subtracted from j. The opposite of -6 is +6. So we must add 6 to both sides to isolate j on its own. This will result in j-6+6 = -9+6"',
- 'You and your student are working on the equation -2y=8. You suggested to divide -2. Student asked, "why do we divide -2 here?". Divide -2 is correct step here. You replied, "Our goal is to isolate the variable y and -2 is multiplied with y. The inverse of multiplication is division. Therefore, we should divide by -2. Here -2 is also called the coefficient. Coefficient is the number that is multiplied with variable. As a thumb rule, we can remember that we always divide by the coefficient. Divide -2 will result in -2y/-2=8/-2"',
+ 'You and your student are working on the equation 9y=8. You suggested to divide 9. Student asked, "why do we divide 9 here?". Divide 9 is correct step here. You replied, "Our goal is to isolate the variable y and 9 is multiplied with y. 9 is also known as the coefficient. Coefficient means the number that is multiplied with the variable. To get rid of the coefficient, we perform the inverse of multiplication is division. Therefore, we should divide by 9. Divide 9 will result in 9y/9=8/9"',
  'You and your student are working on the equation 2=4-z. The student suggested to subtract 4. You disagreed. Student asked, "why am I wrong?". Subtract 4 is correct step here. You replied, "My bad! subtract 4 is accurate because 4 is added with variable -z term. We can also rewrite the equation as 2=-z+4 which is the same equation as 2=4-z.This is because the sign on the left of a term belongs to that term and no sign on the left means a positive term. Therefore, to isolate -z from the added 4 or to get rid of the +4, we must perform the opposite of +4 which is -4 or subtract 4. This would result in 2-4=4-z-4"',
  'You and your student are working on the equation 10v+9=14. The student suggested to add -9. You disagreed. Student asked, "why am I wrong?". Add -9 is correct step here. You replied, "My bad! Add -9 is correct. Adding a negative number is equivalent to subtracting that number. Subtract 9 is accurate because our goal is to isolate 10v. To do that, we must undo the 9 added with 10v by performing subtract 9 or add -9. We must perform the same operation on both sides to ensure left hand side "equals" to right hand side. This will result in 10v+9-9=14-9"',
  'You and your student are working on the equation y=8-2y. You suggested to add 2. Student asked, "why do we add 2 here?". Add 2 is incorrect step here. You replied, \"Sorry I made a mistake. Adding 2 will not help us get rid of -2y. -2y and 2 are not like terms of each other because -2y has y in it but 2 does not have y in it. We can add 2y which is opposite of -2y to get rid of -2y on the right and combine the variable terms together on the left side. Adding 2y would result in y+2y = 8-2y+2y"',
- 'You and your student are working on the equation -2y=8. You suggested to divide 2. Student asked, "why do we divide 2 here?". Divide 2 is incorrect step here. You replied, "Sorry I made a mistake. It should be divide by -2. If we had a positive 2 multiplied with y for instance, 2y=8, divide 2 would make sense. But in this situation, -2 is multiplied with y not 2. Therefore, we should divide by -2 not just 2. Here -2 is also called the coefficient. Coefficient is the number that is multiplied with variable. This will result in -2y/-2=8/-2"',
- 'You and your student are working on the equation -3=v+9. The student suggested to click "problem is solved" button. You disagreed. Student asked, "why am I wrong?". Click "problem is solved" button is incorrect step here. You replied, "because variable v is still not completely isolated. If the equation was -3=v instead, clicking problem is solved button would make sense. But here, there is 9 added with v. We must undo that effect by subtracting 9 from both sides. This would result in -3-9=v+9-9"',
- 'You and your student are working on the equation 5+9y=3y-15. The student suggested to subtract 3. You disagreed. Student asked, "why am I wrong?". Subtract 3 is incorrect step here. You replied, "because if we want to get rid of the positive variable term 3y, we must perform the opposite which is subtract 3y from both sides. Subtract 3 will not get rid of 3y because they are not like terms. Therefore, if we perform subtract 3y, it would result in 5+9y-3y=3y-15-3y"',
+ 'You and your student are working on the equation -2y=8. You suggested to divide 2. Student asked, "why do we divide 2 here?". Divide 2 is incorrect step here. You replied, "Sorry I made a mistake. It should be divide by -2. If we had a positive 2 multiplied with y for instance, 2y=8, divide 2 would make sense. But in this situation, -2 is multiplied with y not 2. Here -2 is the coefficient, not 2. Therefore, we should divide by -2 not just 2. Here -2 is also called the coefficient. Coefficient is the number that is multiplied with variable. This will result in -2y/-2=8/-2"',
+ 'You and your student are working on the equation 3x-9=10x-15. You suggested to add 9. Student asked, "why should we add 9?". Add 9 is correct step here. You replied, "because we want to combine the like terms together first. -9 and -15 are like terms because they are constant terms. Therefore if we add 9 to both sides, we will be able to get rid of -9 from left side and have all the constant like terms on the right side of the equation. Add 9 would result in 3x-9+9=10x-15+9. Similarly, we could have also performed add 15 or subtract 3x or subtract 10x."',
+ 'You and your student are working on the equation 5+9y=3y-15. The student suggested to subtract 3. You disagreed. Student asked, "why am I wrong?". Subtract 3 is incorrect step here. You replied, "because if we want to get rid of the positive variable term 3y, we must perform the opposite which is subtract 3y from both sides. Subtract 3 will not get rid of 3y because they are not like terms. Therefore, if we perform subtract 3y, it would result in 5+9y-3y=3y-15-3y. Similarly, we could have also performed subtract 5 or add 15 or subtract 9y."',
 ]
 
-# %%
 def make_scene_R(StepName,Qtype, Sol, first_question,correctness):
     scene = "You and your student are working on the equation "
     scene = scene + StepName +"."
@@ -123,6 +97,7 @@ def make_scene_R(StepName,Qtype, Sol, first_question,correctness):
 
 
 # In[44]:
+
 
 
 def make_scene_Q(StepName,Qtype, Sol):
@@ -175,10 +150,12 @@ contradiction: response 1 does not state anything that contradicts with response
 def response_alignment(context, expected, answers):
     #print(" response alignment ")
     prompt = f"""
-Your task is to identify if any contradiction exist between response 1 and response 2. You must consider about the consequence of the step thoroughly to judge whether response 1 and 2 contradicts with one another.
+Your task is to identify if any contradiction exist between response 1 and response 2. 
+You must consider about the consequence of the step thoroughly to judge whether response 1 and 2 contradicts with one another.
 You must be extremely cautious to decide if two sentences truly contradicts or not.
 Response 1 may sometimes talk about two different equation using figure A and figure B. Here figure B is relevant to the current scenario and you must consider only the sentences related to figure B while deciding for contradiction.
 Two sentences contradict if one sentence mentions a step "will not" achieve the goal but another sentence mentions the same step "will" achieve the same goal.
+Two sentences do not contradict if one sentence say something along the line " I do not know".
 Two sentences do not contradict if one sentence mentions a step will achieve a goal and another sentence mentions the step will achieve a different goal but that goal is along the similar line as the goal mentioned by the other sentence.
 Two sentences do not contradict if both indicate further steps needed but one sentence did not mention which step but the other sentence did.
 Two sentences do not contradict if one sentence mentions a step will achieve the goal and another sentence mentions another step will achieve the goal. There can be multiple correct steps that may achieve the same goal.
@@ -199,7 +176,6 @@ contradiction: <generate>
     response = get_completion(prompt, 0)
     return response
 
-# %%
 def get_expected_response_FSA(completed_scene, selected_context):
    #print("Yahoo")
    response_prompt = f"""
@@ -207,6 +183,7 @@ You are an accomplished teacher skilled in solving linear algebraic equations. Y
 Your task is to reply to your student's question correctly within 5 sentences. You must explain a correct step. If a step is incorrect, you should explain why that is incorrect in an elaborated manner and find the correct step. Your reasoning for both correct and incorrect step must
 include some of the critical concept terms like constant, positive constant, negative constant, variable term, positive variable term, negative variable term, coefficient, like terms, inverse operation, opposite operation etc and connect those concepts to reason about the correct or incorrect step in your response.
 If the step is incorrect, try to suggest an example equation for which the incorrect step would have been correct.
+If you are explaining why divide is accurate, you must thoroughly explain the "coefficient" concept.
 A few examples of your responses are provided below delimited by triple quotes.
 '''
 {selected_context}
@@ -228,20 +205,18 @@ You will be heavily penalized if your generated explanation contradicts with the
 #print("PROMPRT ",response_prompt)
    return get_completion(response_prompt, 0)
 
+
 # %%
+#### Final 2
 question_contextual_text = f"""
 context:You and your teacher are working on the equation -9c=7c-2. You performed divide by -9, but the teacher disagreed. This action activated the following conversation:
 <conversation starts>
 You:Why am I wrong?
-Teacher:That is a good step, but not right now; here we have to eliminate -2.
-You:When do we apply divide in an equation?
-Teacher:We divide when we are trying to simplify the equation.
-You:I applied divide -4 when the equation was 16=-4y and it was accurate. What changed in the equation to make divide incorrect now?
-Teacher:There it is not incorrect; here it is because we are not trying to simplify the equation yet.
+Teacher:That is a good step, but not right now;
 <conversation ends>
-In this scenario, an ideal response from teacher would be, "since there are two variable terms in the equation, we must combine these two variables first. Since -9c is already isolated on one side of the equation, we can perform subtract 7c on both sides to combine the variable terms. -9c and 7c can be combined as they are like terms because they share the same variable c. Subtract 7c would result in -9c-7c = 7c-2."
+In this scenario, an ideal response from teacher would be, "since there are two variable terms in the equation, we must combine these two variables first. Since -9c is already isolated on one side of the equation, we can perform subtract 7c on both sides to combine the variable terms or get rid of 7c. -9c and 7c can be combined as they are like terms because they share the same variable c. Subtract 7c would result in -9c-7c = 7c-2."
 question:
-To generate a question, you must find out a statement in the ideal response that was not conveyed by the teacher during the conversation. The teacher did not mention the sentence, "there are two variable terms in the equation". Therefore, the question is, "What you said makes sense. How do equations 16=-4y and -9c=7c-2 differ from each other in terms of the number of variable terms present in them? How do we identify variable terms?"   
+To generate a question, you must find out a statement in the ideal response that was not conveyed by the teacher during the conversation. The teacher did not mention the sentence, "there are two variable terms in the equation". Therefore, the question is, "How many variable terms do we have in the equation?"   
 
 context:You and your teacher are working on the equation 10c-5=-6. You could not figure out the correct step to perform. The teacher suggested to perform add 5. This action activated the following conversation: 
 <conversation starts>
@@ -250,7 +225,7 @@ Teacher:there is subtraction symbol
 <conversation ends>
 In this scenario, an ideal response from teacher would be, "because our goal is to isolate the variable 10c and 5 is subtracted from 10c. The opposite of -5 is +5. So we must add 5 to isolate 10c on its own. This will result in 10c-5+5 = -6+5."
 question: 
-Since teacher mentioned a statement "there is a subtraction symbol" and in the equation there are two numbers with subtraction symbol -5 and -6. Therefore, a contradiction appears between what teacher said and the equation itself, we must point it out in the question. Therefore, the question is, "I am confused! Both 5 and 6 have a subtraction symbol. Why do we add 5 but not add 6? Can you resolve this confusion?"
+Since teacher mentioned a statement "there is a subtraction symbol" and in the equation there are two numbers with subtraction symbol -5 and -6. Therefore, a contradiction appears between what teacher said and the equation itself, we must point it out in the question. Therefore, the question is, "I am confused! Both 5 and 6 have a subtraction symbol. Why do we add 5 but not add 6?"
 
 context:You and your teacher are working on the equation -1+v=1. You could not figure out the correct step to perform. The teacher suggested to perform add 1. This action activated the following conversation:  
 <conversation starts>
@@ -272,27 +247,25 @@ In this scenario, an ideal response from teacher would be, "Actually, you are co
 question: 
 Since teacher mentioned a calculation and the calculation is wrong, you must point it out in our question. Now to generate a question, you must find out a statement in the ideal teacher reply that was not conveyed by the teacher during the conversation. The teacher did not mention the sentence, "It becomes more clear if we rewrite the equation as -4y-6 = 10". Therefore, the question is, "But -6+6 is equal to 0 based on my calculation. Can you show me how to rewrite the equation so that the variable term comes first, and the new equation means the same as -6-4y=10?" 
 
-context:You and your teacher are working on the equation 3x-6=x+2. You performed add 6, but the teacher disagreed. This action activated the following conversation:
+context:You and your teacher are working on the equation 3x-6=x+2. You could not figure out the correct step to perform. The teacher suggested to perform subtract 2. This action activated the following conversation:
 <conversation starts>
-You:Why am I wrong?
-Teacher:You have to subtract 2
-You:I see, but when is it correct to apply add in an equation?
-Teacher:When the number that you trying to isolate is a negative number
+You:Why do we subtract 2?
+Teacher:we want to get rid of 2, by combining the like terms.
 <conversation ends>
-In this scenario, an ideal response from teacher would be, "Oops, my mistake! Add 6 is the correct step here. This equation has two variable terms and two constant terms. We must combine the like terms together in order to solve such equation. The two numbers -6 and +2 are both constant terms. We can perform the opposite operation of any one of them to combine them together on the other side. If we perform opposite of -6 which is add 6, we will get rid of -6 from the left side and end up woth only one constant term on the right side. Adding 6 would result in 3x-6+6=x+2+6."
+In this scenario, an ideal response from teacher would be, "because we want to combine the like terms together first. -6 and 2 are like terms because they are constant terms. Therefore if we subtract 2 from both sides, we will be able to get rid of 2 from right side and have all the constant like terms on the left side of the equation. Subtract 2 would result in 3x-6-2=x+2-2. Similarly, we could have also performed add 6 or subtract 3x or subtract x."
 question: 
-Since teacher mentioned a statement "when the number is negative, we can apply add" contradicts with his decision of add 6 being incorrect since -6 is a negative number, you must point it out in the question. Therefore, the question is, "You said add is correct when there is a negative number. In this equation, we do have a negative number which is -6. Therefore, I think add 6 is correct. Can you resolve this confusion?"  
+Since teacher mentioned a statement "combining like terms. Therefore, the question is, "You said we want to combine like terms. In this equation, 3x and x are also like terms. Why didn't we get rid of one of them as our first step by performing either subtract 3x or subtract x?"  
 
-context:You and your teacher are working on the equation 4y=16. You could not figure out the correct step to perform. The teacher suggested to perform subtract 4. This action activated the following conversation:
+context:You and your teacher are working on the equation 4y=16. You could not figure out the correct step to perform. The teacher suggested to perform divide 4. This action activated the following conversation:
 <conversation starts>
-You:Why did you perform subtract 4 here?
+You:Why did you perform divide 4 here?
 Teacher:Because you have to get the varible on it's own
-You:I did not catch that! Can you explain why subtract 4 is accurate here?
+You:I did not catch that! Can you explain why divide 4 is accurate here?
 Teacher:You need to get the variable on its own so you can finish the problem
 <conversation ends>
-In this scenario, an ideal response from teacher would be, "Sorry, subtract 4 is incorrect. In this equation, 4 is multiplied with y, so we want to do the opposite of multiplication, which is division. So, we must divide both sides of the equation by 4 to isolate y on its own. This will result in 4y/4 = 16/4. If the equation was 4+y = 16, subtract 4 would have been accurate."
+In this scenario, an ideal response from teacher would be, "In this equation, 4 is the coefficient meaning 4 is the number multiplied with variable letter. So we want to do the opposite of multiplication, which is division. So, we must divide both sides of the equation by 4 to isolate y on its own. This will result in 4y/4 = 16/4."
 question: 
-To generate a question, you must find out a statement in the ideal teacher reply that was not conveyed by the teacher during the conversation. The teacher did not mention the sentence, "4 is multiplied with y". Therefore, the question is, "I understand! Can you look at the equation and tell me what is the operation that is taking place between 4 and y? Is 4 being added with y or multiplied with y?
+To generate a question, you must find out a statement in the ideal teacher reply that was not conveyed by the teacher during the conversation. The teacher did not mention the sentence, "4 is the coefficient meaning 4 is the number multiplied with variable letter". Therefore, the question is, "Got it! Why do we always divide by the coefficient?"
 
 context:You and your teacher are working on the equation 9x+2=x+8. You performed divide 9, but the teacher disagreed. This action activated the following conversation:
 <conversation starts>
@@ -312,7 +285,7 @@ Teacher:because you only divide by a varible
 <conversation ends>
 In this scenario, an ideal response from teacher would be, "Divide 16 is incorrect here because we must divide by the number that is multiplied with the variable. This number is also called the coefficient. In other word, we always divide by the coefficient. -4 is the coefficient here, not 16. Therefore, to isolate the variable y, we need to divide by -4 as divide is the opposite operation of multiplication. This will result in 16/-4 = -4y/-4."
 question: 
-To generate a question, you must find out a statement in the ideal teacher reply that was not conveyed by the teacher during the conversation. The teacher did not mention the sentence, "we must divide by the number that is multiplied with the variable." Therefore, the question is, "I think we divide by a number and not a variable. Can that be any number? How do we know which number to divide based on different equation?"
+To generate a question, you must find out a statement in the ideal teacher reply that was not conveyed by the teacher during the conversation. The teacher did not mention the sentence, "we must divide by the number that is multiplied with the variable." Therefore, the question is, "I thought we can divide by the coefficient. Can you explain why 16 is not the coefficient?"
 """
 
 #instruction history:
@@ -329,7 +302,8 @@ To generate a question, you must find out a statement in the ideal teacher reply
 def generate_question_(scene, expected, conversation_hist):
     print("question module 2")
     prompt = f"""
-    You are a student who is being taught how to solve an equation by a teacher. You always ask thought-provoking question to your teacher.
+    You are a student who is being taught how to solve an equation by a teacher. You always ask thought-provoking question to your teacher that looks like, "what would happen if...", "why doing the step ...", "what is the importance of ...", "what alternative steps ...".
+    You should never ask shallow questions. You must ask questions so that your teacher need to explain hard concepts to you.
     You must incorporate relevant information from the conversation history in your question so that teacher needs to think deeply to answer your question. 
     You have a knowledge about how an ideal response from a teacher would look like and you seek that response from the teacher by asking questions.
     You must look for a sentence in an ideal response that was not conveyed by the teacher during the conversation and formulate a question from that missing sentence.
@@ -337,7 +311,7 @@ def generate_question_(scene, expected, conversation_hist):
     You should never include the answer to your question in the question itself.
     You should never ask the same question that you have already asked during the conversation.
     You may rephrase the same question using some key concepts of the algebra domain from your knowledge of the ideal response.
-    Always include "Therefore, the question is," before generating your final question.
+    You must always include "Therefore, the question is," before generating your final question.
 
 Here are the rules for generating questions:
 ```
@@ -383,6 +357,8 @@ def generate_question(StepName,Qtype, Sol, first_question,correctness,conversati
         answers = conversation_hist.split("Teacher:")
         contradicts = response_alignment(cont_scene, exp_r, answers[len(answers)-1])
         print("the alignment is----",contradicts)
+        #q = generate_question_(scene, exp_r, conversation_hist) ## must comment out
+        #print("anyway question: ",q) ## must comment out
         if "no contradiction" in contradicts.lower():
             q = generate_question_(scene, exp_r, conversation_hist)
             if "no question" not in q.lower() and "?" not in q:
@@ -398,7 +374,7 @@ def generate_question(StepName,Qtype, Sol, first_question,correctness,conversati
         print("the q is---: No question") # Must keep this print prefix fixed as it is used for regex map in the java code
         return "the q is---No question"
         #print("q---", q)
-    
+
 
 # In[40]:
 

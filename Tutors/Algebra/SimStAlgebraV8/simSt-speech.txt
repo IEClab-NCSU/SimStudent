@@ -92,14 +92,14 @@ So, let me think... Bear with me.
 Okay, let me think... Bear with me.
 
 DONE_FEEDBACK
-Is that the solution to the problem?
+Is that the solution to the problem so that I can click the problem is solved button?
 Can I click the problem is solved button now?
 Is it alright to say that the problem is solved here?
 Is it okay to say that the problem is solved here?
 I clicked the Problem is Solved button. Do you think that's right?
 I said that the problem is solved. Do you think that was right?
-I think I've finished the problem. Is that right?
-I think I've solved the problem. Is that right?
+I think I've finished the problem so I clicked the problem is solved button. Is that right?
+I think I've solved the problem so I clicked the problem is solved button. Is that right?
 
 
 FEEDBACK

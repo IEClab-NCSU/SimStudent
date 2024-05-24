@@ -45,6 +45,7 @@ public class LLMScript {
 				//System.out.println("JAVA KBR "+expected_response_KBR);
 				scriptOutput = runPythonScript(pythonPath, scriptPath, stepName, QType, Sol, first_question, correctness, conv_history, expected_response_KBR);
 			}
+			//System.out.println("QLLM "+scriptOutput);
 			//System.out.println("START");
 			//System.out.println("Entire Script Output: "+scriptOutput);
 			//System.out.println("END");
@@ -156,7 +157,24 @@ public class LLMScript {
 		            // Extract the text after "Therefore, the question is,"
 		            String extractedText = matcher.group(1);
 		            //System.out.println("The second extracted Q text is, "+extractedText);
-		            return extractedText.replace("\"", "");
+		            extractedText = extractedText.replace("\"", "");
+		            if(extractedText.contains("the question is,")) {
+		            	regexPattern ="the question is, (.*)";
+			        	pattern = Pattern.compile(regexPattern);
+				        matcher = pattern.matcher(extractedText);
+
+				        // Check if the pattern matches
+				        if (matcher.find()) {
+				            // Extract the text after "Therefore, the question is,"
+				            String extractedText2 = matcher.group(1);
+				            //System.out.println("The second extracted Q text is, "+extractedText);
+				            return extractedText2.replace("\"", "");
+				        }
+				        else
+				        	return "No question";
+		            }
+		            else
+		            	return extractedText;
 		        }
 		        else {
 		        	regexPattern ="the question is, (.*)";

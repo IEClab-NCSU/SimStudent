@@ -341,7 +341,9 @@ public class AlgebraV8InputChecker extends InputChecker {
 				else 
 				{
 					if(current != variableChar)
-						return "You can use only one letter as a variable term in the equation.";
+						//return "You can use only one letter as a variable term in the equation."; // This error message is changed because it is confusing when tutor is entering a transformation. Detail: https://docs.google.com/document/d/1u5foxLrZaF65vCwNkeO_0NwIaeULcTQchJ0YK70de_Q/edit#bookmark=id.lr78q7hka11s
+						return "Invalid input!\nIf you are entering an equation, use one type of letter as the variable (e.g 2v + 3 = 9v is valid but 2c + 3 = 9x is invalid). \nIf you are entering a transformation, write add/subtract/divide/multiply followed by a term (eq: add 2 or add 2x are valid) ";
+					
 					else if(current == input.charAt(i-1) && i > 0)
 						return "Did you forget to put an operator between " + current + " ?";
 				}
@@ -479,6 +481,7 @@ public class AlgebraV8InputChecker extends InputChecker {
 		return null;
 	}
 	
+	
 	private String interpretTransformation(String input)
 	{
 		input = input.trim();
@@ -487,7 +490,8 @@ public class AlgebraV8InputChecker extends InputChecker {
 		input = input.replaceAll(" {2,}", " ");
 		if(checkInputTransformation(input))
 			return input;
-		String[] parts = input.split(" ");
+		String[] parts = input.split(" ");		
+		
 		if(parts.length < 2)
 		{
 			input = splitSmushedTransformation(input);
@@ -508,6 +512,11 @@ public class AlgebraV8InputChecker extends InputChecker {
 					return input;
 				}
 			}
+			//String[] singledigits = {"one","two","three","four","five","six","seven","eight","nine","ten"};
+			//if(singledigits.)
+			//Integer number = Integer.valueOf(parts[1].trim());
+			
+			// autotranslate should happen here
 		}
 		
 		if(parts.length == 3)

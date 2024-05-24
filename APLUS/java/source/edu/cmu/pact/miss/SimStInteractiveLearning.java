@@ -2692,6 +2692,13 @@ public void fillInQuizProblem(String problemName) {
 		
 	}
 	
+	public boolean processLLMLabel(SimStPLE ple, String stepName, String skill_INPUT, String question, String explanation) {
+		LLMClassifier classification_script = new LLMClassifier("llm_response_classifier.py");
+		String response_class = classification_script.executeScript(ple.getPythonScriptPath(), simSt.getProjectDir(), stepName, skill_INPUT, question, explanation,logger);
+		return classification_script.processClassifiedResponse(response_class);
+		
+	}
+	
 	public String askLLMQuestions(String question, String explanation, String stepName, Sai sai, String correctness, SimStPLE ple, boolean hint_explained) {
 		boolean last_KB = false;
 		boolean any_KB = false;
@@ -2719,7 +2726,8 @@ public void fillInQuizProblem(String problemName) {
 		String LLM_question = script.processQ(response);
 		//if (LLM_question != "" || LLM_question.trim().contains("No question")) 
 		{
-			last_KB = processLightsideLabel(ple,explanation);
+			//last_KB = processLightsideLabel(ple,explanation);
+			last_KB = processLLMLabel(ple,stepName, skill_INPUT, question, explanation);
 			if (last_KB == true && any_KB == false) any_KB = true;
 		}
 		String exp_resp = script.processResponseLLMOutput(response);
@@ -2740,7 +2748,8 @@ public void fillInQuizProblem(String problemName) {
 					.getProblemStepString();
 			if (explanation != null && explanation.length() > 0) {
 				//if (KB == false) 
-				last_KB = processLightsideLabel(ple,explanation);
+				//last_KB = processLightsideLabel(ple,explanation);
+				last_KB = processLLMLabel(ple,stepName, skill_INPUT, LLM_question, explanation);
 				if (last_KB == true && any_KB == false) any_KB = true;
 				conv_history += "\nYou:"+LLM_question+"\nTeacher:"+explanation;
 				if(hint_explained)
@@ -2813,11 +2822,13 @@ public void fillInQuizProblem(String problemName) {
 	    //trace.out(edge.getSelection());
 		//if (simSt.isSelfExplainMode() && !skillName.contains("typein") && !skillName.contains("unnamed")) {
 		//10/06/2014: now selection is the one that defines if SimStudent should ask for self explanation
-		if ((simSt.isSelfExplainMode() && isSelectionValidForSelfExplanation(edge.getSelection()) 
-				&& !explainedWhyRightSkills.contains(skillName) 
-			&& !explainedSelectionSkills.contains(edge.getSelection())) || 
+		if ((simSt.isSelfExplainMode() && 
+				isSelectionValidForSelfExplanation(edge.getSelection()) && 
+				!explainedWhyRightSkills.contains(skillName) && 
+			    !explainedSelectionSkills.contains(edge.getSelection())) 
+				||
 				(probability <= CHANCE && explainedWhyRightSkills.contains(skillName) && explainedSelectionSkills.contains(edge.getSelection()) && simSt.isSelfExplainMode() && isSelectionValidForSelfExplanation(edge.getSelection()))
-				)
+			)
 		//if (simSt.isSelfExplainMode() && isSelectionValidForSelfExplanation(edge.getSelection())
 				//&& skill_q_asked_count <= 2 
 		//		&& probability <= CHANCE && !explainedSelectionSkills.contains(edge.getSelection()))
@@ -2999,12 +3010,13 @@ public void fillInQuizProblem(String problemName) {
 							ple.giveMessage(ple.getConversation().getMessage(
 									SimStConversation.KBR_ACKNOWLEDGEMENT_TOPIC));
 						}
-						if (Boolean.valueOf(KBs[0]) == true) {
+						if (Boolean.valueOf(KBs[0]) == true || (Boolean.valueOf(KBs[0]) == false && sai.getS().equalsIgnoreCase(Rule.DONE_NAME))) {
 							if(!explainedWhyRightSkills.contains(skillName) && !explainedWhyRightSkills.contains(skillName)) {
 								explainedWhyRightSkills.add(skillName);
 								explainedSelectionSkills.add(edge.getSelection());
 							}
 						}
+						
 					}
 				}
 
