@@ -1273,8 +1273,8 @@ public class SimStPLE {
 		if(getSimSt().isCTIFollowupInquiryMode() && getSimSt().isbothAgreeSpeechGetterClassDefined())
 			conversation.processBothAgreeSpeechFile("simSt-both-agree-speech.txt");
 		
-		if(getSimSt().isCTIFollowupInquiryLLMMode())
-			setupLightSideClassifier();
+		//if(getSimSt().isCTIFollowupInquiryLLMMode())
+		//	setupLightSideClassifier();
 			
 	}
 

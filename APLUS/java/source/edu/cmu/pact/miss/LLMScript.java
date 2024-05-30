@@ -3,6 +3,7 @@ package edu.cmu.pact.miss;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,7 +21,7 @@ public class LLMScript {
 		return scriptName;
 	}
 	
-	public String executeScript(String pythonPath,String projectPath,  String stepName, String QType, String Sol, String first_question, String correctness, String conv_history, String expected_response, SimStLogger logger) {
+	public String executeScript(String pythonPath,String projectPath,  String stepName, String QType, String Sol, String first_question, String correctness, String conv_history, String expected_response,ArrayList<String> all_questions, ArrayList<String> all_answers, SimStLogger logger) {
 		//System.out.println("script_execute");
 		//System.out.println("stepname "+stepName+" QTYPE "+QType+" Sol "+Sol+" correctness "+correctness);
 		//System.out.println(" first_question "+first_question+" conv history "+conv_history);
@@ -39,11 +40,19 @@ public class LLMScript {
 			//				"Teacher:you need to get the varible on its own" + "\n" ;
 			//System.out.println(pythonPath+" "+scriptPath);
 			String scriptOutput;
-			if(expected_response=="") 
-				scriptOutput = runPythonScript(pythonPath, scriptPath, stepName, QType, Sol, first_question, correctness, conv_history);
+			if(expected_response=="") {
+				scriptOutput = runPythonScript(pythonPath, scriptPath, all_questions.toString(), all_answers.toString(), stepName, QType, Sol, first_question, correctness, conv_history);
+				//String conv = "\nYou:Why do you think I should add 2?"+"\nTeacher:"+"to combine like terms";
+				//scriptOutput = runPythonScript(pythonPath, scriptPath, "6x-2=7x+10", "WR", "add 2", "Why do you think I should add 2?", "correct", conv);
+				//System.out.println(scriptOutput);
+			}
 			else {
-				//System.out.println("JAVA KBR "+expected_response_KBR);
-				scriptOutput = runPythonScript(pythonPath, scriptPath, stepName, QType, Sol, first_question, correctness, conv_history, expected_response_KBR);
+				//System.out.println("JAVA KBR ");
+				scriptOutput = runPythonScript(pythonPath, scriptPath, all_questions.toString(), all_answers.toString(), stepName, QType, Sol, first_question, correctness, conv_history, expected_response_KBR);
+				//String exp = "Add 2 is correct because it will help us combine the like terms together. Add 2 will get rid of -2 and combine all the constant terms on right It would result in 6x-2+2=7x+10+2. We also have another constant term which is +10. We could have also get rid of +10 by performing subtract 10. Also, we could have combined the variable terms first instead of constant terms.";
+				//String conv = "\nYou:Why do you think I should add 2?"+"\nTeacher:"+"to combine like terms";
+				//scriptOutput = runPythonScript(pythonPath, scriptPath, "6x-2=7x+10", "WR", "add 2", "Why do you think I should add 2?", "correct", conv, exp);
+				//System.out.println(scriptOutput);
 			}
 			//System.out.println("QLLM "+scriptOutput);
 			//System.out.println("START");
@@ -59,6 +68,7 @@ public class LLMScript {
 		}
 		return "";
 	}
+
 	public String runPythonScript(String pythonPath, String scriptPath, String... arguments) {
 		try {
 			// Construct the command to run the Python script with arguments
@@ -128,7 +138,7 @@ public class LLMScript {
 	}
 
 	public String processQ(String script_output) {
-	
+			if(!script_output.contains("the question is") && (script_output.toLowerCase().contains("since teacher") || script_output.toLowerCase().contains("teacher mentioned") || script_output.toLowerCase().contains("teacher did not mention"))) return "No question";
 	        String regexPattern = "Therefore, the question is, (.*)";
 	        Pattern pattern = Pattern.compile(regexPattern);
 	        Matcher matcher = pattern.matcher(script_output);

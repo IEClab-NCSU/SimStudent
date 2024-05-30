@@ -12,33 +12,21 @@ conversation_hist=""
 sys_args = 0
 expected_response = "" #should be empty for the first call for any episode, but once response LLM is called for this episode, it should be sent as an arguement
 # If the script is called with arguments, use the first argument as the name
+all_questions = ""
+all_answers = ""
 if len(sys.argv) > 1:
     sys_args = 1
-    StepName=sys.argv[1]
-    Qtype=sys.argv[2] # WW = if the questions is why am I wrong WR = if the question is why did you do transformation?
-    Sol= sys.argv[3]
-    first_question= sys.argv[4]
-    correctness=sys.argv[5] ## oracle correctness
-    conversation_hist=sys.argv[6]
+    all_questions = sys.argv[1]
+    all_answers = sys.argv[2]
+    StepName=sys.argv[3]
+    Qtype=sys.argv[4] # WW = if the questions is why am I wrong WR = if the question is why did you do transformation?
+    Sol= sys.argv[5]
+    first_question= sys.argv[6]
+    correctness=sys.argv[7] ## oracle correctness
+    conversation_hist=sys.argv[8]
     #print(greet(name))
-if len(sys.argv) == 8:
-    expected_response = sys.argv[7]
-
-# In[38]:
-if sys_args == 0:
-    StepName="4=4y"
-    Qtype="WW" # WW = if the questions is why am I wrong WR = if the question is why did you do transformation?
-    Sol= "click \"problem is solved\" button"
-    first_question= "Why am I wrong?"
-    correctness="incorrect" ## oracle correctness lowercase
-    conversation_hist=f"""
-    You:Why am I wrong?
-    Teacher:you need to get the varible on its own
-    You:It feels like I have a misconception regarding when NOT to click the \"problem is solved\" button in an equation. Please explain when it is incorrect to click that using the key terms in the Unit Overview tab?
-    Teacher:You haven't solved the problem all the way
-    You:Still no luck for me! Would you please try one more time to explain when it is incorrect to say the \"problem is solved\"? Please explain using the key terms mentioned in the Unit Overview tab.
-    Teacher:You need to add one more step
-    """
+if len(sys.argv) == 10:
+    expected_response = sys.argv[9]
 
 
 ## OpenAPI call
@@ -79,8 +67,8 @@ fixed_in_context_examples = [
  'You and your student are working on the equation 10v+9=14. The student suggested to add -9. You disagreed. Student asked, "why am I wrong?". Add -9 is correct step here. You replied, "My bad! Add -9 is correct. Adding a negative number is equivalent to subtracting that number. Subtract 9 is accurate because our goal is to isolate 10v. To do that, we must undo the 9 added with 10v by performing subtract 9 or add -9. We must perform the same operation on both sides to ensure left hand side "equals" to right hand side. This will result in 10v+9-9=14-9"',
  'You and your student are working on the equation y=8-2y. You suggested to add 2. Student asked, "why do we add 2 here?". Add 2 is incorrect step here. You replied, \"Sorry I made a mistake. Adding 2 will not help us get rid of -2y. -2y and 2 are not like terms of each other because -2y has y in it but 2 does not have y in it. We can add 2y which is opposite of -2y to get rid of -2y on the right and combine the variable terms together on the left side. Adding 2y would result in y+2y = 8-2y+2y"',
  'You and your student are working on the equation -2y=8. You suggested to divide 2. Student asked, "why do we divide 2 here?". Divide 2 is incorrect step here. You replied, "Sorry I made a mistake. It should be divide by -2. If we had a positive 2 multiplied with y for instance, 2y=8, divide 2 would make sense. But in this situation, -2 is multiplied with y not 2. Here -2 is the coefficient, not 2. Therefore, we should divide by -2 not just 2. Here -2 is also called the coefficient. Coefficient is the number that is multiplied with variable. This will result in -2y/-2=8/-2"',
- 'You and your student are working on the equation 3x-9=10x-15. You suggested to add 9. Student asked, "why should we add 9?". Add 9 is correct step here. You replied, "because we want to combine the like terms together first. -9 and -15 are like terms because they are constant terms. Therefore if we add 9 to both sides, we will be able to get rid of -9 from left side and have all the constant like terms on the right side of the equation. Add 9 would result in 3x-9+9=10x-15+9. Similarly, we could have also performed add 15 or subtract 3x or subtract 10x."',
- 'You and your student are working on the equation 5+9y=3y-15. The student suggested to subtract 3. You disagreed. Student asked, "why am I wrong?". Subtract 3 is incorrect step here. You replied, "because if we want to get rid of the positive variable term 3y, we must perform the opposite which is subtract 3y from both sides. Subtract 3 will not get rid of 3y because they are not like terms. Therefore, if we perform subtract 3y, it would result in 5+9y-3y=3y-15-3y. Similarly, we could have also performed subtract 5 or add 15 or subtract 9y."',
+ 'You and your student are working on the equation 3x-9=10x-15. You suggested to add 9. Student asked, "why should we add 9?". Add 9 is correct step here. You replied, "because it will help us combine the like terms together. Add 9 will get rid of -9 and combine all the constant terms on right. It would result in 3x-9+9=10x-15+9. We also have another constant term which is -15. We could have also get rid of -15 by performing add 15. Also, we could have combined the variable terms first instead of constant terms."',
+ 'You and your student are working on the equation 5+9y=3y-15. You suggested to subtract 9y. Student asked, "why do you think I should subtract 9y?". Subtract 9y is correct step here. You replied, "because it will help us combine the like terms or the variable terms together first. Subtract 9y will get rid of 9y and combine all the variable terms on right. It would result in 5+9y-9y=3y-15-9y. We also have another variable term which is 3y. We could have also get rid of 3y by performing subtract 3y. It does not matter which one you get rid of as long as you are combining the like terms together."',
 ]
 
 def make_scene_R(StepName,Qtype, Sol, first_question,correctness):
@@ -152,10 +140,12 @@ def response_alignment(context, expected, answers):
     prompt = f"""
 Your task is to identify if any contradiction exist between response 1 and response 2. 
 You must consider about the consequence of the step thoroughly to judge whether response 1 and 2 contradicts with one another.
-You must be extremely cautious to decide if two sentences truly contradicts or not.
+You must be extremely cautious to decide if two sentences contradicts.
 Response 1 may sometimes talk about two different equation using figure A and figure B. Here figure B is relevant to the current scenario and you must consider only the sentences related to figure B while deciding for contradiction.
 Two sentences contradict if one sentence mentions a step "will not" achieve the goal but another sentence mentions the same step "will" achieve the same goal.
-Two sentences do not contradict if one sentence say something along the line " I do not know".
+Two sentences do not contradict if they suggest different steps.
+Two sentences do not contradict if one does not provide any specific reason for a step. This means no contradiction.
+Two sentences do not contradict if one sentence say something along the line "I do not know" or "because".
 Two sentences do not contradict if one sentence mentions a step will achieve a goal and another sentence mentions the step will achieve a different goal but that goal is along the similar line as the goal mentioned by the other sentence.
 Two sentences do not contradict if both indicate further steps needed but one sentence did not mention which step but the other sentence did.
 Two sentences do not contradict if one sentence mentions a step will achieve the goal and another sentence mentions another step will achieve the goal. There can be multiple correct steps that may achieve the same goal.
@@ -197,7 +187,8 @@ A few facts about solving linear algebraic equation domain that may help you gen
 - "-number*variable-number" means "number is subtracted from -number*variable". You never say "-number is subtracted from -number*variable".
 - "-number+number*variable" can be rearranged as "number*variable-number"
 - "-number-number*variable" can be rearranged as "-number*variable-number"
-- Whenever we "rewrite the equation", we never change the side of the terms, instead we only change the positon of the terms within the same side of the equal sign in such a way that both the given equation and the rewritten equation means the same thing. 
+- Whenever we "rewrite the equation", we never change the side of the terms, instead we only change the positon of the terms within the same side of the equal sign in such a way that both the given equation and the rewritten equation means the same thing.
+- If an equation has variable term on both sides and also constant on the other, it is accurate to either get rid of one of the variable terms first or constant terms first as long as it is opposite operation on both sides. 
 - You must click \"problem is solved\" button if the equation looks like "variable = positive or negative constant" or "positive or negative constant=variable". We never perform any step at this state of the equation.
 You will be heavily penalized if your generated explanation contradicts with the facts of the domain.
 {completed_scene}
@@ -267,16 +258,14 @@ In this scenario, an ideal response from teacher would be, "In this equation, 4 
 question: 
 To generate a question, you must find out a statement in the ideal teacher reply that was not conveyed by the teacher during the conversation. The teacher did not mention the sentence, "4 is the coefficient meaning 4 is the number multiplied with variable letter". Therefore, the question is, "Got it! Why do we always divide by the coefficient?"
 
-context:You and your teacher are working on the equation 9x+2=x+8. You performed divide 9, but the teacher disagreed. This action activated the following conversation:
+context:You and your teacher are working on the equation 9x-2=x+8. You could not figure out the correct step to perform. The teacher suggested to perform add 2. This action activated the following conversation:
 <conversation starts>
-You:Why am I wrong?
-Teacher:we are working on a different step of the equation
-You:Got it! At what step do we apply divide in an equation?
-Teacher:we apply the divide operation when we are isolating the vaiable, not any time before that
+You:Why did you perform add 2?
+Teacher:we want to combine like terms or get rid of 2.
 <conversation ends>
-In this scenario, an ideal response from teacher would be, "Divide 9 is incorrect here because we divide when there is only one variable term in the entire equation. we have two variable terms in this equation 9x and x. So, in order to simplify this equation, we should combine these two variable terms together. Note that, we can only combine 9x and x together because they are like terms, they both have the same variable letter x. We can subtract x as it is a positive term. Subtract x on both sides will isolate 8 on the right side This will result in 9x - x = x + 8 - x." 
+In this scenario, an ideal response from teacher would be, "Add 2 is correct because it will help us combine the like terms together. Add 2 will get rid of -2 and combine all the constant terms on right It would result in 9x-2+2=x+8+2. We also have another constant term which is +8. We could have also get rid of +8 by performing subtract 8. Also, we could have combined the variable terms first instead of constant terms." 
 question: 
-To generate a question, you must find out a statement in the ideal teacher reply that was not conveyed by the teacher during the conversation. The teacher did not mention the sentence, "because they are like terms, they both have the same variable letter x". Therefore, the question is, "I have one more confusion. How do we know if two terms are like terms with each other?"
+To generate a question, you must find out a statement in the ideal teacher reply that was not conveyed by the teacher during the conversation. The teacher did not mention the sentence, "We also have another constant term which is +8". Therefore, the question is, "What would happen if we got rid of the other constant term?"
 
 context:You and your teacher are working on the equation 16=-4y. You performed divide 16, but the teacher disagreed. This action activated the following conversation:
 <conversation starts>
@@ -299,13 +288,14 @@ To generate a question, you must find out a statement in the ideal teacher reply
 #Rule 5: If you've previously asked a question about a missing sentence and the teacher didn't respond as expected, focus on another missing sentence and ask question about it.
 #Rule 6: You must never say "why <step mentioned in an ideal response> is correct?" unless the teacher mentioned that step during conversation.
 #Rule 7: If you've asked questions about every possible missing sentences from the ideal teacher, say, "no question."
-def generate_question_(scene, expected, conversation_hist):
+def generate_question_(scene, expected, conversation_hist,dup):
     print("question module 2")
-    prompt = f"""
+    prompt_1 = f"""
     You are a student who is being taught how to solve an equation by a teacher. You always ask thought-provoking question to your teacher that looks like, "what would happen if...", "why doing the step ...", "what is the importance of ...", "what alternative steps ...".
     You should never ask shallow questions. You must ask questions so that your teacher need to explain hard concepts to you.
     You must incorporate relevant information from the conversation history in your question so that teacher needs to think deeply to answer your question. 
     You have a knowledge about how an ideal response from a teacher would look like and you seek that response from the teacher by asking questions.
+    Your questions must be phrased in such a way that a person currently in 6th, 7th or 8th grade would understand.
     You must look for a sentence in an ideal response that was not conveyed by the teacher during the conversation and formulate a question from that missing sentence.
     Note that, teacher's reply may contain grammatical or spelling errors. You must try your best to make sense of the teacher's reply with respect to the provided equation.
     You should never include the answer to your question in the question itself.
@@ -313,28 +303,68 @@ def generate_question_(scene, expected, conversation_hist):
     You may rephrase the same question using some key concepts of the algebra domain from your knowledge of the ideal response.
     You must always include "Therefore, the question is," before generating your final question.
 
-Here are the rules for generating questions:
-```
-Rule 1: If the teacher's reply contains any calculation error, point it out and then generate a question.
-Rule 2: If the teacher's reply contradicts the context, point it out and then generate a question.
-Rule 3: If the teacher's reply is calculation error free and aligns with the context, select a sentence from the ideal teacher reply that is missing in the conversation. Ask a question about that sentence.
-Rule 4: You never ask the exact same question that is present in the conversation.
-Rule 5: If you've previously asked a question about a missing sentence and the teacher didn't respond as expected, focus on another missing sentence and ask question about it.
-Rule 6: You must never say "why <step mentioned in an ideal response> is correct?" unless the teacher mentioned that step during conversation.
-Rule 7: You must never say "in the ideal response" as teacher has no clue that there is an ideal response from which you are formulating the question.
-Rule 8: If you've asked questions about every possible missing sentences from the ideal teacher, say, "no question."
-```
+    Here are the rules for generating questions:
+    ```
+    Rule 1: If the teacher's reply contains any calculation error, point it out and then generate a question.
+    Rule 2: If the teacher's reply contradicts the context, point it out and then generate a question.
+    Rule 3: If the teacher's reply is calculation error free and aligns with the context, select a sentence from the ideal teacher reply that is missing in the conversation. Ask a question about that sentence.
+    Rule 4: You never ask the exact same question that is present in the conversation.
+    Rule 5: If you've previously asked a question about a missing sentence and the teacher didn't respond as expected, focus on another missing sentence and ask question about it.
+    Rule 6: You must never say "why <step mentioned in an ideal response> is correct?" unless the teacher mentioned that step during conversation.
+    Rule 7: You must never say "in the ideal response" as teacher has no clue that there is an ideal response from which you are formulating the question.
+    Rule 8: If you've asked questions about every possible missing sentences from the ideal teacher, say, "no question."
+    ```
 
-A few examples are provided below delimited by triple quotes.
-'''{question_contextual_text}'''
+    A few examples are provided below delimited by triple quotes.
+    '''{question_contextual_text}'''
 
-context:{scene}. 
-<conversation starts>
-{conversation_hist}
-<conversation ends>
-In this scenario, an ideal response from teacher would be, "{expected}"
-<generate>
-"""
+    context:{scene}. 
+    <conversation starts>
+    {conversation_hist}
+    <conversation ends>
+    In this scenario, an ideal response from teacher would be, "{expected}"
+    <generate>
+    """
+
+    prompt_2 = f"""
+    You are a student who is being taught how to solve an equation by a teacher. You always ask thought-provoking question to your teacher that looks like, "what would happen if...", "why doing the step ...", "what is the importance of ...", "what alternative steps ...".
+    You should never ask shallow questions. You must ask questions so that your teacher need to explain hard concepts to you.
+    You must incorporate relevant information from the conversation history in your question so that teacher needs to think deeply to answer your question. 
+    You have a knowledge about how an ideal response from a teacher would look like and you seek that response from the teacher by asking questions.
+    Your questions must be phrased in such a way that a person currently in 6th, 7th or 8th grade would understand.
+    You must look for a sentence in an ideal response that was not conveyed by the teacher during the conversation and formulate a question from that missing sentence.
+    Note that, teacher's reply may contain grammatical or spelling errors. You must try your best to make sense of the teacher's reply with respect to the provided equation.
+    You should never include the answer to your question in the question itself.
+    You should never ask the same question that you have already asked during the conversation.
+    You may rephrase the same question using some key concepts of the algebra domain from your knowledge of the ideal response.
+    You must always include "Therefore, the question is," before generating your final question.
+
+    Here are the rules for generating questions:
+    ```
+    Rule 1: If the teacher's reply contains any calculation error, point it out and then generate a question.
+    Rule 2: If the teacher's reply contradicts the context, point it out and then generate a question.
+    Rule 3: If the teacher's reply is calculation error free and aligns with the context, select a sentence from the ideal teacher reply that is missing in the conversation. Ask a question about that sentence.
+    Rule 4: You never ask the exact same question that is present in the conversation.
+    Rule 5: If you've previously asked a question about a missing sentence and the teacher didn't respond as expected, focus on another missing sentence and ask question about it.
+    Rule 6: You must never say "why <step mentioned in an ideal response> is correct?" unless the teacher mentioned that step during conversation.
+    Rule 7: You must never say "in the ideal response" as teacher has no clue that there is an ideal response from which you are formulating the question.
+    Rule 8: If you've asked questions about every possible missing sentences from the ideal teacher, say, "no question."
+    ```
+    Be careful, you have just repeated a question that you have already in the conversation. This time, you must find out a different question.
+    A few examples are provided below delimited by triple quotes.
+    '''{question_contextual_text}'''
+
+    context:{scene}. 
+    <conversation starts>
+    {conversation_hist}
+    <conversation ends>
+    In this scenario, an ideal response from teacher would be, "{expected}"
+    <generate>
+    """
+    if dup == 1:
+        prompt = prompt_2
+    else:
+        prompt = prompt_1
     response = get_completion(prompt, .5)
     return response
 
@@ -354,15 +384,20 @@ def generate_question(StepName,Qtype, Sol, first_question,correctness,conversati
     scene = make_scene_Q(StepName,Qtype, Sol)
     if len(str(exp_r)) > 1:
         cont_scene = make_contradiction_scene(StepName, Sol, Qtype)
-        answers = conversation_hist.split("Teacher:")
-        contradicts = response_alignment(cont_scene, exp_r, answers[len(answers)-1])
+        #answers = conversation_hist.split("Teacher:")
+        all_questions_arr = all_questions.strip('][').split(', ')
+        all_answers_arr = all_answers.strip('][').split(', ')
+        #contradicts = response_alignment(cont_scene, exp_r, answers[len(answers)-1])
+        contradicts = response_alignment(cont_scene, exp_r, all_answers_arr[len(all_answers_arr)-1])
         print("the alignment is----",contradicts)
-        #q = generate_question_(scene, exp_r, conversation_hist) ## must comment out
-        #print("anyway question: ",q) ## must comment out
         if "no contradiction" in contradicts.lower():
-            q = generate_question_(scene, exp_r, conversation_hist)
+            q = generate_question_(scene, exp_r, conversation_hist,0)
             if "no question" not in q.lower() and "?" not in q:
-                q = generate_question_(scene, exp_r, conversation_hist)
+                q = generate_question_(scene, exp_r, conversation_hist,0)
+            #elif "no question" not in q.lower() and ""
+            if q.lower() in all_questions_arr:
+                print("I am in duplicate")
+                q = generate_question_(scene, exp_r, conversation_hist,1)
             print("the q is---",q) # Must keep this print prefix fixed as it is used for regex map in the java code
             q = "the q is---"+q
             return q
@@ -378,4 +413,7 @@ def generate_question(StepName,Qtype, Sol, first_question,correctness,conversati
 
 # In[40]:
 
-generate_question(StepName,Qtype, Sol, first_question,correctness,conversation_hist)
+if sys_args == 1:
+    generate_question(StepName,Qtype, Sol, first_question,correctness,conversation_hist)
+else:
+    print("the q is---: No question")

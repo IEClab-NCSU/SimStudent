@@ -2700,9 +2700,13 @@ public void fillInQuizProblem(String problemName) {
 	}
 	
 	public String askLLMQuestions(String question, String explanation, String stepName, Sai sai, String correctness, SimStPLE ple, boolean hint_explained) {
+		ArrayList<String> all_questions = new ArrayList<String>();
+		all_questions.add(question.toLowerCase());
+		ArrayList<String> all_answers = new ArrayList<String>();
+		all_answers.add(explanation);
 		boolean last_KB = false;
 		boolean any_KB = false;
-		int max_q = 2;
+		int max_q = 3;
 		int q_count = 1;
 		if (getBrController(getSimSt()).getMissController().isPLEon()) 
 			ple.setAvatarThinking();
@@ -2720,9 +2724,9 @@ public void fillInQuizProblem(String problemName) {
 		}
 		
 		if (hint_explained)
-			response = script.executeScript(ple.getPythonScriptPath(), simSt.getProjectDir(), stepName, "WR", skill_INPUT, question, correctness, conv_history,"",logger);
+			response = script.executeScript(ple.getPythonScriptPath(), simSt.getProjectDir(), stepName, "WR", skill_INPUT, question, correctness, conv_history,"",all_questions, all_answers, logger);
 		else
-			response = script.executeScript(ple.getPythonScriptPath(), simSt.getProjectDir(), stepName, "WW", skill_INPUT, question, correctness, conv_history,"",logger);
+			response = script.executeScript(ple.getPythonScriptPath(), simSt.getProjectDir(), stepName, "WW", skill_INPUT, question, correctness, conv_history,"",all_questions, all_answers,logger);
 		String LLM_question = script.processQ(response);
 		//if (LLM_question != "" || LLM_question.trim().contains("No question")) 
 		{
@@ -2738,8 +2742,9 @@ public void fillInQuizProblem(String problemName) {
 			ple.setAvatarNormal();
 		while(LLM_question != "" && q_count <= max_q && !LLM_question.trim().contains("No question")) {
 			//System.out.println("COnv history so far "+conv_history);
-			
+			all_questions.add(LLM_question.toLowerCase());
 			explanation = ple.giveMessageFreeTextResponse(LLM_question);
+			all_answers.add(explanation);
 			if(ple != null ) ple.setAvatarThinking();
 			long explainRequestTime = Calendar.getInstance().getTimeInMillis();
 			int explainDuration = (int) (Calendar.getInstance()
@@ -2781,9 +2786,9 @@ public void fillInQuizProblem(String problemName) {
 			//response = script.executeScript(simSt.getProjectDir(), stepName, "WR", sai.getI(), question, correctness, conv_history,"exp");
 			if (q_count <= max_q) {
 				if (hint_explained)
-					response = script.executeScript(ple.getPythonScriptPath(), simSt.getProjectDir(), stepName, "WR", skill_INPUT, question, correctness, conv_history,"exp",logger);
+					response = script.executeScript(ple.getPythonScriptPath(), simSt.getProjectDir(), stepName, "WR", skill_INPUT, question, correctness, conv_history,"exp",all_questions, all_answers,logger);
 				else
-					response = script.executeScript(ple.getPythonScriptPath(), simSt.getProjectDir(), stepName, "WW", skill_INPUT, question, correctness, conv_history,"exp",logger);
+					response = script.executeScript(ple.getPythonScriptPath(), simSt.getProjectDir(), stepName, "WW", skill_INPUT, question, correctness, conv_history,"exp",all_questions, all_answers,logger);
 				LLM_question = script.processQ(response);
 			}
 		}
@@ -3010,7 +3015,7 @@ public void fillInQuizProblem(String problemName) {
 							ple.giveMessage(ple.getConversation().getMessage(
 									SimStConversation.KBR_ACKNOWLEDGEMENT_TOPIC));
 						}
-						if (Boolean.valueOf(KBs[0]) == true || (Boolean.valueOf(KBs[0]) == false && sai.getS().equalsIgnoreCase(Rule.DONE_NAME))) {
+						if (Boolean.valueOf(KBs[0]) == true || (Boolean.valueOf(KBs[0]) == false && skillName.contains("done"))) {
 							if(!explainedWhyRightSkills.contains(skillName) && !explainedWhyRightSkills.contains(skillName)) {
 								explainedWhyRightSkills.add(skillName);
 								explainedSelectionSkills.add(edge.getSelection());
