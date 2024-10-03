@@ -200,6 +200,9 @@ public final class SimSt implements Serializable {
 
    private static final String NO_ACTIVATIONS = "NoActivations";
    private static final String NOT_SPECIFIED = "NotSpecified";
+   
+   // CTI python code
+   public static final String CTI_CHAT_CODE = "chat_interface_resQ.py";
 
    String logDirectory = null;
    String runType = System.getProperty("appRunType");
@@ -373,9 +376,8 @@ public final class SimSt implements Serializable {
 	   this.simst_strategy_reveal_Mode = simst_strategy_reveal_Mode;
    }
    
-   public void setSsConstructiveTuteeInquiryLLM(boolean CTILLMMode, boolean useResponseLLM) {
+   public void setSsConstructiveTuteeInquiryLLM(boolean CTILLMMode) {
 	   this.CTI_LLM_Mode = CTILLMMode;
-	   this.useResponseLLM = useResponseLLM;
    }
    public boolean isSelfExplainMode()
    {
@@ -393,12 +395,6 @@ public final class SimSt implements Serializable {
    {
    	return CTI_LLM_Mode;
    }
-   public boolean useResponseLLMMode()
-   {
-   	return useResponseLLM;
-   }
-
-
   private transient ProblemAssessor problemAssessor = new AlgebraProblemAssessor();
    public void setProblemAssessor(ProblemAssessor pa)
    {

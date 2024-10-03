@@ -2706,16 +2706,11 @@ public void fillInQuizProblem(String problemName) {
 		all_answers.add(explanation);
 		boolean last_KB = false;
 		boolean any_KB = false;
-		int max_q = 3;
+		int max_q = 2;
 		int q_count = 1;
 		if (getBrController(getSimSt()).getMissController().isPLEon()) 
 			ple.setAvatarThinking();
-		LLMScript script;
-		if (simSt.useResponseLLMMode())
-			script=new LLMScript("chat_interface_resQ.py");
-			//script=new LLMScript("chat_interface_resQ.py");
-		else
-			script=new LLMScript("");
+		LLMScript script = new LLMScript(simSt.CTI_CHAT_CODE);
 		String conv_history = "\nYou:"+question+"\nTeacher:"+explanation;
 		String response = "";
 		String skill_INPUT = sai.getI();
@@ -3004,7 +2999,7 @@ public void fillInQuizProblem(String problemName) {
 								explainDuration, question);
 					}
 					// LLM question asking
-					if(simSt.isCTIFollowupInquiryLLMMode()) {
+					if(simSt.isCTIFollowupInquiryLLMMode() && ple.LLM_ERR==false) {
 						String KB = askLLMQuestions(question, explanation, stepName, sai ,correctness,ple, true);
 						String[] KBs = KB.split("_");
 						if (Boolean.valueOf(KBs[1]) == false) {
@@ -3490,7 +3485,7 @@ public void fillInQuizProblem(String problemName) {
 					    String stepName = problemName.replace("_", "=");
 					    //System.out.println("CONFIRMED "+correctness);
 					    // LLM question asking
-						if(simSt.isCTIFollowupInquiryLLMMode()) {
+						if(simSt.isCTIFollowupInquiryLLMMode() && ple.LLM_ERR == false) {
 							String KB = askLLMQuestions("why am I wrong?", explanation, stepName, sai ,correctness,ple, false);
 							String[] KBs = KB.split("_");
 							if (Boolean.valueOf(KBs[1]) == false) {

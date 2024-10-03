@@ -1,6 +1,6 @@
-# %%
 import openai
 import sys
+import os
 
 # %%
 StepName=""
@@ -28,10 +28,14 @@ if len(sys.argv) > 1:
 if len(sys.argv) == 10:
     expected_response = sys.argv[9]
 
+all_good = 1
 
 ## OpenAPI call
-#openai.api_key  ='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'
-openai.api_key  ='sk-proj-mqmxOR8xrMApiWPBurXgT3BlbkFJXwUv4DyMNc8zIlg8jYjm'
+if "OPENAI_API_KEY" in os.environ:
+    openai.api_key = os.environ["OPENAI_API_KEY"]
+else:
+    all_good = 0
+
 def get_completion(prompt, temperature, model="gpt-3.5-turbo"):
     try:
         #Make your OpenAI API request here
@@ -76,7 +80,7 @@ def make_scene_R(StepName,Qtype, Sol, first_question,correctness):
     scene = scene + StepName +"."
     supporting_scenario = ""
     if Qtype == "WW":
-        supporting_scenario = " The student suggested to perform "+ Sol+". You disagreed."        
+        supporting_scenario = " The student suggested to perform "+ Sol+". You disagreed."
     else:
         supporting_scenario = " You suggested to perform "+ Sol+"."
     scene = scene + supporting_scenario+" Student asked, \""+first_question.replace("\"","")+"\""
@@ -93,7 +97,7 @@ def make_scene_Q(StepName,Qtype, Sol):
     scene = scene + StepName +"."
     supporting_scenario = ""
     if Qtype == "WW":
-        supporting_scenario = " You suggested to perform "+ Sol+". The teacher disagreed."        
+        supporting_scenario = " You suggested to perform "+ Sol+". The teacher disagreed."
     else:
         supporting_scenario = " You could not figure out the correct step to perform. The teacher suggested to perform "+ Sol+"."
     scene = scene + supporting_scenario+"This action activated the following conversation:\n"
@@ -110,25 +114,25 @@ def make_contradiction_scene(stepName, sol, Qtype):
     return scene
 
 contradiction_contextual_text = f"""
-context: given an equation 6=2x, performing add -2x on both sides was discouraged by the person who provides response 1.  
+context: given an equation 6=2x, performing add -2x on both sides was discouraged by the person who provides response 1.
 response 1: "it is easier to just divide by 2. it uses fewer steps."
 response 2: "Sorry, but adding -2x is not the correct step here. Our goal is to isolate the variable x, and in the equation 6=2x, 2x means 2 multiplied by x. To undo the multiplication, we need to perform the opposite operation, which is division. So, the correct step would be to divide both sides of the equation by 2. This will result in 6/2 = 2x/2, which simplifies to 3 = x."
-contradiction: response 1 is suggesting to divide by 2 and response 2 is also suggesting to divide by 2. First sentence in response 1 does not contradict with response 2. Response 1 states dividing by 2 uses fewer steps but response 2 has no such information to decide whether it contradicts or not. Therefore, we can say no sentences in response 1 contradict with any sentences in response 2. Therefore, 100% of response 1 aligns with response 2. No contradiction. 
+contradiction: response 1 is suggesting to divide by 2 and response 2 is also suggesting to divide by 2. First sentence in response 1 does not contradict with response 2. Response 1 states dividing by 2 uses fewer steps but response 2 has no such information to decide whether it contradicts or not. Therefore, we can say no sentences in response 1 contradict with any sentences in response 2. Therefore, 100% of response 1 aligns with response 2. No contradiction.
 
-context: given an equation 10=-6-4y, performing add 6 on both sides was discouraged by the person who provides response 1. 
+context: given an equation 10=-6-4y, performing add 6 on both sides was discouraged by the person who provides response 1.
 response 1: "This is not going to bring us to the rightb answer. adding will not be isolating y"
 response 2: "My apologies, you are correct. Adding 6 is the correct step here. The equation is 10=-6-4y. To isolate the variable term -4y, we need to undo the effect of -6. The opposite of subtracting 6 is adding 6. So, by adding 6 to both sides of the equation, we get 10+6=-6-4y+6. This simplifies to 16=-4y."
-contradiction: response 1 indicates add 6 will not bring the right answer, whereas response 2 indicates add 6 is correct step which means it will bring the right answer. First sentence in response 1 contradicts with response 2. Response 1 states that adding will not isolate y but response 2 states that adding will isolate -4y which also means it will isolate y down the road. Second sentence also contradicts with response 2. Therefore, 100% of response 1 contradicts with response 2. Contradiction. 
+contradiction: response 1 indicates add 6 will not bring the right answer, whereas response 2 indicates add 6 is correct step which means it will bring the right answer. First sentence in response 1 contradicts with response 2. Response 1 states that adding will not isolate y but response 2 states that adding will isolate -4y which also means it will isolate y down the road. Second sentence also contradicts with response 2. Therefore, 100% of response 1 contradicts with response 2. Contradiction.
 
-context: given an equation 3x=5, performing divide 5 was encouraged by the person who provides response 1. 
+context: given an equation 3x=5, performing divide 5 was encouraged by the person who provides response 1.
 response 1: "To get the variable by itself"
 response 2: "Sorry, I made a mistake. It should be divide by 3. Our goal is to isolate the variable x, and 3 is multiplied with x. Therefore, we should divide by 3. Here 3 is also called the coefficient. Coefficient is the number that is multiplied with the variable. Dividing by 5 would not give us the correct solution. Dividing by 3 will result in 3x/3 = 5/3."
-contradiction: response 1 states divide 5 will get the variable by itself, but response 2 states divide 3 will isolate the variable x. No other sentence is present in response 1. Therefore, 100% of response 1 contradicts with response 2. Contradiction.   
+contradiction: response 1 states divide 5 will get the variable by itself, but response 2 states divide 3 will isolate the variable x. No other sentence is present in response 1. Therefore, 100% of response 1 contradicts with response 2. Contradiction.
 
 context: given an equation x=3, performing divide x was encouraged by the person who provides response 1.
 response 1: "because you have to divide the variable on both sides. it is correct because when you get to the last two numbers you divide by the varieble"
 response 2: "I made a mistake. We cannot divide x in this equation because x is already isolated on one side. Our goal is to isolate the variable on one side of the equation, and x is already by itself. If we were to divide x, it would result in x/x = 3/x, which doesn't simplify the equation. Since x=3, we can consider this equation already solved."
-contradiction: response 1 indicates we divide the variable on both sides, but response 2 states divide by x or divide by variable is incorrect. First sentence contradicts. Next, response 1 states when there is last two numbers, you divide by the variable but response 2 suggests that we do not perform any more steps when x = 3 as the equation is solved which means we do not perform divide by variable when x = 3. Second sentence contradicts. Therefore, 100% of response 1 contradicts with response 2. Contradiction. 
+contradiction: response 1 indicates we divide the variable on both sides, but response 2 states divide by x or divide by variable is incorrect. First sentence contradicts. Next, response 1 states when there is last two numbers, you divide by the variable but response 2 suggests that we do not perform any more steps when x = 3 as the equation is solved which means we do not perform divide by variable when x = 3. Second sentence contradicts. Therefore, 100% of response 1 contradicts with response 2. Contradiction.
 
 context: given an equation 7c-10=8-9c, performing subtract 8 was encouraged by the person who provides response 1.
 response 1: "because you have to"
@@ -138,7 +142,7 @@ contradiction: response 1 does not state anything that contradicts with response
 def response_alignment(context, expected, answers):
     #print(" response alignment ")
     prompt = f"""
-Your task is to identify if any contradiction exist between response 1 and response 2. 
+Your task is to identify if any contradiction exist between response 1 and response 2.
 You must consider about the consequence of the step thoroughly to judge whether response 1 and 2 contradicts with one another.
 You must be extremely cautious to decide if two sentences contradicts.
 Response 1 may sometimes talk about two different equation using figure A and figure B. Here figure B is relevant to the current scenario and you must consider only the sentences related to figure B while deciding for contradiction.
@@ -188,7 +192,7 @@ A few facts about solving linear algebraic equation domain that may help you gen
 - "-number+number*variable" can be rearranged as "number*variable-number"
 - "-number-number*variable" can be rearranged as "-number*variable-number"
 - Whenever we "rewrite the equation", we never change the side of the terms, instead we only change the positon of the terms within the same side of the equal sign in such a way that both the given equation and the rewritten equation means the same thing.
-- If an equation has variable term on both sides and also constant on the other, it is accurate to either get rid of one of the variable terms first or constant terms first as long as it is opposite operation on both sides. 
+- If an equation has variable term on both sides and also constant on the other, it is accurate to either get rid of one of the variable terms first or constant terms first as long as it is opposite operation on both sides.
 - You must click \"problem is solved\" button if the equation looks like "variable = positive or negative constant" or "positive or negative constant=variable". We never perform any step at this state of the equation.
 You will be heavily penalized if your generated explanation contradicts with the facts of the domain.
 {completed_scene}
@@ -207,26 +211,26 @@ Teacher:That is a good step, but not right now;
 <conversation ends>
 In this scenario, an ideal response from teacher would be, "since there are two variable terms in the equation, we must combine these two variables first. Since -9c is already isolated on one side of the equation, we can perform subtract 7c on both sides to combine the variable terms or get rid of 7c. -9c and 7c can be combined as they are like terms because they share the same variable c. Subtract 7c would result in -9c-7c = 7c-2."
 question:
-To generate a question, you must find out a statement in the ideal response that was not conveyed by the teacher during the conversation. The teacher did not mention the sentence, "there are two variable terms in the equation". Therefore, the question is, "How many variable terms do we have in the equation?"   
+To generate a question, you must find out a statement in the ideal response that was not conveyed by the teacher during the conversation. The teacher did not mention the sentence, "there are two variable terms in the equation". Therefore, the question is, "How many variable terms do we have in the equation?"
 
-context:You and your teacher are working on the equation 10c-5=-6. You could not figure out the correct step to perform. The teacher suggested to perform add 5. This action activated the following conversation: 
+context:You and your teacher are working on the equation 10c-5=-6. You could not figure out the correct step to perform. The teacher suggested to perform add 5. This action activated the following conversation:
 <conversation starts>
-You:Why are we adding 5 here?	
+You:Why are we adding 5 here?
 Teacher:there is subtraction symbol
 <conversation ends>
 In this scenario, an ideal response from teacher would be, "because our goal is to isolate the variable 10c and 5 is subtracted from 10c. The opposite of -5 is +5. So we must add 5 to isolate 10c on its own. This will result in 10c-5+5 = -6+5."
-question: 
+question:
 Since teacher mentioned a statement "there is a subtraction symbol" and in the equation there are two numbers with subtraction symbol -5 and -6. Therefore, a contradiction appears between what teacher said and the equation itself, we must point it out in the question. Therefore, the question is, "I am confused! Both 5 and 6 have a subtraction symbol. Why do we add 5 but not add 6?"
 
-context:You and your teacher are working on the equation -1+v=1. You could not figure out the correct step to perform. The teacher suggested to perform add 1. This action activated the following conversation:  
+context:You and your teacher are working on the equation -1+v=1. You could not figure out the correct step to perform. The teacher suggested to perform add 1. This action activated the following conversation:
 <conversation starts>
-You:Why are we adding 1 here?	 
-Teacher:so that we conclude with v=2. 
+You:Why are we adding 1 here?
+Teacher:so that we conclude with v=2.
 You:That makes sense! What part of the equation motivated you to demonstrate add 1?
 Teacher:in adding one you eliminate -1 which leves you with v=2
 <conversation ends>
 In this scenario, an ideal response from teacher would be, "because our goal is to isolate the variable v. 1 is subtracted from v in this equation. We can say 1 is subtracted because there is a negative sign on the left of 1. The negative sign on the left of a term belongs to that term. We could even rewrite the equation as v-1 = 1. They both have the same meaning. Now to under the impact of -1 on v, we should perform the opposite operation. The opposite of -1 is +1. So we must add 1 to isolate v on its own. This will result in -1+v = 1+1."
-question: 
+question:
 To generate a question, you must find out a statement in the ideal teacher reply that was not conveyed by the teacher during the conversation. The teacher did not mention the sentence, "We can say 1 is subtracted because there is a negative sign on the left of 1". Therefore, the question is, "Got it! How can we say if 1 is subtracted or 1 is added with the variable v here?"
 
 context:You and your teacher are working on the equation -6-4y=10. You performed add 6, but the teacher disagreed. This action activated the following conversation:
@@ -235,8 +239,8 @@ You:Why am I wrong?
 Teacher:-6+6=-12 you must subtract 6 to get to 0
 <conversation ends>
 In this scenario, an ideal response from teacher would be, "Actually, you are correct. Adding 6 is the correct step here. Our goal is to isolate the variable term -4y. In this equation, 6 is subtracted from -4y. It becomes more clear if we rewrite the equation as -4y-6 = 10. This equation is exactly the same as -6-4y = 10 as we did not change the sign on any terms. The sign on the left of the term belongs to that term. Now, since 6 is subtracted from -4y, to isolate -4y, we must undo that by performing the opposite. The opposite of subtraction is addition, so we need to add 6 to both sides of the equation. This will result in -6-4y+6=10+6."
-question: 
-Since teacher mentioned a calculation and the calculation is wrong, you must point it out in our question. Now to generate a question, you must find out a statement in the ideal teacher reply that was not conveyed by the teacher during the conversation. The teacher did not mention the sentence, "It becomes more clear if we rewrite the equation as -4y-6 = 10". Therefore, the question is, "But -6+6 is equal to 0 based on my calculation. Can you show me how to rewrite the equation so that the variable term comes first, and the new equation means the same as -6-4y=10?" 
+question:
+Since teacher mentioned a calculation and the calculation is wrong, you must point it out in our question. Now to generate a question, you must find out a statement in the ideal teacher reply that was not conveyed by the teacher during the conversation. The teacher did not mention the sentence, "It becomes more clear if we rewrite the equation as -4y-6 = 10". Therefore, the question is, "But -6+6 is equal to 0 based on my calculation. Can you show me how to rewrite the equation so that the variable term comes first, and the new equation means the same as -6-4y=10?"
 
 context:You and your teacher are working on the equation 3x-6=x+2. You could not figure out the correct step to perform. The teacher suggested to perform subtract 2. This action activated the following conversation:
 <conversation starts>
@@ -244,8 +248,8 @@ You:Why do we subtract 2?
 Teacher:we want to get rid of 2, by combining the like terms.
 <conversation ends>
 In this scenario, an ideal response from teacher would be, "because we want to combine the like terms together first. -6 and 2 are like terms because they are constant terms. Therefore if we subtract 2 from both sides, we will be able to get rid of 2 from right side and have all the constant like terms on the left side of the equation. Subtract 2 would result in 3x-6-2=x+2-2. Similarly, we could have also performed add 6 or subtract 3x or subtract x."
-question: 
-Since teacher mentioned a statement "combining like terms. Therefore, the question is, "You said we want to combine like terms. In this equation, 3x and x are also like terms. Why didn't we get rid of one of them as our first step by performing either subtract 3x or subtract x?"  
+question:
+Since teacher mentioned a statement "combining like terms. Therefore, the question is, "You said we want to combine like terms. In this equation, 3x and x are also like terms. Why didn't we get rid of one of them as our first step by performing either subtract 3x or subtract x?"
 
 context:You and your teacher are working on the equation 4y=16. You could not figure out the correct step to perform. The teacher suggested to perform divide 4. This action activated the following conversation:
 <conversation starts>
@@ -255,7 +259,7 @@ You:I did not catch that! Can you explain why divide 4 is accurate here?
 Teacher:You need to get the variable on its own so you can finish the problem
 <conversation ends>
 In this scenario, an ideal response from teacher would be, "In this equation, 4 is the coefficient meaning 4 is the number multiplied with variable letter. So we want to do the opposite of multiplication, which is division. So, we must divide both sides of the equation by 4 to isolate y on its own. This will result in 4y/4 = 16/4."
-question: 
+question:
 To generate a question, you must find out a statement in the ideal teacher reply that was not conveyed by the teacher during the conversation. The teacher did not mention the sentence, "4 is the coefficient meaning 4 is the number multiplied with variable letter". Therefore, the question is, "Got it! Why do we always divide by the coefficient?"
 
 context:You and your teacher are working on the equation 9x-2=x+8. You could not figure out the correct step to perform. The teacher suggested to perform add 2. This action activated the following conversation:
@@ -263,8 +267,8 @@ context:You and your teacher are working on the equation 9x-2=x+8. You could not
 You:Why did you perform add 2?
 Teacher:we want to combine like terms or get rid of 2.
 <conversation ends>
-In this scenario, an ideal response from teacher would be, "Add 2 is correct because it will help us combine the like terms together. Add 2 will get rid of -2 and combine all the constant terms on right It would result in 9x-2+2=x+8+2. We also have another constant term which is +8. We could have also get rid of +8 by performing subtract 8. Also, we could have combined the variable terms first instead of constant terms." 
-question: 
+In this scenario, an ideal response from teacher would be, "Add 2 is correct because it will help us combine the like terms together. Add 2 will get rid of -2 and combine all the constant terms on right It would result in 9x-2+2=x+8+2. We also have another constant term which is +8. We could have also get rid of +8 by performing subtract 8. Also, we could have combined the variable terms first instead of constant terms."
+question:
 To generate a question, you must find out a statement in the ideal teacher reply that was not conveyed by the teacher during the conversation. The teacher did not mention the sentence, "We also have another constant term which is +8". Therefore, the question is, "What would happen if we got rid of the other constant term?"
 
 context:You and your teacher are working on the equation 16=-4y. You performed divide 16, but the teacher disagreed. This action activated the following conversation:
@@ -273,13 +277,13 @@ You:Why am I wrong?
 Teacher:because you only divide by a varible
 <conversation ends>
 In this scenario, an ideal response from teacher would be, "Divide 16 is incorrect here because we must divide by the number that is multiplied with the variable. This number is also called the coefficient. In other word, we always divide by the coefficient. -4 is the coefficient here, not 16. Therefore, to isolate the variable y, we need to divide by -4 as divide is the opposite operation of multiplication. This will result in 16/-4 = -4y/-4."
-question: 
+question:
 To generate a question, you must find out a statement in the ideal teacher reply that was not conveyed by the teacher during the conversation. The teacher did not mention the sentence, "we must divide by the number that is multiplied with the variable." Therefore, the question is, "I thought we can divide by the coefficient. Can you explain why 16 is not the coefficient?"
 """
 
 #instruction history:
-# Your task is to formulate a question by comparing a teacher reply and an ideal teacher reply given in a context. You will formulate a question from the sentences that the teacher did not state 
-# but is present in the ideal teacher reply. Be aware that teacher reply may contain grammatical or spelling errors. You must try to make sense of the teacher reply. If teacher is repeating the same sentences, then you must change your questioning angle. 
+# Your task is to formulate a question by comparing a teacher reply and an ideal teacher reply given in a context. You will formulate a question from the sentences that the teacher did not state
+# but is present in the ideal teacher reply. Be aware that teacher reply may contain grammatical or spelling errors. You must try to make sense of the teacher reply. If teacher is repeating the same sentences, then you must change your questioning angle.
 ### LLM for question generation from missing info: P2
 #Rule 1: If the teacher's reply contains any calculation error, point it out and then generate a question.
 #Rule 2: If the teacher's reply contradicts the context, point it out and then generate a question.
@@ -293,7 +297,7 @@ def generate_question_(scene, expected, conversation_hist,dup):
     prompt_1 = f"""
     You are a student who is being taught how to solve an equation by a teacher. You always ask thought-provoking question to your teacher that looks like, "what would happen if...", "why doing the step ...", "what is the importance of ...", "what alternative steps ...".
     You should never ask shallow questions. You must ask questions so that your teacher need to explain hard concepts to you.
-    You must incorporate relevant information from the conversation history in your question so that teacher needs to think deeply to answer your question. 
+    You must incorporate relevant information from the conversation history in your question so that teacher needs to think deeply to answer your question.
     You have a knowledge about how an ideal response from a teacher would look like and you seek that response from the teacher by asking questions.
     Your questions must be phrased in such a way that a person currently in 6th, 7th or 8th grade would understand.
     You must look for a sentence in an ideal response that was not conveyed by the teacher during the conversation and formulate a question from that missing sentence.
@@ -318,7 +322,7 @@ def generate_question_(scene, expected, conversation_hist,dup):
     A few examples are provided below delimited by triple quotes.
     '''{question_contextual_text}'''
 
-    context:{scene}. 
+    context:{scene}.
     <conversation starts>
     {conversation_hist}
     <conversation ends>
@@ -329,7 +333,7 @@ def generate_question_(scene, expected, conversation_hist,dup):
     prompt_2 = f"""
     You are a student who is being taught how to solve an equation by a teacher. You always ask thought-provoking question to your teacher that looks like, "what would happen if...", "why doing the step ...", "what is the importance of ...", "what alternative steps ...".
     You should never ask shallow questions. You must ask questions so that your teacher need to explain hard concepts to you.
-    You must incorporate relevant information from the conversation history in your question so that teacher needs to think deeply to answer your question. 
+    You must incorporate relevant information from the conversation history in your question so that teacher needs to think deeply to answer your question.
     You have a knowledge about how an ideal response from a teacher would look like and you seek that response from the teacher by asking questions.
     Your questions must be phrased in such a way that a person currently in 6th, 7th or 8th grade would understand.
     You must look for a sentence in an ideal response that was not conveyed by the teacher during the conversation and formulate a question from that missing sentence.
@@ -354,7 +358,7 @@ def generate_question_(scene, expected, conversation_hist,dup):
     A few examples are provided below delimited by triple quotes.
     '''{question_contextual_text}'''
 
-    context:{scene}. 
+    context:{scene}.
     <conversation starts>
     {conversation_hist}
     <conversation ends>
@@ -412,8 +416,10 @@ def generate_question(StepName,Qtype, Sol, first_question,correctness,conversati
 
 
 # In[40]:
-
-if sys_args == 1:
-    generate_question(StepName,Qtype, Sol, first_question,correctness,conversation_hist)
+if all_good == 0:
+    print("ERROR: OpenAI library (0.28.1) is not installed or the OPENAI_API_KEY is not set")
 else:
-    print("the q is---: No question")
+    if sys_args == 1:
+        generate_question(StepName,Qtype, Sol, first_question,correctness,conversation_hist)
+    else:
+        print("the q is---: No question")

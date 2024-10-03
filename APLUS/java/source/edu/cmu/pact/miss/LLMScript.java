@@ -22,23 +22,9 @@ public class LLMScript {
 	}
 	
 	public String executeScript(String pythonPath,String projectPath,  String stepName, String QType, String Sol, String first_question, String correctness, String conv_history, String expected_response,ArrayList<String> all_questions, ArrayList<String> all_answers, SimStLogger logger) {
-		//System.out.println("script_execute");
-		//System.out.println("stepname "+stepName+" QTYPE "+QType+" Sol "+Sol+" correctness "+correctness);
-		//System.out.println(" first_question "+first_question+" conv history "+conv_history);
-		//System.out.println(" exp "+expected_response);
-		//System.out.println();
+		
 		if(scriptName != "") {
 			String scriptPath = projectPath + "/"+scriptName ;
-			//String scriptPath ="/Users/tasmiashahriar/Documents/GitHub/APLUS_CTI/SimStudent/Tutors/Algebra/SimStAlgebraV8"+"/chat_interface.py" ;
-			//String stepName = "4=y+5";
-			//String QType = "WW";
-			//String Sol = "subtract 5";
-			//String first_question = "Why am I wrong?";
-			//String correctness = "correct";
-			//String conv_history =
-			//		"Student:Why am I wrong?" + "\n" +
-			//				"Teacher:you need to get the varible on its own" + "\n" ;
-			//System.out.println(pythonPath+" "+scriptPath);
 			String scriptOutput;
 			if(expected_response=="") {
 				scriptOutput = runPythonScript(pythonPath, scriptPath, all_questions.toString(), all_answers.toString(), stepName, QType, Sol, first_question, correctness, conv_history);
@@ -70,6 +56,7 @@ public class LLMScript {
 	}
 
 	public String runPythonScript(String pythonPath, String scriptPath, String... arguments) {
+		//System.out.println("inside function "+pythonPath+" "+scriptPath);
 		try {
 			// Construct the command to run the Python script with arguments
 			String[] command = new String[arguments.length + 2];

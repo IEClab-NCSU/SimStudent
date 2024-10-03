@@ -1,18 +1,47 @@
-How to run APLUS application using the script files
-Note that you need java 1.8.0 version in order to run this application.
+How to run APLUS application using the script files:
+
+Requirements:
+
+1. Java 1.8.0 version (caution: any other version is not compatible. You can download the java 8 version from here: https://www.oracle.com/java/technologies/javase/javase8-archive-downloads.html)
+
+Step 2 - 6 is only applicable if you want to run the LLM conversation.
+
+2. Python 3.8 needs to be installed. You need to know the path where executable is installed. You can use "which python" or "which python3" command in terminal to know the python path.
+
+3. Open the runAplus.sh script in a text editor of your choice. Find the line containing -DpythonScriptPath= and paste the Python executable path obtained from the which python command. The line should look like this: "-DpythonScriptPath=<paste path returned by which python command>"
+
+4. Install openai==0.28.1 (pip install openai==0.28.1) 
+
+5. Sign in to OpenAI and generate an API key. If you already have a key, just copy your key in a notepad.
+
+6. Ensure to add the open AI API key in your system path. Please follow the instructions in this link: https://help.openai.com/en/articles/5112595-best-practices-for-api-key-safety
+Please ensure that you save the key using this variable "OPENAI_API_KEY".
+
+If any of the steps 2-6 are not completed accurately, APLUS will notify you at the startup that the settings are incorrect, however, it will continue running without Contructive Tutee Inquiries.
+
+Once you have the requirements installed, you are ready to run the application using terminal.
 
 For MAC/Linux users:
 
--> To run usual APLUS with existing modes:
+1. Open Terminal 
+2. cd to folder that contains the runAplus.sh file
+3. Run "./runAplus.sh"
 
-1. cd AlgebraTuTalk
-2. ./runAplus.sh
+It will output a brief explanation on the flags that are used to run SimStudent is different modes. To turn on both modes together you just need to append that flag at the end of the command.
 
-An example command to run APLUS in cog tutor mode:
-./runAplus.sh -ct -noLogging
+For instance:
+To turn metatutor on with meta-cognitive hint only mode, you need to run the following command:
 
-An example command to run APLUS with metatutor metacognitive hints mode:
-./runAplus.sh -mtmc -noLogging
+"./runAplus.sh -mtmc -noLogging"
 
-An example command to run APLUS with metatutor metacognitive hints mode and cti turned on:
-./runAplus.sh -mtmc -cti -noLogging
+To turn metatutor on with meta-cognitive hint only mode and also turn on the constructive tutee inquiry using LLM, you need to run the following command:
+
+"./runAplus.sh -mtmc -llmcti -noLogging"
+
+Note that -noLogging means your action in the interface will not be logged. If you want the log to be saved, you must say -localLogging <database_name>. <database_name> can be any string
+
+"./runAplus.sh -mtmc -llmcti -localLogging study_2"
+
+For windows users, each condition has a separate bash file. The windows bash files are little outdated, therefore, you may encounter some errors. However, ensure that the error are not due to any coding mistake inside the runtime package rather it is because all the arguments required for running the package are not properly send by the bat file. 
+
+How to debug for windows users: It would be ideal to run the same package shell script ./runAplus.sh for the mode you want in a Mac or Linus and copy all the arguments that are being send to the code and verify if your bat file is also sending all those arguments or not.

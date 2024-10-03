@@ -64,7 +64,8 @@ case $1 in
 	echo "	-cta - launch APLUS in AplusControl mode"
 	echo "	-ct - launch APLUS in Cognitive Tutor mode"
 	echo "	-tt - turns Tutalk on"
-  echo "	-cti - turns constructive tutee inquiry on"
+  	echo "	-cti - turns constructive tutee inquiry on"
+	echo "	-llmcti - turns constructive tutee inquiry with llm on"
 	echo "	-br - displays Behavior Recorder window"
 	echo "	-u or -user <name> - sets the user ID"
 	echo "	-o or -output <filename> - redirects output to file"
@@ -89,6 +90,18 @@ function cleanup {
 }
 trap cleanup EXIT
 AddArgs="${AddArgs} -ssConstructiveTuteeInquiryFTIMode -ssCTIBothStuckParams none";;
+"-llmcti") LLMCTI="on"
+condition="${condition}_LLMCTI"
+#AddArgs=${AddArgs/MetaTutorMC/MetaTutorMC_CTI}
+#kill -9 $(lsof -ti:8000)
+#sh ${CVSDIR}/runAplus_lightside.sh &
+#LIGHTSIDE_PID=$!
+#function cleanup {
+#  kill $LIGHTSIDE_PID
+#  kill $(lsof -t -i:8000)
+#}
+#trap cleanup EXIT
+AddArgs="${AddArgs} -ssConstructiveTuteeInquiryResQLLM -DpythonScriptPath=/Users/tasmiashahriar/opt/anaconda3/bin/python3.8";;
 "-br") br="on";;
 "-u"|"-user") AddArgs="${AddArgs} -ssUserID";;
 "-o"|"-output") redir="on";;
@@ -188,10 +201,11 @@ TutorArg="${TutorArg} -ssNumBadInputRetries 2"
 TutorArg="${TutorArg} -ssProblemsPerQuizSection 2"
 TutorArg="${TutorArg} -Dschool_name=someSchool"
 TutorArg="${TutorArg} -Dclass_name=someClass"
+#TutorArg="${TutorArg} -DconfigFile=simSt-config-cti.txt"
 if [ ${CTI} == "on" ];
 then
   TutorArg="${TutorArg} -ssResponseSatisfactoryGetterClass SimStAlgebraV8.AlgebraResponseSatisfactoryGetter"
-  TutorArg="${TutorArg} -DconfigFile=simSt-config-cti.txt"
+  #TutorArg="${TutorArg} -DconfigFile=simSt-config-cti.txt"
 fi
 #TutorArg="${TutorArg} -ssCondition devTesting"
 TutorArg="${TutorArg} ${AddArgs}"

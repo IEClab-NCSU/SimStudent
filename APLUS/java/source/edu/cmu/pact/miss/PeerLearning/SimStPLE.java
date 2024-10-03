@@ -102,6 +102,7 @@ import edu.cmu.pact.miss.AskHint;
 import edu.cmu.pact.miss.HashMap;
 import edu.cmu.pact.miss.Instruction;
 import edu.cmu.pact.miss.JTabbedPaneWithCloseIcons;
+import edu.cmu.pact.miss.LLMScript;
 import edu.cmu.pact.miss.MissControllerExternal;
 import edu.cmu.pact.miss.ProblemAssessor;
 import edu.cmu.pact.miss.RegexHashtable;
@@ -280,6 +281,7 @@ public class SimStPLE {
 	public static final String PAPER_CLOSE = "img/paperClose.png";
 	// adding the python script path for LLM CTI
 	public static String PYTHON_SCRIPT_PATH = "";
+	public static Boolean LLM_ERR = false;
 
 	public static final String BOARD_IMAGE = "img/board.png";
 	public static final String NEXT_EXAMPLE_IMAGE = "img/next.png";
@@ -1214,6 +1216,34 @@ public class SimStPLE {
 	}
 	
 	public String[] key_terms;
+	public void checkLLMConfig() {
+		if (PYTHON_SCRIPT_PATH == ""){
+			// Python Path Error
+			//System.out.println("llm path error");
+			LLM_ERR = true;
+			JOptionPane.showMessageDialog(null,
+					"<html><p>Pythonpath Settings Error!</p><p> Set the python 3.8 path using DpythonScriptPath variable! APLUS will continue to run without Constructive Tutee Inquiry Functionality.</p><p>Click OK to continue now.</p>",
+					"", JOptionPane.INFORMATION_MESSAGE);
+		}
+		else if(PYTHON_SCRIPT_PATH != "") {
+			
+			LLMScript script = new LLMScript(simSt.CTI_CHAT_CODE);
+			String scriptPath = simSt.getProjectDir() + "/"+simSt.CTI_CHAT_CODE;
+			//System.out.println("SCRIPT  CALLING "+PYTHON_SCRIPT_PATH+" "+scriptPath);
+			String response = script.runPythonScript(PYTHON_SCRIPT_PATH,scriptPath,"", "", "", "", "", "", "", "");
+			if (response.contains("ERROR: OpenAI library (0.28.1) is not installed or the OPENAI_API_KEY is not set")) {
+				//System.out.println("api key error");
+				LLM_ERR = true;
+				JOptionPane.showMessageDialog(null,
+						"<html><p>OpenAI Settings Error!</p><p>OpenAI library == 0.28.1 is not installed or the OPENAI_API_KEY is not set! APLUS will continue to run without Constructive Tutee Inquiry Functionality.</p><p>Click OK to continue now.</p>",
+						"", JOptionPane.INFORMATION_MESSAGE);
+			}
+			//runPythonScript(pythonPath, scriptPath, all_questions.toString(), all_answers.toString(), stepName, QType, Sol, first_question, correctness, conv_history)
+			//System.out.println("SCRIPT ERR"+response);
+			
+		}
+		
+	}
 	public void setupLightSideClassifier() {
 		String path = simSt.getProjectDirectory();
 		String pathToModel = path+"⁨LightSide/lightside/models/both_stuck_model_svm_f.model.xml";
@@ -1273,8 +1303,8 @@ public class SimStPLE {
 		if(getSimSt().isCTIFollowupInquiryMode() && getSimSt().isbothAgreeSpeechGetterClassDefined())
 			conversation.processBothAgreeSpeechFile("simSt-both-agree-speech.txt");
 		
-		//if(getSimSt().isCTIFollowupInquiryLLMMode())
-		//	setupLightSideClassifier();
+		if(getSimSt().isCTIFollowupInquiryLLMMode())
+			checkLLMConfig();
 			
 	}
 

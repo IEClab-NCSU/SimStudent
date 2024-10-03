@@ -914,11 +914,11 @@ public class MissController implements MissControllerExternal {
 		
 	
 	// Added by Tasmia for CTI using LLM
-	public void setSsConstructiveTuteeInquiryLLM(boolean useLLM, boolean useResponseLLM)
+	public void setSsConstructiveTuteeInquiryLLM(boolean useLLM)
 	{    	
 		if(getSimSt()!= null)
 		{
-			getSimSt().setSsConstructiveTuteeInquiryLLM(useLLM, useResponseLLM);
+			getSimSt().setSsConstructiveTuteeInquiryLLM(useLLM);
 		}
 	}
 
@@ -2214,12 +2214,8 @@ public class MissController implements MissControllerExternal {
                     }
                     // Author: Tasmia for LLM question generation
                     else if(keyStem.equalsIgnoreCase("ssConstructiveTuteeInquiryResQLLM")) {
-                    	setSsConstructiveTuteeInquiryLLM(true,true);
+                    	setSsConstructiveTuteeInquiryLLM(true);
                     } 
-                    else if(keyStem.equalsIgnoreCase("ssConstructiveTuteeInquiryQLLM")) {
-                    	setSsConstructiveTuteeInquiryLLM(true,false);
-                    } 
-                    
                     else if(keyStem.equalsIgnoreCase("ssIntroVideo")) {
                     	setSsIntroVideo(parameter[0]);
                     } else if(keyStem.equalsIgnoreCase("ssLoadPrefsFile")) {
