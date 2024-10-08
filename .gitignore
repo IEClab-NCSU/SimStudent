@@ -19,4 +19,7 @@ APLUS/java/bin/edu/cmu/pact/Log/*
 APLUS/java/reports/ctat/*
 Tutors/Algebra/SimStAlgebraV8/*
 
+Tutors/Algebra/bin/*
+Tutors/Algebra/test/bin/*
+
 StudyManagementSystem/Deploy/data
