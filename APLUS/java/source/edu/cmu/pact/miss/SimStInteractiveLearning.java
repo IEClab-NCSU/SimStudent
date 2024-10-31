@@ -3762,10 +3762,8 @@ public class SimStInteractiveLearning implements Runnable {
 				String mtStatus = simSt.builtInInquiryClTutor(sai.getS(), sai.getA(), sai.getI(), currentNode, problemName);
 				System.out.println("Correctness of the tutor feedback"+mtStatus);
 			}
-			else {
-				if(!question.contains("Flag")) {
+			else if(!runType.equals("springBoot") && !question.contains("Flag")) {
 					String why_flagged_explanation = getBrController(getSimSt()).getMissController().getSimStPLE().giveMessageFreeTextResponse(question);
-				}
 			}
 			// Tasmia: if tutor's feedback is "yes", then tutor and tutee both agree on a solution step.
 			// initial tutee inquiry for both agree speech began here.

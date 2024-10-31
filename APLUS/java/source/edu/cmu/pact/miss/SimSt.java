@@ -376,9 +376,8 @@ public final class SimSt implements Serializable {
 	   this.simst_strategy_reveal_Mode = simst_strategy_reveal_Mode;
    }
 
-   public void setSsConstructiveTuteeInquiryLLM(boolean CTILLMMode, boolean useResponseLLM) {
+   public void setSsConstructiveTuteeInquiryLLM(boolean CTILLMMode) {
 	   this.CTI_LLM_Mode = CTILLMMode;
-       this.useResponseLLM = useResponseLLM;
    }
    public boolean isSelfExplainMode()
    {
