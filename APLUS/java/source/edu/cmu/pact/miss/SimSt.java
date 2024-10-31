@@ -376,8 +376,9 @@ public final class SimSt implements Serializable {
 	   this.simst_strategy_reveal_Mode = simst_strategy_reveal_Mode;
    }
 
-   public void setSsConstructiveTuteeInquiryLLM(boolean CTILLMMode) {
+   public void setSsConstructiveTuteeInquiryLLM(boolean CTILLMMode, boolean useResponseLLM) {
 	   this.CTI_LLM_Mode = CTILLMMode;
+       this.useResponseLLM = useResponseLLM;
    }
    public boolean isSelfExplainMode()
    {
@@ -394,6 +395,9 @@ public final class SimSt implements Serializable {
    public boolean isCTIFollowupInquiryLLMMode()
    {
    	return CTI_LLM_Mode;
+   }
+   public boolean useResponseLLMMode() {
+       return useResponseLLM;
    }
   private transient ProblemAssessor problemAssessor = new AlgebraProblemAssessor();
    public void setProblemAssessor(ProblemAssessor pa)

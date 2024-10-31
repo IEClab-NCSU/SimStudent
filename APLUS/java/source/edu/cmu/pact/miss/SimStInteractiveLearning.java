@@ -288,6 +288,14 @@ public class SimStInteractiveLearning implements Runnable {
 	public boolean getExplanationGiven(){return this.explanationGiven;}
 	public void setExplanationGiven(boolean flag){this.explanationGiven=flag;}
 
+	public boolean llm_hint_explained;
+	public String llm_correctness;
+
+	public Sai llm_sai;
+	public SimStPLE llm_ple;
+
+	public String llm_stepName;
+
 	private boolean askStudentToUndo;
 
 	//public static Hashtable<SimSt,BR_Controller> simstLookup = new Hashtable<SimSt,BR_Controller>();
@@ -1752,9 +1760,9 @@ public class SimStInteractiveLearning implements Runnable {
 					getBrController(getSimSt()).getMissController().getSimStPLE().checkForQuizTutoringBehaviourDiscrepency(brController.getProblemName(),null);
 
 				// Tasmia added code starts here
-				//if(simSt.isCTIInitialInquiryMode()) 
+				//if(simSt.isCTIInitialInquiryMode())
 				/*{
-					
+
 					String title = SimStConversation.ASKING_IF_TUTOR_KNOWS_STEP_TOPIC;
 					SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();
 					String message = ple.getConversation().getMessage(SimStConversation.ASKING_IF_TUTOR_KNOWS_STEP_TOPIC);
@@ -1767,7 +1775,7 @@ public class SimStInteractiveLearning implements Runnable {
 					else {
 						if(getSimSt().isNearSimilarProblemsGetterDefined()) {
 							 NearSimilarProblemsGetter nspg = getSimSt().getNearSimilarProblemsGetter();
-							 ArrayList<String> similar_problems = nspg.nearSimilarProblemsGetter(currentNode);       
+							 ArrayList<String> similar_problems = nspg.nearSimilarProblemsGetter(currentNode);
 							 for(int i=0; i<similar_problems.size(); i++) {
 									ProblemNode similarNode = currentNode;
 									similarNode.setName(similar_problems.get(i));
@@ -1795,8 +1803,8 @@ public class SimStInteractiveLearning implements Runnable {
 										}
 										break;
 									}
-									
-									
+
+
 									if(rule_not_applied_logic != "") {
 										followupAfterMrWTrigger(currentNode, rule_not_applied_logic, hint.skillName.trim(), is_feature_predicate_found, false);
 										askedExplanation = true;
@@ -1818,12 +1826,12 @@ public class SimStInteractiveLearning implements Runnable {
 					trace.out("ss", "Calling askWhatToDoNext  "
 							+ "currentNode: " + currentNode
 							+ " nextCurrentNode: " + nextCurrentNode);
-				// Previous code ends 
+				// Previous code ends
 
 			}
 
 			// Null nextCurrentNode after the Oracle inquiry means that the user
-			// initiated a new problem			
+			// initiated a new problem
 			if (nextCurrentNode != null) {
 
 //				if (!askedExplanation && hintReceived)
@@ -2005,13 +2013,13 @@ public class SimStInteractiveLearning implements Runnable {
 				//followupAfterMrWTrigger(currentNode, rule_not_applied_logic, ruleNickName, false);
 			}
 		}
-		
+
 		if(was_skill_known_but_not_applied && tutor_shown_same_skill_as_sug)
 			followupAfterMrWTrigger(currentNode, rule_not_applied_logic, suggested_ruleNickName.trim(), is_feature_predicate_found, tutor_shown_same_skill_as_sug);
 		else
 			followupAfterMrWTrigger(currentNode, rule_not_applied_logic, hint.skillName.trim(), is_feature_predicate_found, tutor_shown_same_skill_as_sug);
-		
-		
+
+
 		getBrController(getSimSt()).getMissController().getSimStPLE().setAvatarNormal();
 		String thank_mr_williams = ple.getConversation().getMessage(SimStConversation.THANK_MR_WILLIAMS);
 		//String show_next_after_hint = ple.getConversation().getMessage(SimStConversation.SHOW_NEXT_AFTER_HINT);
@@ -2361,10 +2369,10 @@ public class SimStInteractiveLearning implements Runnable {
 			// We decided to not implement this part for now.
 			// block starts:
 			/*
-			if(getSimSt().isCTIFollowupInquiryMode()) 
+			if(getSimSt().isCTIFollowupInquiryMode())
 			{
-				
-				
+
+
 				String skillname = ran.getName();
 				String selection = ran.getActualSelection();
 				String input = ran.getActualInput();
@@ -2384,7 +2392,7 @@ public class SimStInteractiveLearning implements Runnable {
 					}
 					else {
 						boolean cont = inspectAgendaRuleActivation(currentNode, ran, successiveNode, activationList.size(), listAssessmentBuilder, true, q_tutor_flagged);
-						
+
 					}
 				}
 				else if(q_mw_flagged.contains("Flag")) {
@@ -2400,7 +2408,7 @@ public class SimStInteractiveLearning implements Runnable {
 			}
 			else
 			*/
-			// block ends 
+			// block ends
 			{
 				// previous code
 				boolean cont = inspectAgendaRuleActivation(currentNode, ran, successiveNode, activationList.size(), listAssessmentBuilder, false);
@@ -2647,7 +2655,7 @@ public class SimStInteractiveLearning implements Runnable {
 		boolean any_KB = false;
 		int max_q = 2;
 		int q_count = 1;
-		if (getBrController(getSimSt()).getMissController().isPLEon())
+		if (!runType.equalsIgnoreCase("springboot") &&  getBrController(getSimSt()).getMissController().isPLEon())
 			ple.setAvatarThinking();
 		LLMScript script = new LLMScript(simSt.CTI_CHAT_CODE);
 		String conv_history = "\nYou:"+question+"\nTeacher:"+explanation;
@@ -2663,7 +2671,7 @@ public class SimStInteractiveLearning implements Runnable {
 			response = script.executeScript(ple.getPythonScriptPath(), simSt.getProjectDir(), stepName, "WW", skill_INPUT, question, correctness, conv_history,"",all_questions, all_answers,logger);
 		String LLM_question = script.processQ(response);
 		script.processResponseLLMOutput(response);
-		//if (LLM_question != "" || LLM_question.trim().contains("No question")) 
+		//if (LLM_question != "" || LLM_question.trim().contains("No question"))
 		{
 			//last_KB = processLightsideLabel(ple,explanation);
 			last_KB = processLLMLabel(ple,stepName, skill_INPUT, question, explanation);
@@ -2673,7 +2681,10 @@ public class SimStInteractiveLearning implements Runnable {
 		String context = stepName+"::"+skill_INPUT+"::"+correctness+"::"+exp_resp;
 		logger.simStLog(SimStLogger.SIM_STUDENT_EXPLANATION, SimStLogger.EXPECTED_KBR,
 				stepName, context, exp_resp, 0, "");
-		if (getBrController(getSimSt()).getMissController().isPLEon())
+		if (runType.equalsIgnoreCase("springboot")){
+			return LLM_question;
+		}
+		if (!runType.equalsIgnoreCase("springboot") && getBrController(getSimSt()).getMissController().isPLEon())
 			ple.setAvatarNormal();
 		while(!Objects.equals(LLM_question, "") && q_count <= max_q && !LLM_question.trim().contains("No question")) {
 			//System.out.println("COnv history so far "+conv_history);
@@ -2687,7 +2698,7 @@ public class SimStInteractiveLearning implements Runnable {
 			step = getBrController(getSimSt()).getMissController().getSimSt()
 					.getProblemStepString();
 			if (explanation != null && explanation.length() > 0) {
-				//if (KB == false) 
+				//if (KB == false)
 				//last_KB = processLightsideLabel(ple,explanation);
 				last_KB = processLLMLabel(ple,stepName, skill_INPUT, LLM_question, explanation);
 				if (last_KB && !any_KB) any_KB = true;
@@ -2727,7 +2738,7 @@ public class SimStInteractiveLearning implements Runnable {
 				LLM_question = script.processQ(response);
 			}
 		}
-		if(ple != null ) ple.setAvatarNormal();
+		if(!runType.equalsIgnoreCase("springboot") && ple != null ) ple.setAvatarNormal();
 		return any_KB+"_"+last_KB;
 	}
 
@@ -2800,17 +2811,17 @@ public class SimStInteractiveLearning implements Runnable {
 		return explanation;
 	}
 
-	public void explainWhyRight(ProblemNode curnode, ProblemNode node) {
+	public String explainWhyRight(ProblemNode curnode, ProblemNode node) {
 
 //		String stepName = node.getProblemModel().getProblemName();
 		String stepName = "";
 		ProblemEdge edge = null;
 		//String name = simSt.getProblemStepString();
 		if (node.getInDegree() <= 0)
-			return;
+			return null;
 		edge = (ProblemEdge) node.getIncomingEdges().get(0);
 		if (edge.getEdgeData().getRuleNames().size() <= 0)
-			return;
+			return null;
 		String skillName = (String) edge.getEdgeData().getRuleNames()
 				.get(edge.getEdgeData().getRuleNames().size() - 1);
 
@@ -2923,7 +2934,7 @@ public class SimStInteractiveLearning implements Runnable {
 				// However, if you need something to be done after
 				// self-explaining,
 				// change this if to if-else and remove this return.
-				return;
+				return null;
 			}
 			if (simSt.isCTIFollowupInquiryMode()) {
 				String xml_script_name;
@@ -2974,7 +2985,7 @@ public class SimStInteractiveLearning implements Runnable {
 				}
 
 
-				return;
+				return null;
 			}
 
 			String explanation = "";
@@ -2991,6 +3002,11 @@ public class SimStInteractiveLearning implements Runnable {
 				SimStPLE ple = getBrController(getSimSt()).getMissController().getSimStPLE();
 
 				if(runType.equals("springBoot")) {
+					if (simSt.isCTIFollowupInquiryLLMMode()){
+						// trigger LLM question mode
+						saveLLMParameters(stepName, sai, correctness, ple, false);
+						return question;
+					}
 					explanation = getHintInformation();
 				} else {
 					explanation = ple.giveMessageFreeTextResponse(question); // response to first ITI
@@ -3057,10 +3073,107 @@ public class SimStInteractiveLearning implements Runnable {
 						explainDuration, question);
 			}*/
 		}
-		return;
+		return null;
 	}
 
+	public void saveLLMParameters(String stepName, Sai sai, String correctness, SimStPLE ple, boolean hint_explained){
+		this.llm_stepName = stepName;
+		this.llm_sai = sai;
+		this.llm_correctness = correctness;
+		this.llm_ple = ple;
+		this.llm_hint_explained = hint_explained;
+	}
 
+	public String getLLMQuestion(String question, String explanation, String conversation, int count){
+		return askLLMQuestionsSpringBoot(question, explanation, conversation, llm_stepName, llm_sai, llm_correctness, llm_ple, llm_hint_explained, count);
+	}
+
+	public String askLLMQuestionsSpringBoot(String question, String explanation, String conversation, String stepName, Sai sai, String correctness, SimStPLE ple, boolean hint_explained, int q_count) {
+		ArrayList<String> all_questions = new ArrayList<String>();
+		all_questions.add(question.toLowerCase());
+		ArrayList<String> all_answers = new ArrayList<String>();
+		all_answers.add(explanation);
+		boolean last_KB = false;
+		boolean any_KB = false;
+		int max_q = 2;
+		LLMScript script;
+		if (simSt.useResponseLLMMode())
+			script=new LLMScript("chat_interface_resQ.py");
+		else
+			script=new LLMScript("");
+//		String conv_history = "\nStudent:"+question+"\nTeacher:"+explanation;
+		String response = "";
+		String skill_INPUT = sai.getI();
+		if (sai.getS().equalsIgnoreCase(Rule.DONE_NAME)) {
+			skill_INPUT = "click \"problem is solved\" button";
+		}
+
+
+//		if (hint_explained)
+//			response = script.executeScript(ple.getPythonScriptPath(), simSt.getProjectDir(), stepName, "WR", skill_INPUT, question, correctness, conv_history,"",logger);
+//		else
+//			response = script.executeScript(ple.getPythonScriptPath(), simSt.getProjectDir(), stepName, "WW", skill_INPUT, question, correctness, conv_history,"",logger);
+//		String LLM_question = script.processQ(response);
+//		//if (LLM_question != "" || LLM_question.trim().contains("No question"))
+//		{
+//			last_KB = processLightsideLabel(ple,explanation);
+//			if (last_KB == true && any_KB == false) any_KB = true;
+//		}
+//		String exp_resp = script.processResponseLLMOutput(response);
+//		String context = stepName+"::"+skill_INPUT+"::"+correctness+"::"+exp_resp;
+//		logger.simStLog(SimStLogger.SIM_STUDENT_EXPLANATION, SimStLogger.EXPECTED_KBR,
+//				stepName, context, exp_resp, 0, "");
+//
+//		while(LLM_question != "" && q_count <= max_q && !LLM_question.trim().contains("No question")) {
+//			//System.out.println("COnv history so far "+conv_history);
+//
+//			explanation = ple.giveMessageFreeTextResponse(LLM_question);
+//			long explainRequestTime = Calendar.getInstance().getTimeInMillis();
+//			int explainDuration = (int) (Calendar.getInstance()
+//					.getTimeInMillis() - explainRequestTime);
+		step = getBrController(getSimSt()).getMissController().getSimSt()
+				.getProblemStepString();
+		if (explanation != null && explanation.length() > 0) {
+			//if (KB == false)
+			last_KB = processLightsideLabel(ple,explanation);
+			if (last_KB == true && any_KB == false) any_KB = true;
+//				conv_history += "\nStudent:"+question+"\nTeacher:"+explanation;
+			if(hint_explained)
+				logger.simStLog(SimStLogger.SIM_STUDENT_EXPLANATION,
+						SimStLogger.HINT_EXPLAIN_ACTION+SimStLogger.FOLLOW_UP_EXPLAIN_SUFFIX, step, explanation,
+						question, sai, 0, question);
+			else
+				logger.simStLog(SimStLogger.SIM_STUDENT_EXPLANATION,
+						SimStLogger.INPUT_WRONG_EXPLAIN_ACTION+SimStLogger.FOLLOW_UP_EXPLAIN_SUFFIX, step,
+						explanation, question, sai, 0, question);
+
+
+		} else {
+			last_KB = false;
+//				conv_history += "\nStudent:"+LLM_question+"\nTeacher: no explanation given";
+			if(hint_explained)
+				logger.simStLog(SimStLogger.SIM_STUDENT_EXPLANATION,
+						SimStLogger.HINT_EXPLAIN_ACTION+SimStLogger.FOLLOW_UP_EXPLAIN_SUFFIX, step,
+						SimStLogger.NO_EXPLAIN_ACTION, question, sai,
+						0, question);
+			else
+				logger.simStLog(SimStLogger.SIM_STUDENT_EXPLANATION,
+						SimStLogger.INPUT_WRONG_EXPLAIN_ACTION+SimStLogger.FOLLOW_UP_EXPLAIN_SUFFIX, step,
+						SimStLogger.NO_EXPLAIN_ACTION, question, sai,
+						0, question);
+		}
+		//conv_history += "\n Student:"+LLM_question+"\nTeacher:"+explanation;
+		q_count++;
+		//response = script.executeScript(simSt.getProjectDir(), stepName, "WR", sai.getI(), question, correctness, conv_history,"exp");
+		if (q_count <= max_q) {
+			if (hint_explained)
+				response = script.executeScript(ple.getPythonScriptPath(), simSt.getProjectDir(), stepName, "WR", skill_INPUT, question, correctness, conversation,"exp", all_questions, all_answers, logger);
+			else
+				response = script.executeScript(ple.getPythonScriptPath(), simSt.getProjectDir(), stepName, "WW", skill_INPUT, question, correctness, conversation,"exp", all_questions, all_answers, logger);
+			return script.processQ(response);
+		}
+		return null;
+	}
 
 	public String askMoreExampleQuestion(String question, boolean requireResponse) {
 		String explanation = "";
