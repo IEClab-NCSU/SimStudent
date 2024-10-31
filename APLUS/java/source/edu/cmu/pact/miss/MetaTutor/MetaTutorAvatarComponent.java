@@ -147,17 +147,24 @@ public class MetaTutorAvatarComponent extends JPanel {
 	  @param ss link to the SimStudent environment
 	 */
 	public MetaTutorAvatarComponent(String path, SimSt ss) {
-		
 		init();
-		Icon icon = createImageIcon(path);
-		img = ((ImageIcon) icon).getImage();
-		addMouseListener(listener);
+		if(runType == null || !runType.equals("springBoot")) {
+			Icon icon = createImageIcon(path);
+			img = ((ImageIcon) icon).getImage();
+			addMouseListener(listener);
+			new APlusPopUpMenu();
+		}
 		simStudent = ss;
 		reader = new XMLReader(simStudent);
-		new APlusPopUpMenu();
 		logger = new SimStLogger(simStudent.getBrController());
 	}
-	
+
+	public MetaTutorAvatarComponent(SimSt ss){
+		simStudent = ss;
+		reader = new XMLReader(simStudent);
+		logger = new SimStLogger(simStudent.getBrController());
+	}
+
 	/**
 	  Initializes the environment by looking for the files if they exist locally on the system
 	  or by extracting it from the jar if running on webstart
@@ -206,6 +213,10 @@ public class MetaTutorAvatarComponent extends JPanel {
     	super.paint(g);
     	g.drawImage(img, 0,0, this);
     }
+
+	public ArrayList<ArrayList<String>> handleMouseClickEvent(){
+		return handleMouseClickEvent(null);
+	}
 	public ArrayList<ArrayList<String>> handleMouseClickEvent(MouseEvent e){
 		if (getSimStudent().isSsAplusCtrlCogTutorMode() && getSimStudent().getModelTraceWM().getStudentEnteredProblem()!=null){
 			getSimStudent().getModelTraceWM().setRequestType("hint-request");
@@ -271,6 +282,9 @@ public class MetaTutorAvatarComponent extends JPanel {
 		//	if (!getSimStudent().isSsCogTutorMode() && getSimStudent().isSsMetaTutorMode() && getSimStudent().getModelTraceWM().getStudentEnteredProblem()!=null)
 		//		llist.clear();
 
+		if(runType.equalsIgnoreCase("springBoot")) {
+			return llist;
+		}
 
 		if(count > 0 && llist.size() > 0) {
 			//trace.out(" count : "+count);
@@ -356,21 +370,18 @@ public class MetaTutorAvatarComponent extends JPanel {
 			label2.setBackground(Color.white);
 			menu.add(label2);
 
-			if(e != null || runType == null || !runType.equals("springBoot")) {
+			// Position the menu to avoid the menu exceed the parent window
+			int componentWidth = e.getComponent().getWidth();
+			int menuWidth = (int) menu.getPreferredSize().getWidth();
+			int offset = 38;
+			int heightOffset = 5;
 
-				// Position the menu to avoid the menu exceed the parent window
-				int componentWidth = e.getComponent().getWidth();
-				int menuWidth = (int) menu.getPreferredSize().getWidth();
-				int offset = 38;
-				int heightOffset = 5;
+			// If menuWidth > (componentWidth + 50) then set OFFSET = (componentWidth+50)-menuWidth
+			if (menuWidth > (componentWidth + 50))
+				offset = ((componentWidth + 50) - menuWidth);
 
-				// If menuWidth > (componentWidth + 50) then set OFFSET = (componentWidth+50)-menuWidth
-				if (menuWidth > (componentWidth + 50))
-					offset = ((componentWidth + 50) - menuWidth);
-
-				menu.show(e.getComponent(), offset, -((int) menu.getPreferredSize().getHeight()) + heightOffset);
-				menu.repaint();
-			}
+			menu.show(e.getComponent(), offset, -((int) menu.getPreferredSize().getHeight()) + heightOffset);
+			menu.repaint();
 
 			String step = simStudent.getProblemStepString();
 			logger.simStInfoLog(SimStLogger.SIM_STUDENT_METATUTOR_AL, SimStLogger.METATUTOR_CLICK_ACTION, step, "NoHint", "");

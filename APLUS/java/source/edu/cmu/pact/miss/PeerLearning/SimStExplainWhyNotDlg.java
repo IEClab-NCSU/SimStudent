@@ -58,7 +58,7 @@ import java.awt.event.FocusListener;
 public class SimStExplainWhyNotDlg extends JDialog implements ActionListener,FocusListener {
 
 	//private final JPanel contentPanel = new JPanel();
-	
+
 	JComponent pastInterface;
 	JComponent nowInterface;
 	JComponent studentInterface;
@@ -72,22 +72,21 @@ public class SimStExplainWhyNotDlg extends JDialog implements ActionListener,Foc
 	public static Color BORDER_PAST=Color.blue;
 	public static Color BORDER_NOW=Color.red;
 	public static String DEFAULT_ANSWER="Enter your explanation here and click submit to close this window";
-	
+
 	BR_Controller brController;
 	void setController(BR_Controller brController){this.brController=brController;}
 	BR_Controller getController(){return this.brController;}
 	JTextField selfExplanationText;
 	JTextPane selfExplanationSimStQuestion;
 	JButton submitButton;
-	
+
 	public SimStExplainWhyNotDlg(JComponent parent,TutorController brController,Sai sai,Instruction inst,String question, boolean only_comparison_module) {
-	
 		BR_Controller temp = (BR_Controller)brController;
 		setController(temp);
 		setStudentInterface(brController.getTutorPanel());
-		
+
 		Dimension prefs=brController.getTutorPanel().getPreferredSize();
-		
+
 		if(!only_comparison_module) {
 			setBounds(600, 100, prefs.width*2+40, prefs.height+220);
 			setLocationRelativeTo(parent);
@@ -100,12 +99,11 @@ public class SimStExplainWhyNotDlg extends JDialog implements ActionListener,Foc
 		//setLocationRelativeTo(parent);
 		//setLocationRelativeTo(null);
 		//this.setLocation(680, 500);
-		
+
 		getContentPane().setBackground( AplusPlatform.studentColor );
-		
-		
+
+
 		getRootPane().setBorder(BorderFactory.createLineBorder(Color.black,2) );
-		
 		getContentPane().setLayout(new BorderLayout());
 		this.setAlwaysOnTop(true);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -123,20 +121,19 @@ public class SimStExplainWhyNotDlg extends JDialog implements ActionListener,Foc
 		getContentPane().add(backPanel);
 
 
-		
+
 		/*Add the new interfaces to the window*/
-		if(!only_comparison_module) 
+		if(!only_comparison_module)
 			addSelfExplanationQuestion(backPanel,question); // responsible for showing chatbox in the popup.
 		addPastInterface(backPanel);
 		addNowInterface(backPanel);
-		if(!only_comparison_module) 
+		if(!only_comparison_module)
 			addSelfExplanationResponseTextArea(backPanel); // responsible for showing textbox in the popup.
-	    
 		setResizable(false);
-		
+
 		/*populate the two interfaces and show the window*/
 		if (sai!=null && inst!=null){
-			populateInterfaceFromSai(nowInterface,sai,BORDER_NOW,true);	
+			populateInterfaceFromSai(nowInterface,sai,BORDER_NOW,true);
 			populatePastInterface(inst);
 			populateNowInterface(getController());
 			//this.setUndecorated(true);
@@ -145,31 +142,31 @@ public class SimStExplainWhyNotDlg extends JDialog implements ActionListener,Foc
 			setVisible(true);
 		}
 
-		
-		
+
+
 	}
-	
+
 
 	/*public SimStExplainWhyNotDlg(JComponent parent,TutorController brController,Sai sai,Instruction inst,String question, boolean isCTI) {
-	
+
 		BR_Controller temp = (BR_Controller)brController;
 		setController(temp);
 		setStudentInterface(brController.getTutorPanel());
-		
+
 		Dimension prefs=brController.getTutorPanel().getPreferredSize();
-		
+
 		//this.setUndecorated(true);
 		setBounds(600, 100, prefs.width*2+40, prefs.height+100);
 
 		setLocationRelativeTo(parent);
 		//setLocationRelativeTo(null);
 		//this.setLocation(680, 500);
-		
+
 		getContentPane().setBackground( AplusPlatform.studentColor );
-		
-		
+
+
 		getRootPane().setBorder( BorderFactory.createLineBorder(Color.black,2) );
-		
+
 		getContentPane().setLayout(new BorderLayout());
 		this.setAlwaysOnTop(true);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);*/
@@ -187,216 +184,215 @@ public class SimStExplainWhyNotDlg extends JDialog implements ActionListener,Foc
 		getContentPane().add(backPanel);*/
 
 
-		
+
 		/*Add the new interfaces to the window*/
 		//addSelfExplanationQuestion(backPanel,question); // responsible for showing chatbox in the popup.
 		/*addPastInterface(backPanel);
 		addNowInterface(backPanel);
 		//addSelfExplanationResponseTextArea(backPanel); // responsible for showing textbox in the popup.
-	    
+
 		setResizable(false);*/
-		
+
 		/*populate the two interfaces and show the window*/
 		/*if (sai!=null && inst!=null){
-			populateInterfaceFromSai(nowInterface,sai,BORDER_NOW,true);	
+			populateInterfaceFromSai(nowInterface,sai,BORDER_NOW,true);
 			populatePastInterface(inst);
 			populateNowInterface(getController());
 			setVisible(true);
 		}
 
-		
-		
+
+
 	}*/
-	
 
 	void addSelfExplanationQuestion(JPanel backPanel,String question){
-		
-		
+
+
 		JPanel selfExplanationPanel = new JPanel();
 
 		GridBagConstraints layout = new GridBagConstraints();
 		layout.gridy = 0;
 
 		selfExplanationPanel.setLayout(new GridBagLayout());
-			
+
 		question=brController.getMissController().getSimStPLE().getSimStName() + ": "+question;
-			
-		/*add the self explanation */	
+
+		/*add the self explanation */
 		selfExplanationSimStQuestion=new JTextPane();
 		selfExplanationSimStQuestion.setBounds(92, 107, 388, 29);
 		selfExplanationSimStQuestion.setBorder(BorderFactory.createLineBorder(Color.black));
 		selfExplanationSimStQuestion.setPreferredSize( new Dimension( 880, 105 ) );
-	//	selfExplanationSimStQuestion.setPreferredSize( new Dimension( 680, 24 ) );
+		//	selfExplanationSimStQuestion.setPreferredSize( new Dimension( 680, 24 ) );
 		selfExplanationSimStQuestion.setEditable(false);
-		selfExplanationSimStQuestion.setContentType("text/html");		
+		selfExplanationSimStQuestion.setContentType("text/html");
 		selfExplanationSimStQuestion.setText(formatQuestion(question,brController.getMissController().getSimStPLE().getSimStName()));
-		
+
 		selfExplanationPanel.add(selfExplanationSimStQuestion);
-	    
-		
+
+
 		backPanel.add(selfExplanationPanel);
-		
+
 	}
-	
+
 	String clearFormatedQuestion(String question){
 		String formatedString=question.replace("[fontblue]", "");
 		formatedString=formatedString.replace("[fontred]", "");
 		formatedString=formatedString.replace("[fontend]", "");
 		return formatedString;
 	}
-	
-	
+
+
 	String formatQuestion(String question,String name){
 		String previousMessage=brController.getMissController().getSimStPLE().getSsInteractiveLearning().previousMessageGiven;
 		String formatedString="<html><body style=\"font-family: Serif; font-size:13px; padding: 0.3cm 0.2cm 0.2cm 0.4cm;\">"+name+": " + previousMessage + " <br>"+name+": Hm, let me think...<br>"+question+"</body></html>";
-  	   
+
 		//String formatedString="<html><body style=\"font-family: Serif; font-size:13px; padding: 0.3cm 0.2cm 0.2cm 0.4cm;\">"+name+": Hm, let me think...<br>"+question+"</body></html>";
 		formatedString=formatedString.replace("[fontblue]", "<font color=\"blue\">");
 		formatedString=formatedString.replace("[fontred]", "<font color=\"red\">");
 		formatedString=formatedString.replace("[fontend]", "</font>");
 		return formatedString;
 	}
-	
-	
+
+
 	void addSelfExplanationResponseTextArea(JPanel backPanel){
-		
-		
+
+
 		JPanel selfExplanationPanel = new JPanel();
 
 		GridBagConstraints layout = new GridBagConstraints();
 		layout.gridy = 0;
 
 		selfExplanationPanel.setLayout(new GridBagLayout());
-		
-		
-		/*add the self explanation */	
+
+
+		/*add the self explanation */
 		selfExplanationText=new JTextField();
 		selfExplanationText.setBounds(92, 107, 388, 29);
 		selfExplanationText.setPreferredSize( new Dimension( 780, 24 ) );
 		selfExplanationText.setEnabled(true);
-    	//	selfExplanationText.requestFocus();
+		//	selfExplanationText.requestFocus();
 		selfExplanationText.setForeground(Color.gray);
 		selfExplanationText.setText(DEFAULT_ANSWER);
 		//selfExplanationText.addActionListener((ActionListener) this);
 		selfExplanationText.addFocusListener(this);
-	    selfExplanationPanel.add(selfExplanationText);
-	    
-	    
-	    LinkedBlockingQueue<String> bucket = new LinkedBlockingQueue<String>();
+		selfExplanationPanel.add(selfExplanationText);
+
+
+		LinkedBlockingQueue<String> bucket = new LinkedBlockingQueue<String>();
 
 		submitButton = new JButton("Submit");
 		//submitButton.addActionListener((ActionListener) this);
-		
+
 		//TextEntryListener textEntryList=brController.getMissController().getSimStPLE().new TextEntryListener(bucket);
 		//submitButton.addActionListener(textEntryList);
 		submitButton.setBounds(200,245,88,36);
 		submitButton.setEnabled(true);
 		//submitButton.setFont(MED_FONT);
-		selfExplanationPanel.add(submitButton);	
-		
+		selfExplanationPanel.add(submitButton);
+
 		backPanel.add(selfExplanationPanel);
-		
-		
+
+
 	}
-	
-	
-	
-	  public String giveMessageSelectableResponse(String message, List<String> selections,String input)
-	    {
-	    	LinkedBlockingQueue<String> bucket = new LinkedBlockingQueue<String>();
-	    	
-	    	brController.getMissController().getSimStPLE().setAvatarAsking();
-	    	
-	    	
-	    
-	        brController.getMissController().getSimStPLE().getSimStPeerTutoringPlatform().appendSpeech("Hm, let me think...",brController.getMissController().getSimStPLE().getSimStName());
-	   
-	    	
-	    //	brController.getMissController().getSimStPLE().getSimStPeerTutoringPlatform().showTextResponseOptions(true,selections);
-	
-	    	for(ActionListener al:submitButton.getActionListeners()/*brController.getMissController().getSimStPLE().getSimStPeerTutoringPlatform().getTextResponseSubmitButton().getActionListeners()*/)
-	    	{
-	    		//brController.getMissController().getSimStPLE().getSimStPeerTutoringPlatform().getTextResponseSubmitButton().removeActionListener(al);
-	       		
-	    		submitButton.removeActionListener(al);
-	    	}
-	    	
-	    	//brController.getMissController().getSimStPLE().getSimStPeerTutoringPlatform().getTextResponseSubmitButton().addActionListener(new TextEntryListener(bucket));
-	    	submitButton.addActionListener(new TextEntryListener(bucket));
-	    	
-	    	
-			String response = "";
 
-			brController.getMissController().getSimStPLE().getSimStPeerTutoringPlatform().scrollPaneToBottom();
-	    	
-			try {
-				response = bucket.take();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
 
-	
-			
-			brController.getMissController().getSimStPLE().getSimStPeerTutoringPlatform().appendSpeech(clearFormatedQuestion(message), brController.getMissController().getSimStPLE().getSimStName());
-			
-			if(response.length() > 0)
-				brController.getMissController().getSimStPLE().getSimStPeerTutoringPlatform().appendSpeech(response, "Me");
-			
-			
-			
-			//getSimStPeerTutoringPlatform().getTextResponse().setText("");
-			
-			brController.getMissController().getSimStPLE().getSimStPeerTutoringPlatform().getTextResponse().setSelectedItem("");
+
+	public String giveMessageSelectableResponse(String message, List<String> selections,String input)
+	{
+		LinkedBlockingQueue<String> bucket = new LinkedBlockingQueue<String>();
+
+		brController.getMissController().getSimStPLE().setAvatarAsking();
+
+
+
+		brController.getMissController().getSimStPLE().getSimStPeerTutoringPlatform().appendSpeech("Hm, let me think...",brController.getMissController().getSimStPLE().getSimStName());
+
+
+		//	brController.getMissController().getSimStPLE().getSimStPeerTutoringPlatform().showTextResponseOptions(true,selections);
+
+		for(ActionListener al:submitButton.getActionListeners()/*brController.getMissController().getSimStPLE().getSimStPeerTutoringPlatform().getTextResponseSubmitButton().getActionListeners()*/)
+		{
+			//brController.getMissController().getSimStPLE().getSimStPeerTutoringPlatform().getTextResponseSubmitButton().removeActionListener(al);
+
+			submitButton.removeActionListener(al);
+		}
+
+		//brController.getMissController().getSimStPLE().getSimStPeerTutoringPlatform().getTextResponseSubmitButton().addActionListener(new TextEntryListener(bucket));
+		submitButton.addActionListener(new TextEntryListener(bucket));
+
+
+		String response = "";
+
+		brController.getMissController().getSimStPLE().getSimStPeerTutoringPlatform().scrollPaneToBottom();
+
+		try {
+			response = bucket.take();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+
+
+		brController.getMissController().getSimStPLE().getSimStPeerTutoringPlatform().appendSpeech(clearFormatedQuestion(message), brController.getMissController().getSimStPLE().getSimStName());
+
+		if(response.length() > 0)
+			brController.getMissController().getSimStPLE().getSimStPeerTutoringPlatform().appendSpeech(response, "Me");
+
+
+
+		//getSimStPeerTutoringPlatform().getTextResponse().setText("");
+
+		brController.getMissController().getSimStPLE().getSimStPeerTutoringPlatform().getTextResponse().setSelectedItem("");
 
 		//	brController.getMissController().getSimStPLE().getSimStPeerTutoringPlatform().showTextResponseOptions(false,null);
-			brController.getMissController().getSimStPLE().setAvatarNormal();
-	    	
-			return response;
-	    	
+		brController.getMissController().getSimStPLE().setAvatarNormal();
+
+		return response;
+
 
 	    }
-	  
+
 	/**
-	 * Method responsible for filling the "past" interface based on an instruction. It retrieves 
+	 * Method responsible for filling the "past" interface based on an instruction. It retrieves
 	 * the previous instructions in the list. Highlights only the first instruction.
 	 * @param inst
 	 */
 	void populatePastInterface(Instruction inst){
-	
-	 	Instruction prev=inst;	
-	 	boolean showBorder=true;
-	 	
-	 	//trace.err("Instruction used to populate is " + inst);
-   		while (prev!=null){
+
+		Instruction prev=inst;
+		boolean showBorder=true;
+
+		//trace.err("Instruction used to populate is " + inst);
+		while (prev!=null){
 			Color border=showBorder? BORDER_PAST : null;
-   			populateInterfaceFromInstruction(this.pastInterface,prev,border);
-   			showBorder=false;
-   		   	String previousID=prev.getPreviousID();
-   	
-   		   	prev=this.getController().getMissController().getSimSt().getInstructionByID(previousID);
-   		   //	trace.err("previous for next iteration is " + previousID  +"  which is  "+  prev);
-   		}
-   		
+			populateInterfaceFromInstruction(this.pastInterface,prev,border);
+			showBorder=false;
+			String previousID=prev.getPreviousID();
+
+			prev=this.getController().getMissController().getSimSt().getInstructionByID(previousID);
+			//	trace.err("previous for next iteration is " + previousID  +"  which is  "+  prev);
+		}
+
 	}
-	
+
 	/**
 	 * Method that populates the now interface, based on the current graph
 	 * @param brController
 	 */
 	void populateNowInterface(BR_Controller brController){
-		
+
 		ProblemNode currentNode=brController.getCurrentNode();
 		while (currentNode!=null && currentNode.getInDegree()>0){
-				if (currentNode.getInDegree() > 0){			
-					ProblemEdge tmp=currentNode.getIncomingEdges().get(0);
-					populateInterfaceFromSai(nowInterface,tmp.getSai(),null,false);		
-					currentNode=tmp.getSource();		
-				}
+			if (currentNode.getInDegree() > 0){
+				ProblemEdge tmp=currentNode.getIncomingEdges().get(0);
+				populateInterfaceFromSai(nowInterface,tmp.getSai(),null,false);
+				currentNode=tmp.getSource();
+			}
 		}
-				
+
 	}
 
-	
+
 	/**
 	 * Method that fills a tutoring interface based on an instruction.
 	 * @param tutorInterface
@@ -411,18 +407,18 @@ public class SimStExplainWhyNotDlg extends JDialog implements ActionListener,Foc
 			String[] foa=str.split("\\|");	//instruction foa is of the form WME|name(selection)|value(input)
 			String selection=foa[1];
 			String input=foa[2];
-			
+
 			if (selection!=null && input!=null){
 				getController().getMissController().getSimStPLE().fillSelection(tutorInterface,selection,input,borderColor,false);
 			}
 		}
-		
+
 
 	}
-	
-	
+
+
 	/**
-	 * 
+	 *
 	 * @param tutorInterface
 	 * @param sai
 	 * @param border
@@ -432,7 +428,7 @@ public class SimStExplainWhyNotDlg extends JDialog implements ActionListener,Foc
 
 		/*get the foas for the current SAI*/
 		Vector foas=getController().getMissController().getSimSt().getFoaGetter().foaGetter(getController(), sai.getS(), sai.getA(), sai.getI(), null);
-		
+
 		/*fill the values of the foas*/
 		for (int i=0;i<foas.size();i++){
 			String foaInput="";
@@ -449,15 +445,15 @@ public class SimStExplainWhyNotDlg extends JDialog implements ActionListener,Foc
 				foaInput = ((TableExpressionCell)foas.elementAt(i)).getText();
 				foaName = (String) ((TableExpressionCell)foas.elementAt(i)).getCommName();
 			}
-	
+
 			getController().getMissController().getSimStPLE().fillSelection(tutorInterface,foaName,foaInput,borderColor,false);
 		}
-			/*fill the value of the Sai*/
-			getController().getMissController().getSimStPLE().fillSelection(tutorInterface,sai.getS(),sai.getI(),borderColor,highlight);	
-	
+		/*fill the value of the Sai*/
+		getController().getMissController().getSimStPLE().fillSelection(tutorInterface,sai.getS(),sai.getI(),borderColor,highlight);
+
 	}
 
-	
+
 	/**
 	 * Method that adds the past tutoring interface on the back panel
 	 * @param backPanel
@@ -506,28 +502,28 @@ public class SimStExplainWhyNotDlg extends JDialog implements ActionListener,Foc
 		backPanel.add(pastPanel);
 
 	}
-	
+
 	/**
 	 * Method that adds the now tutoring interface on the back panel
 	 * @param backPanel
 	 */
 	void addNowInterface(JPanel backPanel){
-		
+
 		JPanel nowPanel = new JPanel();
-		
+
 		GridBagConstraints layout = new GridBagConstraints();
 		layout.gridy = 0;
-		
+
 		nowPanel.setLayout(new GridBagLayout());
-		
+
 		label = new JLabel("Now I am thinking about this:   (Figure B)");
 		label.setForeground(Color.RED);
 		label.setFont(new Font("Lucida Grande", Font.PLAIN, 17));
 		nowPanel.add(label,layout);
-		
+
 		layout.gridx = GridBagConstraints.RELATIVE;
 		layout.gridy = 2;
-		
+
 		nowInterface.setPreferredSize(getStudentInterface().getPreferredSize());
 		nowInterface.setBackground(AplusPlatform.studentColor);
 		SimStPLE.setComponentEnabled(false, nowInterface);
@@ -542,38 +538,38 @@ public class SimStExplainWhyNotDlg extends JDialog implements ActionListener,Foc
 		ipConst.fill = GridBagConstraints.BOTH;
 		ipConst.anchor = GridBagConstraints.PAGE_START;
 		nowPanel.add(nowInterface, layout);
-		
-		
+
+
 		layout.gridx = GridBagConstraints.RELATIVE;
 		layout.gridy = 3;
-		
+
 		//JLabel labelB = new JLabel("Figure B");
 		//labelB.setFont(new Font("Lucida Grande", Font.PLAIN, 17));
 		//labelB.setForeground(Color.RED);
 		//nowPanel.add(labelB,layout);
-		
+
 		backPanel.add(nowPanel);
 
 	}
-	
 
-	
+
+
 	class TextEntryListener implements ActionListener
-    {
+	{
 
-    	BlockingQueue<String> bucket;
-    	
-    	TextEntryListener(BlockingQueue<String> bucket)
-    	{		
-    		this.bucket = bucket;
-    	}
-    	
+		BlockingQueue<String> bucket;
+
+		TextEntryListener(BlockingQueue<String> bucket)
+		{
+			this.bucket = bucket;
+		}
+
 		@Override
-		public void actionPerformed(ActionEvent e) 
-		{ 	
-	
+		public void actionPerformed(ActionEvent e)
+		{
+
 			//JOptionPane.showMessageDialog(null, "22action" + e.getSource());
-			
+
 			String response = "";
 			if(e.getSource() instanceof JTextField)
 			{
@@ -589,39 +585,39 @@ public class SimStExplainWhyNotDlg extends JDialog implements ActionListener,Foc
 					response = (String)((JComboBox) e.getSource()).getSelectedItem();
 			}
 			if(e.getSource() ==  submitButton)
-			{	
-				
+			{
+
 				if (selfExplanationText!=null && selfExplanationText.getText().length()>0 && !selfExplanationText.getText().equals(DEFAULT_ANSWER))
 					response=selfExplanationText.getText();
-				
+
 			}
 			try {
-		
+
 				bucket.put(response);
 			} catch (InterruptedException e1) {
 				e1.printStackTrace();
 			}
 			submitButton.removeActionListener(this);
-			
+
 		}
-    	
-    }
+
+	}
 
 
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		
+
 		JOptionPane.showMessageDialog(null, e.getSource());
-		
-		
-		
+
+
+
 	}
 	@Override
 	public void focusGained(FocusEvent e) {
 		// TODO Auto-generated method stub
-		
+
 		//JOptionPane.showMessageDialog(null, e.getSource());
 		selfExplanationText.setText("");
 		selfExplanationText.setForeground(Color.black);
@@ -629,11 +625,11 @@ public class SimStExplainWhyNotDlg extends JDialog implements ActionListener,Foc
 	@Override
 	public void focusLost(FocusEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
-	
-	
-	
-	
+
+
+
+
+
 }

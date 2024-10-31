@@ -1,6 +1,6 @@
 /**
- *
- *
+ * 
+ * 
  */
 package edu.cmu.pact.miss.PeerLearning;
 
@@ -28,9 +28,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -297,7 +295,7 @@ public class SimStPLE {
 	public static final String QUIZ_STATUS = "QUIZ";
 	private String status = NORMAL_STATUS;
 	private String QA_status = "";
-	
+
 	private static final int BORDER_WIDTH = 5;
 
 	public static final int QUIZ_COMPLETED_EXIT = 104;
@@ -420,6 +418,7 @@ public class SimStPLE {
 
 	String runType = System.getProperty("appRunType");
 	private static File videoFile = null;
+
 
 	public static void setVideoFile(File file) {
 		videoFile = file;
@@ -649,7 +648,38 @@ public class SimStPLE {
 	public void setUndoMessage(String undoMessage) {
 		this.undoMessage = undoMessage;
 	}
+	public String[] key_terms;
 
+	public void setupLightSideClassifier() {
+		String path = simSt.getProjectDirectory();
+		String pathToModel = path+"/lightside/models/both_stuck_model_svm_f.model.xml";
+		String modelName = "both_stuck_model_svm_f.model.xml";
+		String modelNickname = "both_stuck_model_f";
+		String predictionCommand = path+"/lightside/scripts/prediction_server.sh";
+		String classificationString = "R0,70,R1,70,R2,70";
+
+		sideMessageAnnotator = new LightSideMessageAnnotator(pathToModel,modelName,modelNickname,predictionCommand,classificationString);
+		// Reading the key terms
+		String file = path+"/key_terms.txt";
+		//key_terms = new String[];
+		BufferedReader reader = null;
+		try {
+			reader = new BufferedReader(new FileReader(file));
+			String line = reader.readLine();
+			//key_terms = new ArrayList<String>(Arrays.asList(line.split(",")));
+			key_terms = line.split(",");
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				reader.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		//System.out.println("key "+key_terms);
+	}
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 	// Constructor
 	// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1210,12 +1240,11 @@ public class SimStPLE {
 		return returnValue;
 
 	}
-	
+
 	public String getPythonScriptPath() {
 		return PYTHON_SCRIPT_PATH;
 	}
-	
-	public String[] key_terms;
+
 	public void checkLLMConfig() {
 		if (PYTHON_SCRIPT_PATH == ""){
 			// Python Path Error
@@ -1226,7 +1255,7 @@ public class SimStPLE {
 					"", JOptionPane.INFORMATION_MESSAGE);
 		}
 		else if(PYTHON_SCRIPT_PATH != "") {
-			
+
 			LLMScript script = new LLMScript(simSt.CTI_CHAT_CODE);
 			String scriptPath = simSt.getProjectDir() + "/"+simSt.CTI_CHAT_CODE;
 			//System.out.println("SCRIPT  CALLING "+PYTHON_SCRIPT_PATH+" "+scriptPath);
@@ -1240,48 +1269,17 @@ public class SimStPLE {
 			}
 			//runPythonScript(pythonPath, scriptPath, all_questions.toString(), all_answers.toString(), stepName, QType, Sol, first_question, correctness, conv_history)
 			//System.out.println("SCRIPT ERR"+response);
-			
+
 		}
-		
+
 	}
-	public void setupLightSideClassifier() {
-		String path = simSt.getProjectDirectory();
-		String pathToModel = path+"⁨LightSide/lightside/models/both_stuck_model_svm_f.model.xml";
-		String modelName = "both_stuck_model_svm_f.model.xml";
-		String modelNickname = "both_stuck_model_f";
-		String predictionCommand = path+"⁨LightSide/lightside/scripts/prediction_server.sh";
-		String classificationString = "R0,70,R1,70,R2,70";
-		
-		sideMessageAnnotator = new LightSideMessageAnnotator(pathToModel,modelName,modelNickname,predictionCommand,classificationString);
-		// Reading the key terms
-		String file = path+"/key_terms.txt";
-		//key_terms = new String[];
-		BufferedReader reader = null;
-		try {
-			reader = new BufferedReader(new FileReader(file));
-			String line = reader.readLine();
-			//key_terms = new ArrayList<String>(Arrays.asList(line.split(",")));
-			key_terms = line.split(",");
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				reader.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		//System.out.println("key "+key_terms);
-	}
-	
+
 	public LightSideMessageAnnotator getMessageAnnotator() {
 		return sideMessageAnnotator;
 	}
 
 	public void config() {
 		PYTHON_SCRIPT_PATH = System.getProperty("pythonScriptPath");
-		//System.out.println(PYTHON_SCRIPT_PATH);
 		componentNames = new RegexHashtable();
 		startStateElements = new ArrayList<String>();
 		examples = new ArrayList<SimStExample>();
@@ -1302,10 +1300,12 @@ public class SimStPLE {
 		// add -ssBothAgreeSpeechGetterClass SimStAlgebraV8.SimStBothAgreeSpeech in the program arguements.
 		if(getSimSt().isCTIFollowupInquiryMode() && getSimSt().isbothAgreeSpeechGetterClassDefined())
 			conversation.processBothAgreeSpeechFile("simSt-both-agree-speech.txt");
-		
+
 		if(getSimSt().isCTIFollowupInquiryLLMMode())
 			checkLLMConfig();
-			
+
+//		if(getSimSt().isCTIFollowupInquiryLLMMode())
+//			setupLightSideClassifier();
 	}
 
 	// Reads the configuration file and applies the items in it to their categories
@@ -4522,7 +4522,7 @@ public class SimStPLE {
 			StudentAvatarDisplay tutoringAvatar = (StudentAvatarDisplay) getSimStPeerTutoringPlatform().getSimStAvatarLayerIcon();
 			String file = "img/on_paper_trigger.png";
 			tutoringAvatar.setImage(file, true);
-			
+
 		}
 	// Undo the on_paper Display
 	public void undoAvatarOnPaper() {
@@ -5054,7 +5054,7 @@ public class SimStPLE {
 	public String giveMessageFreeTextResponse(String message) {
 		return giveMessageFreeTextResponse(message, false);
 	}
-	
+
 //	public String giveMessageFreeTextResponse(String message, int is_disabled_required, boolean on_paper) {
 //
 //		getSimStPeerTutoringPlatform().setRestartButtonEnabled(false);
@@ -6053,7 +6053,7 @@ public class SimStPLE {
 
 		AplusPlatform aplus = (AplusPlatform) this.getSimStPeerTutoringPlatform();
 
-		if (aplus.lastClickedQuizProblem == null) {
+		if (aplus != null && aplus.lastClickedQuizProblem == null) {
 			aplus.lastClickedQuizProblem = quizProblem.getTitle();
 
 			aplus.lastClickedQuizProblemIndex = index;

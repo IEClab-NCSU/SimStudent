@@ -908,6 +908,9 @@ public class TutorController extends CTATBase implements CTAT_Controller
      * @return A comm widget with the same name
      */
     public Object lookupWidgetByName(String name) {
+        if (runType != null && runType.equals("springBoot")){
+            return null;
+        }
         for (Iterator<JCommWidget> i = getCommWidgetTable().values().iterator(); i.hasNext();) {
             JCommWidget widget = i.next();
             String widgetName = widget.getCommName();

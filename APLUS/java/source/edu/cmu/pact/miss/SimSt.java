@@ -200,7 +200,7 @@ public final class SimSt implements Serializable {
 
    private static final String NO_ACTIVATIONS = "NoActivations";
    private static final String NOT_SPECIFIED = "NotSpecified";
-   
+
    // CTI python code
    public static final String CTI_CHAT_CODE = "chat_interface_resQ.py";
 
@@ -212,8 +212,8 @@ public final class SimSt implements Serializable {
 	   return logDirectory;// = System.getProperty("logDirectory");
    }
    
-   private SimStRete brainStormRete; 
-   
+   private SimStRete brainStormRete;
+
    public SimStRete getbrainStormRete() {
 	   return brainStormRete;
    }
@@ -375,7 +375,7 @@ public final class SimSt implements Serializable {
    public void setSsSimStStrategyRevealMode(boolean simst_strategy_reveal_Mode) {
 	   this.simst_strategy_reveal_Mode = simst_strategy_reveal_Mode;
    }
-   
+
    public void setSsConstructiveTuteeInquiryLLM(boolean CTILLMMode) {
 	   this.CTI_LLM_Mode = CTILLMMode;
    }
@@ -1522,7 +1522,7 @@ public final class SimSt implements Serializable {
 
    // A list storing instructions representing negative examples
    private List<Instruction> negativeExamples = new LinkedList<Instruction>();
-   
+
    public List<Instruction> getNegativeExamples()
    {
 		if(trace.getDebugCode("nbarbaDebug"))trace.out("nbarbaDebug", "retreiving negative examples, which are: " + negativeExamples);
@@ -1550,12 +1550,12 @@ public final class SimSt implements Serializable {
        instructions.add( example );
 
    }
-   
-   
+
+
    // Added by Tasmia: in order to ask why step was graded as incorrect in the quiz.
    // list of graded examples represented as Instructions
    private List<GradedInstruction> gradedExamples = new LinkedList<GradedInstruction>();
-   
+
    public void addGradedExample(GradedInstruction example)
    {
 	   if(gradedExamples == null) gradedExamples = new LinkedList<GradedInstruction>();
@@ -1568,7 +1568,7 @@ public final class SimSt implements Serializable {
 		//if(trace.getDebugCode("nbarbaDebug"))trace.out("nbarbaDebug", "retreiving negative examples, which are: " + negativeExamples);
 	   return gradedExamples;
    }
-   
+
    public void addGradedNegativeExample(Instruction example)
    {
 
@@ -1576,13 +1576,13 @@ public final class SimSt implements Serializable {
    		if(this.gradedNegativeInstructions == null) {
    			this.gradedNegativeInstructions = new Hashtable<String, Vector<Instruction>>();
    		}
-   		
+
    		Vector /* Instruction */<Instruction> instructions = this.gradedNegativeInstructions.get( name );
 
 	    if (instructions == null) {
 	          instructions = new Vector<Instruction>();
 	          this.gradedNegativeInstructions.put(name, instructions );
-	    } 
+	    }
        instructions.add( example );
 
    }
@@ -1872,7 +1872,7 @@ public final class SimSt implements Serializable {
            }
        }
    }
-   
+
 // Overloaded to allow output to file
    // Instructions are saved as strings - see Instruction.toString()
    private void printGradedInstructions(PrintStream out) {
@@ -1881,7 +1881,7 @@ public final class SimSt implements Serializable {
 	if(gradedExamples == null) return;
    	for (int i = gradedExamples.size()-1; i >= 0; i--) {
            GradedInstruction instruction = gradedExamples.get(i);
-           //if(instruction.is_in_file != true) 
+           //if(instruction.is_in_file != true)
            {
         	   //provide identifying character to separate instructions/skills
         	   out.println("~~~");
@@ -1889,7 +1889,7 @@ public final class SimSt implements Serializable {
         	   out.println(instruction.toString());
         	   //instruction.is_in_file = true;
            }
-           
+
        }
    }
 
@@ -2945,14 +2945,14 @@ public final class SimSt implements Serializable {
    /*public void setNearSimilarProblemsGetterClassDefined(boolean flag) {
 	   nearSimilarProblemsGetterClassDefined = flag;
    }*/
-   
+
    public void setBothAgreeSpeechGetterClassDefined(boolean flag) {
 	   bothAgreeSpeechGetterClassDefined = flag;
    }
    public void setResponseSatisfactoryGetterClassDefined(boolean flag) {
 	   responseSatisfactoryGetterClassDefined = flag;
    }
-   
+
    private transient SkillNameGetter skillNameGetter = null;
    //private transient  NearSimilarProblemsGetter nearSimilarProblemsGetter = null;
    private transient BothAgreeSpeechGetter bothAgreeSpeechGetter = null;
@@ -2979,7 +2979,7 @@ public final class SimSt implements Serializable {
 	           logger.simStLogException(e);
 	   	}
    }
-   
+
    public void setSsResponseSatisfactoryGetter(String responseSatisfactoryGetterClassName) {
 	   	try {
 	   		Class isResponseSatisfactoryGetterClass = Class.forName(responseSatisfactoryGetterClassName);
@@ -5927,7 +5927,7 @@ public final class SimSt implements Serializable {
            String foaStr = getCurrentFoA().get(i).foaString();
            String foa = foaStr.split("\\|")[1];
     	   current_foas.add(foa);
-           
+
            foaStrs.add(foaStr);//getCurrentFoA().get(i).foaString());
        }
 
@@ -9264,7 +9264,7 @@ public final class SimSt implements Serializable {
    public Vector /* RuleActivationNode */<RuleActivationNode> gatherActivationList(ProblemNode problemNode) {
 
        Vector /* RuleActivationNode */<RuleActivationNode> activationList = new Vector<RuleActivationNode>();
-       
+
        try{
     	   if(trace.getDebugCode("miss")) trace.out("miss", "gatherActivationList: currentNode ==>> " + problemNode);
     	   trace.out("webAuth","******* Hm... current facts are : " + getSsRete().getFacts());
@@ -10024,7 +10024,7 @@ public final class SimSt implements Serializable {
 				else {
            			why_flagged_explanation = getMissController().getSimStPLE().giveMessageFreeTextResponse(q_mw_flagged);
 				}
-	       	
+
 	       	}*/
 	       	status = getStatusByInquiryResponseAndUpdateSkill(ran, oracle == JOptionPane.YES_OPTION);
 
@@ -10072,7 +10072,7 @@ public final class SimSt implements Serializable {
  	   		instructions = gradedNegativeInstructions.get(skillName);
  	   else
  	   		instructions = negativeInstructions.get(skillName);
- 	   
+
  	   if (instructions != null && !instructions.isEmpty()) {
       		for (int i = 0; i < instructions.size(); i++) { //for each instruction
 
@@ -10089,8 +10089,8 @@ public final class SimSt implements Serializable {
  	   	}
  		return null;
    }
-   
-   
+
+
    // This function checks if mr_williams = 0 or tutor = 1 already negated a skill for the same equation in the past.
    // If yes, ask why it was incorrect in the past.
    // checkIfStepsAlreadyNegated(ran.getName(), ran.getActualSelection(), ran.getRuleFoas(), int by_whom)
@@ -10146,7 +10146,7 @@ public final class SimSt implements Serializable {
                		else if (typeOfStep == "type-in" && count_foa_matches > 1){
                			if(operand == "" && operation == "")
                				operand = ((String) neg_example_foas.get(j)).split("\\|")[2];
-               			
+
                			if(operand != "")
                				operation = ((String) neg_example_foas.get(j)).split("\\|")[2];
                		}
@@ -10175,13 +10175,13 @@ public final class SimSt implements Serializable {
                			//return "Flag"+":"+i;
                			return "Flag";
                		}
-               		
-               				
+
+
                }
        		}
        }
   		return "";
-	   
+
    }
 
    public String getInquiry(String actualSelection, String actualAction, String actualInput,
@@ -10249,66 +10249,66 @@ public final class SimSt implements Serializable {
  			}
  		}
    }
-   
-   
-  /* public String inquiryRuleActivationOracle(String actualSelection, String actualAction, String actualInput, 
+
+
+  /* public String inquiryRuleActivationOracle(String actualSelection, String actualAction, String actualInput,
            ProblemNode node, String problemName, String ruleName,
            RuleActivationNode ran) {
 
 
 		String step = getProblemStepString();
-		// See if there has been an oracle for the inquired rule activation 
+		// See if there has been an oracle for the inquired rule activation
 		String status = EdgeData.CLT_ERROR_ACTION;
-		
+
 		if (!actualSelection.equals(MTRete.NOT_SPECIFIED) &&
 		(actualInput.toUpperCase().indexOf("FALSE") == -1) ) {
-		
+
 			String title = "Applying the rule " + ruleName.replaceAll("MAIN::", "");
 			String message[] = generateQueryMessage(actualSelection, actualAction, actualInput, ran);
-		
+
 			JFrame frame = getBrController().getActiveWindow();
-		
+
 			if(getMissController().getSimStPLE() != null)
 					getMissController().getSimStPLE().setFocusTab(SimStPLE.SIM_ST_TAB);
-		
-		
-		
+
+
+
 			String msg = "";
 			for(int i=0;i<message.length;i++)
 				msg += message[i]+" ";
 			Sai sai = new Sai(actualSelection, actualAction, actualInput);
 			AskHint hint = null;
 			long verifyRequestTime = Calendar.getInstance().getTimeInMillis();
-		
+
 			// Should update the working memory for model-tracing i.e. actor and stepCorrectness from here
-			if(isSsMetaTutorMode()){	
+			if(isSsMetaTutorMode()){
 				//String result = builtInInquiryClTutor(actualSelection, actualAction, actualInput, node, problemName);
 				long start = Calendar.getInstance().getTimeInMillis();
 				//getBrController().getAmt().handleInterfaceAction("ssfeedback","implicit", "-1");
-				getBrController().getMissController().getSimSt().getModelTraceWM().setRequestType("feedback-request"); 	
+				getBrController().getMissController().getSimSt().getModelTraceWM().setRequestType("feedback-request");
 				long end = Calendar.getInstance().getTimeInMillis();
-			} 
-		
+			}
+
 			try{
 				if(logger.getLoggingEnabled()){
-		
+
 				//hint = new AskHintInBuiltClAlgebraTutor(getBrController(), node);
 				//CL oracle should not be hardcoded. Whichever oracle grades the quiz should be provide hint for logging
 				hint = askForHintQuizGradingOracle(getBrController(),node);
-				
+
 				}
 			}
 			catch(Exception ex){
 				ex.printStackTrace(); logger.simStLogException(ex);
 			}
-		
+
 			if(logger.getLoggingEnabled())
 			{
-				logger.simStLog(SimStLogger.SIM_STUDENT_INFO_RECEIVED, SimStLogger.CONFIRMATION_REQUEST_ACTION, step, 
-				"", title+":"+msg, sai,node, hint.getSelection(), hint.getAction(), hint.getInput(),0,msg);		
-				
+				logger.simStLog(SimStLogger.SIM_STUDENT_INFO_RECEIVED, SimStLogger.CONFIRMATION_REQUEST_ACTION, step,
+				"", title+":"+msg, sai,node, hint.getSelection(), hint.getAction(), hint.getInput(),0,msg);
+
 			}
-		
+
 			int oracle = displayConfirmMessage(title,message);
 			if (oracle == JOptionPane.YES_OPTION) {
 				status = EdgeData.CORRECT_ACTION;
@@ -10316,16 +10316,16 @@ public final class SimSt implements Serializable {
 					getSkillNameGetter().skillNameGetter(getBrController(), actualSelection, actualAction, actualInput);
 				}
 			}
-		
+
 			// TODO: Need to figure out a unified way to handle all the interface actions at one place
-			// Model-tracing the student interface action (clicking either the Yes or No button) in response to the 
+			// Model-tracing the student interface action (clicking either the Yes or No button) in response to the
 			// SimStudent feedback request
 			if(isSsMetaTutorMode()) {
-		
+
 				if(getBrController() != null && getBrController().getAmt() != null) {
 					//trace.out("Yes or No or Done button clicked ");
 					if(oracle == JOptionPane.YES_OPTION) {
-		
+
 						// If the feedback is for done then run the model-tracer for done, ButtonPressed, -1
 						if(ruleName.replaceAll("MAIN::", "").contains(WorkingMemoryConstants.DONE_BUTTON_SELECTION)) {
 						getBrController().getAmt().handleInterfaceAction(WorkingMemoryConstants.DONE_BUTTON_SELECTION,
@@ -10335,13 +10335,13 @@ public final class SimSt implements Serializable {
 							WorkingMemoryConstants.BUTTON_ACTION, WorkingMemoryConstants.BUTTON_INPUT);
 						}
 					} else if(oracle == JOptionPane.NO_OPTION) {
-						
+
 						getBrController().getAmt().handleInterfaceAction(WorkingMemoryConstants.NO_BUTTON_SELECTION,
-						WorkingMemoryConstants.BUTTON_ACTION, WorkingMemoryConstants.BUTTON_INPUT);	      				
+						WorkingMemoryConstants.BUTTON_ACTION, WorkingMemoryConstants.BUTTON_INPUT);
 					}
 				}
 			}
-		
+
 			if(getSsInteractiveLearning() != null)
 			{
 				//if(isSsMetaTutorMode()) {
@@ -10350,13 +10350,13 @@ public final class SimSt implements Serializable {
 				if(logger.getLoggingEnabled())
 				{
 					int verifyDuration = (int) ((Calendar.getInstance().getTimeInMillis() - verifyRequestTime)/1000);
-					logger.simStLog(SimStLogger.SIM_STUDENT_INFO_RECEIVED, SimStLogger.INPUT_VERIFY_ACTION, step, 
+					logger.simStLog(SimStLogger.SIM_STUDENT_INFO_RECEIVED, SimStLogger.INPUT_VERIFY_ACTION, step,
 					status, title+":"+msg, sai,node,hint.getSelection(), hint.getAction(), hint.getInput(), verifyDuration,msg);
 				}
-		
+
 			}
 		}
-		
+
 		if(trace.getDebugCode("miss"))trace.out("miss", "Oracle status ==> " + status );
 		return status;
 }*/
@@ -10487,8 +10487,8 @@ public final class SimSt implements Serializable {
 
    	return parts;
    }
-   
-   
+
+
    private String past_comparable_problem = "";
    private String past_comparable_input = "";
    private ArrayList<String> past_foa_contents;
@@ -10522,6 +10522,9 @@ public final class SimSt implements Serializable {
    	Vector<String> foaContents = new Vector<String>();
    	for(int i=0;i<foas.size();i++)
    	{
+           if (runType != null && runType.equalsIgnoreCase("springBoot") ){
+               continue;
+           }
    		if(getBrController().lookupWidgetByName((String)foas.get(i)) instanceof JCommTable.TableCell)
    		{
    			JCommTable.TableCell cell = (JCommTable.TableCell)getBrController().lookupWidgetByName((String)foas.get(i));
@@ -10560,7 +10563,7 @@ public final class SimSt implements Serializable {
    			setPastInput(foaGetter.getComparablePastInput(inst));
    			past_foa_contents = foaGetter.getComparablePastFoas(inst);
    		}
-   		
+
    	}
    	else
    	{
@@ -10609,8 +10612,9 @@ public final class SimSt implements Serializable {
 	for (int i=foas.size()-1;i>=0;i--){
 		String foaInput="";
 		String foaName="";
-
-		if (foas.elementAt(i) instanceof JCommComboBox ){
+if (runType != null && runType.equalsIgnoreCase("springBoot") ){
+            foaInput = (String) foas.elementAt(i);
+        } else if (foas.elementAt(i) instanceof JCommComboBox ){
 			foaInput = (String) ((JCommComboBox)foas.elementAt(i)).getValue();
 			foaName = (String) ((JCommComboBox)foas.elementAt(i)).getCommName();
 		}
@@ -11503,7 +11507,7 @@ public final class SimSt implements Serializable {
 
 
 	   	AskHint hint = null;
-	   	
+
 	   	String hintMethodName = getQuizGradingMethod();
 
 	   	if(hintMethodName.equalsIgnoreCase(AskHint.HINT_METHOD_BRD))
@@ -13544,7 +13548,7 @@ public final class SimSt implements Serializable {
    		JOptionPane.showMessageDialog(getBrController().getActiveWindow(), message, title, JOptionPane.PLAIN_MESSAGE);
    	}
    }
-   
+
    public void displayMessage(String title, String[] message)
    {
    	if(getMissController().isPLEon())

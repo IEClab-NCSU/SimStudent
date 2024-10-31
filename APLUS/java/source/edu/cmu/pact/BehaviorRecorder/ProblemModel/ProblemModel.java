@@ -2370,7 +2370,7 @@ public class ProblemModel implements Serializable {
      * @return Returns the startNode.
      */
     public ProblemNode getStartNode() {
-        return startNode;
+        return (ProblemNode) this.startNode;
     }
     
     public GroupEditorContext getEditContext() {
