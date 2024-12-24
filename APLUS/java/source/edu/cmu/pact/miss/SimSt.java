@@ -378,6 +378,7 @@ public final class SimSt implements Serializable {
 
    public void setSsConstructiveTuteeInquiryLLM(boolean CTILLMMode) {
 	   this.CTI_LLM_Mode = CTILLMMode;
+       this.useResponseLLM = true;
    }
    public boolean isSelfExplainMode()
    {

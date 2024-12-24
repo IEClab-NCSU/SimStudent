@@ -3076,6 +3076,7 @@ public class SimStInteractiveLearning implements Runnable {
 		return null;
 	}
 
+	// These are parameters needed for LLM question loop and are set in the explainWhyRight code
 	public void saveLLMParameters(String stepName, Sai sai, String correctness, SimStPLE ple, boolean hint_explained){
 		this.llm_stepName = stepName;
 		this.llm_sai = sai;
@@ -3084,60 +3085,52 @@ public class SimStInteractiveLearning implements Runnable {
 		this.llm_hint_explained = hint_explained;
 	}
 
+	// This is the method that is called by WebAPLUS to start the LLM question loop
 	public String getLLMQuestion(String question, String explanation, String conversation, int count){
 		return askLLMQuestionsSpringBoot(question, explanation, conversation, llm_stepName, llm_sai, llm_correctness, llm_ple, llm_hint_explained, count);
 	}
 
+	// List of questions and answers that we use in the LLM question loop
+	ArrayList<String> all_questions = new ArrayList<String>();
+	ArrayList<String> all_answers = new ArrayList<String>();
+
 	public String askLLMQuestionsSpringBoot(String question, String explanation, String conversation, String stepName, Sai sai, String correctness, SimStPLE ple, boolean hint_explained, int q_count) {
-		ArrayList<String> all_questions = new ArrayList<String>();
+		// We add the current question and the user explanation into the lists
 		all_questions.add(question.toLowerCase());
-		ArrayList<String> all_answers = new ArrayList<String>();
 		all_answers.add(explanation);
 		boolean last_KB = false;
 		boolean any_KB = false;
+
+		// Maximum number of times, we want the LLM question loop to continue
 		int max_q = 2;
-		LLMScript script;
-		if (simSt.useResponseLLMMode())
-			script=new LLMScript("chat_interface_resQ.py");
-		else
-			script=new LLMScript("");
-//		String conv_history = "\nStudent:"+question+"\nTeacher:"+explanation;
+
+		// Creating the LLM Script from the python file
+		LLMScript script = new LLMScript(simSt.CTI_CHAT_CODE);
+
 		String response = "";
 		String skill_INPUT = sai.getI();
+
+		// If the solved button is clicked, the input is changed to that
 		if (sai.getS().equalsIgnoreCase(Rule.DONE_NAME)) {
 			skill_INPUT = "click \"problem is solved\" button";
 		}
 
-
-//		if (hint_explained)
-//			response = script.executeScript(ple.getPythonScriptPath(), simSt.getProjectDir(), stepName, "WR", skill_INPUT, question, correctness, conv_history,"",logger);
-//		else
-//			response = script.executeScript(ple.getPythonScriptPath(), simSt.getProjectDir(), stepName, "WW", skill_INPUT, question, correctness, conv_history,"",logger);
-//		String LLM_question = script.processQ(response);
-//		//if (LLM_question != "" || LLM_question.trim().contains("No question"))
-//		{
-//			last_KB = processLightsideLabel(ple,explanation);
-//			if (last_KB == true && any_KB == false) any_KB = true;
-//		}
-//		String exp_resp = script.processResponseLLMOutput(response);
-//		String context = stepName+"::"+skill_INPUT+"::"+correctness+"::"+exp_resp;
-//		logger.simStLog(SimStLogger.SIM_STUDENT_EXPLANATION, SimStLogger.EXPECTED_KBR,
-//				stepName, context, exp_resp, 0, "");
-//
-//		while(LLM_question != "" && q_count <= max_q && !LLM_question.trim().contains("No question")) {
-//			//System.out.println("COnv history so far "+conv_history);
-//
-//			explanation = ple.giveMessageFreeTextResponse(LLM_question);
-//			long explainRequestTime = Calendar.getInstance().getTimeInMillis();
-//			int explainDuration = (int) (Calendar.getInstance()
-//					.getTimeInMillis() - explainRequestTime);
+		// Getting the current step of the problem
 		step = getBrController(getSimSt()).getMissController().getSimSt()
 				.getProblemStepString();
+
+		// If the user has provided an explanation and is not empty, we find if the response is good or bad
+		// We use processLLMLabel with the current step, input, question and the user explanation to perform the classification
+		// We used lightside for this previously, but we use LLM now
 		if (explanation != null && explanation.length() > 0) {
-			//if (KB == false)
-			last_KB = processLightsideLabel(ple,explanation);
+			last_KB = processLLMLabel(ple,stepName, skill_INPUT, question, explanation);
 			if (last_KB == true && any_KB == false) any_KB = true;
-//				conv_history += "\nStudent:"+question+"\nTeacher:"+explanation;
+
+			String exp_resp = script.processResponseLLMOutput(response);
+			String context = stepName+"::"+skill_INPUT+"::"+correctness+"::"+exp_resp;
+			logger.simStLog(SimStLogger.SIM_STUDENT_EXPLANATION, SimStLogger.EXPECTED_KBR,
+					stepName, context, exp_resp, 0, "");
+
 			if(hint_explained)
 				logger.simStLog(SimStLogger.SIM_STUDENT_EXPLANATION,
 						SimStLogger.HINT_EXPLAIN_ACTION+SimStLogger.FOLLOW_UP_EXPLAIN_SUFFIX, step, explanation,
@@ -3146,11 +3139,10 @@ public class SimStInteractiveLearning implements Runnable {
 				logger.simStLog(SimStLogger.SIM_STUDENT_EXPLANATION,
 						SimStLogger.INPUT_WRONG_EXPLAIN_ACTION+SimStLogger.FOLLOW_UP_EXPLAIN_SUFFIX, step,
 						explanation, question, sai, 0, question);
-
-
 		} else {
+			// The user did not provide an explanation and is empty
+
 			last_KB = false;
-//				conv_history += "\nStudent:"+LLM_question+"\nTeacher: no explanation given";
 			if(hint_explained)
 				logger.simStLog(SimStLogger.SIM_STUDENT_EXPLANATION,
 						SimStLogger.HINT_EXPLAIN_ACTION+SimStLogger.FOLLOW_UP_EXPLAIN_SUFFIX, step,
@@ -3162,18 +3154,50 @@ public class SimStInteractiveLearning implements Runnable {
 						SimStLogger.NO_EXPLAIN_ACTION, question, sai,
 						0, question);
 		}
-		//conv_history += "\n Student:"+LLM_question+"\nTeacher:"+explanation;
+
+		// Incrementing the question counter to make sure that the loop terminates
 		q_count++;
-		//response = script.executeScript(simSt.getProjectDir(), stepName, "WR", sai.getI(), question, correctness, conv_history,"exp");
+		String LLM_question = "";
+
+		// If the question count is less than the max count, we generate the LLM question
+		// We call the LLM script to generate a response based on the current question, step, input, correctness of the current operation, conversation that has happened till now
+		// Response will look like this:
+		// KBR is  I'm sorry for the confusion earlier. Subtract 5 is the correct step here because our goal is to isolate the variable x. Since 5 is added to x, we need to perform the opposite operation to get rid of it. Subtracting 5 from both sides will result in x+5-5=5-5, which simplifies to x=0. This step helps us isolate x on one side of the equation, which is our objective in solving linear equations.
+		// the alignment is---- contradiction: response 1 states that subtract 5 is right, while response 2 also states that subtract 5 is the correct step. Since both responses agree on the correctness of the step, there is no contradiction between response 1 and response 2.
+		// question module 2
+		// the q is--- Since the teacher did not provide a clear explanation for why subtract 5 is the correct step, a missing statement from the ideal response is, "Subtract 5 is the correct step here because our goal is to isolate the variable x." Therefore, the question is, "Why is it important to isolate the variable in solving linear equations?"
+
+		// The response will contain the output of the LLM and we call the processQ function to extract the question from the response
 		if (q_count <= max_q) {
 			if (hint_explained)
 				response = script.executeScript(ple.getPythonScriptPath(), simSt.getProjectDir(), stepName, "WR", skill_INPUT, question, correctness, conversation,"exp", all_questions, all_answers, logger);
 			else
 				response = script.executeScript(ple.getPythonScriptPath(), simSt.getProjectDir(), stepName, "WW", skill_INPUT, question, correctness, conversation,"exp", all_questions, all_answers, logger);
-			return script.processQ(response);
+
+			LLM_question = script.processQ(response);
 		}
-		return null;
-	}
+
+		// If the LLM question is not empty or does not contain "No question" return the question to the user and continue the loop
+		if (!Objects.equals(LLM_question, "") && !LLM_question.trim().contains("No question")) {
+			return LLM_question;
+		}
+
+		// If we are here, then the loop is terminated because we have reached max question count or there is no question from the LLM
+		// We clear the lists for the next LLM question loop
+		this.all_questions.clear();
+		this.all_answers.clear();
+
+		// If the last_KB is false, the user did not give very good answer or gave bad answers
+		if (!last_KB) {
+			return ple.getConversation().getMessage(
+					SimStConversation.KTR_ACKNOWLEDGEMENT_TOPIC);
+		}
+
+		// If we reach here the user gave good answers
+		return ple.getConversation().getMessage(
+				SimStConversation.KBR_ACKNOWLEDGEMENT_TOPIC);
+
+    }
 
 	public String askMoreExampleQuestion(String question, boolean requireResponse) {
 		String explanation = "";
