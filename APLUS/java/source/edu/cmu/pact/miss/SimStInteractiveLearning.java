@@ -2687,7 +2687,6 @@ public class SimStInteractiveLearning implements Runnable {
 		if (!runType.equalsIgnoreCase("springboot") && getBrController(getSimSt()).getMissController().isPLEon())
 			ple.setAvatarNormal();
 		while(!Objects.equals(LLM_question, "") && q_count <= max_q && !LLM_question.trim().contains("No question")) {
-			//System.out.println("COnv history so far "+conv_history);
 			all_questions.add(LLM_question.toLowerCase());
 			explanation = ple.giveMessageFreeTextResponse(LLM_question);
 			all_answers.add(explanation);

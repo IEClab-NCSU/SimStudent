@@ -1,21 +1,21 @@
 Manifest-Version: 1.0
 Ant-Version: Apache Ant 1.10.14
-Created-By: 1.8.0_411-b09 (Oracle Corporation)
+Created-By: 1.8.0_422-b06 (BellSoft)
 Main-Class: edu.cmu.pact.BehaviorRecorder.Controller.CTAT_Launcher
 Class-Path: HARTNetworking.jar TableLayout.jar aima.jar cl.jar commons
- -lang-2.6.jar commons-lang3-3.0.1.jar ctat_old.jar ctat_prev.jar cust
- omizer.jar foil.jar gstreamer-java-1.5.jar idw.jar jcalendar-1.4.jar 
- jdom.jar je-5.0.34.jar jess.jar jgraphlayout.jar jh.jar jmf.jar jna-4
- .1.0.jar jnlp.jar joda-time-2.1.jar jsoup-1.15.3.jar junit.jar light.
- jar lightside-message-annotator.jar lingpipe-2.3.0.jar logclient.jar 
- logging.jar mediaplayer.jar multiplayer.jar mylib.jar plugin.jar runc
- c.jar stanford-postagger-2010-05-26.jar swingx-core-1.6.2.jar trove.j
- ar tutalk-slim.jar tutorshop.jar weka.jar xalan.jar xercesImpl.jar xe
- rcesSamples.jar xml-writer.jar xpp3-1.1.3.4d_b4_min.jar xstream-1.1.3
- .jar yeritools.jar cl/LMS.jar cl/LMSfiledata.jar cl/TT.jar cl/XPlaunc
- her.jar cl/cl_common.jar cl/communication.jar cl/editor.jar cl/grant.
- jar cl/jzlib.jar cl/resources.jar cl/thirdparty/TableLayout.jar cl/th
- irdparty/webeq35.jar cl/tutors.jar cl/ui.jar cl/utilities.jar
+ -lang-2.6.jar commons-lang3-3.0.1.jar ctat_prev.jar customizer.jar fo
+ il.jar gstreamer-java-1.5.jar idw.jar jcalendar-1.4.jar jdom.jar je-5
+ .0.34.jar jess.jar jgraphlayout.jar jh.jar jmf.jar jna-4.1.0.jar jnlp
+ .jar joda-time-2.1.jar jsoup-1.15.3.jar junit.jar light.jar lightside
+ -message-annotator.jar lingpipe-2.3.0.jar logclient.jar logging.jar m
+ ediaplayer.jar multiplayer.jar mylib.jar plugin.jar runcc.jar stanfor
+ d-postagger-2010-05-26.jar swingx-core-1.6.2.jar trove.jar tutalk-sli
+ m.jar tutorshop.jar weka.jar xalan.jar xercesImpl.jar xercesSamples.j
+ ar xml-writer.jar xpp3-1.1.3.4d_b4_min.jar xstream-1.1.3.jar yeritool
+ s.jar cl/LMS.jar cl/LMSfiledata.jar cl/TT.jar cl/XPlauncher.jar cl/cl
+ _common.jar cl/communication.jar cl/editor.jar cl/grant.jar cl/jzlib.
+ jar cl/resources.jar cl/thirdparty/TableLayout.jar cl/thirdparty/webe
+ q35.jar cl/tutors.jar cl/ui.jar cl/utilities.jar
 
 Name: pact/CommWidgets/JCommTextField.class
 Java-Bean: True

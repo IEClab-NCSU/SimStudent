@@ -23,3 +23,7 @@ Tutors/Algebra/bin/*
 Tutors/Algebra/test/bin/*
 
 StudyManagementSystem/Deploy/data
+APLUS/java/test/bin/*
+
+*.iml
+brPrefs.xml

@@ -742,8 +742,10 @@ public class SimStPLE {
 		if (getSimSt().isSsCogTutorMode())
 			setSsCognitiveTutor(new SimStCognitiveTutor(getBrController(), this));
 
-		messageDialog = new SimStMessageDialog(new Frame(), logger);
-		messageDialog.setLocationRelativeTo(getSimStPeerTutoringPlatform());
+		if (!runType.equalsIgnoreCase("springboot")) {
+			messageDialog = new SimStMessageDialog(new Frame(), logger);
+			messageDialog.setLocationRelativeTo(getSimStPeerTutoringPlatform());
+		}
 
 		config();
 
@@ -1260,7 +1262,7 @@ public class SimStPLE {
 			String scriptPath = simSt.getProjectDir() + "/"+simSt.CTI_CHAT_CODE;
 			//System.out.println("SCRIPT  CALLING "+PYTHON_SCRIPT_PATH+" "+scriptPath);
 			String response = script.runPythonScript(PYTHON_SCRIPT_PATH,scriptPath,"", "", "", "", "", "", "", "");
-			if (response.contains("ERROR: OpenAI library (0.28.1) is not installed or the OPENAI_API_KEY is not set")) {
+			if (response != null && response.contains("ERROR: OpenAI library (0.28.1) is not installed or the OPENAI_API_KEY is not set")) {
 				//System.out.println("api key error");
 				LLM_ERR = true;
 				JOptionPane.showMessageDialog(null,
