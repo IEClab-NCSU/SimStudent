@@ -203,6 +203,7 @@ public final class SimSt implements Serializable {
 
    // CTI python code
    public static final String CTI_CHAT_CODE = "chat_interface_resQ.py";
+   public static final String CTI_CLASSIFIER_CODE = "llm_response_classifier.py";
 
    String logDirectory = null;
    String runType = System.getProperty("appRunType");

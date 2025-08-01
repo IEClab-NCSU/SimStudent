@@ -2639,106 +2639,81 @@ public class SimStInteractiveLearning implements Runnable {
 		return simSt.getBrController().getMissController().getSimStPLE().getValidSelections()!=null && simSt.getBrController().getMissController().getSimStPLE().getValidSelections().contains(selection);
 	}
 
-	public boolean processLLMLabel(SimStPLE ple, String stepName, String skill_INPUT, String question, String explanation) {
-		LLMClassifier classification_script = new LLMClassifier("llm_response_classifier.py");
-		String response_class = classification_script.executeScript(ple.getPythonScriptPath(), simSt.getProjectDir(), stepName, skill_INPUT, question, explanation,logger);
-		return classification_script.processClassifiedResponse(response_class);
-
-	}
+//	public boolean processLLMLabel(SimStPLE ple, String stepName, String skill_INPUT, String question, String explanation) {
+//		LLMClassifier classification_script = new LLMClassifier("llm_response_classifier.py");
+//		String response_class = classification_script.executeScript(ple.getPythonScriptPath(), simSt.getProjectDir(), stepName, skill_INPUT, question, explanation,logger);
+//		return classification_script.processClassifiedResponse(response_class);
+//
+//	}
 
 	public String askLLMQuestions(String question, String explanation, String stepName, Sai sai, String correctness, SimStPLE ple, boolean hint_explained) {
-		ArrayList<String> all_questions = new ArrayList<String>();
-		all_questions.add(question.toLowerCase());
-		ArrayList<String> all_answers = new ArrayList<String>();
-		all_answers.add(explanation);
-		boolean last_KB = false;
-		boolean any_KB = false;
-		int max_q = 2;
-		int q_count = 1;
-		if (!runType.equalsIgnoreCase("springboot") &&  getBrController(getSimSt()).getMissController().isPLEon())
+
+		System.out.println(stepName + ", sai: " + sai + ", question: " + question + ", answer: " + explanation);
+
+		// Turn on thinking face ! (avatar)
+		if (ple != null && getBrController(getSimSt()).getMissController().isPLEon())
 			ple.setAvatarThinking();
+
+		// Preparing all LLM script input vars
 		LLMScript script = new LLMScript(simSt.CTI_CHAT_CODE);
-		String conv_history = "\nYou:"+question+"\nTeacher:"+explanation;
-		String response = "";
-		String skill_INPUT = sai.getI();
-		if (sai.getS().equalsIgnoreCase(Rule.DONE_NAME)) {
-			skill_INPUT = "click \"problem is solved\" button";
-		}
+//		LLMClassifier classifier = new LLMClassifier(simSt.CTI_CLASSIFIER_CODE);
 
-		if (hint_explained)
-			response = script.executeScript(ple.getPythonScriptPath(), simSt.getProjectDir(), stepName, "WR", skill_INPUT, question, correctness, conv_history,"",all_questions, all_answers, logger);
-		else
-			response = script.executeScript(ple.getPythonScriptPath(), simSt.getProjectDir(), stepName, "WW", skill_INPUT, question, correctness, conv_history,"",all_questions, all_answers,logger);
-		String LLM_question = script.processQ(response);
-		script.processResponseLLMOutput(response);
-		//if (LLM_question != "" || LLM_question.trim().contains("No question"))
-		{
-			//last_KB = processLightsideLabel(ple,explanation);
-			last_KB = processLLMLabel(ple,stepName, skill_INPUT, question, explanation);
-			if (last_KB && !any_KB) any_KB = true;
-		}
-		String exp_resp = script.processResponseLLMOutput(response);
-		String context = stepName+"::"+skill_INPUT+"::"+correctness+"::"+exp_resp;
-		logger.simStLog(SimStLogger.SIM_STUDENT_EXPLANATION, SimStLogger.EXPECTED_KBR,
-				stepName, context, exp_resp, 0, "");
-		if (runType.equalsIgnoreCase("springboot")){
-			return LLM_question;
-		}
-		if (!runType.equalsIgnoreCase("springboot") && getBrController(getSimSt()).getMissController().isPLEon())
+		String pythonPath = ple.getPythonScriptPath();
+		String projectDir = simSt.getProjectDir();
+		explanation = (explanation != null && !explanation.isEmpty()) ? explanation : SimStLogger.NO_EXPLAIN_ACTION;
+		String conv_history = "Me: " + question + "\nFriend: " + explanation;
+		String selection = sai.getS();
+		String solution = selection.equalsIgnoreCase(Rule.DONE_NAME) ? "done" : sai.getI();
+		String CFAction = hint_explained ? SimStLogger.HINT_EXPLAIN_ACTION : SimStLogger.INPUT_WRONG_EXPLAIN_ACTION;
+		String qType = hint_explained ? "WR" : "WW";
+		String username = getSimSt().getUserID();
+
+		// Prompting LLM for CTI
+		String LLM_question = script.executeScript(pythonPath, projectDir, username, stepName, qType, solution, conv_history, logger);
+		System.out.println("LLM Question: " + LLM_question);
+
+		// Check Response classification
+		// last_KB = processLightsideLabel(ple,explanation); ...uses trained lightside classifier instead of llm prompt
+		boolean last_KB = !explanation.equals(SimStLogger.NO_EXPLAIN_ACTION)
+				&& LLM_question.isEmpty(); // There will not be a follow-up question if the student response is good enough.
+		boolean any_KB = last_KB; // Has the student produced any good responses ?
+
+		if (ple != null && getBrController(getSimSt()).getMissController().isPLEon())
 			ple.setAvatarNormal();
-		while(!Objects.equals(LLM_question, "") && q_count <= max_q && !LLM_question.trim().contains("No question")) {
-			all_questions.add(LLM_question.toLowerCase());
-			explanation = ple.giveMessageFreeTextResponse(LLM_question);
-			all_answers.add(explanation);
-			if(ple != null ) ple.setAvatarThinking();
+
+		int max_q = 3;
+		int q_count = 1;
+		while (LLM_question != null && !LLM_question.isEmpty() && q_count <= max_q) {
+
+			// Retrieve student response to LLM question. Make sure it is not null or empty.
 			long explainRequestTime = Calendar.getInstance().getTimeInMillis();
+			explanation = ple.giveMessageFreeTextResponse(LLM_question);
 			int explainDuration = (int) (Calendar.getInstance()
-					.getTimeInMillis() - explainRequestTime);
-			step = getBrController(getSimSt()).getMissController().getSimSt()
-					.getProblemStepString();
-			if (explanation != null && explanation.length() > 0) {
-				//if (KB == false)
-				//last_KB = processLightsideLabel(ple,explanation);
-				last_KB = processLLMLabel(ple,stepName, skill_INPUT, LLM_question, explanation);
-				if (last_KB && !any_KB) any_KB = true;
-				conv_history += "\nYou:"+LLM_question+"\nTeacher:"+explanation;
-				if(hint_explained)
-					logger.simStLog(SimStLogger.SIM_STUDENT_EXPLANATION,
-							SimStLogger.HINT_EXPLAIN_ACTION+SimStLogger.FOLLOW_UP_EXPLAIN_SUFFIX, step, explanation,
-							LLM_question, sai, explainDuration, LLM_question);
-				else
-					logger.simStLog(SimStLogger.SIM_STUDENT_EXPLANATION,
-							SimStLogger.INPUT_WRONG_EXPLAIN_ACTION+SimStLogger.FOLLOW_UP_EXPLAIN_SUFFIX, step,
-							explanation, LLM_question, sai, explainDuration, LLM_question);
+					.getTimeInMillis() - explainRequestTime); // How long did the student take to answer?
+			explanation = (explanation != null && !explanation.isEmpty()) ? explanation : SimStLogger.NO_EXPLAIN_ACTION;
+			logger.simStLog(SimStLogger.SIM_STUDENT_EXPLANATION,
+					CFAction + SimStLogger.FOLLOW_UP_EXPLAIN_SUFFIX, stepName,
+					explanation, LLM_question, sai, explainDuration, LLM_question);
 
+			// Turn off avatar thinking face
+			if (ple != null && getBrController(getSimSt()).getMissController().isPLEon())
+				ple.setAvatarNormal();
 
-			} else {
-				last_KB = false;
-				conv_history += "\nYou:"+LLM_question+"\nTeacher: no explanation given";
-				if(hint_explained)
-					logger.simStLog(SimStLogger.SIM_STUDENT_EXPLANATION,
-							SimStLogger.HINT_EXPLAIN_ACTION+SimStLogger.FOLLOW_UP_EXPLAIN_SUFFIX, step,
-							SimStLogger.NO_EXPLAIN_ACTION, LLM_question, sai,
-							explainDuration, LLM_question);
-				else
-					logger.simStLog(SimStLogger.SIM_STUDENT_EXPLANATION,
-							SimStLogger.INPUT_WRONG_EXPLAIN_ACTION+SimStLogger.FOLLOW_UP_EXPLAIN_SUFFIX, step,
-							SimStLogger.NO_EXPLAIN_ACTION, LLM_question, sai,
-							explainDuration, LLM_question);
-			}
-			//conv_history += "\n Student:"+LLM_question+"\nTeacher:"+explanation;
+			// Now, generate next question.
+			conv_history += "\nMe: " + LLM_question + "\nFriend: " + explanation;
+			LLM_question = script.executeScript(pythonPath, projectDir, username, stepName, qType, solution, conv_history, logger);
+
+			// Has the student produced a good response?
+			last_KB = !explanation.equals(SimStLogger.NO_EXPLAIN_ACTION)
+					&& LLM_question.isEmpty();
+			if (last_KB && !any_KB) any_KB = true;
+
 			q_count++;
-			//response = script.executeScript(simSt.getProjectDir(), stepName, "WR", sai.getI(), question, correctness, conv_history,"exp");
-			if (q_count <= max_q) {
-				if (hint_explained)
-					response = script.executeScript(ple.getPythonScriptPath(), simSt.getProjectDir(), stepName, "WR", skill_INPUT, question, correctness, conv_history,"exp",all_questions, all_answers,logger);
-				else
-					response = script.executeScript(ple.getPythonScriptPath(), simSt.getProjectDir(), stepName, "WW", skill_INPUT, question, correctness, conv_history,"exp",all_questions, all_answers,logger);
-				LLM_question = script.processQ(response);
-			}
+			if (ple != null && getBrController(getSimSt()).getMissController().isPLEon())
+				ple.setAvatarNormal();
 		}
-		if(!runType.equalsIgnoreCase("springboot") && ple != null ) ple.setAvatarNormal();
-		return any_KB+"_"+last_KB;
+		System.out.println(any_KB + "_" + last_KB);
+		return any_KB + "_" + last_KB;
 	}
 
 	public boolean processLightsideLabel(SimStPLE ple, String explanation) {
@@ -2823,6 +2798,7 @@ public class SimStInteractiveLearning implements Runnable {
 			return null;
 		String skillName = (String) edge.getEdgeData().getRuleNames()
 				.get(edge.getEdgeData().getRuleNames().size() - 1);
+		String inputName = edge.getSai().getI();
 
 		//System.out.println("SSS:: stepname--"+stepName+" sol_step "+skillName);
 		if (trace.getDebugCode("sstt"))
@@ -2832,7 +2808,7 @@ public class SimStInteractiveLearning implements Runnable {
 
 
 		//System.out.println("Am I right"+edge.isCorrect());
-		if (explainedWhyRightSkills==null)
+		if (explainedWhyRightSkills == null)
 			explainedWhyRightSkills = new HashSet<String>();
 
 
@@ -2842,12 +2818,14 @@ public class SimStInteractiveLearning implements Runnable {
 		//trace.out(edge.getSelection());
 		//if (simSt.isSelfExplainMode() && !skillName.contains("typein") && !skillName.contains("unnamed")) {
 		//10/06/2014: now selection is the one that defines if SimStudent should ask for self explanation
+		Boolean miamia = isSelectionValidForSelfExplanation(edge.getSelection());
+		Object miamia2 = edge.getSelection();
 		if ((simSt.isSelfExplainMode() &&
 				isSelectionValidForSelfExplanation(edge.getSelection()) &&
-				!explainedWhyRightSkills.contains(skillName) &&
+				!explainedWhyRightSkills.contains(inputName) &&
 				!explainedSelectionSkills.contains(edge.getSelection()))
-				||
-				(probability <= CHANCE && explainedWhyRightSkills.contains(skillName) && explainedSelectionSkills.contains(edge.getSelection()) && simSt.isSelfExplainMode() && isSelectionValidForSelfExplanation(edge.getSelection()))
+//				||
+//				(probability <= CHANCE && explainedWhyRightSkills.contains(skillName) && explainedSelectionSkills.contains(edge.getSelection()) && simSt.isSelfExplainMode() && isSelectionValidForSelfExplanation(edge.getSelection()))
 		)
 		//if (simSt.isSelfExplainMode() && isSelectionValidForSelfExplanation(edge.getSelection())
 		//&& skill_q_asked_count <= 2
@@ -2872,8 +2850,8 @@ public class SimStInteractiveLearning implements Runnable {
 			//explainedSelectionSkills.add(edge.getSelection());
 
 			if (!simSt.isCTIFollowupInquiryMode() && !simSt.isResponseSatisfactoryGetterClassDefined() && !simSt.isCTIFollowupInquiryLLMMode()) {
-				if(!explainedWhyRightSkills.contains(skillName)) {
-					explainedWhyRightSkills.add(skillName);
+				if(!explainedWhyRightSkills.contains(inputName)) {
+					explainedWhyRightSkills.add(inputName);
 					explainedSelectionSkills.add(edge.getSelection());
 				}
 			}
@@ -2974,12 +2952,12 @@ public class SimStInteractiveLearning implements Runnable {
 				if (simSt.isResponseSatisfactoryGetterClassDefined()) {
 					IsResponseSatisfactory resp_satisfaction = getSimSt().getResponseSatisfactoryGetter();
 					if(resp_satisfaction.isResponseSatosfactoryGetter(c.getLabel())) {
-						explainedWhyRightSkills.add(skillName);
+						explainedWhyRightSkills.add(inputName);
 						explainedSelectionSkills.add(edge.getSelection());
 					}
 				}
 				else {
-					explainedWhyRightSkills.add(skillName);
+					explainedWhyRightSkills.add(inputName);
 					explainedSelectionSkills.add(edge.getSelection());
 				}
 
@@ -3036,8 +3014,8 @@ public class SimStInteractiveLearning implements Runnable {
 									SimStConversation.KBR_ACKNOWLEDGEMENT_TOPIC));
 						}
 						if (Boolean.parseBoolean(KBs[0]) || (!Boolean.parseBoolean(KBs[0]) && skillName.contains("done"))) {
-							if(!explainedWhyRightSkills.contains(skillName)) {
-								explainedWhyRightSkills.add(skillName);
+							if(!explainedWhyRightSkills.contains(inputName)) {
+								explainedWhyRightSkills.add(inputName);
 								explainedSelectionSkills.add(edge.getSelection());
 							}
 						}
@@ -3055,22 +3033,6 @@ public class SimStInteractiveLearning implements Runnable {
 					}
 				}
 			}
-
-
-			/*int explainDuration = (int) (Calendar.getInstance()
-					.getTimeInMillis() - explainRequestTime);
-			step = getBrController(getSimSt()).getMissController().getSimSt()
-					.getProblemStepString();
-			if (explanation != null && explanation.length() > 0) {
-				logger.simStLog(SimStLogger.SIM_STUDENT_EXPLANATION,
-						SimStLogger.HINT_EXPLAIN_ACTION, step, explanation,
-						question, sai, explainDuration, question);
-			} else {
-				logger.simStLog(SimStLogger.SIM_STUDENT_EXPLANATION,
-						SimStLogger.HINT_EXPLAIN_ACTION, step,
-						SimStLogger.NO_EXPLAIN_ACTION, question, sai,
-						explainDuration, question);
-			}*/
 		}
 		return null;
 	}
@@ -3122,13 +3084,15 @@ public class SimStInteractiveLearning implements Runnable {
 		// We use processLLMLabel with the current step, input, question and the user explanation to perform the classification
 		// We used lightside for this previously, but we use LLM now
 		if (explanation != null && explanation.length() > 0) {
-			last_KB = processLLMLabel(ple,stepName, skill_INPUT, question, explanation);
+			LLMClassifier classifier = new LLMClassifier(simSt.CTI_CLASSIFIER_CODE);
+			String qType = hint_explained ? "WR" : "WW";
+			last_KB = classifier.executeScript(ple.getPythonScriptPath(), simSt.getProjectDir(), stepName, qType, solution, question, explanation, logger);
 			if (last_KB == true && any_KB == false) any_KB = true;
 
-			String exp_resp = script.processResponseLLMOutput(response);
-			String context = stepName+"::"+skill_INPUT+"::"+correctness+"::"+exp_resp;
-			logger.simStLog(SimStLogger.SIM_STUDENT_EXPLANATION, SimStLogger.EXPECTED_KBR,
-					stepName, context, exp_resp, 0, "");
+//			String exp_resp = script.processResponseLLMOutput(response);
+//			String context = stepName+"::"+skill_INPUT+"::"+correctness+"::"+exp_resp;
+//			logger.simStLog(SimStLogger.SIM_STUDENT_EXPLANATION, SimStLogger.EXPECTED_KBR,
+//					stepName, context, exp_resp, 0, "");
 
 			if(hint_explained)
 				logger.simStLog(SimStLogger.SIM_STUDENT_EXPLANATION,
@@ -3169,9 +3133,9 @@ public class SimStInteractiveLearning implements Runnable {
 		// The response will contain the output of the LLM and we call the processQ function to extract the question from the response
 		if (q_count <= max_q) {
 			if (hint_explained)
-				response = script.executeScript(ple.getPythonScriptPath(), simSt.getProjectDir(), stepName, "WR", skill_INPUT, question, correctness, conversation,"exp", all_questions, all_answers, logger);
+				response = script.executeScript(ple.getPythonScriptPath(), simSt.getProjectDir(), getSimSt().getUserID(), stepName, "WR", skill_INPUT, conversation, logger);
 			else
-				response = script.executeScript(ple.getPythonScriptPath(), simSt.getProjectDir(), stepName, "WW", skill_INPUT, question, correctness, conversation,"exp", all_questions, all_answers, logger);
+				response = script.executeScript(ple.getPythonScriptPath(), simSt.getProjectDir(), getSimSt().getUserID(), stepName, "WW", skill_INPUT, conversation, logger);;
 
 			LLM_question = script.processQ(response);
 		}

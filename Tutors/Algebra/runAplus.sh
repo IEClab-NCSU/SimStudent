@@ -92,16 +92,24 @@ trap cleanup EXIT
 AddArgs="${AddArgs} -ssConstructiveTuteeInquiryFTIMode -ssCTIBothStuckParams none";;
 "-llmcti") LLMCTI="on"
 condition="${condition}_LLMCTI"
-#AddArgs=${AddArgs/MetaTutorMC/MetaTutorMC_CTI}
-#kill -9 $(lsof -ti:8000)
-#sh ${CVSDIR}/runAplus_lightside.sh &
-#LIGHTSIDE_PID=$!
-#function cleanup {
-#  kill $LIGHTSIDE_PID
-#  kill $(lsof -t -i:8000)
-#}
-#trap cleanup EXIT
-AddArgs="${AddArgs} -ssConstructiveTuteeInquiryResQLLM -DpythonScriptPath=/Users/tasmiashahriar/opt/anaconda3/bin/python3.8";;
+
+# CTI PYTHON SETUP
+# Step 1: Find python3.12
+PYTHON_PATH=$(command -v python3.12)
+if [ -z "$PYTHON_PATH" ]; then
+    echo "python3.12 not found in PATH."
+    exit 1
+fi
+echo "Found python3.12 at: $PYTHON_PATH"
+# Step 2: Create virtual environment in current directory (./venv)
+$PYTHON_PATH -m venv .venv || { echo "Failed to create virtualenv"; exit 1; }
+# Step 3: Retrieve python path from the virtual environment
+VENV_PYTHON="${ProjectDir}/.venv/bin/python3.12" || { echo "Failed to locate python3.12 from the virtual environment"; exit 1; }
+# Step 4: Install packages
+$VENV_PYTHON -m pip install -r "${ProjectDir}/requirements.txt" || { echo "Failed to load packages from requirements.txt"; exit 1; }
+echo "Virtual environment with python3.12 and other packages at: $VENV_PYTHON"
+
+AddArgs="${AddArgs} -ssConstructiveTuteeInquiryResQLLM -DpythonScriptPath=${VENV_PYTHON}";;
 "-br") br="on";;
 "-u"|"-user") AddArgs="${AddArgs} -ssUserID";;
 "-o"|"-output") redir="on";;

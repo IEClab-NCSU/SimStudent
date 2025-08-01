@@ -1249,31 +1249,22 @@ public class SimStPLE {
 
 	public void checkLLMConfig() {
 		if (PYTHON_SCRIPT_PATH == ""){
-			// Python Path Error
-			//System.out.println("llm path error");
 			LLM_ERR = true;
 			JOptionPane.showMessageDialog(null,
-					"<html><p>Pythonpath Settings Error!</p><p> Set the python 3.8 path using DpythonScriptPath variable! APLUS will continue to run without Constructive Tutee Inquiry Functionality.</p><p>Click OK to continue now.</p>",
+					"<html><p>Pythonpath Settings Error!</p><p> Set the python 3.12 path using DpythonScriptPath variable! APLUS will continue to run without Constructive Tutee Inquiry Functionality.</p><p>Click OK to continue now.</p>",
 					"", JOptionPane.INFORMATION_MESSAGE);
-		}
-		else if(PYTHON_SCRIPT_PATH != "") {
-
+		} else if(PYTHON_SCRIPT_PATH != "") {
 			LLMScript script = new LLMScript(simSt.CTI_CHAT_CODE);
-			String scriptPath = simSt.getProjectDir() + "/"+simSt.CTI_CHAT_CODE;
-			//System.out.println("SCRIPT  CALLING "+PYTHON_SCRIPT_PATH+" "+scriptPath);
+			String scriptPath = simSt.getProjectDir() + "/" + simSt.CTI_CHAT_CODE;
 			String response = script.runPythonScript(PYTHON_SCRIPT_PATH,scriptPath,"", "", "", "", "", "", "", "");
+
 			if (response != null && response.contains("ERROR: OpenAI library (0.28.1) is not installed or the OPENAI_API_KEY is not set")) {
-				//System.out.println("api key error");
 				LLM_ERR = true;
 				JOptionPane.showMessageDialog(null,
 						"<html><p>OpenAI Settings Error!</p><p>OpenAI library == 0.28.1 is not installed or the OPENAI_API_KEY is not set! APLUS will continue to run without Constructive Tutee Inquiry Functionality.</p><p>Click OK to continue now.</p>",
 						"", JOptionPane.INFORMATION_MESSAGE);
 			}
-			//runPythonScript(pythonPath, scriptPath, all_questions.toString(), all_answers.toString(), stepName, QType, Sol, first_question, correctness, conv_history)
-			//System.out.println("SCRIPT ERR"+response);
-
 		}
-
 	}
 
 	public LightSideMessageAnnotator getMessageAnnotator() {

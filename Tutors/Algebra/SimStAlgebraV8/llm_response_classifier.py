@@ -1,96 +1,82 @@
-# %%
-import openai
 import sys
+import os
 
-# %%
-question=""
-response=""
-#sys_args = 0
+from dotenv import load_dotenv
+from openai import OpenAI
+
+## Make sure you follow instructions in the README.md file
+# to store your OpenAI API key in the environment variable OPENAI_API_KEY
+MODEL = "o4-mini-2025-04-16"
+load_dotenv()
+if "OPENAI_API_KEY" not in os.environ:
+    print("No class :: ERROR: OpenAI library is not installed or the OPENAI_API_KEY is not set")
+    exit(1)
+client = OpenAI()
+client.api_key = os.environ["OPENAI_API_KEY"]
+
+CLASSIFICATION_PROMPT = """I am in charge of assessing a middle school student’s performance while they help their peer solve algebra equations. {scene}. This initiated the following conversation:
+  Peer: {question}
+  Student: {response}
+
+I need your help independently evaluating the student ’s response to the peer's question. Please classify their response into one of two classes - ‘good response’ or ‘bad response’ - based on the criteria below:
+
+(i) Relevancy (relevant vs irrelevant): Responses are relevant if they can independently reveal some information about the working domain and irrelevant if they could belong to any problem-solving domain.
+(ii) Intonation (descriptive vs reparative): Responses are descriptive if the student explains their stance and reparative if they acknowledges they made a mistake. Note that a response is not reparative if the student is repairing someone else’s mistake.
+(iIi) Information content (why vs what/how): Responses are why-informative if it describes why a solution step or an alternative solution step is correct or incorrect. Responses are what/how-informative if it describes what solution step to perform or how a solution step is executed.
+
+Any irrelevant student responses belong to the 'bad response' class.
+
+Information content is what distinguishes a good response from a bad one. Descriptive, why-informative responses or Reparative, why-informative responses are classified as 'good response'. Consequently, Descriptive, what/how-informative responses or Reparative, what/how-informative responses are classified as 'bad response'.
+
+Now, classify the student’s response and give a short justification in this structure: ‘This response is (classification) because: (justification)’.
+"""
+
+def get_completion(prompt, temperature=None, model=MODEL):
+    '''
+    Function to get a completion from the OpenAI API.
+    Uses the reasoning model by default.
+    Args:
+        prompt (str): The prompt to send to the OpenAI API.
+        temperature (float): The temperature for the OpenAI API request.
+        model (str): The model to use for the OpenAI API request.
+    Returns:
+        str: The output text from the OpenAI API.
+    '''
+    try:
+        # Making your OpenAI API request here
+        response = client.responses.create(
+            model=model,
+            reasoning={"effort": "high"},
+            # max_output_tokens=100,
+            # temperature=temperature,
+            input=prompt
+        )
+        return response.output_text
+    except Exception as e:
+        print(f"No class :: OpenAI API returned an API Error: {e}")
+        exit(1)
+
+def get_scene(qtype, sol, stepName):
+    """
+    This function takes the input variables and returns the scene for the question LLM
+    """
+    sol = "that the problem is done" if sol == "done" else f"to perform {sol}"
+    scene = f"Currently, the student is teaching their peer how to solve the equation {stepName}. "
+
+    if qtype == "WR":
+        return  scene + f"The student initially proposed {sol}. Their peer is confused."
+    elif qtype == "WW":
+        return  scene + f"The peer proposed {sol}; however, the student disagreed."
+
+
+def classify_response(qtype, sol, stepName, question, response):
+    return get_completion(CLASSIFICATION_PROMPT.format(scene=get_scene(qtype, sol, stepName), question=question, response=response))
 
 # If the script is called with arguments, use the first argument as the name
-if len(sys.argv) > 1:
-    #sys_args = 1
-    question=sys.argv[1]
-    response=sys.argv[2]
+if len(sys.argv) == 6 and all(sys.argv):
+    _, stepName, qtype, sol, question, response = sys.argv[:6]
+    print(classify_response(qtype, sol, stepName, question, response))
 
-## OpenAPI call
-
-all_good = 1
-
-## OpenAPI call
-if "OPENAI_API_KEY" in os.environ:
-    openai.api_key = os.environ["OPENAI_API_KEY"]
 else:
-    all_good = 0
-
-def get_completion(prompt, temperature, model="gpt-3.5-turbo"):
-    try:
-        #Make your OpenAI API request here
-        messages = [{"role": "user", "content": prompt}]
-        response = openai.ChatCompletion.create(
-            model=model,
-            messages=messages,
-            temperature=temperature, # this is the degree of randomness of the model's output
-        )
-        return response.choices[0].message["content"]
-    except openai.APITimeoutError as e:
-        print(f"OpenAI API returned an API Error: {e}")
-        return "No question:: API ERROR"+{e}
-    except openai.APIError as e:
-        #Handle API error here, e.g. retry or log
-        print(f"OpenAI API returned an API Error: {e}")
-        return "No question:: API ERROR"+{e}
-    except openai.APIConnectionError as e:
-        #Handle connection error here
-        print(f"Failed to connect to OpenAI API: {e}")
-        return "No question:: API ERROR"+{e}
-    except openai.RateLimitError as e:
-        #Handle rate limit error (we recommend using exponential backoff)
-        print(f"OpenAI API request exceeded rate limit: {e}")
-        return "No question:: API ERROR"+{e}
-
-
-## response classifier (in place of lightside)
-def classify_response(question, response):
-   #print("I am here class")
-   response_prompt = f"""
-Your task is to identify given a question, if the response is a good or a bad response.
-A response is considered bad if it lacks elaboration, is irrelevant, or avoids addressing the question or just instruct what to do using equations or some other forms without proper explanation. It may recognize a mistake but fails to explain it thoroughly.
-A response is considered good if it provides a detailed explanation of solving equations relevant to the question. If the response acknowledges a mistake, it should elaborate on what went wrong and why, using mathematical concepts.
-Both good and bad responses can have spelling mistakes and such mistakes are not decisive factors in determining the quality of the response.
-Do not focus on the length of the response to decide if it is a good response or not, rather focus on the quality of the elaboration in the response.
-Remember, the responses are coming from middle school students, therefore, you must not be super strict.
-A few examples of bad and good responses are provided below delimited by triple quotes.
-'''
-question: In the past, when I had a-6=9, I added 6 and you said that is correct. Now I see 10+y=8, so I thought add 10 would work. Why am I wrong?
-response: You need to do the oposite transformation, previously it was -6, so you added, now it is +10, so you must subtrat! Got it?
-verdict: Since the response is elaborated and relevant to the question asked and also explained using mathematical concepts, the verdict is, good response.
-
-question: In the past, when I had 6=3x, I divided by 3 and you said that is correct. Now I see 2x=10, so I thought divide 10 would work. Why am I wrong?
-response: divide 2x by 2
-verdict: Since the response is not elaborated and only instructs what to do without proper justification, the verdict is, bad response.
-
-question: Why should I perform subtract 10?
-response: My bad, it should be add 10.
-verdict: Since the response recognizes a mistake but just instructs the correct thing to do without explaining what went wrong using mathematical concepts, the verdict is, bad response.
-
-question: What is the role of the coefficient in an equation?
-response: Coefeicient is a number that is multiplied with variable, so in order to get rid of it, we must divide by it.
-verdict: Since the response is elaborated and relevant to the question asked and also clearly explained the significance of coefficient concept, the verdict is, good response.
-
-question: How do we know if a problem is solved?
-response: whenever you have variable isolated on one side and consinent on the other, it means you have solved it.
-verdict: Since the response is elaborated and relevant to the question asked and also clearly explained the concept of a solve equation, the verdict is, good response.
-'''
-question: {question}
-response: {response}
-verdict:
-"""
-#print("PROMPRT ",response_prompt)
-   return get_completion(response_prompt, 0)
-
-if all_good == 0:
-    print("ERROR: OpenAI library (0.28.1) is not installed or the OPENAI_API_KEY is not set")
-else:
-    response_class = classify_response(question,response)
-    print(response_class)
+    print("No class :: No question or response provided. Expected 5 arguments: stepName qtype sol question response")
+    sys.exit(1)
