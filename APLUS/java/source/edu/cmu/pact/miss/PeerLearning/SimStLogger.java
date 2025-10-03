@@ -175,6 +175,7 @@ public class SimStLogger {
    public static final String SSGAME_REVIEW = "SSGAME_REVIEW";
    public static final String SSGAME_ERROR = "SSGAME_ERROR";
 
+   public static final String PROBLEM_NAME_NOT_APPLICABLE = "NA";
    public static final String GAMESHOW_STARTUP_ACTION = "Game Show Program Started";
    public static final String JOIN_MATCHUP_ACTION = "Joined Matchup Area";
    public static final String SUCCESSFUL_MATCHUP_ACTION = "Matchup Successful";
@@ -687,7 +688,7 @@ public class SimStLogger {
 		//Determine if we need new context messages created - ie when starting a new problem
    	if (PLE_STARTED_ACTION.equalsIgnoreCase(action) || GAMESHOW_STARTUP_ACTION.equalsIgnoreCase(action))
 		{
-			brController.getLoggingSupport().setProblemName("START");
+			brController.getLoggingSupport().setProblemName(PROBLEM_NAME_NOT_APPLICABLE);
 			status = START_STATUS;
 			createContextMessages();
 		}
@@ -1017,7 +1018,7 @@ public class SimStLogger {
 	{
 		ProblemAssessor assess = brController.getMissController().getSimSt().getProblemAssessor();
 		
-		if(problem != null && problem.length() > 0 && !problem.equals("START"))
+		if(problem != null && problem.length() > 0 && !problem.equals(PROBLEM_NAME_NOT_APPLICABLE))
 		{
 			String problemPattern = assess.abstractProblem(problem);
 			String problemType = assess.classifyProblem(problem);
@@ -1040,7 +1041,7 @@ public class SimStLogger {
 	    	
 		}
 
-		if(step != null & step.length() > 0 && !step.startsWith(QUIZ_STATUS) && !step.equals("START"))
+		if(step != null & step.length() > 0 && !step.startsWith(QUIZ_STATUS) && !step.equals(SimSt.START_STEP))
 		{
 			String step1 = step.contains("[") ? step.substring(0, step.indexOf("[")) : step;
 			String stepPattern = assess.abstractProblem(step1);

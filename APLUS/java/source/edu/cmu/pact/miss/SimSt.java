@@ -504,7 +504,7 @@ public final class SimSt implements Serializable {
    	return problemsPerQuiz;
    }
 
-   public static final String START_STEP = "START";
+   public static final String START_STEP = "NA";
 
    private String problemStepString = START_STEP;
    public String getProblemStepString()
