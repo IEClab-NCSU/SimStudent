@@ -780,20 +780,21 @@ public class SimStLogger {
 		//trace.out(studentContext.toString());
 		logThis(studentContext);
 	//	trace.out("----------End of storing the log in Student database ----------");
-		
-		logging.setDatasetName(datasetBasename);
-		flowContext= logging.getContextMessage();
-	//	trace.out("-----------Logging the following in APLUS database--------------");
-		//trace.out(flowContext.toString());
-		logThis(flowContext);
-	//	trace.out("------------End of storing the log in APLUS database -------------\n");
-		
+
 		logging.setDatasetName(datasetBasename+LMS_APPEND);
 		lmsContext= logging.getContextMessage();
 	//	trace.out("-------------Logging the following in LMS database----------------");
 		//trace.out(lmsContext.toString());
 		logThis(lmsContext);
 	//	trace.out("-------------End of storing the following in the LMS database -------------");
+
+        // Default to FlowContext
+        logging.setDatasetName(datasetBasename);
+        flowContext= logging.getContextMessage();
+        //	trace.out("-----------Logging the following in APLUS database--------------");
+        //trace.out(flowContext.toString());
+        logThis(flowContext);
+        //	trace.out("------------End of storing the log in APLUS database -------------\n");
 	}
 	
 	
