@@ -27,3 +27,6 @@ APLUS/java/test/bin/*
 
 *.iml
 brPrefs.xml
+
+.env
+**/.env
