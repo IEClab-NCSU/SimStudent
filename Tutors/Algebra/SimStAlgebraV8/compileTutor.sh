@@ -52,6 +52,10 @@ echo compiling AlgebraV8AdhocFoaGetter...
 echo ${JAVAC} ${VmOption} AlgebraV8AdhocFoaGetter.java
 ${JAVAC} ${VmOption} SimStAlgebraV8/AlgebraV8AdhocFoaGetter.java -source 1.8 -target 1.8
 
+echo compiling AlgebraV8AdhocStepNameGetter...
+echo ${JAVAC} ${VmOption} AlgebraV8AdhocStepNameGetter.java
+${JAVAC} ${VmOption} SimStAlgebraV8/AlgebraV8AdhocStepNameGetter.java -source 1.8 -target 1.8
+
 echo compiling AlgebraV8AdhocSelectionGetter...
 echo ${JAVAC} ${VmOption} AlgebraV8AdhocSelectionGetter.java
 ${JAVAC} ${VmOption} SimStAlgebraV8/AlgebraV8AdhocSelectionGetter.java -source 1.8 -target 1.8
@@ -70,7 +74,7 @@ echo ${JAVAC} ${VmOption} AlgebraV8ResourceGetter.java
 ${JAVAC} ${VmOption} SimStAlgebraV8/AlgebraV8ResourceGetter.java -source 1.8 -target 1.8
 
 echo compiling AlgebraV8AdhocSkillNameGetter...
-echo ${JAVAC} ${VmOption} AlgebraV8AdhocFoaGetter.java
+echo ${JAVAC} ${VmOption} AlgebraV8AdhocSkillNameGetter.java
 ${JAVAC} ${VmOption} SimStAlgebraV8/AlgebraV8AdhocSkillNameGetter.java -source 1.8 -target 1.8
 
 echo compiling AlgebraV8AdhocSAIConverter...

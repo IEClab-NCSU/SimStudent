@@ -45,6 +45,7 @@ set TutorArg=%TutorArg% -ssSetInactiveInterfaceTimeout 5000000
 set TutorArg=%TutorArg% -ssInputCheckerClass SimStAlgebraV8.AlgebraV8InputChecker
 set TutorArg=%TutorArg% -ssStartStateCheckerClass SimStAlgebraV8.AlgebraV8StartStateChecker
 set TutorArg=%TutorArg% -ssFoaGetterClass SimStAlgebraV8.AlgebraV8AdhocFoaGetter
+set TutorArg=%TutorArg% -ssStepNameGetterClass SimStAlgebraV8.AlgebraV8AdhocStepNameGetter
 set TutorArg=%TutorArg% -ssSelectionOrderGetterClass SimStAlgebraV8.AlgebraV8AdhocSelectionGetter
 set TutorArg=%TutorArg% -ssClSolverTutorSAIConverter SimStAlgebraV8.AlgebraV8AdhocSAIConverter
 set TutorArg=%TutorArg% -ssActivationList AccuracySortedActivationList
