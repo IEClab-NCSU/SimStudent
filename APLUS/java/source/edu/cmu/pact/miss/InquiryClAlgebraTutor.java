@@ -597,7 +597,7 @@ public class InquiryClAlgebraTutor {
     	return edgeCount;
     }
 
-    public static Vector /* ProblemEdge */ findPathDepthFirst(ProblemNode startNode, ProblemNode endNode) {
+    public static Vector<ProblemEdge> findPathDepthFirst(ProblemNode startNode, ProblemNode endNode) {
 
     	if(startNode == null || endNode == null)
     		return null;
@@ -607,17 +607,16 @@ public class InquiryClAlgebraTutor {
 
         ProblemEdge theEdge = null;
         if ((theEdge = startNode.isChildNode(endNode)) != null) {
-            Vector path = new Vector();
+            Vector<ProblemEdge> path = new Vector<>();
             path.add(theEdge);
             return path; 
         } else {
-            Vector /* ProblemNode */ childlen = startNode.getChildren();
-            if (childlen.isEmpty()) {
+            Vector<ProblemNode> children = startNode.getChildren();
+            if (children.isEmpty()) {
                 return null;
             } else {
-                for (int i = 0; i < childlen.size(); i++) {
-                    ProblemNode childNode = (ProblemNode)childlen.get(i);
-                    Vector path = findPathDepthFirst(childNode, endNode);
+                for (ProblemNode childNode : children) {
+                    Vector<ProblemEdge> path = findPathDepthFirst(childNode, endNode);
                     if (path != null) {
                         path.add(0, startNode.isChildNode(childNode));
                         return path;

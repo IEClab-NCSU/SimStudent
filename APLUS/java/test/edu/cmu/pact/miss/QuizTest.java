@@ -171,7 +171,8 @@ public class QuizTest extends TestCase{
 		tutorArg+=" -ssProjectDir " + projectDir;
 		tutorArg+=" -DssFoilBase " + javaDir + "/FOIL6";
 		tutorArg+=" -ssOverviewPage curriculum.html";
-		tutorArg+=" -ssFoaGetterClass edu.cmu.pact.miss.SimStAlgebraV8.AlgebraV8AdhocFoaGetter";		
+		tutorArg+=" -ssFoaGetterClass edu.cmu.pact.miss.SimStAlgebraV8.AlgebraV8AdhocFoaGetter";
+        tutorArg+=" -ssStepNameGetterClass SimStAlgebraV8.AlgebraV8AdhocStepNameGetter";
 		tutorArg+=" -ssSkillNameGetterClass edu.cmu.pact.miss.SimStAlgebraV8.AlgebraV8AdhocSkillNameGetter";
 		tutorArg+=" -ssInputMatcher edu.cmu.pact.miss.userDef.algebra.IsEquivalent";
 		String[] argv = tutorArg.split(" ");

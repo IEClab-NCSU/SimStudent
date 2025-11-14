@@ -28,6 +28,8 @@ import edu.cmu.pact.miss.SimSt;
 import edu.cmu.pact.miss.SimStInteractiveLearning;
 import edu.cmu.pact.miss.userDef.algebra.EqFeaturePredicate;
 
+import static edu.cmu.pact.miss.InquiryClAlgebraTutor.findPathDepthFirst;
+
 
 public class ContestMultiProdRules extends SimStInteractiveLearning{
 
@@ -145,8 +147,9 @@ public class ContestMultiProdRules extends SimStInteractiveLearning{
         
 
         while (!killMessageReceived) {
-            
-        	String step = simSt.getProblemAssessor().calcProblemStepString(currentNode.getProblemModel().getStartNode(), currentNode,simSt.getLastSkillOperand());
+            ProblemNode startNode = currentNode.getProblemModel().getStartNode();
+            Vector<ProblemEdge> pathEdges = findPathDepthFirst(startNode, currentNode);
+            String step = simSt.getStepNameGetter().getStepName(pathEdges, startNode);
         	simSt.setProblemStepString(step);
         	
         	trace.out("ss", "----------------"+step);
@@ -535,7 +538,7 @@ public class ContestMultiProdRules extends SimStInteractiveLearning{
 
         while (!killMessageReceived) {
             
-        	String step = simSt.calcProblemStepString();
+        	String step =
         	simSt.setProblemStepString(step);
         	
         	trace.out("ss", "----------------"+step);
@@ -632,8 +635,9 @@ public class ContestMultiProdRules extends SimStInteractiveLearning{
         
         //when running not from a BRD, it never gets "done" - reaching a done state breaks out of loop
         while (!killMessageReceived) {
-
-        	String step = simSt.getProblemAssessor().calcProblemStepString(currentNode.getProblemModel().getStartNode(), currentNode, simSt.getLastSkillOperand());
+            ProblemNode startNode = currentNode.getProblemModel().getStartNode();
+            Vector<ProblemEdge> pathEdges = findPathDepthFirst(startNode, currentNode);
+            String step = simSt.getStepNameGetter().getStepName(pathEdges, startNode);
         	simSt.setProblemStepString(step);
         	
             ProblemNode nextCurrentNode = null;

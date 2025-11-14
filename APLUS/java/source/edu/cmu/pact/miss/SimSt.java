@@ -68,6 +68,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
+import edu.cmu.pact.miss.Getters.StepNameGetter;
 import jess.Activation;
 import jess.Defrule;
 import jess.Fact;
@@ -153,6 +154,8 @@ import pact.CommWidgets.JCommTable;
 import pact.CommWidgets.JCommTable.TableExpressionCell;
 import pact.CommWidgets.JCommTextField;
 import pact.CommWidgets.StudentInterfaceWrapper;
+
+import static edu.cmu.pact.miss.InquiryClAlgebraTutor.findPathDepthFirst;
 
 public final class SimSt implements Serializable {
 
@@ -2681,7 +2684,6 @@ public final class SimSt implements Serializable {
     * Add / remove focus of attention.  Toggled by a mouse click (see
     * JCommTable.mouseClickedWhenMissActive())
     *
-    * @param className a <code>Class</code> value
     * @param widget an <code>Object</code> value
     **/
    public void toggleFocusOfAttention(Object widget) {
@@ -2745,6 +2747,24 @@ public final class SimSt implements Serializable {
        }
    }
 
+
+    private transient StepNameGetter stepNameGetter = null;
+
+    // Instantiate the step name getter class with the concrete implementation provided
+    // This is typically done by passing the class name of the concrete class in CLI arguments
+    public void setSsStepNameGetter(String stepNameGetterClassName) {
+        try {
+            Class<?> stepNameGetterClass = Class.forName(stepNameGetterClassName);
+            this.stepNameGetter = (StepNameGetter) stepNameGetterClass.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.simStLogException(e);
+        }
+    }
+
+    public StepNameGetter getStepNameGetter() {
+        return this.stepNameGetter;
+    }
 
 
 
@@ -4394,7 +4414,7 @@ public final class SimSt implements Serializable {
    /**
     * Called when a Start State is created in BR
     *
-    * @param startStateName a <code>String</code> value
+    * @param startProblemNode a <code>String</code> value
     */
    public void startStateCreated( ProblemNode startProblemNode ) {
 
@@ -4428,7 +4448,6 @@ public final class SimSt implements Serializable {
     * which is defined elsewhere), returns a list of GUI elements (i.e., JCommWidget)
     * that are the corresponding focus of attention for the given "Selection"
     *
-    * @param instruction
     * @param selection
     * @param action
     * @param input
@@ -4642,7 +4661,7 @@ public final class SimSt implements Serializable {
     * Randomly take numTraining problems from the rest of the problems as training
     * problems.  Call ssRunInBatchMode with those training and test problems.
     *
-    * @param BRDdir
+    * @param studentDir
     * @param output
     */
    public void analysisOfFitnessWilkinsburg( String studentDir, String output ) {
@@ -5890,9 +5909,8 @@ public final class SimSt implements Serializable {
    /**
     * @param instruction
     * @param selection
-    * @param actionI
+    * @param action
     * @param input
-    * @param problemEdge
     * @param edgePath
     */
    //16 April 2008
@@ -6586,7 +6604,8 @@ public final class SimSt implements Serializable {
    	if(trace.getDebugCode("rr"))
    		trace.out("rr", "hint: " + hint);
 
-   	setProblemStepString(getProblemAssessor().calcProblemStepString(startNode, currentNode, null));
+    Vector<ProblemEdge> pathEdges = findPathDepthFirst(startNode, currentNode);
+   	setProblemStepString(this.getStepNameGetter().getStepName(pathEdges, startNode));
 
    	RuleActivationNode randomRan = null;
    	for(RuleActivationNode ran: activationList)
@@ -9919,7 +9938,6 @@ public final class SimSt implements Serializable {
 
    /**
     *
-    * @param ruleActivated
     * @param problemName
     * @return
     */
@@ -12695,7 +12713,7 @@ if (runType != null && runType.equalsIgnoreCase("springBoot") ){
     * c.f. searchRhsOps( Vector )
     *
     * //6March2007: this method returns the operator sequence found.
-    * @param skillName
+    * @param instructions
     * @return
     */
    public /*private*/ Vector /* String */ searchRhsOpsFor(Vector /* Instruction */ instructions) {
@@ -13087,7 +13105,7 @@ if (runType != null && runType.equalsIgnoreCase("springBoot") ){
    /**
     * Read operator symbols from a file
     *
-    * @param fileName a <code>String</code> value
+    * @param filename a <code>String</code> value
     */
    public void readRhsOpList( URI filename ) {
 

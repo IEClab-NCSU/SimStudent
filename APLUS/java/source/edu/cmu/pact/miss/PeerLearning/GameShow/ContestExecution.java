@@ -38,6 +38,8 @@ import edu.cmu.pact.miss.PeerLearning.SimStPLE;
 import edu.cmu.pact.miss.console.controller.MissController;
 import edu.cmu.pact.miss.userDef.algebra.EqFeaturePredicate;
 
+import static edu.cmu.pact.miss.InquiryClAlgebraTutor.findPathDepthFirst;
+
 /*
  * ContestExecution
  * A class to handle the technical details of solving the problems in the contest, using the productionRules
@@ -469,8 +471,9 @@ public class ContestExecution extends SimStInteractiveLearning{
         
         //when running not from a BRD, it never gets "done" - reaching a done state breaks out of loop
         while (!killMessageReceived) {
-
-        	String step = simSt.getProblemAssessor().calcProblemStepString(currentNode.getProblemModel().getStartNode(), currentNode,simSt.getLastSkillOperand());
+            ProblemNode startNode = currentNode.getProblemModel().getStartNode();
+            Vector<ProblemEdge> pathEdges = findPathDepthFirst(startNode, currentNode);
+            String step = simSt.getStepNameGetter().getStepName(pathEdges, startNode);
         	simSt.setProblemStepString(step);
         	
         	logger.simStLog(SimStLogger.SSGAME_CONTEST, SimStLogger.STEP_STARTED_ACTION, step, "", "", 0, contestant.rating);

@@ -55,6 +55,8 @@ import edu.cmu.pact.miss.ProblemModel.Graph.SimStProblemGraph;
 import edu.cmu.pact.miss.jess.WorkingMemoryConstants;
 import edu.cmu.pact.miss.userDef.algebra.EqFeaturePredicate;
 
+import static edu.cmu.pact.miss.InquiryClAlgebraTutor.findPathDepthFirst;
+
 
 public class SimStInteractiveLearning implements Runnable {
 
@@ -1402,7 +1404,11 @@ public class SimStInteractiveLearning implements Runnable {
 		}
 
 		trace.out("ss", listAssessment);
-		simSt.setProblemStepString(simSt.getProblemAssessor().calcProblemStepString(getQuizGraph().getStartNode(),nextCurrentNode, null));
+
+        ProblemNode startNode = currentNode.getProblemModel().getStartNode();
+        Vector<ProblemEdge> pathEdges = findPathDepthFirst(startNode, currentNode);
+        String step = simSt.getStepNameGetter().getStepName(pathEdges, startNode);
+		simSt.setProblemStepString(step);
 
 		return nextCurrentNode;
 	}
@@ -2037,7 +2043,9 @@ public class SimStInteractiveLearning implements Runnable {
 	}
 
 	public void calculateFullStepTime(ProblemNode currentNode) {
-		step = simSt.getProblemAssessor().calcProblemStepString(currentNode.getProblemModel().getStartNode(), currentNode,simSt.getLastSkillOperand());
+        ProblemNode startNode = currentNode.getProblemModel().getStartNode();
+        Vector<ProblemEdge> pathEdges = findPathDepthFirst(startNode, currentNode);
+		step = simSt.getStepNameGetter().getStepName(pathEdges, startNode);
 		setStep(step);
 		simSt.setProblemStepString(step);
 		if (logger.getLoggingEnabled())
@@ -4447,8 +4455,7 @@ public class SimStInteractiveLearning implements Runnable {
 	}
 
 	public String currentStep(ProblemNode startNode, ProblemNode problemNode) {
-		Vector /* ProblemEdge */pathEdges = InquiryClAlgebraTutor
-				.findPathDepthFirst(startNode, problemNode);
+		Vector /* ProblemEdge */pathEdges = findPathDepthFirst(startNode, problemNode);
 		String lastEquation = (pathEdges != null ? step(pathEdges)
 				: problemNode.getName());
 		// lastEquation() may return null

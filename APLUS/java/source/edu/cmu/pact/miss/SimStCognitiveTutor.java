@@ -68,6 +68,8 @@ import javax.swing.border.Border;
 import org.jdesktop.swingx.JXTaskPane;
 import edu.cmu.pact.jess.SimStJessModelTracingBKT;
 
+import static edu.cmu.pact.miss.InquiryClAlgebraTutor.findPathDepthFirst;
+
 /*
  * Class that holds all the specifics for the CogTutor mode of APLUS.
  * In class, this details holds 
@@ -321,7 +323,11 @@ public class SimStCognitiveTutor {
 		
 		/*Log student action*/
       	//String step = brController.getMissController().getSimSt().getProblemStepString();
-		String step = brController.getMissController().getSimSt().getProblemAssessor().calcProblemStepString(brController.getSolutionState().getCurrentNode().getProblemModel().getStartNode(), brController.getSolutionState().getCurrentNode(),getSimStPLE().getSimSt().getLastSkillOperand());
+        ProblemNode currentNode = brController.getSolutionState().getCurrentNode();
+        ProblemNode startNode = currentNode.getProblemModel().getStartNode();
+        Vector<ProblemEdge> pathEdges = findPathDepthFirst(startNode, currentNode);
+        String step = brController.getMissController().getSimSt().getStepNameGetter().getStepName(pathEdges, startNode);
+
       	ProblemNode parentNode= brController.getSolutionState().getCurrentNode();	
 		getSimStPLE().getSimSt().setProblemStepString(step);
 

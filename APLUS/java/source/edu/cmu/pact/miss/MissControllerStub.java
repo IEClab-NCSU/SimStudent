@@ -152,7 +152,10 @@ public class MissControllerStub implements MissControllerExternal {
 
 	public void setSsFoaGetterClass(String foaGetter) {}
 
-	public void setSsFoaSearch(boolean flag) {}
+    @Override
+    public void setSsStepNameGetterClass(String stepNameGetter) {}
+
+    public void setSsFoaSearch(boolean flag) {}
 
 	public void setSsHeuristicBasedIDS(boolean flag) {}
 

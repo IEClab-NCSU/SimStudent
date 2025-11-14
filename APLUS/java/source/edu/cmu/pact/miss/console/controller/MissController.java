@@ -625,6 +625,12 @@ public class MissController implements MissControllerExternal {
     public void setSsFoaGetterClass(String foaGetter) {
         getSimSt().setSsFoaGetter(foaGetter);
     }
+
+    @Override
+    public void setSsStepNameGetterClass(String stepNameGetter) {
+        getSimSt().setSsStepNameGetter(stepNameGetter);
+    }
+
     //nbarba 06/09/16: Problem Accessor may be added externally to define how problem is evaluated.
     public void setSsProlbemAssesorClass(String paClass) {
         getSimSt().setProblemAssessor(paClass);
@@ -1929,6 +1935,8 @@ public class MissController implements MissControllerExternal {
                     } else if (keyStem.equalsIgnoreCase("ssFoaGetterClass")) {
                         setSsFoaGetterClass(parameter[0]);
 
+                    } else if (keyStem.equalsIgnoreCase("ssStepNameGetterClass")) {
+                        setSsStepNameGetterClass(parameter[0]);
                     }
                     else if (keyStem.equalsIgnoreCase("ssDeletePrFile")){
                         getBrController().setDeletePrFile(true);

@@ -120,6 +120,8 @@ public interface MissControllerExternal {
 
 	public void setSsFoaGetterClass(String foaGetter);
 
+    public void setSsStepNameGetterClass(String stepNameGetter);
+
 	public void setSsInputCheckerClass(String inputChecker);
 
 	public void setSsPathOrderingClass(String cName);
