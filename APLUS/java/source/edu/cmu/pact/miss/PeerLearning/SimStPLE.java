@@ -2784,6 +2784,14 @@ public class SimStPLE {
 		} else {
 			traversed = brController.goToState(edge.getSource());
 		}
+
+        // Mark the child of the current node as buggy
+        // This invalidates all the children of the current node as UNDO lead to current node
+        List<ProblemEdge> outgoingEdges = brController.getCurrentNode().getOutgoingEdges();
+        for (ProblemEdge childEdge: outgoingEdges) {
+            childEdge.getEdgeData().setActionType(EdgeData.BUGGY_ACTION);
+        }
+
 		// JOptionPane.showMessageDialog(null, "Done Node Style: "+traversed);
 
 		// Learning must be started again and let it handle it (but do stop it from
@@ -2871,7 +2879,7 @@ public class SimStPLE {
 		 * = brController.goToState(edge.getSource()); if(traversed)
 		 * simSt.displayMessage("SimStudent asks...", SHOULD_DO_MSG); } if(!traversed) {
 		 * simSt.displayMessage("Error", UNDO_ERROR_MSG); return; } String newStep =
-		 * simSt.calcProblemStepString(); simSt.setProblemStepString(newStep);
+		 * ; simSt.setProblemStepString(newStep);
 		 * logger.simStLog(SimStLogger.SIM_STUDENT_STEP,
 		 * SimStLogger.STEP_STARTED_ACTION, newStep,"",""); blockInput(false);
 		 */
